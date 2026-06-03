@@ -212,12 +212,18 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
 
 /* video = permanent background */
-.hero-video-wrap{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.hero-video-wrap{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  transform:translate3d(0,var(--bg-y,0px),0);
+  will-change:transform;
+}
 .hero-video{width:100%;height:100%;object-fit:cover;display:block;}
 
 /* gradient dim — fades in before copy */
 .hero-dim{
   position:absolute;inset:0;z-index:1;pointer-events:none;
+  transform:translate3d(0,var(--bg-y,0px),0);
+  will-change:transform;
   opacity:0;
   background:
     linear-gradient(180deg, rgba(6,4,18,.55) 0%, rgba(6,4,18,.18) 32%, transparent 58%),
@@ -227,11 +233,46 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero-ready .hero-dim{opacity:1;}
 
+/* edge splashes — vector shards, blurred gradients, parallax */
+.hero-splashes{
+  position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible;
+  opacity:0;transition:opacity .85s var(--ease);
+}
+.hero-ready .hero-splashes{opacity:1;}
+.hero-splash{
+  position:absolute;display:block;overflow:visible;
+  mix-blend-mode:screen;
+  opacity:0;
+  transform:translate(var(--px,0px),var(--py,0px));
+  filter:blur(calc(var(--blur,28px) + 14px));
+  transition:opacity .9s var(--ease), filter .9s var(--ease);
+  will-change:transform;
+}
+.hero-ready .hero-splash{
+  opacity:calc(var(--op,.72) * var(--scroll-fade,1));
+  filter:blur(var(--blur,28px));
+}
+.hero-splash--l1{--blur:36px;--op:.55;}
+.hero-splash--l2{--blur:22px;--op:.68;}
+.hero-splash--l3{--blur:14px;--op:.82;}
+.hero-splash.s1{left:-4%;top:8%;width:clamp(118px,15vw,220px);transition-delay:.05s;}
+.hero-splash.s2{left:-2%;top:38%;width:clamp(68px,9vw,138px);transition-delay:.14s;}
+.hero-splash.s3{left:1%;bottom:12%;width:clamp(160px,20vw,280px);transition-delay:.22s;}
+.hero-splash.s4{left:8%;top:62%;width:clamp(48px,6vw,88px);transition-delay:.18s;}
+.hero-splash.s5{right:-3%;top:14%;width:clamp(118px,15vw,220px);transition-delay:.08s;}
+.hero-splash.s6{right:-1%;top:44%;width:clamp(78px,10vw,158px);transition-delay:.16s;}
+.hero-splash.s7{right:2%;bottom:8%;width:clamp(150px,19vw,270px);transition-delay:.24s;}
+.hero-splash.s8{right:10%;top:68%;width:clamp(54px,6.5vw,98px);transition-delay:.2s;}
+@media (prefers-reduced-motion: reduce){
+  .hero-splashes{opacity:1;transition:none;}
+  .hero-splash{opacity:var(--op,.6);transform:none;transition:none;}
+}
+
 /* shell visible after video; copy fades in per block */
 .hero-content{
-  position:relative;z-index:2;width:100%;
+  position:relative;z-index:3;width:100%;
   max-width:var(--maxw);margin:0 auto;
-  padding:clamp(4vh,5.5vw,7vh) var(--gutter) clamp(40px,6vw,64px);
+  padding:max(0px,calc(clamp(4vh,5.5vw,7vh) - 50px)) var(--gutter) clamp(40px,6vw,64px);
   visibility:hidden;pointer-events:none;
 }
 .hero-ready .hero-content{visibility:visible;pointer-events:auto;}
@@ -239,7 +280,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero-head .eyebrow{margin-bottom:20px;}
 .hero-head .title{
   margin-top:6px;
-  font-size:clamp(50px,7.5vw,84px);
+  font-size:clamp(75px,11.25vw,126px);
   line-height:1.02;
   letter-spacing:-.03em;
 }
@@ -827,6 +868,89 @@ body:not(.hero-ready){overflow:hidden;}
   </div>
   <div class="hero-dim" aria-hidden="true"></div>
 
+  <div class="hero-splashes" aria-hidden="true">
+    <svg class="hero-splash hero-splash--l1 s1" viewBox="0 0 200 240" data-depth="0.38" data-side="left" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hs-g1" x1="0%" y1="20%" x2="100%" y2="80%">
+          <stop offset="0%" stop-color="#e8d4ff" stop-opacity=".95"/>
+          <stop offset="35%" stop-color="#bf5cff" stop-opacity=".88"/>
+          <stop offset="72%" stop-color="#6c4cf1" stop-opacity=".62"/>
+          <stop offset="100%" stop-color="#2a1060" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hs-g1)" d="M0 40 L120 -8 L185 55 L140 130 L45 210 L-12 145 Z"/>
+    </svg>
+    <svg class="hero-splash hero-splash--l2 s2" viewBox="0 0 180 200" data-depth="0.52" data-side="left" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hs-g2" x1="10%" y1="0%" x2="90%" y2="100%">
+          <stop offset="0%" stop-color="#f0e6ff" stop-opacity=".9"/>
+          <stop offset="40%" stop-color="#a855f7" stop-opacity=".78"/>
+          <stop offset="100%" stop-color="#4c1d95" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hs-g2)" d="M-5 30 L95 5 L165 70 L130 155 L20 185 L-8 95 Z"/>
+    </svg>
+    <svg class="hero-splash hero-splash--l3 s3" viewBox="0 0 220 260" data-depth="0.72" data-side="left" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hs-g3" cx="28%" cy="22%" r="78%">
+          <stop offset="0%" stop-color="#fff" stop-opacity=".92"/>
+          <stop offset="28%" stop-color="#d946ef" stop-opacity=".85"/>
+          <stop offset="65%" stop-color="#7c3aed" stop-opacity=".55"/>
+          <stop offset="100%" stop-color="#1e0a3c" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path fill="url(#hs-g3)" d="M0 80 L80 20 L190 45 L210 140 L150 230 L30 250 L-15 160 Z"/>
+    </svg>
+    <svg class="hero-splash hero-splash--l1 s4" viewBox="0 0 120 140" data-depth="0.28" data-side="left" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hs-g4" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stop-color="#c084fc" stop-opacity=".7"/>
+          <stop offset="100%" stop-color="#581c87" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hs-g4)" d="M5 10 L90 0 L105 65 L55 120 L0 85 Z"/>
+    </svg>
+    <svg class="hero-splash hero-splash--l2 s5" viewBox="0 0 200 230" data-depth="0.44" data-side="right" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hs-g5" x1="100%" y1="15%" x2="0%" y2="85%">
+          <stop offset="0%" stop-color="#ede9fe" stop-opacity=".92"/>
+          <stop offset="38%" stop-color="#a78bfa" stop-opacity=".82"/>
+          <stop offset="100%" stop-color="#312e81" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hs-g5)" d="M200 35 L95 -5 L15 60 L40 145 L130 210 L205 155 Z"/>
+    </svg>
+    <svg class="hero-splash hero-splash--l3 s6" viewBox="0 0 170 190" data-depth="0.65" data-side="right" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hs-g6" cx="75%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#faf5ff" stop-opacity=".88"/>
+          <stop offset="32%" stop-color="#e879f9" stop-opacity=".8"/>
+          <stop offset="100%" stop-color="#5b21b6" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path fill="url(#hs-g6)" d="M195 25 L110 0 L25 55 L10 130 L85 185 L190 140 Z"/>
+    </svg>
+    <svg class="hero-splash hero-splash--l1 s7" viewBox="0 0 210 250" data-depth="0.58" data-side="right" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hs-g7" x1="85%" y1="0%" x2="15%" y2="100%">
+          <stop offset="0%" stop-color="#f5d0fe" stop-opacity=".9"/>
+          <stop offset="45%" stop-color="#9333ea" stop-opacity=".72"/>
+          <stop offset="100%" stop-color="#1a0533" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hs-g7)" d="M210 70 L130 15 L20 40 L0 150 L70 240 L195 210 Z"/>
+    </svg>
+    <svg class="hero-splash hero-splash--l2 s8" viewBox="0 0 130 150" data-depth="0.35" data-side="right" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hs-g8" x1="100%" y1="40%" x2="0%" y2="60%">
+          <stop offset="0%" stop-color="#ddd6fe" stop-opacity=".75"/>
+          <stop offset="100%" stop-color="#6d28d9" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hs-g8)" d="M125 15 L45 0 L0 55 L35 115 L115 135 Z"/>
+    </svg>
+  </div>
+
   <div class="hero-content" aria-live="polite">
     <div class="head hero-head">
       <span class="eyebrow hero-fade d1"><span class="dot"></span>Batch pitch-deck evaluation</span>
@@ -1244,11 +1368,11 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-/* hero intro: copy fades in while video keeps playing */
+/* hero intro: copy fades in while video keeps playing (ms) */
 (function initHeroIntro(){
   const hero = document.getElementById('hero');
   const video = hero?.querySelector('.hero-video');
-  const COPY_REVEAL_MS = 1130;
+  const COPY_REVEAL_MS = 1300;
   if(!hero) return;
 
   const reveal = () => {
@@ -1321,6 +1445,48 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   const prime = () => { tryPlay(); };
   window.addEventListener('touchstart', prime, {passive:true, once:true});
   window.addEventListener('click', prime, {once:true});
+})();
+
+/* hero edge splashes — scroll parallax vs background video */
+(function initHeroSplashesParallax(){
+  const hero = document.getElementById('hero');
+  const videoWrap = hero?.querySelector('.hero-video-wrap');
+  const heroDim = hero?.querySelector('.hero-dim');
+  const splashes = hero?.querySelectorAll('.hero-splash');
+  if(!hero || !splashes?.length) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const BG_RATE = 0.14;
+  const FG_RATE = 0.52;
+  let raf = 0;
+
+  const paint = () => {
+    raf = 0;
+    const rect = hero.getBoundingClientRect();
+    const shift = -rect.top;
+    const heroH = rect.height || window.innerHeight;
+
+    const bgY = (shift * BG_RATE).toFixed(2) + 'px';
+    if(videoWrap) videoWrap.style.setProperty('--bg-y', bgY);
+    if(heroDim) heroDim.style.setProperty('--bg-y', bgY);
+
+    splashes.forEach(el => {
+      const d = parseFloat(el.dataset.depth) || 0.5;
+      const side = el.dataset.side === 'right' ? 1 : -1;
+      const px = shift * d * FG_RATE * 0.18 * side;
+      const py = shift * d * FG_RATE;
+      const fade = Math.max(0, Math.min(1, 1 - Math.max(0, shift - heroH * 0.65) / (heroH * 0.35)));
+      el.style.setProperty('--px', px.toFixed(2) + 'px');
+      el.style.setProperty('--py', py.toFixed(2) + 'px');
+      el.style.setProperty('--scroll-fade', fade.toFixed(3));
+    });
+  };
+
+  const schedule = () => { if(!raf){ raf = requestAnimationFrame(paint); } };
+
+  window.addEventListener('scroll', schedule, {passive:true});
+  window.addEventListener('resize', schedule);
+  schedule();
 })();
 
 /* ============================================================
