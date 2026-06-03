@@ -1152,6 +1152,8 @@ body:not(.hero-ready){overflow:hidden;}
     <video class="hero-video"
            muted
            playsinline
+           autoplay
+           loop
            preload="auto"
            disablepictureinpicture
            webkit-playsinline="true">
@@ -1259,6 +1261,8 @@ body:not(.hero-ready){overflow:hidden;}
     <video class="hero-unicorn"
            muted
            playsinline
+           autoplay
+           loop
            preload="auto"
            disablepictureinpicture
            webkit-playsinline="true">
@@ -1714,9 +1718,16 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }
 
   let done = false;
-  let syncing = false;
+  let playing = false;
+  let starting = false;
   let maxWait = null;
   let copyTimer = null;
+  const ready = new Set();
+
+  layers.forEach(el => {
+    el.loop = true;
+    el.muted = true;
+  });
 
   const finish = () => {
     if(done) return;
@@ -1736,40 +1747,28 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     copyTimer = setTimeout(finish, COPY_REVEAL_MS);
   };
 
-  const seekTo = (el, t) => new Promise(resolve => {
-    if(Math.abs(el.currentTime - t) < 0.001){ resolve(); return; }
-    const onSeeked = () => resolve();
-    el.addEventListener('seeked', onSeeked, {once:true});
-    try { el.currentTime = t; } catch(_) { resolve(); }
-    setTimeout(resolve, 120);
-  });
-
-  const pauseAll = () => {
-    layers.forEach(el => { try { el.pause(); } catch(_) {} });
+  const markReady = (el) => {
+    if(!el || ready.has(el)) return;
+    ready.add(el);
+    if(ready.size >= layers.length) beginPlayback();
   };
 
-  const syncPlay = async () => {
-    if(syncing) return;
-    if(hasPair && (video.readyState < 2 || overlay.readyState < 2)) return;
+  const beginPlayback = async () => {
+    if(playing || starting) return;
+    starting = true;
 
-    syncing = true;
-    pauseAll();
-    await Promise.all(layers.map(el => seekTo(el, 0)));
+    layers.forEach(el => { try { el.pause(); } catch(_) {} });
+    layers.forEach(el => { try { el.currentTime = 0; } catch(_) {} });
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
     try {
       await Promise.all(layers.map(el => el.play()));
+      playing = true;
     } catch(_) {
-      setTimeout(finish, 500);
+      playing = false;
+    } finally {
+      starting = false;
     }
-    syncing = false;
-  };
-
-  const syncRestart = async () => {
-    if(syncing) return;
-    pauseAll();
-    await Promise.all(layers.map(el => seekTo(el, 0)));
-    await syncPlay();
   };
 
   const keepInSync = () => {
@@ -1779,35 +1778,26 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     }
   };
 
-  const tryStart = () => {
-    if(hasPair){
-      if(video.readyState >= 2 && overlay.readyState >= 2) syncPlay();
-      return;
-    }
-    if(video.readyState >= 2){
-      video.play().catch(() => setTimeout(finish, 500));
-    }
-  };
-
   video.addEventListener('playing', scheduleCopyReveal, {once:true});
   video.addEventListener('timeupdate', () => {
     keepInSync();
     if(video.currentTime * 1000 >= COPY_REVEAL_MS) finish();
   });
-  video.addEventListener('ended', () => { syncRestart(); });
 
   layers.forEach(el => {
+    const onReady = () => markReady(el);
+    if(el.readyState >= 2) onReady();
+    el.addEventListener('loadeddata', onReady, {once:true});
+    el.addEventListener('canplay', onReady);
     el.addEventListener('loadedmetadata', () => {
       if(video.duration) armFallback(video.duration);
-      tryStart();
     }, {once:true});
     el.addEventListener('error', () => setTimeout(finish, 500), {once:true});
   });
 
   armFallback(3);
-  tryStart();
 
-  const prime = () => { tryStart(); };
+  const prime = () => { if(!playing) beginPlayback(); };
   window.addEventListener('touchstart', prime, {passive:true, once:true});
   window.addEventListener('click', prime, {once:true});
 })();
