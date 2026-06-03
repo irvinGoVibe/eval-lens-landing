@@ -564,13 +564,13 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   opacity:0;
   transform:translateY(22px);
   filter:blur(6px);
-  transition:opacity .75s var(--ease), transform .75s var(--ease), filter .75s var(--ease);
+  transition:opacity .42s var(--ease), transform .42s var(--ease), filter .42s var(--ease);
 }
 .hero-ready .hero-fade{opacity:1;transform:none;filter:none;}
-.hero-ready .hero-fade.d1{transition-delay:.32s;}
-.hero-ready .hero-fade.d2{transition-delay:.48s;}
-.hero-ready .hero-fade.d3{transition-delay:.64s;}
-.hero-ready .hero-fade.d4{transition-delay:.78s;}
+.hero-ready .hero-fade.d1{transition-delay:.14s;}
+.hero-ready .hero-fade.d2{transition-delay:.22s;}
+.hero-ready .hero-fade.d3{transition-delay:.30s;}
+.hero-ready .hero-fade.d4{transition-delay:.38s;}
 
 body:not(.hero-ready){overflow:hidden;}
 @media (prefers-reduced-motion: reduce){
@@ -1694,7 +1694,8 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   const video = hero?.querySelector('.hero-video');
   const overlay = hero?.querySelector('.hero-unicorn');
   const OVERLAY_REVEAL_SEC = 2.5;
-  const COPY_REVEAL_MS = OVERLAY_REVEAL_SEC * 1000;
+  const COPY_REVEAL_SEC = 1.2;
+  const COPY_REVEAL_MS = COPY_REVEAL_SEC * 1000;
   const SYNC_DRIFT = 0.04;
   if(!hero) return;
 
