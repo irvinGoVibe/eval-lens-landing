@@ -284,7 +284,7 @@ body:not(.hero-ready){overflow:hidden;}
        -movflags +faststart section2-scroll.mp4
    ============================================================ */
 .scroll-scrub{background:transparent;color:#f5f5f7;position:relative;overflow:visible;z-index:2;}
-/* 300px overlap: fade hero → section 2 (top stays fully transparent so hero isn't tinted at rest) */
+/* 300px overlap: fade hero → section 2 (top stays transparent so hero isn't tinted at rest) */
 .scroll-scrub .scrub-lead{
   position:relative;height:300px;margin-top:-300px;z-index:1;pointer-events:none;
   background:linear-gradient(180deg,
@@ -295,11 +295,14 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(0,0,0,.58) 84%,
     rgba(0,0,0,.88) 96%,
     #000 100%);}
-.scroll-scrub .scrub-track{position:relative;z-index:2;height:450vh;background:#000;}
-.scroll-scrub .scrub-pin{position:sticky;top:0;height:100vh;width:100%;overflow:hidden;background:#000;z-index:2;
+.scroll-scrub .scrub-track{position:relative;z-index:2;height:480vh;background:#000;}
+.scroll-scrub .scrub-pin{position:sticky;top:0;height:100vh;width:100%;overflow:visible;background:#000;
   display:flex;flex-direction:column;justify-content:center;align-items:stretch;
   padding:clamp(40px,7vh,90px) 0;}
-.scroll-scrub .scrub-stage-area{position:relative;width:100%;flex:1 1 auto;min-height:0;height:auto;overflow:hidden;background:#000;z-index:1;}
+.scroll-scrub .scrub-stage-area{
+  position:relative;width:100%;flex:1 1 auto;min-height:0;height:auto;
+  overflow:visible;background:#000;
+  will-change:transform;}
 .scroll-scrub .scrub-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000;pointer-events:none;}
 /* Lush fallback gradient shown when video has no source / hasn't loaded */
 .scroll-scrub .scrub-fallback{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:1;transition:opacity .6s var(--ease);
@@ -532,23 +535,15 @@ body:not(.hero-ready){overflow:hidden;}
   100% {transform:scaleX(var(--w,.8));opacity:0;}
 }
 
-/* gradient bridge between sections (black top → transparent bottom) */
-.section-bridge{
-  position:relative;z-index:3;height:300px;margin-top:-300px;margin-bottom:-300px;
-  pointer-events:none;
-  background:linear-gradient(180deg,
-    #000 0%,
-    rgba(0,0,0,.88) 4%,
-    rgba(0,0,0,.58) 16%,
-    rgba(0,0,0,.32) 30%,
-    rgba(0,0,0,.10) 45%,
-    transparent 60%,
-    transparent 100%);}
+/* solid black spacer after pin exits — full width, 100px tall */
+.scroll-scrub .scrub-black-bar{
+  display:block;width:100%;max-width:100%;height:100px;
+  background:#000;flex:none;}
 
 @media (max-width:760px){
-  .section-bridge{height:220px;margin-top:-220px;margin-bottom:-220px;}
   .scroll-scrub .scrub-lead{height:220px;margin-top:-220px;}
-  .scroll-scrub .scrub-track{height:360vh;}
+  .scroll-scrub .scrub-track{height:400vh;}
+  .scroll-scrub .scrub-black-bar{height:100px;}
   .scrub-heading .scrub-sub{font-size:15px;}
   .scrub-scene{grid-template-columns:1fr;padding:6vh 6vw;align-content:space-between;}
   .scrub-files{height:36vh;}
@@ -560,7 +555,7 @@ body:not(.hero-ready){overflow:hidden;}
    3 · ENTRY POINT — glass cube hub
    ============================================================ */
 #workflow{
-  position:relative;z-index:2;background:var(--bg);
+  position:relative;background:var(--bg);
   padding-top:clamp(48px,7vh,88px);}
 #workflow .wrap{padding-top:0;}
 .cube-stage{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,4vw,56px);}
@@ -823,10 +818,10 @@ body:not(.hero-ready){overflow:hidden;}
         </div>
       </div>
     </div>
+    </div>
   </div>
+  <div class="scrub-black-bar" aria-hidden="true"></div>
 </section>
-
-<div class="section-bridge" aria-hidden="true"></div>
 
 <!-- ============ 3 · PRODUCT WORKFLOW — Launch your entry point ============ -->
 <section class="band" id="workflow" data-screen-label="03 Launch your entry point">
@@ -1314,8 +1309,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     }
 
-    /* pin timeline: center hold → lift to top → subtitle → video → cards */
-    const PHASE = { HOLD_END: 0.2, LIFT_START: 0.2, LIFT_END: 0.48, SUB_START: 0.26, VIDEO_START: 0.36, SCENE_START: 0.5 };
+    /* pin timeline: hold → lift heading → video → cards → exit (whole stage up) */
+    const PHASE = {
+      HOLD_END: 0.2, LIFT_START: 0.2, LIFT_END: 0.48, SUB_START: 0.26,
+      VIDEO_START: 0.36, SCENE_START: 0.5, EXIT_START: 0.82
+    };
 
     function updateHeading(trackP){
       if(!heading || reduce) return;
@@ -1374,6 +1372,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
       heading.style.setProperty('--h-top', smoothTop + 'px');
       heading.style.setProperty('--sub-op', String(subOp));
+      if(trackP >= PHASE.EXIT_START){
+        heading.style.opacity = String(Math.max(0, 1 - (trackP - PHASE.EXIT_START) / 0.08));
+      } else {
+        heading.style.opacity = '';
+      }
     }
 
     function updateReveal(p){
@@ -1382,8 +1385,19 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       if(scene) scene.classList.toggle('is-visible', pinActive && p >= PHASE.SCENE_START);
     }
 
+    function updateExit(p){
+      if(!stageArea || reduce) return;
+      let y = 0;
+      if(p >= PHASE.EXIT_START){
+        const t = (p - PHASE.EXIT_START) / (1 - PHASE.EXIT_START);
+        y = easeInOut(Math.min(1, t)) * 115;
+      }
+      stageArea.style.transform = y > 0 ? `translateY(-${y}vh)` : '';
+    }
+
     function videoProgress(p){
-      return Math.max(0, Math.min(1, (p - PHASE.VIDEO_START) / (1 - PHASE.VIDEO_START)));
+      const end = PHASE.EXIT_START;
+      return Math.max(0, Math.min(1, (p - PHASE.VIDEO_START) / (end - PHASE.VIDEO_START)));
     }
 
     function updateStages(p){
@@ -1414,6 +1428,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       progress = computeProgress();
       updateHeading(progress);
       updateReveal(progress);
+      updateExit(progress);
       updateStages(progress);
 
       if(ready && duration > 0){
