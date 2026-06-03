@@ -495,7 +495,7 @@ body:not(.hero-ready){overflow:hidden;}
        -g 1 -keyint_min 1 -sc_threshold 0 \
        -movflags +faststart section2-scroll-2.mp4
    ============================================================ */
-.scroll-scrub{background:transparent;color:#f5f5f7;position:relative;overflow:visible;z-index:2;}
+.scroll-scrub{background:transparent;color:#f5f5f7;position:relative;overflow:visible;z-index:7;}
 /* 300px overlap: fade hero → section 2 (top stays transparent so hero isn't tinted at rest) */
 .scroll-scrub .scrub-lead{
   position:relative;height:300px;margin-top:-300px;z-index:1;pointer-events:none;
@@ -509,13 +509,29 @@ body:not(.hero-ready){overflow:hidden;}
     #000 100%);}
 .scroll-scrub .scrub-track{position:relative;z-index:2;height:480vh;background:#000;}
 .scroll-scrub .scrub-pin{position:sticky;top:0;height:100vh;width:100%;overflow:visible;background:#000;
-  display:flex;flex-direction:column;justify-content:center;align-items:stretch;
-  padding:clamp(40px,7vh,90px) 0;}
+  isolation:isolate;
+  display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;
+  padding:clamp(40px,7vh,90px) 0 0;}
 .scroll-scrub .scrub-stage-area{
-  position:relative;width:100%;flex:1 1 auto;min-height:0;height:auto;
+  position:relative;z-index:1;width:100%;flex:1 1 auto;min-height:0;
   overflow:visible;background:#000;
+  isolation:isolate;
   will-change:transform;}
-.scroll-scrub .scrub-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000;pointer-events:none;}
+/* above <video> compositor layer — must sit inside .scrub-stage-area */
+.scroll-scrub .scrub-bottom-fade{
+  position:absolute;left:0;right:0;bottom:0;z-index:50;pointer-events:none;
+  transform:translate3d(0,0,1px);
+  height:clamp(160px,26vh,300px);
+  background:linear-gradient(to top,
+    #000 0%,
+    rgba(0,0,0,.96) 14%,
+    rgba(0,0,0,.78) 32%,
+    rgba(0,0,0,.48) 54%,
+    rgba(0,0,0,.2) 76%,
+    transparent 100%);}
+.scroll-scrub .scrub-video{
+  position:absolute;inset:0;z-index:1;width:100%;height:100%;
+  object-fit:cover;display:block;background:#000;pointer-events:none;}
 /* Lush fallback gradient shown when video has no source / hasn't loaded */
 .scroll-scrub .scrub-fallback{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:1;transition:opacity .6s var(--ease);
   background:
@@ -524,7 +540,7 @@ body:not(.hero-ready){overflow:hidden;}
     radial-gradient(65% 60% at 50% 110%, color-mix(in oklab,var(--aqua) 28%, transparent), transparent 70%),
     #05060a;}
 .scroll-scrub.has-video .scrub-fallback{opacity:0;}
-.scroll-scrub .scrub-veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+.scroll-scrub .scrub-veil{position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.05) 28%, rgba(0,0,0,.05) 60%, rgba(0,0,0,.55) 100%);}
 
 /* hint label that drops the camera-style media tag */
@@ -644,7 +660,7 @@ body:not(.hero-ready){overflow:hidden;}
 .scrub-scene.is-files-gone .scrub-files{opacity:0 !important;visibility:hidden;pointer-events:none;}
 
 /* ---------- section 2 scene: flying files + appearing cells ---------- */
-.scrub-scene{position:absolute;inset:0;z-index:2;pointer-events:none;
+.scrub-scene{position:absolute;inset:0;z-index:3;pointer-events:none;
   display:grid;grid-template-columns:1fr 1fr;align-items:center;
   padding:clamp(24px,4vh,56px) clamp(28px,6vw,96px);}
 .scrub-scene::before{content:"";position:absolute;left:50%;top:50%;width:min(46vw,520px);height:min(46vw,520px);transform:translate(-50%,-50%);
@@ -771,18 +787,42 @@ body:not(.hero-ready){overflow:hidden;}
   100% {transform:scaleX(var(--w,.8));opacity:0;}
 }
 
-/* exit cap (inside section 2) */
+/* exit cap — sticky at viewport bottom through end of section 2 scroll */
 .scroll-scrub .scrub-exit-cap{
-  display:block;width:100%;height:100px;background:#000;flex:none;}
+  position:sticky;bottom:0;left:0;right:0;
+  display:block;width:100%;flex:none;z-index:60;pointer-events:none;
+  transform:translate3d(0,0,1px);
+  height:clamp(160px,26vh,300px);
+  margin-top:calc(-1 * clamp(160px,26vh,300px));
+  background:linear-gradient(to top,
+    #000 0%,
+    rgba(0,0,0,.96) 14%,
+    rgba(0,0,0,.78) 32%,
+    rgba(0,0,0,.48) 54%,
+    rgba(0,0,0,.2) 76%,
+    transparent 100%);}
 
 /* orange semicircle — between section 2 and 3, centered on viewport */
 .section-orange-glow{
-  position:relative;z-index:8;
+  position:relative;z-index:6;
   width:100%;max-width:100vw;margin:0 auto;
+  margin-top:calc(-1 * clamp(160px,26vh,300px));
+  padding-top:clamp(160px,26vh,300px);
   height:clamp(280px,38vh,440px);
-  background:#000;overflow:hidden;pointer-events:none;}
+  background:#000;overflow:visible;pointer-events:none;}
+.section-orange-glow::before{
+  content:"";position:absolute;left:0;right:0;top:0;
+  height:clamp(160px,26vh,300px);
+  transform:translateY(-100%);
+  pointer-events:none;z-index:30;
+  transform:translate3d(0,0,1px);
+  background:linear-gradient(to top,
+    #000 0%,
+    rgba(0,0,0,.92) 22%,
+    rgba(0,0,0,.55) 50%,
+    transparent 100%);}
 .section-orange-glow__stage{
-  position:absolute;inset:0;
+  position:absolute;inset:0;z-index:1;
   display:grid;place-items:end center;
   overflow:hidden;}
 .section-orange-glow__bloom{
@@ -821,8 +861,14 @@ body:not(.hero-ready){overflow:hidden;}
 @media (max-width:760px){
   .scroll-scrub .scrub-lead{height:220px;margin-top:-220px;}
   .scroll-scrub .scrub-track{height:400vh;}
-  .scroll-scrub .scrub-exit-cap{height:80px;}
-  .section-orange-glow{height:clamp(220px,34vh,320px);}
+  .scroll-scrub .scrub-bottom-fade,
+  .scroll-scrub .scrub-exit-cap{height:clamp(120px,20vh,200px);}
+  .scroll-scrub .scrub-exit-cap{margin-top:calc(-1 * clamp(120px,20vh,200px));}
+  .section-orange-glow{
+    margin-top:calc(-1 * clamp(120px,20vh,200px));
+    padding-top:clamp(120px,20vh,200px);
+    height:clamp(220px,34vh,320px);}
+  .section-orange-glow::before{height:clamp(120px,20vh,200px);}
   .scrub-heading .scrub-sub{font-size:15px;}
   .scrub-scene{grid-template-columns:1fr;padding:6vh 6vw;align-content:space-between;}
   .scrub-files{height:36vh;}
@@ -1205,6 +1251,7 @@ body:not(.hero-ready){overflow:hidden;}
         </div>
       </div>
       </div>
+        <div class="scrub-bottom-fade" aria-hidden="true"></div>
     </div>
     </div>
   </div>
