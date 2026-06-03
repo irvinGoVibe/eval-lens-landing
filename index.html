@@ -634,6 +634,14 @@ body:not(.hero-ready){overflow:hidden;}
   transition:none;}
 .scrub-scene:not(.is-visible) .scrub-file,
 .scrub-scene:not(.is-visible) .scrub-cell{animation-play-state:paused;opacity:0;}
+.scrub-scene.is-visible .scrub-cell{
+  animation:none !important;
+  opacity:0;
+  will-change:transform,opacity,filter;
+}
+.scrub-scene.is-cells-active .scrub-cell{pointer-events:auto;}
+.scrub-scene.is-visible .scrub-cell .bar i{animation:none !important;transform:scaleX(0);}
+.scrub-scene.is-files-gone .scrub-files{opacity:0 !important;visibility:hidden;pointer-events:none;}
 
 /* ---------- section 2 scene: flying files + appearing cells ---------- */
 .scrub-scene{position:absolute;inset:0;z-index:2;pointer-events:none;
@@ -1189,13 +1197,13 @@ body:not(.hero-ready){overflow:hidden;}
           <span class="bar"><i style="--w:.88"></i></span>
           <span class="sc">88</span>
         </div>
-          <div class="scrub-cell c3">
-            <span class="n">03</span>
-            <span class="nm">Quanta Bio</span>
-            <span class="bar"><i style="--w:.81"></i></span>
-            <span class="sc">81</span>
-          </div>
+        <div class="scrub-cell c3">
+          <span class="n">03</span>
+          <span class="nm">Quanta Bio</span>
+          <span class="bar"><i style="--w:.81"></i></span>
+          <span class="sc">81</span>
         </div>
+      </div>
       </div>
     </div>
     </div>
@@ -1658,6 +1666,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     const stageArea = section.querySelector('.scrub-stage-area');
     const scene = section.querySelector('.scrub-scene');
     const scrubFiles = scene ? Array.from(scene.querySelectorAll('.scrub-file')) : [];
+    const scrubCells = scene ? Array.from(scene.querySelectorAll('.scrub-cell')) : [];
     if(!track || !pin) return;
 
     function splitEpicLines(){
@@ -1774,8 +1783,16 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     };
     const SUCK_VIDEO_START = 0.62;
     const SUCK_VIDEO_END = 1;
+    /* left decks hide → right cells: c3, c2, c1 from scene center to slots */
+    const FILES_GONE_PULL = 0.68;
+    const CELLS_P_START = 0.76;
+    const CELLS_P_END = 0.82;
+    const CELL_REVEAL = 0.28;
+    const CELL_ORDER = [2, 1, 0];
+    const CELL_BLUR_MAX = 36;
     let suckTargets = null;
     let suckBaseTransforms = null;
+    let cellRest = null;
 
     function updateHeading(trackP){
       if(!heading || reduce) return;
@@ -1880,7 +1897,9 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
         file.style.transform = '';
         file.style.opacity = '';
         file.style.filter = '';
+        file.style.visibility = '';
       });
+      scene?.classList.remove('is-files-gone');
     }
 
     function captureFileSuckTargets(){
@@ -1945,6 +1964,122 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       });
     }
 
+    function resetSceneCells(){
+      cellRest = null;
+      if(scene){
+        scene.classList.remove('is-files-gone','is-cells-active');
+      }
+      scrubCells.forEach(cell=>{
+        cell.style.opacity = '';
+        cell.style.transform = '';
+        cell.style.filter = '';
+        const barI = cell.querySelector('.bar i');
+        if(barI) barI.style.transform = '';
+      });
+    }
+
+    function captureCellRest(){
+      if(cellRest || !scene) return;
+      scrubCells.forEach(cell=>{
+        cell.style.transform = 'none';
+        cell.style.filter = 'none';
+        cell.style.opacity = '0';
+      });
+      void scene.offsetHeight;
+      const sr = scene.getBoundingClientRect();
+      const cx = sr.left + sr.width * 0.5;
+      const cy = sr.top + sr.height * 0.5;
+      cellRest = scrubCells.map(cell=>{
+        const r = cell.getBoundingClientRect();
+        return {
+          startX: cx - (r.left + r.width * 0.5),
+          startY: cy - (r.top + r.height * 0.5),
+        };
+      });
+    }
+
+    function updateSceneCells(p){
+      if(!scene || !scrubCells.length) return;
+      if(reduce){
+        scene.classList.add('is-files-gone','is-cells-active');
+        scrubCells.forEach(cell=>{
+          cell.style.opacity = '1';
+          cell.style.transform = 'none';
+          cell.style.filter = 'none';
+          const barI = cell.querySelector('.bar i');
+          if(barI){
+            const w = parseFloat(barI.style.getPropertyValue('--w') || '0.8');
+            barI.style.transform = `scaleX(${w})`;
+          }
+        });
+        return;
+      }
+
+      const pinActive = track.getBoundingClientRect().top <= 2;
+      const sceneOn = pinActive && p >= PHASE.SCENE_START;
+      const suckT = sceneOn ? suckProgress(p) : 0;
+      const pull = Math.pow(suckT, 1.12);
+      const filesGone = sceneOn && pull >= FILES_GONE_PULL;
+      const cellPhase = filesGone && p >= CELLS_P_START
+        ? easeOut(Math.min(1, (p - CELLS_P_START) / (CELLS_P_END - CELLS_P_START)))
+        : 0;
+
+      if(!sceneOn){
+        resetSceneCells();
+        return;
+      }
+
+      scene.classList.toggle('is-files-gone', filesGone);
+
+      if(!filesGone){
+        resetSceneCells();
+        return;
+      }
+
+      if(filesGone){
+        scrubFiles.forEach(file=>{
+          file.style.opacity = '0';
+          file.style.visibility = 'hidden';
+        });
+      }
+
+      if(cellPhase <= 0){
+        scene.classList.remove('is-cells-active');
+        scrubCells.forEach(cell=>{
+          cell.style.opacity = '0';
+          cell.style.transform = '';
+          cell.style.filter = '';
+        });
+        return;
+      }
+
+      scene.classList.add('is-cells-active');
+      if(!cellRest) captureCellRest();
+
+      const orderLen = CELL_ORDER.length;
+      const stagger = orderLen > 1 ? (1 - CELL_REVEAL) / (orderLen - 1) : 0;
+
+      CELL_ORDER.forEach((idx, orderI)=>{
+        const cell = scrubCells[idx];
+        const rest = cellRest?.[idx];
+        if(!cell || !rest) return;
+        const slot = orderI * stagger;
+        const t = Math.max(0, Math.min(1, (cellPhase - slot) / CELL_REVEAL));
+        const e = easeOut(t);
+        const x = rest.startX * (1 - e);
+        const y = rest.startY * (1 - e);
+        const blur = (1 - Math.pow(e, 0.78)) * CELL_BLUR_MAX;
+        cell.style.opacity = t > 0.02 ? String(e) : '0';
+        cell.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+        cell.style.filter = blur > 0.5 ? `blur(${blur.toFixed(1)}px)` : 'none';
+        const barI = cell.querySelector('.bar i');
+        if(barI){
+          const w = parseFloat(barI.style.getPropertyValue('--w') || '0.8');
+          barI.style.transform = `scaleX(${e * w})`;
+        }
+      });
+    }
+
     function updateStages(p){
       if(!stages.length) return;
       // Even split with small cross-fade window handled by CSS transition
@@ -1975,6 +2110,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       updateReveal(progress);
       updateExit(progress);
       updateFileSuck(progress);
+      updateSceneCells(progress);
       updateStages(progress);
 
       if(ready && duration > 0){
