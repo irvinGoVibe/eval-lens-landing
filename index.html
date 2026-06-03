@@ -51,6 +51,14 @@
   --cyan:      #2ec5e8;
   --aqua:      #36e0c2;
 
+  /* warm orange glow (Claude-style bridge after section 2) */
+  --orange-hot:   #ff6a2e;
+  --orange-core:  #ff8f4f;
+  --orange-soft:  #ffb27a;
+  --orange-mist:  rgba(255, 118, 58, .42);
+  --orange-deep:  #1a0c06;
+  --orange-warm:  #fff6f0;
+
   --lens: linear-gradient(118deg, var(--violet) 0%, var(--lavender) 32%, var(--cyan) 68%, var(--aqua) 100%);
   --lens-soft: linear-gradient(118deg, color-mix(in oklab, var(--violet) 22%, transparent), color-mix(in oklab, var(--cyan) 18%, transparent) 60%, color-mix(in oklab, var(--aqua) 20%, transparent));
 
@@ -599,15 +607,58 @@ body:not(.hero-ready){overflow:hidden;}
   100% {transform:scaleX(var(--w,.8));opacity:0;}
 }
 
-/* solid black spacer after pin exits — full width, 100px tall */
-.scroll-scrub .scrub-black-bar{
-  display:block;width:100%;max-width:100%;height:100px;
-  background:#000;flex:none;}
+/* exit cap (inside section 2) */
+.scroll-scrub .scrub-exit-cap{
+  display:block;width:100%;height:100px;background:#000;flex:none;}
+
+/* orange semicircle — between section 2 and 3, centered on viewport */
+.section-orange-glow{
+  position:relative;z-index:8;
+  width:100%;max-width:100vw;margin:0 auto;
+  height:clamp(280px,38vh,440px);
+  background:#000;overflow:hidden;pointer-events:none;}
+.section-orange-glow__stage{
+  position:absolute;inset:0;
+  display:grid;place-items:end center;
+  overflow:hidden;}
+.section-orange-glow__bloom{
+  position:relative;flex:none;
+  border-radius:50%;pointer-events:none;
+  transform:translateZ(0);}
+.section-orange-glow__bloom--wide{
+  width:min(148vw,1680px);height:min(82vw,780px);
+  margin-bottom:-38%;
+  background:radial-gradient(ellipse 50% 46% at 50% 76%,
+    rgba(255, 155, 95, .98) 0%,
+    rgba(255, 122, 62, .72) 18%,
+    rgba(255, 92, 42, .38) 36%,
+    rgba(255, 72, 32, .14) 52%,
+    transparent 68%);
+  filter:blur(32px);opacity:.95;}
+.section-orange-glow__bloom--core{
+  position:absolute;bottom:-6%;left:50%;
+  width:min(88vw,920px);height:min(48vw,480px);
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse 56% 50% at 50% 86%,
+    rgba(255, 198, 140, .92) 0%,
+    rgba(255, 138, 72, .55) 28%,
+    rgba(255, 98, 48, .22) 48%,
+    transparent 66%);
+  filter:blur(18px);}
+.section-orange-glow__bloom--rim{
+  position:absolute;bottom:0;left:50%;
+  width:min(112vw,1280px);height:clamp(130px,20vh,240px);
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse 100% 100% at 50% 100%,
+    rgba(255, 176, 110, .55) 0%,
+    rgba(255, 118, 58, .22) 42%,
+    transparent 72%);}
 
 @media (max-width:760px){
   .scroll-scrub .scrub-lead{height:220px;margin-top:-220px;}
   .scroll-scrub .scrub-track{height:400vh;}
-  .scroll-scrub .scrub-black-bar{height:100px;}
+  .scroll-scrub .scrub-exit-cap{height:80px;}
+  .section-orange-glow{height:clamp(220px,34vh,320px);}
   .scrub-heading .scrub-sub{font-size:15px;}
   .scrub-scene{grid-template-columns:1fr;padding:6vh 6vw;align-content:space-between;}
   .scrub-files{height:36vh;}
@@ -619,9 +670,19 @@ body:not(.hero-ready){overflow:hidden;}
    3 · ENTRY POINT — glass cube hub
    ============================================================ */
 #workflow{
-  position:relative;background:var(--bg);
+  position:relative;z-index:10;
+  background:var(--bg);
   padding-top:clamp(48px,7vh,88px);}
-#workflow .wrap{padding-top:0;}
+#workflow::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:min(52vh,520px);
+  z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,
+    color-mix(in oklab,var(--orange-hot) 22%, transparent) 0%,
+    color-mix(in oklab,var(--orange-soft) 12%, transparent) 28%,
+    transparent 72%);}
+#workflow .wrap{position:relative;z-index:1;padding-top:0;}
+#workflow .eyebrow{color:color-mix(in oklab,var(--orange-hot) 65%, var(--violet));}
+#workflow .eyebrow .dot{background:linear-gradient(118deg,var(--orange-hot),var(--orange-soft));}
 .cube-stage{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,4vw,56px);}
 .cube-wrap{position:relative;height:clamp(300px,34vw,400px);display:grid;place-items:center;}
 /* falling envelopes */
@@ -761,7 +822,7 @@ body:not(.hero-ready){overflow:hidden;}
            preload="auto"
            disablepictureinpicture
            webkit-playsinline="true">
-      <source src="assets/hero-intro.mp4" type="video/mp4" />
+      <source src="assets/hero-intro-2.mp4" type="video/mp4" />
     </video>
   </div>
   <div class="hero-dim" aria-hidden="true"></div>
@@ -884,8 +945,16 @@ body:not(.hero-ready){overflow:hidden;}
     </div>
     </div>
   </div>
-  <div class="scrub-black-bar" aria-hidden="true"></div>
+  <div class="scrub-exit-cap" aria-hidden="true"></div>
 </section>
+
+<div class="section-orange-glow" aria-hidden="true">
+  <div class="section-orange-glow__stage">
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--wide"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--core"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--rim"></div>
+  </div>
+</div>
 
 <!-- ============ 3 · PRODUCT WORKFLOW — Launch your entry point ============ -->
 <section class="band" id="workflow" data-screen-label="03 Launch your entry point">
