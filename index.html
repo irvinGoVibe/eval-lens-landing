@@ -105,6 +105,79 @@ a{color:inherit;text-decoration:none;}
 .brand .mark{width:22px;height:22px;border-radius:50%;background:var(--lens);position:relative;box-shadow:0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 14px -4px var(--violet);}
 .brand .mark::after{content:"";position:absolute;inset:5px;border-radius:50%;background:radial-gradient(circle at 34% 30%, rgba(255,255,255,.95), rgba(255,255,255,.1) 55%, transparent 70%);}
 
+/* ---------- site header ---------- */
+.site-header{
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  padding-top:max(12px,env(safe-area-inset-top));
+  background:transparent;
+  pointer-events:none;
+}
+/* same horizontal grid as .hero-content — logo aligns with hero title */
+.site-header__inner{
+  width:100%;max-width:var(--maxw);margin:0 auto;
+  padding-left:var(--gutter);padding-right:var(--gutter);
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  min-height:52px;
+  pointer-events:auto;
+}
+.site-header .brand{
+  flex:none;font-size:18px;color:#f5f5f7;
+  transition:color .35s var(--ease);
+}
+.site-header .brand .mark{box-shadow:0 0 0 1px rgba(255,255,255,.45) inset, 0 4px 14px -4px var(--violet);}
+.site-header__nav{
+  display:flex;align-items:center;gap:clamp(18px,2.6vw,36px);
+  margin-left:auto;margin-right:clamp(12px,2vw,28px);
+}
+.site-header__link{
+  font-family:var(--font-text);
+  font-size:14px;font-weight:400;letter-spacing:-.01em;
+  color:rgba(245,245,247,.82);
+  white-space:nowrap;
+  transition:color .25s var(--ease);
+}
+.site-header__link:hover{color:#fff;}
+.site-header__accent{
+  position:relative;display:inline-block;
+  margin-left:.28em;
+  background:var(--lens);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+.site-header__accent::after{
+  content:"";
+  position:absolute;left:-3%;right:-3%;top:54%;
+  height:1.5px;border-radius:1px;
+  background:var(--lens);
+  transform:scaleX(0);
+  transform-origin:left center;
+  transition:transform .38s var(--ease);
+  pointer-events:none;
+}
+.site-header__link:hover .site-header__accent::after{transform:scaleX(1);}
+.site-header__cta.btn{
+  flex:none;
+  font-size:13.5px;font-weight:500;letter-spacing:-.01em;
+  padding:10px 18px;
+  color:#fff;
+  background:var(--violet);
+  border:0;
+  box-shadow:0 10px 28px -12px var(--violet);
+}
+.site-header__cta.btn:hover{
+  background:var(--violet-2);
+  box-shadow:0 14px 34px -10px var(--violet);
+}
+/* past hero — readable on light sections, still transparent */
+.site-header.is-light .brand{color:var(--fg);}
+.site-header.is-light .brand .mark{box-shadow:0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 14px -4px var(--violet);}
+.site-header.is-light .site-header__link{color:var(--muted);}
+.site-header.is-light .site-header__link:hover{color:var(--fg);}
+@media (max-width:900px){
+  .site-header__nav{display:none;}
+  .site-header__inner{justify-content:space-between;}
+}
+
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-text);font-weight:400;font-size:15px;line-height:1;border:0;cursor:pointer;border-radius:980px;padding:11px 20px;transition:transform .2s var(--ease), box-shadow .25s, background .25s;}
 .btn:active{transform:scale(.97);}
@@ -287,68 +360,94 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero-head .sub{margin-top:18px;}
 .hero-head .cta-row{justify-content:flex-start;margin-top:30px;}
 
-/* Hero — Liquid Glass CTAs (lens palette) */
+/* Hero — iOS-style Liquid Glass CTAs (steel / ice crystal) */
+.hero .cta-row{gap:18px;}
 .hero .cta-row .btn{
-  position:relative;isolation:isolate;overflow:hidden;
-  font-weight:500;letter-spacing:-.01em;
-  backdrop-filter:blur(22px) saturate(1.75);
-  -webkit-backdrop-filter:blur(22px) saturate(1.75);
-  border:1px solid rgba(255,255,255,.34);
+  position:relative;isolation:isolate;overflow:hidden;z-index:0;
+  font-weight:500;letter-spacing:-.02em;
+  font-size:17px;line-height:1.1;
+  padding:17px 34px;min-height:56px;
+  backdrop-filter:blur(44px) saturate(1.9) brightness(1.06);
+  -webkit-backdrop-filter:blur(44px) saturate(1.9) brightness(1.06);
+  border:1px solid rgba(255,255,255,.38);
+  background:rgba(255,255,255,.08);
+  color:#f8fafc;
+  text-shadow:0 1px 2px rgba(0,0,0,.22);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.48),
-    inset 0 -1px 0 rgba(255,255,255,.1),
-    0 10px 36px -12px rgba(108,76,241,.55);
-  transition:transform .22s var(--ease), box-shadow .35s var(--ease), border-color .35s, background .35s;
+    inset 0 1.5px 0 rgba(255,255,255,.72),
+    inset 0 -1px 0 rgba(255,255,255,.14),
+    inset 1px 0 0 rgba(255,255,255,.18),
+    inset -1px 0 0 rgba(200,220,240,.12),
+    0 14px 48px -10px rgba(0,0,0,.42),
+    0 4px 20px -6px rgba(180,200,220,.18);
+  transition:transform .28s var(--ease), box-shadow .4s var(--ease), border-color .4s, background .4s, backdrop-filter .4s;
 }
 .hero .cta-row .btn::before{
-  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:linear-gradient(180deg, rgba(255,255,255,.32) 0%, rgba(255,255,255,.06) 38%, transparent 58%);}
-.hero .cta-row .btn::after{
-  content:"";position:absolute;inset:-50% -30%;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(ellipse 90% 70% at 50% -20%, color-mix(in oklab,var(--lavender) 42%, transparent), transparent 58%);
-  opacity:.75;transition:opacity .35s var(--ease);}
-.hero .cta-row .btn:hover::after{opacity:1;}
-.hero .cta-row .btn-primary{
-  color:#fff;
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
   background:
-    linear-gradient(118deg,
-      color-mix(in oklab,var(--violet) 78%, transparent) 0%,
-      color-mix(in oklab,var(--lavender) 52%, transparent) 34%,
-      color-mix(in oklab,var(--cyan) 48%, transparent) 68%,
-      color-mix(in oklab,var(--aqua) 42%, transparent) 100%),
-    rgba(255,255,255,.07);}
-.hero .cta-row .btn-primary:hover{
-  border-color:rgba(255,255,255,.5);
+    linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.14) 22%, transparent 48%),
+    linear-gradient(25deg, transparent 55%, rgba(210,228,248,.12) 100%);}
+.hero .cta-row .btn::after{
+  content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(ellipse 95% 75% at 42% -18%, rgba(255,255,255,.55), transparent 52%),
+    radial-gradient(ellipse 70% 60% at 92% 108%, rgba(190,210,235,.22), transparent 54%),
+    radial-gradient(ellipse 55% 45% at 8% 92%, rgba(220,232,248,.16), transparent 50%);
+  opacity:.85;
+  transition:opacity .45s var(--ease), transform .65s var(--ease);}
+.hero .cta-row .btn:hover{
+  border-color:rgba(255,255,255,.52);
+  backdrop-filter:blur(48px) saturate(2) brightness(1.1);
+  -webkit-backdrop-filter:blur(48px) saturate(2) brightness(1.1);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.58),
-    0 16px 44px -10px color-mix(in oklab,var(--violet) 62%, transparent),
-    0 0 56px -14px color-mix(in oklab,var(--cyan) 48%, transparent);
+    inset 0 2px 0 rgba(255,255,255,.82),
+    inset 0 -1px 0 rgba(255,255,255,.2),
+    0 20px 56px -12px rgba(0,0,0,.48),
+    0 0 40px -8px rgba(200,220,240,.28);
+}
+.hero .cta-row .btn:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
+.hero .cta-row .btn-primary{
+  background:
+    linear-gradient(145deg,
+      rgba(255,255,255,.22) 0%,
+      rgba(220,232,248,.1) 38%,
+      rgba(255,255,255,.04) 100%),
+    rgba(255,255,255,.06);
+}
+.hero .cta-row .btn-primary:hover{
+  background:
+    linear-gradient(145deg,
+      rgba(255,255,255,.3) 0%,
+      rgba(230,240,252,.14) 40%,
+      rgba(255,255,255,.08) 100%),
+    rgba(255,255,255,.1);
 }
 .hero .cta-row .btn-glass{
-  color:#f5f5f7;
-  background:rgba(8,6,20,.22);
-  border-color:color-mix(in oklab,var(--lavender) 28%, rgba(255,255,255,.32));
+  color:rgba(245,248,252,.94);
+  background:rgba(12,16,24,.14);
+  border-color:rgba(255,255,255,.28);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.36),
-    inset 0 -1px 0 rgba(255,255,255,.06),
-    0 10px 32px -14px rgba(46,197,232,.28);
+    inset 0 1px 0 rgba(255,255,255,.5),
+    inset 0 -1px 0 rgba(255,255,255,.08),
+    0 12px 40px -14px rgba(0,0,0,.38);
 }
 .hero .cta-row .btn-glass::after{
-  background:radial-gradient(ellipse 85% 65% at 18% -15%, color-mix(in oklab,var(--cyan) 38%, transparent), transparent 55%),
-    radial-gradient(ellipse 70% 55% at 88% 110%, color-mix(in oklab,var(--violet) 32%, transparent), transparent 52%);}
+  background:
+    radial-gradient(ellipse 80% 62% at 12% -12%, rgba(255,255,255,.38), transparent 54%),
+    radial-gradient(ellipse 65% 50% at 100% 100%, rgba(175,195,220,.2), transparent 52%);}
 .hero .cta-row .btn-glass:hover{
-  background:rgba(255,255,255,.12);
-  border-color:color-mix(in oklab,var(--aqua) 35%, rgba(255,255,255,.42));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.44),
-    0 14px 40px -12px color-mix(in oklab,var(--cyan) 42%, transparent);
+  background:rgba(255,255,255,.1);
+  border-color:rgba(255,255,255,.44);
 }
+.hero .cta-row .btn .btn-txt,
+.hero .cta-row .btn .arr{position:relative;z-index:1;}
 .hero .cta-row .btn .arr{
-  opacity:.92;
-  filter:drop-shadow(0 0 8px color-mix(in oklab,var(--aqua) 55%, transparent));
+  opacity:.95;
+  filter:drop-shadow(0 0 10px rgba(220,235,255,.45));
 }
 @media (prefers-reduced-motion: reduce){
-  .hero .cta-row .btn::after{transition:none;}
+  .hero .cta-row .btn::after{transition:opacity .2s;}
+  .hero .cta-row .btn:hover::after{transform:none;}
 }
 
 .hero-fade{
@@ -394,7 +493,7 @@ body:not(.hero-ready){overflow:hidden;}
      ffmpeg -i input.mov -an -vcodec libx264 -pix_fmt yuv420p \
        -profile:v high -preset slow -crf 20 \
        -g 1 -keyint_min 1 -sc_threshold 0 \
-       -movflags +faststart section2-scroll.mp4
+       -movflags +faststart section2-scroll-2.mp4
    ============================================================ */
 .scroll-scrub{background:transparent;color:#f5f5f7;position:relative;overflow:visible;z-index:2;}
 /* 300px overlap: fade hero → section 2 (top stays transparent so hero isn't tinted at rest) */
@@ -610,6 +709,15 @@ body:not(.hero-ready){overflow:hidden;}
   82%  {transform:translate(96px,-48px) rotate(-10deg) scale(.68);opacity:.35;}
   100% {transform:translate(142px,-80px) rotate(20deg) scale(.52);opacity:0;}
 }
+
+/* scroll-end: cards sucked diagonally into scene center (JS drives --suck-t) */
+.scrub-scene.is-sucking .scrub-files{perspective:900px;perspective-origin:68% 50%;}
+.scrub-scene.is-sucking::before{
+  transform:translate(-50%,-50%) scale(calc(1 + var(--suck-t, 0) * 0.65));
+  opacity:calc(0.72 + var(--suck-t, 0) * 0.45);
+  filter:blur(calc(16px - var(--suck-t, 0) * 6px));
+  transition:transform .12s linear, opacity .12s linear, filter .12s linear;}
+.scrub-scene.is-sucking .scrub-file{animation-play-state:paused !important;}
 
 /* RIGHT: cells that appear one-by-one */
 .scrub-cells{position:relative;display:flex;flex-direction:column;gap:10px;justify-self:end;
@@ -851,6 +959,22 @@ body:not(.hero-ready){overflow:hidden;}
 <body>
 <div class="progress" id="progress"></div>
 
+<header class="site-header" id="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="#top" aria-label="EvalLense home">
+      <span class="mark" aria-hidden="true"></span>
+      EvalLense
+    </a>
+    <nav class="site-header__nav" aria-label="Primary">
+      <a class="site-header__link" href="#nav-1">Menu <span class="site-header__accent">one</span></a>
+      <a class="site-header__link" href="#nav-2">Menu <span class="site-header__accent">two</span></a>
+      <a class="site-header__link" href="#nav-3">Menu <span class="site-header__accent">three</span></a>
+      <a class="site-header__link" href="#nav-4">Menu <span class="site-header__accent">four</span></a>
+    </nav>
+    <a class="btn btn-primary site-header__cta" href="#demo">Book Live Demo</a>
+  </div>
+</header>
+
 <main id="top">
 
 <!-- ============ 1 · HERO ============ -->
@@ -957,8 +1081,8 @@ body:not(.hero-ready){overflow:hidden;}
       <h1 class="title hero-fade d2">Lens Your <span class="grad-word">Next Unicorn</span></h1>
       <p class="sub hero-fade d3">Batch-review pitch decks, rank the strongest startups, and give every team a clear report.</p>
       <div class="cta-row hero-fade d4">
-        <button class="btn btn-primary">Book a demo</button>
-        <button class="btn btn-glass">Try live demo&nbsp;<span class="arr">→</span></button>
+        <button class="btn btn-primary"><span class="btn-txt">Book a demo</span></button>
+        <button class="btn btn-glass"><span class="btn-txt">Try live demo</span>&nbsp;<span class="arr">→</span></button>
       </div>
     </div>
   </div>
@@ -987,7 +1111,7 @@ body:not(.hero-ready){overflow:hidden;}
                disablepictureinpicture
                webkit-playsinline="true"
                aria-hidden="true">
-          <source src="assets/section2-scroll.mp4" type="video/mp4" />
+          <source src="assets/section2-scroll-2.mp4" type="video/mp4" />
         </video>
         <div class="scrub-veil" aria-hidden="true"></div>
 
@@ -1362,6 +1486,20 @@ const onScroll = () => {
 };
 document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
+/* site header — light text on hero, dark text on light bands */
+(function(){
+  const header = document.getElementById('site-header');
+  const hero = document.getElementById('hero');
+  if(!header || !hero) return;
+  const sync = () => {
+    const heroBottom = hero.getBoundingClientRect().bottom;
+    header.classList.toggle('is-light', heroBottom < 72);
+  };
+  sync();
+  window.addEventListener('scroll', sync, {passive:true});
+  window.addEventListener('resize', sync, {passive:true});
+})();
+
 /* reveal on scroll */
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
@@ -1512,6 +1650,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     const headingSlot = section.querySelector('.scrub-heading-slot');
     const stageArea = section.querySelector('.scrub-stage-area');
     const scene = section.querySelector('.scrub-scene');
+    const scrubFiles = scene ? Array.from(scene.querySelectorAll('.scrub-file')) : [];
     if(!track || !pin) return;
 
     function splitEpicLines(){
@@ -1621,6 +1760,10 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       HOLD_END: 0.2, LIFT_START: 0.2, LIFT_END: 0.48, SUB_START: 0.26,
       VIDEO_START: 0.36, SCENE_START: 0.5, EXIT_START: 0.82
     };
+    const SUCK_VIDEO_START = 0.62;
+    const SUCK_VIDEO_END = 1;
+    let suckTargets = null;
+    let suckBaseTransforms = null;
 
     function updateHeading(trackP){
       if(!heading || reduce) return;
@@ -1707,6 +1850,77 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       return Math.max(0, Math.min(1, (p - PHASE.VIDEO_START) / (end - PHASE.VIDEO_START)));
     }
 
+    function suckProgress(p){
+      const vp = videoProgress(p);
+      if(vp <= SUCK_VIDEO_START) return 0;
+      return easeInOut(Math.min(1, (vp - SUCK_VIDEO_START) / (SUCK_VIDEO_END - SUCK_VIDEO_START)));
+    }
+
+    function resetFileSuck(){
+      suckTargets = null;
+      suckBaseTransforms = null;
+      if(scene){
+        scene.classList.remove('is-sucking');
+        scene.style.removeProperty('--suck-t');
+      }
+      scrubFiles.forEach(file=>{
+        file.style.transform = '';
+        file.style.opacity = '';
+        file.style.filter = '';
+        file.style.animationPlayState = '';
+      });
+    }
+
+    function captureFileSuckTargets(){
+      if(!scene || !scrubFiles.length) return;
+      const sr = scene.getBoundingClientRect();
+      const cx = sr.left + sr.width * 0.5;
+      const cy = sr.top + sr.height * 0.5;
+      suckTargets = scrubFiles.map(file=>{
+        const r = file.getBoundingClientRect();
+        const fx = r.left + r.width * 0.5;
+        const fy = r.top + r.height * 0.5;
+        return {dx: cx - fx, dy: cy - fy};
+      });
+      suckBaseTransforms = scrubFiles.map(file=> getComputedStyle(file).transform);
+      scene.classList.add('is-sucking');
+      scrubFiles.forEach(file=>{ file.style.animationPlayState = 'paused'; });
+    }
+
+    function updateFileSuck(p){
+      if(!scene || !scrubFiles.length || reduce) return;
+      const pinActive = track.getBoundingClientRect().top <= 2;
+      const sceneOn = pinActive && p >= PHASE.SCENE_START;
+      const t = sceneOn ? suckProgress(p) : 0;
+
+      if(t <= 0.001){
+        if(suckTargets) resetFileSuck();
+        return;
+      }
+
+      if(!suckTargets) captureFileSuckTargets();
+
+      const pull = Math.pow(t, 1.12);
+      scene.style.setProperty('--suck-t', pull.toFixed(4));
+
+      scrubFiles.forEach((file, i)=>{
+        const target = suckTargets[i];
+        const base = suckBaseTransforms[i];
+        if(!target || !base || base === 'none') return;
+        const m = new DOMMatrix(base);
+        m.translateSelf(target.dx * pull, target.dy * pull);
+        const scale = Math.max(0.04, 1 - pull * 0.94);
+        m.scaleSelf(scale, scale);
+        file.style.transform = m.toString();
+        file.style.opacity = String(Math.max(0, 1 - pull * 1.08));
+        const blur = pull * 16;
+        const bright = 1 + pull * 0.35;
+        file.style.filter = blur > 0.4
+          ? `blur(${blur.toFixed(1)}px) brightness(${bright.toFixed(2)})`
+          : '';
+      });
+    }
+
     function updateStages(p){
       if(!stages.length) return;
       // Even split with small cross-fade window handled by CSS transition
@@ -1736,6 +1950,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       updateHeading(progress);
       updateReveal(progress);
       updateExit(progress);
+      updateFileSuck(progress);
       updateStages(progress);
 
       if(ready && duration > 0){
