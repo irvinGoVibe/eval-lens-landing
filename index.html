@@ -356,7 +356,14 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero-video-wrap{position:absolute;inset:0;z-index:0;}
 .hero-video{width:100%;height:100%;object-fit:cover;display:block;}
-.hero-unicorn-wrap{position:absolute;inset:0;z-index:1;}
+.hero-unicorn-wrap{
+  position:absolute;inset:0;z-index:50;pointer-events:none;
+  transform:translate3d(0,var(--bg-y,0px),0);
+  will-change:transform;
+  opacity:0;
+  transition:opacity .4s var(--ease);
+}
+.hero-unicorn-wrap.is-visible{opacity:1;}
 .hero-unicorn-gfx{position:absolute;inset:0;}
 .hero-unicorn{
   width:100%;height:100%;object-fit:cover;display:block;
@@ -620,7 +627,7 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(0,0,0,.58) 84%,
     rgba(0,0,0,.88) 96%,
     #000 100%);}
-.scroll-scrub .scrub-track{position:relative;z-index:2;height:480vh;background:#000;}
+.scroll-scrub .scrub-track{position:relative;z-index:2;height:380vh;background:#000;}
 .scroll-scrub .scrub-pin{position:sticky;top:0;height:100vh;width:100%;overflow:visible;background:#000;
   isolation:isolate;
   display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;
@@ -915,73 +922,108 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(0,0,0,.2) 76%,
     transparent 100%);}
 
-/* orange semicircle — between section 2 and 3, centered on viewport */
+/* orange voice-glow — round dome bridging dark→light seam */
 .section-orange-glow{
-  position:relative;z-index:6;
+  position:relative;z-index:11;
   width:100%;max-width:100vw;margin:0 auto;
-  margin-top:calc(-1 * clamp(160px,26vh,300px));
-  padding-top:clamp(160px,26vh,300px);
-  height:clamp(280px,38vh,440px);
-  background:#000;overflow:visible;pointer-events:none;}
-.section-orange-glow::before{
-  content:"";position:absolute;left:0;right:0;top:0;
-  height:clamp(160px,26vh,300px);
-  transform:translateY(-100%);
-  pointer-events:none;z-index:30;
-  transform:translate3d(0,0,1px);
-  background:linear-gradient(to top,
+  margin-top:calc(-1 * clamp(60px,9vh,110px));
+  height:clamp(260px,34vh,400px);
+  background:linear-gradient(to bottom,
     #000 0%,
-    rgba(0,0,0,.92) 22%,
-    rgba(0,0,0,.55) 50%,
-    transparent 100%);}
+    #000 30%,
+    rgba(0,0,0,.86) 54%,
+    rgba(0,0,0,.45) 78%,
+    transparent 100%);
+  overflow:visible;pointer-events:none;}
 .section-orange-glow__stage{
   position:absolute;inset:0;z-index:1;
-  display:grid;place-items:end center;
-  overflow:hidden;}
+  overflow:visible;}
 .section-orange-glow__bloom{
-  position:relative;flex:none;
-  border-radius:50%;pointer-events:none;
-  transform:translateZ(0);}
+  position:absolute;pointer-events:none;
+  transform:translate3d(-50%,0,0);
+  left:50%;}
 .section-orange-glow__bloom--wide{
-  width:min(148vw,1680px);height:min(82vw,780px);
-  margin-bottom:-38%;
-  background:radial-gradient(ellipse 50% 46% at 50% 76%,
-    rgba(255, 155, 95, .98) 0%,
-    rgba(255, 122, 62, .72) 18%,
-    rgba(255, 92, 42, .38) 36%,
-    rgba(255, 72, 32, .14) 52%,
-    transparent 68%);
-  filter:blur(32px);opacity:.95;}
+  bottom:-40%;
+  width:min(150vw,1700px);aspect-ratio:2/1.4;
+  background:radial-gradient(ellipse 56% 80% at 50% 50%,
+    rgba(255, 150, 90, .78) 0%,
+    rgba(255, 118, 58, .50) 22%,
+    rgba(255, 92, 42, .24) 42%,
+    rgba(255, 70, 28, .09) 62%,
+    transparent 78%);
+  filter:blur(48px);opacity:.9;}
 .section-orange-glow__bloom--core{
-  position:absolute;bottom:-6%;left:50%;
-  width:min(88vw,920px);height:min(48vw,480px);
-  transform:translateX(-50%);
-  background:radial-gradient(ellipse 56% 50% at 50% 86%,
-    rgba(255, 198, 140, .92) 0%,
-    rgba(255, 138, 72, .55) 28%,
-    rgba(255, 98, 48, .22) 48%,
-    transparent 66%);
-  filter:blur(18px);}
+  bottom:-18%;
+  width:min(64vw,720px);aspect-ratio:1;
+  background:radial-gradient(circle at 50% 50%,
+    rgba(255, 232, 196, .92) 0%,
+    rgba(255, 190, 130, .70) 16%,
+    rgba(255, 138, 72, .42) 34%,
+    rgba(255, 92, 40, .14) 54%,
+    transparent 72%);
+  filter:blur(34px);}
+.section-orange-glow__bloom--core-l{ left:30%; }
+.section-orange-glow__bloom--core-c{ left:50%; }
+.section-orange-glow__bloom--core-r{ left:70%; }
 .section-orange-glow__bloom--rim{
-  position:absolute;bottom:0;left:50%;
-  width:min(112vw,1280px);height:clamp(130px,20vh,240px);
-  transform:translateX(-50%);
-  background:radial-gradient(ellipse 100% 100% at 50% 100%,
-    rgba(255, 176, 110, .55) 0%,
-    rgba(255, 118, 58, .22) 42%,
-    transparent 72%);}
+  bottom:-30%;
+  width:min(140vw,1600px);height:clamp(240px,32vh,380px);
+  background:radial-gradient(ellipse 78% 58% at 50% 50%,
+    rgba(255, 168, 108, .22) 0%,
+    rgba(255, 110, 56, .08) 52%,
+    transparent 82%);
+  filter:blur(42px);opacity:.62;}
+
+/* "voice glow" breathing — wide halo + three offset pulsing orbs */
+@keyframes glow-breath-wide{
+  0%,100%{ transform:translate3d(-50%,0,0) scale(1);    opacity:.90; }
+  50%    { transform:translate3d(-50%,-2%,0) scale(1.04); opacity:.76; }
+}
+@keyframes glow-pulse-l{
+  0%,100%{ transform:translate3d(-50%,0,0) scale(.82); opacity:.58; }
+  40%    { transform:translate3d(-50%,-2%,0) scale(1.08); opacity:.95; }
+  70%    { transform:translate3d(-50%,-4%,0) scale(.94); opacity:.78; }
+}
+@keyframes glow-pulse-c{
+  0%,100%{ transform:translate3d(-50%,0,0) scale(.92); opacity:.7; }
+  50%    { transform:translate3d(-50%,-5%,0) scale(1.14); opacity:1; }
+}
+@keyframes glow-pulse-r{
+  0%,100%{ transform:translate3d(-50%,0,0) scale(1.04); opacity:.88; }
+  35%    { transform:translate3d(-50%,-3%,0) scale(.88);  opacity:.62; }
+  75%    { transform:translate3d(-50%,-1%,0) scale(1.10); opacity:1; }
+}
+@keyframes glow-drift-rim{
+  0%,100%{ transform:translate3d(-50%,0,0) scaleX(1);    opacity:.78; }
+  33%    { transform:translate3d(-48%,0,0) scaleX(1.06); opacity:1; }
+  66%    { transform:translate3d(-52%,0,0) scaleX(.95);  opacity:.68; }
+}
+.section-orange-glow__bloom--wide{
+  animation:glow-breath-wide 7.5s ease-in-out infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--core-l{
+  animation:glow-pulse-l 4.3s ease-in-out -1.4s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--core-c{
+  animation:glow-pulse-c 5.5s ease-in-out -2.6s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--core-r{
+  animation:glow-pulse-r 4.9s ease-in-out -3.2s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--rim{
+  animation:glow-drift-rim 9s ease-in-out -3s infinite;
+  will-change:transform,opacity;}
+@media (prefers-reduced-motion: reduce){
+  .section-orange-glow__bloom{ animation:none !important; }
+}
 
 @media (max-width:760px){
   .scroll-scrub .scrub-lead{height:220px;margin-top:-220px;}
-  .scroll-scrub .scrub-track{height:400vh;}
-  .scroll-scrub .scrub-bottom-fade,
-  .scroll-scrub .scrub-exit-cap{height:clamp(120px,20vh,200px);}
-  .scroll-scrub .scrub-exit-cap{margin-top:calc(-1 * clamp(120px,20vh,200px));}
+  .scroll-scrub .scrub-track{height:320vh;}
+  .scroll-scrub .scrub-bottom-fade{height:clamp(120px,20vh,200px);}
   .section-orange-glow{
-    margin-top:calc(-1 * clamp(120px,20vh,200px));
-    padding-top:clamp(120px,20vh,200px);
-    height:clamp(220px,34vh,320px);}
-  .section-orange-glow::before{height:clamp(120px,20vh,200px);}
+    margin-top:calc(-1 * clamp(60px,12vh,140px));
+    height:clamp(180px,28vh,260px);}
   .scrub-heading .scrub-sub{font-size:15px;}
   .scrub-scene{grid-template-columns:1fr;padding:6vh 6vw;align-content:space-between;}
   .scrub-files{height:36vh;}
@@ -1164,21 +1206,22 @@ body:not(.hero-ready){overflow:hidden;}
         <source src="assets/hero-intro-2.mp4" type="video/mp4" />
       </video>
     </div>
-    <div class="hero-unicorn-wrap">
-      <div class="hero-unicorn-gfx">
-        <video class="hero-unicorn"
-               muted
-               playsinline
-               preload="auto"
-               disablepictureinpicture
-               webkit-playsinline="true">
-          <source src="assets/hero-intro-transed-alpha.mov?v=2" type='video/quicktime; codecs="hvc1"' />
-          <source src="assets/hero-intro-transed.webm?v=4" type="video/webm" />
-        </video>
-      </div>
-    </div>
   </div>
   <div class="hero-dim" aria-hidden="true"></div>
+
+  <div class="hero-unicorn-wrap" aria-hidden="true">
+    <div class="hero-unicorn-gfx">
+      <video class="hero-unicorn"
+             muted
+             playsinline
+             preload="auto"
+             disablepictureinpicture
+             webkit-playsinline="true">
+        <source src="assets/hero-intro-transed-test.mov?v=1" type='video/quicktime; codecs="hvc1"' />
+        <source src="assets/hero-intro-transed-test.webm?v=1" type="video/webm" />
+      </video>
+    </div>
+  </div>
 
   <div class="hero-splashes" aria-hidden="true">
     <svg class="hero-splash hero-splash--l1 s1" viewBox="0 0 200 240" data-depth="0.38" data-side="left" xmlns="http://www.w3.org/2000/svg">
@@ -1382,13 +1425,14 @@ body:not(.hero-ready){overflow:hidden;}
     </div>
     </div>
   </div>
-  <div class="scrub-exit-cap" aria-hidden="true"></div>
 </section>
 
 <div class="section-orange-glow" aria-hidden="true">
   <div class="section-orange-glow__stage">
     <div class="section-orange-glow__bloom section-orange-glow__bloom--wide"></div>
-    <div class="section-orange-glow__bloom section-orange-glow__bloom--core"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-l"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-c"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-r"></div>
     <div class="section-orange-glow__bloom section-orange-glow__bloom--rim"></div>
   </div>
 </div>
@@ -1700,8 +1744,13 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   const hero = document.getElementById('hero');
   const video = hero?.querySelector('.hero-video');
   const overlay = hero?.querySelector('.hero-unicorn');
+  const overlayWrap = hero?.querySelector('.hero-unicorn-wrap');
   const COPY_REVEAL_SEC = 1.2;
   const COPY_REVEAL_MS = COPY_REVEAL_SEC * 1000;
+  /* ⇩ change these to move when the unicorn overlay fades in / out (seconds, relative to hero video start).
+     Set OVERLAY_HIDE_SEC to null to keep the overlay visible until the video ends. */
+  const OVERLAY_REVEAL_SEC = 2.0;
+  const OVERLAY_HIDE_SEC = 3.2;
   const SYNC_DRIFT = 0.04;
   if(!hero) return;
 
@@ -1795,9 +1844,24 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     }
   };
 
+  let overlayShown = false;
+  let overlayHidden = false;
+  const maybeRevealOverlay = () => {
+    if(!overlayWrap) return;
+    if(!overlayShown && video.currentTime >= OVERLAY_REVEAL_SEC){
+      overlayWrap.classList.add('is-visible');
+      overlayShown = true;
+    }
+    if(overlayShown && !overlayHidden && OVERLAY_HIDE_SEC != null && video.currentTime >= OVERLAY_HIDE_SEC){
+      overlayWrap.classList.remove('is-visible');
+      overlayHidden = true;
+    }
+  };
+
   video.addEventListener('playing', scheduleCopyReveal, {once:true});
   video.addEventListener('timeupdate', () => {
     keepInSync();
+    maybeRevealOverlay();
     if(video.currentTime * 1000 >= COPY_REVEAL_MS) finish();
   });
 
@@ -1824,6 +1888,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   const hero = document.getElementById('hero');
   const mediaStack = hero?.querySelector('.hero-media-stack');
   const heroDim = hero?.querySelector('.hero-dim');
+  const unicornWrap = hero?.querySelector('.hero-unicorn-wrap');
   const splashes = hero?.querySelectorAll('.hero-splash');
   if(!hero || !splashes?.length) return;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -1841,6 +1906,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     const bgY = (shift * BG_RATE).toFixed(2) + 'px';
     if(mediaStack) mediaStack.style.setProperty('--bg-y', bgY);
     if(heroDim) heroDim.style.setProperty('--bg-y', bgY);
+    if(unicornWrap) unicornWrap.style.setProperty('--bg-y', bgY);
 
     splashes.forEach(el => {
       const d = parseFloat(el.dataset.depth) || 0.5;
@@ -1999,7 +2065,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     /* pin timeline: hold → lift heading → video → cards → exit (whole stage up) */
     const PHASE = {
       HOLD_END: 0.2, LIFT_START: 0.2, LIFT_END: 0.48, SUB_START: 0.26,
-      VIDEO_START: 0.36, SCENE_START: 0.5, EXIT_START: 0.82
+      VIDEO_START: 0.36, SCENE_START: 0.5, EXIT_START: 0.88
     };
     const SUCK_VIDEO_START = 0.62;
     const SUCK_VIDEO_END = 1;
@@ -2088,7 +2154,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       let y = 0;
       if(p >= PHASE.EXIT_START){
         const t = (p - PHASE.EXIT_START) / (1 - PHASE.EXIT_START);
-        y = easeInOut(Math.min(1, t)) * 115;
+        y = easeInOut(Math.min(1, t)) * 60;
       }
       stageArea.style.transform = y > 0 ? `translateY(-${y}vh)` : '';
     }
