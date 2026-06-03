@@ -290,6 +290,17 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(0,0,0,.58) 84%,
     rgba(0,0,0,.88) 96%,
     #000 100%);}
+/* 300px fade section 2 → next (black → transparent), mirror of scrub-lead */
+.scroll-scrub .scrub-tail{
+  position:relative;height:300px;margin-bottom:-300px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,
+    #000 0%,
+    rgba(0,0,0,.88) 4%,
+    rgba(0,0,0,.58) 16%,
+    rgba(0,0,0,.32) 30%,
+    rgba(0,0,0,.10) 45%,
+    transparent 60%,
+    transparent 100%);}
 .scroll-scrub .scrub-track{position:relative;z-index:2;height:450vh;background:#000;}
 .scroll-scrub .scrub-pin{position:sticky;top:0;height:100vh;width:100%;overflow:hidden;background:#000;z-index:2;
   display:flex;flex-direction:column;justify-content:center;align-items:stretch;
@@ -355,12 +366,6 @@ body:not(.hero-ready){overflow:hidden;}
 .scroll-scrub .scrub-stage.center .scrub-stat{justify-content:center;}
 .scroll-scrub .scrub-stage.center .scrub-sub{margin-left:auto;margin-right:auto;}
 
-/* below-the-pin recap band (chips + cta) on the soft background */
-.scroll-scrub .scrub-tail{background:var(--bg-soft);color:var(--fg);padding:clamp(56px,7vw,88px) var(--gutter) clamp(72px,9vw,120px);text-align:center;}
-.scroll-scrub .scrub-tail .keymsg{margin:0 auto;max-width:620px;color:var(--muted);font-size:16px;line-height:1.6;}
-.scroll-scrub .scrub-tail .labels{margin-top:26px;}
-.scroll-scrub .scrub-tail .sect-cta{margin-top:30px;}
-
 @media (max-width:760px){
   .scroll-scrub .scrub-stage{align-items:flex-end;padding-bottom:18vh;}
   .scroll-scrub .scrub-stage.right,
@@ -377,7 +382,10 @@ body:not(.hero-ready){overflow:hidden;}
 .scrub-stage-area.is-visible,
 .scrub-scene.is-visible{opacity:1;transform:none;}
 /* heading slot reserves space in pin; heading is always fixed when visible (no layout jump) */
-.scrub-heading-slot{flex:none;width:100%;min-height:clamp(100px,14vh,168px);visibility:hidden;pointer-events:none;}
+.scrub-heading-slot{
+  flex:none;width:100%;min-height:clamp(128px,18vh,220px);
+  padding-top:clamp(32px,5.5vh,64px);box-sizing:border-box;
+  visibility:hidden;pointer-events:none;}
 .scrub-heading{
   position:fixed;left:50%;top:var(--h-top,50vh);z-index:9999;isolation:isolate;
   width:min(880px,92vw);max-width:92vw;text-align:center;
@@ -532,6 +540,7 @@ body:not(.hero-ready){overflow:hidden;}
 
 @media (max-width:760px){
   .scroll-scrub .scrub-lead{height:220px;margin-top:-220px;}
+  .scroll-scrub .scrub-tail{height:220px;margin-bottom:-220px;}
   .scroll-scrub .scrub-track{height:360vh;}
   .scrub-heading .scrub-sub{font-size:15px;}
   .scrub-scene{grid-template-columns:1fr;padding:6vh 6vw;align-content:space-between;}
@@ -711,7 +720,7 @@ body:not(.hero-ready){overflow:hidden;}
           <span class="epic-line l1">Find the leaders</span>
           <span class="epic-line l2"><span class="grad">hidden in your flow</span>.</span>
         </h2>
-        <p class="scrub-sub">Hundreds of pitch decks. Different formats. No way to compare them side by side — until now.</p>
+        <p class="scrub-sub">EvalLense batch-analyzes every deck, compares applications in one format, and brings the strongest candidates to the top.</p>
       </div>
 
       <div class="scrub-stage-area">
@@ -804,6 +813,7 @@ body:not(.hero-ready){overflow:hidden;}
       </div>
     </div>
   </div>
+  <div class="scrub-tail" aria-hidden="true"></div>
 </section>
 
 <!-- ============ 3 · PRODUCT WORKFLOW — Launch your entry point ============ -->
@@ -1318,10 +1328,12 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
         heading.classList.add('is-epic-active');
       }
 
+      const headingTopInset = Math.min(64, Math.max(32, vh * 0.055));
       let slotY = centerY;
       if(headingSlot){
         const sr = headingSlot.getBoundingClientRect();
-        slotY = sr.top + sr.height * 0.44;
+        const blockH = heading ? heading.offsetHeight : 120;
+        slotY = sr.top + headingTopInset + blockH * 0.38;
       }
 
       let targetTop = centerY;
