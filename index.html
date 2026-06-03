@@ -35,7 +35,14 @@
    product's brand accents (violet / lavender / cyan / aqua).
    ============================================================ */
 :root{
-  /* Apple neutral foundation */
+  /* ---- Font families (EvalLense type system) ---- */
+  --font-mono:    "SF Mono", ui-monospace, "JetBrains Mono", Menlo, monospace;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-ui:      -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-text:    var(--font-ui);
+  --font:         var(--font-text);
+
+  /* Apple neutral foundation (light sections) */
   --bg:        #ffffff;
   --bg-soft:   #f5f5f7;
   --bg-ink:    #000000;
@@ -44,12 +51,26 @@
   --border:    #d2d2d7;
   --border-2:  #e6e6ea;
 
+  /* Dark-surface text (hero, .ink, cards) — from type-explorer */
+  --fg-on-dark:   #f5f5f7;
+  --body-on-dark: #d8d8de;
+  --muted-on-dark:#a9a9b2;
+  --muted-2:      #76767f;
+
+  /* Dark surfaces & borders */
+  --ink:       #000000;
+  --panel:     #0a0a0d;
+  --panel-2:   #121218;
+  --border-on-dark:   rgba(255,255,255,.12);
+  --border-on-dark-2: rgba(255,255,255,.07);
+
   /* EvalLense lens accents */
   --violet:    #6c4cf1;
   --violet-2:  #7b5cf6;
   --lavender:  #a99bff;
   --cyan:      #2ec5e8;
   --aqua:      #36e0c2;
+  --tag-tint:  #cdbfff;
 
   /* warm orange glow (Claude-style bridge after section 2) */
   --orange-hot:   #ff6a2e;
@@ -61,12 +82,6 @@
 
   --lens: linear-gradient(118deg, var(--violet) 0%, var(--lavender) 32%, var(--cyan) 68%, var(--aqua) 100%);
   --lens-soft: linear-gradient(118deg, color-mix(in oklab, var(--violet) 22%, transparent), color-mix(in oklab, var(--cyan) 18%, transparent) 60%, color-mix(in oklab, var(--aqua) 20%, transparent));
-
-  --font-body:    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-text:    var(--font-body);
-  --font:         var(--font-text);
-  --font-mono:    var(--font-body);
 
   --maxw: 1180px;
   --gutter: clamp(20px, 5vw, 72px);
@@ -96,6 +111,57 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0;letter-spac
 p{margin:0;text-wrap:pretty;}
 a{color:inherit;text-decoration:none;}
 
+/* ---- Type roles (EvalLense — apply class or mirror in component CSS) ---- */
+.t-eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;font-weight:400;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--lavender);
+}
+.t-tag{
+  font-family:var(--font-mono);
+  font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--tag-tint);
+}
+.t-heading{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(34px, 5.5vw, 60px);
+  line-height:1.03;letter-spacing:-.03em;
+  text-wrap:balance;
+  background:var(--lens);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+.t-title{
+  font-family:var(--font-display);
+  font-weight:600;font-size:18px;letter-spacing:-.01em;
+  color:var(--fg-on-dark);
+}
+.t-body{
+  font-family:var(--font-ui);
+  font-size:16px;line-height:1.58;letter-spacing:-.01em;
+  color:var(--body-on-dark);
+}
+.t-body-strong{
+  font-family:var(--font-ui);
+  font-size:21px;line-height:1.3;
+  color:var(--fg-on-dark);
+}
+.t-sub{
+  font-family:var(--font-ui);
+  font-size:12px;color:var(--muted-2);
+}
+.t-meta{
+  font-family:var(--font-mono);
+  font-size:13px;color:var(--muted-2);
+  font-variant-numeric:tabular-nums;letter-spacing:0;
+}
+.t-verdict{
+  font-family:var(--font-ui);
+  font-size:12px;line-height:1.4;color:var(--muted-2);
+}
+
 /* ---------- scroll progress ---------- */
 .progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:200;background:transparent;}
 .progress::before{content:"";display:block;height:100%;width:var(--p,0%);background:var(--lens);transition:width .08s linear;}
@@ -121,7 +187,7 @@ a{color:inherit;text-decoration:none;}
   pointer-events:auto;
 }
 .site-header .brand{
-  flex:none;font-size:18px;color:#f5f5f7;
+  flex:none;font-size:18px;color:var(--fg-on-dark);
   transition:color .35s var(--ease);
 }
 .site-header .brand .mark{box-shadow:0 0 0 1px rgba(255,255,255,.45) inset, 0 4px 14px -4px var(--violet);}
@@ -196,17 +262,17 @@ a{color:inherit;text-decoration:none;}
 /* ---------- section scaffolding ---------- */
 section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .band.soft{background:var(--bg-soft);}
-.band.ink{background:var(--bg-ink);color:#f5f5f7;}
+.band.ink{background:var(--bg-ink);color:var(--fg-on-dark);}
 .wrap{max-width:var(--maxw);margin:0 auto;}
 .head{max-width:760px;margin:0 auto;text-align:center;}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-text);font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:20px;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-weight:400;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);margin-bottom:20px;}
 .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--lens);}
 .ink .eyebrow{color:var(--lavender);}
 .title{font-size:clamp(33px,5vw,56px);}
 .ink .title{font-size:clamp(40px,7vw,84px);letter-spacing:-.03em;}
 .sub{font-size:clamp(18px,2.1vw,23px);line-height:1.42;color:var(--muted);margin-top:18px;font-family:var(--font-text);font-weight:400;letter-spacing:0;}
 .keymsg{font-family:var(--font-text);font-weight:400;}
-.ink .sub{color:#a9a9b2;}
+.ink .sub{color:var(--muted-on-dark);}
 .keymsg{max-width:660px;margin:22px auto 0;font-size:16px;line-height:1.6;color:var(--muted);}
 
 /* ---------- micro-labels ---------- */
@@ -276,12 +342,11 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   padding:0;overflow:hidden;
   display:flex;flex-direction:column;justify-content:flex-start;
   background:transparent;
-  color:#f5f5f7;
+  color:var(--fg-on-dark);
   position:relative;
   z-index:1;
 }
 .hero .eyebrow{color:var(--lavender);}
-.hero .sub{color:#a9a9b2;}
 .hero .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
 
 /* video = permanent background */
@@ -357,7 +422,15 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   line-height:1.02;
   letter-spacing:-.03em;
 }
-.hero-head .sub{margin-top:18px;}
+.hero-head .sub{
+  margin-top:18px;
+  font-family:"SF Pro Text", BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight:400;
+  font-size:clamp(18px, 2.1vw, 23px);
+  line-height:1.58;
+  letter-spacing:-.01em;
+  color:var(--muted-on-dark);
+}
 .hero-head .cta-row{justify-content:flex-start;margin-top:30px;}
 
 /* Hero — iOS-style Liquid Glass CTAs (steel / ice crystal) */
@@ -495,7 +568,7 @@ body:not(.hero-ready){overflow:hidden;}
        -g 1 -keyint_min 1 -sc_threshold 0 \
        -movflags +faststart section2-scroll-2.mp4
    ============================================================ */
-.scroll-scrub{background:transparent;color:#f5f5f7;position:relative;overflow:visible;z-index:7;}
+.scroll-scrub{background:transparent;color:var(--fg-on-dark);position:relative;overflow:visible;z-index:7;}
 /* 300px overlap: fade hero → section 2 (top stays transparent so hero isn't tinted at rest) */
 .scroll-scrub .scrub-lead{
   position:relative;height:300px;margin-top:-300px;z-index:1;pointer-events:none;
@@ -1817,10 +1890,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       const x = Math.min(1, Math.max(0, t));
       return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     }
-    /* opacity fades late in suck so cards stay readable longer */
+    /* opacity fades only near scene center — cards stay visible while flying in */
     function suckOpacity(pull){
-      const t = Math.min(1, Math.max(0, pull) / 0.36);
-      return 1 - Math.pow(1 - t, 2.35);
+      if(pull <= 0.78) return 0;
+      const t = (pull - 0.78) / 0.22;
+      return 1 - Math.pow(1 - Math.min(1, t), 2.2);
     }
 
     /* pin timeline: hold → lift heading → video → cards → exit (whole stage up) */
@@ -1831,10 +1905,8 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     const SUCK_VIDEO_START = 0.62;
     const SUCK_VIDEO_END = 1;
     /* left decks hide → right cells: c3, c2, c1 from scene center to slots */
-    const FILES_GONE_VP = 0.6;
-    const FILES_GONE_PULL = 0.42;
-    const CELLS_VP_START = 0.66;
-    const CELLS_VP_END = 1;
+    const FILES_GONE_PULL = 0.94;
+    const CELLS_PULL_START = 0.82;
     const CELL_REVEAL = 0.34;
     const CELL_ORDER = [2, 1, 0];
     const CELL_BLUR_MAX = 36;
@@ -2065,13 +2137,12 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
       const pinActive = track.getBoundingClientRect().top <= 2;
       const sceneOn = pinActive && p >= PHASE.SCENE_START;
-      const vp = videoProgress(p);
       const suckT = sceneOn ? suckProgress(p) : 0;
       const pull = Math.pow(suckT, 1.12);
-      const filesGone = sceneOn && (vp >= FILES_GONE_VP || pull >= FILES_GONE_PULL);
-      const cellSpan = Math.max(0.001, CELLS_VP_END - CELLS_VP_START);
-      const cellPhase = filesGone && vp >= CELLS_VP_START
-        ? easeOut(Math.min(1, (vp - CELLS_VP_START) / cellSpan))
+      const filesGone = sceneOn && pull >= FILES_GONE_PULL;
+      const cellSpan = Math.max(0.001, 1 - CELLS_PULL_START);
+      const cellPhase = sceneOn && pull >= CELLS_PULL_START
+        ? easeOut(Math.min(1, (pull - CELLS_PULL_START) / cellSpan))
         : 0;
 
       if(!sceneOn){
@@ -2081,11 +2152,6 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
       scene.classList.toggle('is-files-gone', filesGone);
 
-      if(!filesGone){
-        resetSceneCells();
-        return;
-      }
-
       if(filesGone){
         scrubFiles.forEach(file=>{
           file.style.opacity = '0';
@@ -2094,6 +2160,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       }
 
       if(cellPhase <= 0){
+        cellRest = null;
         scene.classList.remove('is-cells-active');
         scrubCells.forEach(cell=>{
           cell.style.opacity = '0';
