@@ -1755,6 +1755,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       const x = Math.min(1, Math.max(0, t));
       return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     }
+    /* opacity fades late in suck so cards stay readable longer */
+    function suckOpacity(pull){
+      const t = Math.min(1, Math.max(0, pull) / 0.36);
+      return 1 - Math.pow(1 - t, 2.35);
+    }
 
     /* pin timeline: hold → lift heading → video → cards → exit (whole stage up) */
     const PHASE = {
@@ -1919,7 +1924,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
           .translate(target.dx * pull + blurShiftX, target.dy * pull)
           .scaleSelf(scale, scale);
         file.style.transform = shift.multiply(m).toString();
-        file.style.opacity = String(Math.max(0, 1 - pull * 1.08));
+        file.style.opacity = String(Math.max(0, 1 - suckOpacity(pull)));
         const blur = pull * 16;
         const bright = 1 + pull * 0.35;
         file.style.filter = blur > 0.4
