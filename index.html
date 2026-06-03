@@ -24,6 +24,15 @@
   tryShim('localStorage');
   tryShim('sessionStorage');
 })();</script>
+<script>
+(function(){
+  var ua = navigator.userAgent;
+  var webkit = /AppleWebKit/i.test(ua);
+  var notChromium = !/Chrom|CriOS|Edg|OPR|FxiOS/i.test(ua);
+  var safari = (webkit && notChromium) || !!window.safari;
+  if(safari) document.documentElement.classList.add('ua-safari');
+})();
+</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>EvalLense — Lens Your Next Unicorn</title>
@@ -338,29 +347,25 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .eyebrow{color:var(--lavender);}
 .hero .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
 
-/* video = permanent background */
-.hero-video-wrap{
+/* bg + transparent overlay share one parallax stack (Safari blend needs this) */
+.hero-media-stack{
   position:absolute;inset:0;z-index:0;pointer-events:none;
   transform:translate3d(0,var(--bg-y,0px),0);
   will-change:transform;
+  isolation:isolate;
 }
+.hero-video-wrap{position:absolute;inset:0;z-index:0;}
 .hero-video{width:100%;height:100%;object-fit:cover;display:block;}
-
-/* intro black — topmost hero layer, same frame as bg video */
-.hero-unicorn-wrap{
-  position:absolute;inset:0;z-index:10;pointer-events:none;
-  transform:translate3d(0,var(--bg-y,0px),0);
-  will-change:transform;
-}
+.hero-unicorn-wrap{position:absolute;inset:0;z-index:1;}
+.hero-unicorn-gfx{position:absolute;inset:0;}
 .hero-unicorn{
   width:100%;height:100%;object-fit:cover;display:block;
-  background:transparent;
-  opacity:1;
+  background:none;
 }
 
 /* gradient dim — fades in before copy */
 .hero-dim{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
+  position:absolute;inset:0;z-index:2;pointer-events:none;
   transform:translate3d(0,var(--bg-y,0px),0);
   will-change:transform;
   opacity:0;
@@ -374,7 +379,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 
 /* edge splashes — vector shards, blurred gradients, parallax */
 .hero-splashes{
-  position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible;
+  position:absolute;inset:0;z-index:3;pointer-events:none;overflow:visible;
   opacity:0;transition:opacity .85s var(--ease);
 }
 .hero-ready .hero-splashes{opacity:1;}
@@ -409,7 +414,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 
 /* shell visible after video; copy fades in per block */
 .hero-content{
-  position:relative;z-index:3;width:100%;
+  position:relative;z-index:4;width:100%;
   max-width:var(--maxw);margin:0 auto;
   padding:max(0px,calc(clamp(4vh,5.5vw,7vh) - 50px)) var(--gutter) clamp(40px,6vw,64px);
   visibility:hidden;pointer-events:none;
@@ -1148,15 +1153,30 @@ body:not(.hero-ready){overflow:hidden;}
 
 <!-- ============ 1 · HERO ============ -->
 <section class="band hero" id="hero" data-screen-label="01 Hero — Lens Your Next Unicorn">
-  <div class="hero-video-wrap">
-    <video class="hero-video"
-           muted
-           playsinline
-           preload="auto"
-           disablepictureinpicture
-           webkit-playsinline="true">
-      <source src="assets/hero-intro-2.mp4" type="video/mp4" />
-    </video>
+  <div class="hero-media-stack" aria-hidden="true">
+    <div class="hero-video-wrap">
+      <video class="hero-video"
+             muted
+             playsinline
+             preload="auto"
+             disablepictureinpicture
+             webkit-playsinline="true">
+        <source src="assets/hero-intro-2.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="hero-unicorn-wrap">
+      <div class="hero-unicorn-gfx">
+        <video class="hero-unicorn"
+               muted
+               playsinline
+               preload="auto"
+               disablepictureinpicture
+               webkit-playsinline="true">
+          <source src="assets/hero-intro-transed-alpha.mov?v=2" type='video/quicktime; codecs="hvc1"' />
+          <source src="assets/hero-intro-transed.webm?v=4" type="video/webm" />
+        </video>
+      </div>
+    </div>
   </div>
   <div class="hero-dim" aria-hidden="true"></div>
 
@@ -1253,18 +1273,6 @@ body:not(.hero-ready){overflow:hidden;}
         <button class="btn btn-glass"><span class="btn-txt">Try live demo</span>&nbsp;<span class="arr">→</span></button>
       </div>
     </div>
-  </div>
-
-  <div class="hero-unicorn-wrap" aria-hidden="true">
-    <video class="hero-unicorn"
-           muted
-           playsinline
-           preload="auto"
-           disablepictureinpicture
-           webkit-playsinline="true">
-      <source src="assets/hero-intro-transed-hevc.mp4" type='video/mp4; codecs="hvc1"' />
-      <source src="assets/hero-intro-transed.webm" type="video/webm; codecs=vp9" />
-    </video>
   </div>
 </section>
 
@@ -1697,6 +1705,17 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   const SYNC_DRIFT = 0.04;
   if(!hero) return;
 
+  /* overlay alpha source: only Safari/WebKit handles HEVC-with-alpha .mov; everyone else gets the VP9 WebM. */
+  if(overlay){
+    const isSafari = document.documentElement.classList.contains('ua-safari');
+    const sources = Array.from(overlay.querySelectorAll('source'));
+    const mov = sources.find(s => /\.mov/i.test(s.getAttribute('src') || ''));
+    const webm = sources.find(s => /\.webm/i.test(s.getAttribute('src') || ''));
+    const keep = isSafari ? mov : webm;
+    sources.forEach(s => { if(s !== keep) s.remove(); });
+    overlay.load();
+  }
+
   const layers = [video, overlay].filter(Boolean);
   const hasPair = video && overlay;
 
@@ -1803,8 +1822,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 /* hero edge splashes — scroll parallax vs background video */
 (function initHeroSplashesParallax(){
   const hero = document.getElementById('hero');
-  const videoWrap = hero?.querySelector('.hero-video-wrap');
-  const unicornWrap = hero?.querySelector('.hero-unicorn-wrap');
+  const mediaStack = hero?.querySelector('.hero-media-stack');
   const heroDim = hero?.querySelector('.hero-dim');
   const splashes = hero?.querySelectorAll('.hero-splash');
   if(!hero || !splashes?.length) return;
@@ -1821,8 +1839,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     const heroH = rect.height || window.innerHeight;
 
     const bgY = (shift * BG_RATE).toFixed(2) + 'px';
-    if(videoWrap) videoWrap.style.setProperty('--bg-y', bgY);
-    if(unicornWrap) unicornWrap.style.setProperty('--bg-y', bgY);
+    if(mediaStack) mediaStack.style.setProperty('--bg-y', bgY);
     if(heroDim) heroDim.style.setProperty('--bg-y', bgY);
 
     splashes.forEach(el => {
