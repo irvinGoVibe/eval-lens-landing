@@ -1244,18 +1244,16 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-/* hero intro: video first, then copy over same frame */
+/* hero intro: copy fades in while video keeps playing */
 (function initHeroIntro(){
   const hero = document.getElementById('hero');
   const video = hero?.querySelector('.hero-video');
+  const COPY_REVEAL_MS = 1130;
   if(!hero) return;
 
   const reveal = () => {
     hero.classList.add('hero-ready');
     document.body.classList.add('hero-ready');
-    if(video){
-      try { video.pause(); } catch(_) {}
-    }
   };
 
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -1270,17 +1268,24 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   let done = false;
   let maxWait = null;
+  let copyTimer = null;
 
   const finish = () => {
     if(done) return;
     done = true;
     if(maxWait) clearTimeout(maxWait);
+    if(copyTimer) clearTimeout(copyTimer);
     reveal();
   };
 
   const armFallback = (sec) => {
     if(maxWait) clearTimeout(maxWait);
     maxWait = setTimeout(finish, (sec + 1) * 1000);
+  };
+
+  const scheduleCopyReveal = () => {
+    if(copyTimer) clearTimeout(copyTimer);
+    copyTimer = setTimeout(finish, COPY_REVEAL_MS);
   };
 
   const tryPlay = () => {
@@ -1290,7 +1295,10 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     }
   };
 
-  video.addEventListener('ended', finish, {once:true});
+  video.addEventListener('playing', scheduleCopyReveal, {once:true});
+  video.addEventListener('timeupdate', () => {
+    if(video.currentTime * 1000 >= COPY_REVEAL_MS) finish();
+  });
 
   video.addEventListener('loadedmetadata', () => {
     const dur = video.duration || 2.5;
