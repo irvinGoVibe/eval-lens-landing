@@ -1152,8 +1152,6 @@ body:not(.hero-ready){overflow:hidden;}
     <video class="hero-video"
            muted
            playsinline
-           autoplay
-           loop
            preload="auto"
            disablepictureinpicture
            webkit-playsinline="true">
@@ -1261,8 +1259,6 @@ body:not(.hero-ready){overflow:hidden;}
     <video class="hero-unicorn"
            muted
            playsinline
-           autoplay
-           loop
            preload="auto"
            disablepictureinpicture
            webkit-playsinline="true">
@@ -1725,7 +1721,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   const ready = new Set();
 
   layers.forEach(el => {
-    el.loop = true;
+    el.loop = false;
     el.muted = true;
   });
 
