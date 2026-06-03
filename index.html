@@ -426,37 +426,71 @@ body:not(.hero-ready){overflow:hidden;}
   border-radius:50%;background:radial-gradient(circle, color-mix(in oklab,var(--violet) 26%, transparent), transparent 65%);
   filter:blur(20px);pointer-events:none;}
 
-/* LEFT: flying pitch-deck files */
-.scrub-files{position:relative;height:min(56vh,440px);}
-.scrub-file{position:absolute;width:clamp(150px,16vw,200px);padding:14px 16px;border-radius:14px;
+/* LEFT: flying pitch-deck files — many cards, chaotic paths */
+.scrub-files{position:relative;height:min(68vh,560px);overflow:visible;}
+.scrub-file{position:absolute;width:clamp(140px,15vw,190px);padding:12px 14px;border-radius:14px;
   background:linear-gradient(160deg, rgba(28,24,52,.92), rgba(16,14,32,.92));
   border:1px solid rgba(255,255,255,.10);
   box-shadow:0 24px 60px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(108,76,241,.18) inset;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  color:#e9e9ef;font-family:var(--font-display);font-size:13px;font-weight:500;letter-spacing:-.01em;
-  display:flex;flex-direction:column;gap:9px;
+  color:#e9e9ef;font-family:var(--font-display);font-size:12.5px;font-weight:500;letter-spacing:-.01em;
+  display:flex;flex-direction:column;gap:8px;
   will-change:transform,opacity;}
+.scrub-file.sm{width:clamp(118px,12vw,155px);padding:10px 12px;font-size:11.5px;}
+.scrub-file.lg{width:clamp(158px,17vw,208px);padding:14px 16px;font-size:13px;}
 .scrub-file .nm{display:flex;align-items:center;gap:9px;}
 .scrub-file .av{width:22px;height:22px;border-radius:7px;background:var(--lens);box-shadow:0 0 12px color-mix(in oklab,var(--violet) 60%, transparent);flex:none;}
+.scrub-file.sm .av{width:18px;height:18px;}
 .scrub-file .lines{display:flex;flex-direction:column;gap:5px;}
 .scrub-file .lines i{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.10);}
 .scrub-file .lines i:nth-child(1){width:78%;background:color-mix(in oklab,var(--lavender) 55%, rgba(255,255,255,.12));height:5px;}
 .scrub-file .lines i:nth-child(2){width:92%;}
 .scrub-file .lines i:nth-child(3){width:62%;}
-.scrub-file .tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);}
-.scrub-file.f1{top:4%;  left:6%;  animation:scrub-float 14s var(--ease) infinite;}
-.scrub-file.f2{top:24%; left:34%; animation:scrub-float 14s var(--ease) -2.8s infinite;}
-.scrub-file.f3{top:46%; left:8%;  animation:scrub-float 14s var(--ease) -5.6s infinite;}
-.scrub-file.f4{top:64%; left:36%; animation:scrub-float 14s var(--ease) -8.4s infinite;}
-.scrub-file.f5{top:82%; left:14%; animation:scrub-float 14s var(--ease) -11.2s infinite;}
-@keyframes scrub-float{
-  0%   {transform:translate(0,40px) rotate(-6deg) scale(.86);opacity:0;}
-  10%  {opacity:.95;}
-  35%  {transform:translate(18px,0)  rotate(-2deg) scale(1);opacity:1;}
-  55%  {transform:translate(36px,-18px) rotate(3deg) scale(.98);opacity:1;}
-  78%  {transform:translate(80px,-40px) rotate(8deg) scale(.78);opacity:.45;}
-  92%  {transform:translate(120px,-60px) rotate(12deg) scale(.6);opacity:0;}
-  100% {transform:translate(120px,-60px) rotate(12deg) scale(.6);opacity:0;}
+.scrub-file .tag{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.scrub-file.f1{top:2%;  left:2%;  animation:scrub-float-a 12s ease-in-out -0.5s infinite;}
+.scrub-file.f2{top:18%; left:38%; animation:scrub-float-b 15s cubic-bezier(.45,.05,.55,.95) -3.2s infinite;}
+.scrub-file.f3{top:8%;  left:22%; animation:scrub-float-c 11s ease-in-out -6s infinite;}
+.scrub-file.f4{top:34%; left:4%;  animation:scrub-float-d 13.5s cubic-bezier(.36,.12,.64,.88) -1.8s infinite;}
+.scrub-file.f5{top:42%; left:42%; animation:scrub-float-a 14s ease-in-out -9.5s infinite;}
+.scrub-file.f6{top:55%; left:14%; animation:scrub-float-b 10.5s cubic-bezier(.55,.1,.45,.9) -4.4s infinite;}
+.scrub-file.f7{top:62%; left:32%; animation:scrub-float-c 16s ease-in-out -11s infinite;}
+.scrub-file.f8{top:72%; left:6%;  animation:scrub-float-d 12.5s cubic-bezier(.4,.2,.6,.8) -7.2s infinite;}
+.scrub-file.f9{top:78%; left:48%; animation:scrub-float-a 11.5s ease-in-out -13.6s infinite;}
+.scrub-file.f10{top:48%; left:26%;animation:scrub-float-b 13s cubic-bezier(.5,0,.5,1) -5.8s infinite;}
+@keyframes scrub-float-a{
+  0%   {transform:translate(-8px,48px) rotate(-14deg) scale(.82);opacity:0;}
+  8%   {opacity:.92;}
+  28%  {transform:translate(12px,8px) rotate(4deg) scale(1.02);opacity:1;}
+  48%  {transform:translate(38px,-22px) rotate(-6deg) scale(.96);opacity:1;}
+  68%  {transform:translate(62px,-8px) rotate(11deg) scale(.88);opacity:.75;}
+  88%  {transform:translate(110px,-55px) rotate(18deg) scale(.62);opacity:.15;}
+  100% {transform:translate(128px,-72px) rotate(22deg) scale(.5);opacity:0;}
+}
+@keyframes scrub-float-b{
+  0%   {transform:translate(14px,55px) rotate(10deg) scale(.78);opacity:0;}
+  10%  {opacity:.88;}
+  22%  {transform:translate(-6px,20px) rotate(-9deg) scale(.94);opacity:1;}
+  42%  {transform:translate(28px,-12px) rotate(7deg) scale(1);opacity:1;}
+  58%  {transform:translate(52px,-35px) rotate(-12deg) scale(.9);opacity:.85;}
+  75%  {transform:translate(88px,-28px) rotate(16deg) scale(.72);opacity:.5;}
+  100% {transform:translate(135px,-68px) rotate(-8deg) scale(.48);opacity:0;}
+}
+@keyframes scrub-float-c{
+  0%   {transform:translate(0,36px) rotate(6deg) scale(.84);opacity:0;}
+  12%  {opacity:.95;}
+  32%  {transform:translate(22px,-6px) rotate(-11deg) scale(1.04);opacity:1;}
+  52%  {transform:translate(8px,-28px) rotate(5deg) scale(.98);opacity:1;}
+  72%  {transform:translate(74px,-42px) rotate(-15deg) scale(.8);opacity:.6;}
+  100% {transform:translate(118px,-58px) rotate(9deg) scale(.58);opacity:0;}
+}
+@keyframes scrub-float-d{
+  0%   {transform:translate(-12px,42px) rotate(-8deg) scale(.8);opacity:0;}
+  9%   {opacity:.9;}
+  26%  {transform:translate(18px,14px) rotate(12deg) scale(.92);opacity:1;}
+  46%  {transform:translate(44px,-8px) rotate(-4deg) scale(1.06);opacity:1;}
+  64%  {transform:translate(56px,-32px) rotate(14deg) scale(.86);opacity:.7;}
+  82%  {transform:translate(96px,-48px) rotate(-10deg) scale(.68);opacity:.35;}
+  100% {transform:translate(142px,-80px) rotate(20deg) scale(.52);opacity:0;}
 }
 
 /* RIGHT: cells that appear one-by-one */
@@ -501,9 +535,9 @@ body:not(.hero-ready){overflow:hidden;}
   .scroll-scrub .scrub-track{height:360vh;}
   .scrub-heading .scrub-sub{font-size:15px;}
   .scrub-scene{grid-template-columns:1fr;padding:6vh 6vw;align-content:space-between;}
-  .scrub-files{height:30vh;}
+  .scrub-files{height:36vh;}
   .scrub-cells{justify-self:stretch;width:auto;}
-  .scrub-file.f4,.scrub-file.f5{display:none;}
+  .scrub-file.f8,.scrub-file.f9,.scrub-file.f10{display:none;}
 }
 
 /* ============================================================
@@ -695,12 +729,12 @@ body:not(.hero-ready){overflow:hidden;}
 
         <div class="scrub-scene" aria-hidden="true">
       <div class="scrub-files">
-        <div class="scrub-file f1">
+        <div class="scrub-file f1 lg">
           <span class="tag">Pitch deck · 001</span>
           <span class="nm"><span class="av"></span>Aurora Labs</span>
           <span class="lines"><i></i><i></i><i></i></span>
         </div>
-        <div class="scrub-file f2">
+        <div class="scrub-file f2 sm">
           <span class="tag">Pitch deck · 023</span>
           <span class="nm"><span class="av"></span>Northwind AI</span>
           <span class="lines"><i></i><i></i><i></i></span>
@@ -710,14 +744,39 @@ body:not(.hero-ready){overflow:hidden;}
           <span class="nm"><span class="av"></span>Quanta Bio</span>
           <span class="lines"><i></i><i></i><i></i></span>
         </div>
-        <div class="scrub-file f4">
+        <div class="scrub-file f4 sm">
           <span class="tag">Pitch deck · 094</span>
           <span class="nm"><span class="av"></span>Vela Robotics</span>
           <span class="lines"><i></i><i></i><i></i></span>
         </div>
-        <div class="scrub-file f5">
+        <div class="scrub-file f5 sm">
           <span class="tag">Pitch deck · 123</span>
           <span class="nm"><span class="av"></span>Helio Sense</span>
+          <span class="lines"><i></i><i></i><i></i></span>
+        </div>
+        <div class="scrub-file f6">
+          <span class="tag">Pitch deck · 041</span>
+          <span class="nm"><span class="av"></span>Stark IO</span>
+          <span class="lines"><i></i><i></i><i></i></span>
+        </div>
+        <div class="scrub-file f7 sm">
+          <span class="tag">Pitch deck · 058</span>
+          <span class="nm"><span class="av"></span>Prism Health</span>
+          <span class="lines"><i></i><i></i><i></i></span>
+        </div>
+        <div class="scrub-file f8 lg">
+          <span class="tag">Pitch deck · 076</span>
+          <span class="nm"><span class="av"></span>Novalink</span>
+          <span class="lines"><i></i><i></i><i></i></span>
+        </div>
+        <div class="scrub-file f9">
+          <span class="tag">Pitch deck · 112</span>
+          <span class="nm"><span class="av"></span>Cipher Grid</span>
+          <span class="lines"><i></i><i></i><i></i></span>
+        </div>
+        <div class="scrub-file f10 sm">
+          <span class="tag">Pitch deck · 089</span>
+          <span class="nm"><span class="av"></span>Bloom AI</span>
           <span class="lines"><i></i><i></i><i></i></span>
         </div>
       </div>
