@@ -1779,12 +1779,21 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     }
   };
 
+  const hideOverlay = () => {
+    overlay?.classList.remove('is-visible');
+  };
+
   const updateOverlayVisibility = () => {
-    if(!overlay || overlay.classList.contains('is-visible')) return;
+    if(!overlay) return;
+    if(video.ended){
+      hideOverlay();
+      return;
+    }
     if(video.currentTime >= OVERLAY_REVEAL_SEC) overlay.classList.add('is-visible');
   };
 
   video.addEventListener('playing', scheduleCopyReveal, {once:true});
+  video.addEventListener('ended', hideOverlay);
   video.addEventListener('timeupdate', () => {
     keepInSync();
     updateOverlayVisibility();
