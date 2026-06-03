@@ -1274,8 +1274,29 @@ body:not(.hero-ready){overflow:hidden;}
   background:var(--bg);
   padding-top:clamp(48px,7vh,88px);}
 #workflow .wrap{position:relative;z-index:1;padding-top:0;}
+/* heading sticks at viewport mid as the section is scrolled past — appears right when the section-2 video disappears, then rides the scroll down */
+#workflow .head{
+  position:sticky;
+  top:34vh;
+  z-index:30;
+  text-align:center;
+  max-width:920px;
+  margin:0 auto;
+  padding-bottom:24px;
+}
 #workflow .eyebrow{color:color-mix(in oklab,var(--orange-hot) 65%, var(--violet));}
 #workflow .eyebrow .dot{background:linear-gradient(118deg,var(--orange-hot),var(--orange-soft));}
+#workflow .title{
+  /* exactly the section-2 .scrub-heading .scrub-title style */
+  font-family:var(--font-display);
+  font-weight:600;
+  letter-spacing:-.028em;
+  line-height:1.08;
+  font-size:clamp(36px,6vw,72px);
+  text-wrap:balance;
+  margin-top:0;
+}
+#workflow .sub{margin-top:18px;max-width:680px;margin-left:auto;margin-right:auto;}
 .cube-stage{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,4vw,56px);}
 .cube-wrap{position:relative;height:clamp(300px,34vw,400px);display:grid;place-items:center;}
 /* falling envelopes */
@@ -1678,7 +1699,6 @@ body:not(.hero-ready){overflow:hidden;}
 <section class="band" id="workflow" data-screen-label="03 Launch your entry point">
   <div class="wrap">
     <div class="head reveal">
-      <span class="eyebrow"><span class="dot"></span>Entry hub</span>
       <h2 class="title">Launch your entry point</h2>
       <p class="sub">Create one place where teams submit their pitch decks. EvalLense collects every application, organizes the full batch, and lets you run evaluation when you're ready.</p>
       <p class="keymsg">You don't need to chase decks across emails, forms, folders, and chats. EvalLense gives you one clean entry hub for collecting startup applications and turning them into structured evaluation results.</p>
