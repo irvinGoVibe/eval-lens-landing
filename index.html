@@ -1991,11 +1991,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       const x = Math.min(1, Math.max(0, t));
       return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     }
-    /* opacity fades only near scene center — cards stay visible while flying in */
+    /* opacity fades while flying in — earlier, steeper dissolve */
     function suckOpacity(pull){
-      if(pull <= 0.78) return 0;
-      const t = (pull - 0.78) / 0.22;
-      return 1 - Math.pow(1 - Math.min(1, t), 2.2);
+      if(pull <= 0.56) return 0;
+      const t = (pull - 0.56) / 0.20;
+      return 1 - Math.pow(1 - Math.min(1, t), 3.2);
     }
 
     /* pin timeline: hold → lift heading → video → cards → exit (whole stage up) */
