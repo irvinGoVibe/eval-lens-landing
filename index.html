@@ -238,6 +238,70 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero-head .sub{margin-top:18px;}
 .hero-head .cta-row{justify-content:flex-start;margin-top:30px;}
 
+/* Hero — Liquid Glass CTAs (lens palette) */
+.hero .cta-row .btn{
+  position:relative;isolation:isolate;overflow:hidden;
+  font-weight:500;letter-spacing:-.01em;
+  backdrop-filter:blur(22px) saturate(1.75);
+  -webkit-backdrop-filter:blur(22px) saturate(1.75);
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.48),
+    inset 0 -1px 0 rgba(255,255,255,.1),
+    0 10px 36px -12px rgba(108,76,241,.55);
+  transition:transform .22s var(--ease), box-shadow .35s var(--ease), border-color .35s, background .35s;
+}
+.hero .cta-row .btn::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.32) 0%, rgba(255,255,255,.06) 38%, transparent 58%);}
+.hero .cta-row .btn::after{
+  content:"";position:absolute;inset:-50% -30%;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(ellipse 90% 70% at 50% -20%, color-mix(in oklab,var(--lavender) 42%, transparent), transparent 58%);
+  opacity:.75;transition:opacity .35s var(--ease);}
+.hero .cta-row .btn:hover::after{opacity:1;}
+.hero .cta-row .btn-primary{
+  color:#fff;
+  background:
+    linear-gradient(118deg,
+      color-mix(in oklab,var(--violet) 78%, transparent) 0%,
+      color-mix(in oklab,var(--lavender) 52%, transparent) 34%,
+      color-mix(in oklab,var(--cyan) 48%, transparent) 68%,
+      color-mix(in oklab,var(--aqua) 42%, transparent) 100%),
+    rgba(255,255,255,.07);}
+.hero .cta-row .btn-primary:hover{
+  border-color:rgba(255,255,255,.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.58),
+    0 16px 44px -10px color-mix(in oklab,var(--violet) 62%, transparent),
+    0 0 56px -14px color-mix(in oklab,var(--cyan) 48%, transparent);
+}
+.hero .cta-row .btn-glass{
+  color:#f5f5f7;
+  background:rgba(8,6,20,.22);
+  border-color:color-mix(in oklab,var(--lavender) 28%, rgba(255,255,255,.32));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.36),
+    inset 0 -1px 0 rgba(255,255,255,.06),
+    0 10px 32px -14px rgba(46,197,232,.28);
+}
+.hero .cta-row .btn-glass::after{
+  background:radial-gradient(ellipse 85% 65% at 18% -15%, color-mix(in oklab,var(--cyan) 38%, transparent), transparent 55%),
+    radial-gradient(ellipse 70% 55% at 88% 110%, color-mix(in oklab,var(--violet) 32%, transparent), transparent 52%);}
+.hero .cta-row .btn-glass:hover{
+  background:rgba(255,255,255,.12);
+  border-color:color-mix(in oklab,var(--aqua) 35%, rgba(255,255,255,.42));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.44),
+    0 14px 40px -12px color-mix(in oklab,var(--cyan) 42%, transparent);
+}
+.hero .cta-row .btn .arr{
+  opacity:.92;
+  filter:drop-shadow(0 0 8px color-mix(in oklab,var(--aqua) 55%, transparent));
+}
+@media (prefers-reduced-motion: reduce){
+  .hero .cta-row .btn::after{transition:none;}
+}
+
 .hero-fade{
   opacity:0;
   transform:translateY(22px);
