@@ -996,7 +996,9 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(0,0,0,.86) 54%,
     rgba(0,0,0,.45) 78%,
     transparent 100%);
-  overflow:visible;pointer-events:none;}
+  overflow:visible;pointer-events:none;
+  /* clip ONLY at the bottom edge — halo can still bleed up, but no orange tails spill into the white section below */
+  clip-path:inset(-100% -100% 0 -100%);}
 .section-orange-glow__stage{
   position:absolute;inset:0;z-index:1;
   overflow:visible;}
@@ -1005,28 +1007,109 @@ body:not(.hero-ready){overflow:hidden;}
   transform:translate3d(-50%,0,0);
   left:50%;}
 .section-orange-glow__bloom--wide{
-  bottom:-40%;
-  width:min(150vw,1700px);aspect-ratio:2/1.4;
-  background:radial-gradient(ellipse 56% 80% at 50% 50%,
-    rgba(255, 150, 90, .78) 0%,
-    rgba(255, 118, 58, .50) 22%,
-    rgba(255, 92, 42, .24) 42%,
-    rgba(255, 70, 28, .09) 62%,
+  bottom:-38%;
+  width:min(150vw,1700px);aspect-ratio:1.9/1;
+  background:radial-gradient(ellipse 70% 62% at 50% 56%,
+    rgba(255, 150, 90, .76) 0%,
+    rgba(255, 118, 58, .48) 22%,
+    rgba(255, 92, 42, .22) 42%,
+    rgba(255, 70, 28, .08) 62%,
     transparent 78%);
-  filter:blur(48px);opacity:.9;}
+  filter:blur(44px);opacity:.9;}
 .section-orange-glow__bloom--core{
-  bottom:-18%;
-  width:min(64vw,720px);aspect-ratio:1;
-  background:radial-gradient(circle at 50% 50%,
-    rgba(255, 232, 196, .92) 0%,
-    rgba(255, 190, 130, .70) 16%,
-    rgba(255, 138, 72, .42) 34%,
-    rgba(255, 92, 40, .14) 54%,
-    transparent 72%);
-  filter:blur(34px);}
-.section-orange-glow__bloom--core-l{ left:30%; }
-.section-orange-glow__bloom--core-c{ left:50%; }
-.section-orange-glow__bloom--core-r{ left:70%; }
+  bottom:-32%;
+  width:min(82vw,960px);aspect-ratio:2.3/1;
+  background:radial-gradient(ellipse 92% 58% at 50% 50%,
+    rgba(255, 250, 235, 1)    0%,
+    rgba(255, 235, 200, .96)  10%,
+    rgba(255, 210, 160, .82)  22%,
+    rgba(255, 175, 115, .58)  38%,
+    rgba(255, 130, 70, .30)   54%,
+    rgba(255, 92, 40, .10)    70%,
+    transparent 84%);
+  filter:blur(28px);}
+.section-orange-glow__bloom--core-l{ left:28%; }
+.section-orange-glow__bloom--core-c{
+  left:50%;
+  /* center orb — wider + brighter white-hot core that blends into the sides */
+  width:min(108vw,1120px);
+  aspect-ratio:2.6/1;
+  bottom:-50%;
+  background:radial-gradient(ellipse 95% 60% at 50% 50%,
+    rgba(255, 255, 252, 1)    0%,
+    rgba(255, 250, 230, 1)    8%,
+    rgba(255, 235, 195, .98)  18%,
+    rgba(255, 210, 155, .86)  30%,
+    rgba(255, 170, 105, .58)  46%,
+    rgba(255, 125, 60, .32)   60%,
+    rgba(255, 90, 38, .12)    74%,
+    transparent 86%);
+  filter:blur(32px);
+}
+.section-orange-glow__bloom--core-c2{
+  left:50%;
+  /* softer breathing backdrop behind the bright center */
+  width:min(80vw,900px);
+  aspect-ratio:2.2/1;
+  bottom:-34%;
+  background:radial-gradient(ellipse 92% 60% at 50% 50%,
+    rgba(255, 245, 215, .88) 0%,
+    rgba(255, 230, 185, .78) 14%,
+    rgba(255, 200, 140, .6)  30%,
+    rgba(255, 160, 95, .38)  48%,
+    rgba(255, 115, 55, .18)  64%,
+    transparent 82%);
+  filter:blur(34px);
+}
+.section-orange-glow__bloom--core-r{ left:72%; }
+/* small embers in the dips left/right of center — appear and fade in their own rhythm */
+.section-orange-glow__bloom--ember{
+  width:min(28vw,320px);
+  aspect-ratio:1.7/1;
+  bottom:-12%;
+  background:radial-gradient(ellipse 80% 62% at 50% 50%,
+    rgba(255, 222, 175, .68) 0%,
+    rgba(255, 188, 125, .48) 22%,
+    rgba(255, 138, 78, .22)  46%,
+    rgba(255, 95, 50, .08)   68%,
+    transparent 84%);
+  filter:blur(22px);
+}
+.section-orange-glow__bloom--ember-1{ left:38%; bottom:-8%; }
+.section-orange-glow__bloom--ember-2{ left:44%; bottom:-16%; }
+.section-orange-glow__bloom--ember-3{ left:56%; bottom:-14%; }
+.section-orange-glow__bloom--ember-4{ left:62%; bottom:-6%; }
+/* bright sparks — small intense white-cream highlights that bloom briefly across the halo */
+.section-orange-glow__bloom--spark{
+  width:min(20vw,220px);
+  aspect-ratio:1.4/1;
+  background:radial-gradient(ellipse 78% 70% at 50% 50%,
+    rgba(255, 250, 230, .85) 0%,
+    rgba(255, 230, 185, .68) 18%,
+    rgba(255, 195, 135, .42) 40%,
+    rgba(255, 140, 80, .18)  64%,
+    transparent 84%);
+  filter:blur(16px);
+}
+.section-orange-glow__bloom--spark-1{ left:22%; bottom:-10%; }
+.section-orange-glow__bloom--spark-2{ left:50%; bottom:-2%;  }
+.section-orange-glow__bloom--spark-3{ left:78%; bottom:-12%; }
+.section-orange-glow__bloom--core-hot{
+  left:50%;
+  /* round soft-cream hotspot — brighter, slightly larger, still fades smoothly into the dark */
+  width:min(68vw,770px);
+  aspect-ratio:1.7/1;
+  bottom:-32%;
+  background:radial-gradient(ellipse 90% 80% at 50% 50%,
+    rgba(255, 250, 232, .96) 0%,
+    rgba(255, 238, 198, .88) 14%,
+    rgba(255, 210, 155, .70) 30%,
+    rgba(255, 170, 110, .46) 48%,
+    rgba(255, 125, 70, .22)  64%,
+    rgba(255,  85, 40, .08)  76%,
+    transparent 86%);
+  filter:blur(26px);
+}
 .section-orange-glow__bloom--rim{
   bottom:-30%;
   width:min(140vw,1600px);height:clamp(240px,32vh,380px);
@@ -1041,19 +1124,65 @@ body:not(.hero-ready){overflow:hidden;}
   0%,100%{ transform:translate3d(-50%,0,0) scale(1);    opacity:.90; }
   50%    { transform:translate3d(-50%,-2%,0) scale(1.04); opacity:.76; }
 }
+/* wave pulse — horizontal sway + breath, NO upward shift (stops glow from spilling onto the video above) */
 @keyframes glow-pulse-l{
-  0%,100%{ transform:translate3d(-50%,0,0) scale(.82); opacity:.58; }
-  40%    { transform:translate3d(-50%,-2%,0) scale(1.08); opacity:.95; }
-  70%    { transform:translate3d(-50%,-4%,0) scale(.94); opacity:.78; }
+  0%,100% { transform:translate3d(-54%,0,0) scale(.94); opacity:.80; }
+  50%     { transform:translate3d(-46%,0,0) scale(1.06); opacity:1; }
 }
 @keyframes glow-pulse-c{
-  0%,100%{ transform:translate3d(-50%,0,0) scale(.92); opacity:.7; }
-  50%    { transform:translate3d(-50%,-5%,0) scale(1.14); opacity:1; }
+  0%,100% { transform:translate3d(-50%,0,0) scale(.96); opacity:.88; }
+  50%     { transform:translate3d(-50%,0,0) scale(1.04); opacity:1; }
 }
 @keyframes glow-pulse-r{
-  0%,100%{ transform:translate3d(-50%,0,0) scale(1.04); opacity:.88; }
-  35%    { transform:translate3d(-50%,-3%,0) scale(.88);  opacity:.62; }
-  75%    { transform:translate3d(-50%,-1%,0) scale(1.10); opacity:1; }
+  0%,100% { transform:translate3d(-46%,0,0) scale(.94); opacity:.80; }
+  50%     { transform:translate3d(-54%,0,0) scale(1.06); opacity:1; }
+}
+/* slower deeper breath for the secondary center orb, offset from the bright C */
+@keyframes glow-pulse-c2{
+  0%,100% { transform:translate3d(-50%,0,0) scale(.90); opacity:.62; }
+  50%     { transform:translate3d(-50%,0,0) scale(1.10); opacity:.94; }
+}
+/* sharp fast heartbeat for the white-hot bullseye */
+@keyframes glow-pulse-hot{
+  0%,100% { transform:translate3d(-50%,0,0) scale(.94); opacity:.88; }
+  50%     { transform:translate3d(-50%,0,0) scale(1.08); opacity:1;  }
+}
+/* embers — appear briefly, swell, fade out, sit dark for a while */
+@keyframes glow-ember-a{
+  0%, 12%, 100% { opacity:0;   transform:translate3d(-50%,0,0) scale(.82); }
+  28%           { opacity:.85; transform:translate3d(-50%,0,0) scale(1);   }
+  44%           { opacity:0;   transform:translate3d(-50%,0,0) scale(1.18); }
+}
+@keyframes glow-ember-b{
+  0%, 20%, 100% { opacity:0;   transform:translate3d(-50%,0,0) scale(.86); }
+  38%           { opacity:.78; transform:translate3d(-50%,0,0) scale(1.04); }
+  56%           { opacity:0;   transform:translate3d(-50%,0,0) scale(1.22); }
+}
+@keyframes glow-ember-c{
+  0%, 10%, 100% { opacity:0;   transform:translate3d(-50%,0,0) scale(.88); }
+  24%           { opacity:.82; transform:translate3d(-50%,0,0) scale(1.02); }
+  42%           { opacity:0;   transform:translate3d(-50%,0,0) scale(1.16); }
+}
+@keyframes glow-ember-d{
+  0%, 24%, 100% { opacity:0;   transform:translate3d(-50%,0,0) scale(.84); }
+  40%           { opacity:.88; transform:translate3d(-50%,0,0) scale(1.06); }
+  60%           { opacity:0;   transform:translate3d(-50%,0,0) scale(1.2);  }
+}
+/* bright sparks — quick punchy bloom, mostly invisible, brief flash */
+@keyframes glow-spark-a{
+  0%, 18%, 100% { opacity:0;   transform:translate3d(-50%,0,0) scale(.78); }
+  32%           { opacity:.95; transform:translate3d(-50%,0,0) scale(1.06); }
+  46%           { opacity:0;   transform:translate3d(-50%,0,0) scale(1.24); }
+}
+@keyframes glow-spark-b{
+  0%, 26%, 100% { opacity:0;   transform:translate3d(-50%,0,0) scale(.8); }
+  42%           { opacity:.92; transform:translate3d(-50%,0,0) scale(1.08); }
+  56%           { opacity:0;   transform:translate3d(-50%,0,0) scale(1.26); }
+}
+@keyframes glow-spark-c{
+  0%, 14%, 100% { opacity:0;   transform:translate3d(-50%,0,0) scale(.82); }
+  28%           { opacity:.98; transform:translate3d(-50%,0,0) scale(1.04); }
+  44%           { opacity:0;   transform:translate3d(-50%,0,0) scale(1.22); }
 }
 @keyframes glow-drift-rim{
   0%,100%{ transform:translate3d(-50%,0,0) scaleX(1);    opacity:.78; }
@@ -1063,14 +1192,42 @@ body:not(.hero-ready){overflow:hidden;}
 .section-orange-glow__bloom--wide{
   animation:glow-breath-wide 7.5s ease-in-out infinite;
   will-change:transform,opacity;}
+/* staggered phase L→C→R creates a left-to-right wave ripple */
 .section-orange-glow__bloom--core-l{
-  animation:glow-pulse-l 4.3s ease-in-out -1.4s infinite;
+  animation:glow-pulse-l 6s ease-in-out 0s infinite;
   will-change:transform,opacity;}
 .section-orange-glow__bloom--core-c{
-  animation:glow-pulse-c 5.5s ease-in-out -2.6s infinite;
+  animation:glow-pulse-c 6s ease-in-out -2s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--core-c2{
+  animation:glow-pulse-c2 8.4s ease-in-out -3.7s infinite;
   will-change:transform,opacity;}
 .section-orange-glow__bloom--core-r{
-  animation:glow-pulse-r 4.9s ease-in-out -3.2s infinite;
+  animation:glow-pulse-r 6s ease-in-out -4s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--core-hot{
+  animation:glow-pulse-hot 3.6s ease-in-out -0.8s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--ember-1{
+  animation:glow-ember-a 9s ease-in-out 0s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--ember-2{
+  animation:glow-ember-b 11s ease-in-out -3.4s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--ember-3{
+  animation:glow-ember-c 8s ease-in-out -5.2s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--ember-4{
+  animation:glow-ember-d 10s ease-in-out -1.8s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--spark-1{
+  animation:glow-spark-a 7.4s ease-in-out -2.6s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--spark-2{
+  animation:glow-spark-b 9.2s ease-in-out -4.8s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--spark-3{
+  animation:glow-spark-c 8.6s ease-in-out -0.4s infinite;
   will-change:transform,opacity;}
 .section-orange-glow__bloom--rim{
   animation:glow-drift-rim 9s ease-in-out -3s infinite;
@@ -1100,13 +1257,19 @@ body:not(.hero-ready){overflow:hidden;}
   position:relative;z-index:10;
   background:var(--bg);
   padding-top:clamp(48px,7vh,88px);}
+#workflow{margin-top:-1px;}
+/* soft dark-to-white wash at the top — catches the orange halo above and fades down to the white content */
 #workflow::before{
-  content:"";position:absolute;left:0;right:0;top:0;height:min(52vh,520px);
+  content:"";position:absolute;left:0;right:0;top:0;
+  height:min(58vh,560px);
   z-index:0;pointer-events:none;
   background:linear-gradient(180deg,
-    color-mix(in oklab,var(--orange-hot) 22%, transparent) 0%,
-    color-mix(in oklab,var(--orange-soft) 12%, transparent) 28%,
-    transparent 72%);}
+    rgba(20, 14, 12, .95) 0%,
+    rgba(48, 36, 32, .72) 14%,
+    rgba(96, 78, 70, .48) 30%,
+    rgba(170, 150, 140, .26) 52%,
+    rgba(220, 210, 202, .10) 74%,
+    transparent 100%);}
 #workflow .wrap{position:relative;z-index:1;padding-top:0;}
 #workflow .eyebrow{color:color-mix(in oklab,var(--orange-hot) 65%, var(--violet));}
 #workflow .eyebrow .dot{background:linear-gradient(118deg,var(--orange-hot),var(--orange-soft));}
@@ -1493,8 +1656,17 @@ body:not(.hero-ready){overflow:hidden;}
   <div class="section-orange-glow__stage">
     <div class="section-orange-glow__bloom section-orange-glow__bloom--wide"></div>
     <div class="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-l"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-c2"></div>
     <div class="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-c"></div>
     <div class="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-r"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--ember section-orange-glow__bloom--ember-1"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--ember section-orange-glow__bloom--ember-2"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--ember section-orange-glow__bloom--ember-3"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--ember section-orange-glow__bloom--ember-4"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--spark section-orange-glow__bloom--spark-1"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--spark section-orange-glow__bloom--spark-2"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--spark section-orange-glow__bloom--spark-3"></div>
+    <div class="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-hot"></div>
     <div class="section-orange-glow__bloom section-orange-glow__bloom--rim"></div>
   </div>
 </div>
