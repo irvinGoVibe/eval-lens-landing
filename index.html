@@ -572,21 +572,52 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 
 .hero-fade{
   opacity:0;
-  transform:translateY(22px);
-  filter:blur(6px);
-  transition:opacity .42s var(--ease), transform .42s var(--ease), filter .42s var(--ease);
+  transform:translateY(56px) scale(.9);
+  filter:blur(12px);
+  transform-origin:left center;
+  transition:
+    opacity .3s cubic-bezier(.16,1,.3,1),
+    transform .58s cubic-bezier(.18,1.3,.32,1),
+    filter .3s cubic-bezier(.16,1,.3,1);
 }
 .hero-ready .hero-fade{opacity:1;transform:none;filter:none;}
-.hero-ready .hero-fade.d1{transition-delay:.14s;}
-.hero-ready .hero-fade.d2{transition-delay:.22s;}
-.hero-ready .hero-fade.d3{transition-delay:.30s;}
-.hero-ready .hero-fade.d4{transition-delay:.38s;}
+.hero-ready .hero-fade.d1{transition-delay:0s;}
+.hero-ready .hero-fade.d2{transition-delay:.06s;}
+.hero-ready .hero-fade.d3{transition-delay:.12s;}
+.hero-ready .hero-fade.d4{transition-delay:.18s;}
 
 body:not(.hero-ready){overflow:hidden;}
+
+/* glitch-smash: text shudders and RGB-splits as the unicorn punches through */
+.hero-smash .hero-fade{
+  animation:hero-smash-shake .72s cubic-bezier(.36,.07,.19,.97) both;
+}
+.hero-smash .hero-fade.d1{animation-delay:0s;}
+.hero-smash .hero-fade.d2{animation-delay:.04s;}
+.hero-smash .hero-fade.d3{animation-delay:.08s;}
+.hero-smash .hero-fade.d4{animation-delay:.12s;}
+@keyframes hero-smash-shake{
+  0%   {transform:translate(0,0);filter:none;}
+  6%   {transform:translate(-9px,-3px) skewX(-1.2deg);
+        filter:drop-shadow(3px 0 0 rgba(255,40,110,.85)) drop-shadow(-3px 0 0 rgba(54,224,255,.85));}
+  13%  {transform:translate(8px,3px) skewX(1deg);
+        filter:drop-shadow(-4px 0 0 rgba(255,40,110,.85)) drop-shadow(4px 0 0 rgba(54,224,255,.85));}
+  22%  {transform:translate(-6px,2px);
+        filter:drop-shadow(2px 0 0 rgba(255,40,110,.7)) drop-shadow(-2px 0 0 rgba(54,224,255,.7));}
+  32%  {transform:translate(5px,-2px);
+        filter:drop-shadow(-2px 0 0 rgba(255,40,110,.6)) drop-shadow(2px 0 0 rgba(54,224,255,.6));}
+  44%  {transform:translate(-3px,1px);filter:none;}
+  58%  {transform:translate(2px,0);}
+  72%  {transform:translate(-1px,0);}
+  86%  {transform:translate(1px,0);}
+  100% {transform:translate(0,0);filter:none;}
+}
+
 @media (prefers-reduced-motion: reduce){
   .hero-dim{opacity:1;transition:none;}
   .hero-content{visibility:visible;pointer-events:auto;}
   .hero-fade{opacity:1;transform:none;filter:none;transition:none;}
+  .hero-smash .hero-fade{animation:none;}
 }
 
 /* ============================================================
@@ -1745,12 +1776,15 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   const video = hero?.querySelector('.hero-video');
   const overlay = hero?.querySelector('.hero-unicorn');
   const overlayWrap = hero?.querySelector('.hero-unicorn-wrap');
-  const COPY_REVEAL_SEC = 1.2;
+  const heroHead = hero?.querySelector('.hero-head');
+  const COPY_REVEAL_SEC = 1.4;
   const COPY_REVEAL_MS = COPY_REVEAL_SEC * 1000;
   /* ⇩ change these to move when the unicorn overlay fades in / out (seconds, relative to hero video start).
      Set OVERLAY_HIDE_SEC to null to keep the overlay visible until the video ends. */
   const OVERLAY_REVEAL_SEC = 2.0;
   const OVERLAY_HIDE_SEC = 3.2;
+  /* glitch-shake on the hero text — set to null to disable. Triggers in sync with the overlay reveal. */
+  const TEXT_SMASH_AT_SEC = OVERLAY_REVEAL_SEC;
   const SYNC_DRIFT = 0.04;
   if(!hero) return;
 
@@ -1846,7 +1880,13 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   let overlayShown = false;
   let overlayHidden = false;
+  let smashFired = false;
   const maybeRevealOverlay = () => {
+    if(TEXT_SMASH_AT_SEC != null && !smashFired && heroHead && video.currentTime >= TEXT_SMASH_AT_SEC){
+      heroHead.classList.add('hero-smash');
+      smashFired = true;
+      setTimeout(() => heroHead.classList.remove('hero-smash'), 900);
+    }
     if(!overlayWrap) return;
     if(!overlayShown && video.currentTime >= OVERLAY_REVEAL_SEC){
       overlayWrap.classList.add('is-visible');
