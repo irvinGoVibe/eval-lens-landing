@@ -1228,20 +1228,21 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     }
 
     function easeOut(t){ return 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 2.4); }
+    function easeInOut(t){
+      const x = Math.min(1, Math.max(0, t));
+      return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    }
+
+    /* pin timeline: center hold → lift to top → subtitle → video → cards */
+    const PHASE = { HOLD_END: 0.2, LIFT_START: 0.2, LIFT_END: 0.48, SUB_START: 0.26, VIDEO_START: 0.36, SCENE_START: 0.5 };
 
     function updateHeading(trackP){
       if(!heading || reduce) return;
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       const start = vh * 0.5;
-      const fadeLen = vh * 0.14;
-      const driftLen = vh * 0.16;
       const pinActive = track.getBoundingClientRect().top <= 2;
-
-      let drift = 0;
-      let subOp = 0;
-      const subStartScroll = start + fadeLen + driftLen * 0.9;
-      const subFadeLen = vh * 0.08;
+      const centerY = vh * 0.5;
 
       if(scrollY < start * 0.88){
         heading.classList.remove('is-shown');
@@ -1252,51 +1253,54 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
       heading.classList.add('is-shown');
 
-      if(scrollY >= start){
-        const t = scrollY - start;
-        if(t < fadeLen){
-          drift = (1 - t / fadeLen) * 24;
-        }else{
-          drift = 24 + Math.min(1, (t - fadeLen) / driftLen) * 28;
-        }
-      }else{
-        drift = 24;
+      if(!epicPlayed){
+        epicPlayed = true;
+        smoothTop = centerY;
+        heading.classList.add('is-epic-active');
       }
 
-      if(scrollY >= subStartScroll){
-        subOp = easeOut(Math.min(1, (scrollY - subStartScroll) / subFadeLen));
-      }else if(pinActive && trackP >= 0.14){
-        subOp = easeOut(Math.min(1, (trackP - 0.14) / 0.12));
-      }
-
-      let targetTop;
-      if(pinActive && headingSlot){
+      let slotY = centerY;
+      if(headingSlot){
         const sr = headingSlot.getBoundingClientRect();
-        targetTop = sr.top + sr.height * 0.44;
-      }else{
-        targetTop = vh * 0.5 + drift;
+        slotY = sr.top + sr.height * 0.44;
       }
 
-      if(smoothTop === null) smoothTop = targetTop;
-      const lerp = pinActive ? 0.32 : 0.2;
+      let targetTop = centerY;
+      let subOp = 0;
+      let liftT = 0;
+
+      if(pinActive){
+        if(trackP < PHASE.LIFT_START){
+          targetTop = centerY;
+        }else if(trackP < PHASE.LIFT_END){
+          liftT = (trackP - PHASE.LIFT_START) / (PHASE.LIFT_END - PHASE.LIFT_START);
+          targetTop = centerY + (slotY - centerY) * easeInOut(liftT);
+        }else{
+          targetTop = slotY;
+          liftT = 1;
+        }
+
+        if(trackP >= PHASE.SUB_START){
+          subOp = easeOut(Math.min(1, (trackP - PHASE.SUB_START) / 0.12));
+        }
+      }
+
+      if(smoothTop === null) smoothTop = centerY;
+      const lerp = pinActive && liftT > 0 && liftT < 1 ? 0.1 : pinActive ? 0.14 : 0.18;
       smoothTop += (targetTop - smoothTop) * lerp;
 
       heading.style.setProperty('--h-top', smoothTop + 'px');
       heading.style.setProperty('--sub-op', String(subOp));
-
-      if(!epicPlayed){
-        epicPlayed = true;
-        heading.classList.add('is-epic-active');
-      }
     }
 
     function updateReveal(p){
-      if(stageArea) stageArea.classList.toggle('is-visible', p >= 0.24);
-      if(scene) scene.classList.toggle('is-visible', p >= 0.44);
+      const pinActive = track.getBoundingClientRect().top <= 2;
+      if(stageArea) stageArea.classList.toggle('is-visible', pinActive && p >= PHASE.VIDEO_START);
+      if(scene) scene.classList.toggle('is-visible', pinActive && p >= PHASE.SCENE_START);
     }
 
     function videoProgress(p){
-      return Math.max(0, Math.min(1, (p - 0.22) / 0.78));
+      return Math.max(0, Math.min(1, (p - PHASE.VIDEO_START) / (1 - PHASE.VIDEO_START)));
     }
 
     function updateStages(p){
