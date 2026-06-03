@@ -1784,10 +1784,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     const SUCK_VIDEO_START = 0.62;
     const SUCK_VIDEO_END = 1;
     /* left decks hide → right cells: c3, c2, c1 from scene center to slots */
-    const FILES_GONE_PULL = 0.68;
-    const CELLS_P_START = 0.76;
-    const CELLS_P_END = 0.82;
-    const CELL_REVEAL = 0.28;
+    const FILES_GONE_VP = 0.6;
+    const FILES_GONE_PULL = 0.42;
+    const CELLS_VP_START = 0.66;
+    const CELLS_VP_END = 1;
+    const CELL_REVEAL = 0.34;
     const CELL_ORDER = [2, 1, 0];
     const CELL_BLUR_MAX = 36;
     let suckTargets = null;
@@ -2017,11 +2018,13 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
       const pinActive = track.getBoundingClientRect().top <= 2;
       const sceneOn = pinActive && p >= PHASE.SCENE_START;
+      const vp = videoProgress(p);
       const suckT = sceneOn ? suckProgress(p) : 0;
       const pull = Math.pow(suckT, 1.12);
-      const filesGone = sceneOn && pull >= FILES_GONE_PULL;
-      const cellPhase = filesGone && p >= CELLS_P_START
-        ? easeOut(Math.min(1, (p - CELLS_P_START) / (CELLS_P_END - CELLS_P_START)))
+      const filesGone = sceneOn && (vp >= FILES_GONE_VP || pull >= FILES_GONE_PULL);
+      const cellSpan = Math.max(0.001, CELLS_VP_END - CELLS_VP_START);
+      const cellPhase = filesGone && vp >= CELLS_VP_START
+        ? easeOut(Math.min(1, (vp - CELLS_VP_START) / cellSpan))
         : 0;
 
       if(!sceneOn){
