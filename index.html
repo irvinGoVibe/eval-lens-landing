@@ -36,7 +36,7 @@
    ============================================================ */
 :root{
   /* ---- Font families (EvalLense type system) ---- */
-  --font-mono:    "SF Mono", ui-monospace, "JetBrains Mono", Menlo, monospace;
+  --font-mono:    Menlo, "SF Mono", ui-monospace, "JetBrains Mono", monospace;
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-ui:      -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-text:    var(--font-ui);
@@ -196,8 +196,10 @@ a{color:inherit;text-decoration:none;}
   margin-left:auto;margin-right:clamp(12px,2vw,28px);
 }
 .site-header__link{
-  font-family:var(--font-text);
-  font-size:14px;font-weight:400;letter-spacing:-.01em;
+  font-family:var(--font-mono);
+  font-size:14px;font-weight:400;
+  letter-spacing:.12em;
+  text-transform:uppercase;
   color:rgba(245,245,247,.82);
   white-space:nowrap;
   transition:color .25s var(--ease);
@@ -1100,10 +1102,10 @@ body:not(.hero-ready){overflow:hidden;}
       EvalLense
     </a>
     <nav class="site-header__nav" aria-label="Primary">
-      <a class="site-header__link" href="#nav-1">Menu <span class="site-header__accent">one</span></a>
-      <a class="site-header__link" href="#nav-2">Menu <span class="site-header__accent">two</span></a>
-      <a class="site-header__link" href="#nav-3">Menu <span class="site-header__accent">three</span></a>
-      <a class="site-header__link" href="#nav-4">Menu <span class="site-header__accent">four</span></a>
+      <a class="site-header__link" href="#workflow">Product</a>
+      <a class="site-header__link" href="#problem">Block</a>
+      <a class="site-header__link" href="#results">Pricing</a>
+      <a class="site-header__link" href="#trust">Information</a>
     </nav>
     <a class="btn btn-primary site-header__cta" href="#demo">Book Live Demo</a>
   </div>
