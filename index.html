@@ -346,6 +346,18 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero-video{width:100%;height:100%;object-fit:cover;display:block;}
 
+/* intro black — topmost hero layer, same frame as bg video */
+.hero-unicorn-wrap{
+  position:absolute;inset:0;z-index:10;pointer-events:none;
+  transform:translate3d(0,var(--bg-y,0px),0);
+  will-change:transform;
+}
+.hero-unicorn{
+  width:100%;height:100%;object-fit:cover;display:block;
+  background:transparent;
+  opacity:1;
+}
+
 /* gradient dim — fades in before copy */
 .hero-dim{
   position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -1140,7 +1152,6 @@ body:not(.hero-ready){overflow:hidden;}
     <video class="hero-video"
            muted
            playsinline
-           autoplay
            preload="auto"
            disablepictureinpicture
            webkit-playsinline="true">
@@ -1242,6 +1253,17 @@ body:not(.hero-ready){overflow:hidden;}
         <button class="btn btn-glass"><span class="btn-txt">Try live demo</span>&nbsp;<span class="arr">→</span></button>
       </div>
     </div>
+  </div>
+
+  <div class="hero-unicorn-wrap" aria-hidden="true">
+    <video class="hero-unicorn"
+           muted
+           playsinline
+           preload="auto"
+           disablepictureinpicture
+           webkit-playsinline="true">
+      <source src="assets/hero-intro-black.mp4" type="video/mp4" />
+    </video>
   </div>
 </section>
 
@@ -1664,12 +1686,17 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-/* hero intro: copy fades in while video keeps playing (ms) */
+/* hero intro: synced dual-video play + copy reveal */
 (function initHeroIntro(){
   const hero = document.getElementById('hero');
   const video = hero?.querySelector('.hero-video');
+  const overlay = hero?.querySelector('.hero-unicorn');
   const COPY_REVEAL_MS = 1300;
+  const SYNC_DRIFT = 0.04;
   if(!hero) return;
+
+  const layers = [video, overlay].filter(Boolean);
+  const hasPair = video && overlay;
 
   const reveal = () => {
     hero.classList.add('hero-ready');
@@ -1687,6 +1714,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }
 
   let done = false;
+  let syncing = false;
   let maxWait = null;
   let copyTimer = null;
 
@@ -1708,37 +1736,78 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     copyTimer = setTimeout(finish, COPY_REVEAL_MS);
   };
 
-  const tryPlay = () => {
-    const p = video.play();
-    if(p && typeof p.then === 'function'){
-      p.catch(() => setTimeout(finish, 500));
+  const seekTo = (el, t) => new Promise(resolve => {
+    if(Math.abs(el.currentTime - t) < 0.001){ resolve(); return; }
+    const onSeeked = () => resolve();
+    el.addEventListener('seeked', onSeeked, {once:true});
+    try { el.currentTime = t; } catch(_) { resolve(); }
+    setTimeout(resolve, 120);
+  });
+
+  const pauseAll = () => {
+    layers.forEach(el => { try { el.pause(); } catch(_) {} });
+  };
+
+  const syncPlay = async () => {
+    if(syncing) return;
+    if(hasPair && (video.readyState < 2 || overlay.readyState < 2)) return;
+
+    syncing = true;
+    pauseAll();
+    await Promise.all(layers.map(el => seekTo(el, 0)));
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    try {
+      await Promise.all(layers.map(el => el.play()));
+    } catch(_) {
+      setTimeout(finish, 500);
+    }
+    syncing = false;
+  };
+
+  const syncRestart = async () => {
+    if(syncing) return;
+    pauseAll();
+    await Promise.all(layers.map(el => seekTo(el, 0)));
+    await syncPlay();
+  };
+
+  const keepInSync = () => {
+    if(!hasPair || video.paused) return;
+    if(Math.abs(video.currentTime - overlay.currentTime) > SYNC_DRIFT){
+      try { overlay.currentTime = video.currentTime; } catch(_) {}
+    }
+  };
+
+  const tryStart = () => {
+    if(hasPair){
+      if(video.readyState >= 2 && overlay.readyState >= 2) syncPlay();
+      return;
+    }
+    if(video.readyState >= 2){
+      video.play().catch(() => setTimeout(finish, 500));
     }
   };
 
   video.addEventListener('playing', scheduleCopyReveal, {once:true});
   video.addEventListener('timeupdate', () => {
+    keepInSync();
     if(video.currentTime * 1000 >= COPY_REVEAL_MS) finish();
   });
+  video.addEventListener('ended', () => { syncRestart(); });
 
-  video.addEventListener('loadedmetadata', () => {
-    const dur = video.duration || 2.5;
-    armFallback(dur);
-    try { video.currentTime = 0; } catch(_) {}
-    tryPlay();
-  }, {once:true});
+  layers.forEach(el => {
+    el.addEventListener('loadedmetadata', () => {
+      if(video.duration) armFallback(video.duration);
+      tryStart();
+    }, {once:true});
+    el.addEventListener('error', () => setTimeout(finish, 500), {once:true});
+  });
 
-  video.addEventListener('error', () => {
-    setTimeout(finish, 500);
-  }, {once:true});
+  armFallback(3);
+  tryStart();
 
-  if(video.readyState >= 1){
-    armFallback(video.duration || 2.5);
-    tryPlay();
-  } else {
-    armFallback(3);
-  }
-
-  const prime = () => { tryPlay(); };
+  const prime = () => { tryStart(); };
   window.addEventListener('touchstart', prime, {passive:true, once:true});
   window.addEventListener('click', prime, {once:true});
 })();
@@ -1747,6 +1816,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 (function initHeroSplashesParallax(){
   const hero = document.getElementById('hero');
   const videoWrap = hero?.querySelector('.hero-video-wrap');
+  const unicornWrap = hero?.querySelector('.hero-unicorn-wrap');
   const heroDim = hero?.querySelector('.hero-dim');
   const splashes = hero?.querySelectorAll('.hero-splash');
   if(!hero || !splashes?.length) return;
@@ -1764,6 +1834,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
     const bgY = (shift * BG_RATE).toFixed(2) + 'px';
     if(videoWrap) videoWrap.style.setProperty('--bg-y', bgY);
+    if(unicornWrap) unicornWrap.style.setProperty('--bg-y', bgY);
     if(heroDim) heroDim.style.setProperty('--bg-y', bgY);
 
     splashes.forEach(el => {
