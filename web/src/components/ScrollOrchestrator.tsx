@@ -387,24 +387,46 @@ function runScript() {
       }
 
       if (video) {
-        video.addEventListener(
-          "loadedmetadata",
-          () => {
-            duration = video.duration || 0;
-            if (duration > 0) {
-              ready = true;
-              markHasVideo();
-              try {
-                video.currentTime = 0;
-              } catch (_) {}
-              schedule();
-            }
-          },
-          { once: true }
-        );
+        // Belt-and-suspenders: even if some browser autoplays the scrub-video
+        // (e.g. iOS Safari with user gesture in another tab), force-pause so
+        // it never drifts independently of scroll. Otherwise scrolling back
+        // up fights an autoplay that keeps pushing currentTime forward and
+        // the rewind looks like it doesn't work.
+        try { video.pause(); } catch (_) {}
+        const onMetadata = () => {
+          duration = video.duration || 0;
+          if (duration > 0) {
+            ready = true;
+            markHasVideo();
+            try {
+              video.pause();
+              video.currentTime = 0;
+            } catch (_) {}
+            schedule();
+          }
+        };
+        // preload="auto" can fire loadedmetadata BEFORE our listener attaches —
+        // especially after hydration of a server-rendered <video>. If duration
+        // is already known, run the handler synchronously instead of waiting
+        // for an event that will never come.
+        if (video.readyState >= 1 && video.duration > 0) {
+          onMetadata();
+        } else {
+          video.addEventListener("loadedmetadata", onMetadata, { once: true });
+          // Some browsers expose duration on `durationchange` rather than
+          // `loadedmetadata` when the value transitions from NaN to a number.
+          video.addEventListener("durationchange", onMetadata, { once: true });
+        }
         video.addEventListener("error", () => {
           ready = false;
         }, { once: true });
+        // If the browser kicks off playback anyway (autoplay heuristics,
+        // metadata events), kill it on each play attempt.
+        video.addEventListener("play", () => {
+          try { video.pause(); } catch (_) {}
+        });
+        // iOS Safari historically needed a play+pause to unlock seek. Keep
+        // the prime, but pause again right after so we stay in scrub-only mode.
         const primeOnce = () => {
           if (!ready) return;
           const p = video.play();

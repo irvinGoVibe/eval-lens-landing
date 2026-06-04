@@ -48,9 +48,11 @@ export function Problem() {
 
           <div className="scrub-stage-area">
             <div className="scrub-fallback" aria-hidden="true"></div>
+            {/* No autoPlay: this video is purely scrubbed by scroll position
+                via ScrollOrchestrator. Autoplay would fight the seek-back
+                logic and make scrolling up feel like it doesn't rewind. */}
             <video
               className="scrub-video"
-              autoPlay
               muted
               playsInline
               preload="auto"

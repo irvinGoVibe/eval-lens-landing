@@ -5,20 +5,26 @@ Two surfaces live in this repo:
 - `index.html` + `serve.py` — original standalone landing page (kept as visual reference)
 - `web/` — Next.js 16 app (App Router, TS, Tailwind v4); the live target
 
-## Running the dev server — do NOT use `pnpm dev` / `npm run dev` directly
+## Dev server / preview — do NOT start it on your own
 
-Use the Claude Code preview tool (`preview_start` with name `web`) which is wired
-through [.claude/launch.json](.claude/launch.json). Reasons:
+The user runs their own dev server in their IDE — opening the in-IDE preview
+panel from Claude Code gets in the way. **Do not call `preview_start`,
+`pnpm dev`, `pnpm build`, or any other long-running command unless the user
+explicitly asks** ("запусти превью", "подними сервер", "посмотри визуально"
+or similar). If you need to verify a change, ask first.
 
-- The preview tool tracks the server, exposes `preview_logs` / `preview_console_logs`
-  / `preview_screenshot` for verification, and survives across turns. Running
-  `pnpm dev` from Bash leaves a detached process that ties up port 3000 and
-  isn't reachable from the preview MCP.
-- If you have to inspect the running app, prefer `preview_eval` over launching
-  a parallel browser instance.
+When the user does ask:
 
-The legacy static page has its own preview config (`name: static`, port 5173) — use
-that when verifying against the original HTML.
+- Use the Claude Code preview tool (`preview_start` with name `web`), which
+  is wired through [.claude/launch.json](.claude/launch.json). The preview
+  tool tracks the server, exposes `preview_logs` / `preview_console_logs` /
+  `preview_screenshot` / `preview_eval` for inspection, and survives across
+  turns. Running `pnpm dev` from Bash leaves a detached process.
+- The dev server is pinned to **port 3005** (both `package.json` scripts and
+  the launch config) so it doesn't collide with the user's other project on
+  3000. Do not change the port without asking.
+- The legacy static page has its own preview config (`name: static`,
+  port 5173) — use that when verifying against the original HTML.
 
 ## Conventions for `web/`
 
