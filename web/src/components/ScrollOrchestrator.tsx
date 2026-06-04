@@ -902,29 +902,52 @@ function runScript() {
     }
 
     let epicPlayed = false;
-    const PHASE = { SUB_START: 0.28, FADE_START: 0.92 };
+    let smoothTop: number | null = null;
+    let visible = false;
+    let rafActive = false;
+
+    // Same shape as the problem section's PHASE: HOLD → LIFT → SUB → EXIT.
+    // Tuned so the type-in + lift happens across the dark scrub-tail + the
+    // top of the orange-glow band, and the heading lands above the cube.
+    const PHASE = {
+      LIFT_START: 0.2,
+      LIFT_END: 0.5,
+      SUB_START: 0.32,
+      EXIT_START: 0.92,
+    };
 
     function easeOut(t: number) {
       return 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 2.4);
+    }
+    function easeInOut(t: number) {
+      const x = Math.min(1, Math.max(0, t));
+      return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     }
 
     function computeProgress() {
       const rect = section!.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
-      const trigger = vh * 0.72;
-      if (rect.top > trigger) return 0;
+      // Trigger is tuned so the type-in fires the moment the problem-section
+      // pin releases and the viewport flips to solid black (track bg + scrub-tail).
+      // workflow.rect.top is ≈ 1.5–1.6·vh at that point, so trigger=1.8·vh starts
+      // the reveal slightly before pin-release and types-in across the dark band.
+      const trigger = vh * 1.8;
+      if (rect.top > trigger) return -1;
       const scrolled = trigger - rect.top;
-      const range = vh * 0.52;
+      const range = vh * 1.6;
       return Math.min(1, scrolled / range);
     }
 
     function update() {
       const p = computeProgress();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const centerY = vh * 0.5;
 
-      if (p <= 0) {
+      if (p < 0) {
         heading!.classList.remove("is-shown");
         heading!.style.setProperty("--sub-op", "0");
         heading!.style.opacity = "";
+        smoothTop = null;
         return;
       }
 
@@ -932,44 +955,80 @@ function runScript() {
 
       if (!epicPlayed) {
         epicPlayed = true;
+        smoothTop = centerY;
         heading!.classList.add("is-epic-active");
       }
 
+      // Heading's final viewport-y after the lift — fixed point in the upper
+      // third of the screen, regardless of where the document-flow slot sits.
+      // This is what makes the heading travel UP from center (instead of down
+      // toward the still-off-screen slot), then stay pinned at the top through
+      // the black→gray→white transition until EXIT fade.
+      const finalY = vh * 0.22;
+
+      let targetTop = centerY;
       let subOp = 0;
-      if (p >= PHASE.SUB_START) {
-        subOp = easeOut(Math.min(1, (p - PHASE.SUB_START) / 0.12));
+      let liftT = 0;
+
+      if (p < PHASE.LIFT_START) {
+        targetTop = centerY;
+      } else if (p < PHASE.LIFT_END) {
+        liftT = (p - PHASE.LIFT_START) / (PHASE.LIFT_END - PHASE.LIFT_START);
+        targetTop = centerY + (finalY - centerY) * easeInOut(liftT);
+      } else {
+        targetTop = finalY;
+        liftT = 1;
       }
+
+      if (p >= PHASE.SUB_START) {
+        subOp = easeOut(Math.min(1, (p - PHASE.SUB_START) / 0.14));
+      }
+
+      if (smoothTop === null) smoothTop = centerY;
+      const lerp = liftT > 0 && liftT < 1 ? 0.12 : 0.16;
+      smoothTop += (targetTop - smoothTop) * lerp;
+
+      heading!.style.setProperty("--h-top", smoothTop + "px");
       heading!.style.setProperty("--sub-op", String(subOp));
 
-      if (p >= PHASE.FADE_START) {
-        heading!.style.opacity = String(Math.max(0, 1 - (p - PHASE.FADE_START) / 0.08));
+      if (p >= PHASE.EXIT_START) {
+        heading!.style.opacity = String(
+          Math.max(0, 1 - (p - PHASE.EXIT_START) / 0.08)
+        );
       } else {
         heading!.style.opacity = "";
       }
     }
 
-    let rafPending = false;
-    function schedule() {
-      if (rafPending) return;
-      rafPending = true;
-      requestAnimationFrame(() => {
-        rafPending = false;
-        update();
-      });
+    function loop() {
+      if (!visible) {
+        rafActive = false;
+        return;
+      }
+      update();
+      requestAnimationFrame(loop);
+    }
+
+    function startLoop() {
+      if (rafActive) return;
+      rafActive = true;
+      requestAnimationFrame(loop);
     }
 
     const visibleIO = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) schedule();
+          visible = e.isIntersecting;
+          if (visible) startLoop();
         });
       },
-      { threshold: 0 }
+      // observe the section even when it's still ~1 viewport below, so the
+      // pre-arrival type-in / lift sequence can run.
+      { threshold: 0, rootMargin: "100% 0px 50% 0px" }
     );
     visibleIO.observe(section);
 
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    schedule();
+    window.addEventListener("resize", update);
+    update();
   })();
 }

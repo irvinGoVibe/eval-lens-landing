@@ -1377,23 +1377,25 @@ body:not(.hero-ready){overflow:hidden;}
   padding-top:0;}
 #workflow .wrap{position:relative;z-index:1;padding-top:0;}
 /* heading slot reserves space; sticky pin — no fixed overlay (Safari video) */
+/* heading is fixed-positioned (driven by ScrollOrchestrator) like .scrub-heading;
+   this wrapper no longer pins — kept as zero-height anchor for legacy markup. */
 .workflow-heading-pin{
-  position:sticky;
-  top:max(120px, calc(50vh - 200px));
-  z-index:20;
+  position:relative;
   height:0;
   overflow:visible;
-  pointer-events:none;
-  margin-bottom:clamp(72px, 10vh, 120px);}
+  pointer-events:none;}
+/* slot reserves vertical space in the section's flow so cube content sits below
+   where the heading lands after lifting from viewport center. */
 .workflow-heading-slot{
-  width:100%;min-height:clamp(48px,8vh,96px);
+  width:100%;min-height:clamp(220px,30vh,360px);
+  padding-top:clamp(40px,6vh,80px);box-sizing:border-box;
   pointer-events:none;}
 .workflow-heading{
-  position:relative;left:50%;
+  position:fixed;left:50%;top:var(--h-top,50vh);z-index:40;
   width:min(880px,92vw);max-width:92vw;text-align:center;
   padding:0 var(--gutter);margin:0;pointer-events:none;
   opacity:1;display:none;
-  transform:translateX(-50%);}
+  transform:translate(-50%,-50%);}
 .workflow-heading.is-shown{display:block;}
 .workflow-heading .title{
   font-family:var(--font-display);
