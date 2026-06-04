@@ -22,9 +22,7 @@ export function Workflow() {
       </div>
       <div className="workflow-heading-slot" aria-hidden="true"></div>
       <div className="wrap">
-        <div className="head reveal">
-        Yeah. */}
-        </div>
+        <div className="head reveal"></div>
 
         <div
           className="stage reveal d1"
