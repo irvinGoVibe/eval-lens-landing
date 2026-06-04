@@ -901,27 +901,30 @@ function runScript() {
       return;
     }
 
+    // .stage-pad is the cube container inside the workflow .wrap — once it
+    // scrolls up to the heading, the heading docks above it and scrolls along.
+    const stagePad = section.querySelector(
+      ".stage-pad"
+    ) as HTMLElement | null;
+
     let epicPlayed = false;
     let smoothTop: number | null = null;
     let visible = false;
     let rafActive = false;
 
-    // Same shape as the problem section's PHASE: HOLD → LIFT → SUB → EXIT.
-    // Tuned against trigger=1.8·vh + range=2.2·vh:
-    //  - LIFT plays on pure black (track bg + tail).
-    //  - Heading then pins at finalY through the orange-glow band.
-    //  - SUB_START fires as the white workflow bg is approaching the heading.
-    //  - After a brief beat with both title + sub on white, EXIT fades both out.
-    //  - EXIT_END must finish inside [0,1] so opacity actually reaches 0
-    //    (otherwise the clamped tail leaves the heading visibly hanging).
+    // HOLD → LIFT → SUB. No EXIT fade — once SUB is in, both title and sub
+    // stay pinned at full opacity through the rest of the workflow body.
+    // Hiding is driven separately:
+    //  - reverse-scroll up: p < UP_HIDE_THRESHOLD (slightly before p=0) →
+    //    full reset so the type-in replays on the next entry from above.
+    //  - section fully past: rect.bottom < 0 → hide WITHOUT resetting state,
+    //    so scrolling back up into the section re-shows instantly at finalY.
     const PHASE = {
       LIFT_START: 0.15,
       LIFT_END: 0.36,
       SUB_START: 0.62,
-      EXIT_START: 0.82,
     };
-    const EXIT_FADE_WIDTH = 0.1;
-    const EXIT_END = PHASE.EXIT_START + EXIT_FADE_WIDTH;
+    const UP_HIDE_THRESHOLD = 0.08;
 
     function easeOut(t: number) {
       return 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 2.4);
@@ -950,17 +953,29 @@ function runScript() {
 
     function update() {
       const p = computeProgress();
+      const rect = section!.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const centerY = vh * 0.5;
 
-      // Hide if before trigger (scrolled back up above) OR after the EXIT
-      // fade has fully completed (so the heading doesn't linger half-faded
-      // outside the active range due to the p clamp to [0,1]).
-      if (p < 0 || p >= EXIT_END) {
-        heading!.classList.remove("is-shown");
+      // Reverse-scroll hide: user scrolled back UP past the trigger area
+      // (UP_HIDE_THRESHOLD is slightly > 0 so the heading vanishes a bit
+      // earlier than the show point — feels less like a stuck overlay).
+      // Full reset so the type-in replays cleanly on the next entry from above.
+      if (p < UP_HIDE_THRESHOLD) {
+        heading!.classList.remove("is-shown", "is-epic-active");
         heading!.style.setProperty("--sub-op", "0");
         heading!.style.opacity = "";
         smoothTop = null;
+        epicPlayed = false;
+        return;
+      }
+
+      // Section-past hide: user scrolled DOWN past the entire workflow body.
+      // No state reset — re-entering from below should snap straight back to
+      // finalY with full opacity (no re-lerp from center).
+      if (rect.bottom < 0) {
+        heading!.classList.remove("is-shown");
+        heading!.style.opacity = "";
         return;
       }
 
@@ -972,12 +987,20 @@ function runScript() {
         heading!.classList.add("is-epic-active");
       }
 
-      // Heading's final viewport-y after the lift — fixed point in the upper
-      // third of the screen, regardless of where the document-flow slot sits.
-      // This is what makes the heading travel UP from center (instead of down
-      // toward the still-off-screen slot), then stay pinned at the top through
-      // the black→gray→white transition until EXIT fade.
-      const finalY = vh * 0.22;
+      // Dynamic final-y: the heading sits in the upper third (fixedFinalY)
+      // while .stage-pad is still far below, then docks just above stage-pad
+      // and scrolls along with it once stage-pad catches up from below.
+      // min() guarantees the heading NEVER goes lower than fixedFinalY — it
+      // only travels UP toward / with stage-pad, never back down.
+      const fixedFinalY = vh * 0.3;
+      let finalY = fixedFinalY;
+      if (stagePad) {
+        const padRect = stagePad.getBoundingClientRect();
+        const gap = Math.max(16, Math.min(vh * 0.04, 40));
+        const headingH = heading!.offsetHeight || 250;
+        const dockedY = padRect.top - gap - headingH / 2;
+        finalY = Math.min(fixedFinalY, dockedY);
+      }
 
       let targetTop = centerY;
       let subOp = 0;
@@ -998,19 +1021,21 @@ function runScript() {
       }
 
       if (smoothTop === null) smoothTop = centerY;
-      const lerp = liftT > 0 && liftT < 1 ? 0.12 : 0.16;
-      smoothTop += (targetTop - smoothTop) * lerp;
+      if (liftT === 1) {
+        // After LIFT completes, snap straight to the (dynamic) finalY each
+        // frame — no lerp lag, so the heading tracks .stage-pad in real time
+        // once they dock.
+        smoothTop = finalY;
+      } else {
+        const lerp = liftT > 0 ? 0.12 : 0.16;
+        smoothTop += (targetTop - smoothTop) * lerp;
+      }
 
       heading!.style.setProperty("--h-top", smoothTop + "px");
       heading!.style.setProperty("--sub-op", String(subOp));
-
-      if (p >= PHASE.EXIT_START) {
-        heading!.style.opacity = String(
-          Math.max(0, 1 - (p - PHASE.EXIT_START) / EXIT_FADE_WIDTH)
-        );
-      } else {
-        heading!.style.opacity = "";
-      }
+      // No EXIT fade — heading stays at full opacity until either
+      // reverse-scroll reset or section-past hide above.
+      heading!.style.opacity = "";
     }
 
     function loop() {
