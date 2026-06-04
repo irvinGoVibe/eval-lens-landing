@@ -684,6 +684,7 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(0,0,0,.88) 96%,
     #000 100%);}
 .scroll-scrub .scrub-track{position:relative;z-index:2;height:380vh;background:#000;}
+.scroll-scrub .scrub-tail{position:relative;z-index:2;height:300px;background:#000;}
 .scroll-scrub .scrub-pin{position:sticky;top:0;height:100vh;width:100%;overflow:visible;background:#000;
   isolation:isolate;
   display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;

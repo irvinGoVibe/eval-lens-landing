@@ -99,6 +99,7 @@ export function Problem() {
           </div>
         </div>
       </div>
+      <div className="scrub-tail" aria-hidden="true"></div>
     </section>
   );
 }
