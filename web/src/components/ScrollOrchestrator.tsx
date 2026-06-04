@@ -907,14 +907,21 @@ function runScript() {
     let rafActive = false;
 
     // Same shape as the problem section's PHASE: HOLD → LIFT → SUB → EXIT.
-    // Tuned so the type-in + lift happens across the dark scrub-tail + the
-    // top of the orange-glow band, and the heading lands above the cube.
+    // Tuned against trigger=1.8·vh + range=2.2·vh:
+    //  - LIFT plays on pure black (track bg + tail).
+    //  - Heading then pins at finalY through the orange-glow band.
+    //  - SUB_START fires as the white workflow bg is approaching the heading.
+    //  - After a brief beat with both title + sub on white, EXIT fades both out.
+    //  - EXIT_END must finish inside [0,1] so opacity actually reaches 0
+    //    (otherwise the clamped tail leaves the heading visibly hanging).
     const PHASE = {
-      LIFT_START: 0.2,
-      LIFT_END: 0.5,
-      SUB_START: 0.32,
-      EXIT_START: 0.92,
+      LIFT_START: 0.15,
+      LIFT_END: 0.36,
+      SUB_START: 0.62,
+      EXIT_START: 0.82,
     };
+    const EXIT_FADE_WIDTH = 0.1;
+    const EXIT_END = PHASE.EXIT_START + EXIT_FADE_WIDTH;
 
     function easeOut(t: number) {
       return 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 2.4);
@@ -934,7 +941,10 @@ function runScript() {
       const trigger = vh * 1.8;
       if (rect.top > trigger) return -1;
       const scrolled = trigger - rect.top;
-      const range = vh * 1.6;
+      // Range widened (was 1.6·vh) so that after LIFT_END the heading has room
+      // to sit at finalY while the dark→orange→white band slides past, before
+      // SUB_START fires on white at ≈ p=0.72.
+      const range = vh * 2.2;
       return Math.min(1, scrolled / range);
     }
 
@@ -943,7 +953,10 @@ function runScript() {
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const centerY = vh * 0.5;
 
-      if (p < 0) {
+      // Hide if before trigger (scrolled back up above) OR after the EXIT
+      // fade has fully completed (so the heading doesn't linger half-faded
+      // outside the active range due to the p clamp to [0,1]).
+      if (p < 0 || p >= EXIT_END) {
         heading!.classList.remove("is-shown");
         heading!.style.setProperty("--sub-op", "0");
         heading!.style.opacity = "";
@@ -993,7 +1006,7 @@ function runScript() {
 
       if (p >= PHASE.EXIT_START) {
         heading!.style.opacity = String(
-          Math.max(0, 1 - (p - PHASE.EXIT_START) / 0.08)
+          Math.max(0, 1 - (p - PHASE.EXIT_START) / EXIT_FADE_WIDTH)
         );
       } else {
         heading!.style.opacity = "";
@@ -1018,13 +1031,20 @@ function runScript() {
     const visibleIO = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
+          const wasVisible = visible;
           visible = e.isIntersecting;
           if (visible) startLoop();
+          // Flush a final update on the transition OUT so the heading hides
+          // cleanly when reverse-scrolling past the trigger (otherwise the
+          // rAF loop stops mid-state and leaves it stuck on screen).
+          else if (wasVisible) update();
         });
       },
-      // observe the section even when it's still ~1 viewport below, so the
-      // pre-arrival type-in / lift sequence can run.
-      { threshold: 0, rootMargin: "100% 0px 50% 0px" }
+      // Bottom margin widened to 100% (was 50%) so the loop stays alive past
+      // the heading's hide threshold — without this, on reverse-scroll the
+      // observer flips invisible BEFORE update() ever sees p<0, freezing the
+      // heading at its last visible position (typically dead-center).
+      { threshold: 0, rootMargin: "100% 0px 100% 0px" }
     );
     visibleIO.observe(section);
 
