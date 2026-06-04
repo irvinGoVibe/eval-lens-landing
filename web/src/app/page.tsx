@@ -17,7 +17,7 @@ export default function HomePage() {
       <main id="top">
         <Hero />
         <Problem />
-        <OrangeGlow />
+        {/* <OrangeGlow /> */}
         <Workflow />
         <Decisions />
         <Results />
