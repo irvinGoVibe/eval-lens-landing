@@ -23,11 +23,7 @@ export function Workflow() {
       <div className="workflow-heading-slot" aria-hidden="true"></div>
       <div className="wrap">
         <div className="head reveal">
-          {/* <p className="keymsg">
-            You don&apos;t need to chase decks across emails, forms, folders, and
-            chats. EvalLense gives you one clean entry hub for collecting startup
-            applications and turning them into structured evaluation results.
-          </p> */}
+        Yeah. */}
         </div>
 
         <div

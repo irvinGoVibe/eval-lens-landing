@@ -226,6 +226,16 @@ function runScript() {
       if (video.currentTime * 1000 >= COPY_REVEAL_MS) finish();
     });
 
+    /* fade overlay to opacity 0 the moment it finishes playing */
+    overlay?.addEventListener(
+      "ended",
+      () => {
+        overlayWrap?.classList.remove("is-visible");
+        overlayHidden = true;
+      },
+      { once: true }
+    );
+
     layers.forEach((el) => {
       const onReady = () => markReady(el);
       if (el.readyState >= 2) onReady();
