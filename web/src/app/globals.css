@@ -1152,6 +1152,68 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(255, 110, 56, .08) 52%,
     transparent 82%);
   filter:blur(42px);opacity:.62;}
+/* bright pulsing orbs — three white-hot rounds layered on top of the halo;
+   peak in sequence L→C→R to feel like a rolling wave */
+.section-orange-glow__bloom--pulse{
+  bottom:-22%;
+  width:min(44vw,520px);
+  aspect-ratio:1/1;
+  background:radial-gradient(circle at 50% 50%,
+    rgba(255, 255, 250, 1)    0%,
+    rgba(255, 248, 222, .98)  8%,
+    rgba(255, 228, 178, .9)   18%,
+    rgba(255, 195, 130, .68)  32%,
+    rgba(255, 150, 85, .42)   48%,
+    rgba(255, 105, 50, .2)    64%,
+    rgba(255, 80, 35, .06)    78%,
+    transparent 90%);
+  filter:blur(22px);
+  mix-blend-mode:screen;
+}
+.section-orange-glow__bloom--pulse-c{
+  left:50%;
+  width:min(78vw,900px);
+  aspect-ratio:1.9/1;
+  bottom:-14%;
+  background:radial-gradient(ellipse 92% 62% at 50% 50%,
+    rgba(255, 255, 250, 1)    0%,
+    rgba(255, 248, 222, .98)  8%,
+    rgba(255, 228, 178, .9)   20%,
+    rgba(255, 195, 130, .68)  36%,
+    rgba(255, 150, 85, .42)   52%,
+    rgba(255, 105, 50, .2)    68%,
+    rgba(255, 80, 35, .06)    80%,
+    transparent 92%);
+}
+.section-orange-glow__bloom--pulse-l{
+  left:26%;
+  width:min(38vw,460px);
+  bottom:-20%;
+}
+.section-orange-glow__bloom--pulse-r{
+  left:74%;
+  width:min(38vw,460px);
+  bottom:-20%;
+}
+/* bright flashes at the seams between adjacent orbs — punchy, brief, peak
+   when the wave crests halfway between two neighbours */
+.section-orange-glow__bloom--flash{
+  width:min(22vw,260px);
+  aspect-ratio:1.2/1;
+  bottom:-10%;
+  background:radial-gradient(ellipse 70% 78% at 50% 50%,
+    rgba(255, 255, 248, 1)    0%,
+    rgba(255, 240, 200, .9)   16%,
+    rgba(255, 205, 145, .58)  38%,
+    rgba(255, 150, 88, .26)   60%,
+    rgba(255, 95, 45, .08)    78%,
+    transparent 90%);
+  filter:blur(14px);
+  mix-blend-mode:screen;
+  opacity:0;
+}
+.section-orange-glow__bloom--flash-lc{ left:38%; }
+.section-orange-glow__bloom--flash-cr{ left:62%; }
 
 /* "voice glow" breathing — wide halo + three offset pulsing orbs */
 @keyframes glow-breath-wide{
@@ -1223,6 +1285,24 @@ body:not(.hero-ready){overflow:hidden;}
   33%    { transform:translate3d(-48%,0,0) scaleX(1.06); opacity:1; }
   66%    { transform:translate3d(-52%,0,0) scaleX(.95);  opacity:.68; }
 }
+/* strong heartbeat for the three bright orbs — used with staggered
+   animation-delay (L→C→R) to create a rolling wave across the halo */
+@keyframes glow-orb-pulse{
+  0%, 100% { transform:translate3d(-50%,6%,0) scale(.62); opacity:.18; }
+  42%      { transform:translate3d(-50%,-3%,0) scale(1.18); opacity:1;  }
+  58%      { transform:translate3d(-50%,-3%,0) scale(1.18); opacity:1;  }
+}
+@keyframes glow-orb-pulse-c{
+  0%, 100% { transform:translate3d(-50%,4%,0) scale(.66); opacity:.28; }
+  42%      { transform:translate3d(-50%,-6%,0) scale(1.26); opacity:1;  }
+  58%      { transform:translate3d(-50%,-6%,0) scale(1.26); opacity:1;  }
+}
+/* quick punchy flash — mostly invisible, brief bloom on the wave crest */
+@keyframes glow-orb-flash{
+  0%, 30%, 100% { transform:translate3d(-50%,2%,0) scale(.7); opacity:0; }
+  50%           { transform:translate3d(-50%,-4%,0) scale(1.18); opacity:.95; }
+  70%           { transform:translate3d(-50%,-4%,0) scale(1.28); opacity:0; }
+}
 .section-orange-glow__bloom--wide{
   animation:glow-breath-wide 7.5s ease-in-out infinite;
   will-change:transform,opacity;}
@@ -1266,8 +1346,29 @@ body:not(.hero-ready){overflow:hidden;}
 .section-orange-glow__bloom--rim{
   animation:glow-drift-rim 9s ease-in-out -3s infinite;
   will-change:transform,opacity;}
+/* wave timing: 4.5s cycle, peak at 50%; staggered delays make L→C→R peaks
+   land 1.5s apart so the three orbs read as a rolling wave */
+.section-orange-glow__bloom--pulse-l{
+  animation:glow-orb-pulse 4.5s ease-in-out -2.25s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--pulse-c{
+  animation:glow-orb-pulse-c 4.5s ease-in-out -.75s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--pulse-r{
+  animation:glow-orb-pulse 4.5s ease-in-out .75s infinite;
+  will-change:transform,opacity;}
+/* flashes peak between the main orbs — lc fires between L (t=0) and C (t=1.5)
+   peaks (so peak at t=.75 → delay -1.5s); cr fires between C and R (peak at
+   t=2.25 → delay 0) */
+.section-orange-glow__bloom--flash-lc{
+  animation:glow-orb-flash 4.5s ease-in-out -1.5s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--flash-cr{
+  animation:glow-orb-flash 4.5s ease-in-out 0s infinite;
+  will-change:transform,opacity;}
 @media (prefers-reduced-motion: reduce){
   .section-orange-glow__bloom{ animation:none !important; }
+  .section-orange-glow__bloom--pulse{ opacity:.6 !important; }
 }
 
 /* mist bridge — kept available below OrangeGlow for iteration; OrangeGlow

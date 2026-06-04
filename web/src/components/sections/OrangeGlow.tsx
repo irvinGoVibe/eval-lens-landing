@@ -16,6 +16,11 @@ export function OrangeGlow() {
         <div className="section-orange-glow__bloom section-orange-glow__bloom--spark section-orange-glow__bloom--spark-3"></div>
         <div className="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-hot"></div>
         <div className="section-orange-glow__bloom section-orange-glow__bloom--rim"></div>
+        <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-l"></div>
+        <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-r"></div>
+        <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-c"></div>
+        <div className="section-orange-glow__bloom section-orange-glow__bloom--flash section-orange-glow__bloom--flash-lc"></div>
+        <div className="section-orange-glow__bloom section-orange-glow__bloom--flash section-orange-glow__bloom--flash-cr"></div>
       </div>
     </div>
   );
