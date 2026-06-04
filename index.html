@@ -821,18 +821,32 @@ body:not(.hero-ready){overflow:hidden;}
 }
 .scrub-heading .scrub-title .grad,
 .workflow-heading .title .grad{
-  display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent;
+  display:inline-block;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  background-color:transparent;}
+.scrub-heading .scrub-title .grad{
+  background-image:var(--lens);
   clip-path:inset(0 100% 0 0);}
-.scrub-heading .scrub-title .grad{background:var(--lens);}
-.workflow-heading .title .grad{background:var(--fire);}
+.workflow-heading .title .grad{
+  background-image:var(--fire);
+  background-repeat:no-repeat;
+  background-size:0% 100%;
+  clip-path:none;}
 .scrub-heading.is-epic-active .epic-line.l2 .grad,
 .workflow-heading.is-epic-active .epic-line.l2 .grad{
-  animation:epic-grad-lr .8s cubic-bezier(.22,.61,.36,1) forwards;
   animation-delay:calc(var(--l1-chars,16) * 0.034s + .1s);}
+.scrub-heading.is-epic-active .epic-line.l2 .grad{
+  animation:epic-grad-lr .8s cubic-bezier(.22,.61,.36,1) forwards;}
+.workflow-heading.is-epic-active .epic-line.l2 .grad{
+  animation:workflow-fire-reveal .8s cubic-bezier(.22,.61,.36,1) forwards;}
 .scrub-heading.is-epic-active .epic-line.l2 .epic-char,
 .workflow-heading.is-epic-active .epic-line.l2 .epic-char{
   animation-delay:calc(var(--l1-chars,16) * 0.034s + .72s);}
 @keyframes epic-grad-lr{to{clip-path:inset(0 0 0 0);}}
+@keyframes workflow-fire-reveal{to{background-size:100% 100%;}}
 .scrub-heading .scrub-sub{
   margin:20px auto 0;font-family:var(--font-text);font-weight:400;letter-spacing:0;
   font-size:clamp(16px,1.6vw,20px);line-height:1.45;color:rgba(245,245,247,.82);max-width:560px;text-wrap:pretty;
@@ -1448,7 +1462,8 @@ body:not(.hero-ready){overflow:hidden;}
   .scrub-heading.is-shown,.workflow-heading.is-shown{display:block;}
   .scrub-heading,.workflow-heading{--sub-op:1;}
   .scrub-heading .epic-char,.workflow-heading .epic-char{opacity:1 !important;transform:none !important;animation:none !important;}
-  .scrub-heading .epic-line.l2 .grad,.workflow-heading .epic-line.l2 .grad{clip-path:none !important;animation:none !important;}
+  .scrub-heading .epic-line.l2 .grad{clip-path:none !important;animation:none !important;}
+  .workflow-heading .epic-line.l2 .grad{background-size:100% 100% !important;animation:none !important;}
   .scrub-heading .scrub-sub,.workflow-heading .workflow-sub{transform:none !important;}
   .scrub-stage-area,.scrub-scene{opacity:1 !important;transform:none !important;}
 }
