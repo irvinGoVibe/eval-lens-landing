@@ -1277,32 +1277,15 @@ body:not(.hero-ready){overflow:hidden;}
   width:100%;max-width:100vw;margin:0 auto;
   margin-top:calc(-1 * clamp(60px,9vh,110px));
   height:clamp(280px,36vh,420px);
-  background:linear-gradient(to bottom,
+  /* fully opaque #000→#fff via oklab — bridge owns the whole transition,
+     no transparency anywhere, neither Problem nor Workflow shows through */
+  background:linear-gradient(in oklab to bottom,
     #000 0%,
-    #050505 22%,
-    rgba(18,18,20,.92) 42%,
-    rgba(70,66,62,.58) 60%,
-    rgba(170,166,160,.32) 76%,
-    rgba(238,234,228,.55) 88%,
-    transparent 100%);
-  overflow:visible;pointer-events:none;}
-.section-mist-bridge::after{
-  content:"";
-  position:absolute;
-  left:0;right:0;bottom:-360px;
-  height:calc(110% + 360px);
-  background:linear-gradient(to bottom,
-    rgba(255,255,255,0)   0%,
-    rgba(255,255,255,.14) 12%,
-    rgba(255,255,255,.32) 24%,
-    rgba(255,255,255,.50) 36%,
-    rgba(255,255,255,.66) 48%,
-    rgba(255,255,255,.80) 60%,
-    rgba(255,255,255,.92) 72%,
-    #fff 84%,
+    #000 16%,
+    #2a2724 50%,
+    #c8c2bc 80%,
     #fff 100%);
-  pointer-events:none;
-  z-index:60;}
+  overflow:visible;pointer-events:none;}
 .section-mist-bridge__stage{
   position:absolute;inset:0;z-index:1;
   overflow:visible;}
