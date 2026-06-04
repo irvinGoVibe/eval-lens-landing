@@ -33,11 +33,11 @@ export function Hero() {
             disablePictureInPicture
           >
             <source
-              src="/assets/hero-intro-transed-test.mov?v=3"
+              src="/assets/hero-intro-transed-test.mov?v=5"
               type='video/quicktime; codecs="hvc1"'
             />
             <source
-              src="/assets/hero-intro-transed-test.webm?v=3"
+              src="/assets/hero-intro-transed-test.webm?v=5"
               type="video/webm"
             />
           </video>
