@@ -18,8 +18,8 @@ export default function HomePage() {
       <main id="top">
         <Hero />
         <Problem />
-        {/* <OrangeGlow /> */}
-        <MistBridge />
+        <OrangeGlow />
+        {/* <MistBridge /> — kept for upcoming iteration; styles in globals.css */}
         <Workflow />
         <Decisions />
         <Results />
