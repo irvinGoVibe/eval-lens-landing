@@ -1001,7 +1001,10 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(0,0,0,.2) 76%,
     transparent 100%);}
 
-/* orange voice-glow — round dome bridging dark→light seam */
+/* orange voice-glow — round dome bridging dark→light seam.
+   --glow-p (0..1) is written by ScrollOrchestrator: 0 = section entering
+   from below, 1 = section past top. Used by --glow-zarya (intro halo,
+   peaks at low p) and --glow-orbs (bright orbs, fade in at higher p). */
 .section-orange-glow{
   position:relative;z-index:11;
   width:100%;max-width:100vw;margin:0 auto;
@@ -1013,7 +1016,9 @@ body:not(.hero-ready){overflow:hidden;}
     rgba(0,0,0,.86) 54%,
     rgba(0,0,0,.45) 78%,
     transparent 100%);
-  overflow:visible;pointer-events:none;}
+  overflow:visible;pointer-events:none;
+  --glow-p:1;
+  --glow-zarya:0;}
 /* wide soft white wash across the lower half — dissolves the orange halo into the white section underneath */
 .section-orange-glow::after{
   content:"";
@@ -1036,6 +1041,33 @@ body:not(.hero-ready){overflow:hidden;}
 .section-orange-glow__stage{
   position:absolute;inset:0;z-index:1;
   overflow:visible;}
+/* intro "зарево" — a huge soft warm bloom that appears at the start of the
+   section-2→3 hand-off, then shrinks/fades; driven by --glow-zarya (0..1).
+   Sits behind the static halo. */
+.section-orange-glow__bloom--zarya{
+  left:50%;
+  bottom:-26%;
+  width:min(170vw,1900px);
+  aspect-ratio:1.7/1;
+  background:radial-gradient(ellipse 70% 60% at 50% 56%,
+    rgba(255, 210, 160, .9)   0%,
+    rgba(255, 178, 118, .72)  16%,
+    rgba(255, 138, 78, .44)   34%,
+    rgba(255, 100, 52, .22)   54%,
+    rgba(255, 78, 36, .08)    72%,
+    transparent 88%);
+  filter:blur(60px);
+  opacity:calc(var(--glow-zarya) * .9);
+  transform:translate3d(-50%,calc((1 - var(--glow-zarya)) * 6%),0)
+            scale(calc(.85 + var(--glow-zarya) * .35));
+  will-change:transform,opacity;
+}
+/* wrapper for the bright pulsing orbs and flashes — kept at full opacity
+   so the orbs always burn at fixed brightness regardless of scroll */
+.section-orange-glow__orbs{
+  position:absolute;inset:0;
+  pointer-events:none;
+}
 .section-orange-glow__bloom{
   position:absolute;pointer-events:none;
   transform:translate3d(-50%,0,0);
@@ -1174,7 +1206,7 @@ body:not(.hero-ready){overflow:hidden;}
   left:50%;
   width:min(78vw,900px);
   aspect-ratio:1.9/1;
-  bottom:-14%;
+  bottom:-2%;
   background:radial-gradient(ellipse 92% 62% at 50% 50%,
     rgba(255, 255, 250, 1)    0%,
     rgba(255, 248, 222, .98)  8%,
@@ -1188,12 +1220,44 @@ body:not(.hero-ready){overflow:hidden;}
 .section-orange-glow__bloom--pulse-l{
   left:26%;
   width:min(38vw,460px);
-  bottom:-20%;
+  bottom:-8%;
 }
 .section-orange-glow__bloom--pulse-r{
   left:74%;
   width:min(38vw,460px);
-  bottom:-20%;
+  bottom:-8%;
+}
+/* outer flank orbs — smaller, push the warm light to the screen edges so the
+   whole width reads as glowing and the dark→light seam is fully covered */
+.section-orange-glow__bloom--pulse-ll{
+  left:6%;
+  width:min(34vw,420px);
+  aspect-ratio:1.7/1;
+  bottom:-12%;
+  background:radial-gradient(ellipse 90% 64% at 50% 50%,
+    rgba(255, 255, 250, 1)    0%,
+    rgba(255, 248, 222, .96)  9%,
+    rgba(255, 228, 178, .86)  22%,
+    rgba(255, 195, 130, .62)  38%,
+    rgba(255, 150, 85, .38)   54%,
+    rgba(255, 105, 50, .18)   70%,
+    rgba(255, 80, 35, .05)    82%,
+    transparent 92%);
+}
+.section-orange-glow__bloom--pulse-rr{
+  left:94%;
+  width:min(34vw,420px);
+  aspect-ratio:1.7/1;
+  bottom:-12%;
+  background:radial-gradient(ellipse 90% 64% at 50% 50%,
+    rgba(255, 255, 250, 1)    0%,
+    rgba(255, 248, 222, .96)  9%,
+    rgba(255, 228, 178, .86)  22%,
+    rgba(255, 195, 130, .62)  38%,
+    rgba(255, 150, 85, .38)   54%,
+    rgba(255, 105, 50, .18)   70%,
+    rgba(255, 80, 35, .05)    82%,
+    transparent 92%);
 }
 /* bright flashes at the seams between adjacent orbs — punchy, brief, peak
    when the wave crests halfway between two neighbours */
@@ -1288,14 +1352,14 @@ body:not(.hero-ready){overflow:hidden;}
 /* strong heartbeat for the three bright orbs — used with staggered
    animation-delay (L→C→R) to create a rolling wave across the halo */
 @keyframes glow-orb-pulse{
-  0%, 100% { transform:translate3d(-50%,6%,0) scale(.62); opacity:.18; }
+  0%, 100% { transform:translate3d(-50%,4%,0) scale(.86); opacity:.62; }
   42%      { transform:translate3d(-50%,-3%,0) scale(1.18); opacity:1;  }
   58%      { transform:translate3d(-50%,-3%,0) scale(1.18); opacity:1;  }
 }
 @keyframes glow-orb-pulse-c{
-  0%, 100% { transform:translate3d(-50%,4%,0) scale(.66); opacity:.28; }
-  42%      { transform:translate3d(-50%,-6%,0) scale(1.26); opacity:1;  }
-  58%      { transform:translate3d(-50%,-6%,0) scale(1.26); opacity:1;  }
+  0%, 100% { transform:translate3d(-50%,3%,0) scale(.9); opacity:.7; }
+  42%      { transform:translate3d(-50%,-5%,0) scale(1.22); opacity:1;  }
+  58%      { transform:translate3d(-50%,-5%,0) scale(1.22); opacity:1;  }
 }
 /* quick punchy flash — mostly invisible, brief bloom on the wave crest */
 @keyframes glow-orb-flash{
@@ -1356,6 +1420,14 @@ body:not(.hero-ready){overflow:hidden;}
   will-change:transform,opacity;}
 .section-orange-glow__bloom--pulse-r{
   animation:glow-orb-pulse 4.5s ease-in-out .75s infinite;
+  will-change:transform,opacity;}
+/* flank orbs continue the L→C→R wave outward: LL leads L by 1.5s, RR
+   trails R by 1.5s — so the crest sweeps LL→L→C→R→RR */
+.section-orange-glow__bloom--pulse-ll{
+  animation:glow-orb-pulse 4.5s ease-in-out -3.75s infinite;
+  will-change:transform,opacity;}
+.section-orange-glow__bloom--pulse-rr{
+  animation:glow-orb-pulse 4.5s ease-in-out 2.25s infinite;
   will-change:transform,opacity;}
 /* flashes peak between the main orbs — lc fires between L (t=0) and C (t=1.5)
    peaks (so peak at t=.75 → delay -1.5s); cr fires between C and R (peak at

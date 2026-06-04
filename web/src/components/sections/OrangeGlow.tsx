@@ -2,6 +2,7 @@ export function OrangeGlow() {
   return (
     <div className="section-orange-glow" aria-hidden="true">
       <div className="section-orange-glow__stage">
+        <div className="section-orange-glow__bloom section-orange-glow__bloom--zarya"></div>
         <div className="section-orange-glow__bloom section-orange-glow__bloom--wide"></div>
         <div className="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-l"></div>
         <div className="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-c2"></div>
@@ -16,11 +17,15 @@ export function OrangeGlow() {
         <div className="section-orange-glow__bloom section-orange-glow__bloom--spark section-orange-glow__bloom--spark-3"></div>
         <div className="section-orange-glow__bloom section-orange-glow__bloom--core section-orange-glow__bloom--core-hot"></div>
         <div className="section-orange-glow__bloom section-orange-glow__bloom--rim"></div>
-        <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-l"></div>
-        <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-r"></div>
-        <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-c"></div>
-        <div className="section-orange-glow__bloom section-orange-glow__bloom--flash section-orange-glow__bloom--flash-lc"></div>
-        <div className="section-orange-glow__bloom section-orange-glow__bloom--flash section-orange-glow__bloom--flash-cr"></div>
+        <div className="section-orange-glow__orbs">
+          <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-ll"></div>
+          <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-l"></div>
+          <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-r"></div>
+          <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-rr"></div>
+          <div className="section-orange-glow__bloom section-orange-glow__bloom--pulse section-orange-glow__bloom--pulse-c"></div>
+          <div className="section-orange-glow__bloom section-orange-glow__bloom--flash section-orange-glow__bloom--flash-lc"></div>
+          <div className="section-orange-glow__bloom section-orange-glow__bloom--flash section-orange-glow__bloom--flash-cr"></div>
+        </div>
       </div>
     </div>
   );

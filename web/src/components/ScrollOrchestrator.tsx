@@ -57,6 +57,36 @@ function runScript() {
     window.addEventListener("resize", sync, { passive: true });
   })();
 
+  /* orange-glow scroll-driven phase — writes --glow-p / --glow-zarya on
+     .section-orange-glow so the intro halo (зарево) blooms as the section
+     2→3 hand-off begins, then shrinks. Orbs are NOT gated by scroll — they
+     stay at fixed brightness independently. */
+  (function initOrangeGlowPhase() {
+    const glow = document.querySelector(".section-orange-glow") as HTMLElement | null;
+    if (!glow) return;
+    let ticking = false;
+    const compute = () => {
+      ticking = false;
+      const rect = glow.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const total = vh + rect.height;
+      const traveled = vh - rect.top;
+      const p = Math.max(0, Math.min(1, traveled / total));
+      // intro halo: ramps 0→1 over p∈[0,.2], then 1→0 over p∈[.2,.55]
+      const zarya = p < 0.2 ? p / 0.2 : Math.max(0, (0.55 - p) / 0.35);
+      glow.style.setProperty("--glow-p", p.toFixed(3));
+      glow.style.setProperty("--glow-zarya", zarya.toFixed(3));
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(compute);
+    };
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+  })();
+
   /* reveal on scroll */
   const io = new IntersectionObserver(
     (entries) => {
