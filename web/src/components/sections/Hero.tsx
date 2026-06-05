@@ -14,7 +14,7 @@ export function Hero() {
             playsInline
             preload="auto"
             disablePictureInPicture
-            poster="/assets/hero-intro-2-poster.jpg"
+            poster="/assets/hero-intro-2-poster.webp"
           >
             <source src="/assets/hero-intro-2.mp4" type="video/mp4" />
           </video>
