@@ -92,6 +92,7 @@ function BackgroundGlow() {
 function UnicornModel({ isMobile }: { isMobile: boolean }) {
   const { scene } = useGLTF(MODEL_URL);
   const group = useRef<THREE.Group>(null);
+  const seams = useRef<THREE.LineSegments>(null);
   const swayY = useRef(0);
   const swayX = useRef(0);
 
@@ -131,11 +132,80 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     [],
   );
 
+  // Interior shell: back faces lit by the white core light show through the
+  // glass, so facets flare from inside as the head turns. Additive blending
+  // over a near-black base means only the lit facets appear.
+  const innerGlow = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color("#0a0a18"),
+        side: THREE.BackSide,
+        transparent: true,
+        roughness: 0.4,
+        metalness: 0,
+        envMapIntensity: 0.3,
+        flatShading: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    [],
+  );
+
+  // White seams along the facet edges, animated per edge: a light wave
+  // travels across the head and each edge flares white only while the wave
+  // passes over it. Brightness lives in a dynamic vertex-color attribute.
+  const { edges, twinklePhase } = useMemo(() => {
+    const e = new THREE.EdgesGeometry(geometry, 1);
+    const pos = e.getAttribute("position");
+    const colors = new THREE.BufferAttribute(new Float32Array(pos.count * 3), 3);
+    colors.setUsage(THREE.DynamicDrawUsage);
+    e.setAttribute("color", colors);
+
+    geometry.computeBoundingBox();
+    const box = geometry.boundingBox as THREE.Box3;
+    const size = new THREE.Vector3();
+    box.getSize(size);
+
+    // per-edge phase = random offset + position term, so the flare drifts
+    // across the head instead of blinking everywhere at once
+    const phase = new Float32Array(pos.count / 2);
+    for (let i = 0; i < phase.length; i++) {
+      const a = i * 2;
+      const mx = (pos.getX(a) + pos.getX(a + 1)) / 2;
+      const my = (pos.getY(a) + pos.getY(a + 1)) / 2;
+      const mz = (pos.getZ(a) + pos.getZ(a + 1)) / 2;
+      const h = Math.sin(mx * 127.1 + my * 311.7 + mz * 74.7) * 43758.5453;
+      const rand = h - Math.floor(h);
+      phase[i] =
+        rand * Math.PI * 2 +
+        ((mx - box.min.x) / size.x) * 2.5 +
+        ((my - box.min.y) / size.y) * 1.5;
+    }
+    return { edges: e, twinklePhase: phase };
+  }, [geometry]);
+
+  const seam = useMemo(
+    () =>
+      new THREE.LineBasicMaterial({
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.3,
+        blending: THREE.AdditiveBlending,
+        depthTest: true,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    [],
+  );
+
   useEffect(() => {
     return () => {
       glass.dispose();
+      innerGlow.dispose();
+      edges.dispose();
+      seam.dispose();
     };
-  }, [glass]);
+  }, [glass, innerGlow, edges, seam]);
 
   useFrame((state, delta) => {
     const g = group.current;
@@ -147,11 +217,32 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     swayX.current = THREE.MathUtils.damp(swayX.current, targetX, 2, delta);
     g.rotation.y = BASE_YAW + Math.sin(t * 0.22) * 0.3 + swayY.current;
     g.rotation.x = Math.sin(t * 0.31) * 0.04 + swayX.current;
+
+    // shimmer: narrow sine pulse per edge — bright only near its peak, so a
+    // handful of edges flash white at a time as the wave sweeps the head
+    const colorAttr = seams.current?.geometry.getAttribute("color") as
+      | THREE.BufferAttribute
+      | undefined;
+    if (colorAttr) {
+      for (let i = 0; i < twinklePhase.length; i++) {
+        const s = Math.sin(t * 0.9 + twinklePhase[i]);
+        const pulse = s > 0 ? s ** 8 : 0;
+        const b = 0.1 + pulse * 2.4;
+        const a = i * 2;
+        colorAttr.setXYZ(a, b, b, b * 1.08);
+        colorAttr.setXYZ(a + 1, b, b, b * 1.08);
+      }
+      colorAttr.needsUpdate = true;
+    }
   });
 
   return (
     <group ref={group} position={[0, -0.05, 0]} scale={1 / 1.5}>
-      <mesh geometry={geometry} material={glass} />
+      <mesh geometry={geometry} material={innerGlow} />
+      <mesh geometry={geometry} material={glass} renderOrder={1} />
+      <lineSegments ref={seams} geometry={edges} material={seam} renderOrder={2} />
+      {/* pink eye light rides the head so the muzzle area glows as it sways */}
+      <pointLight position={[0, 0.32, -0.42]} intensity={5} distance={0.9} decay={2} color="#ff5ad1" />
     </group>
   );
 }
@@ -179,6 +270,9 @@ export default function UnicornScene({ isMobile, active }: UnicornSceneProps) {
       <pointLight position={[0, -2.4, 1.6]} intensity={14} color={VIOLET} />
       {/* cyan rim from behind so the silhouette stays lit against the halo */}
       <directionalLight position={[-1.2, 1, -2.6]} intensity={2.4} color={CYAN} />
+      {/* white core fixed in world space at the head center: the head sways
+          around it, so interior facets shimmer as their angle changes */}
+      <pointLight position={[0, -0.05, 0]} intensity={10} distance={1.7} decay={2} color="#ffffff" />
       <Environment frames={1} resolution={128}>
         {/* violet key panel, camera-left */}
         <mesh position={[-5, 1.5, 3]} rotation={[0, Math.PI / 3, 0]}>
