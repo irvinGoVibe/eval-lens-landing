@@ -199,8 +199,13 @@ const ENV_VIOLET = new THREE.Color(VIOLET).multiplyScalar(6);
 const ENV_CYAN = new THREE.Color(CYAN).multiplyScalar(5);
 const ENV_LAVENDER = new THREE.Color(LAVENDER).multiplyScalar(9);
 
-/* Hot pink, pushed past 1.0 so the eyes feed the bloom pass directly. */
-const EYE_PINK = new THREE.Color("#ff5ad1").multiplyScalar(2.2);
+/* Pink-white headlight palette, pushed past 1.0 to feed the bloom pass. */
+const EYE_PINK = new THREE.Color("#ffc4e8").multiplyScalar(2.4);
+const FLARE_WHITE = new THREE.Color("#fff0f8").multiplyScalar(2.6);
+
+const _beamDir = new THREE.Vector3();
+const _toCam = new THREE.Vector3();
+const _eyePos = new THREE.Vector3();
 
 type UnicornSceneProps = {
   isMobile: boolean;
@@ -220,6 +225,21 @@ function makeGlowTexture(): THREE.CanvasTexture {
   grad.addColorStop(1, "rgba(255,255,255,0)");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, size, size);
+  return new THREE.CanvasTexture(canvas);
+}
+
+/** Lengthwise fade for the eye beams: bright at the apex, dissolving away. */
+function makeBeamTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 2;
+  canvas.height = 256;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  const grad = ctx.createLinearGradient(0, 0, 0, 256);
+  grad.addColorStop(0, "rgba(255,255,255,0.95)");
+  grad.addColorStop(0.45, "rgba(255,255,255,0.3)");
+  grad.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 2, 256);
   return new THREE.CanvasTexture(canvas);
 }
 
@@ -274,6 +294,9 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   const body = useRef<THREE.Mesh>(null);
   const seams = useRef<THREE.LineSegments>(null);
   const eyes = useRef<THREE.Group>(null);
+  const flareL = useRef<THREE.Sprite>(null);
+  const flareR = useRef<THREE.Sprite>(null);
+  const beamL = useRef<THREE.Mesh>(null);
   const rig = useRef({
     neckYaw: { x: 0, v: 0 },
     neckPitch: { x: 0, v: 0 },
@@ -474,11 +497,42 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     edgeAttr.setUsage(THREE.DynamicDrawUsage);
     const epos0 = Float32Array.from(edgeAttr.array as Float32Array);
     const eweights = buildRigWeights(epos0, edgeAttr.count, neckZ, muzzleSign);
-    return { pos0, nrm0, weights, epos0, eweights, muzzleSign };
+    // edges near the eye sockets get a constant white highlight
+    const eyeL = [-0.3, 0.16, muzzleSign * 0.27];
+    const eyeR = [0.3, 0.16, muzzleSign * 0.27];
+    const eyeEdge = new Float32Array(edgeAttr.count / 2);
+    for (let e = 0; e < eyeEdge.length; e++) {
+      const a = e * 6;
+      const mx = (epos0[a] + epos0[a + 3]) / 2;
+      const my = (epos0[a + 1] + epos0[a + 4]) / 2;
+      const mz = (epos0[a + 2] + epos0[a + 5]) / 2;
+      const dL = Math.hypot(mx - eyeL[0], my - eyeL[1], mz - eyeL[2]);
+      const dR = Math.hypot(mx - eyeR[0], my - eyeR[1], mz - eyeR[2]);
+      eyeEdge[e] = 1 - THREE.MathUtils.smoothstep(Math.min(dL, dR), 0.08, 0.22);
+    }
+    return { pos0, nrm0, weights, epos0, eweights, muzzleSign, eyeEdge };
   }, [geometry, edges]);
 
   // Soft round glow for the pink eyes, same radial texture as the halo.
   const eyeGlow = useMemo(() => makeGlowTexture(), []);
+
+  // Projector beams: open-ended cones with a lengthwise gradient so they
+  // read as cones of light dissolving into the dark, not solid geometry.
+  const beamGeo = useMemo(() => new THREE.ConeGeometry(0.3, 1.2, 24, 1, true), []);
+  const beamTex = useMemo(() => makeBeamTexture(), []);
+  const beamMat = useMemo(
+    () =>
+      new THREE.MeshBasicMaterial({
+        map: beamTex,
+        color: new THREE.Color("#ff5ad1"),
+        transparent: true,
+        opacity: 0.5,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      }),
+    [beamTex],
+  );
 
   useEffect(() => {
     return () => {
@@ -487,8 +541,11 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
       edges.dispose();
       seam.dispose();
       eyeGlow.dispose();
+      beamGeo.dispose();
+      beamTex.dispose();
+      beamMat.dispose();
     };
-  }, [glass, innerGlow, edges, seam, eyeGlow]);
+  }, [glass, innerGlow, edges, seam, eyeGlow, beamGeo, beamTex, beamMat]);
 
   useFrame((state, delta) => {
     const g = group.current;
@@ -556,6 +613,26 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     const eyeGroup = eyes.current;
     if (eyeGroup) {
       eyeGroup.matrix.copy(r.m3);
+      // headlight flare: when the beams line up with the camera, the eyes
+      // blaze up like oncoming high beams — opacity and size follow the dot
+      // product between beam direction and the direction to the camera
+      eyeGroup.getWorldPosition(_eyePos);
+      _beamDir.set(0, 0, deform.muzzleSign).transformDirection(eyeGroup.matrixWorld);
+      _toCam.copy(state.camera.position).sub(_eyePos).normalize();
+      const align = Math.max(0, _beamDir.dot(_toCam)) ** 7;
+      const fl = flareL.current;
+      const fr = flareR.current;
+      if (fl && fr) {
+        (fl.material as THREE.SpriteMaterial).opacity = align;
+        (fr.material as THREE.SpriteMaterial).opacity = align;
+        const s = 0.22 + align * 0.6;
+        fl.scale.set(s, s, 1);
+        fr.scale.set(s, s, 1);
+      }
+      const beam = beamL.current;
+      if (beam) {
+        (beam.material as THREE.MeshBasicMaterial).opacity = 0.35 + align * 0.4;
+      }
     }
 
     const bodyGeo = body.current?.geometry;
@@ -592,7 +669,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
       for (let i = 0; i < twinklePhase.length; i++) {
         const s = Math.sin(t * 0.9 + twinklePhase[i]);
         const pulse = s > 0 ? s ** 8 : 0;
-        const b = 0.1 + pulse * 2.4;
+        const b = 0.1 + pulse * 2.4 + deform.eyeEdge[i] * 1.8;
         const a = i * 2;
         colorAttr.setXYZ(a, b, b, b * 1.08);
         colorAttr.setXYZ(a + 1, b, b, b * 1.08);
@@ -641,10 +718,53 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
             toneMapped={false}
           />
         </sprite>
+        {/* blinding white-pink flares, visible only when the gaze meets the camera */}
+        <sprite ref={flareL} position={[-0.3, 0.16, deform.muzzleSign * 0.3]} renderOrder={6}>
+          <spriteMaterial
+            map={eyeGlow}
+            color={FLARE_WHITE}
+            blending={THREE.AdditiveBlending}
+            depthTest={false}
+            depthWrite={false}
+            transparent
+            opacity={0}
+            toneMapped={false}
+          />
+        </sprite>
+        <sprite ref={flareR} position={[0.3, 0.16, deform.muzzleSign * 0.3]} renderOrder={6}>
+          <spriteMaterial
+            map={eyeGlow}
+            color={FLARE_WHITE}
+            blending={THREE.AdditiveBlending}
+            depthTest={false}
+            depthWrite={false}
+            transparent
+            opacity={0}
+            toneMapped={false}
+          />
+        </sprite>
+        {/* projector beams shining forward out of the eyes */}
+        <mesh
+          ref={beamL}
+          geometry={beamGeo}
+          material={beamMat}
+          position={[-0.3, 0.16, deform.muzzleSign * 0.87]}
+          rotation={[(-Math.PI / 2) * deform.muzzleSign, 0, 0]}
+          renderOrder={5}
+          frustumCulled={false}
+        />
+        <mesh
+          geometry={beamGeo}
+          material={beamMat}
+          position={[0.3, 0.16, deform.muzzleSign * 0.87]}
+          rotation={[(-Math.PI / 2) * deform.muzzleSign, 0, 0]}
+          renderOrder={5}
+          frustumCulled={false}
+        />
         <pointLight
           position={[0, 0.16, deform.muzzleSign * 0.3]}
-          intensity={9}
-          distance={1.1}
+          intensity={12}
+          distance={1.4}
           decay={2}
           color="#ff5ad1"
         />
