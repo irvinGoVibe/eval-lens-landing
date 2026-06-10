@@ -199,6 +199,9 @@ const ENV_VIOLET = new THREE.Color(VIOLET).multiplyScalar(6);
 const ENV_CYAN = new THREE.Color(CYAN).multiplyScalar(5);
 const ENV_LAVENDER = new THREE.Color(LAVENDER).multiplyScalar(9);
 
+/* Hot pink, pushed past 1.0 so the eyes feed the bloom pass directly. */
+const EYE_PINK = new THREE.Color("#ff5ad1").multiplyScalar(2.2);
+
 type UnicornSceneProps = {
   isMobile: boolean;
   active: boolean;
@@ -270,6 +273,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   const group = useRef<THREE.Group>(null);
   const body = useRef<THREE.Mesh>(null);
   const seams = useRef<THREE.LineSegments>(null);
+  const eyes = useRef<THREE.Group>(null);
   const rig = useRef({
     neckYaw: { x: 0, v: 0 },
     neckPitch: { x: 0, v: 0 },
@@ -470,8 +474,11 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     edgeAttr.setUsage(THREE.DynamicDrawUsage);
     const epos0 = Float32Array.from(edgeAttr.array as Float32Array);
     const eweights = buildRigWeights(epos0, edgeAttr.count, neckZ, muzzleSign);
-    return { pos0, nrm0, weights, epos0, eweights };
+    return { pos0, nrm0, weights, epos0, eweights, muzzleSign };
   }, [geometry, edges]);
+
+  // Soft round glow for the pink eyes, same radial texture as the halo.
+  const eyeGlow = useMemo(() => makeGlowTexture(), []);
 
   useEffect(() => {
     return () => {
@@ -479,8 +486,9 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
       innerGlow.dispose();
       edges.dispose();
       seam.dispose();
+      eyeGlow.dispose();
     };
-  }, [glass, innerGlow, edges, seam]);
+  }, [glass, innerGlow, edges, seam, eyeGlow]);
 
   useFrame((state, delta) => {
     const g = group.current;
@@ -543,6 +551,13 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     );
     makeJointMatrix(r.m3, J_POLL, r.m2, r.headYaw.x, r.headPitch.x, -r.headYaw.x * 0.12);
 
+    // the eyes are fully head-bone vertices: drive their group straight from
+    // the skull matrix so they ride every turn of the rig
+    const eyeGroup = eyes.current;
+    if (eyeGroup) {
+      eyeGroup.matrix.copy(r.m3);
+    }
+
     const bodyGeo = body.current?.geometry;
     if (bodyGeo) {
       applyRig(
@@ -597,8 +612,43 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
         renderOrder={2}
         frustumCulled={false}
       />
-      {/* pink eye light rides the head so the muzzle area glows as it sways */}
-      <pointLight position={[0, 0.32, -0.42]} intensity={5} distance={0.9} decay={2} color="#ff5ad1" />
+      {/* glowing pink eyes: two additive glow dots plus a soft pink light,
+          all driven by the skull joint so they move with the head */}
+      <group ref={eyes} matrixAutoUpdate={false}>
+        {/* eye sockets located from the mesh itself: the two symmetric
+            concave clusters at (±0.30, 0.16, 0.27) in centered local space */}
+        <sprite position={[-0.3, 0.16, deform.muzzleSign * 0.27]} scale={[0.16, 0.16, 1]} renderOrder={4}>
+          <spriteMaterial
+            map={eyeGlow}
+            color={EYE_PINK}
+            blending={THREE.AdditiveBlending}
+            depthTest={false}
+            depthWrite={false}
+            transparent
+            opacity={1}
+            toneMapped={false}
+          />
+        </sprite>
+        <sprite position={[0.3, 0.16, deform.muzzleSign * 0.27]} scale={[0.16, 0.16, 1]} renderOrder={4}>
+          <spriteMaterial
+            map={eyeGlow}
+            color={EYE_PINK}
+            blending={THREE.AdditiveBlending}
+            depthTest={false}
+            depthWrite={false}
+            transparent
+            opacity={1}
+            toneMapped={false}
+          />
+        </sprite>
+        <pointLight
+          position={[0, 0.16, deform.muzzleSign * 0.3]}
+          intensity={9}
+          distance={1.1}
+          decay={2}
+          color="#ff5ad1"
+        />
+      </group>
     </group>
   );
 }
