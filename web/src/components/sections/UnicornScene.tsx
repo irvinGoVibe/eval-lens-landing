@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float, useGLTF } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
@@ -13,6 +13,9 @@ const MODEL_URL = "/assets/models/unicorn-head-lowpoly.glb";
 
 /* Frontal export, yawed 45° for a three-quarter hero angle. */
 const BASE_YAW = Math.PI / 4;
+/* Yaw at which the head faces the camera — the gaze pivots around this once
+   the cursor enters the canvas, so it actually "sees" the cursor. */
+const GAZE_YAW = 0;
 
 const VIOLET = "#7b5cf6";
 const LAVENDER = "#a99bff";
@@ -91,10 +94,41 @@ function BackgroundGlow() {
 
 function UnicornModel({ isMobile }: { isMobile: boolean }) {
   const { scene } = useGLTF(MODEL_URL);
+  const gl = useThree((state) => state.gl);
   const group = useRef<THREE.Group>(null);
   const seams = useRef<THREE.LineSegments>(null);
-  const swayY = useRef(0);
+  const swayY = useRef(BASE_YAW);
   const swayX = useRef(0);
+  const gaze = useRef({ x: 0, y: 0, active: false });
+
+  // Track the cursor across the whole window (not just the canvas), relative
+  // to the canvas center, so the head keeps "watching" it anywhere on screen.
+  useEffect(() => {
+    if (isMobile) return;
+    const onMove = (ev: PointerEvent) => {
+      const rect = gl.domElement.getBoundingClientRect();
+      const halfW = rect.width / 2;
+      const halfH = rect.height / 2;
+      // the head only "notices" the cursor while it is inside the canvas
+      gaze.current.active =
+        ev.clientX >= rect.left &&
+        ev.clientX <= rect.right &&
+        ev.clientY >= rect.top &&
+        ev.clientY <= rect.bottom;
+      gaze.current.x = THREE.MathUtils.clamp(
+        (ev.clientX - (rect.left + halfW)) / halfW,
+        -1.4,
+        1.4,
+      );
+      gaze.current.y = THREE.MathUtils.clamp(
+        (ev.clientY - (rect.top + halfH)) / halfH,
+        -1.4,
+        1.4,
+      );
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [gl, isMobile]);
 
   const geometry = useMemo(() => {
     let found: THREE.BufferGeometry | null = null;
@@ -211,12 +245,15 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     const g = group.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    const targetY = isMobile ? 0 : state.pointer.x * 0.3;
-    const targetX = isMobile ? 0 : state.pointer.y * -0.12;
-    swayY.current = THREE.MathUtils.damp(swayY.current, targetY, 2, delta);
-    swayX.current = THREE.MathUtils.damp(swayX.current, targetX, 2, delta);
-    g.rotation.y = BASE_YAW + Math.sin(t * 0.22) * 0.3 + swayY.current;
-    g.rotation.x = Math.sin(t * 0.31) * 0.04 + swayX.current;
+    // rest pose: three-quarter 45°; once the cursor is inside the canvas the
+    // head swings to face the camera and tracks the cursor from there
+    const engaged = !isMobile && gaze.current.active;
+    const targetYaw = engaged ? GAZE_YAW + gaze.current.x * 0.6 : BASE_YAW;
+    const targetPitch = engaged ? gaze.current.y * 0.3 : 0;
+    swayY.current = THREE.MathUtils.damp(swayY.current, targetYaw, 10, delta);
+    swayX.current = THREE.MathUtils.damp(swayX.current, targetPitch, 10, delta);
+    g.rotation.y = swayY.current + Math.sin(t * 0.22) * 0.08;
+    g.rotation.x = swayX.current + Math.sin(t * 0.31) * 0.03;
 
     // shimmer: narrow sine pulse per edge — bright only near its peak, so a
     // handful of edges flash white at a time as the wave sweeps the head
