@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
  * Verbatim port of the original landing-page <script> block.
  * Single client-side mount: progress bar, header tint, reveal IO,
  * hero dual-video sync, hero parallax, Apple-style scroll-scrub for
- * #problem, and #workflow heading orchestration.
+ * #problem, #workflow epic heading, and workflow scroll demo.
  *
  * Each sub-IIFE matches the original 1-for-1. DOM queries happen after
  * mount so they see the section markup rendered by the server.
@@ -905,7 +905,7 @@ function runScript() {
         text.split("").forEach((ch) => {
           const s = document.createElement("span");
           s.className = "epic-char";
-          s.textContent = ch === " " ? " " : ch;
+          s.textContent = ch === " " ? "\u00a0" : ch;
           s.style.setProperty("--ci", String(ci++));
           l1.appendChild(s);
         });
@@ -931,24 +931,13 @@ function runScript() {
       return;
     }
 
-    // .stage-pad is the cube container inside the workflow .wrap — once it
-    // scrolls up to the heading, the heading docks above it and scrolls along.
-    const stagePad = section.querySelector(
-      ".stage-pad"
-    ) as HTMLElement | null;
+    const dockTarget = section.querySelector(".wf-sticky") as HTMLElement | null;
 
     let epicPlayed = false;
     let smoothTop: number | null = null;
     let visible = false;
     let rafActive = false;
 
-    // HOLD → LIFT → SUB. No EXIT fade — once SUB is in, both title and sub
-    // stay pinned at full opacity through the rest of the workflow body.
-    // Hiding is driven separately:
-    //  - reverse-scroll up: p < UP_HIDE_THRESHOLD (slightly before p=0) →
-    //    full reset so the type-in replays on the next entry from above.
-    //  - section fully past: rect.bottom < 0 → hide WITHOUT resetting state,
-    //    so scrolling back up into the section re-shows instantly at finalY.
     const PHASE = {
       LIFT_START: 0.15,
       LIFT_END: 0.36,
@@ -967,16 +956,9 @@ function runScript() {
     function computeProgress() {
       const rect = section!.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
-      // Trigger is tuned so the type-in fires the moment the problem-section
-      // pin releases and the viewport flips to solid black (track bg + scrub-tail).
-      // workflow.rect.top is ≈ 1.5–1.6·vh at that point, so trigger=1.8·vh starts
-      // the reveal slightly before pin-release and types-in across the dark band.
       const trigger = vh * 1.8;
       if (rect.top > trigger) return -1;
       const scrolled = trigger - rect.top;
-      // Range widened (was 1.6·vh) so that after LIFT_END the heading has room
-      // to sit at finalY while the dark→orange→white band slides past, before
-      // SUB_START fires on white at ≈ p=0.72.
       const range = vh * 2.2;
       return Math.min(1, scrolled / range);
     }
@@ -987,10 +969,6 @@ function runScript() {
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const centerY = vh * 0.5;
 
-      // Reverse-scroll hide: user scrolled back UP past the trigger area
-      // (UP_HIDE_THRESHOLD is slightly > 0 so the heading vanishes a bit
-      // earlier than the show point — feels less like a stuck overlay).
-      // Full reset so the type-in replays cleanly on the next entry from above.
       if (p < UP_HIDE_THRESHOLD) {
         heading!.classList.remove("is-shown", "is-epic-active");
         heading!.style.setProperty("--sub-op", "0");
@@ -1000,9 +978,6 @@ function runScript() {
         return;
       }
 
-      // Section-past hide: user scrolled DOWN past the entire workflow body.
-      // No state reset — re-entering from below should snap straight back to
-      // finalY with full opacity (no re-lerp from center).
       if (rect.bottom < 0) {
         heading!.classList.remove("is-shown");
         heading!.style.opacity = "";
@@ -1017,15 +992,10 @@ function runScript() {
         heading!.classList.add("is-epic-active");
       }
 
-      // Dynamic final-y: the heading sits in the upper third (fixedFinalY)
-      // while .stage-pad is still far below, then docks just above stage-pad
-      // and scrolls along with it once stage-pad catches up from below.
-      // min() guarantees the heading NEVER goes lower than fixedFinalY — it
-      // only travels UP toward / with stage-pad, never back down.
       const fixedFinalY = vh * 0.3;
       let finalY = fixedFinalY;
-      if (stagePad) {
-        const padRect = stagePad.getBoundingClientRect();
+      if (dockTarget) {
+        const padRect = dockTarget.getBoundingClientRect();
         const gap = Math.max(16, Math.min(vh * 0.04, 40));
         const headingH = heading!.offsetHeight || 250;
         const dockedY = padRect.top - gap - headingH / 2;
@@ -1052,9 +1022,6 @@ function runScript() {
 
       if (smoothTop === null) smoothTop = centerY;
       if (liftT === 1) {
-        // After LIFT completes, snap straight to the (dynamic) finalY each
-        // frame — no lerp lag, so the heading tracks .stage-pad in real time
-        // once they dock.
         smoothTop = finalY;
       } else {
         const lerp = liftT > 0 ? 0.12 : 0.16;
@@ -1063,8 +1030,6 @@ function runScript() {
 
       heading!.style.setProperty("--h-top", smoothTop + "px");
       heading!.style.setProperty("--sub-op", String(subOp));
-      // No EXIT fade — heading stays at full opacity until either
-      // reverse-scroll reset or section-past hide above.
       heading!.style.opacity = "";
     }
 
@@ -1089,21 +1054,265 @@ function runScript() {
           const wasVisible = visible;
           visible = e.isIntersecting;
           if (visible) startLoop();
-          // Flush a final update on the transition OUT so the heading hides
-          // cleanly when reverse-scrolling past the trigger (otherwise the
-          // rAF loop stops mid-state and leaves it stuck on screen).
           else if (wasVisible) update();
         });
       },
-      // Bottom margin widened to 100% (was 50%) so the loop stays alive past
-      // the heading's hide threshold — without this, on reverse-scroll the
-      // observer flips invisible BEFORE update() ever sees p<0, freezing the
-      // heading at its last visible position (typically dead-center).
       { threshold: 0, rootMargin: "100% 0px 100% 0px" }
     );
     visibleIO.observe(section);
 
     window.addEventListener("resize", update);
     update();
+  })();
+
+  /* ============================================================
+     Section 3 — scroll-driven product workflow demo (block3)
+     ============================================================ */
+  (function initWorkflowScroll() {
+    const section = document.getElementById("workflow");
+    if (!section) return;
+
+    const scroll = document.getElementById("wf-scroll");
+    const layerA = document.getElementById("wf-layerA");
+    const layerB = document.getElementById("wf-layerB");
+    const layerC = document.getElementById("wf-layerC");
+    const crumb = document.getElementById("wf-crumb");
+    const pill = document.getElementById("wf-stagepill");
+    const steps = Array.from(section.querySelectorAll(".wf-rail .step"));
+    if (!scroll || !layerA || !layerB || !layerC || !crumb || !pill || !steps.length) return;
+
+    const scrollEl = scroll;
+    const layerAEl = layerA;
+    const layerBEl = layerB;
+    const layerCEl = layerC;
+    const crumbEl = crumb;
+    const pillEl = pill;
+
+    const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    const setupCard = document.getElementById("wf-setupCard");
+    const scBadge = document.getElementById("wf-scBadge");
+    const evName = document.getElementById("wf-evName");
+    const evCur = document.getElementById("wf-evCur");
+    const evDate = document.getElementById("wf-evDate");
+    const createBtn = document.getElementById("wf-createBtn");
+    const linkCard = document.getElementById("wf-linkCard");
+    const copyBtn = document.getElementById("wf-copyBtn");
+    const previewCard = document.getElementById("wf-previewCard");
+    const mchips = Array.from(section.querySelectorAll(".mchip"));
+    const NAME = "TechStars Demo Day \u201926";
+
+    const upItems = Array.from(section.querySelectorAll(".up-item"));
+    const upProg = document.getElementById("wf-upProg");
+    const upCounter = document.getElementById("wf-upCounter");
+
+    const rows = Array.from(section.querySelectorAll(".tbl tbody tr"));
+    const hubStatus = document.getElementById("wf-hubStatus");
+    const cCollected = document.getElementById("wf-cCollected");
+    const cReady = document.getElementById("wf-cReady");
+    const cMissing = document.getElementById("wf-cMissing");
+    const batchBadge = document.getElementById("wf-batchBadge");
+    const runBtn = document.getElementById("wf-runBtn");
+    const pipeline = document.getElementById("wf-pipeline");
+    const pipeFill = document.getElementById("wf-pipeFill");
+    const pipeNodes = Array.from(section.querySelectorAll(".pipe-node"));
+
+    const STAGES = 6;
+    let lastStage = 0;
+    let countTok = 0;
+    const pillText = ["Setup", "Link ready", "Public upload", "Collecting", "Batch ready", "Running"];
+    const crumbText = [
+      "New entry point",
+      "Submission page · live",
+      "Public submission page",
+      "Application hub",
+      "Application hub · ready",
+      "Application hub · processing",
+    ];
+
+    function setCounters(c: number, r: number, m: number) {
+      if (cCollected) cCollected.textContent = String(c);
+      if (cReady) cReady.textContent = String(r);
+      if (cMissing) cMissing.textContent = String(m);
+    }
+
+    function countUp() {
+      const tok = ++countTok;
+      let start: number | null = null;
+      const dur = 750;
+      function tick(ts: number) {
+        if (tok !== countTok) return;
+        if (!start) start = ts;
+        const p = Math.min(1, (ts - start) / dur);
+        setCounters(Math.round(123 * p), Math.round(117 * p), Math.round(6 * p));
+        if (p < 1) requestAnimationFrame(tick);
+        else setCounters(123, 117, 6);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function resetLinkA() {
+      if (!linkCard || !copyBtn || !previewCard) return;
+      linkCard.style.opacity = "0";
+      linkCard.style.transform = "translateY(14px)";
+      copyBtn.classList.remove("copied");
+      copyBtn.textContent = "Copy link";
+      previewCard.style.display = "none";
+      previewCard.style.opacity = "0";
+      previewCard.style.transform = "translateY(16px)";
+    }
+
+    function fillFormFull() {
+      if (evName) evName.textContent = NAME;
+      if (evCur) evCur.style.display = "none";
+      mchips.forEach((c) => c.classList.add("on"));
+      if (evDate) {
+        evDate.textContent = "Mar 14, 2026";
+        evDate.classList.remove("muted");
+      }
+      createBtn?.classList.add("ready");
+    }
+
+    function setStage(stage: number, frac: number) {
+      steps.forEach((s, i) => {
+        const n = i + 1;
+        s.classList.toggle("active", n === stage);
+        s.classList.toggle("done", n < stage);
+        const fi = s.querySelector(".track i") as HTMLElement | null;
+        if (fi) fi.style.width = n < stage ? "100%" : n === stage ? (frac * 100).toFixed(1) + "%" : "0%";
+      });
+
+      pillEl.textContent = pillText[stage - 1];
+      crumbEl.textContent = crumbText[stage - 1];
+
+      layerAEl.classList.toggle("on", stage <= 2);
+      layerBEl.classList.toggle("on", stage === 3);
+      layerCEl.classList.toggle("on", stage >= 4);
+
+      if (stage === 1) {
+        setupCard?.classList.remove("done");
+        if (scBadge) scBadge.textContent = "Draft";
+        resetLinkA();
+        const t1 = Math.min(1, frac / 0.4);
+        if (evName) evName.textContent = NAME.slice(0, Math.round(NAME.length * t1));
+        if (evCur) evCur.style.display = frac < 0.86 ? "inline-block" : "none";
+        mchips.forEach((c, i) => c.classList.toggle("on", frac > 0.44 + i * 0.1));
+        if (evDate) {
+          if (frac > 0.74) {
+            evDate.textContent = "Mar 14, 2026";
+            evDate.classList.remove("muted");
+          } else {
+            evDate.textContent = "Select date\u2026";
+            evDate.classList.add("muted");
+          }
+        }
+        createBtn?.classList.toggle("ready", frac > 0.88);
+      } else if (stage === 2) {
+        fillFormFull();
+        setupCard?.classList.add("done");
+        if (scBadge) scBadge.textContent = "Live";
+        if (linkCard) {
+          const lp = easeOut(Math.min(1, frac / 0.34));
+          linkCard.style.opacity = lp.toFixed(2);
+          linkCard.style.transform = "translateY(" + ((1 - lp) * 14).toFixed(1) + "px)";
+        }
+        const copied = frac > 0.5;
+        copyBtn?.classList.toggle("copied", copied);
+        if (copyBtn) copyBtn.textContent = copied ? "Copied \u2713" : "Copy link";
+        if (previewCard) {
+          previewCard.style.display = "flex";
+          const pv = easeOut(Math.min(1, Math.max(0, (frac - 0.52) / 0.4)));
+          previewCard.style.opacity = pv.toFixed(2);
+          previewCard.style.transform = "translateY(" + ((1 - pv) * 16).toFixed(1) + "px)";
+        }
+      }
+
+      if (stage === 3) {
+        upItems.forEach((it, i) => {
+          const ip = Math.min(1, Math.max(0, (frac - i * 0.13) / 0.3));
+          (it as HTMLElement).style.opacity = ip.toFixed(2);
+          (it as HTMLElement).style.transform = "translateY(" + ((1 - ip) * 8).toFixed(1) + "px)";
+        });
+        const prog = Math.min(100, Math.max(0, ((frac - 0.52) / 0.34) * 100));
+        if (upProg) upProg.style.width = prog.toFixed(0) + "%";
+        if (upCounter) upCounter.textContent = 11 + Math.round(frac * 112) + " teams submitted";
+      }
+
+      if (stage >= 4) {
+        rows.forEach((r, i) => {
+          const ri = stage > 4 ? 1 : Math.min(1, Math.max(0, (frac - i * 0.11) / 0.34));
+          r.classList.toggle("in", ri > 0.5 || stage > 4);
+        });
+
+        if (stage === 4) {
+          setCounters(0, 0, 0);
+          countTok++;
+          if (hubStatus) {
+            hubStatus.textContent = "Collecting\u2026";
+            hubStatus.className = "hub-status";
+          }
+          batchBadge?.classList.remove("show");
+          runBtn?.classList.remove("ready", "pressed");
+          pipeline?.classList.remove("show");
+          if (pipeFill) pipeFill.style.width = "0%";
+          pipeNodes.forEach((n) => n.classList.remove("on"));
+          rows.forEach((r) => r.classList.remove("processing"));
+        } else if (stage === 5) {
+          if (lastStage !== 5) countUp();
+          if (hubStatus) {
+            hubStatus.textContent = "Batch ready";
+            hubStatus.className = "hub-status ready";
+          }
+          batchBadge?.classList.toggle("show", frac > 0.22);
+          runBtn?.classList.toggle("ready", frac > 0.48);
+          runBtn?.classList.remove("pressed");
+          pipeline?.classList.remove("show");
+          if (pipeFill) pipeFill.style.width = "0%";
+          pipeNodes.forEach((n) => n.classList.remove("on"));
+          rows.forEach((r) => r.classList.remove("processing"));
+        } else if (stage === 6) {
+          countTok++;
+          setCounters(123, 117, 6);
+          if (hubStatus) {
+            hubStatus.textContent = "Evaluation started";
+            hubStatus.className = "hub-status run";
+          }
+          batchBadge?.classList.add("show");
+          runBtn?.classList.add("ready");
+          runBtn?.classList.toggle("pressed", frac > 0.1);
+          rows.forEach((r, i) => {
+            if (r.classList.contains("more-row")) return;
+            r.classList.toggle("processing", frac > 0.16 + i * 0.05);
+          });
+          pipeline?.classList.toggle("show", frac > 0.18);
+          const pp = Math.min(1, Math.max(0, (frac - 0.24) / 0.62));
+          if (pipeFill) pipeFill.style.width = (pp * 100).toFixed(0) + "%";
+          pipeNodes.forEach((n, i) => n.classList.toggle("on", pp >= (i + 0.5) / pipeNodes.length));
+        }
+      }
+      lastStage = stage;
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = scrollEl.getBoundingClientRect();
+        const total = scrollEl.offsetHeight - window.innerHeight;
+        const raw = Math.min(Math.max(-rect.top, 0), total);
+        const p = total > 0 ? raw / total : 0;
+        const sf = p * STAGES;
+        const stage = Math.min(STAGES, Math.floor(sf) + 1);
+        const frac = Math.min(1, sf - (stage - 1));
+        setStage(stage, frac);
+        ticking = false;
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    setStage(1, 0);
+    onScroll();
   })();
 }
