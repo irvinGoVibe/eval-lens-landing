@@ -105,29 +105,50 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   // to the canvas center, so the head keeps "watching" it anywhere on screen.
   useEffect(() => {
     if (isMobile) return;
-    const onMove = (ev: PointerEvent) => {
+    let clientX = 0;
+    let clientY = 0;
+    let seen = false;
+
+    const update = () => {
+      if (!seen) return;
       const rect = gl.domElement.getBoundingClientRect();
       const halfW = rect.width / 2;
       const halfH = rect.height / 2;
-      // the head only "notices" the cursor while it is inside the canvas
-      gaze.current.active =
-        ev.clientX >= rect.left &&
-        ev.clientX <= rect.right &&
-        ev.clientY >= rect.top &&
-        ev.clientY <= rect.bottom;
+      // the head "notices" the cursor anywhere over the whole section
+      // (paddings and CTA included); the turn angle is still measured from
+      // the canvas center where the head sits
+      const zone =
+        gl.domElement.closest("section")?.getBoundingClientRect() ?? rect;
+      // gaze is sticky: outside the zone we simply stop updating, so the
+      // head keeps looking at the spot where it last saw the cursor
+      if (clientY < zone.top || clientY > zone.bottom) return;
+      gaze.current.active = true;
       gaze.current.x = THREE.MathUtils.clamp(
-        (ev.clientX - (rect.left + halfW)) / halfW,
+        (clientX - (rect.left + halfW)) / halfW,
         -1.4,
         1.4,
       );
       gaze.current.y = THREE.MathUtils.clamp(
-        (ev.clientY - (rect.top + halfH)) / halfH,
+        (clientY - (rect.top + halfH)) / halfH,
         -1.4,
         1.4,
       );
     };
+
+    const onMove = (ev: PointerEvent) => {
+      clientX = ev.clientX;
+      clientY = ev.clientY;
+      seen = true;
+      update();
+    };
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, [gl, isMobile]);
 
   const geometry = useMemo(() => {
@@ -249,7 +270,10 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     // head swings to face the camera and tracks the cursor from there
     const engaged = !isMobile && gaze.current.active;
     const targetYaw = engaged ? GAZE_YAW + gaze.current.x * 0.6 : BASE_YAW;
-    const targetPitch = engaged ? gaze.current.y * 0.3 : 0;
+    // asymmetric pitch: the head throws itself up at a cursor above it much
+    // harder than it dips toward one below
+    const pitchGain = gaze.current.y < 0 ? 0.55 : 0.3;
+    const targetPitch = engaged ? gaze.current.y * pitchGain : 0;
     swayY.current = THREE.MathUtils.damp(swayY.current, targetYaw, 10, delta);
     swayX.current = THREE.MathUtils.damp(swayX.current, targetPitch, 10, delta);
     g.rotation.y = swayY.current + Math.sin(t * 0.22) * 0.08;
