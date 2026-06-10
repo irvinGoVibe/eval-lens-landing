@@ -2,6 +2,7 @@ import { Footer } from "@/components/Footer";
 import { ScrollOrchestrator } from "@/components/ScrollOrchestrator";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Decisions } from "@/components/sections/Decisions";
+import { FinalUnicorn } from "@/components/sections/FinalUnicorn";
 import { Hero } from "@/components/sections/Hero";
 import { MistBridge } from "@/components/sections/MistBridge";
 import { OrangeGlow } from "@/components/sections/OrangeGlow";
@@ -24,6 +25,7 @@ export default function HomePage() {
         <Decisions />
         <Results />
         <Trust />
+        <FinalUnicorn />
       </main>
       <Footer />
       <ScrollOrchestrator />
