@@ -19,7 +19,7 @@ function FallbackGlow() {
   return (
     <div aria-hidden className="absolute inset-0 overflow-hidden">
       <div className="absolute left-[44%] top-1/2 h-[62%] w-[52%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(108,76,241,0.38),transparent_72%)] blur-2xl" />
-      <div className="absolute left-[60%] top-[56%] h-[46%] w-[40%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(46,197,232,0.24),transparent_72%)] blur-2xl" />
+      <div className="absolute left-[60%] top-[56%] h-[46%] w-[40%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(58,168,255,0.22),transparent_72%)] blur-2xl" />
       <div className="absolute left-1/2 top-[30%] h-[26%] w-[18%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(169,155,255,0.3),transparent_70%)] blur-xl" />
     </div>
   );

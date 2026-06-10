@@ -187,9 +187,11 @@ function applyRig(
   if (nrmAttr) nrmAttr.needsUpdate = true;
 }
 
-const VIOLET = "#7b5cf6";
+/* Brand-locked palette: violet/blue only, no emerald/teal anywhere. */
+const VIOLET = "#B85CFF";
+const DEEP_VIOLET = "#5F4BFF";
 const LAVENDER = "#a99bff";
-const CYAN = "#2ec5e8";
+const CYAN = "#31E7FF";
 
 /* Bright emissive panels baked into the env map — the crystal facets reflect
    these as colored glints instead of white "room" highlights. */
@@ -241,7 +243,7 @@ function BackgroundGlow() {
       <sprite scale={[6, 6, 1]} position={[1.5, -0.5, 0]}>
         <spriteMaterial
           map={texture}
-          color="#0a2f3c"
+          color="#0d1f45"
           blending={THREE.AdditiveBlending}
           depthWrite={false}
           transparent
@@ -358,23 +360,29 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   const glass = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color("#171440"),
+        color: new THREE.Color(DEEP_VIOLET),
         transparent: true,
-        opacity: 0.58,
-        // Glassy facets: low roughness so the colored env panels land as
-        // crisp glints sliding across the crystal while it sways.
-        roughness: 0.14,
+        // True crystal: mostly see-through, edges and internal facet lines
+        // stay visible through the body — edge-heavy, not surface-heavy.
+        opacity: 0.3,
+        roughness: 0.1,
         metalness: 0,
-        transmission: 0.5,
+        transmission: 0.7,
         ior: 1.5,
         thickness: 0.8,
-        envMapIntensity: 1.6,
+        reflectivity: 0.9,
+        clearcoat: 1,
+        clearcoatRoughness: 0.05,
+        envMapIntensity: 1.2,
         flatShading: true,
-        // Solid depth so the far side of the head is occluded by the volume —
-        // without this the model reads as an x-ray instead of solid crystal.
+        // Front faces write depth so edges on the far side of the head are
+        // occluded by the volume; polygonOffset keeps surface lines stable.
         depthWrite: true,
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
         emissive: new THREE.Color("#1c1452"),
-        emissiveIntensity: 0.7,
+        emissiveIntensity: 0.35,
       }),
     [],
   );
@@ -431,6 +439,8 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     return { edges: e, twinklePhase: phase };
   }, [geometry]);
 
+  // Edge layer that stays invisible until the travelling wave makes an edge
+  // glint white for a moment — flashes only, no constant wireframe.
   const seam = useMemo(
     () =>
       new THREE.LineBasicMaterial({
@@ -603,19 +613,13 @@ export default function UnicornScene({ isMobile, active }: UnicornSceneProps) {
     >
       <color attach="background" args={["#000000"]} />
       <BackgroundGlow />
-      <ambientLight intensity={0.9} color="#3b3180" />
-      <pointLight position={[-2.6, 1.6, 2.2]} intensity={34} color={VIOLET} />
-      <pointLight position={[2.6, -0.4, 2.4]} intensity={28} color={CYAN} />
-      <pointLight position={[0, 2.6, -1.6]} intensity={16} color={LAVENDER} />
-      {/* glint lights: white keys for crisp sparkles plus colored accents
-          at opposing angles, so facets flash as the head sways */}
-      <directionalLight position={[1.5, 3, 2.5]} intensity={3.2} color="#ffffff" />
-      <pointLight position={[0, 0.6, 3.2]} intensity={9} color="#ffffff" />
-      <pointLight position={[-1.8, -1.2, 2.8]} intensity={18} color="#8a5cff" />
-      <pointLight position={[1.2, 2.2, 1.6]} intensity={15} color="#36e0c2" />
-      <pointLight position={[0, -2.4, 1.6]} intensity={14} color={VIOLET} />
-      {/* cyan rim from behind so the silhouette stays lit against the halo */}
-      <directionalLight position={[-1.2, 1, -2.6]} intensity={2.4} color={CYAN} />
+      <ambientLight intensity={0.12} />
+      {/* colored back-side rim lights: violet left, cyan right — they draw
+          the silhouette (horn, ears, neck edge) out of the black background */}
+      <pointLight position={[-3.5, 1.5, -2.5]} intensity={55} color={VIOLET} />
+      <pointLight position={[3.5, 1.5, -2.5]} intensity={55} color={CYAN} />
+      {/* minimal white key for sharp facet glints only */}
+      <directionalLight position={[0, 2, 4]} intensity={0.6} color="#ffffff" />
       {/* white core fixed in world space at the head center: the head sways
           around it, so interior facets shimmer as their angle changes */}
       <pointLight position={[0, -0.05, 0]} intensity={10} distance={1.7} decay={2} color="#ffffff" />
@@ -644,9 +648,9 @@ export default function UnicornScene({ isMobile, active }: UnicornSceneProps) {
       <EffectComposer>
         <Bloom
           mipmapBlur
-          intensity={isMobile ? 0.5 : 0.9}
-          luminanceThreshold={0.22}
-          luminanceSmoothing={0.18}
+          intensity={isMobile ? 0.22 : 0.35}
+          luminanceThreshold={0.25}
+          luminanceSmoothing={0.25}
           radius={0.75}
         />
       </EffectComposer>
