@@ -11,11 +11,181 @@ const MODEL_URL = "/assets/models/unicorn-head-lowpoly.glb";
 /* Decimated derivative of the raw Meshy export (unicorn-head.glb, 365k tris) —
    the low-poly faceted look needs the simplified mesh; swap URLs to compare. */
 
-/* Frontal export, yawed 45° for a three-quarter hero angle. */
-const BASE_YAW = Math.PI / 4;
+/* Rest pose: 15° to the left of head-on; the gaze still centers on camera. */
+const BASE_YAW = Math.PI / 12;
 /* Yaw at which the head faces the camera — the gaze pivots around this once
    the cursor enters the canvas, so it actually "sees" the cursor. */
 const GAZE_YAW = 0;
+
+/* Anatomical three-joint rig, like a horse's neck and skull:
+   - neckBase / neckMid: cervical vertebrae — the neck bends in an arc
+   - poll: the atlanto-occipital joint where the skull does the final,
+     fastest part of the turn.
+   Each joint carries a share of the total turn, with anatomical limits. */
+const J_NECK_BASE = new THREE.Vector3(0, -0.95, 0);
+const J_NECK_MID = new THREE.Vector3(0, -0.55, 0);
+const J_POLL = new THREE.Vector3(0, -0.12, 0);
+
+const NECK_YAW_SHARE = 0.5; // fixed split: the neck turns its half at its own pace
+const NECK_PITCH_SHARE = 0.4;
+const NECK_YAW_MAX = 0.7;
+const HEAD_YAW_MAX = 0.7;
+const PITCH_UP_MAX = 0.6;
+const PITCH_DOWN_MAX = 0.22;
+
+const _euler = new THREE.Euler();
+const _pivot = new THREE.Vector3();
+const _rp = new THREE.Vector3();
+
+/** out = rotation(yaw,pitch,roll) about `pivot`, stacked onto `parent` (FK). */
+function makeJointMatrix(
+  out: THREE.Matrix4,
+  pivot: THREE.Vector3,
+  parent: THREE.Matrix4 | null,
+  yaw: number,
+  pitch: number,
+  roll: number,
+) {
+  _pivot.copy(pivot);
+  if (parent) _pivot.applyMatrix4(parent);
+  out.makeRotationFromEuler(_euler.set(pitch, yaw, roll, "YXZ"));
+  _rp.copy(_pivot).applyMatrix4(out);
+  out.setPosition(_pivot.x - _rp.x, _pivot.y - _rp.y, _pivot.z - _rp.z);
+  if (parent) out.multiply(parent);
+}
+
+/** Damped spring integrator — overshoot and settle, instead of a lerp. */
+function springStep(
+  s: { x: number; v: number },
+  target: number,
+  stiffness: number,
+  damping: number,
+  dt: number,
+) {
+  s.v += (target - s.x) * stiffness * dt;
+  s.v *= Math.exp(-damping * dt);
+  s.x += s.v * dt;
+}
+
+/** Locate the neck column and which z-direction the muzzle points. */
+function neckFrame(pos0: Float32Array, count: number) {
+  let sum = 0;
+  let n = 0;
+  let minZ = Infinity;
+  let maxZ = -Infinity;
+  for (let i = 0; i < count; i++) {
+    const y = pos0[i * 3 + 1];
+    const z = pos0[i * 3 + 2];
+    if (y < -0.85) {
+      sum += z;
+      n++;
+    }
+    if (z < minZ) minZ = z;
+    if (z > maxZ) maxZ = z;
+  }
+  const neckZ = n > 0 ? sum / n : 0;
+  const muzzleSign = maxZ - neckZ > neckZ - minZ ? 1 : -1;
+  return { neckZ, muzzleSign };
+}
+
+/* Skinning weights, 3 per vertex (neckBase / neckMid / head), partition of
+   unity with the fixed base. Head membership uses height AND distance toward
+   the muzzle, so the jaw stays rigid with the skull instead of bending like
+   neck flesh. */
+function buildRigWeights(
+  pos0: Float32Array,
+  count: number,
+  neckZ: number,
+  muzzleSign: number,
+): Float32Array {
+  const w = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const y = pos0[i * 3 + 1];
+    const z = pos0[i * 3 + 2];
+    const snout = (z - neckZ) * muzzleSign;
+    const headByZ = THREE.MathUtils.smoothstep(snout, 0.35, 0.75);
+    const c3 = Math.max(THREE.MathUtils.smoothstep(y, -0.32, 0.02), headByZ);
+    const c2 = Math.max(THREE.MathUtils.smoothstep(y, -0.7, -0.25), c3);
+    const c1 = Math.max(THREE.MathUtils.smoothstep(y, -1.0, -0.6), c2);
+    w[i * 3] = c1 - c2;
+    w[i * 3 + 1] = c2 - c3;
+    w[i * 3 + 2] = c3;
+  }
+  return w;
+}
+
+/** Linear-blend skinning over the three joint matrices. */
+function applyRig(
+  posAttr: THREE.BufferAttribute,
+  pos0: Float32Array,
+  weights: Float32Array,
+  m1: THREE.Matrix4,
+  m2: THREE.Matrix4,
+  m3: THREE.Matrix4,
+  nrmAttr?: THREE.BufferAttribute,
+  nrm0?: Float32Array,
+) {
+  const e1 = m1.elements;
+  const e2 = m2.elements;
+  const e3 = m3.elements;
+  const count = posAttr.count;
+  for (let i = 0; i < count; i++) {
+    const ix = i * 3;
+    const w1 = weights[ix];
+    const w2 = weights[ix + 1];
+    const w3 = weights[ix + 2];
+    const w0 = 1 - w1 - w2 - w3;
+    const x = pos0[ix];
+    const y = pos0[ix + 1];
+    const z = pos0[ix + 2];
+    let X = w0 * x;
+    let Y = w0 * y;
+    let Z = w0 * z;
+    if (w1 > 0) {
+      X += w1 * (e1[0] * x + e1[4] * y + e1[8] * z + e1[12]);
+      Y += w1 * (e1[1] * x + e1[5] * y + e1[9] * z + e1[13]);
+      Z += w1 * (e1[2] * x + e1[6] * y + e1[10] * z + e1[14]);
+    }
+    if (w2 > 0) {
+      X += w2 * (e2[0] * x + e2[4] * y + e2[8] * z + e2[12]);
+      Y += w2 * (e2[1] * x + e2[5] * y + e2[9] * z + e2[13]);
+      Z += w2 * (e2[2] * x + e2[6] * y + e2[10] * z + e2[14]);
+    }
+    if (w3 > 0) {
+      X += w3 * (e3[0] * x + e3[4] * y + e3[8] * z + e3[12]);
+      Y += w3 * (e3[1] * x + e3[5] * y + e3[9] * z + e3[13]);
+      Z += w3 * (e3[2] * x + e3[6] * y + e3[10] * z + e3[14]);
+    }
+    posAttr.setXYZ(i, X, Y, Z);
+    if (nrmAttr && nrm0) {
+      const nx = nrm0[ix];
+      const ny = nrm0[ix + 1];
+      const nz = nrm0[ix + 2];
+      let NX = w0 * nx;
+      let NY = w0 * ny;
+      let NZ = w0 * nz;
+      if (w1 > 0) {
+        NX += w1 * (e1[0] * nx + e1[4] * ny + e1[8] * nz);
+        NY += w1 * (e1[1] * nx + e1[5] * ny + e1[9] * nz);
+        NZ += w1 * (e1[2] * nx + e1[6] * ny + e1[10] * nz);
+      }
+      if (w2 > 0) {
+        NX += w2 * (e2[0] * nx + e2[4] * ny + e2[8] * nz);
+        NY += w2 * (e2[1] * nx + e2[5] * ny + e2[9] * nz);
+        NZ += w2 * (e2[2] * nx + e2[6] * ny + e2[10] * nz);
+      }
+      if (w3 > 0) {
+        NX += w3 * (e3[0] * nx + e3[4] * ny + e3[8] * nz);
+        NY += w3 * (e3[1] * nx + e3[5] * ny + e3[9] * nz);
+        NZ += w3 * (e3[2] * nx + e3[6] * ny + e3[10] * nz);
+      }
+      const len = Math.sqrt(NX * NX + NY * NY + NZ * NZ) || 1;
+      nrmAttr.setXYZ(i, NX / len, NY / len, NZ / len);
+    }
+  }
+  posAttr.needsUpdate = true;
+  if (nrmAttr) nrmAttr.needsUpdate = true;
+}
 
 const VIOLET = "#7b5cf6";
 const LAVENDER = "#a99bff";
@@ -96,9 +266,17 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   const { scene } = useGLTF(MODEL_URL);
   const gl = useThree((state) => state.gl);
   const group = useRef<THREE.Group>(null);
+  const body = useRef<THREE.Mesh>(null);
   const seams = useRef<THREE.LineSegments>(null);
-  const swayY = useRef(BASE_YAW);
-  const swayX = useRef(0);
+  const rig = useRef({
+    neckYaw: { x: 0, v: 0 },
+    neckPitch: { x: 0, v: 0 },
+    headYaw: { x: 0, v: 0 },
+    headPitch: { x: 0, v: 0 },
+    m1: new THREE.Matrix4(),
+    m2: new THREE.Matrix4(),
+    m3: new THREE.Matrix4(),
+  });
   const gaze = useRef({ x: 0, y: 0, active: false });
 
   // Track the cursor across the whole window (not just the canvas), relative
@@ -160,6 +338,20 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     });
     const geo = found ?? new THREE.IcosahedronGeometry(1, 1);
     geo.center();
+    // GLTF may deliver interleaved attributes, which can't be flagged dynamic
+    // or rewritten per frame — copy them out into plain buffer attributes
+    for (const name of ["position", "normal"] as const) {
+      const attr = geo.getAttribute(name);
+      if (attr && !(attr instanceof THREE.BufferAttribute)) {
+        const arr = new Float32Array(attr.count * attr.itemSize);
+        for (let i = 0; i < attr.count; i++) {
+          for (let j = 0; j < attr.itemSize; j++) {
+            arr[i * attr.itemSize + j] = attr.getComponent(i, j);
+          }
+        }
+        geo.setAttribute(name, new THREE.BufferAttribute(arr, attr.itemSize));
+      }
+    }
     return geo;
   }, [scene]);
 
@@ -253,6 +445,24 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     [],
   );
 
+  // Rest pose snapshot + per-vertex neck weights for the fake rig: the body
+  // and the edge lines deform from these originals every frame.
+  const deform = useMemo(() => {
+    const posAttr = geometry.getAttribute("position") as THREE.BufferAttribute;
+    const nrmAttr = geometry.getAttribute("normal") as THREE.BufferAttribute;
+    posAttr.setUsage(THREE.DynamicDrawUsage);
+    nrmAttr.setUsage(THREE.DynamicDrawUsage);
+    const pos0 = Float32Array.from(posAttr.array as Float32Array);
+    const nrm0 = Float32Array.from(nrmAttr.array as Float32Array);
+    const { neckZ, muzzleSign } = neckFrame(pos0, posAttr.count);
+    const weights = buildRigWeights(pos0, posAttr.count, neckZ, muzzleSign);
+    const edgeAttr = edges.getAttribute("position") as THREE.BufferAttribute;
+    edgeAttr.setUsage(THREE.DynamicDrawUsage);
+    const epos0 = Float32Array.from(edgeAttr.array as Float32Array);
+    const eweights = buildRigWeights(epos0, edgeAttr.count, neckZ, muzzleSign);
+    return { pos0, nrm0, weights, epos0, eweights };
+  }, [geometry, edges]);
+
   useEffect(() => {
     return () => {
       glass.dispose();
@@ -266,18 +476,87 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     const g = group.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    // rest pose: three-quarter 45°; once the cursor is inside the canvas the
-    // head swings to face the camera and tracks the cursor from there
+    // the neck (group) stays planted in the 45° rest pose with a faint
+    // breathing sway; only the head turns toward the cursor, on a spring
     const engaged = !isMobile && gaze.current.active;
-    const targetYaw = engaged ? GAZE_YAW + gaze.current.x * 0.6 : BASE_YAW;
+    const totalYaw = engaged ? GAZE_YAW - BASE_YAW + gaze.current.x * 0.6 : 0;
     // asymmetric pitch: the head throws itself up at a cursor above it much
     // harder than it dips toward one below
-    const pitchGain = gaze.current.y < 0 ? 0.55 : 0.3;
-    const targetPitch = engaged ? gaze.current.y * pitchGain : 0;
-    swayY.current = THREE.MathUtils.damp(swayY.current, targetYaw, 10, delta);
-    swayX.current = THREE.MathUtils.damp(swayX.current, targetPitch, 10, delta);
-    g.rotation.y = swayY.current + Math.sin(t * 0.22) * 0.08;
-    g.rotation.x = swayX.current + Math.sin(t * 0.31) * 0.03;
+    const pitchGain = gaze.current.y < 0 ? 0.55 : 0.2;
+    const totalPitch = engaged ? gaze.current.y * pitchGain : 0;
+
+    // split the turn across the chain with anatomical limits: the neck takes
+    // its share, the skull does the rest at the poll joint
+    const r = rig.current;
+    const neckYawT = THREE.MathUtils.clamp(
+      totalYaw * NECK_YAW_SHARE,
+      -NECK_YAW_MAX,
+      NECK_YAW_MAX,
+    );
+    const neckPitchT = THREE.MathUtils.clamp(
+      totalPitch * NECK_PITCH_SHARE,
+      -PITCH_UP_MAX * 0.5,
+      PITCH_DOWN_MAX * 0.5,
+    );
+
+    const headYawT = THREE.MathUtils.clamp(
+      totalYaw * (1 - NECK_YAW_SHARE),
+      -HEAD_YAW_MAX,
+      HEAD_YAW_MAX,
+    );
+    const headPitchT = THREE.MathUtils.clamp(
+      totalPitch * (1 - NECK_PITCH_SHARE),
+      -PITCH_UP_MAX,
+      PITCH_DOWN_MAX,
+    );
+
+    // both joints turn at the same time toward their own share of the angle:
+    // the skull fast, the neck base slow and heavy
+    springStep(r.headYaw, headYawT, 120, 11, delta);
+    springStep(r.headPitch, headPitchT, 120, 11, delta);
+    springStep(r.neckYaw, neckYawT, 18, 5.5, delta);
+    springStep(r.neckPitch, neckPitchT, 18, 5.5, delta);
+
+    g.rotation.y = BASE_YAW + Math.sin(t * 0.22) * 0.08;
+    g.rotation.x = Math.sin(t * 0.31) * 0.03;
+
+    // FK chain: lower vertebrae take 40% of the neck angle, upper 60%, and a
+    // slight roll tilts the head into the turn the way horses do
+    makeJointMatrix(r.m1, J_NECK_BASE, null, r.neckYaw.x * 0.4, r.neckPitch.x * 0.4, 0);
+    makeJointMatrix(
+      r.m2,
+      J_NECK_MID,
+      r.m1,
+      r.neckYaw.x * 0.6,
+      r.neckPitch.x * 0.6,
+      -r.neckYaw.x * 0.06,
+    );
+    makeJointMatrix(r.m3, J_POLL, r.m2, r.headYaw.x, r.headPitch.x, -r.headYaw.x * 0.12);
+
+    const bodyGeo = body.current?.geometry;
+    if (bodyGeo) {
+      applyRig(
+        bodyGeo.getAttribute("position") as THREE.BufferAttribute,
+        deform.pos0,
+        deform.weights,
+        r.m1,
+        r.m2,
+        r.m3,
+        bodyGeo.getAttribute("normal") as THREE.BufferAttribute,
+        deform.nrm0,
+      );
+    }
+    const seamGeo = seams.current?.geometry;
+    if (seamGeo) {
+      applyRig(
+        seamGeo.getAttribute("position") as THREE.BufferAttribute,
+        deform.epos0,
+        deform.eweights,
+        r.m1,
+        r.m2,
+        r.m3,
+      );
+    }
 
     // shimmer: narrow sine pulse per edge — bright only near its peak, so a
     // handful of edges flash white at a time as the wave sweeps the head
@@ -299,9 +578,15 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
 
   return (
     <group ref={group} position={[0, -0.05, 0]} scale={1 / 1.5}>
-      <mesh geometry={geometry} material={innerGlow} />
-      <mesh geometry={geometry} material={glass} renderOrder={1} />
-      <lineSegments ref={seams} geometry={edges} material={seam} renderOrder={2} />
+      <mesh geometry={geometry} material={innerGlow} frustumCulled={false} />
+      <mesh ref={body} geometry={geometry} material={glass} renderOrder={1} frustumCulled={false} />
+      <lineSegments
+        ref={seams}
+        geometry={edges}
+        material={seam}
+        renderOrder={2}
+        frustumCulled={false}
+      />
       {/* pink eye light rides the head so the muzzle area glows as it sways */}
       <pointLight position={[0, 0.32, -0.42]} intensity={5} distance={0.9} decay={2} color="#ff5ad1" />
     </group>
