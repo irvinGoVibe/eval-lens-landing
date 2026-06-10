@@ -1315,4 +1315,294 @@ function runScript() {
     setStage(1, 0);
     onScroll();
   })();
+
+  /* ============================================================
+     Section 4 — scroll-driven structured decision demo (block4)
+     ============================================================ */
+  (function initDecisionsScroll() {
+    const section = document.getElementById("decisions");
+    if (!section) return;
+
+    const scroll = document.getElementById("sd-scroll");
+    const windowEl = document.getElementById("sd-window");
+    const layerA = document.getElementById("sd-layerA");
+    const layerB = document.getElementById("sd-layerB");
+    const dash = document.getElementById("sd-dash");
+    const beam = document.getElementById("sd-beam");
+    const scanTitle = document.getElementById("sd-scanTitle");
+    const repgrid = document.getElementById("sd-repgrid");
+    const crumb = document.getElementById("sd-crumb");
+    const pill = document.getElementById("sd-stagepill");
+    const steps = Array.from(section.querySelectorAll(".sd-rail .step"));
+    if (
+      !scroll ||
+      !windowEl ||
+      !layerA ||
+      !layerB ||
+      !dash ||
+      !beam ||
+      !scanTitle ||
+      !repgrid ||
+      !crumb ||
+      !pill ||
+      !steps.length
+    )
+      return;
+
+    const scrollEl = scroll;
+    const windowElRef = windowEl;
+    const layerAEl = layerA;
+    const layerBEl = layerB;
+    const dashEl = dash;
+    const beamEl = beam;
+    const scanTitleEl = scanTitle;
+    const repgridEl = repgrid;
+    const crumbEl = crumb;
+    const pillEl = pill;
+
+    const deckfield = layerAEl.querySelector(".deckfield") as HTMLElement | null;
+    const decks = Array.from(layerAEl.querySelectorAll(".deckfield .deck"));
+    const tags = Array.from(layerAEl.querySelectorAll(".deckfield .tag"));
+    const repcards = Array.from(layerAEl.querySelectorAll(".repcard"));
+    const rows = Array.from(section.querySelectorAll("#sd-tbody tr"));
+    const panelScore = document.getElementById("sd-panelScore");
+    const panel = section.querySelector(".sd-panel") as HTMLElement | null;
+    const revItems = Array.from(section.querySelectorAll(".reveal-item"));
+
+    const dstatus = document.getElementById("sd-dstatus");
+    const seg = document.getElementById("sd-seg");
+    const segR = seg?.querySelector('[data-d="review"]') as HTMLElement | null;
+    const segA = seg?.querySelector('[data-d="approved"]') as HTMLElement | null;
+    const noteWrap = document.getElementById("sd-noteWrap");
+    const ntext = document.getElementById("sd-ntext");
+    const ncur = document.getElementById("sd-ncur");
+    const addnote = document.getElementById("sd-addnote");
+    const save = document.getElementById("sd-save");
+    const NOTE = "Strong team — confirm MX licensing before final approval.";
+
+    const STAGES = 6;
+    const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+    let lastStage = 0;
+    const pillText = ["Analyzing", "Extracting", "Standardizing", "Comparing", "Report open", "Decision"];
+    const crumbText = [
+      "Batch #A24 · 123 decks",
+      "Batch #A24 · scanning signals",
+      "Batch #A24 · 123 reports",
+      "Batch #A24 · ranked",
+      "NovaPay · report",
+      "NovaPay · decision",
+    ];
+
+    function alignDecks(on: boolean) {
+      const pos = [
+        { l: "7%", t: "12%" },
+        { l: "53%", t: "12%" },
+        { l: "7%", t: "54%" },
+        { l: "53%", t: "54%" },
+      ];
+      decks.forEach((d, i) => {
+        const el = d as HTMLElement;
+        if (on) {
+          el.style.transform = "rotate(0deg)";
+          el.style.left = pos[i].l;
+          el.style.top = pos[i].t;
+          el.style.width = "40%";
+          el.style.height = "38%";
+        } else {
+          el.style.transform = "";
+          el.style.left = "";
+          el.style.top = "";
+          el.style.width = "";
+          el.style.height = "";
+        }
+      });
+    }
+
+    function countUp(el: HTMLElement, target: number) {
+      let start: number | null = null;
+      const dur = 600;
+      function tick(ts: number) {
+        if (!start) start = ts;
+        const p = Math.min(1, (ts - start) / dur);
+        el.textContent = (target * (0.5 + 0.5 * p)).toFixed(1);
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toFixed(1);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function updateHumanLoop(stage: number, frac: number) {
+      if (stage < 6) {
+        if (dstatus) {
+          dstatus.className = "dstatus pending";
+          dstatus.textContent = "Pending";
+        }
+        segR?.classList.remove("on");
+        segA?.classList.remove("on");
+        noteWrap?.classList.remove("show");
+        if (ntext) ntext.textContent = "";
+        if (ncur) ncur.style.display = "none";
+        addnote?.classList.remove("used");
+        dashEl.classList.remove("saved");
+        if (save) save.textContent = "Save decision";
+        return;
+      }
+      const picked = frac >= 0.2;
+      segA?.classList.toggle("on", picked);
+      segR?.classList.remove("on");
+      if (dstatus) {
+        dstatus.className = picked ? "dstatus approved" : "dstatus pending";
+        dstatus.textContent = picked ? "Approved" : "Pending";
+      }
+      const noteOn = frac >= 0.4;
+      noteWrap?.classList.toggle("show", noteOn);
+      addnote?.classList.toggle("used", noteOn);
+      if (noteOn) {
+        const tp = Math.min(1, (frac - 0.4) / 0.3);
+        if (ntext) ntext.textContent = NOTE.slice(0, Math.round(NOTE.length * tp));
+        if (ncur) ncur.style.display = tp < 1 ? "inline-block" : "none";
+      } else {
+        if (ntext) ntext.textContent = "";
+        if (ncur) ncur.style.display = "none";
+      }
+      const saved = frac >= 0.78;
+      dashEl.classList.toggle("saved", saved);
+      if (save) save.textContent = saved ? "Decision saved" : "Save decision";
+    }
+
+    function setStage(stage: number, frac: number) {
+      steps.forEach((s, i) => {
+        const n = i + 1;
+        s.classList.toggle("active", n === stage);
+        s.classList.toggle("done", n < stage);
+        const fill = s.querySelector(".track i") as HTMLElement | null;
+        if (fill) {
+          fill.style.width =
+            n < stage ? "100%" : n === stage ? (frac * 100).toFixed(1) + "%" : "0%";
+        }
+      });
+
+      pillEl.textContent = pillText[stage - 1];
+      crumbEl.textContent = crumbText[stage - 1];
+
+      const bView = stage >= 4;
+      layerAEl.classList.toggle("on", !bView);
+      layerBEl.classList.toggle("on", bView);
+      windowElRef.setAttribute("data-stage", String(stage));
+
+      beamEl.style.opacity = stage === 2 ? "1" : "0";
+      if (stage === 2 && deckfield) {
+        const h = deckfield.clientHeight || 420;
+        beamEl.style.transform = "translateY(" + (frac * (h - 120)).toFixed(1) + "px)";
+      }
+      scanTitleEl.style.opacity = stage === 2 ? "1" : "0";
+
+      const tagsOn = stage === 2 || stage === 3;
+      tags.forEach((t, i) => {
+        const el = t as HTMLElement;
+        const show = tagsOn && (stage === 3 ? true : frac * tags.length > i);
+        const s3fade = stage === 3 ? Math.max(0, 1 - frac * 1.6) : 1;
+        el.style.opacity = show ? s3fade.toFixed(2) : "0";
+        el.style.transform = show ? "translateY(0) scale(1)" : "translateY(6px) scale(.96)";
+      });
+
+      if (stage === 3) {
+        alignDecks(true);
+        const rg = Math.min(1, Math.max(0, (frac - 0.25) / 0.6));
+        if (deckfield) deckfield.style.opacity = (1 - rg).toFixed(2);
+        repgridEl.style.opacity = rg.toFixed(2);
+        repgridEl.style.visibility = rg > 0.02 ? "visible" : "hidden";
+        repcards.forEach((c, i) => {
+          const el = c as HTMLElement;
+          const ci = Math.min(1, Math.max(0, (rg - i * 0.12) / 0.4));
+          el.style.opacity = ci.toFixed(2);
+          el.style.transform = "translateY(" + ((1 - ci) * 10).toFixed(1) + "px)";
+        });
+      } else if (stage < 3) {
+        alignDecks(false);
+        if (deckfield) deckfield.style.opacity = "1";
+        repgridEl.style.opacity = "0";
+        repgridEl.style.visibility = "hidden";
+      } else {
+        if (deckfield) deckfield.style.opacity = "0";
+        repgridEl.style.opacity = "1";
+        repgridEl.style.visibility = "visible";
+        repcards.forEach((c) => {
+          const el = c as HTMLElement;
+          el.style.opacity = "1";
+          el.style.transform = "none";
+        });
+      }
+
+      if (bView) {
+        rows.forEach((r, i) => {
+          const ri = stage > 4 ? 1 : Math.min(1, Math.max(0, (frac - i * 0.14) / 0.4));
+          r.classList.toggle("in", ri > 0.5 || stage > 4);
+        });
+
+        if (stage >= 5) {
+          dashEl.classList.add("open");
+          const openP = stage === 5 ? easeOut(Math.min(1, frac / 0.3)) : 1;
+          if (panel) panel.style.transform = "translateX(" + ((1 - openP) * 102).toFixed(2) + "%)";
+          const rStart = 0.32;
+          const rStep = 0.085;
+          const rDur = 0.2;
+          revItems.forEach((el, i) => {
+            const node = el as HTMLElement;
+            const rp =
+              stage > 5 ? 1 : Math.min(1, Math.max(0, (frac - rStart - i * rStep) / rDur));
+            node.style.opacity = rp.toFixed(2);
+            node.style.transform = "translateY(" + ((1 - rp) * 10).toFixed(1) + "px)";
+          });
+        } else {
+          dashEl.classList.remove("open");
+          if (panel) panel.style.transform = "translateX(102%)";
+          revItems.forEach((el) => {
+            const node = el as HTMLElement;
+            node.style.opacity = "0";
+            node.style.transform = "translateY(10px)";
+          });
+        }
+
+        dashEl.classList.toggle("review", stage >= 6);
+      } else {
+        dashEl.classList.remove("open", "review");
+        if (panel) panel.style.transform = "translateX(102%)";
+        revItems.forEach((el) => {
+          const node = el as HTMLElement;
+          node.style.opacity = "0";
+          node.style.transform = "translateY(10px)";
+        });
+        rows.forEach((r) => r.classList.remove("in"));
+      }
+
+      updateHumanLoop(stage, frac);
+
+      if (stage === 5 && lastStage !== 5 && panelScore) countUp(panelScore, 8.4);
+      lastStage = stage;
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = scrollEl.getBoundingClientRect();
+        const total = scrollEl.offsetHeight - window.innerHeight;
+        const raw = Math.min(Math.max(-rect.top, 0), total);
+        const p = total > 0 ? raw / total : 0;
+        const sf = p * STAGES;
+        const stage = Math.min(STAGES, Math.floor(sf) + 1);
+        const frac = Math.min(1, sf - (stage - 1));
+        setStage(stage, frac);
+        ticking = false;
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("load", onScroll);
+    setStage(1, 0);
+    onScroll();
+  })();
 }
