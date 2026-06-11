@@ -16,6 +16,9 @@ const BASE_YAW = Math.PI / 12;
 /* Yaw at which the head faces the camera — the gaze pivots around this once
    the cursor enters the canvas, so it actually "sees" the cursor. */
 const GAZE_YAW = 0;
+/* Pitch of the projector beams relative to the skull's local z-axis
+   (radians, positive = up). Tuned by eye against the rendered gaze line. */
+const BEAM_TILT = -0.34;
 
 /* Anatomical three-joint rig, like a horse's neck and skull:
    - neckBase / neckMid: cervical vertebrae — the neck bends in an arc
@@ -617,7 +620,9 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
       // blaze up like oncoming high beams — opacity and size follow the dot
       // product between beam direction and the direction to the camera
       eyeGroup.getWorldPosition(_eyePos);
-      _beamDir.set(0, 0, deform.muzzleSign).transformDirection(eyeGroup.matrixWorld);
+      _beamDir
+        .set(0, Math.sin(BEAM_TILT), deform.muzzleSign * Math.cos(BEAM_TILT))
+        .transformDirection(eyeGroup.matrixWorld);
       _toCam.copy(state.camera.position).sub(_eyePos).normalize();
       const align = Math.max(0, _beamDir.dot(_toCam)) ** 7;
       const fl = flareL.current;
@@ -694,24 +699,28 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
       <group ref={eyes} matrixAutoUpdate={false}>
         {/* eye sockets located from the mesh itself: the two symmetric
             concave clusters at (±0.30, 0.16, 0.27) in centered local space */}
-        <sprite position={[-0.3, 0.16, deform.muzzleSign * 0.27]} scale={[0.16, 0.16, 1]} renderOrder={4}>
+        {/* depth-tested against the skull (the glass front faces write depth),
+            so the far-side eye hides behind the head instead of shining
+            through it; lifted slightly off the socket surface so the sprite
+            plane doesn't get chord-clipped by its own concavity */}
+        <sprite position={[-0.3, 0.16, deform.muzzleSign * 0.31]} scale={[0.16, 0.16, 1]} renderOrder={4}>
           <spriteMaterial
             map={eyeGlow}
             color={EYE_PINK}
             blending={THREE.AdditiveBlending}
-            depthTest={false}
+            depthTest
             depthWrite={false}
             transparent
             opacity={1}
             toneMapped={false}
           />
         </sprite>
-        <sprite position={[0.3, 0.16, deform.muzzleSign * 0.27]} scale={[0.16, 0.16, 1]} renderOrder={4}>
+        <sprite position={[0.3, 0.16, deform.muzzleSign * 0.31]} scale={[0.16, 0.16, 1]} renderOrder={4}>
           <spriteMaterial
             map={eyeGlow}
             color={EYE_PINK}
             blending={THREE.AdditiveBlending}
-            depthTest={false}
+            depthTest
             depthWrite={false}
             transparent
             opacity={1}
@@ -719,45 +728,47 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
           />
         </sprite>
         {/* blinding white-pink flares, visible only when the gaze meets the camera */}
-        <sprite ref={flareL} position={[-0.3, 0.16, deform.muzzleSign * 0.3]} renderOrder={6}>
+        <sprite ref={flareL} position={[-0.3, 0.16, deform.muzzleSign * 0.32]} renderOrder={6}>
           <spriteMaterial
             map={eyeGlow}
             color={FLARE_WHITE}
             blending={THREE.AdditiveBlending}
-            depthTest={false}
+            depthTest
             depthWrite={false}
             transparent
             opacity={0}
             toneMapped={false}
           />
         </sprite>
-        <sprite ref={flareR} position={[0.3, 0.16, deform.muzzleSign * 0.3]} renderOrder={6}>
+        <sprite ref={flareR} position={[0.3, 0.16, deform.muzzleSign * 0.32]} renderOrder={6}>
           <spriteMaterial
             map={eyeGlow}
             color={FLARE_WHITE}
             blending={THREE.AdditiveBlending}
-            depthTest={false}
+            depthTest
             depthWrite={false}
             transparent
             opacity={0}
             toneMapped={false}
           />
         </sprite>
-        {/* projector beams shining forward out of the eyes */}
+        {/* projector beams shining forward out of the eyes, pitched up by
+            BEAM_TILT so they run along the gaze; the cones rotate about their
+            centers, so the position compensates to keep the apex at the eye */}
         <mesh
           ref={beamL}
           geometry={beamGeo}
           material={beamMat}
-          position={[-0.3, 0.16, deform.muzzleSign * 0.87]}
-          rotation={[(-Math.PI / 2) * deform.muzzleSign, 0, 0]}
+          position={[-0.3, 0.16 + Math.sin(BEAM_TILT) * 0.6, deform.muzzleSign * 0.87]}
+          rotation={[(-Math.PI / 2 - BEAM_TILT) * deform.muzzleSign, 0, 0]}
           renderOrder={5}
           frustumCulled={false}
         />
         <mesh
           geometry={beamGeo}
           material={beamMat}
-          position={[0.3, 0.16, deform.muzzleSign * 0.87]}
-          rotation={[(-Math.PI / 2) * deform.muzzleSign, 0, 0]}
+          position={[0.3, 0.16 + Math.sin(BEAM_TILT) * 0.6, deform.muzzleSign * 0.87]}
+          rotation={[(-Math.PI / 2 - BEAM_TILT) * deform.muzzleSign, 0, 0]}
           renderOrder={5}
           frustumCulled={false}
         />
