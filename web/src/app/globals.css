@@ -2121,8 +2121,77 @@ body:not(.hero-ready){overflow:hidden;}
 .foot .legal{max-width:var(--maxw);margin:36px auto 0;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;}
 @media (max-width:760px){.foot .wrap{grid-template-columns:1fr 1fr}}
 
+/* ── bento tiles: on hover the hairline edge twinkles like the unicorn's
+      facet seams — whole stretches of the border breathe in, crawl a few
+      degrees and dissolve. Two independent layers with feathered segments,
+      different periods and opposite drift give the asynchronous, organic
+      shimmer instead of a running garland. --bento-origin aims the first
+      segments at the unicorn's side of the grid. ───────────────────────── */
+@property --bento-drift-a{syntax:"<angle>";initial-value:0deg;inherits:false;}
+@property --bento-drift-b{syntax:"<angle>";initial-value:0deg;inherits:false;}
+.bento-tile{position:relative;}
+.bento-tile::before,
+.bento-tile::after{
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;
+  padding:1.5px;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  opacity:0;
+}
+/* layer A: a wide cold-white stretch near the origin + an icy-blue one
+   opposite — the palette matches the unicorn's white-cyan facet glints */
+.bento-tile::before{
+  background:conic-gradient(from calc(var(--bento-origin,90deg) + var(--bento-drift-a)),
+    transparent 6deg,
+    rgba(255,255,255,0) 20deg,
+    rgba(244,250,255,.9) 40deg,
+    rgba(214,238,255,0) 62deg,
+    transparent 150deg,
+    rgba(150,212,255,0) 192deg,
+    rgba(150,212,255,.5) 212deg,
+    rgba(150,212,255,0) 232deg,
+    transparent 360deg);
+}
+/* layer B: two softer cold stretches elsewhere, drifting the other way */
+.bento-tile::after{
+  background:conic-gradient(from calc(var(--bento-origin,90deg) - var(--bento-drift-b)),
+    transparent 88deg,
+    rgba(228,244,255,0) 104deg,
+    rgba(228,244,255,.7) 122deg,
+    rgba(228,244,255,0) 140deg,
+    transparent 262deg,
+    rgba(120,205,245,0) 280deg,
+    rgba(120,205,245,.4) 296deg,
+    rgba(120,205,245,0) 312deg,
+    transparent 360deg);
+}
+.bento-tile:hover::before,
+.bento-tile:focus-visible::before{
+  animation:bento-edge-breathe-a 2.6s ease-in-out infinite;
+}
+.bento-tile:hover::after,
+.bento-tile:focus-visible::after{
+  animation:bento-edge-breathe-b 3.6s ease-in-out .7s infinite;
+}
+/* ignite → crawl a little → dissolve, like one facet edge after another */
+@keyframes bento-edge-breathe-a{
+  0%{opacity:0;--bento-drift-a:0deg;}
+  30%{opacity:1;}
+  65%{opacity:.75;}
+  100%{opacity:0;--bento-drift-a:32deg;}
+}
+@keyframes bento-edge-breathe-b{
+  0%{opacity:0;--bento-drift-b:0deg;}
+  32%{opacity:1;}
+  68%{opacity:.7;}
+  100%{opacity:0;--bento-drift-b:26deg;}
+}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;scroll-behavior:auto !important;}
+  .bento-tile::before,.bento-tile::after{animation:none !important;opacity:0 !important;}
   .reveal{opacity:1 !important;transform:none !important;}
   .scrub-heading.is-shown,.workflow-heading.is-shown{display:block;}
   .scrub-heading,.workflow-heading{--sub-op:1;}
