@@ -413,18 +413,20 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
       new THREE.MeshPhysicalMaterial({
         color: new THREE.Color(DEEP_VIOLET),
         transparent: true,
-        // True crystal: mostly see-through, edges and internal facet lines
-        // stay visible through the body — edge-heavy, not surface-heavy.
-        opacity: 0.3,
-        roughness: 0.1,
+        // Semi-frosted crystal — halfway between the original mirror gloss
+        // and the fully matte pass: enough roughness to keep the soft env
+        // washes on the facets, enough clearcoat to bring back a light
+        // sparkle on edges catching the panels.
+        opacity: 0.27,
+        roughness: 0.28,
         metalness: 0,
-        transmission: 0.7,
+        transmission: 0.72,
         ior: 1.5,
         thickness: 0.8,
-        reflectivity: 0.9,
-        clearcoat: 1,
-        clearcoatRoughness: 0.05,
-        envMapIntensity: 1.2,
+        reflectivity: 0.6,
+        clearcoat: 0.5,
+        clearcoatRoughness: 0.25,
+        envMapIntensity: 0.8,
         flatShading: true,
         // Front faces write depth so edges on the far side of the head are
         // occluded by the volume; polygonOffset keeps surface lines stable.
@@ -447,7 +449,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
         color: new THREE.Color("#0a0a18"),
         side: THREE.BackSide,
         transparent: true,
-        roughness: 0.4,
+        roughness: 0.55,
         metalness: 0,
         envMapIntensity: 0.3,
         flatShading: true,
@@ -807,6 +809,10 @@ export default function UnicornScene({ isMobile, active }: UnicornSceneProps) {
           the silhouette (horn, ears, neck edge) out of the black background */}
       <pointLight position={[-3.5, 1.5, -2.5]} intensity={55} color={VIOLET} />
       <pointLight position={[3.5, 1.5, -2.5]} intensity={55} color={CYAN} />
+      {/* side kickers, just behind the head plane: pink camera-left, bright
+          blue camera-right — they rake the matte facets from the sides */}
+      <pointLight position={[-4, 0.4, -0.6]} intensity={45} color="#ff5ad1" />
+      <pointLight position={[4, 0.4, -0.6]} intensity={45} color="#35c8ff" />
       {/* minimal white key for sharp facet glints only */}
       <directionalLight position={[0, 2, 4]} intensity={0.6} color="#ffffff" />
       {/* white core fixed in world space at the head center: the head sways
