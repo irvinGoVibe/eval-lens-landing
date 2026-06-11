@@ -282,7 +282,7 @@ function BackgroundGlow() {
           blending={THREE.AdditiveBlending}
           depthWrite={false}
           transparent
-          opacity={0.2}
+          opacity={0.14}
         />
       </sprite>
       <sprite scale={[6, 6, 1]} position={[1.5, -0.5, 0]}>
@@ -292,7 +292,7 @@ function BackgroundGlow() {
           blending={THREE.AdditiveBlending}
           depthWrite={false}
           transparent
-          opacity={0.15}
+          opacity={0.11}
         />
       </sprite>
       <sprite scale={[4.5, 4.5, 1]} position={[0.2, 1.3, 0]}>
@@ -302,7 +302,7 @@ function BackgroundGlow() {
           blending={THREE.AdditiveBlending}
           depthWrite={false}
           transparent
-          opacity={0.12}
+          opacity={0.09}
         />
       </sprite>
     </group>
@@ -429,7 +429,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
         reflectivity: 0.6,
         clearcoat: 0.5,
         clearcoatRoughness: 0.25,
-        envMapIntensity: 0.8,
+        envMapIntensity: 0.65,
         flatShading: true,
         // Front faces write depth so edges on the far side of the head are
         // occluded by the volume; polygonOffset keeps surface lines stable.
@@ -438,7 +438,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
         polygonOffsetFactor: 1,
         polygonOffsetUnits: 1,
         emissive: new THREE.Color("#1c1452"),
-        emissiveIntensity: 0.35,
+        emissiveIntensity: 0.26,
       }),
     [],
   );
@@ -809,20 +809,20 @@ export default function UnicornScene({ isMobile, active, zoom = 1 }: UnicornScen
     >
       <color attach="background" args={["#000000"]} />
       <BackgroundGlow />
-      <ambientLight intensity={0.12} />
+      <ambientLight intensity={0.08} />
       {/* colored back-side rim lights: violet left, cyan right — they draw
           the silhouette (horn, ears, neck edge) out of the black background */}
-      <pointLight position={[-3.5, 1.5, -2.5]} intensity={55} color={VIOLET} />
-      <pointLight position={[3.5, 1.5, -2.5]} intensity={55} color={CYAN} />
+      <pointLight position={[-3.5, 1.5, -2.5]} intensity={40} color={VIOLET} />
+      <pointLight position={[3.5, 1.5, -2.5]} intensity={40} color={CYAN} />
       {/* side kickers, just behind the head plane: pink camera-left, bright
           blue camera-right — they rake the matte facets from the sides */}
-      <pointLight position={[-4, 0.4, -0.6]} intensity={45} color="#ff5ad1" />
-      <pointLight position={[4, 0.4, -0.6]} intensity={45} color="#35c8ff" />
+      <pointLight position={[-4, 0.4, -0.6]} intensity={30} color="#ff5ad1" />
+      <pointLight position={[4, 0.4, -0.6]} intensity={30} color="#35c8ff" />
       {/* minimal white key for sharp facet glints only */}
-      <directionalLight position={[0, 2, 4]} intensity={0.6} color="#ffffff" />
+      <directionalLight position={[0, 2, 4]} intensity={0.45} color="#ffffff" />
       {/* white core fixed in world space at the head center: the head sways
           around it, so interior facets shimmer as their angle changes */}
-      <pointLight position={[0, -0.05, 0]} intensity={10} distance={1.7} decay={2} color="#ffffff" />
+      <pointLight position={[0, -0.05, 0]} intensity={8} distance={1.7} decay={2} color="#ffffff" />
       <Environment frames={1} resolution={128}>
         {/* violet key panel, camera-left */}
         <mesh position={[-5, 1.5, 3]} rotation={[0, Math.PI / 3, 0]}>

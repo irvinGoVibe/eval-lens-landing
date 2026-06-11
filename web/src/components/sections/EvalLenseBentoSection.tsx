@@ -106,19 +106,9 @@ function ArtTile({
 function HorseStage() {
   return (
     <div className="relative -mx-6 mt-1 min-h-[320px] flex-1 self-stretch">
-      {/* dark pocket: dims the page halo right around the head, easing it
-          down to the canvas's own black — paired with the edge mask below,
-          the page→canvas transition runs dark-to-dark and disappears */}
-      <div
-        aria-hidden
-        className="absolute -inset-x-28 -inset-y-14 bg-[radial-gradient(60%_68%_at_50%_48%,rgba(1,1,4,0.95),rgba(1,1,4,0.6)_56%,transparent_82%)]"
-      />
-      <div
-        aria-hidden
-        className="absolute left-1/2 top-1/2 h-[92%] w-[92%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(108,76,241,0.16),rgba(46,197,232,0.05)_55%,transparent_78%)]"
-      />
-      {/* the canvas clears to opaque black; this mask dissolves its edges
-          into the darkened pocket so no rectangle shows */}
+      {/* the canvas clears to opaque black; the page halo is kept dark
+          enough that the rectangle has nothing to contrast against, and
+          this mask dissolves the last trace of its edges */}
       <div className="absolute inset-0 [mask-image:radial-gradient(74%_84%_at_50%_48%,black_56%,transparent_95%)]">
         <BentoHorse />
       </div>
@@ -138,9 +128,9 @@ export function EvalLenseBentoSection() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(62% 68% at 42% 48%, rgba(46,34,105,0.5), transparent 70%)," +
-            "radial-gradient(52% 58% at 72% 66%, rgba(19,44,96,0.42), transparent 70%)," +
-            "radial-gradient(46% 44% at 52% 18%, rgba(52,42,107,0.38), transparent 70%)",
+            "radial-gradient(62% 68% at 42% 48%, rgba(36,26,82,0.28), transparent 70%)," +
+            "radial-gradient(52% 58% at 72% 66%, rgba(13,31,69,0.24), transparent 70%)," +
+            "radial-gradient(46% 44% at 52% 18%, rgba(42,34,87,0.2), transparent 70%)",
         }}
       />
       <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-4 lg:grid-cols-3 lg:auto-rows-[300px]">
@@ -148,7 +138,7 @@ export function EvalLenseBentoSection() {
             head — additive, breathing slowly, blind to the pointer */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[308px] z-20 hidden h-[860px] w-[860px] -translate-x-1/2 -translate-y-1/2 animate-[bento-aura_7s_ease-in-out_infinite] mix-blend-screen bg-[radial-gradient(closest-side,rgba(173,196,255,0.14),rgba(108,76,241,0.09)_42%,rgba(46,197,232,0.04)_60%,transparent_72%)] lg:block"
+          className="pointer-events-none absolute left-1/2 top-[308px] z-20 hidden h-[860px] w-[860px] -translate-x-1/2 -translate-y-1/2 animate-[bento-aura_7s_ease-in-out_infinite] mix-blend-screen bg-[radial-gradient(closest-side,rgba(173,196,255,0.08),rgba(108,76,241,0.05)_42%,rgba(46,197,232,0.02)_60%,transparent_72%)] lg:block"
         />
         {/* ── hero: the unicorn, center, two rows tall — no frame at all:
                the head floats over the shared background glow ──────────── */}
