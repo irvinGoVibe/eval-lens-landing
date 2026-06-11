@@ -225,6 +225,9 @@ const EYE_RING = new THREE.Color("#ff7ad1").multiplyScalar(1.5);
 type UnicornSceneProps = {
   isMobile: boolean;
   active: boolean;
+  /** Linear head-size multiplier — implemented as camera dolly-in, so the
+   *  figure scales without touching the shared model rig. Default 1. */
+  zoom?: number;
 };
 
 /** Soft radial sprite used for the halo behind the head. */
@@ -796,12 +799,12 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   );
 }
 
-export default function UnicornScene({ isMobile, active }: UnicornSceneProps) {
+export default function UnicornScene({ isMobile, active, zoom = 1 }: UnicornSceneProps) {
   return (
     <Canvas
       frameloop={active ? "always" : "never"}
       dpr={isMobile ? [1, 1.5] : [1, 2]}
-      camera={{ position: [0, 0.05, 3.2], fov: 38 }}
+      camera={{ position: [0, 0.05, 3.2 / zoom], fov: 38 }}
       gl={{ antialias: true, powerPreference: "high-performance" }}
     >
       <color attach="background" args={["#000000"]} />

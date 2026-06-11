@@ -101,29 +101,25 @@ function ArtTile({
   );
 }
 
-/** The big central orb with the live 3D head. */
-function HorseOrb() {
+/** The live 3D head, unframed: the scene's black background dissolves into
+ *  the black tile, so the unicorn floats freely — no circle, no border. */
+function HorseStage() {
   return (
-    <div className="relative h-[300px] w-[300px] rounded-full lg:h-[400px] lg:w-[400px]">
+    <div className="relative -mx-6 mt-1 min-h-[320px] flex-1 self-stretch">
+      {/* dark pocket: dims the page halo right around the head, easing it
+          down to the canvas's own black — paired with the edge mask below,
+          the page→canvas transition runs dark-to-dark and disappears */}
       <div
         aria-hidden
-        className="absolute inset-[-12%] rounded-full bg-[radial-gradient(closest-side,rgba(108,76,241,0.3),transparent_72%)]"
+        className="absolute -inset-x-28 -inset-y-14 bg-[radial-gradient(60%_68%_at_50%_48%,rgba(1,1,4,0.95),rgba(1,1,4,0.6)_56%,transparent_82%)]"
       />
-      <svg
-        viewBox="0 0 100 100"
+      <div
         aria-hidden
-        className="absolute inset-0 h-full w-full animate-[spin_90s_linear_infinite] opacity-50"
-      >
-        <defs>
-          <path id="bento-ring" d="M50,50 m-48,0 a48,48 0 1,1 96,0 a48,48 0 1,1 -96,0" />
-        </defs>
-        <text fill="var(--lavender)" style={{ fontSize: "3.2px", letterSpacing: "1.2px", fontFamily: "var(--font-mono)" }}>
-          <textPath href="#bento-ring">
-            10110101 EVALLENSE 0110 10011 EVAL 110101 10110 01101 LENS 0110101 1011
-          </textPath>
-        </text>
-      </svg>
-      <div className="absolute inset-[14px] overflow-hidden rounded-full">
+        className="absolute left-1/2 top-1/2 h-[92%] w-[92%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(108,76,241,0.16),rgba(46,197,232,0.05)_55%,transparent_78%)]"
+      />
+      {/* the canvas clears to opaque black; this mask dissolves its edges
+          into the darkened pocket so no rectangle shows */}
+      <div className="absolute inset-0 [mask-image:radial-gradient(74%_84%_at_50%_48%,black_56%,transparent_95%)]">
         <BentoHorse />
       </div>
     </div>
@@ -133,11 +129,30 @@ function HorseOrb() {
 export function EvalLenseBentoSection() {
   return (
     <section id="system" className="band ink" data-screen-label="System bento">
+      {/* the unicorn's halo, stretched edge-to-edge UNDER every card: the
+          same three glows the in-canvas BackgroundGlow paints (deep violet
+          left, deep blue lower-right, violet overhead), scaled to the full
+          section width so the head's light and the page share one wash */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(62% 68% at 42% 48%, rgba(46,34,105,0.5), transparent 70%)," +
+            "radial-gradient(52% 58% at 72% 66%, rgba(19,44,96,0.42), transparent 70%)," +
+            "radial-gradient(46% 44% at 52% 18%, rgba(52,42,107,0.38), transparent 70%)",
+        }}
+      />
       <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-4 lg:grid-cols-3 lg:auto-rows-[300px]">
-        {/* ── hero: the unicorn, center, two rows tall ─────────────── */}
+        {/* over-light: the same light washing OVER the cards around the
+            head — additive, breathing slowly, blind to the pointer */}
         <div
-          className={`${TILE} [--bento-origin:180deg] order-1 flex flex-col items-center px-6 py-8 text-center lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1`}
-        >
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-[308px] z-20 hidden h-[860px] w-[860px] -translate-x-1/2 -translate-y-1/2 animate-[bento-aura_7s_ease-in-out_infinite] mix-blend-screen bg-[radial-gradient(closest-side,rgba(173,196,255,0.14),rgba(108,76,241,0.09)_42%,rgba(46,197,232,0.04)_60%,transparent_72%)] lg:block"
+        />
+        {/* ── hero: the unicorn, center, two rows tall — no frame at all:
+               the head floats over the shared background glow ──────────── */}
+        <div className="relative order-1 flex flex-col items-center px-6 py-8 text-center lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.16em] text-[var(--lavender)]">
             <Sparkle className="h-3 w-3" />
             EvalLense
@@ -146,9 +161,7 @@ export function EvalLenseBentoSection() {
             Lens Your{" "}
             <span className="bg-[image:var(--lens)] bg-clip-text text-transparent">Next Unicorn</span>
           </h2>
-          <div className="relative -mb-2 mt-2 flex flex-1 items-center justify-center">
-            <HorseOrb />
-          </div>
+          <HorseStage />
           <div className={`flex flex-wrap items-center justify-center gap-3 pt-3 ${REVEAL}`}>
             <Link href="/book-demo" className="btn btn-primary btn-sm">
               <span className="btn-txt">Book a demo</span>

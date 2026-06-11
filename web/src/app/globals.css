@@ -2188,6 +2188,13 @@ body:not(.hero-ready){overflow:hidden;}
   68%{opacity:.7;}
   100%{opacity:0;--bento-drift-b:26deg;}
 }
+/* the unicorn's aura washing over the surrounding tiles, breathing slowly.
+   Scale only — centering comes from the standalone translate property the
+   Tailwind utilities set, and transform composes on top of it. */
+@keyframes bento-aura{
+  0%,100%{opacity:.75;transform:scale(1);}
+  50%{opacity:1;transform:scale(1.05);}
+}
 
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;scroll-behavior:auto !important;}
