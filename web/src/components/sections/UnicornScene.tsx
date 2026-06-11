@@ -41,6 +41,7 @@ const _euler = new THREE.Euler();
 const _gazeDir = new THREE.Vector3();
 const _toCam = new THREE.Vector3();
 const _eyePos = new THREE.Vector3();
+const _eyeN = new THREE.Vector3();
 const _pivot = new THREE.Vector3();
 const _rp = new THREE.Vector3();
 
@@ -206,10 +207,19 @@ const ENV_VIOLET = new THREE.Color(VIOLET).multiplyScalar(6);
 const ENV_CYAN = new THREE.Color(CYAN).multiplyScalar(5);
 const ENV_LAVENDER = new THREE.Color(LAVENDER).multiplyScalar(9);
 
-/* Pink-white headlight palette, pushed past 1.0 to feed the bloom pass. */
-const EYE_PINK = new THREE.Color("#ffc4e8").multiplyScalar(1.5);
-/* Hot center of the eye itself — small and bright, like the original dot. */
-const EYE_CORE = new THREE.Color("#ffd9f0").multiplyScalar(2.4);
+/* Eye socket centroids measured from the lowpoly mesh vertices (in the
+   bbox-centered space the component renders in; z gets ×muzzleSign at use
+   sites). The sculpt is slightly asymmetric — the right eye sits 0.018
+   lower than the left — so each eye carries its own anchor. */
+const EYE_L = { x: -0.31, y: 0.154, z: 0.296 };
+const EYE_R = { x: 0.298, y: 0.136, z: 0.303 };
+/* y sits 0.015 below the measured centroids — the glow reads better tucked
+   into the lower half of the socket. */
+
+/* Hot white pupil dots, pushed past 1.0 to feed the bloom pass… */
+const EYE_CORE = new THREE.Color("#ffffff").multiplyScalar(4.2);
+/* …wrapped in a faint, heavily feathered pink glow around each pupil. */
+const EYE_RING = new THREE.Color("#ff7ad1").multiplyScalar(1.5);
 
 
 type UnicornSceneProps = {
@@ -233,24 +243,24 @@ function makeGlowTexture(): THREE.CanvasTexture {
   return new THREE.CanvasTexture(canvas);
 }
 
-/** Blurred glow for the eye dots: no hot core, just a dim, heavily feathered
- *  haze — the eyes read as diffuse light from inside, never as bright balls. */
-function makeEyeGlowTexture(): THREE.CanvasTexture {
+
+/** Heavily feathered falloff for the pink eye glow: low peak, long fade —
+ *  it should melt into the facets, never read as a drawn circle. */
+function makeRingGlowTexture(): THREE.CanvasTexture {
   const size = 256;
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   const grad = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-  grad.addColorStop(0, "rgba(255,255,255,0.2)");
-  grad.addColorStop(0.4, "rgba(255,255,255,0.09)");
-  grad.addColorStop(0.75, "rgba(255,255,255,0.03)");
+  grad.addColorStop(0, "rgba(255,255,255,0.3)");
+  grad.addColorStop(0.35, "rgba(255,255,255,0.14)");
+  grad.addColorStop(0.7, "rgba(255,255,255,0.05)");
   grad.addColorStop(1, "rgba(255,255,255,0)");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, size, size);
   return new THREE.CanvasTexture(canvas);
 }
-
 
 function BackgroundGlow() {
   const texture = useMemo(() => makeGlowTexture(), []);
@@ -303,8 +313,10 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   const body = useRef<THREE.Mesh>(null);
   const seams = useRef<THREE.LineSegments>(null);
   const eyes = useRef<THREE.Group>(null);
-  const hazeL = useRef<THREE.Sprite>(null);
-  const hazeR = useRef<THREE.Sprite>(null);
+  const pupilL = useRef<THREE.Sprite>(null);
+  const pupilR = useRef<THREE.Sprite>(null);
+  const ringL = useRef<THREE.Sprite>(null);
+  const ringR = useRef<THREE.Sprite>(null);
   // accumulated twinkle phase — integrated each frame so the sweep can
   // speed up with the gaze without the discontinuity of t * speed
   const sweepPhase = useRef(0);
@@ -510,8 +522,8 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     const epos0 = Float32Array.from(edgeAttr.array as Float32Array);
     const eweights = buildRigWeights(epos0, edgeAttr.count, neckZ, muzzleSign);
     // edges near the eye sockets get a constant white highlight
-    const eyeL = [-0.3, 0.16, muzzleSign * 0.27];
-    const eyeR = [0.3, 0.16, muzzleSign * 0.27];
+    const eyeL = [EYE_L.x, EYE_L.y, muzzleSign * EYE_L.z];
+    const eyeR = [EYE_R.x, EYE_R.y, muzzleSign * EYE_R.z];
     const eyeEdge = new Float32Array(edgeAttr.count / 2);
     for (let e = 0; e < eyeEdge.length; e++) {
       const a = e * 6;
@@ -525,10 +537,10 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     return { pos0, nrm0, weights, epos0, eweights, muzzleSign, eyeEdge };
   }, [geometry, edges]);
 
-  // Blurred haze for the pink eyes — softer falloff than the halo texture.
-  const eyeGlow = useMemo(() => makeEyeGlowTexture(), []);
-  // Tight hot-center texture for the eye cores (same falloff as the halo).
+  // Tight hot-center texture for the pupil dots (same falloff as the halo).
   const coreGlow = useMemo(() => makeGlowTexture(), []);
+  // Soft long-fade texture for the pink glow around the pupils.
+  const ringGlow = useMemo(() => makeRingGlowTexture(), []);
 
   useEffect(() => {
     return () => {
@@ -536,10 +548,10 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
       innerGlow.dispose();
       edges.dispose();
       seam.dispose();
-      eyeGlow.dispose();
       coreGlow.dispose();
+      ringGlow.dispose();
     };
-  }, [glass, innerGlow, edges, seam, eyeGlow, coreGlow]);
+  }, [glass, innerGlow, edges, seam, coreGlow, ringGlow]);
 
   useFrame((state, delta) => {
     const g = group.current;
@@ -628,13 +640,35 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
       eyeGroup.getWorldPosition(_eyePos);
       _gazeDir.set(0, 0, deform.muzzleSign).transformDirection(eyeGroup.matrixWorld);
       _toCam.copy(state.camera.position).sub(_eyePos).normalize();
-      gazeAlign = Math.max(0, _gazeDir.dot(_toCam)) ** 5;
-      const hl = hazeL.current;
-      const hr = hazeR.current;
-      if (hl && hr) {
-        (hl.material as THREE.SpriteMaterial).opacity = gazeAlign * 0.7;
-        (hr.material as THREE.SpriteMaterial).opacity = gazeAlign * 0.7;
-      }
+      // hard head-on gate: dark until the muzzle is within ~25° of the
+      // camera, full blaze only in true eye contact — a 3/4 view stays calm
+      gazeAlign = THREE.MathUtils.smoothstep(_gazeDir.dot(_toCam), 0.82, 0.97);
+
+      // per-eye facing factor: how squarely this eye's outward normal looks
+      // at the camera — an averted eye goes fully dark, so nothing blooms
+      // past the silhouette as a detached ball. The normal leans sideways
+      // (horse eyes look outward) and the window dips below zero, so the
+      // NEAR eye stays lit even in a full profile while the far one (dot
+      // strongly negative) still cuts off.
+      const faceOf = (sideSign: number) => {
+        _eyeN
+          .set(sideSign * 0.55, 0.05, deform.muzzleSign * 0.75)
+          .normalize()
+          .transformDirection(eyeGroup.matrixWorld);
+        return THREE.MathUtils.smoothstep(_eyeN.dot(_toCam), -0.15, 0.3);
+      };
+      const faceL = faceOf(-1);
+      const faceR = faceOf(1);
+
+      // eyes glow steadily for whichever eye faces the camera, and pick up
+      // an extra flash on true eye contact
+      const setOpacity = (s: THREE.Sprite | null, o: number) => {
+        if (s) (s.material as THREE.SpriteMaterial).opacity = o;
+      };
+      setOpacity(pupilL.current, (0.85 + 0.15 * gazeAlign) * faceL);
+      setOpacity(pupilR.current, (0.85 + 0.15 * gazeAlign) * faceR);
+      setOpacity(ringL.current, (0.35 + 0.3 * gazeAlign) * faceL);
+      setOpacity(ringR.current, (0.35 + 0.3 * gazeAlign) * faceR);
     }
 
     const bodyGeo = body.current?.geometry;
@@ -697,44 +731,39 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
         renderOrder={2}
         frustumCulled={false}
       />
-      {/* glowing pink eyes: two additive glow dots plus a soft pink light,
-          all driven by the skull joint so they move with the head */}
+      {/* eyes: a blazing white pupil wrapped in a tight pink glow, riding the
+          skull joint; per-frame opacity fades each eye out as it turns away,
+          so the far eye never floats past the silhouette, and both pick up
+          an extra flash on true eye contact */}
       <group ref={eyes} matrixAutoUpdate={false}>
-        {/* eye sockets located from the mesh itself: the two symmetric
-            concave clusters at (±0.30, 0.16, 0.27) in centered local space */}
-        {/* depth-tested against the skull (the glass front faces write depth),
-            so the far-side eye hides behind the head instead of shining
-            through it; lifted slightly off the socket surface so the sprite
-            plane doesn't get chord-clipped by its own concavity */}
-        {/* wide feathered haze, faded in only while the gaze meets the
-            camera (opacity driven per-frame from the alignment dot) */}
-        <sprite ref={hazeL} position={[-0.3, 0.16, deform.muzzleSign * 0.31]} scale={[0.45, 0.45, 1]} renderOrder={4}>
+        {/* anchored on the measured EYE_L / EYE_R socket centroids, lifted a
+            touch off the surface so the sprite plane clears the facets;
+            sprites are depth-tested so the far eye hides behind the head */}
+        <sprite ref={ringL} position={[EYE_L.x, EYE_L.y, deform.muzzleSign * (EYE_L.z + 0.004)]} scale={[0.24, 0.24, 1]} renderOrder={5}>
           <spriteMaterial
-            map={eyeGlow}
-            color={EYE_PINK}
+            map={ringGlow}
+            color={EYE_RING}
             blending={THREE.AdditiveBlending}
             depthTest
             depthWrite={false}
             transparent
-            opacity={0}
+            opacity={0.5}
             toneMapped={false}
           />
         </sprite>
-        <sprite ref={hazeR} position={[0.3, 0.16, deform.muzzleSign * 0.31]} scale={[0.45, 0.45, 1]} renderOrder={4}>
+        <sprite ref={ringR} position={[EYE_R.x, EYE_R.y, deform.muzzleSign * (EYE_R.z + 0.004)]} scale={[0.24, 0.24, 1]} renderOrder={5}>
           <spriteMaterial
-            map={eyeGlow}
-            color={EYE_PINK}
+            map={ringGlow}
+            color={EYE_RING}
             blending={THREE.AdditiveBlending}
             depthTest
             depthWrite={false}
             transparent
-            opacity={0}
+            opacity={0.5}
             toneMapped={false}
           />
         </sprite>
-        {/* hot eye cores: small bright dots inside the haze, restoring the
-            glowing pupil itself */}
-        <sprite position={[-0.3, 0.16, deform.muzzleSign * 0.315]} scale={[0.09, 0.09, 1]} renderOrder={5}>
+        <sprite ref={pupilL} position={[EYE_L.x, EYE_L.y, deform.muzzleSign * (EYE_L.z + 0.012)]} scale={[0.09, 0.09, 1]} renderOrder={6}>
           <spriteMaterial
             map={coreGlow}
             color={EYE_CORE}
@@ -746,7 +775,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
             toneMapped={false}
           />
         </sprite>
-        <sprite position={[0.3, 0.16, deform.muzzleSign * 0.315]} scale={[0.09, 0.09, 1]} renderOrder={5}>
+        <sprite ref={pupilR} position={[EYE_R.x, EYE_R.y, deform.muzzleSign * (EYE_R.z + 0.012)]} scale={[0.09, 0.09, 1]} renderOrder={6}>
           <spriteMaterial
             map={coreGlow}
             color={EYE_CORE}
@@ -758,13 +787,6 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
             toneMapped={false}
           />
         </sprite>
-        <pointLight
-          position={[0, 0.16, deform.muzzleSign * 0.3]}
-          intensity={12}
-          distance={1.4}
-          decay={2}
-          color="#ff5ad1"
-        />
       </group>
     </group>
   );
