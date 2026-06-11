@@ -19,6 +19,10 @@ const GAZE_YAW = 0;
 /* Pitch of the projector beams relative to the skull's local z-axis
    (radians, positive = up). Tuned by eye against the rendered gaze line. */
 const BEAM_TILT = -0.34;
+/* Leftward turns over-twist the neck from the right-facing rest pose, so the
+   whole body slowly swings up to this far left (40°) once the cursor crosses
+   to the left half — the neck chain then only covers what remains. */
+const BODY_TURN_LEFT = 0.7;
 
 /* Anatomical three-joint rig, like a horse's neck and skull:
    - neckBase / neckMid: cervical vertebrae — the neck bends in an arc
@@ -301,6 +305,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   const flareR = useRef<THREE.Sprite>(null);
   const beamL = useRef<THREE.Mesh>(null);
   const rig = useRef({
+    bodyYaw: { x: BASE_YAW, v: 0 },
     neckYaw: { x: 0, v: 0 },
     neckPitch: { x: 0, v: 0 },
     headYaw: { x: 0, v: 0 },
@@ -557,7 +562,22 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     // the neck (group) stays planted in the 45° rest pose with a faint
     // breathing sway; only the head turns toward the cursor, on a spring
     const engaged = !isMobile && gaze.current.active;
-    const totalYaw = engaged ? GAZE_YAW - BASE_YAW + gaze.current.x * 0.6 : 0;
+    const r = rig.current;
+
+    // body yaw: rest pose for a centered/right cursor; once the cursor moves
+    // into the left half, the whole model swings left (up to BODY_TURN_LEFT)
+    // on a slow, heavy spring so the neck never has to over-twist
+    const bodyTarget =
+      BASE_YAW +
+      (engaged
+        ? THREE.MathUtils.clamp(gaze.current.x, -1, 0) * BODY_TURN_LEFT
+        : 0);
+    springStep(r.bodyYaw, bodyTarget, 10, 4.5, delta);
+
+    // the chain aims at the world-space gaze minus whatever the body has
+    // already turned, so as the body swings the neck unwinds by itself
+    const worldYaw = engaged ? GAZE_YAW + gaze.current.x * 0.6 : BASE_YAW;
+    const totalYaw = worldYaw - r.bodyYaw.x;
     // asymmetric pitch: the head throws itself up at a cursor above it much
     // harder than it dips toward one below
     const pitchGain = gaze.current.y < 0 ? 0.55 : 0.2;
@@ -565,7 +585,6 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
 
     // split the turn across the chain with anatomical limits: the neck takes
     // its share, the skull does the rest at the poll joint
-    const r = rig.current;
     const neckYawT = THREE.MathUtils.clamp(
       totalYaw * NECK_YAW_SHARE,
       -NECK_YAW_MAX,
@@ -595,7 +614,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     springStep(r.neckYaw, neckYawT, 18, 5.5, delta);
     springStep(r.neckPitch, neckPitchT, 18, 5.5, delta);
 
-    g.rotation.y = BASE_YAW + Math.sin(t * 0.22) * 0.08;
+    g.rotation.y = r.bodyYaw.x + Math.sin(t * 0.22) * 0.08;
     g.rotation.x = Math.sin(t * 0.31) * 0.03;
 
     // FK chain: lower vertebrae take 40% of the neck angle, upper 60%, and a
