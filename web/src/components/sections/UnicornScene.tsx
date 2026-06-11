@@ -708,11 +708,13 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     if (colorAttr) {
       sweepPhase.current += delta * (0.9 + gazeAlign * 0.8);
       const sweep = sweepPhase.current;
-      const amp = 2.2 + gazeAlign * 2.4;
-      const socket = 1.2 + gazeAlign * 1.8;
+      // dimmer and rarer than before: lower amplitude, and a much narrower
+      // pulse (^18 vs ^8) so only a couple of edges flash at any moment
+      const amp = 1.5 + gazeAlign * 1.6;
+      const socket = 1.0 + gazeAlign * 1.5;
       for (let i = 0; i < twinklePhase.length; i++) {
         const s = Math.sin(sweep + twinklePhase[i]);
-        const pulse = s > 0 ? s ** 8 : 0;
+        const pulse = s > 0 ? s ** 18 : 0;
         const b = 0.1 + pulse * amp + deform.eyeEdge[i] * socket;
         const a = i * 2;
         colorAttr.setXYZ(a, b, b, b * 1.08);
