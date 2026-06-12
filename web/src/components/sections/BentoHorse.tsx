@@ -57,7 +57,7 @@ export function BentoHorse() {
   return (
     <div ref={holder} className="absolute inset-0">
       {mounted && !fallback ? (
-        <UnicornScene isMobile={isMobile} active={inView} zoom={1.25} />
+        <UnicornScene isMobile={isMobile} active={inView} zoom={1.6} withTitle />
       ) : (
         <div
           aria-hidden

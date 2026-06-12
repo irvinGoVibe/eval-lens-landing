@@ -105,11 +105,11 @@ function ArtTile({
  *  the black tile, so the unicorn floats freely — no circle, no border. */
 function HorseStage() {
   return (
-    <div className="relative -mx-6 mt-1 min-h-[320px] flex-1 self-stretch">
-      {/* the canvas clears to opaque black; the page halo is kept dark
-          enough that the rectangle has nothing to contrast against, and
-          this mask dissolves the last trace of its edges */}
-      <div className="absolute inset-0 [mask-image:radial-gradient(74%_84%_at_50%_48%,black_56%,transparent_95%)]">
+    <div className="relative -mx-6 mt-1 min-h-[340px] flex-1 self-stretch">
+      {/* the canvas clears to opaque black; the radial mask dissolves its
+          edges into the page, the bottom-up one sinks the neck into the
+          dark — the in-canvas title needs no DOM layering tricks */}
+      <div className="absolute inset-0 [mask-composite:intersect] [mask-image:radial-gradient(74%_88%_at_50%_40%,black_44%,transparent_96%),linear-gradient(to_top,transparent_8%,rgba(0,0,0,0.3)_24%,rgba(0,0,0,0.7)_38%,black_52%)]">
         <BentoHorse />
       </div>
     </div>
@@ -147,10 +147,10 @@ export function EvalLenseBentoSection() {
             <Sparkle className="h-3 w-3" />
             EvalLense
           </span>
-          <h2 className="mt-4 font-[family-name:var(--font-display)] text-balance text-[clamp(26px,2.6vw,34px)] font-semibold leading-[1.1] tracking-tight text-[var(--fg-on-dark)]">
-            Lens Your{" "}
-            <span className="bg-[image:var(--lens)] bg-clip-text text-transparent">Next Unicorn</span>
-          </h2>
+          {/* the visible headline lives INSIDE the 3D scene (TitlePlane in
+              UnicornScene): the figure truly occludes it. This copy is for
+              screen readers and SEO only. */}
+          <h2 className="sr-only">Lens Your Next Unicorn</h2>
           <HorseStage />
           <div className={`flex flex-wrap items-center justify-center gap-3 pt-3 ${REVEAL}`}>
             <Link href="/book-demo" className="btn btn-primary btn-sm">

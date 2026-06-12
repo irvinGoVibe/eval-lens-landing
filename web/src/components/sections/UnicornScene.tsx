@@ -228,7 +228,68 @@ type UnicornSceneProps = {
   /** Linear head-size multiplier — implemented as camera dolly-in, so the
    *  figure scales without touching the shared model rig. Default 1. */
   zoom?: number;
+  /** Render the bento headline INSIDE the scene, on a plane behind the
+   *  head: the figure truly occludes the words (horn passes in front),
+   *  while the scene background stays behind them. */
+  withTitle?: boolean;
 };
+
+/** "Lens Your Next Unicorn" drawn with the site's display font stack; the
+ *  brand words carry the --lens gradient (violet→lavender→cyan→aqua). */
+function makeTitleTexture(): { texture: THREE.CanvasTexture; aspect: number } {
+  const canvas = document.createElement("canvas");
+  canvas.width = 2048;
+  canvas.height = 320;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  const font =
+    '600 128px -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif';
+  ctx.font = font;
+  ctx.textBaseline = "middle";
+  const plain = "Lens Your ";
+  const brand = "Next Unicorn";
+  const wPlain = ctx.measureText(plain).width;
+  const wBrand = ctx.measureText(brand).width;
+  const x0 = (canvas.width - wPlain - wBrand) / 2;
+  const y = canvas.height / 2;
+  // slightly under pure white so the bloom pass glows gently, not blown out
+  ctx.fillStyle = "#e9e9f2";
+  ctx.fillText(plain, x0, y);
+  const grad = ctx.createLinearGradient(x0 + wPlain, 0, x0 + wPlain + wBrand, 0);
+  grad.addColorStop(0, "#6c4cf1");
+  grad.addColorStop(0.32, "#a99bff");
+  grad.addColorStop(0.68, "#2ec5e8");
+  grad.addColorStop(1, "#36e0c2");
+  ctx.fillStyle = grad;
+  ctx.fillText(brand, x0 + wPlain, y);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.anisotropy = 4;
+  return { texture, aspect: canvas.width / canvas.height };
+}
+
+/** Headline plane pushed TOWARD the camera — it floats in front of the
+ *  figure and renders on top of everything in the scene. The width is
+ *  compensated for the shorter camera distance, so the on-screen size
+ *  stays the same as the between-ears placement. */
+function TitlePlane() {
+  const { texture, aspect } = useMemo(() => makeTitleTexture(), []);
+  useEffect(() => {
+    return () => texture.dispose();
+  }, [texture]);
+  const width = 1.05;
+  return (
+    <mesh position={[0, 0.52, 0.85]} renderOrder={7}>
+      <planeGeometry args={[width, width / aspect]} />
+      <meshBasicMaterial
+        map={texture}
+        transparent
+        depthTest={false}
+        depthWrite={false}
+        fog={false}
+        toneMapped={false}
+      />
+    </mesh>
+  );
+}
 
 /** Soft radial sprite used for the halo behind the head. */
 function makeGlowTexture(): THREE.CanvasTexture {
@@ -280,6 +341,7 @@ function BackgroundGlow() {
           map={texture}
           color="#241a52"
           blending={THREE.AdditiveBlending}
+          fog={false}
           depthWrite={false}
           transparent
           opacity={0.14}
@@ -290,6 +352,7 @@ function BackgroundGlow() {
           map={texture}
           color="#0d1f45"
           blending={THREE.AdditiveBlending}
+          fog={false}
           depthWrite={false}
           transparent
           opacity={0.11}
@@ -300,6 +363,7 @@ function BackgroundGlow() {
           map={texture}
           color="#2a2257"
           blending={THREE.AdditiveBlending}
+          fog={false}
           depthWrite={false}
           transparent
           opacity={0.09}
@@ -420,16 +484,16 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
         // and the fully matte pass: enough roughness to keep the soft env
         // washes on the facets, enough clearcoat to bring back a light
         // sparkle on edges catching the panels.
-        opacity: 0.27,
+        opacity: 0.3,
         roughness: 0.28,
         metalness: 0,
         transmission: 0.72,
         ior: 1.5,
         thickness: 0.8,
         reflectivity: 0.6,
-        clearcoat: 0.5,
-        clearcoatRoughness: 0.25,
-        envMapIntensity: 0.65,
+        clearcoat: 0.7,
+        clearcoatRoughness: 0.15,
+        envMapIntensity: 0.5,
         flatShading: true,
         // Front faces write depth so edges on the far side of the head are
         // occluded by the volume; polygonOffset keeps surface lines stable.
@@ -438,7 +502,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
         polygonOffsetFactor: 1,
         polygonOffsetUnits: 1,
         emissive: new THREE.Color("#1c1452"),
-        emissiveIntensity: 0.26,
+        emissiveIntensity: 0.12,
       }),
     [],
   );
@@ -751,6 +815,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
             map={ringGlow}
             color={EYE_RING}
             blending={THREE.AdditiveBlending}
+            fog={false}
             depthTest
             depthWrite={false}
             transparent
@@ -763,6 +828,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
             map={ringGlow}
             color={EYE_RING}
             blending={THREE.AdditiveBlending}
+            fog={false}
             depthTest
             depthWrite={false}
             transparent
@@ -775,6 +841,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
             map={coreGlow}
             color={EYE_CORE}
             blending={THREE.AdditiveBlending}
+            fog={false}
             depthTest
             depthWrite={false}
             transparent
@@ -787,6 +854,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
             map={coreGlow}
             color={EYE_CORE}
             blending={THREE.AdditiveBlending}
+            fog={false}
             depthTest
             depthWrite={false}
             transparent
@@ -799,27 +867,35 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   );
 }
 
-export default function UnicornScene({ isMobile, active, zoom = 1 }: UnicornSceneProps) {
+export default function UnicornScene({ isMobile, active, zoom = 1, withTitle }: UnicornSceneProps) {
+  const camZ = 3.2 / zoom;
   return (
     <Canvas
       frameloop={active ? "always" : "never"}
       dpr={isMobile ? [1, 1.5] : [1, 2]}
-      camera={{ position: [0, 0.05, 3.2 / zoom], fov: 38 }}
+      camera={{ position: [0, 0.05, camZ], fov: 38 }}
       gl={{ antialias: true, powerPreference: "high-performance" }}
     >
       <color attach="background" args={["#000000"]} />
+      {/* depth dimmer: black fog keyed to camera distance — the muzzle
+          (nearest) stays full-contrast while the neck and far facets sink
+          into darkness; background/eye sprites opt out via fog={false} */}
+      <fog attach="fog" args={["#000000", camZ - 0.2, camZ + 1.75]} />
       <BackgroundGlow />
-      <ambientLight intensity={0.08} />
+      {withTitle && <TitlePlane />}
+      {/* neon-ring contrast scheme: almost no fill — unlit facets fall to
+          black — while saturated rims burn bright, like the reference */}
+      <ambientLight intensity={0.03} />
       {/* colored back-side rim lights: violet left, cyan right — they draw
           the silhouette (horn, ears, neck edge) out of the black background */}
-      <pointLight position={[-3.5, 1.5, -2.5]} intensity={40} color={VIOLET} />
-      <pointLight position={[3.5, 1.5, -2.5]} intensity={40} color={CYAN} />
+      <pointLight position={[-3.5, 1.5, -2.5]} intensity={68} color={VIOLET} />
+      <pointLight position={[3.5, 1.5, -2.5]} intensity={68} color={CYAN} />
       {/* side kickers, just behind the head plane: pink camera-left, bright
-          blue camera-right — they rake the matte facets from the sides */}
-      <pointLight position={[-4, 0.4, -0.6]} intensity={30} color="#ff5ad1" />
-      <pointLight position={[4, 0.4, -0.6]} intensity={30} color="#35c8ff" />
-      {/* minimal white key for sharp facet glints only */}
-      <directionalLight position={[0, 2, 4]} intensity={0.45} color="#ffffff" />
+          blue camera-right — they rake the facets from the sides */}
+      <pointLight position={[-4, 0.4, -0.6]} intensity={52} color="#ff5ad1" />
+      <pointLight position={[4, 0.4, -0.6]} intensity={52} color="#35c8ff" />
+      {/* barely-there white key: fill stays minimal so blacks stay black */}
+      <directionalLight position={[0, 2, 4]} intensity={0.28} color="#ffffff" />
       {/* white core fixed in world space at the head center: the head sways
           around it, so interior facets shimmer as their angle changes */}
       <pointLight position={[0, -0.05, 0]} intensity={8} distance={1.7} decay={2} color="#ffffff" />
@@ -848,8 +924,8 @@ export default function UnicornScene({ isMobile, active, zoom = 1 }: UnicornScen
       <EffectComposer>
         <Bloom
           mipmapBlur
-          intensity={isMobile ? 0.22 : 0.35}
-          luminanceThreshold={0.25}
+          intensity={isMobile ? 0.3 : 0.5}
+          luminanceThreshold={0.3}
           luminanceSmoothing={0.25}
           radius={0.75}
         />
