@@ -204,10 +204,6 @@ export function EvalLenseBentoSection() {
             {/* dock target for the flying title */}
             <div id="bento-hslot" className="bento-hslot" aria-hidden />
           </div>
-          {/* the visible headline lives INSIDE the 3D scene (TitlePlane in
-              UnicornScene): the figure truly occludes it. This copy is for
-              screen readers and SEO only. */}
-          <h3 className="sr-only">Lens Your Next Unicorn</h3>
           {/* hovering the unicorn surfaces the CTAs (events fall through the
               pointer-events-none canvas onto this wrapper); always visible on
               mobile where there is no hover */}

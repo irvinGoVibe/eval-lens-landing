@@ -228,68 +228,11 @@ type UnicornSceneProps = {
   /** Linear head-size multiplier — implemented as camera dolly-in, so the
    *  figure scales without touching the shared model rig. Default 1. */
   zoom?: number;
-  /** Render the bento headline INSIDE the scene, on a plane behind the
-   *  head: the figure truly occludes the words (horn passes in front),
-   *  while the scene background stays behind them. */
-  withTitle?: boolean;
+  /** Transparent canvas: drop the opaque black clear and the decorative
+   *  background-glow sprites so the page (and the title behind it) shows
+   *  through every empty pixel. Lighting and bloom stay. */
+  noBackdrop?: boolean;
 };
-
-/** "Lens Your Next Unicorn" drawn with the site's display font stack; the
- *  brand words carry the --lens gradient (violet→lavender→cyan→aqua). */
-function makeTitleTexture(): { texture: THREE.CanvasTexture; aspect: number } {
-  const canvas = document.createElement("canvas");
-  canvas.width = 2048;
-  canvas.height = 320;
-  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-  const font =
-    '600 128px -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif';
-  ctx.font = font;
-  ctx.textBaseline = "middle";
-  const plain = "Lens Your ";
-  const brand = "Next Unicorn";
-  const wPlain = ctx.measureText(plain).width;
-  const wBrand = ctx.measureText(brand).width;
-  const x0 = (canvas.width - wPlain - wBrand) / 2;
-  const y = canvas.height / 2;
-  // slightly under pure white so the bloom pass glows gently, not blown out
-  ctx.fillStyle = "#e9e9f2";
-  ctx.fillText(plain, x0, y);
-  const grad = ctx.createLinearGradient(x0 + wPlain, 0, x0 + wPlain + wBrand, 0);
-  grad.addColorStop(0, "#6c4cf1");
-  grad.addColorStop(0.32, "#a99bff");
-  grad.addColorStop(0.68, "#2ec5e8");
-  grad.addColorStop(1, "#36e0c2");
-  ctx.fillStyle = grad;
-  ctx.fillText(brand, x0 + wPlain, y);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.anisotropy = 4;
-  return { texture, aspect: canvas.width / canvas.height };
-}
-
-/** Headline plane pushed TOWARD the camera — it floats in front of the
- *  figure and renders on top of everything in the scene. The width is
- *  compensated for the shorter camera distance, so the on-screen size
- *  stays the same as the between-ears placement. */
-function TitlePlane() {
-  const { texture, aspect } = useMemo(() => makeTitleTexture(), []);
-  useEffect(() => {
-    return () => texture.dispose();
-  }, [texture]);
-  const width = 1.05;
-  return (
-    <mesh position={[0, 0.52, 0.85]} renderOrder={7}>
-      <planeGeometry args={[width, width / aspect]} />
-      <meshBasicMaterial
-        map={texture}
-        transparent
-        depthTest={false}
-        depthWrite={false}
-        fog={false}
-        toneMapped={false}
-      />
-    </mesh>
-  );
-}
 
 /** Soft radial sprite used for the halo behind the head. */
 function makeGlowTexture(): THREE.CanvasTexture {
@@ -867,7 +810,7 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   );
 }
 
-export default function UnicornScene({ isMobile, active, zoom = 1, withTitle }: UnicornSceneProps) {
+export default function UnicornScene({ isMobile, active, zoom = 1 }: UnicornSceneProps) {
   const camZ = 3.2 / zoom;
   return (
     <Canvas
@@ -882,7 +825,6 @@ export default function UnicornScene({ isMobile, active, zoom = 1, withTitle }: 
           into darkness; background/eye sprites opt out via fog={false} */}
       <fog attach="fog" args={["#000000", camZ - 0.2, camZ + 1.75]} />
       <BackgroundGlow />
-      {withTitle && <TitlePlane />}
       {/* neon-ring contrast scheme: almost no fill — unlit facets fall to
           black — while saturated rims burn bright, like the reference */}
       <ambientLight intensity={0.03} />
