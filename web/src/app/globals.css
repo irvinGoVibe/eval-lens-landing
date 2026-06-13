@@ -2213,6 +2213,8 @@ body:not(.hero-ready){overflow:hidden;}
 .bento-heading.is-shown{opacity:1;}
 /* reserved space in the card where the heading docks */
 .bento-hslot{width:100%;min-height:clamp(64px,9vh,104px);pointer-events:none;}
+/* summary card under the flying heading — no fill, only the dock slot */
+.bento-summary-tile{background:transparent;}
 .bento-heading .bchar{display:inline-block;opacity:0;transform:translateY(-.7em);}
 .bento-heading.is-active .bchar{
   animation:bento-char-fall .6s cubic-bezier(.22,.61,.36,1) forwards;

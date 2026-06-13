@@ -200,7 +200,7 @@ export function EvalLenseBentoSection() {
         <div className="relative order-1 flex flex-col items-center text-center lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1">
           {/* summary card — just the dock target; the big title flies in and
               docks onto #bento-hslot (no badge, no sub) */}
-          <div className="bento-tile group relative w-full rounded-[28px] bg-black px-6 pb-8 pt-8 text-center ring-1 ring-white/[0.08] transition-[box-shadow,ring-color] duration-300 [--bento-origin:180deg] hover:ring-white/[0.14] hover:shadow-[0_30px_90px_-40px_rgba(108,76,241,0.55)]">
+          <div className="bento-tile bento-summary-tile group relative w-full rounded-[28px] px-6 pb-8 pt-8 text-center ring-1 ring-white/[0.08] transition-[box-shadow,ring-color] duration-300 [--bento-origin:180deg] hover:ring-white/[0.14] hover:shadow-[0_30px_90px_-40px_rgba(108,76,241,0.55)]">
             {/* dock target for the flying title */}
             <div id="bento-hslot" className="bento-hslot" aria-hidden />
           </div>
