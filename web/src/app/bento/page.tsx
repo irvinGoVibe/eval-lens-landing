@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EvalLenseBentoSection } from "@/components/sections/EvalLenseBentoSection";
+import { ScrollUnlock } from "./ScrollUnlock";
 
 export const metadata: Metadata = {
   title: "EvalLense — Trusted, Explainable, Human-Controlled",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function BentoPage() {
   return (
     <main className="bg-black">
+      <ScrollUnlock />
       <EvalLenseBentoSection />
     </main>
   );

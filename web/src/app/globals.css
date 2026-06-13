@@ -2196,9 +2196,53 @@ body:not(.hero-ready){overflow:hidden;}
   50%{opacity:1;transform:scale(1.05);}
 }
 
+/* ── bento section heading: the site's epic reveal, falling variant. Only
+      the plain words fall per-character; the gradient word is a whole clean
+      span that wipes in left-to-right afterwards (per-char transforms would
+      break background-clip:text), exactly like .scrub-heading. ─────────── */
+/* the heading is a fixed overlay: JS drives --bh-top (screen Y) and
+   --bh-scale so it starts large at screen-center, types in, then shrinks and
+   docks onto the slot reserved in the summary card — the site's scroll epic
+   heading, self-contained so it works on /bento (no ScrollOrchestrator). */
+.bento-heading{
+  position:fixed;left:50%;top:var(--bh-top,50vh);z-index:30;
+  width:min(680px,92vw);padding:0 var(--gutter);
+  transform:translate(-50%,-50%) scale(var(--bh-scale,1.85));
+  transform-origin:center center;
+  pointer-events:none;opacity:0;will-change:transform,top;}
+.bento-heading.is-shown{opacity:1;}
+/* reserved space in the card where the heading docks */
+.bento-hslot{width:100%;min-height:clamp(64px,9vh,104px);pointer-events:none;}
+.bento-heading .bchar{display:inline-block;opacity:0;transform:translateY(-.7em);}
+.bento-heading.is-active .bchar{
+  animation:bento-char-fall .6s cubic-bezier(.22,.61,.36,1) forwards;
+  animation-delay:calc(var(--ci,0) * 0.03s);
+}
+@keyframes bento-char-fall{
+  0%{opacity:0;transform:translateY(-.7em);}
+  70%{opacity:1;transform:translateY(.07em);}
+  100%{opacity:1;transform:none;}
+}
+.bento-heading .bgrad{
+  display:inline-block;
+  background-image:var(--lens);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  clip-path:inset(0 100% 0 0);}
+.bento-heading.is-active .bgrad{
+  animation:bento-grad-wipe .75s cubic-bezier(.22,.61,.36,1) forwards;
+  animation-delay:calc(var(--nchars,16) * 0.03s + .05s);}
+@keyframes bento-grad-wipe{to{clip-path:inset(0 0 0 0);}}
+/* sub opacity is driven by scroll progress (--sub-op) so it fades in as the
+   heading docks, matching the site's scrub/workflow sub behavior */
+.bento-heading .bsub{opacity:var(--sub-op,0);transform:translateY(calc((1 - var(--sub-op,0)) * 12px));}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;scroll-behavior:auto !important;}
   .bento-tile::before,.bento-tile::after{animation:none !important;opacity:0 !important;}
+  .bento-heading .bchar{opacity:1 !important;transform:none !important;animation:none !important;}
+  .bento-heading .bsub{--sub-op:1;}
+  .bento-heading .bgrad{clip-path:none !important;}
   .reveal{opacity:1 !important;transform:none !important;}
   .scrub-heading.is-shown,.workflow-heading.is-shown{display:block;}
   .scrub-heading,.workflow-heading{--sub-op:1;}
