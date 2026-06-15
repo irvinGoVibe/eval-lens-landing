@@ -2391,6 +2391,20 @@ body:not(.hero-ready){overflow:hidden;}
 }
 .blog-seeall:hover{gap:11px;color:var(--violet-2);}
 
+/* See All — violet link nudged to the right, tucked up under the hero grid */
+.blog-seeall-row{display:flex;justify-content:flex-end;margin-top:6px;margin-right:-6px;}
+
+/* All News — "Show more" expand button (centered pill) */
+.blog-expand-row{display:flex;justify-content:center;margin-top:clamp(34px,5vw,56px);}
+.blog-expand-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:16px;font-weight:500;color:var(--fg);
+  background:#e6e6eb;border:0;border-radius:980px;padding:13px 28px;cursor:pointer;
+  transition:background .2s var(--ease),transform .2s var(--ease);
+}
+.blog-expand-btn:hover{background:#d8d8de;}
+.blog-expand-btn:active{transform:scale(.98);}
+
 /* ---- Hero: featured + side rail ---- */
 .blog-hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start;}
 .blog-rail{display:flex;flex-direction:column;}
