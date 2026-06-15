@@ -1,7 +1,7 @@
 ---
 title: Карта сайта
 status: approved
-version: 1.0
+version: 1.1
 updated: 2026-06-15
 ---
 
@@ -18,6 +18,7 @@ Conversion Page - главный one-pager для конверсии в demo
 Product - что пользователь делает в системе
 Trust - почему результатам можно доверять
 Company - кто стоит за продуктом и как связаться
+Legal / Technical - правовые и технические страницы: Privacy, Terms, Security
 ```
 
 ## Final Site Structure
@@ -39,11 +40,16 @@ Company - кто стоит за продуктом и как связаться
 │  ├─ Security & Privacy
 │  └─ Use Cases
 │
-└─ Company
-   ├─ About
-   ├─ Newsroom
-   ├─ Careers
-   └─ Contact
+├─ Company
+│  ├─ About
+│  ├─ Newsroom
+│  ├─ Careers
+│  └─ Contact
+│
+└─ Legal / Technical
+   ├─ Privacy
+   ├─ Terms
+   └─ Security
 ```
 
 ## Homepage / Conversion Page
@@ -66,10 +72,10 @@ Book a Demo
 ```text
 1. Hero - что делает EvalLense
 2. Problem / Solution - зачем нужен structured pitch deck evaluation
-3. Product Workflow - как пользователь проходит путь от entry до reports
-4. Product Features - Entry Hub, Evidence-Based Reports, Review Board
+3. Entry point - точка входа: сбор заявок и pitch decks
+4. Workflow - как пользователь проходит путь от entry до reports
 5. Trust Layer - methodology, reliability, security, prompt injection safety
-6. Use Cases - кому это нужно
+6. Newsroom - новости и продуктовые публикации
 7. Final CTA - Book a Demo
 ```
 
@@ -210,6 +216,22 @@ Use Cases
 | Careers | Вакансии и будущие роли |
 | Contact | Контактная форма, demo request, общий контакт |
 
+## Legal / Technical
+
+```text
+/privacy
+/terms
+/security
+```
+
+Роль раздела: правовые и технические страницы. Не входят в основную навигацию, живут в футере.
+
+| Страница | Что раскрывает |
+|---|---|
+| Privacy | Политика конфиденциальности: какие данные собираем, как храним и используем |
+| Terms | Условия использования сервиса и сайта |
+| Security | Технические меры безопасности и обработки pitch decks |
+
 ## Header Navigation
 
 ```text
@@ -248,6 +270,11 @@ COMPANY
 ├─ Newsroom
 ├─ Careers
 └─ Contact
+
+LEGAL
+├─ Privacy
+├─ Terms
+└─ Security
 ```
 
 ## P0 для первого релиза
@@ -266,6 +293,9 @@ COMPANY
 /trust/use-cases
 /company/about
 /company/contact
+/privacy
+/terms
+/security
 ```
 
 ## Что исключено из текущей структуры
