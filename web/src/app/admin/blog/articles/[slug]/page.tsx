@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import { ArticleForm } from "@/components/admin/ArticleForm";
-import { DeleteButton } from "@/components/admin/DeleteButton";
 import { adminGetArticle } from "@/lib/cms/admin-queries";
 import { deleteArticleAction, updateArticleAction } from "../actions";
 
@@ -22,9 +21,8 @@ async function EditArticle({ slug }: { slug: string }) {
           <h1 className="admin-h1">Edit article</h1>
           <p className="admin-sub">{article.title}</p>
         </div>
-        <DeleteButton action={remove} />
       </div>
-      <ArticleForm action={update} article={article} />
+      <ArticleForm action={update} article={article} deleteAction={remove} />
     </>
   );
 }

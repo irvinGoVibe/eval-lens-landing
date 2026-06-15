@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
-import { DeleteButton } from "@/components/admin/DeleteButton";
 import { LoopForm } from "@/components/admin/LoopForm";
 import { adminGetLoopPost } from "@/lib/cms/admin-queries";
 import { deleteLoopAction, updateLoopAction } from "../actions";
@@ -22,9 +21,8 @@ async function EditRepost({ id }: { id: string }) {
           <h1 className="admin-h1">Edit repost</h1>
           <p className="admin-sub">{post.id}</p>
         </div>
-        <DeleteButton action={remove} />
       </div>
-      <LoopForm action={update} post={post} />
+      <LoopForm action={update} post={post} deleteAction={remove} />
     </>
   );
 }

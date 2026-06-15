@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { AdminLoopPost } from "@/lib/cms/admin-queries";
 import { ImageDropzone } from "./ImageDropzone";
+import { DeleteButton } from "./DeleteButton";
 import { uploadLoopMediaAction } from "@/app/admin/blog/reposts/actions";
 
 const ACCENTS = ["violet", "cyan", "aqua", "orange"];
@@ -10,9 +11,11 @@ const ACCENTS = ["violet", "cyan", "aqua", "orange"];
 export function LoopForm({
   action,
   post,
+  deleteAction,
 }: {
   action: (formData: FormData) => void | Promise<void>;
   post?: AdminLoopPost | null;
+  deleteAction?: () => void | Promise<void>;
 }) {
   const p = post ?? null;
   const editing = Boolean(p);
@@ -218,9 +221,12 @@ export function LoopForm({
       </section>
 
       <div className="admin-savebar">
-        <button type="submit" className="admin-btn admin-btn--primary">
-          Save
-        </button>
+        <div className="admin-savebar__inner">
+          {deleteAction && <DeleteButton action={deleteAction} />}
+          <button type="submit" className="admin-btn admin-btn--primary">
+            Save
+          </button>
+        </div>
       </div>
     </form>
   );

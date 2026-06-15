@@ -48,7 +48,9 @@ async function AdminChrome({ children }: { children: React.ReactNode }) {
           <LogoutButton />
         </div>
       </aside>
-      <main className="admin-main">{children}</main>
+      <main className="admin-main">
+        <div className="admin-main__inner">{children}</div>
+      </main>
     </div>
   );
 }

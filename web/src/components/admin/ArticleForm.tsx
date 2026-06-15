@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MarkdownEditor } from "./MarkdownEditor";
 import { ImageDropzone } from "./ImageDropzone";
+import { DeleteButton } from "./DeleteButton";
 import { uploadArticleMediaAction } from "@/app/admin/blog/articles/actions";
 import type { AdminArticle } from "@/lib/cms/admin-queries";
 
@@ -12,9 +13,11 @@ const ACCENTS = ["violet", "cyan", "aqua", "orange"];
 export function ArticleForm({
   action,
   article,
+  deleteAction,
 }: {
   action: (formData: FormData) => void | Promise<void>;
   article?: AdminArticle | null;
+  deleteAction?: () => void | Promise<void>;
 }) {
   const a = article ?? null;
   const [cover, setCover] = useState(a?.cover ?? "");
@@ -188,9 +191,12 @@ export function ArticleForm({
       </section>
 
       <div className="admin-savebar">
-        <button type="submit" className="admin-btn admin-btn--primary">
-          Save
-        </button>
+        <div className="admin-savebar__inner">
+          {deleteAction && <DeleteButton action={deleteAction} />}
+          <button type="submit" className="admin-btn admin-btn--primary">
+            Save
+          </button>
+        </div>
       </div>
     </form>
   );
