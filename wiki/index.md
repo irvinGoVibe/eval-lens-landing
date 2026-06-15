@@ -17,6 +17,7 @@ updated: 2026-06-15
   - [[vision|Vision]] — продукт, аудитория, боль, ценность
   - [[scope|Scope]] — главный сценарий и границы v1
   - [[newsroom|Newsroom]] — блог: зачем он, для кого, какой контент
+  - [[sitemap|Карта сайта]] — структура сайта: conversion page, product, trust, company
 - **Architecture** (`architecture/`) — устройство системы, данные, доменные правила
   - [[system|System]] — поверхности, стек, маршруты, данные, интеграции
   - [[design-system|Design System]] — токены, цвет, типографика, компоненты; опора для внутренних страниц
