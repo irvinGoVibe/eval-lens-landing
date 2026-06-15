@@ -2861,12 +2861,12 @@ body:not(.hero-ready){overflow:hidden;}
 }
 
 /* ---- 3. Конвейер оценки — pinned multi-screen (DARK) ---- */
-.methodology .methodology-pipeline{padding:0;min-height:320vh;}
-.methodology .pipe-stage{min-height:100svh;padding:clamp(72px,12vw,120px) var(--gutter);display:grid;align-content:center;}
+.methodology .methodology-pipeline{padding:0;min-height:240vh;}
+.methodology .pipe-stage{min-height:100svh;padding:clamp(36px,6vh,72px) var(--gutter);display:grid;align-content:center;box-sizing:border-box;}
 .methodology .pipe-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,6vw,80px);align-items:center;}
 .methodology .pipe-col{min-width:0;}
 .methodology .pipe-head{margin:0;}
-.methodology .pipe-diagram{align-self:center;min-width:0;}
+.methodology .pipe-diagram{align-self:center;min-width:0;width:100%;max-width:520px;justify-self:center;}
 .methodology .pipe-track{list-style:none;margin:clamp(36px,5vw,56px) 0 0;padding:0;max-width:560px;display:flex;flex-direction:column;gap:clamp(18px,3vw,34px);}
 .methodology .pipe-step{display:grid;grid-template-columns:auto 1fr;column-gap:clamp(16px,2.6vw,28px);row-gap:6px;align-items:center;}
 .methodology .pipe-node{grid-row:1 / span 2;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);transition:border-color .5s var(--ease),background .5s var(--ease),box-shadow .5s var(--ease);}
@@ -2876,9 +2876,14 @@ body:not(.hero-ready){overflow:hidden;}
 .methodology .pipe-name{font-family:var(--font-mono);font-size:clamp(15px,2vw,20px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-on-dark);}
 .methodology .pipe-desc{grid-column:2;font-size:clamp(14px,1.6vw,17px);line-height:1.5;color:var(--muted-on-dark);max-height:0;overflow:hidden;opacity:0;transition:max-height .55s var(--ease),opacity .45s var(--ease);}
 .methodology .pipe-step.is-current .pipe-desc{max-height:8em;opacity:1;}
+/* narrow screens: drop the pin (sticky stage can't fit a phone viewport) —
+   the section flows normally, every step description stays open */
 @media (max-width:880px){
   .methodology .pipe-grid{grid-template-columns:1fr;}
-  .methodology .pipe-diagram{order:-1;}
+  .methodology .pipe-diagram{order:-1;max-width:none;}
+  .methodology .methodology-pipeline{min-height:0;}
+  .methodology .pipe-stage{position:static;min-height:0;}
+  .methodology .pipe-desc{max-height:none;opacity:1;}
 }
 @media (prefers-reduced-motion:reduce){
   .methodology .pipe-desc{max-height:none;opacity:1;}
@@ -2927,7 +2932,7 @@ body:not(.hero-ready){overflow:hidden;}
 }
 
 /* ---- 7. Rubric system — full-bleed statement (DARK) ---- */
-.methodology .rubric-statement{max-width:18ch;margin-inline:auto;text-align:center;min-height:clamp(0px,30vh,50svh);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.methodology .rubric-statement{max-width:min(900px,100%);margin-inline:auto;text-align:center;min-height:clamp(0px,30vh,50svh);display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .methodology .methodology-rubric .eyebrow{margin-bottom:24px;}
 .methodology .rubric-h{font-size:clamp(36px,6vw,72px);line-height:1.06;letter-spacing:-.03em;font-weight:600;max-width:18ch;}
 .methodology .rubric-note{max-width:54ch;margin-inline:auto;}

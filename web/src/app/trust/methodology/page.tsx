@@ -295,11 +295,11 @@ export default function MethodologyPage() {
               {/* pipeline diagram visual slot — see prompt 2 in file header */}
               <figure
                 className="media-ph pipe-diagram"
-                style={{ ["--ratio" as string]: "3/4" }}
+                style={{ ["--ratio" as string]: "4/3" }}
                 role="img"
                 aria-label="Horizontal track of pipeline nodes Decode to Report"
               >
-                <span className="media-ph__label">Diagram · pipeline · 3:4</span>
+                <span className="media-ph__label">Diagram · pipeline · 4:3</span>
                 <span className="media-ph__hint">
                   Nodes Decode → Judges → Summarize → Score → Report lit along a
                   lens track, thin lines — see prompt 2 in file header
