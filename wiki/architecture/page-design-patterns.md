@@ -16,10 +16,11 @@ source: homepage patterns (web/) + design-system.md + ScrollOrchestrator generic
 Дополняет [[design-system|Design System]] (токены, классы) — здесь про
 **композицию, ритм и движение**.
 
-> Правило №1: движение — только через единый rAF-цикл
-> [ScrollOrchestrator.tsx](web/src/components/ScrollOrchestrator.tsx). Никаких
-> per-section `useEffect`, никаких сторонних animation-библиотек. Внутренние
-> страницы подключают движение **через data-атрибуты** (см. «Движок»).
+> Правило №1: движение — только через единый rAF-цикл. Главная использует
+> [ScrollOrchestrator.tsx](web/src/components/ScrollOrchestrator.tsx);
+> **внутренние страницы монтируют [ScrollFX.tsx](web/src/components/ScrollFX.tsx)**
+> (один раз, после `<Footer/>`) и подключают движение через data-атрибуты.
+> Никаких per-section `useEffect`, никаких сторонних animation-библиотек.
 
 ## Антипаттерн (чего избегать)
 
@@ -36,7 +37,8 @@ Apple так не делает. Их страницы = **чередование
 
 ## Движок (data-атрибуты)
 
-ScrollOrchestrator поднимает их на любой странице (no-op на главной):
+`<ScrollFX/>` (смонтированный на внутренней странице) поднимает их в одном
+rAF-цикле с cleanup (безопасно при client-side навигации):
 
 | Атрибут | Что делает | CSS-выход |
 |---|---|---|
@@ -45,7 +47,9 @@ ScrollOrchestrator поднимает их на любой странице (no-
 | `data-pin` + `data-pin-steps="N"` | высокий трек + липкая сцена внутри (`data-pin-stage`); шаги загораются по очереди | пишет `--pin` 0→1; на `data-pin-step` — `.is-active` (накопительно), `.is-current` (текущий), `--pin-step` (индекс) |
 
 Базовые стили примитивов — в `globals.css` (секция «Generic scroll-FX
-primitives»), reduced-motion обработан там же и в движке. Конкретную раскладку
+primitives»), reduced-motion обработан там же и в движке. **Не забудь смонтировать
+`<ScrollFX/>` на странице** (после `<Footer/>`) — иначе `data-reveal`-элементы
+останутся `opacity:0` (пустые секции). Конкретную раскладку
 секции (grid, sticky-высоту трека, медиа) страница задаёт своими классами под
 обёрткой страницы (напр. `.methodology …`) на **канонических токенах**.
 

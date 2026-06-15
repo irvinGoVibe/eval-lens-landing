@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
+import { ScrollFX } from "@/components/ScrollFX";
 
 export const metadata: Metadata = {
   title: "EvalLense Methodology — How AI Jury Evaluates Pitch Decks",
@@ -396,6 +397,7 @@ export default function MethodologyPage() {
         </section>
       </main>
       <Footer />
+      <ScrollFX />
     </>
   );
 }

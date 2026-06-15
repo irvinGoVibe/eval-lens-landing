@@ -164,9 +164,10 @@ safety-рейлы + коммит на страницу + финальное ре
   ↔ плотный блок), сторону split-секций; ≥1 тёмный statement и ≥1 pinned
   multi-screen со scroll-driven появлением текста;
 - **движение — только через data-атрибуты** (`data-reveal`/`data-scrub`/
-  `data-pin`+`data-pin-step`), которые поднимает единый `ScrollOrchestrator`
-  (примитивы уже в `globals.css`). НИКАКИХ per-section `useEffect` и сторонних
-  anim-библиотек (правило CLAUDE.md);
+  `data-pin`+`data-pin-step`); **смонтируй `<ScrollFX/>` на странице** (после
+  `<Footer/>`) — он поднимает их в одном rAF-цикле (примитивы уже в `globals.css`).
+  Без `<ScrollFX/>` все `data-reveal` останутся `opacity:0` (пустые секции!).
+  НИКАКИХ per-section `useEffect` и сторонних anim-библиотек (правило CLAUDE.md);
 - переиспользовать готовые классы (`.btn`, `.chip`, `.eyebrow`, `.tcard`,
   `.band`, `.wrap`, `.grad-word`, layout-токены `--maxw`/`--gutter`) и
   **канонические** токены `:root`; не `--wf-*`/`--sd-*`; новых цветов/теней/
