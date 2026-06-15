@@ -103,6 +103,19 @@
   --radius-stage: 28px;
   --shadow-soft: 0 2px 8px rgba(20,18,40,.05), 0 24px 60px -28px rgba(60,40,160,.22);
   --ease: cubic-bezier(.22,.61,.36,1);
+
+  /* Canonical radii (design-system §Radius) */
+  --r-xs:   8px;    /* inputs, chips */
+  --r-sm:   12px;   /* buttons, controls */
+  --r-md:   18px;   /* cards */
+  --r-lg:   24px;   /* windows, modals */
+  --r-pill: 980px;  /* pill buttons & chips */
+
+  /* Canonical elevation (design-system §Elevation) — soft, violet-tinted;
+     never a grey drop-shadow. Built on rgba(60,40,160,…) like --shadow-soft. */
+  --sh-1: 0 1px 2px rgba(20,18,40,.04), 0 8px 24px -16px rgba(60,40,160,.20);
+  --sh-2: 0 2px 8px rgba(20,18,40,.05), 0 18px 40px -22px rgba(60,40,160,.26);
+  --sh-3: 0 4px 14px rgba(20,18,40,.06), 0 30px 70px -30px rgba(60,40,160,.32);
 }
 
 *{box-sizing:border-box}
@@ -2940,3 +2953,22 @@ body:not(.hero-ready){overflow:hidden;}
   [data-reveal],[data-reveal="fade"],[data-reveal="left"],[data-reveal="right"],[data-reveal="scale"]{opacity:1;transform:none;transition:none;}
   [data-pin-step]{opacity:1;transform:none;transition:none;}
 }
+
+/* ============================================================
+   Visible media placeholders — mark exactly where a real image /
+   video / meaning-visualization goes, so the slot is obvious in the
+   UI until a real asset is dropped in. Labeled + sized to the target.
+   Usage:
+     <figure class="media-ph" style={{ "--ratio": "16/9" }}
+             role="img" aria-label="Hero lens illustration">
+       <span class="media-ph__label">Image · hero lens · 16:9</span>
+       <span class="media-ph__hint">Prompt: lens-gradient… (see file header)</span>
+     </figure>
+   ============================================================ */
+.media-ph{position:relative;display:grid;place-items:center;gap:10px;text-align:center;padding:24px;margin:0;aspect-ratio:var(--ratio,16/9);width:100%;border:1.5px dashed color-mix(in oklab,var(--violet) 45%, var(--border));border-radius:var(--radius-stage);background:var(--lens-soft);color:var(--muted);overflow:hidden;}
+.media-ph::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 13px,color-mix(in oklab,var(--violet) 7%, transparent) 13px 14px);pointer-events:none;}
+.media-ph > *{position:relative;z-index:1;}
+.media-ph__label{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);padding:8px 14px;border-radius:980px;background:color-mix(in oklab,#fff 72%, transparent);border:1px solid var(--hairline);}
+.media-ph__hint{font-size:12.5px;line-height:1.45;color:var(--muted);max-width:44ch;}
+.ink .media-ph{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.22);color:var(--muted-on-dark);}
+.ink .media-ph__label{background:rgba(255,255,255,.08);color:var(--fg-on-dark);border-color:rgba(255,255,255,.18);}
