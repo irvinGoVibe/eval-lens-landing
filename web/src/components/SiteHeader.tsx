@@ -1,8 +1,11 @@
 import Link from "next/link";
 
-export function SiteHeader() {
+export function SiteHeader({ light = false }: { light?: boolean } = {}) {
   return (
-    <header className="site-header" id="site-header">
+    <header
+      className={light ? "site-header is-light" : "site-header"}
+      id="site-header"
+    >
       <div className="site-header__inner">
         <a className="brand" href="#top" aria-label="EvalLense home">
           <span className="mark" aria-hidden="true"></span>
