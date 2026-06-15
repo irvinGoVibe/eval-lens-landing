@@ -10,8 +10,9 @@ export const metadata: Metadata = {
 
 /*
  * Image slots — generator is NOT wired up. These are neutral placeholders on
- * canonical tokens. When an image generator is available, produce the assets
- * below and drop them into web/public/assets/methodology/.
+ * canonical tokens (--lens-soft / --hairline). When an image generator is
+ * available, produce the assets below and drop them into
+ * web/public/assets/methodology/.
  *
  * hero  (section 1): Abstract "lens" focusing noise into one clear signal.
  *   Prompt: lens-gradient violet→cyan→aqua over an Apple-neutral surface,
@@ -21,149 +22,209 @@ export const metadata: Metadata = {
  * pipeline (section 3): Horizontal track of nodes
  *   Decode → Judges → Summarize → Score → Report.
  *   Prompt: same tokens, nodes lit along a lens track, thin lines, minimal.
+ *
+ * Motion: this page opts into the generic ScrollOrchestrator engine via
+ * data-attributes only (data-reveal / data-scrub / data-pin). No per-section
+ * useEffect, no ScrollOrchestrator edits. reduced-motion is handled by the
+ * engine + the primitives' @media block.
+ *
+ * Draft content: unconfirmed copy (P1–P6 roles, scoring/confidence formula,
+ * rubric levels, pipeline step descriptions, hero tagline) is kept as the
+ * brief's draft wording — no invented numbers (see story 04 open questions).
  */
+
+const PIPELINE_STEPS = [
+  {
+    name: "Decode",
+    desc: "The deck is parsed into structured signal — slides, claims and figures become addressable evidence.",
+  },
+  {
+    name: "Judges",
+    desc: "An AI jury of independent judges reads the deck, each against its own set of criteria.",
+  },
+  {
+    name: "Summarize",
+    desc: "Each judge's findings are condensed into evidence-backed notes with source references.",
+  },
+  {
+    name: "Score",
+    desc: "Per-criterion scores are aggregated; missing evidence is flagged, never guessed.",
+  },
+  {
+    name: "Report",
+    desc: "A comparable, explainable report is assembled — score, breakdown, evidence and confidence.",
+  },
+];
+
+const JUDGE_ROLES = ["P1", "P2", "P3", "P4", "P5", "P6"];
 
 export default function MethodologyPage() {
   return (
     <>
       <SiteHeader light />
       <main className="methodology">
-        {/* 1. Hero */}
+        {/* 1. Hero — statement-hero, light */}
         <section className="band soft methodology-hero">
           <div className="wrap methodology-hero__inner">
-            <div className="methodology-hero__copy">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Methodology
-              </span>
-              <h1 className="title">
-                A scientific methodology for evaluating{" "}
-                <span className="grad-word">pitch decks</span>
-              </h1>
-              {/* draft subhead from brief §1 Hero */}
-              <p className="sub">
-                EvalLense evaluates decks against explicit criteria through an
-                AI jury — with transparent reasoning and a human in the loop for
-                the final decision.
-              </p>
-              <div className="cta-row">
-                {/* final target is /company/contact once that route exists; for now anchor to the homepage demo section to avoid a 404 */}
-                <a className="btn btn-primary" href="/#demo">
-                  Book a Demo
-                </a>
-              </div>
+            <span
+              className="eyebrow"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "0ms" }}
+            >
+              <span className="dot" aria-hidden="true"></span>
+              Methodology
+            </span>
+            {/* draft hero tagline from brief §1 Hero */}
+            <h1
+              className="methodology-hero__title"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "90ms" }}
+            >
+              A scientific methodology for evaluating{" "}
+              <span className="grad-word">pitch decks</span>
+            </h1>
+            <p
+              className="sub methodology-hero__sub"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "180ms" }}
+            >
+              EvalLense evaluates decks against explicit criteria through an AI
+              jury — with transparent reasoning and a human in the loop for the
+              final decision.
+            </p>
+            <div
+              className="cta-row"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "270ms" }}
+            >
+              {/* final target is /company/contact once that route exists; for
+                  now anchor to the homepage demo section to avoid a 404 */}
+              <a className="btn btn-primary" href="/#demo">
+                Book a Demo
+              </a>
             </div>
             {/* hero image placeholder — see prompt comment at top of file */}
             <div
               className="methodology-hero__media"
+              data-reveal="scale"
+              style={{ ["--reveal-delay" as string]: "320ms" }}
               role="img"
               aria-label="Abstract lens focusing noise into one clear signal"
             ></div>
           </div>
         </section>
 
-        {/* 2. Принципы оценки */}
-        <section className="band">
+        {/* 2. Принципы оценки — editorial, light (numbered lines, not a card grid) */}
+        <section className="band methodology-principles">
           <div className="wrap">
-            <div className="head">
+            <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
                 Principles
               </span>
               <h2 className="title">Principles of evaluation</h2>
-              <p className="sub">
-                Three principles keep the result reproducible and trustworthy.
-              </p>
             </div>
-            <div className="trust-grid">
-              <article className="tcard">
-                <span className="chip">
-                  <span className="tick" aria-hidden="true"></span>
-                  Criteria-based
+            <ol className="prin-list">
+              <li
+                className="prin-item"
+                data-reveal="up"
+                style={{ ["--reveal-delay" as string]: "0ms" }}
+              >
+                <span className="prin-num" aria-hidden="true">
+                  01
                 </span>
-                <h3>Criteria-based evaluation</h3>
-                <p>
-                  Decks are scored against pre-defined criteria, not a general
-                  impression.
-                </p>
-              </article>
-              <article className="tcard">
-                <span className="chip">
-                  <span className="tick" aria-hidden="true"></span>
-                  Evidence
+                <div className="prin-body">
+                  <h3 className="prin-h">Criteria-based evaluation</h3>
+                  <p className="prin-p">
+                    Decks are scored against pre-defined criteria, not a general
+                    impression.
+                  </p>
+                </div>
+              </li>
+              <li
+                className="prin-item"
+                data-reveal="up"
+                style={{ ["--reveal-delay" as string]: "120ms" }}
+              >
+                <span className="prin-num" aria-hidden="true">
+                  02
                 </span>
-                <h3>Evidence over opinion</h3>
-                <p>
-                  We show what we found, where it came from, and what is
-                  missing — no bare score without justification.
-                </p>
-              </article>
-              <article className="tcard">
-                <span className="chip">
-                  <span className="tick" aria-hidden="true"></span>
-                  Human-decided
+                <div className="prin-body">
+                  <h3 className="prin-h">Evidence over opinion</h3>
+                  <p className="prin-p">
+                    We show what we found, where it came from, and what is
+                    missing — no bare score without justification.
+                  </p>
+                </div>
+              </li>
+              <li
+                className="prin-item"
+                data-reveal="up"
+                style={{ ["--reveal-delay" as string]: "240ms" }}
+              >
+                <span className="prin-num" aria-hidden="true">
+                  03
                 </span>
-                <h3>AI prepares, humans decide</h3>
-                <p>
-                  The AI output is advisory; the final decision is always made
-                  by a person.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        {/* 3. Конвейер оценки — own .methodology markup (not #workflow scoped CSS) */}
-        <section className="band soft">
-          <div className="wrap">
-            <div className="head">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Pipeline
-              </span>
-              <h2 className="title">The evaluation pipeline</h2>
-              {/* draft from brief §3 Конвейер оценки */}
-              <p className="sub">
-                Every deck runs through a fixed pipeline. Each step is
-                deterministic and reproducible — the same deck takes the same
-                path.
-              </p>
-            </div>
-            <ol className="pipe" aria-label="Evaluation pipeline">
-              <li className="pipe-node is-lit">
-                <span className="pipe-dot" aria-hidden="true"></span>
-                <span className="pipe-name">Decode</span>
-              </li>
-              <li className="pipe-node is-lit">
-                <span className="pipe-dot" aria-hidden="true"></span>
-                <span className="pipe-name">Judges</span>
-              </li>
-              <li className="pipe-node is-lit">
-                <span className="pipe-dot" aria-hidden="true"></span>
-                <span className="pipe-name">Summarize</span>
-              </li>
-              <li className="pipe-node is-lit">
-                <span className="pipe-dot" aria-hidden="true"></span>
-                <span className="pipe-name">Score</span>
-              </li>
-              <li className="pipe-node is-lit">
-                <span className="pipe-dot" aria-hidden="true"></span>
-                <span className="pipe-name">Report</span>
+                <div className="prin-body">
+                  <h3 className="prin-h">AI prepares, humans decide</h3>
+                  <p className="prin-p">
+                    The AI output is advisory; the final decision is always made
+                    by a person.
+                  </p>
+                </div>
               </li>
             </ol>
-            {/* pipeline image placeholder — see prompt comment at top of file */}
-            <div
-              className="pipe-media"
-              role="img"
-              aria-label="Horizontal track of evaluation nodes lit along a lens track"
-            ></div>
           </div>
         </section>
 
-        {/* 4. Роли судей */}
-        <section className="band">
+        {/* 3. Конвейер оценки — pinned-multi-screen, DARK. Tall track +
+            sticky stage; 5 steps light up sequentially via the pin engine. */}
+        <section
+          className="band ink methodology-pipeline"
+          data-pin
+          data-pin-steps="5"
+          aria-label="The evaluation pipeline"
+        >
+          <div className="pipe-stage" data-pin-stage>
+            <div className="wrap">
+              <div className="head pipe-head">
+                <span className="eyebrow">
+                  <span className="dot" aria-hidden="true"></span>
+                  Pipeline
+                </span>
+                <h2 className="title">The evaluation pipeline</h2>
+                {/* draft from brief §3 Конвейер оценки */}
+                <p className="sub">
+                  Every deck runs through a fixed pipeline. Each step is
+                  deterministic and reproducible — the same deck takes the same
+                  path.
+                </p>
+              </div>
+              <ol className="pipe-track">
+                {PIPELINE_STEPS.map((step, i) => (
+                  <li
+                    key={step.name}
+                    className="pipe-step"
+                    data-pin-step
+                    style={{ ["--i" as string]: String(i) }}
+                  >
+                    <span className="pipe-node" aria-hidden="true">
+                      <span className="pipe-dot"></span>
+                    </span>
+                    <span className="pipe-name">{step.name}</span>
+                    <span className="pipe-desc">{step.desc}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Роли судей — horizontal-gallery, light. Scroll-snap lane,
+            keyboard-reachable. P1–P6 are draft (public description pending). */}
+        <section className="band methodology-judges">
           <div className="wrap">
-            <div className="head">
+            <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
                 Judges
@@ -176,45 +237,30 @@ export default function MethodologyPage() {
                 independent judges reduce dependence on a single viewpoint.
               </p>
             </div>
-            <div className="trust-grid">
-              <article className="tcard">
-                <span className="mini-tag">P1</span>
-                <h3>Criterion P1</h3>
-                <p>Draft — public description pending (see open questions).</p>
-              </article>
-              <article className="tcard">
-                <span className="mini-tag">P2</span>
-                <h3>Criterion P2</h3>
-                <p>Draft — public description pending (see open questions).</p>
-              </article>
-              <article className="tcard">
-                <span className="mini-tag">P3</span>
-                <h3>Criterion P3</h3>
-                <p>Draft — public description pending (see open questions).</p>
-              </article>
-              <article className="tcard">
-                <span className="mini-tag">P4</span>
-                <h3>Criterion P4</h3>
-                <p>Draft — public description pending (see open questions).</p>
-              </article>
-              <article className="tcard">
-                <span className="mini-tag">P5</span>
-                <h3>Criterion P5</h3>
-                <p>Draft — public description pending (see open questions).</p>
-              </article>
-              <article className="tcard">
-                <span className="mini-tag">P6</span>
-                <h3>Criterion P6</h3>
-                <p>Draft — public description pending (see open questions).</p>
-              </article>
-            </div>
           </div>
+          <ul
+            className="judge-lane"
+            data-reveal="up"
+            aria-label="Judge roles P1 through P6"
+            tabIndex={0}
+          >
+            {JUDGE_ROLES.map((p) => (
+              <li key={p} className="judge-card">
+                <span className="mini-tag">{p}</span>
+                <h3 className="judge-h">Criterion {p}</h3>
+                <p className="judge-p">
+                  Draft — public description pending (see open questions).
+                </p>
+              </li>
+            ))}
+          </ul>
         </section>
 
-        {/* 5. Scoring model — own .methodology markup (score + confidence ring) */}
-        <section className="band soft">
-          <div className="wrap">
-            <div className="head">
+        {/* 5. Scoring model — editorial-split + scrubbed ring, light.
+            Ring fills with scroll via --scrub on the ring element. */}
+        <section className="band soft methodology-scoring">
+          <div className="wrap score-split">
+            <div className="score-copy" data-reveal="left">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
                 Scoring
@@ -228,88 +274,53 @@ export default function MethodologyPage() {
                 by a confidence ring.
               </p>
             </div>
-            <div className="score">
-              <div className="score-card">
-                <span className="mini-tag">Evidence-linked</span>
-                <h3 className="score-title">Score breakdown</h3>
-                <p>
-                  Each criterion contributes to the aggregate, with the source
-                  quote and page reference attached. Where evidence is absent,
-                  the deck is flagged rather than guessed.
-                </p>
-              </div>
-              <div className="score-confidence">
-                {/* confidence ring filled via conic-gradient — static, full
-                    state so reduced-motion is satisfied trivially */}
-                <div
-                  className="ring"
-                  role="img"
-                  aria-label="Confidence ring"
-                >
-                  <span className="ring-label">Confidence</span>
-                </div>
+            <div className="score-visual" data-reveal="right">
+              {/* confidence ring — fills as it scrolls through the viewport
+                  via --scrub; reduced-motion lands it at the full state */}
+              <div
+                className="conf-ring"
+                data-scrub
+                role="img"
+                aria-label="Confidence ring filling as evidence accumulates"
+              >
+                <span className="conf-ring__label">Confidence</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 6. Rubric system */}
-        <section className="band">
-          <div className="wrap">
-            <div className="head">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Rubric
-              </span>
-              <h2 className="title">Rubric system</h2>
-              {/* draft from brief §6 Rubric system */}
-              <p className="sub">
-                A single rubric defines the criteria and levels judges score
-                against — that is what makes results comparable across decks.
-              </p>
-            </div>
-            <div className="trust-grid">
-              <article className="tcard">
-                <span className="chip">
-                  <span className="tick" aria-hidden="true"></span>
-                  Criteria
-                </span>
-                <h3>Shared criteria</h3>
-                <p>
-                  Draft — every deck is measured against the same set of
-                  criteria (exact descriptors pending).
-                </p>
-              </article>
-              <article className="tcard">
-                <span className="chip">
-                  <span className="tick" aria-hidden="true"></span>
-                  Levels
-                </span>
-                <h3>Defined levels</h3>
-                <p>
-                  Draft — each criterion has defined levels (specific
-                  descriptors not yet fixed).
-                </p>
-              </article>
-              <article className="tcard">
-                <span className="chip">
-                  <span className="tick" aria-hidden="true"></span>
-                  Comparable
-                </span>
-                <h3>Comparable results</h3>
-                <p>
-                  The shared rubric is what makes scores comparable between
-                  decks.
-                </p>
-              </article>
-            </div>
+        {/* 6. Rubric system — full-bleed-statement, DARK (contrast to neighbours) */}
+        <section className="band ink methodology-rubric">
+          <div className="wrap rubric-statement">
+            <span className="eyebrow" data-reveal="up">
+              <span className="dot" aria-hidden="true"></span>
+              Rubric
+            </span>
+            {/* draft from brief §6 Rubric system */}
+            <h2
+              className="rubric-h"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "90ms" }}
+            >
+              One <span className="grad-word">rubric</span> — shared criteria
+              and defined levels — is what makes scores comparable across decks.
+            </h2>
+            <p
+              className="sub rubric-note"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "180ms" }}
+            >
+              Draft — every deck is measured against the same criteria, each with
+              defined levels (specific descriptors not yet fixed).
+            </p>
           </div>
         </section>
 
-        {/* 7. Human-in-the-loop — own .methodology markup */}
-        <section className="band soft">
-          <div className="wrap">
-            <div className="head">
+        {/* 7. Human-in-the-loop — editorial-split, light. AI-green only as the
+            human-approval accent. */}
+        <section className="band methodology-hitl">
+          <div className="wrap hitl-split">
+            <div className="hitl-copy" data-reveal="left">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
                 Human-in-the-loop
@@ -322,11 +333,11 @@ export default function MethodologyPage() {
                 records who and when.
               </p>
             </div>
-            <div className="hitl">
-              <div className="hitl-step">
+            <div className="hitl-flow" data-reveal="right">
+              <div className="hitl-node hitl-node--ai">
                 <span className="mini-tag">AI</span>
-                <h3>Advisory output</h3>
-                <p>
+                <h3 className="hitl-h">Advisory output</h3>
+                <p className="hitl-p">
                   The AI jury prepares an evidence-backed recommendation — it
                   does not decide.
                 </p>
@@ -334,34 +345,49 @@ export default function MethodologyPage() {
               <span className="hitl-arrow" aria-hidden="true">
                 →
               </span>
-              <div className="hitl-step hitl-step--human">
+              <div className="hitl-node hitl-node--human">
                 <span className="mini-tag">Human</span>
-                <h3>Final decision</h3>
-                <p>
+                <h3 className="hitl-h">Final decision</h3>
+                <p className="hitl-p">
                   A person with a named role reviews the advisory output and
                   makes the call.
                 </p>
               </div>
+              <p className="hitl-audit">
+                Audit — every final decision records who decided and when.
+              </p>
             </div>
-            <p className="hitl-audit">
-              Audit — every final decision records who decided and when.
-            </p>
           </div>
         </section>
 
-        {/* 8. Final CTA */}
-        <section className="band ink">
+        {/* 8. Final CTA — quiet-cta, DARK */}
+        <section className="band ink methodology-cta">
           <div className="wrap head">
-            <span className="eyebrow">
+            <span className="eyebrow" data-reveal="up">
               <span className="dot" aria-hidden="true"></span>
               Get started
             </span>
-            <h2 className="title">See the methodology on your own decks</h2>
-            <p className="sub">
+            <h2
+              className="title"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "90ms" }}
+            >
+              See the methodology on your own decks
+            </h2>
+            <p
+              className="sub"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "180ms" }}
+            >
               Book a demo and watch the evaluation run end to end.
             </p>
-            <div className="sect-cta">
-              {/* final target is /company/contact once that route exists; for now anchor to the homepage demo section to avoid a 404 */}
+            <div
+              className="sect-cta"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "270ms" }}
+            >
+              {/* final target is /company/contact once that route exists; for
+                  now anchor to the homepage demo section to avoid a 404 */}
               <a className="btn btn-primary" href="/#demo">
                 Book a Demo
               </a>
