@@ -24,7 +24,7 @@ Bento), знакомится с ценностью и переходит по CT
 - **Блог / Newsroom**: хаб новостей и статей (`/blog`, `/blog/all`,
   `/blog/[slug]`), IA по образцу Apple Newsroom. Продуктовое описание —
   [[newsroom|Newsroom]].
-- Демо-страница `/bento` (визуальная витрина).
+
 
 ## In scope (v1)
 

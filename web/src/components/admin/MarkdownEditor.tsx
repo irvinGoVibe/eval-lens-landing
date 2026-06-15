@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MarkdownBody } from "@/components/article/MarkdownBody";
+import { ImageDropzone } from "./ImageDropzone";
 import { uploadArticleMediaAction } from "@/app/admin/blog/articles/actions";
 
 /**
@@ -9,61 +10,45 @@ import { uploadArticleMediaAction } from "@/app/admin/blog/articles/actions";
  * preview rendered by the SAME `MarkdownBody` the public article page uses, so
  * what the editor sees matches what ships. No heavyweight WYSIWYG dependency.
  *
- * Includes an inline media upload that appends a Markdown image (or `::video`
- * directive) referencing the uploaded Storage URL at the end of the body.
+ * A drag-and-drop zone uploads media via a server action and appends a Markdown
+ * image (or `::video` directive) referencing the uploaded Storage URL to the
+ * body. Upload always goes through the server action — never the client.
  */
 export function MarkdownEditor({
   name,
   defaultValue,
+  textareaId,
 }: {
   name: string;
   defaultValue: string;
+  /** Id for the body textarea so an external <label htmlFor> can target it. */
+  textareaId?: string;
 }) {
   const [value, setValue] = useState(defaultValue);
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState("");
-
-  async function onUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file) return;
-    setUploading(true);
-    setError("");
-    const form = new FormData();
-    form.set("file", file);
-    const result = await uploadArticleMediaAction(form);
-    setUploading(false);
-    if ("error" in result) {
-      setError(result.error);
-      return;
-    }
-    const snippet = file.type.startsWith("video/")
-      ? `\n\n::video{src="${result.url}"}\n`
-      : `\n\n![](${result.url})\n`;
-    setValue((v) => v + snippet);
-  }
 
   return (
     <div>
-      <div className="admin-actions" style={{ marginBottom: 8 }}>
-        <label className="admin-btn">
-          {uploading ? "Загрузка…" : "Загрузить медиа"}
-          <input
-            type="file"
-            accept="image/*,video/*"
-            hidden
-            onChange={onUpload}
-            disabled={uploading}
-          />
-        </label>
-        <span className="admin-hint">
-          Поддержка: ## заголовок, &gt; цитата, - список, ![](url),
-          ::video&#123;src=&#125;, :::gallery
-        </span>
+      <div style={{ marginBottom: 10 }}>
+        <ImageDropzone
+          label="Drag & drop an image or video here, or"
+          hint="Supported: ## heading, > quote, - list, ![](url), ::video{src=}, :::gallery"
+          onUpload={async (file) => {
+            const form = new FormData();
+            form.set("file", file);
+            const result = await uploadArticleMediaAction(form);
+            if ("url" in result) {
+              const snippet = file.type.startsWith("video/")
+                ? `\n\n::video{src="${result.url}"}\n`
+                : `\n\n![](${result.url})\n`;
+              setValue((v) => v + snippet);
+            }
+            return result;
+          }}
+        />
       </div>
-      {error && <p className="admin-error">{error}</p>}
       <div className="admin-md">
         <textarea
+          id={textareaId}
           name={name}
           className="admin-textarea"
           value={value}

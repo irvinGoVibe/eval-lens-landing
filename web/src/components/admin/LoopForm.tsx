@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import type { AdminLoopPost } from "@/lib/cms/admin-queries";
+import { ImageDropzone } from "./ImageDropzone";
+import { uploadLoopMediaAction } from "@/app/admin/blog/reposts/actions";
 
 const ACCENTS = ["violet", "cyan", "aqua", "orange"];
 
@@ -13,8 +16,18 @@ export function LoopForm({
 }) {
   const p = post ?? null;
   const editing = Boolean(p);
+  const [cover, setCover] = useState(p?.cover ?? "");
+  const [video, setVideo] = useState(p?.video ?? "");
+  const [photos, setPhotos] = useState((p?.photos ?? []).join("\n"));
+
+  function appendPhoto(url: string) {
+    setPhotos((cur) => (cur.trim() ? `${cur.replace(/\n+$/, "")}\n${url}` : url));
+  }
+
   return (
     <form className="admin-form" action={action}>
+      <section className="admin-section">
+        <h2 className="admin-section__title">Details</h2>
       <div className="admin-row">
         <div className="admin-field">
           <label htmlFor="l-id">ID</label>
@@ -28,7 +41,7 @@ export function LoopForm({
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="l-kind">Тип</label>
+          <label htmlFor="l-kind">Kind</label>
           <select
             id="l-kind"
             name="kind"
@@ -43,7 +56,7 @@ export function LoopForm({
 
       <div className="admin-row">
         <div className="admin-field">
-          <label htmlFor="l-author">Автор</label>
+          <label htmlFor="l-author">Author</label>
           <input
             id="l-author"
             name="author"
@@ -52,7 +65,7 @@ export function LoopForm({
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="l-initials">Инициалы</label>
+          <label htmlFor="l-initials">Initials</label>
           <input
             id="l-initials"
             name="initials"
@@ -63,7 +76,7 @@ export function LoopForm({
       </div>
 
       <div className="admin-field">
-        <label htmlFor="l-caption">Подпись</label>
+        <label htmlFor="l-caption">Caption</label>
         <input
           id="l-caption"
           name="caption"
@@ -89,7 +102,7 @@ export function LoopForm({
           </select>
         </div>
         <div className="admin-field">
-          <label htmlFor="l-date">Дата</label>
+          <label htmlFor="l-date">Date</label>
           <input
             id="l-date"
             name="date"
@@ -99,40 +112,86 @@ export function LoopForm({
           />
         </div>
       </div>
+      </section>
 
+      <section className="admin-section">
+        <h2 className="admin-section__title">Media</h2>
       <div className="admin-field">
-        <label htmlFor="l-cover">Обложка (URL)</label>
+        <label htmlFor="l-cover">Cover</label>
+        <ImageDropzone
+          accept="image/*"
+          label="Drag & drop a cover image here, or"
+          hint="Uploads to Storage (bento) and fills the URL below; or enter a URL manually."
+          onUpload={async (file) => {
+            const fd = new FormData();
+            fd.set("file", file);
+            const result = await uploadLoopMediaAction("bento", fd);
+            if ("url" in result) setCover(result.url);
+            return result;
+          }}
+        />
         <input
           id="l-cover"
           name="cover"
           className="admin-input"
-          defaultValue={p?.cover ?? ""}
+          value={cover}
+          onChange={(e) => setCover(e.target.value)}
         />
       </div>
 
       <div className="admin-field">
-        <label htmlFor="l-video">Видео (URL, для type=video)</label>
+        <label htmlFor="l-video">Video (for kind=video)</label>
+        <ImageDropzone
+          accept="video/*"
+          label="Drag & drop a video here, or"
+          hint="Uploads to Storage (video) and fills the URL below; or enter a URL manually."
+          onUpload={async (file) => {
+            const fd = new FormData();
+            fd.set("file", file);
+            const result = await uploadLoopMediaAction("video", fd);
+            if ("url" in result) setVideo(result.url);
+            return result;
+          }}
+        />
         <input
           id="l-video"
           name="video"
           className="admin-input"
-          defaultValue={p?.video ?? ""}
+          value={video}
+          onChange={(e) => setVideo(e.target.value)}
         />
       </div>
 
       <div className="admin-field">
-        <label htmlFor="l-photos">Фото галереи (по одному URL на строку)</label>
+        <label htmlFor="l-photos">Gallery photos (one URL per line)</label>
+        <ImageDropzone
+          accept="image/*"
+          multiple
+          label="Drag & drop gallery images here, or"
+          hint="Each upload appends a URL line below; multiple files allowed."
+          onUpload={async (file) => {
+            const fd = new FormData();
+            fd.set("file", file);
+            const result = await uploadLoopMediaAction("photos", fd);
+            if ("url" in result) appendPhoto(result.url);
+            return result;
+          }}
+        />
         <textarea
           id="l-photos"
           name="photos"
           className="admin-textarea"
           style={{ minHeight: 120 }}
-          defaultValue={(p?.photos ?? []).join("\n")}
+          value={photos}
+          onChange={(e) => setPhotos(e.target.value)}
         />
       </div>
+      </section>
 
+      <section className="admin-section">
+        <h2 className="admin-section__title">Source</h2>
       <div className="admin-field">
-        <label htmlFor="l-href">Ссылка на исходный пост</label>
+        <label htmlFor="l-href">Source post link</label>
         <input
           id="l-href"
           name="href"
@@ -140,9 +199,12 @@ export function LoopForm({
           defaultValue={p?.href ?? ""}
         />
       </div>
+      </section>
 
+      <section className="admin-section">
+        <h2 className="admin-section__title">Publish</h2>
       <div className="admin-field" style={{ maxWidth: 220 }}>
-        <label htmlFor="l-status">Статус</label>
+        <label htmlFor="l-status">Status</label>
         <select
           id="l-status"
           name="status"
@@ -153,10 +215,11 @@ export function LoopForm({
           <option value="published">published</option>
         </select>
       </div>
+      </section>
 
-      <div className="admin-actions">
+      <div className="admin-savebar">
         <button type="submit" className="admin-btn admin-btn--primary">
-          Сохранить
+          Save
         </button>
       </div>
     </form>

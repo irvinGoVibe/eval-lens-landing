@@ -18,7 +18,8 @@ async function EditArticle({ slug }: { slug: string }) {
     <>
       <div className="admin-toolbar">
         <div>
-          <h1 className="admin-h1">Редактирование</h1>
+          <p className="admin-eyebrow">Blog · Articles</p>
+          <h1 className="admin-h1">Edit article</h1>
           <p className="admin-sub">{article.title}</p>
         </div>
         <DeleteButton action={remove} />
@@ -36,7 +37,7 @@ export default async function EditArticlePage({
   const { slug } = await params;
   return (
     <div>
-      <Suspense fallback={<p className="admin-sub">Загрузка…</p>}>
+      <Suspense fallback={<p className="admin-sub">Loading…</p>}>
         <EditArticle slug={slug} />
       </Suspense>
     </div>

@@ -8,7 +8,7 @@ import { useTransition } from "react";
  */
 export function DeleteButton({
   action,
-  label = "Удалить",
+  label = "Delete",
 }: {
   action: () => void | Promise<void>;
   label?: string;
@@ -20,13 +20,13 @@ export function DeleteButton({
       className="admin-btn admin-btn--danger"
       disabled={pending}
       onClick={() => {
-        if (!confirm("Удалить запись? Действие необратимо.")) return;
+        if (!confirm("Delete this record? This cannot be undone.")) return;
         startTransition(() => {
           void action();
         });
       }}
     >
-      {pending ? "Удаление…" : label}
+      {pending ? "Deleting…" : label}
     </button>
   );
 }

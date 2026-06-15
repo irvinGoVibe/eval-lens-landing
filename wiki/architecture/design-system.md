@@ -1,7 +1,7 @@
 ---
 title: Design System
-status: approved
-version: 1.1
+status: generated
+version: 1.2
 updated: 2026-06-15
 source: AI Jury / design / EvalLense-Interface-Style-Guide.html (v1.2) + фактический код web/
 ---
@@ -143,6 +143,11 @@ Micro `4–8` (icon gaps) · component `12–16` (карточки, кнопки
 
 Тени мягкие и фиолетово-подкрашенные — **никогда серый drop-shadow**. На тёмных
 поверхностях опираемся на границы, а не на тени.
+
+> `--sh-1/2/3` и `--r-xs/sm/md/lg/pill` заведены в `:root`
+> [globals.css](web/src/app/globals.css) (Story 05) на базе
+> `rgba(60,40,160,…)`-теней (как `--shadow-soft`) и канонических радиусов
+> (8/12/18/24/980px). Их использует продуктовая CMS (`admin.css`).
 
 ### Motion
 
@@ -437,6 +442,12 @@ reveal через `clip-path:inset(0 100% 0 0)→inset(0)`. В Workflow-заго
   тень `--shadow-soft`, layout-токены `--maxw`/`--gutter`. Новые внутренние
   страницы должны тяготеть к каноническим токенам стайл-гайда, переиспользуя
   готовые классы лендинга там, где они подходят.
+- **CMS теперь внутри системы (Story 05).** Ранее `admin.css` намеренно стоял
+  «вне публичной визуальной системы» (тёмная утилитарная палитра, синий primary).
+  Это расхождение снято: `web/src/app/admin/admin.css` (scoped под `.admin-root`)
+  переписан на токены дизайн-системы — светлая тема, violet primary, SF Pro/Menlo,
+  hairline-границы, `--sh-*`/`--r-*`. CMS читается как продуктовая апка; см.
+  [[cms]] §«Визуальный язык и интерфейс».
 
 ## Связанное
 

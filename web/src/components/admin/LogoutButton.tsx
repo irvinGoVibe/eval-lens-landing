@@ -21,7 +21,7 @@ export function LogoutButton() {
       onClick={logout}
       disabled={busy}
     >
-      {busy ? "Выход…" : "Выйти"}
+      {busy ? "Signing out…" : "Sign out"}
     </button>
   );
 }

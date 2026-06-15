@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LoginForm } from "@/components/admin/LoginForm";
 
 export const metadata: Metadata = {
-  title: "Вход — EvalLense CMS",
+  title: "Sign in — EvalLense CMS",
   robots: { index: false, follow: false },
 };
 

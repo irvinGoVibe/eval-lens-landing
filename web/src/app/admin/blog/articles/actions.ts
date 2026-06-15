@@ -31,11 +31,32 @@ function str(form: FormData, key: string): string {
   return typeof v === "string" ? v.trim() : "";
 }
 
+const MAX_UPLOAD_BYTES = 50 * 1024 * 1024; // 50 MB — mirrors the client limit.
+
+/**
+ * Server-side defense-in-depth for uploads: reject anything that is not an
+ * image/video or that exceeds the size ceiling before it ever reaches Storage.
+ * Mirrors the client-side check in ImageDropzone so a forged request can't
+ * bypass it.
+ */
+function validateUpload(file: File): string | null {
+  const type = file.type || "";
+  if (!type.startsWith("image/") && !type.startsWith("video/")) {
+    return `Unsupported file type: ${type || "unknown"}. Use an image or video.`;
+  }
+  if (file.size > MAX_UPLOAD_BYTES) {
+    return "File is too large (max 50 MB).";
+  }
+  return null;
+}
+
 async function readArticleInput(form: FormData): Promise<ArticleInput> {
   // Optional cover upload: if a file is provided it wins over the URL field.
   let cover = str(form, "cover");
   const coverFile = form.get("coverFile");
   if (coverFile instanceof File && coverFile.size > 0) {
+    const invalid = validateUpload(coverFile);
+    if (invalid) throw new Error(invalid);
     cover = await uploadMedia(coverFile, "bento");
   }
 
@@ -99,6 +120,10 @@ export async function uploadArticleMediaAction(
   const file = form.get("file");
   if (!(file instanceof File) || file.size === 0) {
     return { error: "No file." };
+  }
+  const invalid = validateUpload(file);
+  if (invalid) {
+    return { error: invalid };
   }
   const folder = file.type.startsWith("video/") ? "video" : "photos";
   try {

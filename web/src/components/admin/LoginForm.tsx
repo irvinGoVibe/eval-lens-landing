@@ -24,14 +24,14 @@ export function LoginForm() {
       return;
     }
     const data = (await res.json().catch(() => ({}))) as { error?: string };
-    setError(data.error ?? "Не удалось войти.");
+    setError(data.error ?? "Could not sign in.");
     setBusy(false);
   }
 
   return (
     <form className="admin-form" onSubmit={submit}>
       <div className="admin-field">
-        <label htmlFor="cms-password">Пароль</label>
+        <label htmlFor="cms-password">Password</label>
         <input
           id="cms-password"
           className="admin-input"
@@ -49,7 +49,7 @@ export function LoginForm() {
           className="admin-btn admin-btn--primary"
           disabled={busy || password.length === 0}
         >
-          {busy ? "Вход…" : "Войти"}
+          {busy ? "Signing in…" : "Sign in"}
         </button>
       </div>
     </form>

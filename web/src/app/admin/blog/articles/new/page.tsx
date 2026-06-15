@@ -4,8 +4,9 @@ import { createArticleAction } from "../actions";
 export default function NewArticlePage() {
   return (
     <div>
-      <h1 className="admin-h1">Новая статья</h1>
-      <p className="admin-sub">Создание записи в articles.</p>
+      <p className="admin-eyebrow">Blog · Articles</p>
+      <h1 className="admin-h1">New article</h1>
+      <p className="admin-sub">Create a record in articles.</p>
       <ArticleForm action={createArticleAction} />
     </div>
   );

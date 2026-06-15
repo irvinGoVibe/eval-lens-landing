@@ -22,13 +22,14 @@ async function FeaturedPickerLoader() {
 export default function HomeFeaturedPage() {
   return (
     <div>
-      <h1 className="admin-h1">Главная → Блок «Блог»</h1>
+      <p className="admin-eyebrow">Home</p>
+      <h1 className="admin-h1">Blog block</h1>
       <p className="admin-sub">
-        Выберите статьи и задайте порядок показа в блоке блога на главной.
-        Только опубликованные статьи попадают в блок; при пустом выборе —
-        свежие по дате.
+        Pick the articles and their order in the home blog block. Only published
+        articles appear in the block; when the selection is empty it falls back
+        to the latest by date.
       </p>
-      <Suspense fallback={<p className="admin-sub">Загрузка…</p>}>
+      <Suspense fallback={<p className="admin-sub">Loading…</p>}>
         <FeaturedPickerLoader />
       </Suspense>
     </div>

@@ -5,15 +5,15 @@ import { usePathname } from "next/navigation";
 
 const GROUPS = [
   {
-    title: "Блог",
+    title: "Blog",
     links: [
-      { href: "/admin/blog/articles", label: "Статьи" },
-      { href: "/admin/blog/reposts", label: "Репосты" },
+      { href: "/admin/blog/articles", label: "Articles" },
+      { href: "/admin/blog/reposts", label: "Reposts" },
     ],
   },
   {
-    title: "Главная",
-    links: [{ href: "/admin/home/featured", label: "Блок «Блог»" }],
+    title: "Home",
+    links: [{ href: "/admin/home/featured", label: "Blog block" }],
   },
 ];
 

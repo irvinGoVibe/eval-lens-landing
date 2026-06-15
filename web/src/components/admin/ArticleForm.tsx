@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { MarkdownEditor } from "./MarkdownEditor";
+import { ImageDropzone } from "./ImageDropzone";
+import { uploadArticleMediaAction } from "@/app/admin/blog/articles/actions";
 import type { AdminArticle } from "@/lib/cms/admin-queries";
 
 const CATEGORIES = ["Press Release", "Product", "Research"];
@@ -14,11 +17,14 @@ export function ArticleForm({
   article?: AdminArticle | null;
 }) {
   const a = article ?? null;
+  const [cover, setCover] = useState(a?.cover ?? "");
   return (
     <form className="admin-form" action={action}>
+      <section className="admin-section">
+        <h2 className="admin-section__title">Details</h2>
       <div className="admin-row">
         <div className="admin-field">
-          <label htmlFor="f-title">Заголовок</label>
+          <label htmlFor="f-title">Title</label>
           <input
             id="f-title"
             name="title"
@@ -40,7 +46,7 @@ export function ArticleForm({
       </div>
 
       <div className="admin-field">
-        <label htmlFor="f-excerpt">Дек (excerpt)</label>
+        <label htmlFor="f-excerpt">Deck (excerpt)</label>
         <input
           id="f-excerpt"
           name="excerpt"
@@ -51,7 +57,7 @@ export function ArticleForm({
 
       <div className="admin-row">
         <div className="admin-field">
-          <label htmlFor="f-category">Рубрика</label>
+          <label htmlFor="f-category">Category</label>
           <select
             id="f-category"
             name="category"
@@ -84,7 +90,7 @@ export function ArticleForm({
 
       <div className="admin-row">
         <div className="admin-field">
-          <label htmlFor="f-date">Дата</label>
+          <label htmlFor="f-date">Date</label>
           <input
             id="f-date"
             name="date"
@@ -95,7 +101,7 @@ export function ArticleForm({
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="f-read">Минут чтения</label>
+          <label htmlFor="f-read">Read minutes</label>
           <input
             id="f-read"
             name="read_minutes"
@@ -109,7 +115,7 @@ export function ArticleForm({
 
       <div className="admin-row">
         <div className="admin-field">
-          <label htmlFor="f-author">Автор</label>
+          <label htmlFor="f-author">Author</label>
           <input
             id="f-author"
             name="author"
@@ -118,7 +124,7 @@ export function ArticleForm({
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="f-role">Роль</label>
+          <label htmlFor="f-role">Role</label>
           <input
             id="f-role"
             name="role"
@@ -127,27 +133,48 @@ export function ArticleForm({
           />
         </div>
       </div>
+      </section>
 
+      <section className="admin-section">
+        <h2 className="admin-section__title">Cover image</h2>
       <div className="admin-field">
-        <label htmlFor="f-cover">Обложка (URL)</label>
+        <label htmlFor="f-cover">Cover</label>
+        <ImageDropzone
+          accept="image/*"
+          label="Drag & drop a cover image here, or"
+          hint="Drop or choose an image — it uploads to Storage and fills the URL below."
+          onUpload={async (file) => {
+            const fd = new FormData();
+            fd.set("file", file);
+            const result = await uploadArticleMediaAction(fd);
+            if ("url" in result) setCover(result.url);
+            return result;
+          }}
+        />
         <input
           id="f-cover"
           name="cover"
           className="admin-input"
-          defaultValue={a?.cover ?? ""}
+          value={cover}
+          onChange={(e) => setCover(e.target.value)}
           placeholder="https://…/media/bento/cover.png"
         />
-        <span className="admin-hint">Или загрузите файл обложки:</span>
-        <input id="f-coverFile" name="coverFile" type="file" accept="image/*" />
+        <span className="admin-hint">Cover image URL (filled on upload, or enter manually).</span>
       </div>
+      </section>
 
+      <section className="admin-section">
+        <h2 className="admin-section__title">Content</h2>
       <div className="admin-field">
-        <label>Тело (Markdown)</label>
-        <MarkdownEditor name="body" defaultValue={a?.body ?? ""} />
+        <label htmlFor="f-body">Body (Markdown)</label>
+        <MarkdownEditor name="body" defaultValue={a?.body ?? ""} textareaId="f-body" />
       </div>
+      </section>
 
+      <section className="admin-section">
+        <h2 className="admin-section__title">Publish</h2>
       <div className="admin-field" style={{ maxWidth: 220 }}>
-        <label htmlFor="f-status">Статус</label>
+        <label htmlFor="f-status">Status</label>
         <select
           id="f-status"
           name="status"
@@ -158,10 +185,11 @@ export function ArticleForm({
           <option value="published">published</option>
         </select>
       </div>
+      </section>
 
-      <div className="admin-actions">
+      <div className="admin-savebar">
         <button type="submit" className="admin-btn admin-btn--primary">
-          Сохранить
+          Save
         </button>
       </div>
     </form>

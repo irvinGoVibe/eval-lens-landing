@@ -18,7 +18,8 @@ async function EditRepost({ id }: { id: string }) {
     <>
       <div className="admin-toolbar">
         <div>
-          <h1 className="admin-h1">Редактирование репоста</h1>
+          <p className="admin-eyebrow">Blog · Reposts</p>
+          <h1 className="admin-h1">Edit repost</h1>
           <p className="admin-sub">{post.id}</p>
         </div>
         <DeleteButton action={remove} />
@@ -36,7 +37,7 @@ export default async function EditRepostPage({
   const { id } = await params;
   return (
     <div>
-      <Suspense fallback={<p className="admin-sub">Загрузка…</p>}>
+      <Suspense fallback={<p className="admin-sub">Loading…</p>}>
         <EditRepost id={id} />
       </Suspense>
     </div>

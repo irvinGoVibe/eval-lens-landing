@@ -30,10 +30,21 @@ async function AdminChrome({ children }: { children: React.ReactNode }) {
     <div className="admin-root">
       <aside className="admin-sidebar">
         <div className="admin-brand">
-          <Link href="/admin">EvalLense CMS</Link>
+          <Link href="/admin">
+            <span className="admin-brand__mark" aria-hidden="true" />
+            EvalLense CMS
+          </Link>
         </div>
         <AdminNav />
         <div className="admin-sidebar__foot">
+          <a
+            className="admin-sidebar__site"
+            href="/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View site ↗
+          </a>
           <LogoutButton />
         </div>
       </aside>

@@ -60,12 +60,12 @@ export function FeaturedPicker({ options }: { options: FeaturedOption[] }) {
   return (
     <div>
       <h2 className="admin-h1" style={{ fontSize: 16 }}>
-        Выбранные (в порядке показа)
+        Selected (in display order)
       </h2>
       <div className="admin-featured">
         {order.length === 0 && (
           <p className="admin-hint">
-            Пусто — на главной показываются свежие статьи по дате (фолбэк).
+            Empty — the home block falls back to the latest articles by date.
           </p>
         )}
         {order.map((slug, i) => {
@@ -79,7 +79,7 @@ export function FeaturedPicker({ options }: { options: FeaturedOption[] }) {
                 className="admin-btn"
                 onClick={() => move(slug, -1)}
                 disabled={i === 0}
-                aria-label="Выше"
+                aria-label="Move up"
               >
                 ↑
               </button>
@@ -88,7 +88,7 @@ export function FeaturedPicker({ options }: { options: FeaturedOption[] }) {
                 className="admin-btn"
                 onClick={() => move(slug, 1)}
                 disabled={i === order.length - 1}
-                aria-label="Ниже"
+                aria-label="Move down"
               >
                 ↓
               </button>
@@ -97,7 +97,7 @@ export function FeaturedPicker({ options }: { options: FeaturedOption[] }) {
                 className="admin-btn admin-btn--danger"
                 onClick={() => toggle(slug)}
               >
-                Убрать
+                Remove
               </button>
             </div>
           );
@@ -105,7 +105,7 @@ export function FeaturedPicker({ options }: { options: FeaturedOption[] }) {
       </div>
 
       <h2 className="admin-h1" style={{ fontSize: 16, marginTop: 24 }}>
-        Доступные (published)
+        Available (published)
       </h2>
       <div className="admin-featured">
         {available.map((o) => (
@@ -116,12 +116,12 @@ export function FeaturedPicker({ options }: { options: FeaturedOption[] }) {
               className="admin-btn"
               onClick={() => toggle(o.slug)}
             >
-              + Добавить
+              + Add
             </button>
           </div>
         ))}
         {available.length === 0 && (
-          <p className="admin-hint">Все опубликованные статьи уже выбраны.</p>
+          <p className="admin-hint">All published articles are already selected.</p>
         )}
       </div>
 
@@ -132,9 +132,9 @@ export function FeaturedPicker({ options }: { options: FeaturedOption[] }) {
           onClick={save}
           disabled={pending}
         >
-          {pending ? "Сохранение…" : "Сохранить выбор"}
+          {pending ? "Saving…" : "Save selection"}
         </button>
-        {saved && <span className="admin-hint">Сохранено.</span>}
+        {saved && <span className="admin-hint">Saved.</span>}
       </div>
     </div>
   );

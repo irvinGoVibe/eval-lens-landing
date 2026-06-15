@@ -14,6 +14,7 @@ import {
   adminDeleteLoopPost,
   adminUpdateLoopPost,
 } from "@/lib/cms/admin-queries";
+import { type MediaFolder, uploadMedia } from "@/lib/cms/storage";
 
 async function assertSession(): Promise<void> {
   const store = await cookies();
@@ -27,6 +28,25 @@ async function assertSession(): Promise<void> {
 function str(form: FormData, key: string): string {
   const v = form.get(key);
   return typeof v === "string" ? v.trim() : "";
+}
+
+const MAX_UPLOAD_BYTES = 50 * 1024 * 1024; // 50 MB — mirrors the client limit.
+
+/**
+ * Server-side defense-in-depth for uploads: reject anything that is not an
+ * image/video or that exceeds the size ceiling before it ever reaches Storage.
+ * Mirrors the client-side check in ImageDropzone so a forged request can't
+ * bypass it.
+ */
+function validateUpload(file: File): string | null {
+  const type = file.type || "";
+  if (!type.startsWith("image/") && !type.startsWith("video/")) {
+    return `Unsupported file type: ${type || "unknown"}. Use an image or video.`;
+  }
+  if (file.size > MAX_UPLOAD_BYTES) {
+    return "File is too large (max 50 MB).";
+  }
+  return null;
 }
 
 function readLoopInput(form: FormData): LoopPostInput {
@@ -84,4 +104,30 @@ export async function deleteLoopAction(id: string): Promise<void> {
   await adminDeleteLoopPost(id);
   invalidate();
   redirect("/admin/blog/reposts");
+}
+
+/**
+ * Standalone media upload used by the repost form's drag-and-drop zones.
+ * `folder` picks the Storage subpath: `bento` for cover/gallery images,
+ * `video` for video files, `photos` for gallery photos.
+ */
+export async function uploadLoopMediaAction(
+  folder: MediaFolder,
+  form: FormData,
+): Promise<{ url: string } | { error: string }> {
+  await assertSession();
+  const file = form.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { error: "No file." };
+  }
+  const invalid = validateUpload(file);
+  if (invalid) {
+    return { error: invalid };
+  }
+  try {
+    const url = await uploadMedia(file, folder);
+    return { url };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Upload failed." };
+  }
 }
