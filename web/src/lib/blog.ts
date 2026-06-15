@@ -323,6 +323,158 @@ const POSTS: Post[] = [
       },
     ],
   },
+  {
+    slug: "calibrating-the-jury",
+    category: "Research",
+    accent: "cyan",
+    title: "How we calibrate the jury against human reviewers",
+    excerpt:
+      "Before a rubric ships, the jury is benchmarked against partner scores on hundreds of past deals.",
+    date: "2026-04-08",
+    readMinutes: 5,
+    cover: "/assets/bento/scoring-matrix.png",
+    author: "Dev Patel",
+    role: "Research",
+    body: [
+      {
+        type: "p",
+        text: "A score is only trustworthy if it tracks what experienced investors already believe. We calibrate every rubric against a held-out set of past decisions before it ever touches live inbound.",
+      },
+    ],
+  },
+  {
+    slug: "exporting-reports-to-notion",
+    category: "Update",
+    accent: "aqua",
+    title: "Export reports straight to Notion and Affinity",
+    excerpt:
+      "One-click export drops a structured memo into the tools your deal team already lives in.",
+    date: "2026-04-02",
+    readMinutes: 3,
+    cover: "/assets/bento/deck-vault.png",
+    author: "EvalLense Newsroom",
+    role: "Product",
+    body: [
+      {
+        type: "p",
+        text: "Reports now export as clean, structured memos to Notion and Affinity, so the evaluation lands where your team already tracks deals.",
+      },
+    ],
+  },
+  {
+    slug: "what-a-strong-deck-looks-like",
+    category: "Feature",
+    accent: "violet",
+    title: "What a strong deck looks like to the jury",
+    excerpt:
+      "Across thousands of submissions, a few patterns separate the decks that rank high from the rest.",
+    date: "2026-03-26",
+    readMinutes: 6,
+    cover: "/assets/bento/deck-scan.png",
+    author: "Maya Okonkwo",
+    role: "Design",
+    body: [
+      {
+        type: "p",
+        text: "Clarity beats polish. The decks that rank highest answer the rubric's questions directly — problem, wedge, traction — without making the reader hunt.",
+      },
+    ],
+  },
+  {
+    slug: "security-soc2-type-ii",
+    category: "Press Release",
+    accent: "orange",
+    title: "EvalLense completes SOC 2 Type II",
+    excerpt:
+      "Independent auditors confirmed our controls for handling confidential pitch materials.",
+    date: "2026-03-19",
+    readMinutes: 4,
+    cover: "/assets/bento/injection-blocked.png",
+    author: "EvalLense Newsroom",
+    role: "Company",
+    body: [
+      {
+        type: "p",
+        text: "EvalLense has completed a SOC 2 Type II examination, validating the controls that keep confidential decks encrypted, access-scoped, and auditable.",
+      },
+    ],
+  },
+  {
+    slug: "the-cost-of-a-missed-deal",
+    category: "Quick Read",
+    accent: "violet",
+    title: "The real cost of a deck you never read",
+    excerpt:
+      "Triage fatigue quietly buries strong companies. A short argument for reading everything — once.",
+    date: "2026-03-12",
+    readMinutes: 3,
+    cover: "/assets/bento/jury-decision.png",
+    author: "Lena Hoffmann",
+    role: "Customer Story",
+    body: [
+      {
+        type: "p",
+        text: "The deals that hurt most are the ones you never opened. Reading everything once, consistently, is cheaper than the miss.",
+      },
+    ],
+  },
+  {
+    slug: "rubric-templates-by-stage",
+    category: "Update",
+    accent: "cyan",
+    title: "Rubric templates for pre-seed through Series A",
+    excerpt:
+      "Start from a stage-appropriate rubric instead of a blank page, then tune it to your thesis.",
+    date: "2026-03-05",
+    readMinutes: 4,
+    cover: "/assets/bento/scoring-matrix.png",
+    author: "EvalLense Newsroom",
+    role: "Product",
+    body: [
+      {
+        type: "p",
+        text: "New templates ship a sensible rubric for each stage — pre-seed weights team and wedge, later stages weight traction — and every line stays editable.",
+      },
+    ],
+  },
+  {
+    slug: "inside-the-deck-vault",
+    category: "Feature",
+    accent: "aqua",
+    title: "Inside Deck Vault: how confidential decks stay private",
+    excerpt:
+      "A deeper look at encryption, access scoping, and the audit trail behind every submission.",
+    date: "2026-02-26",
+    readMinutes: 5,
+    cover: "/assets/bento/deck-vault-art.png",
+    author: "Dev Patel",
+    role: "Security",
+    body: [
+      {
+        type: "p",
+        text: "Deck Vault encrypts every submission at rest, scopes access to the deal team, and logs every view and download — so a founder always gets a precise answer about who saw their materials.",
+      },
+    ],
+  },
+  {
+    slug: "founding-story",
+    category: "Quick Read",
+    accent: "orange",
+    title: "Why we started EvalLense",
+    excerpt:
+      "The pile of unread decks that wouldn't go away — and the lens we wished we'd had.",
+    date: "2026-02-18",
+    readMinutes: 3,
+    cover: "/assets/bento/deck-scan.png",
+    author: "EvalLense Newsroom",
+    role: "Company",
+    body: [
+      {
+        type: "p",
+        text: "EvalLense started with a simple frustration: too many strong companies lost to a reader's fatigue. We built the lens we wished we'd had.",
+      },
+    ],
+  },
 ];
 
 function toTime(iso: string): number {

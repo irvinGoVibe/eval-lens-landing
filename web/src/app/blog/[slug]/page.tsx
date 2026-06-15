@@ -126,7 +126,7 @@ export default async function ArticlePage({
           <div className="wrap blog-wrap">
             <div className="blog-section-head">
               <h2>More from the Newsroom</h2>
-              <Link href="/blog" className="blog-seeall">
+              <Link href="/blog/all" className="blog-seeall">
                 See all <span aria-hidden="true">→</span>
               </Link>
             </div>

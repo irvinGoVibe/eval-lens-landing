@@ -4,9 +4,9 @@ import { useState } from "react";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 import type { Post } from "@/lib/blog";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 12;
 
-/** All News grid — shows 20 cards, then expands by 20 more on "Show more". */
+/** All News grid — shows 12 cards, then expands by 12 more on "Show more". */
 export function AllNewsGrid({ posts }: { posts: Post[] }) {
   const [count, setCount] = useState(PAGE_SIZE);
   const visible = posts.slice(0, count);
@@ -14,7 +14,7 @@ export function AllNewsGrid({ posts }: { posts: Post[] }) {
 
   return (
     <>
-      <div className="blog-grid">
+      <div className="blog-grid blog-grid--surface">
         {visible.map((post) => (
           <ArticleCard key={post.slug} post={post} variant="grid" />
         ))}

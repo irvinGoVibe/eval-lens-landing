@@ -2448,6 +2448,17 @@ body:not(.hero-ready){overflow:hidden;}
 @media (max-width:820px){.blog-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 @media (max-width:560px){.blog-grid{grid-template-columns:1fr;}}
 
+/* All News — cards on a surface (background, edge-to-edge image, padded body) */
+.blog-grid--surface .blog-card{
+  background:#fff;border:1px solid var(--border-2);border-radius:var(--radius-card);
+  overflow:hidden;box-shadow:0 12px 32px -22px rgba(20,18,40,.4);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+}
+.blog-grid--surface .blog-card:hover{transform:translateY(-3px);box-shadow:0 22px 48px -24px rgba(20,18,40,.5);}
+.blog-grid--surface .blog-card__media{border:0;border-radius:0;aspect-ratio:16/11;}
+.blog-grid--surface .blog-card__body{padding:16px 18px 20px;}
+.blog-grid--surface .blog-card__title{margin-top:11px;}
+
 /* ---- Category tag ---- */
 .blog-tag{
   display:inline-flex;align-items:center;font-family:var(--font-mono);
