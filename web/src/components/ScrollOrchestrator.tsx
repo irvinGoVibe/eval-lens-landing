@@ -21,6 +21,15 @@ export function ScrollOrchestrator() {
     if (ranRef.current) return;
     ranRef.current = true;
 
+    // Survive Fast Refresh / HMR too: a hot reload remounts this component
+    // with a fresh ranRef, which would re-run runScript() and stack a SECOND
+    // set of scroll/stage drivers on top of the old ones. Two competing
+    // stage tweens leave the demo stuck mid-frame (e.g. the report panel
+    // resting half-revealed). A window-level flag keeps it strictly once.
+    const w = window as unknown as { __evlOrchRan?: boolean };
+    if (w.__evlOrchRan) return;
+    w.__evlOrchRan = true;
+
     runScript();
     // Intentionally no cleanup: the landing page never unmounts this in
     // practice, and the original script also installed permanent listeners.
@@ -1587,25 +1596,38 @@ function runScript() {
       layerBEl.classList.toggle("on", bView);
       windowElRef.setAttribute("data-stage", String(stage));
 
-      beamEl.style.opacity = stage === 2 ? "1" : "0";
+      // "Extract signals" scans the messy decks, then near its END squares
+      // them into an even 2×2 grid (this used to live in stage 3).
+      const SQUARE_AT = 0.78;
+      const sqFade =
+        stage === 2 ? Math.max(0, Math.min(1, (frac - SQUARE_AT) / 0.18)) : 0;
+      beamEl.style.opacity = stage === 2 ? (1 - sqFade).toFixed(2) : "0";
       if (stage === 2 && deckfield) {
         const h = deckfield.clientHeight || 420;
-        beamEl.style.transform = "translateY(" + (frac * (h - 120)).toFixed(1) + "px)";
+        const scanP = Math.min(1, frac / SQUARE_AT); // beam reaches the bottom as squaring begins
+        beamEl.style.transform = "translateY(" + (scanP * (h - 120)).toFixed(1) + "px)";
       }
-      scanTitleEl.style.opacity = stage === 2 ? "1" : "0";
+      scanTitleEl.style.opacity = stage === 2 ? (1 - sqFade).toFixed(2) : "0";
 
-      const tagsOn = stage === 2 || stage === 3;
       tags.forEach((t, i) => {
         const el = t as HTMLElement;
-        const show = tagsOn && (stage === 3 ? true : frac * tags.length > i);
-        const s3fade = stage === 3 ? Math.max(0, 1 - frac * 1.6) : 1;
-        el.style.opacity = show ? s3fade.toFixed(2) : "0";
+        // signals pop in during the scan, then fade as the decks square up
+        const show = stage === 2 && frac * tags.length > i;
+        el.style.opacity = show ? (1 - sqFade).toFixed(2) : "0";
         el.style.transform = show ? "translateY(0) scale(1)" : "translateY(6px) scale(.96)";
       });
 
-      if (stage === 3) {
+      if (stage === 2) {
+        // square up the four decks at the tail of Extract signals
+        alignDecks(frac > SQUARE_AT);
+        if (deckfield) deckfield.style.opacity = "1";
+        repgridEl.style.opacity = "0";
+        repgridEl.style.visibility = "hidden";
+      } else if (stage === 3) {
+        // decks arrive already squared from stage 2 — Standardize reports only
+        // MORPHS those squares into the standardized report cards
         alignDecks(true);
-        const rg = Math.min(1, Math.max(0, (frac - 0.25) / 0.6));
+        const rg = Math.min(1, Math.max(0, (frac - 0.08) / 0.7));
         if (deckfield) deckfield.style.opacity = (1 - rg).toFixed(2);
         repgridEl.style.opacity = rg.toFixed(2);
         repgridEl.style.visibility = rg > 0.02 ? "visible" : "hidden";
@@ -1615,7 +1637,7 @@ function runScript() {
           el.style.opacity = ci.toFixed(2);
           el.style.transform = "translateY(" + ((1 - ci) * 10).toFixed(1) + "px)";
         });
-      } else if (stage < 3) {
+      } else if (stage < 2) {
         alignDecks(false);
         if (deckfield) deckfield.style.opacity = "1";
         repgridEl.style.opacity = "0";
@@ -1641,9 +1663,12 @@ function runScript() {
           dashEl.classList.add("open");
           const openP = stage === 5 ? easeOut(Math.min(1, frac / 0.3)) : 1;
           if (panel) panel.style.transform = "translateX(" + ((1 - openP) * 102).toFixed(2) + "%)";
-          const rStart = 0.32;
-          const rStep = 0.085;
-          const rDur = 0.2;
+          // tuned so every report section (incl. the closing "Strengths and
+          // weaknesses") is fully revealed by frac≈0.8 — the stage now rests at
+          // frac=1 (button-driven), so nothing must trail past it.
+          const rStart = 0.14;
+          const rStep = 0.07;
+          const rDur = 0.16;
           revItems.forEach((el, i) => {
             const node = el as HTMLElement;
             const rp =
@@ -1679,27 +1704,52 @@ function runScript() {
       lastStage = stage;
     }
 
-    let ticking = false;
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const rect = scrollEl.getBoundingClientRect();
-        const total = scrollEl.offsetHeight - window.innerHeight;
-        const raw = Math.min(Math.max(-rect.top, 0), total);
-        const p = total > 0 ? raw / total : 0;
-        const sf = p * STAGES;
-        const stage = Math.min(STAGES, Math.floor(sf) + 1);
-        const frac = Math.min(1, sf - (stage - 1));
-        setStage(stage, frac);
-        ticking = false;
-      });
+    // ── manual stepper (same as #workflow) ───────────────────────────
+    // Stages switch ONLY via the up/down buttons or by clicking a step,
+    // never by scroll. Each transition tweens the in-stage fraction 0→1
+    // so the demo's reveals still play out.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const navUp = document.getElementById("sd-navUp") as HTMLButtonElement | null;
+    const navDown = document.getElementById("sd-navDown") as HTMLButtonElement | null;
+
+    let current = 0;
+    let animTok = 0;
+    const easeInOut = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    function syncNav() {
+      if (navUp) navUp.disabled = current <= 1;
+      if (navDown) navDown.disabled = current >= STAGES;
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    window.addEventListener("load", onScroll);
-    setStage(1, 0);
-    onScroll();
+    function goTo(stage: number, animate = true) {
+      const next = Math.min(STAGES, Math.max(1, stage));
+      const tok = ++animTok; // cancels any in-flight tween
+      current = next;
+      syncNav();
+      if (!animate || reduceMotion) {
+        setStage(next, 1);
+        return;
+      }
+      const dur = 820;
+      let start: number | null = null;
+      function frame(ts: number) {
+        if (tok !== animTok) return;
+        if (start === null) start = ts;
+        const p = Math.min(1, (ts - start) / dur);
+        setStage(next, easeInOut(p));
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    navUp?.addEventListener("click", () => goTo(current - 1));
+    navDown?.addEventListener("click", () => goTo(current + 1));
+    steps.forEach((s, i) => {
+      (s as HTMLElement).addEventListener("click", () => goTo(i + 1));
+    });
+    window.addEventListener("resize", () => setStage(current, 1));
+
+    goTo(1, false);
   })();
 }

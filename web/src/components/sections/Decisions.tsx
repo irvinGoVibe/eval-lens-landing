@@ -14,22 +14,53 @@ export function Decisions() {
           </span>
           <h2 className="title">From messy decks to faster decisions</h2>
           <p className="sub">
-            EvalLense turns different pitch decks into clear, comparable reports
-            — so your team can review projects faster, focus on what matters,
-            and keep the final decision in human hands.
-          </p>
-          <p className="keymsg">
             Instead of manually reading, comparing, and rewriting notes for
             every deck, your team gets structured reports, batch-level data,
             and a clear decision trail. This saves reviewer-hours without
             turning the final choice into a black box.
           </p>
+       
         </div>
       </div>
 
       <div className="sd-scroll" id="sd-scroll">
         <div className="sd-sticky">
           <div className="sd-grid">
+            <div className="sd-railcol">
+              <div className="sd-nav" role="group" aria-label="Switch step">
+                <button
+                  type="button"
+                  id="sd-navUp"
+                  className="sd-nav-btn"
+                  aria-label="Previous step"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M6 15l6-6 6 6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  id="sd-navDown"
+                  className="sd-nav-btn"
+                  aria-label="Next step"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M6 9l6 6 6-6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
             <div className="sd-rail" id="sd-rail">
               <div className="sd-rail-lead">The workflow</div>
               <div className="step" data-step="1">
@@ -104,6 +135,7 @@ export function Decisions() {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
 
             <div className="sd-window" id="sd-window" data-stage="1">
@@ -543,48 +575,6 @@ export function Decisions() {
                             <span>No churn or retention cohort data provided.</span>
                           </div>
                         </div>
-
-                        <div className="sect reveal-item" style={{ transitionDelay: ".25s" }}>
-                          <h4>Evidence quotes</h4>
-                          <div className="quote">
-                            &ldquo;We process $2.1M monthly across our SMB base in MX, BR, and
-                            CO.&rdquo;
-                            <span className="src">Deck p.12 · Traction</span>
-                          </div>
-                        </div>
-
-                        <div className="sect reveal-item" style={{ transitionDelay: ".3s" }}>
-                          <h4>Recommended jury questions</h4>
-                          <div className="qbox">
-                            <span className="q">Q1</span>
-                            <span>
-                              What is your licensing timeline for the two unlicensed
-                              corridors?
-                            </span>
-                          </div>
-                          <div className="qbox" style={{ marginTop: 7 }}>
-                            <span className="q">Q2</span>
-                            <span>Can you share 6-month cohort retention?</span>
-                          </div>
-                        </div>
-
-                        <div className="sect reveal-item" style={{ transitionDelay: ".35s" }}>
-                          <h4>Confidence</h4>
-                          <div className="conf">
-                            <span
-                              className="ring"
-                              style={
-                                {
-                                  "--v": 86,
-                                  "--c": "var(--sd-green)",
-                                } as CSSProperties
-                              }
-                            ></span>
-                            <span className="bd">
-                              <b>High</b> — grounded in 9 sourced evidence spans.
-                            </span>
-                          </div>
-                        </div>
                       </div>
 
                       <div className="decision">
@@ -592,7 +582,7 @@ export function Decisions() {
                           <span className="ai-badge">
                             <span className="g"></span>EvalLense AI
                           </span>
-                          <span>
+                          <span className="ai-rec-text">
                             Analysis ready · suggests <b>Shortlist</b>
                           </span>
                           <span className="hint">recommendation, not a decision</span>
