@@ -24,6 +24,41 @@ export function Workflow() {
       <div className="wf-scroll" id="wf-scroll">
         <div className="wf-sticky">
           <div className="wf-grid">
+            <div className="wf-railcol">
+              <div className="wf-nav" role="group" aria-label="Switch workflow step">
+                <button
+                  type="button"
+                  id="wf-navUp"
+                  className="wf-nav-btn"
+                  aria-label="Previous step"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M6 15l6-6 6 6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  id="wf-navDown"
+                  className="wf-nav-btn"
+                  aria-label="Next step"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M6 9l6 6 6-6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
             <div className="wf-rail" id="wf-rail">
               <div className="step" data-step="1">
                 <span className="idx">01</span>
@@ -92,6 +127,7 @@ export function Workflow() {
                 </div>
               </div>
             </div>
+            </div>
 
             <div className="wf-window" id="wf-window" data-stage="1">
               <div className="chrome">
@@ -115,15 +151,13 @@ export function Workflow() {
               <div className="canvas">
                 <div className="layer on" id="wf-layerA">
                   <div className="a-stack">
+                    <div className="wf-entrycard">
                     <div className="setup-card" id="wf-setupCard">
                       <div className="sc-head">
                         <span className="sc-title">New entry point</span>
-                        <span className="sc-badge" id="wf-scBadge">
-                          Draft
+                        <span className="sc-summary" id="wf-scSummary">
+                          TechStars Demo Day &rsquo;26 · 3 materials · closes Mar 14, 2026
                         </span>
-                      </div>
-                      <div className="sc-summary" id="wf-scSummary">
-                        TechStars Demo Day &rsquo;26 · 3 materials · closes Mar 14, 2026
                       </div>
                       <div className="field">
                         <label>Project name</label>
@@ -177,6 +211,7 @@ export function Workflow() {
                       <p className="lc-hint">
                         Share this link with teams — they upload their pitch decks directly.
                       </p>
+                    </div>
                     </div>
 
                     <div className="preview-card" id="wf-previewCard">
@@ -314,9 +349,6 @@ export function Workflow() {
                   <div className="hub">
                     <div className="hub-head">
                       <h3>Application hub</h3>
-                      <span className="hub-status" id="wf-hubStatus">
-                        Collecting…
-                      </span>
                     </div>
 
                     <div className="counters">
@@ -371,6 +403,7 @@ export function Workflow() {
                               <span className="sd"></span>
                               <span className="label-done">Ready</span>
                               <span className="label-proc">Processing</span>
+                              <span className="label-score">Scored</span>
                             </span>
                           </td>
                         </tr>
@@ -395,6 +428,7 @@ export function Workflow() {
                               <span className="sd"></span>
                               <span className="label-done">Ready</span>
                               <span className="label-proc">Processing</span>
+                              <span className="label-score">Scored</span>
                             </span>
                           </td>
                         </tr>
@@ -419,6 +453,7 @@ export function Workflow() {
                               <span className="sd"></span>
                               <span className="label-done">Ready</span>
                               <span className="label-proc">Processing</span>
+                              <span className="label-score">Scored</span>
                             </span>
                           </td>
                         </tr>
@@ -443,6 +478,7 @@ export function Workflow() {
                               <span className="sd"></span>
                               <span className="label-done">Incomplete</span>
                               <span className="label-proc">Processing</span>
+                              <span className="label-score">Scored</span>
                             </span>
                           </td>
                         </tr>
@@ -467,6 +503,7 @@ export function Workflow() {
                               <span className="sd"></span>
                               <span className="label-done">Ready</span>
                               <span className="label-proc">Processing</span>
+                              <span className="label-score">Scored</span>
                             </span>
                           </td>
                         </tr>
@@ -481,13 +518,17 @@ export function Workflow() {
                         <span className="ok">✓</span>Batch ready
                       </span>
                       <button type="button" className="run-btn" id="wf-runBtn">
-                        <span className="play"></span>Run evaluation
+                        Run evaluation
                       </button>
                     </div>
 
                     <div className="pipeline" id="wf-pipeline">
                       <div className="pipe-label">
-                        <span className="spin"></span>Evaluation started · 117 ready applications
+                        <span className="spin"></span>
+                        <span className="pl-check" aria-hidden="true">✓</span>
+                        <span className="pl-text">
+                          Evaluation started · 117 ready applications
+                        </span>
                       </div>
                       <div className="pipe-track">
                         <div className="pipe-fill" id="wf-pipeFill"></div>

@@ -1184,6 +1184,8 @@ function runScript() {
 
       pillEl.textContent = pillText[stage - 1];
       crumbEl.textContent = crumbText[stage - 1];
+      pillEl.classList.remove("done"); // re-applied below when eval is complete
+      if (hubStatus) hubStatus.style.display = ""; // re-shown unless eval is complete
 
       layerAEl.classList.toggle("on", stage <= 2);
       layerBEl.classList.toggle("on", stage === 3);
@@ -1256,7 +1258,7 @@ function runScript() {
           pipeline?.classList.remove("show");
           if (pipeFill) pipeFill.style.width = "0%";
           pipeNodes.forEach((n) => n.classList.remove("on"));
-          rows.forEach((r) => r.classList.remove("processing"));
+          rows.forEach((r) => r.classList.remove("processing", "scored"));
         } else if (stage === 5) {
           if (lastStage !== 5) countUp();
           if (hubStatus) {
@@ -1269,7 +1271,7 @@ function runScript() {
           pipeline?.classList.remove("show");
           if (pipeFill) pipeFill.style.width = "0%";
           pipeNodes.forEach((n) => n.classList.remove("on"));
-          rows.forEach((r) => r.classList.remove("processing"));
+          rows.forEach((r) => r.classList.remove("processing", "scored"));
         } else if (stage === 6) {
           countTok++;
           setCounters(123, 117, 6);
@@ -1284,36 +1286,131 @@ function runScript() {
             if (r.classList.contains("more-row")) return;
             r.classList.toggle("processing", frac > 0.16 + i * 0.05);
           });
-          pipeline?.classList.toggle("show", frac > 0.18);
-          const pp = Math.min(1, Math.max(0, (frac - 0.24) / 0.62));
-          if (pipeFill) pipeFill.style.width = (pp * 100).toFixed(0) + "%";
-          pipeNodes.forEach((n, i) => n.classList.toggle("on", pp >= (i + 0.5) / pipeNodes.length));
+          // the bottom pipeline runs as its own dedicated sweep (playPipeline),
+          // fired on entering stage 6 — not scrubbed by frac here.
+          if (evalDone) applyDoneBadges(); // keep final badges through re-renders
         }
       }
       lastStage = stage;
     }
 
-    let ticking = false;
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const rect = scrollEl.getBoundingClientRect();
-        const total = scrollEl.offsetHeight - window.innerHeight;
-        const raw = Math.min(Math.max(-rect.top, 0), total);
-        const p = total > 0 ? raw / total : 0;
-        const sf = p * STAGES;
-        const stage = Math.min(STAGES, Math.floor(sf) + 1);
-        const frac = Math.min(1, sf - (stage - 1));
-        setStage(stage, frac);
-        ticking = false;
-      });
+    // ── manual stepper ───────────────────────────────────────────────
+    // Stages advance ONLY via the up/down buttons (or by clicking a step),
+    // never by scroll. Each transition tweens the in-stage fraction 0→1 so
+    // the demo's typing / counters / progress bars still play out.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const navUp = document.getElementById("wf-navUp") as HTMLButtonElement | null;
+    const navDown = document.getElementById("wf-navDown") as HTMLButtonElement | null;
+
+    let current = 0;
+    let animTok = 0;
+    let pipeTok = 0;
+    let evalDone = false;
+
+    const pipeLabelText = pipeline?.querySelector(".pl-text") ?? null;
+
+    // final header badges once the evaluation sweep reaches Reports
+    function applyDoneBadges() {
+      pillEl.textContent = "Complete";
+      pillEl.classList.add("done");
+      crumbEl.textContent = "Application hub · complete";
+      if (hubStatus) hubStatus.style.display = "none"; // hide the hub status badge at the end
+      pipeline?.classList.add("done"); // swaps spinner → green check
+      if (pipeLabelText) pipeLabelText.textContent = "Evaluation complete · 117 ready applications";
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    setStage(1, 0);
-    onScroll();
+    const easeInOut = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    function syncNav() {
+      if (navUp) navUp.disabled = current <= 1;
+      if (navDown) navDown.disabled = current >= STAGES;
+    }
+
+    // Dedicated "run" sweep for the bottom pipeline: the fill runs left→right
+    // and the Decoder→…→Reports sectors light up in turn. Fired every time the
+    // user lands on stage 6 (incl. re-clicking the card), so it always plays.
+    // once the sweep reaches Reports, every ready (complete) application flips
+    // from "Processing" to its final "Scored" chip; incomplete rows revert.
+    function markScored() {
+      rows.forEach((r) => {
+        if (r.classList.contains("more-row")) return;
+        r.classList.remove("processing");
+        r.classList.toggle("scored", !!r.querySelector(".status.complete"));
+      });
+      evalDone = true;
+      applyDoneBadges();
+    }
+
+    function playPipeline(animate = true) {
+      if (!pipeline || !pipeFill) return;
+      const fill = pipeFill;
+      const tok = ++pipeTok; // restart cleanly on re-trigger
+      pipeline.classList.add("show");
+      pipeNodes.forEach((n) => n.classList.remove("on"));
+      evalDone = false; // replay shows Running / Processing again, then completes
+      pipeline.classList.remove("done"); // spinner back while it runs
+      if (pipeLabelText) pipeLabelText.textContent = "Evaluation started · 117 ready applications";
+      rows.forEach((r) => r.classList.remove("scored"));
+      if (!animate || reduceMotion) {
+        fill.style.width = "100%";
+        pipeNodes.forEach((n) => n.classList.add("on"));
+        markScored();
+        return;
+      }
+      fill.style.width = "0%";
+      // Decoder (node 0) is lit from the very start; each later sector lights
+      // as the fill reaches it (nodes sit at i/(N-1) along the track).
+      const segs = Math.max(1, pipeNodes.length - 1);
+      pipeNodes[0]?.classList.add("on");
+      const dur = 1700;
+      let start: number | null = null;
+      function frame(ts: number) {
+        if (tok !== pipeTok) return;
+        if (start === null) start = ts;
+        const p = Math.min(1, (ts - start) / dur);
+        fill.style.width = (p * 100).toFixed(1) + "%";
+        pipeNodes.forEach((n, i) => n.classList.toggle("on", p >= i / segs));
+        if (p < 1) requestAnimationFrame(frame);
+        else markScored();
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function goTo(stage: number, animate = true) {
+      const next = Math.min(STAGES, Math.max(1, stage));
+      const tok = ++animTok; // cancels any in-flight tween
+      current = next;
+      syncNav();
+      if (!animate || reduceMotion) {
+        setStage(next, 1);
+        if (next === STAGES) playPipeline(false);
+        return;
+      }
+      const dur = 820;
+      let start: number | null = null;
+      function frame(ts: number) {
+        if (tok !== animTok) return;
+        if (start === null) start = ts;
+        const p = Math.min(1, (ts - start) / dur);
+        setStage(next, easeInOut(p));
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+      if (next === STAGES) playPipeline(true);
+    }
+
+    navUp?.addEventListener("click", () => goTo(current - 1));
+    navDown?.addEventListener("click", () => goTo(current + 1));
+    // the "Run evaluation" button on the Batch-ready card launches stage 6
+    runBtn?.addEventListener("click", () => goTo(STAGES));
+    steps.forEach((s, i) => {
+      (s as HTMLElement).addEventListener("click", () => goTo(i + 1));
+    });
+    // layout-only re-paint; keeps the current stage settled on resize
+    window.addEventListener("resize", () => setStage(current, 1));
+
+    goTo(1, false);
   })();
 
   /* ============================================================

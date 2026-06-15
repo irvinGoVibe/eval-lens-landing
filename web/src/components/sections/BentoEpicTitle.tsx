@@ -68,8 +68,15 @@ export function BentoScrollHeading({
 
     let activated = false;
     let running = false;
+    let activatedAt = 0;
+    let smoothTop: number | null = null;
+    let smoothScale = BIG;
+    // how long the centered type-in runs before the heading is allowed to
+    // move — matches the CSS timing: chars (--ci*34ms) + gradient wipe + the
+    // trailing period (+720ms) + the .65s tail, plus a small settle pause
+    const TYPE_MS = plain.length * 34 + 1700;
 
-    const update = () => {
+    const update = (now: number) => {
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const r = slot.getBoundingClientRect();
       const slotCenter = r.top + r.height / 2;
@@ -87,20 +94,29 @@ export function BentoScrollHeading({
       head.classList.add("is-shown");
       if (!activated) {
         activated = true;
+        activatedAt = now;
         head.classList.add("is-active");
       }
 
       const p = Math.min(1, Math.max(0, (startY - slotCenter) / (startY - endY)));
       const e = easeInOut(p);
-      head.style.setProperty("--bh-top", `${lerp(centerY, slotCenter, e)}px`);
-      head.style.setProperty("--bh-scale", String(lerp(BIG, 1, e)));
+      // hold dead-centre and large until the type-in (incl. the period) has
+      // finished; only then does scroll drive the flight into the card
+      const typing = now - activatedAt < TYPE_MS;
+      const targetTop = typing ? centerY : lerp(centerY, slotCenter, e);
+      const targetScale = typing ? BIG : lerp(BIG, 1, e);
+      // ease the hold → flight handoff so there's no jump
+      smoothTop = smoothTop === null ? targetTop : smoothTop + (targetTop - smoothTop) * 0.16;
+      smoothScale += (targetScale - smoothScale) * 0.16;
+      head.style.setProperty("--bh-top", `${smoothTop}px`);
+      head.style.setProperty("--bh-scale", String(smoothScale));
     };
 
     // rAF loop while the section is anywhere near the viewport; cheaper than a
     // scroll listener and immune to non-window scroll containers.
-    const loop = () => {
+    const loop = (now: number) => {
       if (!running) return;
-      update();
+      update(now);
       requestAnimationFrame(loop);
     };
     const io = new IntersectionObserver(
@@ -111,19 +127,19 @@ export function BentoScrollHeading({
           requestAnimationFrame(loop);
         } else if (!near) {
           running = false;
-          update();
+          update(performance.now());
         }
       },
       { rootMargin: "120% 0px 120% 0px" },
     );
     io.observe(slot);
-    update();
+    update(performance.now());
 
     return () => {
       running = false;
       io.disconnect();
     };
-  }, [slotId]);
+  }, [slotId, plain.length]);
 
   return (
     <div
