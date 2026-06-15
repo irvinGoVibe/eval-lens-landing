@@ -11,11 +11,11 @@ export const metadata: Metadata = {
     "Product updates, research, and stories from the team building EvalLense — structured pitch-deck evaluation with explainable, human-controlled decisions.",
 };
 
-export default function BlogHubPage() {
-  const posts = getAllPosts();
+export default async function BlogHubPage() {
+  const posts = await getAllPosts();
   const [featured, ...rest] = posts;
   const rail = rest.slice(0, 3);
-  const loopPosts = getLoopPosts();
+  const loopPosts = await getLoopPosts();
 
   return (
     <>

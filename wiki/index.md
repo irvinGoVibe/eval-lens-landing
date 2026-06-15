@@ -14,7 +14,14 @@ updated: 2026-06-15
 ## Разделы
 
 - **Product** (`product/`) — что строим, для кого, как работает
+  - [[vision|Vision]] — продукт, аудитория, боль, ценность
+  - [[scope|Scope]] — главный сценарий и границы v1
+  - [[newsroom|Newsroom]] — блог: зачем он, для кого, какой контент
 - **Architecture** (`architecture/`) — устройство системы, данные, доменные правила
+  - [[system|System]] — поверхности, стек, маршруты, данные, интеграции
+  - [[design-system|Design System]] — токены, цвет, типографика, компоненты; опора для внутренних страниц
+  - [[blog|Blog (Newsroom)]] — контент-модель блога: `Post`, `Block`, `LoopPost` и репосты In the Loop
+  - [[cms|CMS]] — что редактирует CMS: статьи, репосты, блоки контента на главной
 - **Stories** (`stories/`) — story-спеки для разработки; шаблон — `stories/_template.md`
 - **[[decisions/_template|Decisions]]** (`decisions/`) — ADR; шаблон — `decisions/_template.md`
 - **Processes** (`processes/`) — [[process|Process]], [[agent-workflow|Agent Workflow]], [[linear-workflow|Linear Workflow]]

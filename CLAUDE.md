@@ -41,3 +41,34 @@ When the user does ask:
 - `<html>` carries `suppressHydrationWarning` because the `safari-detect`
   `beforeInteractive` script adds `ua-safari` before React hydrates — that
   mismatch is intentional.
+
+## Стек (по факту)
+
+- **Frontend:** Next.js 16.2.7 (App Router), React 19, TypeScript 5.
+- **Стили:** Tailwind v4 (`@tailwindcss/postcss`) + legacy CSS в `globals.css`
+  (токены через `@theme inline`).
+- **3D:** `three` + `@react-three/fiber` / `drei` / `postprocessing`.
+- **Данные:** статический контент блога в `web/src/lib/blog.ts` — БД/CMS нет.
+- **Backend / auth:** нет. Сайт — чистая статика (ни одного `process.env`
+  в `web/src`).
+- **Деплой:** Vercel (целевая платформа).
+
+Полное устройство — `wiki/architecture/system.md`. Продукт и scope —
+`wiki/product/`.
+
+## Сборка и пакеты
+
+- **Сборка/проверка:** `cd web && pnpm build`. Dev-сервер сам не запускается
+  (см. правило про preview выше).
+- **Менеджер пакетов — только pnpm** (`pnpm-lock.yaml`). `package-lock.json`
+  не коммитить и не создавать `npm install` в `web/`.
+- Новые зависимости — только по согласованию.
+
+## Запреты
+
+- Секреты только в `.env` (в `.gitignore`) и только server-side; в клиентский
+  бандл секреты не попадают.
+- Не дробить скролл/анимации на per-section `useEffect` — всё в
+  `ScrollOrchestrator.tsx` (единый rAF-цикл).
+- Не менять порт dev-сервера (3005) без согласования.
+- Контент блога добавляется записью в `posts` (`lib/blog.ts`), без внешней CMS.

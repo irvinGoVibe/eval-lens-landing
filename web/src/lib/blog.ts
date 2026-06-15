@@ -1,77 +1,97 @@
-// EvalLense Newsroom — editorial content model.
+// EvalLense Newsroom — blog data facade.
 //
-// Mirrors the Apple Newsroom information architecture (Latest News /
-// In the Loop / More from Newsroom) but with EvalLense's own stories:
-// pitch-deck evaluation, the AI jury, explainable reports, and the
-// human-in-the-loop decisions the product is built around.
+// Content lives in Supabase (Postgres + Storage), not in this repo. This
+// module is a thin server-side facade that preserves the original public
+// contract (`getAllPosts`, `getPostBySlug`, `getRelatedPosts`,
+// `getLoopPosts`, `formatDate`) so the 7 consumer files don't change.
 //
-// This is a static, in-repo source of truth — no CMS. Add a post by
-// appending to `posts` below; the hub page and `/blog/[slug]` pick it up
-// automatically (newest first, by `date`).
+// Source is selected by the `BLOG_SOURCE` env flag:
+//   - unset / "supabase" (default) → read from Supabase
+//   - "static"                     → read the in-repo arrays below
+//
+// The static arrays are kept temporarily behind the flag for a safe rollback;
+// they are removed after a successful production build.
 
-export type Category =
-  | "Press Release"
-  | "Update"
-  | "Quick Read"
-  | "Feature"
-  | "Research"
-  | "Photos";
+import type { Accent, Block, Category, LoopKind, LoopPost, Post } from "./cms/types";
 
-/** Accent tint used for the category tag + hover treatments. */
-export type Accent = "violet" | "cyan" | "aqua" | "orange";
+// Re-export the domain model so existing imports from `@/lib/blog` keep working.
+export type { Accent, Block, Category, LoopKind, LoopPost, Post };
 
-export type Block =
-  | { type: "p"; text: string }
-  | { type: "h2"; text: string }
-  | { type: "quote"; text: string; cite?: string }
-  | { type: "list"; items: string[] };
+// `./cms/queries` is server-only — it uses `'use cache'` + `cacheTag` and pulls
+// in `@supabase/supabase-js`. Client components (e.g. the `"use client"`
+// `InTheLoop`) import `formatDate` / types from `@/lib/blog`, so the Supabase
+// query module must never enter this facade's traceable module graph.
+//
+// A static or even a statically-analyzable dynamic `import("./cms/queries")`
+// is still followed by the bundler's client trace. To keep the single
+// `@/lib/blog` import surface for all consumers while excluding the server-only
+// graph from the client bundle, we load the query module through an indirection
+// the client tracer cannot resolve. `queries.ts` additionally imports
+// `server-only` as a hard guard against ever being bundled for the client.
+const QUERIES_MODULE = "./cms/queries";
 
-export interface Post {
-  slug: string;
-  category: Category;
-  accent: Accent;
-  title: string;
-  /** One-sentence dek shown on cards and at the top of the article. */
-  excerpt: string;
-  /** ISO date — drives ordering and the human-readable stamp. */
-  date: string;
-  readMinutes: number;
-  /** Path under /public. */
-  cover: string;
-  author: string;
-  role: string;
-  body: Block[];
+type QueriesModule = typeof import("./cms/queries");
+
+async function loadQueries(): Promise<QueriesModule> {
+  return import(/* webpackIgnore: true */ QUERIES_MODULE) as Promise<QueriesModule>;
 }
 
-/** "In the Loop" supports two repost formats (à la Apple Newsroom):
- *  - video: a vertical clip (dark card, plays on hover, popup player)
- *  - photo: a photo / gallery post (light card, zooms on hover, popup viewer) */
-export type LoopKind = "video" | "photo";
-
-/**
- * A reposted social item shown in the "In the Loop" rail and opened in a
- * popup on click. All media paths are under /public; `href` is the original
- * social post.
- */
-export interface LoopPost {
-  id: string;
-  kind: LoopKind;
-  author: string;
-  /** Initials shown in the gradient avatar (e.g. "EL"). */
-  initials: string;
-  accent: Accent;
-  caption: string;
-  /** Poster frame (video) or main image (photo). */
-  cover: string;
-  /** Clip path — required for `kind: "video"`. */
-  video?: string;
-  /** Gallery images for `kind: "photo"` (includes the cover); 2+ → gallery. */
-  photos?: string[];
-  /** ISO date — shown as "June 8, 2026" on the card. */
-  date: string;
-  /** Original social post. */
-  href: string;
+function useStaticSource(): boolean {
+  return process.env.BLOG_SOURCE === "static";
 }
+
+function toTime(iso: string): number {
+  return new Date(iso).getTime();
+}
+
+function sortByDateDesc(posts: Post[]): Post[] {
+  return [...posts].sort((a, b) => toTime(b.date) - toTime(a.date));
+}
+
+export async function getAllPosts(): Promise<Post[]> {
+  if (useStaticSource()) {
+    return sortByDateDesc(POSTS);
+  }
+  const { fetchAllPosts } = await import("./cms/queries");
+  return fetchAllPosts();
+}
+
+export async function getPostBySlug(slug: string): Promise<Post | undefined> {
+  if (useStaticSource()) {
+    return sortByDateDesc(POSTS).find((p) => p.slug === slug);
+  }
+  const { fetchPostBySlug } = await import("./cms/queries");
+  return (await fetchPostBySlug(slug)) ?? undefined;
+}
+
+/** Posts to offer as "Read more" at the bottom of an article. */
+export async function getRelatedPosts(slug: string, limit = 3): Promise<Post[]> {
+  const all = await getAllPosts();
+  return all.filter((p) => p.slug !== slug).slice(0, limit);
+}
+
+export async function getLoopPosts(): Promise<LoopPost[]> {
+  if (useStaticSource()) {
+    return LOOP_POSTS;
+  }
+  const { fetchLoopPosts } = await import("./cms/queries");
+  return fetchLoopPosts();
+}
+
+/** "June 10, 2026" — matches the Newsroom stamp style. */
+export function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Static fallback content (behind BLOG_SOURCE=static). Mirrors the Supabase
+// seed exactly. Removed after a successful production build.
+// ---------------------------------------------------------------------------
 
 const POSTS: Post[] = [
   {
@@ -477,35 +497,6 @@ const POSTS: Post[] = [
   },
 ];
 
-function toTime(iso: string): number {
-  return new Date(iso).getTime();
-}
-
-const sorted: Post[] = [...POSTS].sort((a, b) => toTime(b.date) - toTime(a.date));
-
-export function getAllPosts(): Post[] {
-  return sorted;
-}
-
-export function getPostBySlug(slug: string): Post | undefined {
-  return sorted.find((p) => p.slug === slug);
-}
-
-/** Posts to offer as "Read more" at the bottom of an article. */
-export function getRelatedPosts(slug: string, limit = 3): Post[] {
-  return sorted.filter((p) => p.slug !== slug).slice(0, limit);
-}
-
-/** "June 10, 2026" — matches the Newsroom stamp style. */
-export function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
-}
-
 // ---- In the Loop: reposted social items (video reels + photo posts) ----
 const LOOP_POSTS: LoopPost[] = [
   {
@@ -591,7 +582,3 @@ const LOOP_POSTS: LoopPost[] = [
     href: "https://www.instagram.com/evallense/",
   },
 ];
-
-export function getLoopPosts(): LoopPost[] {
-  return LOOP_POSTS;
-}

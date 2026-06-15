@@ -9,8 +9,8 @@ export const metadata: Metadata = {
     "Every story from EvalLense Newsroom — press releases, product updates, research, and more.",
 };
 
-export default function AllNewsPage() {
-  const posts = getAllPosts();
+export default async function AllNewsPage() {
+  const posts = await getAllPosts();
 
   return (
     <>

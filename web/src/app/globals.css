@@ -15,6 +15,9 @@
   --color-orange-hot: var(--orange-hot);
   --color-orange-core: var(--orange-core);
   --color-orange-soft: var(--orange-soft);
+  --color-green: var(--green);
+  --color-amber: var(--amber);
+  --color-amber-ink: var(--amber-ink);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
   --font-sans: var(--font-ui);
@@ -74,8 +77,25 @@
 
   --fire: linear-gradient(118deg, #ffe066 0%, var(--orange-soft) 32%, var(--orange-hot) 68%, #ff3314 100%);
 
+  /* Semantic colors (canonical — one job each, never decorative).
+     Mirrors the per-section wf/sd copies; use these for new code. */
+  --green:     #1aa37a;   /* ready / approved */
+  --amber:     #e8943a;   /* attention / incomplete */
+  --amber-ink: #8a5414;   /* readable text pair for amber fills */
+
+  /* Semantic on dark — desaturated for low-glare dark surfaces */
+  --green-on-dark: #5fe0bf;
+  --amber-on-dark: #f0a95a;
+
+  /* Canonical hairline (matches --wf-hairline/--sd-hairline) */
+  --hairline: rgba(20,18,40,.07);
+
   --lens: linear-gradient(118deg, var(--violet) 0%, var(--lavender) 32%, var(--cyan) 68%, var(--aqua) 100%);
   --lens-soft: linear-gradient(118deg, color-mix(in oklab, var(--violet) 22%, transparent), color-mix(in oklab, var(--cyan) 18%, transparent) 60%, color-mix(in oklab, var(--aqua) 20%, transparent));
+  /* Lens — deep: 135°, for low-glare fills on dark surfaces */
+  --lens-deep: linear-gradient(135deg, #3a1d8f 0%, #1d8f7e 100%);
+  /* Ink — mono: 160°, dark panels & statement surfaces */
+  --ink-grad: linear-gradient(160deg, #0a0a0d 0%, #1b1b26 100%);
 
   --maxw: 1180px;
   --gutter: clamp(20px, 5vw, 72px);
