@@ -1,11 +1,13 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="foot">
       <div className="wrap">
         <div className="col">
-          <a className="brand" href="#top" style={{ marginBottom: 14 }}>
+          <Link className="brand" href="/#top" style={{ marginBottom: 14 }}>
             <span className="mark"></span>EvalLense
-          </a>
+          </Link>
           <p>
             Batch-review pitch decks, rank the strongest startups, and give every
             team a clear report. Final decisions stay human-controlled.
@@ -17,22 +19,22 @@ export function Footer() {
         </div>
         <div className="col">
           <h5>Product</h5>
-          <a href="#problem">Overview</a>
-          <a href="#workflow">Entry hub</a>
-          <a href="#decisions">Reports</a>
-          <a href="#results">Batch results</a>
+          <Link href="/#problem">Overview</Link>
+          <Link href="/#workflow">Entry hub</Link>
+          <Link href="/#decisions">Reports</Link>
+          <Link href="/#results">Batch results</Link>
         </div>
         <div className="col">
           <h5>Trust</h5>
-          <a href="#trust">Methodology</a>
-          <a href="#trust">Human review</a>
-          <a href="#trust">Security &amp; privacy</a>
-          <a href="#trust">Research</a>
+          <Link href="/#trust">Methodology</Link>
+          <Link href="/#trust">Human review</Link>
+          <Link href="/#trust">Security &amp; privacy</Link>
+          <Link href="/#trust">Research</Link>
         </div>
         <div className="col">
           <h5>Company</h5>
           <a href="#">About</a>
-          <a href="#">Blog</a>
+          <Link href="/blog">Newsroom</Link>
           <a href="#">Contact</a>
           <a href="#">careers@evallense.com</a>
         </div>
