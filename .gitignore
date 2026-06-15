@@ -1,0 +1,80 @@
+# Env / secrets — НИКОГДА не коммитить
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+.secrets/
+credentials*.json
+
+# Dependencies
+node_modules/
+.venv/
+vendor/
+
+# Build output
+.next/
+out/
+build/
+dist/
+coverage/
+tmp/
+*.tsbuildinfo
+
+# Local DB / data
+*.sqlite
+*.sqlite3
+*.db
+
+# Uploads / private data
+uploads/
+private/
+customer-data/
+
+# Exports / imports / backups
+exports/
+imports/
+backups/
+*.dump
+*.bak
+
+# AI / agent state
+.claude/state/
+.claude/worktrees/
+.bootstrap-state.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Obsidian: шарим настройки vault, локальное состояние не пушим
+.obsidian/*
+!.obsidian/
+!.obsidian/app.json
+!.obsidian/appearance.json
+!.obsidian/core-plugins.json
+!.obsidian/community-plugins.json
+!.obsidian/types.json
+!.obsidian/plugins/
+!.obsidian/plugins/**
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/snippets/
+.obsidian/cache/
+.obsidian/graph.json
+.obsidian/hotkeys.json
+.obsidian/bookmarks.json
+.obsidian/plugins/**/.DS_Store
+.trash/
+
+# notes: вложения не пушим
+notes/assets/
+
+# Obsidian copilot: локальные чаты не пушим
+copilot/copilot-conversations/

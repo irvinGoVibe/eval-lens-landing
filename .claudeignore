@@ -1,0 +1,36 @@
+# Секреты — не давать ассистенту
+.env
+.env.*
+*.pem
+*.key
+*.p12
+.secrets/
+credentials*.json
+
+# Тяжёлый шум — вне контекста
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Данные
+*.sqlite
+*.sqlite3
+*.db
+uploads/
+exports/
+imports/
+backups/
+customer-data/
+private/
+
+# Локальное состояние
+.git/
+.obsidian/
+.trash/
+notes/assets/

@@ -1,0 +1,166 @@
+{
+  "fileExplorerIconPosition": "absolute-right",
+  "fileExplorerIconFrame": "never",
+  "fileExplorerIconColorMode": "status",
+  "statusColors": {
+    "active": "var(--text-success)",
+    "onHold": "var(--text-warning)",
+    "completed": "var(--text-accent)",
+    "dropped": "var(--text-error)",
+    "unknown": "var(--text-muted)"
+  },
+  "showStatusBar": true,
+  "autoHideStatusBar": false,
+  "enableStatusOverviewPopup": true,
+  "templates": [],
+  "customStatuses": [
+    {
+      "name": "draft",
+      "icon": "📝",
+      "color": "#9E9E9E",
+      "description": "Work in progress"
+    },
+    {
+      "name": "review",
+      "icon": "👀",
+      "color": "#FFC107",
+      "description": "Awaiting review"
+    },
+    {
+      "name": "approved",
+      "icon": "✅",
+      "color": "#4CAF50",
+      "description": "Approved as source of truth"
+    },
+    {
+      "name": "locked",
+      "icon": "🔒",
+      "color": "#7E57C2",
+      "description": "Frozen, ADR required"
+    },
+    {
+      "name": "generated",
+      "icon": "⚙️",
+      "color": "#00BCD4",
+      "description": "Auto-generated, do not edit"
+    },
+    {
+      "name": "deprecated",
+      "icon": "⚠️",
+      "color": "#FF5722",
+      "description": "Outdated"
+    },
+    {
+      "name": "archive",
+      "icon": "📦",
+      "color": "#616161",
+      "description": "Historical snapshot"
+    }
+  ],
+  "showStatusIconsInExplorer": false,
+  "hideUnknownStatusInExplorer": true,
+  "fileExplorerColorFileName": true,
+  "fileExplorerColorBlock": false,
+  "fileExplorerLeftBorder": true,
+  "fileExplorerStatusDot": false,
+  "fileExplorerUnderlineFileName": false,
+  "enableExperimentalFeatures": true,
+  "enableStatusDashboard": true,
+  "enableGroupedStatusView": true,
+  "enabledTemplates": [],
+  "useCustomStatusesOnly": true,
+  "useMultipleStatuses": false,
+  "singleStatusStorageMode": "string",
+  "statusBarShowTemplateName": "auto",
+  "tagPrefix": "status",
+  "strictStatuses": true,
+  "quickStatusCommands": [
+    "active",
+    "completed"
+  ],
+  "unknownStatusIcon": "❓",
+  "unknownStatusLucideIcon": "",
+  "unknownStatusColor": "#8b949e",
+  "statusBarNoStatusText": "No status",
+  "statusBarShowNoStatusIcon": false,
+  "statusBarShowNoStatusText": true,
+  "statusBarBadgeStyle": "accent",
+  "statusBarBadgeContentMode": "icon-text",
+  "vaultSizeLimit": 15000,
+  "showEditorToolbarButton": true,
+  "editorToolbarButtonPosition": "right",
+  "editorToolbarButtonDisplay": "all-notes",
+  "applyStatusRecursivelyToSubfolders": false,
+  "statusFrontmatterMappings": [
+    {
+      "id": "ai-jury-draft",
+      "scope": "status",
+      "statusName": "draft",
+      "templateId": null,
+      "frontmatterKeys": [
+        "status"
+      ]
+    },
+    {
+      "id": "ai-jury-review",
+      "scope": "status",
+      "statusName": "review",
+      "templateId": null,
+      "frontmatterKeys": [
+        "status"
+      ]
+    },
+    {
+      "id": "ai-jury-approved",
+      "scope": "status",
+      "statusName": "approved",
+      "templateId": null,
+      "frontmatterKeys": [
+        "status"
+      ]
+    },
+    {
+      "id": "ai-jury-locked",
+      "scope": "status",
+      "statusName": "locked",
+      "templateId": null,
+      "frontmatterKeys": [
+        "status"
+      ]
+    },
+    {
+      "id": "ai-jury-generated",
+      "scope": "status",
+      "statusName": "generated",
+      "templateId": null,
+      "frontmatterKeys": [
+        "status"
+      ]
+    },
+    {
+      "id": "ai-jury-deprecated",
+      "scope": "status",
+      "statusName": "deprecated",
+      "templateId": null,
+      "frontmatterKeys": [
+        "status"
+      ]
+    },
+    {
+      "id": "ai-jury-archive",
+      "scope": "status",
+      "statusName": "archive",
+      "templateId": null,
+      "frontmatterKeys": [
+        "status"
+      ]
+    }
+  ],
+  "writeMappedTagsToDefault": false,
+  "enableExternalStatusSync": false,
+  "externalStatusSyncPath": "_note-status-sync.json",
+  "syncGroups": [],
+  "enableNonMarkdownSync": false,
+  "nonMarkdownSyncPath": "_note-status-data.json",
+  "defaultStatusForNewNotes": null
+}
