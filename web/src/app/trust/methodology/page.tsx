@@ -10,27 +10,42 @@ export const metadata: Metadata = {
 };
 
 /*
- * Image slots — generator is NOT wired up. These are neutral placeholders on
- * canonical tokens (--lens-soft / --hairline). When an image generator is
- * available, produce the assets below and drop them into
- * web/public/assets/methodology/.
+ * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
+ * The image generator is NOT wired up. Every visual slot below is a VISIBLE,
+ * labeled `.media-ph` placeholder (global primitive in globals.css) on
+ * canonical tokens — never an empty grey div. Each carries an --ratio so the
+ * real asset drops in with zero layout shift. When a generator is available,
+ * produce the assets and drop them into web/public/assets/methodology/.
  *
- * hero  (section 1): Abstract "lens" focusing noise into one clear signal.
- *   Prompt: lens-gradient violet→cyan→aqua over an Apple-neutral surface,
- *   soft violet depth, hairline structure, calm, no shield icons / security
- *   theatre.
+ * 1. hero (section 1) — 16:9
+ *    Abstract "lens" focusing noise into one clear signal.
+ *    Prompt: lens-gradient violet→cyan→aqua over an Apple-neutral surface,
+ *    soft violet depth, hairline structure, calm; no shield icons / security
+ *    theatre.
  *
- * pipeline (section 3): Horizontal track of nodes
- *   Decode → Judges → Summarize → Score → Report.
- *   Prompt: same tokens, nodes lit along a lens track, thin lines, minimal.
+ * 2. pipeline diagram (section 3, beside the pinned conveyor) — 21:9
+ *    Horizontal track of nodes Decode → Judges → Summarize → Score → Report.
+ *    Prompt: same tokens, nodes lit along a lens track, thin connecting lines,
+ *    minimal, on the dark ink surface.
  *
- * Motion: this page opts into the generic ScrollOrchestrator engine via
- * data-attributes only (data-reveal / data-scrub / data-pin). No per-section
- * useEffect, no ScrollOrchestrator edits. reduced-motion is handled by the
- * engine + the primitives' @media block.
+ * 3. report gallery (section 5 "Anatomy of a report") — five 4:3 cards:
+ *    a) score + confidence ring (mono gradient number, conic ring)
+ *    b) evidence quote pulled from a deck page with a page reference
+ *    c) per-criterion breakdown bars (lens-filled horizontal bars)
+ *    d) "missing evidence" amber flag chip
+ *    e) side-by-side deck comparison rows with gradient scores
+ *    Prompt per card: Apple-neutral panel, hairline borders, one lens accent,
+ *    calm, product-UI fidelity.
  *
- * Draft content: unconfirmed copy (P1–P6 roles, scoring/confidence formula,
- * rubric levels, pipeline step descriptions, hero tagline) is kept as the
+ * ── MOTION ───────────────────────────────────────────────────────────────
+ * This page opts into the generic ScrollFX engine via data-attributes only
+ * (data-reveal / data-scrub / data-pin). No per-section useEffect, no
+ * ScrollOrchestrator edits. reduced-motion is handled by the engine + the
+ * primitives' @media block. <ScrollFX/> is mounted once after <Footer/>.
+ *
+ * ── DRAFT CONTENT ────────────────────────────────────────────────────────
+ * Unconfirmed copy (P1–P6 roles, scoring/confidence formula, rubric levels,
+ * pipeline step descriptions, hero tagline, public numbers) is kept as the
  * brief's draft wording — no invented numbers (see story 04 open questions).
  */
 
@@ -57,14 +72,67 @@ const PIPELINE_STEPS = [
   },
 ];
 
-const JUDGE_ROLES = ["P1", "P2", "P3", "P4", "P5", "P6"];
+/* Draft — public descriptions of the criteria are pending (open question). */
+const JUDGE_ROLES = [
+  { id: "P1", title: "Criterion P1" },
+  { id: "P2", title: "Criterion P2" },
+  { id: "P3", title: "Criterion P3" },
+  { id: "P4", title: "Criterion P4" },
+  { id: "P5", title: "Criterion P5" },
+  { id: "P6", title: "Criterion P6" },
+];
+
+/* "Anatomy of a report" gallery — each card describes one report artefact and
+   carries a visible .media-ph for the visual that ships there. */
+const REPORT_CARDS = [
+  {
+    tag: "Score",
+    title: "Score + confidence ring",
+    body: "A single comparable score, paired with a confidence ring that shows how strong the evidence behind it is.",
+    label: "Image · score + confidence ring · 4:3",
+    hint: "Mono gradient score with a conic confidence ring — see prompt 3a in file header",
+    aria: "Score with a confidence ring",
+  },
+  {
+    tag: "Evidence",
+    title: "Evidence quote",
+    body: "Every claim links back to the slide it came from — a source quote with a deck-page reference.",
+    label: "Image · evidence quote + page ref · 4:3",
+    hint: "Quote card pulled from a deck page with a page reference — see prompt 3b",
+    aria: "Evidence quote with a deck-page reference",
+  },
+  {
+    tag: "Breakdown",
+    title: "Per-criterion breakdown",
+    body: "How the score is built: a breakdown across criteria, shown as bars rather than a single opaque number.",
+    label: "Image · breakdown bars · 4:3",
+    hint: "Lens-filled horizontal breakdown bars per criterion — see prompt 3c",
+    aria: "Per-criterion breakdown bars",
+  },
+  {
+    tag: "Flags",
+    title: "Missing-evidence flags",
+    body: "Where the deck is silent, we say so. Gaps are flagged in amber — never guessed or filled in.",
+    label: "Image · missing-evidence flag · 4:3",
+    hint: "Amber 'missing evidence' flag chip on a neutral panel — see prompt 3d",
+    aria: "Missing-evidence amber flag",
+  },
+  {
+    tag: "Compare",
+    title: "Side-by-side comparison",
+    body: "Because every deck runs the same rubric, reports line up side by side for a like-for-like read.",
+    label: "Image · comparison rows · 4:3",
+    hint: "Side-by-side deck comparison rows with gradient scores — see prompt 3e",
+    aria: "Side-by-side deck comparison",
+  },
+];
 
 export default function MethodologyPage() {
   return (
     <>
       <SiteHeader light />
       <main className="methodology">
-        {/* 1. Hero — statement-hero, light */}
+        {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft methodology-hero">
           <div className="wrap methodology-hero__inner">
             <span
@@ -98,24 +166,28 @@ export default function MethodologyPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              {/* final target is /company/contact once that route exists; for
-                  now anchor to the homepage demo section to avoid a 404 */}
               <a className="btn btn-primary" href="/#demo">
                 Book a Demo
               </a>
             </div>
-            {/* hero image placeholder — see prompt comment at top of file */}
-            <div
-              className="methodology-hero__media"
+            {/* hero visual slot — see prompt 1 in file header */}
+            <figure
+              className="media-ph methodology-hero__media"
+              style={{ ["--ratio" as string]: "16/9" }}
               data-reveal="scale"
-              style={{ ["--reveal-delay" as string]: "320ms" }}
               role="img"
               aria-label="Abstract lens focusing noise into one clear signal"
-            ></div>
+            >
+              <span className="media-ph__label">Image · hero lens · 16:9</span>
+              <span className="media-ph__hint">
+                Lens-gradient violet→cyan→aqua over an Apple-neutral surface,
+                soft depth, calm — see prompt 1 in file header
+              </span>
+            </figure>
           </div>
         </section>
 
-        {/* 2. Принципы оценки — editorial, light (numbered lines, not a card grid) */}
+        {/* 2. Principles — editorial numbered lines, light. */}
         <section className="band methodology-principles">
           <div className="wrap">
             <div className="head" data-reveal="up">
@@ -178,8 +250,9 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        {/* 3. Конвейер оценки — pinned-multi-screen, DARK. Tall track +
-            sticky stage; 5 steps light up sequentially via the pin engine. */}
+        {/* 3. The evaluation pipeline — pinned multi-screen, DARK. Tall track +
+            sticky stage; 5 steps light up sequentially via the pin engine.
+            A pipeline-diagram .media-ph sits beside the steps. */}
         <section
           className="band ink methodology-pipeline"
           data-pin
@@ -187,42 +260,57 @@ export default function MethodologyPage() {
           aria-label="The evaluation pipeline"
         >
           <div className="pipe-stage" data-pin-stage>
-            <div className="wrap">
-              <div className="head pipe-head">
-                <span className="eyebrow">
-                  <span className="dot" aria-hidden="true"></span>
-                  Pipeline
-                </span>
-                <h2 className="title">The evaluation pipeline</h2>
-                {/* draft from brief §3 Конвейер оценки */}
-                <p className="sub">
-                  Every deck runs through a fixed pipeline. Each step is
-                  deterministic and reproducible — the same deck takes the same
-                  path.
-                </p>
+            <div className="wrap pipe-grid">
+              <div className="pipe-col">
+                <div className="head pipe-head">
+                  <span className="eyebrow">
+                    <span className="dot" aria-hidden="true"></span>
+                    Pipeline
+                  </span>
+                  <h2 className="title">The evaluation pipeline</h2>
+                  {/* draft from brief §3 Конвейер оценки */}
+                  <p className="sub">
+                    Every deck runs through a fixed pipeline. Each step is
+                    deterministic and reproducible — the same deck takes the
+                    same path.
+                  </p>
+                </div>
+                <ol className="pipe-track">
+                  {PIPELINE_STEPS.map((step, i) => (
+                    <li
+                      key={step.name}
+                      className="pipe-step"
+                      data-pin-step
+                      style={{ ["--i" as string]: String(i) }}
+                    >
+                      <span className="pipe-node" aria-hidden="true">
+                        <span className="pipe-dot"></span>
+                      </span>
+                      <span className="pipe-name">{step.name}</span>
+                      <span className="pipe-desc">{step.desc}</span>
+                    </li>
+                  ))}
+                </ol>
               </div>
-              <ol className="pipe-track">
-                {PIPELINE_STEPS.map((step, i) => (
-                  <li
-                    key={step.name}
-                    className="pipe-step"
-                    data-pin-step
-                    style={{ ["--i" as string]: String(i) }}
-                  >
-                    <span className="pipe-node" aria-hidden="true">
-                      <span className="pipe-dot"></span>
-                    </span>
-                    <span className="pipe-name">{step.name}</span>
-                    <span className="pipe-desc">{step.desc}</span>
-                  </li>
-                ))}
-              </ol>
+              {/* pipeline diagram visual slot — see prompt 2 in file header */}
+              <figure
+                className="media-ph pipe-diagram"
+                style={{ ["--ratio" as string]: "3/4" }}
+                role="img"
+                aria-label="Horizontal track of pipeline nodes Decode to Report"
+              >
+                <span className="media-ph__label">Diagram · pipeline · 3:4</span>
+                <span className="media-ph__hint">
+                  Nodes Decode → Judges → Summarize → Score → Report lit along a
+                  lens track, thin lines — see prompt 2 in file header
+                </span>
+              </figure>
             </div>
           </div>
         </section>
 
-        {/* 4. Роли судей — horizontal-gallery, light. Scroll-snap lane,
-            keyboard-reachable. P1–P6 are draft (public description pending). */}
+        {/* 4. Judge roles — horizontal scroll-snap gallery, light. Each card
+            carries a signal-dot + criterion. P1–P6 are draft. */}
         <section className="band methodology-judges">
           <div className="wrap">
             <div className="head" data-reveal="up">
@@ -245,10 +333,13 @@ export default function MethodologyPage() {
             aria-label="Judge roles P1 through P6"
             tabIndex={0}
           >
-            {JUDGE_ROLES.map((p) => (
-              <li key={p} className="judge-card">
-                <span className="mini-tag">{p}</span>
-                <h3 className="judge-h">Criterion {p}</h3>
+            {JUDGE_ROLES.map((role) => (
+              <li key={role.id} className="judge-card">
+                <span className="judge-icon" aria-hidden="true">
+                  <span className="judge-signal"></span>
+                </span>
+                <span className="mini-tag">{role.id}</span>
+                <h3 className="judge-h">{role.title}</h3>
                 <p className="judge-p">
                   Draft — public description pending (see open questions).
                 </p>
@@ -257,8 +348,52 @@ export default function MethodologyPage() {
           </ul>
         </section>
 
-        {/* 5. Scoring model — editorial-split + scrubbed ring, light.
-            Ring fills with scroll via --scrub on the ring element. */}
+        {/* 5. Anatomy of a report — horizontal gallery, DARK. Five report
+            artefacts, each with a visible .media-ph for its visual. */}
+        <section className="band ink methodology-report">
+          <div className="wrap">
+            <div className="head" data-reveal="up">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                Anatomy of a report
+              </span>
+              <h2 className="title">What you get</h2>
+              <p className="sub">
+                A report is never a bare number. Each one carries the score, the
+                evidence behind it, the breakdown, the gaps and a like-for-like
+                comparison.
+              </p>
+            </div>
+          </div>
+          <ul
+            className="report-lane"
+            data-reveal="up"
+            aria-label="Anatomy of a report — score, evidence, breakdown, flags, comparison"
+            tabIndex={0}
+          >
+            {REPORT_CARDS.map((card) => (
+              <li key={card.tag} className="report-card">
+                <figure
+                  className="media-ph report-card__media"
+                  style={{ ["--ratio" as string]: "4/3" }}
+                  role="img"
+                  aria-label={card.aria}
+                >
+                  <span className="media-ph__label">{card.label}</span>
+                  <span className="media-ph__hint">{card.hint}</span>
+                </figure>
+                <div className="report-card__body">
+                  <span className="mini-tag">{card.tag}</span>
+                  <h3 className="report-card__h">{card.title}</h3>
+                  <p className="report-card__p">{card.body}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* 6. Scoring model — editorial split + scrubbed ring + breakdown bars,
+            light. Ring fills with scroll via --scrub. */}
         <section className="band soft methodology-scoring">
           <div className="wrap score-split">
             <div className="score-copy" data-reveal="left">
@@ -274,10 +409,36 @@ export default function MethodologyPage() {
                 &ldquo;missing evidence&rdquo; flags. The score is accompanied
                 by a confidence ring.
               </p>
+              {/* visual breakdown bars — canonical tokens, decorative.
+                  Draft levels — no public values are shown. */}
+              <ul className="score-bars" aria-hidden="true">
+                <li className="score-bar" style={{ ["--w" as string]: "82%" }}>
+                  <span className="score-bar__name">Criterion</span>
+                  <span className="score-bar__track">
+                    <span className="score-bar__fill"></span>
+                  </span>
+                </li>
+                <li className="score-bar" style={{ ["--w" as string]: "64%" }}>
+                  <span className="score-bar__name">Criterion</span>
+                  <span className="score-bar__track">
+                    <span className="score-bar__fill"></span>
+                  </span>
+                </li>
+                <li className="score-bar" style={{ ["--w" as string]: "47%" }}>
+                  <span className="score-bar__name">Criterion</span>
+                  <span className="score-bar__track">
+                    <span className="score-bar__fill"></span>
+                  </span>
+                </li>
+              </ul>
+              <p className="score-note">
+                Draft — illustrative breakdown; aggregation formula and public
+                values are pending (see open questions).
+              </p>
             </div>
             <div className="score-visual" data-reveal="right">
-              {/* confidence ring — fills as it scrolls through the viewport
-                  via --scrub; reduced-motion lands it at the full state */}
+              {/* confidence ring — fills as it scrolls through the viewport via
+                  --scrub; reduced-motion lands it at the full state */}
               <div
                 className="conf-ring"
                 data-scrub
@@ -290,7 +451,7 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        {/* 6. Rubric system — full-bleed-statement, DARK (contrast to neighbours) */}
+        {/* 7. Rubric system — full-bleed statement, DARK. */}
         <section className="band ink methodology-rubric">
           <div className="wrap rubric-statement">
             <span className="eyebrow" data-reveal="up">
@@ -303,8 +464,8 @@ export default function MethodologyPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              One <span className="grad-word">rubric</span> — shared criteria
-              and defined levels — is what makes scores comparable across decks.
+              One <span className="grad-word">rubric</span> — shared criteria and
+              defined levels — is what makes scores comparable across decks.
             </h2>
             <p
               className="sub rubric-note"
@@ -317,7 +478,7 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        {/* 7. Human-in-the-loop — editorial-split, light. AI-green only as the
+        {/* 8. Human-in-the-loop — editorial split, light. AI-green only as the
             human-approval accent. */}
         <section className="band methodology-hitl">
           <div className="wrap hitl-split">
@@ -361,7 +522,7 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        {/* 8. Final CTA — quiet-cta, DARK */}
+        {/* 9. Final CTA — quiet CTA, DARK. */}
         <section className="band ink methodology-cta">
           <div className="wrap head">
             <span className="eyebrow" data-reveal="up">
@@ -387,8 +548,6 @@ export default function MethodologyPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              {/* final target is /company/contact once that route exists; for
-                  now anchor to the homepage demo section to avoid a 404 */}
               <a className="btn btn-primary" href="/#demo">
                 Book a Demo
               </a>

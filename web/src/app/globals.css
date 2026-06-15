@@ -2841,12 +2841,12 @@ body:not(.hero-ready){overflow:hidden;}
 
 /* ---- 1. Hero — statement-hero (light, centered, lots of air) ---- */
 .methodology .methodology-hero{padding-top:clamp(132px,18vw,200px);}
-.methodology .methodology-hero__inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;}
+.methodology .methodology-hero__inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;min-width:0;}
 .methodology .methodology-hero .eyebrow{margin-bottom:22px;}
 .methodology .methodology-hero__title{font-size:clamp(44px,7vw,92px);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:14ch;}
 .methodology .methodology-hero__sub{max-width:62ch;margin-top:26px;}
 .methodology .methodology-hero .cta-row{justify-content:center;}
-.methodology .methodology-hero__media{width:min(100%,860px);aspect-ratio:16/7;margin-top:clamp(48px,7vw,88px);border-radius:var(--radius-stage);background:var(--lens-soft);border:1px solid var(--hairline);box-shadow:var(--shadow-soft);}
+.methodology .methodology-hero__media{width:min(100%,920px);margin-top:clamp(48px,7vw,88px);box-shadow:var(--shadow-soft);}
 
 /* ---- 2. Принципы оценки — editorial numbered lines ---- */
 .methodology .methodology-principles .head{margin-bottom:clamp(36px,5vw,64px);}
@@ -2863,8 +2863,11 @@ body:not(.hero-ready){overflow:hidden;}
 /* ---- 3. Конвейер оценки — pinned multi-screen (DARK) ---- */
 .methodology .methodology-pipeline{padding:0;min-height:320vh;}
 .methodology .pipe-stage{min-height:100svh;padding:clamp(72px,12vw,120px) var(--gutter);display:grid;align-content:center;}
-.methodology .pipe-head{margin:0 auto;}
-.methodology .pipe-track{list-style:none;margin:clamp(40px,6vw,72px) auto 0;padding:0;max-width:760px;display:flex;flex-direction:column;gap:clamp(18px,3vw,34px);}
+.methodology .pipe-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,6vw,80px);align-items:center;}
+.methodology .pipe-col{min-width:0;}
+.methodology .pipe-head{margin:0;}
+.methodology .pipe-diagram{align-self:center;min-width:0;}
+.methodology .pipe-track{list-style:none;margin:clamp(36px,5vw,56px) 0 0;padding:0;max-width:560px;display:flex;flex-direction:column;gap:clamp(18px,3vw,34px);}
 .methodology .pipe-step{display:grid;grid-template-columns:auto 1fr;column-gap:clamp(16px,2.6vw,28px);row-gap:6px;align-items:center;}
 .methodology .pipe-node{grid-row:1 / span 2;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);transition:border-color .5s var(--ease),background .5s var(--ease),box-shadow .5s var(--ease);}
 .methodology .pipe-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.22);transition:background .5s var(--ease);}
@@ -2873,6 +2876,10 @@ body:not(.hero-ready){overflow:hidden;}
 .methodology .pipe-name{font-family:var(--font-mono);font-size:clamp(15px,2vw,20px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-on-dark);}
 .methodology .pipe-desc{grid-column:2;font-size:clamp(14px,1.6vw,17px);line-height:1.5;color:var(--muted-on-dark);max-height:0;overflow:hidden;opacity:0;transition:max-height .55s var(--ease),opacity .45s var(--ease);}
 .methodology .pipe-step.is-current .pipe-desc{max-height:8em;opacity:1;}
+@media (max-width:880px){
+  .methodology .pipe-grid{grid-template-columns:1fr;}
+  .methodology .pipe-diagram{order:-1;}
+}
 @media (prefers-reduced-motion:reduce){
   .methodology .pipe-desc{max-height:none;opacity:1;}
 }
@@ -2881,14 +2888,34 @@ body:not(.hero-ready){overflow:hidden;}
 .methodology .methodology-judges .head{margin-bottom:clamp(32px,5vw,56px);}
 .methodology .judge-lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
 .methodology .judge-lane:focus-visible{outline:2px solid var(--violet);outline-offset:4px;border-radius:var(--radius-card);}
-.methodology .judge-card{flex:0 0 clamp(240px,28vw,320px);scroll-snap-align:start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;position:relative;min-height:220px;}
+.methodology .judge-card{flex:0 0 clamp(240px,28vw,320px);scroll-snap-align:start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;position:relative;min-width:0;min-height:240px;}
+.methodology .judge-icon{width:40px;height:40px;border-radius:12px;background:var(--lens-soft);border:1px solid color-mix(in oklab,var(--violet) 24%, transparent);display:grid;place-items:center;}
+.methodology .judge-signal{width:10px;height:10px;border-radius:50%;background:var(--lens);}
 .methodology .judge-card .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
 .methodology .judge-h{font-size:21px;letter-spacing:-.01em;margin-top:auto;}
 .methodology .judge-p{font-size:14px;line-height:1.5;color:var(--muted);}
 
-/* ---- 5. Scoring model — editorial split + scrubbed ring (light) ---- */
+/* ---- 5. Anatomy of a report — horizontal gallery (DARK) ---- */
+.methodology .methodology-report .head{margin-bottom:clamp(32px,5vw,56px);}
+.methodology .report-lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
+.methodology .report-lane:focus-visible{outline:2px solid var(--violet);outline-offset:4px;border-radius:var(--radius-card);}
+.methodology .report-card{flex:0 0 clamp(260px,30vw,340px);scroll-snap-align:start;min-width:0;display:flex;flex-direction:column;gap:18px;}
+.methodology .report-card__media{margin:0;}
+.methodology .report-card__body{min-width:0;display:flex;flex-direction:column;gap:8px;}
+.methodology .report-card .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
+.methodology .report-card__h{font-size:clamp(18px,2vw,22px);letter-spacing:-.01em;color:var(--fg-on-dark);}
+.methodology .report-card__p{font-size:14px;line-height:1.55;color:var(--muted-on-dark);}
+
+/* ---- 6. Scoring model — editorial split + scrubbed ring + bars (light) ---- */
 .methodology .score-split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;}
-.methodology .score-visual{display:grid;place-items:center;}
+.methodology .score-copy{min-width:0;}
+.methodology .score-bars{list-style:none;margin:clamp(24px,3vw,34px) 0 0;padding:0;display:flex;flex-direction:column;gap:14px;max-width:440px;}
+.methodology .score-bar{display:grid;grid-template-columns:clamp(72px,12vw,110px) 1fr;gap:14px;align-items:center;}
+.methodology .score-bar__name{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);min-width:0;}
+.methodology .score-bar__track{height:8px;border-radius:980px;background:var(--bg);border:1px solid var(--border-2);overflow:hidden;}
+.methodology .score-bar__fill{display:block;height:100%;width:var(--w,0%);background:var(--lens);border-radius:980px;}
+.methodology .score-note{margin-top:18px;font-family:var(--font-mono);font-size:12px;line-height:1.5;letter-spacing:.04em;color:var(--muted-2);max-width:48ch;}
+.methodology .score-visual{display:grid;place-items:center;min-width:0;}
 .methodology .conf-ring{position:relative;width:clamp(180px,26vw,260px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--violet) calc(var(--scrub,0)*280deg), var(--hairline) 0);}
 .methodology .conf-ring::before{content:"";position:absolute;width:66%;aspect-ratio:1;border-radius:50%;background:var(--bg-soft);}
 .methodology .conf-ring__label{position:relative;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);}
@@ -2899,16 +2926,17 @@ body:not(.hero-ready){overflow:hidden;}
   .methodology .conf-ring{background:conic-gradient(var(--violet) 280deg, var(--hairline) 0);}
 }
 
-/* ---- 6. Rubric system — full-bleed statement (DARK) ---- */
+/* ---- 7. Rubric system — full-bleed statement (DARK) ---- */
 .methodology .rubric-statement{max-width:18ch;margin-inline:auto;text-align:center;min-height:clamp(0px,30vh,50svh);display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .methodology .methodology-rubric .eyebrow{margin-bottom:24px;}
 .methodology .rubric-h{font-size:clamp(36px,6vw,72px);line-height:1.06;letter-spacing:-.03em;font-weight:600;max-width:18ch;}
 .methodology .rubric-note{max-width:54ch;margin-inline:auto;}
 
-/* ---- 7. Human-in-the-loop — editorial split (light) ---- */
+/* ---- 8. Human-in-the-loop — editorial split (light) ---- */
 .methodology .hitl-split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,80px);align-items:center;}
-.methodology .hitl-flow{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(12px,2vw,22px);align-items:stretch;}
-.methodology .hitl-node{background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:22px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;}
+.methodology .hitl-copy{min-width:0;}
+.methodology .hitl-flow{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(12px,2vw,22px);align-items:stretch;min-width:0;}
+.methodology .hitl-node{background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:22px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;min-width:0;}
 .methodology .hitl-node .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
 .methodology .hitl-node--ai{border-style:dashed;}
 .methodology .hitl-node--human{border-color:color-mix(in oklab,var(--green) 45%, var(--border));}
@@ -2925,7 +2953,7 @@ body:not(.hero-ready){overflow:hidden;}
   .methodology .hitl-arrow{transform:rotate(90deg);}
 }
 
-/* ---- 8. Final CTA — quiet CTA (DARK) ---- */
+/* ---- 9. Final CTA — quiet CTA (DARK) ---- */
 .methodology .methodology-cta .sect-cta{margin-top:34px;}
 
 /* ============================================================
