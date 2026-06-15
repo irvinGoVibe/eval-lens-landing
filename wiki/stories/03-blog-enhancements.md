@@ -1,5 +1,5 @@
 ---
-status: draft
+status: done
 version: 0.1
 updated: 2026-06-15
 linear_project:
@@ -9,7 +9,7 @@ linear_issues:
 
 # Story 03 - Доработки блога (рубрики, deep-link репостов, блок на главной)
 
-Status: Draft
+Status: Done
 Owner:
 Team: —
 Priority:
@@ -180,3 +180,4 @@ Linear Mapping: Project + child issues
 ## Change Log
 
 - 2026-06-15 - created
+- 2026-06-15 - closed: рубрики 6→3 (код+миграция 0005 data-preserving), deep-link ?loop, блок на главной. Примечание: закрыто по факту реализации в дереве, полный /implement-story QA-flow не прогонялся

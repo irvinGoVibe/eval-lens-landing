@@ -1,5 +1,5 @@
 ---
-status: approved
+status: done
 version: 0.3
 updated: 2026-06-15
 linear_project:
@@ -9,7 +9,7 @@ linear_issues:
 
 # Story 01 - Blog Supabase Backend (контент-бэкенд блога)
 
-Status: Draft
+Status: Done
 Owner:
 Team: —
 Priority:
@@ -186,3 +186,4 @@ Linear Mapping: Project + child issues
 
 - 2026-06-15 - created
 - 2026-06-15 - переименована в Blog Supabase Backend (бэкенд, не CMS); закрыты open questions (создание проекта — вручную; service_role отложен; массивы за фиче-флагом; ревалидация `/api/revalidate` + секрет)
+- 2026-06-15 - closed: бэкенд блога на Supabase (схема+сид live), реализация подтверждена

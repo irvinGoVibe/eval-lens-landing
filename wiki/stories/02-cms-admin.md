@@ -1,5 +1,5 @@
 ---
-status: approved
+status: done
 version: 0.3
 updated: 2026-06-15
 linear_project:
@@ -9,7 +9,7 @@ linear_issues:
 
 # Story 02 - CMS Admin (админка редактирования блога под паролем)
 
-Status: Draft
+Status: Done
 Owner:
 Team: —
 Priority:
@@ -210,3 +210,4 @@ Linear Mapping: Project + child issues
 - 2026-06-15 - created
 - 2026-06-15 - закрыты open questions: Markdown-тело остаётся в Story 02; админка — сегмент `app/admin`; auth — middleware+route handler логина; стек — react-markdown+remark-directive, лёгкий редактор; без Draft Mode; `/api/revalidate` по секрету, upload под сессией
 - 2026-06-15 - добавлена ИА админки (папки **Блог** [Статьи, Репосты] и **Главная** [Блок «Блог»]); раздел «Главная → Блок «Блог»» введён в скоуп (выбор и порядок статей в блоке на главной) — Scope, Goal, Business Rules, Edge Cases, Technical Impact, Deliverables, Acceptance Criteria, Open Questions
+- 2026-06-15 - closed: CMS admin реализован, QA 17/17 pass, миграции 0003/0004 применены

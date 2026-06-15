@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { MarkdownBody } from "@/components/article/MarkdownBody";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 import { CategoryTag } from "@/components/blog/CategoryTag";
 import {
-  type Block,
   formatDate,
   getAllPosts,
   getPostBySlug,
@@ -36,31 +36,6 @@ export async function generateMetadata({
       images: [{ url: post.cover }],
     },
   };
-}
-
-function BlockContent({ block }: { block: Block }) {
-  switch (block.type) {
-    case "h2":
-      return <h2 className="article-h2">{block.text}</h2>;
-    case "quote":
-      return (
-        <blockquote className="article-quote">
-          <p>{block.text}</p>
-          {block.cite && <cite>— {block.cite}</cite>}
-        </blockquote>
-      );
-    case "list":
-      return (
-        <ul className="article-list">
-          {block.items.map((item, i) => (
-            <li key={i}>{item}</li>
-          ))}
-        </ul>
-      );
-    case "p":
-    default:
-      return <p className="article-p">{block.text}</p>;
-  }
 }
 
 export default async function ArticlePage({
@@ -116,9 +91,7 @@ export default async function ArticlePage({
 
       <div className="wrap blog-wrap">
         <div className="article-body">
-          {post.body.map((block, i) => (
-            <BlockContent key={i} block={block} />
-          ))}
+          <MarkdownBody markdown={post.body} />
         </div>
       </div>
 

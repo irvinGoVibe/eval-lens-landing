@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { formatDate, type LoopPost } from "@/lib/blog";
+import type { LoopPost } from "@/lib/blog";
+import { formatDate } from "@/lib/format-date";
 
 function VideoGlyph() {
   return (
@@ -199,11 +201,41 @@ function PopupGallery({ photos }: { photos: string[] }) {
  *  (video reels + photo posts) that open in a popup on click. */
 export function InTheLoop({ posts }: { posts: LoopPost[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [pages, setPages] = useState(1);
   const [page, setPage] = useState(0);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const active = activeIndex === null ? null : posts[activeIndex];
   const [lead, body] = active ? splitCaption(active.caption) : ["", ""];
+
+  // Deep-link: on mount, open the popup if `?loop=<id>` points at a known post.
+  // Unknown / missing id is a graceful no-op. Runs once — listing/closing must
+  // not re-trigger it, so it deliberately omits `searchParams` from deps.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("loop");
+    if (!id) return;
+    const idx = posts.findIndex((p) => p.id === id);
+    if (idx >= 0) setActiveIndex(idx);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [posts]);
+
+  // Mirror the open item into `?loop=<id>` (open / step) and strip it on close.
+  // `router.replace` of the same path/segment updates the URL without
+  // remounting, so `activeIndex` survives. Skips writes when the URL already
+  // matches to avoid redundant history churn.
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    const current = params.get("loop");
+    const target =
+      activeIndex === null ? null : (posts[activeIndex]?.id ?? null);
+    if (current === target) return;
+    if (target === null) params.delete("loop");
+    else params.set("loop", target);
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [activeIndex, posts, pathname, router, searchParams]);
 
   // Flip through items inside the popup (wraps around).
   const step = useCallback(

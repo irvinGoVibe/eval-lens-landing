@@ -19,12 +19,6 @@ const MORE_LINKS = [
     href: "/blog/all",
     accent: "orange",
   },
-  {
-    title: "Photos & Brand",
-    desc: "Imagery and assets for the press.",
-    href: "/blog/all",
-    accent: "cyan",
-  },
 ] as const;
 
 /** "More from EvalLense Newsroom" — shared between the hub and All News. */

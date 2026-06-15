@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CategoryTag } from "@/components/blog/CategoryTag";
-import { formatDate, type Post } from "@/lib/blog";
+import type { Post } from "@/lib/blog";
+import { formatDate } from "@/lib/format-date";
 
 type Variant = "feature" | "grid" | "list";
 

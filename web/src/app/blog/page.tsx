@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 import { InTheLoop } from "@/components/blog/InTheLoop";
 import { MoreFromNewsroom } from "@/components/blog/MoreFromNewsroom";
@@ -47,7 +48,13 @@ export default async function BlogHubPage() {
       </section>
 
       {/* ---- In the Loop: paged rail of reposted social items (popup) ---- */}
-      {loopPosts.length > 0 && <InTheLoop posts={loopPosts} />}
+      {/* Suspense: InTheLoop reads `?loop=<id>` via useSearchParams, which
+          requires a boundary for the prod build (Next 16 CSR bailout). */}
+      {loopPosts.length > 0 && (
+        <Suspense fallback={null}>
+          <InTheLoop posts={loopPosts} />
+        </Suspense>
+      )}
 
       {/* ---- More from the Newsroom ---- */}
       <MoreFromNewsroom />

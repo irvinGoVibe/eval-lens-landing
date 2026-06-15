@@ -4,17 +4,17 @@
 // They were extracted from `lib/blog.ts` so the CMS data layer (`client.ts`,
 // `map.ts`) and the thin facade (`lib/blog.ts`) reference one definition.
 
-export type Category =
-  | "Press Release"
-  | "Update"
-  | "Quick Read"
-  | "Feature"
-  | "Research"
-  | "Photos";
+export type Category = "Press Release" | "Product" | "Research";
 
 /** Accent tint used for the category tag + hover treatments. */
 export type Accent = "violet" | "cyan" | "aqua" | "orange";
 
+/**
+ * @deprecated The structured block model was replaced by a Markdown `body`
+ * string in Story 02 (see `Post.body`). The type is kept only so any lingering
+ * type-only re-export does not break; no runtime value is shaped like this
+ * anymore. Remove once no consumer imports it.
+ */
 export type Block =
   | { type: "p"; text: string }
   | { type: "h2"; text: string }
@@ -35,7 +35,12 @@ export interface Post {
   cover: string;
   author: string;
   role: string;
-  body: Block[];
+  /**
+   * Article body as a Markdown source string (Story 02). Rendered by the
+   * public article page through `react-markdown` (+ `remark-gfm`,
+   * `remark-directive`) mapped onto the `.article-*` classes; raw HTML is off.
+   */
+  body: string;
 }
 
 /** "In the Loop" supports two repost formats (à la Apple Newsroom):

@@ -78,3 +78,4 @@ notes/assets/
 
 # Obsidian copilot: локальные чаты не пушим
 copilot/copilot-conversations/
+.db-backup/

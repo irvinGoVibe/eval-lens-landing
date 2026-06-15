@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { Decisions } from "@/components/sections/Decisions";
 import { EvalLenseBentoSection } from "@/components/sections/EvalLenseBentoSection";
 import { Hero } from "@/components/sections/Hero";
+import { HomeBlogBlock } from "@/components/sections/HomeBlogBlock";
 import { MistBridge } from "@/components/sections/MistBridge";
 import { OrangeGlow } from "@/components/sections/OrangeGlow";
 import { Problem } from "@/components/sections/Problem";
@@ -22,6 +23,7 @@ export default function HomePage() {
         <Workflow />
         <Decisions />
         <EvalLenseBentoSection />
+        <HomeBlogBlock />
       </main>
       <Footer />
       <ScrollOrchestrator />
