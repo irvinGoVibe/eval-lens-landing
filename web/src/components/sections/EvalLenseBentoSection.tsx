@@ -286,7 +286,7 @@ export function EvalLenseBentoSection() {
             className="text-[clamp(20px,1.55vw,26px)]"
           />
           <div className="mt-1.5 font-[family-name:var(--font-mono)] text-[10.5px] uppercase tracking-[0.12em] text-[var(--muted-on-dark)]">
-            400+ evaluation runs
+            1,000+ evaluation runs
           </div>
           <div className="mt-4 flex flex-wrap content-start gap-2">
             {caseChips.map((c) => (
