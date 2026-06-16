@@ -27,6 +27,9 @@ export function Footer() {
         <div className="col">
           <h5>Trust</h5>
           <Link href="/trust/methodology">Methodology</Link>
+          <Link href="/trust/consistency-reliability">
+            Consistency &amp; reliability
+          </Link>
           <Link href="/#trust">Human review</Link>
           <Link href="/#trust">Security &amp; privacy</Link>
           <Link href="/#trust">Research</Link>
