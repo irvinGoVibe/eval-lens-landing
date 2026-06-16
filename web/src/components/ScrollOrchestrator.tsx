@@ -97,8 +97,9 @@ function runScript() {
   })();
 
   /* reveal on scroll — drives every `.reveal` element, including the home-page
-     blog block (#home-blog, Story 02). The block's scroll-in is owned by this
-     single shared observer; it must NOT grow a per-section useEffect. */
+     blog block's section-level fade (#home-blog, Story 02). One-shot: it adds
+     `.in` once and unobserves. The Newsroom CARDS get a separate, re-firing
+     bounce observer just below; both are owned here (no per-section useEffect). */
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
@@ -111,6 +112,43 @@ function runScript() {
     { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
   );
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+  /* Newsroom carousel — springy bounce-in / bounce-out for the cards
+     (#home-blog). A dedicated observer (kept observing, unlike the one-shot
+     `.reveal` IO above) toggles `.cards-in` / `.cards-out` so the cards re-play
+     their spring each time the block scrolls into / out of view. CSS owns the
+     motion (`news-pop` / `news-drop` in globals.css). */
+  (function initNewsroomReveal() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const nio = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const block = e.target;
+          if (e.isIntersecting) {
+            block.classList.add("cards-in");
+            block.classList.remove("cards-out");
+          } else if (block.classList.contains("cards-in")) {
+            block.classList.add("cards-out");
+            block.classList.remove("cards-in");
+          }
+        });
+      },
+      { threshold: 0.22, rootMargin: "0px 0px -12% 0px" }
+    );
+    // #home-blog is an async Server Component, so it can stream in AFTER this
+    // orchestrator mounts. Attach immediately if present, otherwise watch for it.
+    const attach = () => {
+      const block = document.getElementById("home-blog");
+      if (!block) return false;
+      nio.observe(block);
+      return true;
+    };
+    if (attach()) return;
+    const mo = new MutationObserver(() => {
+      if (attach()) mo.disconnect();
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  })();
 
   /* hero intro: synced dual-video play + copy reveal */
   (function initHeroIntro() {

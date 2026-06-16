@@ -2819,11 +2819,140 @@ body:not(.hero-ready){overflow:hidden;}
 .article-gallery__dot.is-active{background:var(--violet);}
 
 /* Home-page blog block (Story 02) */
-.home-blog{padding:clamp(56px,8vw,110px) 0;background:var(--bg);}
+.home-blog{
+  padding:clamp(56px,8vw,110px) 0;background:var(--bg-soft);
+  /* Left/right content edge — matches the centered .wrap content so the
+     carousel's first card lines up with the heading. */
+  --news-edge:calc(max(0px, (100vw - var(--maxw)) / 2) + var(--gutter));
+}
+.home-blog .wrap{padding-inline:var(--gutter);}
 .home-blog__head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:clamp(24px,4vw,44px);}
-.home-blog__title{font-family:var(--font-display);font-size:clamp(28px,4vw,44px);letter-spacing:-.02em;}
+.home-blog__title{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,4vw,44px);letter-spacing:-.02em;color:var(--fg);}
 .home-blog__seeall{font-family:var(--font-mono);font-size:13px;color:var(--violet);text-decoration:none;white-space:nowrap;}
 .home-blog__seeall:hover{text-decoration:underline;}
+
+/* Apple-style horizontal card carousel (home Newsroom block) */
+.news-carousel{position:relative;}
+.news-carousel__track{
+  display:flex;gap:20px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  /* keep the snapport start at the visual left edge so the first card rests
+     flush with the content area instead of snapping to x:0 */
+  scroll-padding-left:var(--news-edge);
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  /* generous block padding so neither the hover lift shadow nor the spring
+     bounce-in/out travel is clipped by the scroll box (overflow-x:auto forces
+     overflow-y to clip too) */
+  padding:20px var(--gutter) 54px var(--news-edge);
+}
+.news-carousel__track::-webkit-scrollbar{display:none;}
+
+.news-card{
+  position:relative;
+  flex:0 0 auto;
+  width:clamp(264px,80vw,344px);
+  display:flex;flex-direction:column;
+  background:#fff;
+  border-radius:18px;
+  padding:30px 30px 0;
+  scroll-snap-align:start;
+  color:var(--fg);
+  text-decoration:none;
+  overflow:hidden;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.news-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px -28px rgba(20,18,40,.4);}
+.news-card__top{display:block;}
+.news-card .blog-tag{margin-bottom:14px;}
+
+/* Apple-grade reveal for the cards. A dedicated observer in ScrollOrchestrator
+   toggles `.cards-in` / `.cards-out` on #home-blog (kept observing, so it
+   re-fires when the block enters / leaves the viewport). Driven entirely in CSS
+   via keyframes — `news-pop` uses `backwards` fill so it leaves NO persistent
+   transform once at rest, which keeps the :hover lift working. `news-drop` only
+   runs while off-screen (no hover). The motion is a long, smooth deceleration
+   (easeOutExpo) with NO overshoot — the silky "settle into place" feel from
+   apple.com, not a spring. */
+@media (prefers-reduced-motion:no-preference){
+  /* armed (initial, before first reveal): hidden, no transform, no animation */
+  .home-blog .news-card{opacity:0;}
+  .home-blog.cards-in .news-card{
+    opacity:1;
+    animation:news-pop 1.05s cubic-bezier(0.16,1,0.3,1) backwards;
+  }
+  .home-blog.cards-in .news-card:nth-child(2){animation-delay:.09s;}
+  .home-blog.cards-in .news-card:nth-child(3){animation-delay:.18s;}
+  .home-blog.cards-in .news-card:nth-child(4){animation-delay:.27s;}
+  .home-blog.cards-in .news-card:nth-child(5){animation-delay:.36s;}
+  .home-blog.cards-in .news-card:nth-child(6){animation-delay:.45s;}
+  /* leaving: a quiet, smooth fade-down (ease-in, no bounce) so re-entry can
+     replay the reveal without any jolt */
+  .home-blog.cards-out .news-card{
+    opacity:0;
+    animation:news-drop .6s cubic-bezier(0.4,0,0.7,0.2) forwards;
+  }
+}
+@keyframes news-pop{
+  from{opacity:0;transform:translateY(38px) scale(.985);}
+  to{opacity:1;transform:none;}
+}
+@keyframes news-drop{
+  from{opacity:1;transform:none;}
+  to{opacity:0;transform:translateY(22px) scale(.99);}
+}
+.news-card__title{
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(22px,2.4vw,27px);line-height:1.12;letter-spacing:-.02em;
+  transition:color .25s var(--ease);
+}
+.news-card:hover .news-card__title{color:var(--violet);}
+.news-card__excerpt{
+  color:var(--muted);font-size:15px;line-height:1.45;margin-top:14px;
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
+}
+.news-card__media{
+  position:relative;display:block;
+  margin-top:auto;align-self:center;
+  width:100%;aspect-ratio:4/3;
+}
+.news-card__img{object-fit:contain;}
+.news-card__plus{
+  position:absolute;right:18px;bottom:18px;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--violet);
+  /* hide the literal "+" glyph — the cross is drawn with two centered bars
+     below so it is pixel-symmetric regardless of font metrics */
+  font-size:0;color:transparent;
+  box-shadow:0 6px 18px -6px rgba(108,76,241,.5);
+  transition:transform .22s var(--ease), background .22s var(--ease), box-shadow .25s var(--ease);
+}
+.news-card__plus::before,
+.news-card__plus::after{
+  content:"";position:absolute;top:50%;left:50%;
+  background:#fff;border-radius:2px;
+}
+.news-card__plus::before{width:14px;height:2px;transform:translate(-50%,-50%);}
+.news-card__plus::after{width:2px;height:14px;transform:translate(-50%,-50%);}
+.news-card:hover .news-card__plus{
+  transform:scale(1.1);
+  background:var(--violet-2);
+  box-shadow:0 10px 26px -6px rgba(108,76,241,.6);
+}
+
+.news-carousel__nav{
+  display:flex;gap:10px;justify-content:flex-end;
+  padding:6px var(--news-edge) 0;
+}
+.news-arrow{
+  width:40px;height:40px;border-radius:50%;border:0;cursor:pointer;
+  background:rgba(0,0,0,.06);color:var(--fg);
+  font-size:22px;line-height:1;display:grid;place-items:center;
+  transition:background .2s var(--ease),opacity .2s;
+}
+.news-arrow:hover:not(:disabled){background:rgba(0,0,0,.12);}
+.news-arrow:disabled{opacity:.35;cursor:default;}
 
 /* ============================================================
    /trust/methodology — Apple-grade scroll page (Story 04)
