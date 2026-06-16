@@ -22,7 +22,7 @@ export function Footer() {
           <Link href="/product">Overview</Link>
           <Link href="/product/entry-hub">Entry hub</Link>
           <Link href="/product/evidence-based-reports">Reports</Link>
-          <Link href="/#results">Batch results</Link>
+          <Link href="/product/review-board">Review board</Link>
         </div>
         <div className="col">
           <h5>Trust</h5>
