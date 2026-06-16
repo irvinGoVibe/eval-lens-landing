@@ -81,30 +81,33 @@ primitives»), reduced-motion обработан там же и в движке.
 
 ## Каталог блок-архетипов
 
+> Визуальный каталог **уже использованных** типов секций со скриншотами —
+> [[section-types|Section Types]]. Здесь — архетипы как справочник «как собирать».
+
 Собирай страницу из РАЗНЫХ архетипов, не повторяя один. Минимум 5–6 разных на
 страницу из 8 секций.
 
-1. **Statement hero** — крупный тихий заголовок (`clamp(44px,7vw,96px)`),
+1. **[[section-types#1. Statement hero|Statement hero]]** — крупный тихий заголовок (`clamp(44px,7vw,96px)`),
    lens-акцент на ключевой фразе (`.grad-word`), короткий подзаголовок, один CTA.
    Много воздуха. Часто — тёмный (`.band.ink`) или светлый full-bleed.
-2. **Full-bleed statement** — одна мысль на весь экран (`min-height:100svh`),
+2. **[[section-types#2. Full-bleed statement|Full-bleed statement]]** — одна мысль на весь экран (`min-height:100svh`),
    большой текст по центру, `data-reveal`. Разделяет плотные блоки, даёт «вдох».
-3. **Pinned multi-screen** — одна секция на несколько экранов: `data-pin` +
+3. **[[section-types#3. Pinned multi-screen|Pinned multi-screen]]** — одна секция на несколько экранов: `data-pin` +
    липкая сцена, по мере скролла построчно/поэтапно появляется текст или
    загораются узлы (`data-pin-step`). Это «как Apple рассказывает про продукт».
    Идеально для процесса/конвейера, «как это работает», timeline.
-4. **Editorial split** — текст слева, визуал/медиа справа (или наоборот),
+4. **[[section-types#4. Editorial split|Editorial split]]** — текст слева, визуал/медиа справа (или наоборот),
    чередовать сторону между секциями. `data-reveal="left"` / `="right"`.
-5. **Horizontal gallery** — горизонтальная лента карточек со scroll-snap
+5. **[[section-types#6. Horizontal gallery|Horizontal gallery]]** — горизонтальная лента карточек со scroll-snap
    (`overflow-x:auto; scroll-snap-type:x mandatory`) для наборов (роли судей,
    use cases). Не вертикальная сетка.
-6. **Stat band / counters** — крупные числа (mono, tabular, lens-градиент),
+6. **[[section-types#9. Stat band / counters|Stat band / counters]]** — крупные числа (mono, tabular, lens-градиент),
    появляются стаггером; каждое число — с источником-подписью.
-7. **Scrubbed visual** — элемент с `data-scrub`: parallax-сдвиг, заполнение
+7. **[[section-types#5. Editorial split + scrub-ring|Scrubbed visual]]** — элемент с `data-scrub`: parallax-сдвиг, заполнение
    confidence-ring по `--scrub`, прокрутка медиа.
-8. **Bento overview** — разнокалиберные тайлы (как на главной), один hero-тайл +
+8. **[[section-types#7. Bento overview|Bento overview]]** — разнокалиберные тайлы (как на главной), один hero-тайл +
    несколько равных, для обзора возможностей.
-9. **Quiet CTA band** — финальный спокойный призыв на контрастной полосе
+9. **[[section-types#12. Quiet CTA band|Quiet CTA band]]** — финальный спокойный призыв на контрастной полосе
    (`.band.ink` / `.band.soft`) + pill-кнопка.
 
 ## Композиция и ритм
@@ -226,5 +229,6 @@ primitives»), reduced-motion обработан там же и в движке.
 
 ## Связанное
 
+- [[section-types|Section Types]] — визуальный каталог типов секций со скриншотами
 - [[design-system|Design System]] — токены, классы, паттерны главной
 - [[system|System]] — ScrollOrchestrator, рендеринг, поверхности
