@@ -251,7 +251,7 @@ export default function SectionLabPage() {
         />
 
         <section className="band ink lab-statement" data-marker="02 · Full-bleed statement">
-          <div className="wrap lab-statement__inner" data-reveal="up">
+          <div className="wrap lab-statement__inner" data-version="1" data-reveal="up">
             <span className="eyebrow">
               <span className="dot" aria-hidden="true"></span>
               02 · Full-bleed statement
@@ -259,6 +259,16 @@ export default function SectionLabPage() {
             <p className="lab-statement__text">
               Internal pages should feel sequenced, not stacked: a visitor moves
               through scale changes, visual evidence and quiet decisions.
+            </p>
+          </div>
+          <div className="wrap lab-statement__inner" data-version="2" data-reveal="up" hidden>
+            <span className="eyebrow">
+              <span className="dot" aria-hidden="true"></span>
+              02 · Full-bleed statement
+            </span>
+            <p className="lab-statement__text">
+              A page is a sequence of decisions — each section earns the next
+              scroll, or it should not be on the page.
             </p>
           </div>
         </section>

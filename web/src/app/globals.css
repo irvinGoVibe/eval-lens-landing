@@ -4378,22 +4378,46 @@ section[id]{scroll-margin-top:72px;}
    LabMarkers client component (sections/lab/LabMarkers.tsx) — same imperative
    pattern as ScrollFX. Scoped to `.section-lab`, so sections stay clean when
    reused on a real page. */
-.section-lab .lab-marker{
+.section-lab .lab-inspector{
   position:absolute;top:14px;right:clamp(14px,3vw,28px);z-index:30;
-  pointer-events:none;cursor:pointer;
-  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:#fff;padding:7px 13px;border-radius:980px;white-space:nowrap;
-  background:var(--lens);box-shadow:var(--shadow-soft);
-  border:1px solid color-mix(in oklab,#fff 35%, transparent);
-  opacity:0;transform:translateY(-6px) scale(.96);transform-origin:top right;
-  transition:opacity .22s var(--ease),transform .22s var(--ease),filter .15s var(--ease);
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  pointer-events:none;
+  opacity:0;transform:translateY(-6px) scale(.97);transform-origin:top right;
+  transition:opacity .22s var(--ease),transform .22s var(--ease);
 }
-.section-lab section.band:hover .lab-marker{opacity:1;transform:none;pointer-events:auto;}
-.section-lab .lab-marker:hover{filter:brightness(1.08);}
-.section-lab .lab-marker:active{transform:scale(.95);}
-.section-lab .lab-marker.is-copied{background:var(--violet);}
+.section-lab section.band:hover .lab-inspector,
+.section-lab section.band:focus-within .lab-inspector{opacity:1;transform:none;pointer-events:auto;}
+.section-lab .lab-inspector__name{
+  cursor:pointer;border:0;white-space:nowrap;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;padding:7px 13px;border-radius:980px;
+  background:var(--lens);box-shadow:var(--shadow-soft);
+  transition:filter .15s var(--ease),transform .15s var(--ease);
+}
+.section-lab .lab-inspector__name:hover{filter:brightness(1.08);}
+.section-lab .lab-inspector__name:active{transform:scale(.95);}
+.section-lab .lab-inspector__name.is-copied{background:var(--violet);}
+.section-lab .lab-inspector__row{
+  display:flex;align-items:center;gap:6px;padding:5px;border-radius:14px;
+  background:rgba(18,16,26,.62);
+  backdrop-filter:blur(14px) saturate(1.6);-webkit-backdrop-filter:blur(14px) saturate(1.6);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 12px 32px -14px rgba(0,0,0,.55);
+}
+.section-lab .lab-inspector__seg,
+.section-lab .lab-inspector__vers{display:inline-flex;gap:3px;}
+.section-lab .lab-inspector__vers{padding-left:8px;margin-left:2px;border-left:1px solid rgba(255,255,255,.14);}
+.section-lab .lab-inspector__row button{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(255,255,255,.72);background:transparent;border:0;cursor:pointer;
+  padding:6px 10px;border-radius:9px;white-space:nowrap;
+  transition:background .18s var(--ease),color .18s var(--ease);
+}
+.section-lab .lab-inspector__row button:hover{color:#fff;background:rgba(255,255,255,.09);}
+.section-lab .lab-inspector__row button.is-active{color:#fff;background:var(--lens);}
+.section-lab .lab-inspector__row button:disabled{opacity:.4;cursor:default;}
 @media (prefers-reduced-motion:reduce){
-  .section-lab .lab-marker{transition:opacity .22s linear;transform:none;}
+  .section-lab .lab-inspector{transition:opacity .22s linear;transform:none;}
 }
 .section-lab .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
 .section-lab .ink .mini-tag{color:var(--lavender);}

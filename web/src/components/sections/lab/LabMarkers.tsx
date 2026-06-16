@@ -3,59 +3,162 @@
 import { useEffect } from "react";
 
 /**
- * Dev affordance for the Section Lab stand: turns every `[data-marker]`
- * section into a clickable corner chip that names the catalog archetype and
- * copies that name to the clipboard on click.
+ * Dev inspector for the Section Lab stand. For every `[data-marker]` section it
+ * injects a corner panel that:
+ *   1. names the catalog archetype (click to copy), and
+ *   2. exposes two controls used while iterating on a block —
+ *      • a **surface** toggle (Light / Dark → swaps `.band.soft`/`.band.ink`), and
+ *      • **version tabs** (v1 / v2 / … ) that switch between saved design
+ *        versions of the same block.
  *
- * Imperative, ScrollFX-style: it injects one `<button class="lab-marker">` per
- * section instead of threading a chip through 20 different section bodies. The
- * `data-marker` attribute on each section is the single source of truth; this
- * component only enhances it on the client. Renders nothing itself.
+ * Versions are declared in the markup: a section that has several variants wraps
+ * each one in a `[data-version="1|2|…"]` element. With one (or none) the tabs
+ * collapse to a single `v1`. Both choices persist per-section in localStorage so
+ * a comparison survives reloads.
+ *
+ * Imperative, ScrollFX-style: it enhances the existing DOM and renders nothing.
  */
 export function LabMarkers() {
   useEffect(() => {
     const sections = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        ".section-lab section.band[data-marker]",
-      ),
+      document.querySelectorAll<HTMLElement>(".section-lab section.band[data-marker]"),
     );
-
     const cleanups: Array<() => void> = [];
 
     for (const section of sections) {
-      const name = section.getAttribute("data-marker");
-      if (!name) continue;
+      const marker = section.getAttribute("data-marker");
+      if (!marker) continue;
 
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "lab-marker";
-      btn.tabIndex = -1; // keep the 20+ chips out of the section tab order
-      btn.textContent = name;
-      btn.title = `Click to copy: ${name}`;
-      btn.setAttribute("aria-label", `Copy section type: ${name}`);
+      // --- discover this section's own version variants (not nested ones) ---
+      const versions = Array.from(
+        section.querySelectorAll<HTMLElement>("[data-version]"),
+      ).filter((el) => el.closest("section.band[data-marker]") === section);
+      const versionIds =
+        versions.length > 0
+          ? [...new Set(versions.map((el) => el.dataset.version ?? "1"))].sort()
+          : ["1"];
 
+      const keySurface = `lab:surface:${marker}`;
+      const keyVersion = `lab:version:${marker}`;
+
+      // --- build the panel ---
+      const panel = document.createElement("div");
+      panel.className = "lab-inspector";
+
+      const name = document.createElement("button");
+      name.type = "button";
+      name.className = "lab-inspector__name";
+      name.tabIndex = -1;
+      name.textContent = marker;
+      name.title = `Click to copy: ${marker}`;
+      name.setAttribute("aria-label", `Copy section type: ${marker}`);
+
+      const row = document.createElement("div");
+      row.className = "lab-inspector__row";
+
+      // surface segmented control
+      const seg = document.createElement("div");
+      seg.className = "lab-inspector__seg";
+      seg.setAttribute("role", "group");
+      seg.setAttribute("aria-label", "Surface");
+      const surfBtns: Record<string, HTMLButtonElement> = {};
+      (["soft", "ink"] as const).forEach((surf) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.tabIndex = -1;
+        b.dataset.surf = surf;
+        b.textContent = surf === "soft" ? "Light" : "Dark";
+        b.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          applySurface(surf);
+          try {
+            localStorage.setItem(keySurface, surf);
+          } catch {
+            /* private mode — non-fatal */
+          }
+        });
+        surfBtns[surf] = b;
+        seg.appendChild(b);
+      });
+
+      // version tabs
+      const vers = document.createElement("div");
+      vers.className = "lab-inspector__vers";
+      vers.setAttribute("role", "group");
+      vers.setAttribute("aria-label", "Versions");
+      const verBtns: Record<string, HTMLButtonElement> = {};
+      versionIds.forEach((id) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.tabIndex = -1;
+        b.dataset.ver = id;
+        b.textContent = `v${id}`;
+        b.disabled = versionIds.length < 2;
+        b.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          applyVersion(id);
+          try {
+            localStorage.setItem(keyVersion, id);
+          } catch {
+            /* non-fatal */
+          }
+        });
+        verBtns[id] = b;
+        vers.appendChild(b);
+      });
+
+      function applySurface(surf: "soft" | "ink") {
+        section.classList.remove("soft", "ink");
+        section.classList.add(surf);
+        for (const [s, b] of Object.entries(surfBtns)) {
+          b.classList.toggle("is-active", s === surf);
+        }
+      }
+      function applyVersion(id: string) {
+        for (const el of versions) {
+          el.hidden = (el.dataset.version ?? "1") !== id;
+        }
+        for (const [v, b] of Object.entries(verBtns)) {
+          b.classList.toggle("is-active", v === id);
+        }
+      }
+
+      // copy name on click
       let resetTimer: number | undefined;
-
-      const onClick = (event: MouseEvent) => {
-        event.preventDefault();
-        event.stopPropagation();
-        copyText(name);
-        btn.classList.add("is-copied");
-        btn.textContent = "Copied ✓";
+      const onCopy = (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        copyText(marker);
+        name.classList.add("is-copied");
+        const prev = name.textContent;
+        name.textContent = "Copied ✓";
         window.clearTimeout(resetTimer);
         resetTimer = window.setTimeout(() => {
-          btn.classList.remove("is-copied");
-          btn.textContent = name;
+          name.classList.remove("is-copied");
+          name.textContent = prev;
         }, 1200);
       };
+      name.addEventListener("click", onCopy);
 
-      btn.addEventListener("click", onClick);
-      section.appendChild(btn);
+      row.appendChild(seg);
+      row.appendChild(vers);
+      panel.appendChild(name);
+      panel.appendChild(row);
+      section.appendChild(panel);
+
+      // --- restore persisted state ---
+      const initSurf =
+        safeGet(keySurface) ?? (section.classList.contains("ink") ? "ink" : "soft");
+      applySurface(initSurf === "ink" ? "ink" : "soft");
+      const storedVer = safeGet(keyVersion);
+      applyVersion(storedVer && versionIds.includes(storedVer) ? storedVer : versionIds[0]);
 
       cleanups.push(() => {
         window.clearTimeout(resetTimer);
-        btn.removeEventListener("click", onClick);
-        btn.remove();
+        name.removeEventListener("click", onCopy);
+        panel.remove();
       });
     }
 
@@ -65,6 +168,14 @@ export function LabMarkers() {
   }, []);
 
   return null;
+}
+
+function safeGet(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
 }
 
 /** Clipboard write with a legacy fallback for non-secure contexts. */
