@@ -739,7 +739,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .site-header__cta.btn,
 .foot.is-dark .btn-glass,
 .horse-ctas .btn-glass,
-.cta-band .btn-glass{
+.cta-band .btn-glass,
+.section-lab .lab-hero.ink .cta-row .btn{
   position:relative;isolation:isolate;overflow:hidden;z-index:0;
   font-weight:500;letter-spacing:-.02em;
   font-size:17px;line-height:1.1;
@@ -763,7 +764,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .site-header__cta.btn::before,
 .foot.is-dark .btn-glass::before,
 .horse-ctas .btn-glass::before,
-.cta-band .btn-glass::before{
+.cta-band .btn-glass::before,
+.section-lab .lab-hero.ink .cta-row .btn::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
   background:
     linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.14) 22%, transparent 48%),
@@ -772,7 +774,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .site-header__cta.btn::after,
 .foot.is-dark .btn-glass::after,
 .horse-ctas .btn-glass::after,
-.cta-band .btn-glass::after{
+.cta-band .btn-glass::after,
+.section-lab .lab-hero.ink .cta-row .btn::after{
   content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
   background:
     radial-gradient(ellipse 95% 75% at 42% -18%, rgba(255,255,255,.55), transparent 52%),
@@ -784,7 +787,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .site-header__cta.btn:hover,
 .foot.is-dark .btn-glass:hover,
 .horse-ctas .btn-glass:hover,
-.cta-band .btn-glass:hover{
+.cta-band .btn-glass:hover,
+.section-lab .lab-hero.ink .cta-row .btn:hover{
   border-color:rgba(255,255,255,.52);
   backdrop-filter:blur(48px) saturate(2) brightness(1.1);
   -webkit-backdrop-filter:blur(48px) saturate(2) brightness(1.1);
@@ -798,12 +802,14 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .site-header__cta.btn:hover::after,
 .foot.is-dark .btn-glass:hover::after,
 .horse-ctas .btn-glass:hover::after,
-.cta-band .btn-glass:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
+.cta-band .btn-glass:hover::after,
+.section-lab .lab-hero.ink .cta-row .btn:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
 .hero .cta-row .btn-primary,
 .site-header__cta.btn-primary,
 .foot.is-dark .btn-glass,
 .horse-ctas .btn-glass,
-.cta-band .btn-glass{
+.cta-band .btn-glass,
+.section-lab .lab-hero.ink .cta-row .btn{
   background:
     linear-gradient(145deg,
       rgba(255,255,255,.22) 0%,
@@ -815,7 +821,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .site-header__cta.btn-primary:hover,
 .foot.is-dark .btn-glass:hover,
 .horse-ctas .btn-glass:hover,
-.cta-band .btn-glass:hover{
+.cta-band .btn-glass:hover,
+.section-lab .lab-hero.ink .cta-row .btn:hover{
   background:
     linear-gradient(145deg,
       rgba(255,255,255,.3) 0%,
@@ -4431,8 +4438,57 @@ section[id]{scroll-margin-top:72px;}
 .section-lab .lab-hero__title{font-size:clamp(44px,7vw,96px);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:15ch;}
 .section-lab .lab-hero__sub{width:min(100%,68ch);margin-top:26px;}
 .section-lab .lab-hero .cta-row{justify-content:center;}
-.section-lab .lab-hero__media{width:min(100%,980px);max-width:100%;margin-top:clamp(48px,7vw,88px);box-shadow:var(--shadow-soft);}
+.section-lab .lab-hero__media{width:min(100%,980px);max-width:100%;margin-top:clamp(48px,7vw,88px);border-radius:var(--radius-stage);box-shadow:var(--sh-3);}
 .section-lab .lab-hero [data-reveal]{opacity:1;transform:none;}
+
+/* ============ Statement hero — versions v2/v3/v4 (structure: сильно) ============ */
+
+/* shared overlay (v2 + v4) */
+.section-lab .lab-hero__overlay{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center;}
+.section-lab .lab-hero__overlay .eyebrow{margin-bottom:18px;}
+.section-lab .lab-hero__title--over{font-size:clamp(40px,6vw,88px);max-width:16ch;}
+.section-lab .lab-hero__sub--over{width:min(100%,52ch);margin-top:22px;}
+.section-lab .lab-hero__v2 .cta-row,
+.section-lab .lab-hero__v4 .cta-row{justify-content:center;margin-top:clamp(26px,3vw,40px);}
+/* media-slot tag — marks where the real bg photo/video drops in */
+.section-lab .lab-hero__bg-tag{position:absolute;top:16px;left:18px;z-index:2;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);background:rgba(0,0,0,.34);border:1px solid var(--border-on-dark);border-radius:var(--r-pill);padding:4px 11px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+
+/* ---- v2 — near-full-bleed cinematic gradient stage ---- */
+.section-lab .lab-hero__stage{position:relative;isolation:isolate;overflow:hidden;border-radius:var(--radius-stage);min-height:clamp(520px,72vh,760px);display:grid;place-items:center;padding:clamp(44px,7vw,96px) clamp(24px,6vw,72px);box-shadow:var(--sh-3);}
+.section-lab .lab-hero__stage--wide{width:min(100vw - 24px, 1640px);margin-left:50%;transform:translateX(-50%);}
+/* v2 — directional brand gradient, surface-adaptive: light wash on .soft, dark on .ink */
+.section-lab .lab-hero__bg{position:absolute;inset:0;z-index:-2;background:linear-gradient(132deg, color-mix(in oklab,var(--violet) 18%, var(--bg-soft)) 0%, var(--bg-soft) 48%, color-mix(in oklab,var(--cyan) 14%, var(--bg-soft)) 100%);}
+.section-lab .lab-hero.ink .lab-hero__bg{background:linear-gradient(132deg, color-mix(in oklab,var(--violet) 42%, var(--ink)) 0%, var(--ink) 50%, color-mix(in oklab,var(--cyan) 26%, var(--ink)) 100%);}
+/* dot-grid texture — v2 & v4 adapt: dark dots on light → white dots on ink */
+.section-lab .lab-hero__stage::after,
+.section-lab .lab-hero__cinema::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(color-mix(in oklab,var(--fg) 8%,transparent) 1px, transparent 1px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%, #000 0%, transparent 78%);mask-image:radial-gradient(ellipse at 50% 40%, #000 0%, transparent 78%);opacity:.5;}
+.section-lab .lab-hero.ink .lab-hero__stage::after,
+.section-lab .lab-hero.ink .lab-hero__cinema::after{background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);}
+
+/* ---- v3 — editorial: text left + lens graphic right ---- */
+.section-lab .lab-hero__editorial{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center;}
+.section-lab .lab-hero__ed-copy{min-width:0;text-align:left;display:flex;flex-direction:column;align-items:flex-start;}
+.section-lab .lab-hero__ed-copy .eyebrow{margin-bottom:20px;}
+.section-lab .lab-hero__title--left{text-align:left;max-width:14ch;}
+.section-lab .lab-hero__sub--left{text-align:left;width:min(100%,46ch);margin-top:22px;}
+.section-lab .lab-hero .cta-row--left{justify-content:flex-start;}
+.section-lab .lab-hero__ed-graphic{position:relative;aspect-ratio:4/5;border-radius:var(--radius-stage);overflow:hidden;background:var(--bg-soft);border:1px solid var(--border-2);box-shadow:var(--sh-3);min-width:0;}
+.section-lab .lab-hero.ink .lab-hero__ed-graphic{background:var(--panel);border-color:var(--border-on-dark-2);}
+.section-lab .lab-hero__orb{position:absolute;left:50%;top:46%;width:78%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--lens);filter:blur(6px);opacity:.92;box-shadow:0 30px 90px -30px var(--violet);}
+.section-lab .lab-hero__ed-graphic::after{content:"";position:absolute;inset:0;background-image:radial-gradient(color-mix(in oklab,var(--fg) 7%,transparent) 1px,transparent 1px);background-size:20px 20px;opacity:.4;}
+
+/* ---- v4 — full-bleed photo/video background; surface-adaptive; bottom→up scrim ---- */
+.section-lab .lab-hero__cinema{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin-left:50%;transform:translateX(-50%);min-height:clamp(520px,74vh,820px);display:grid;align-items:end;}
+/* media placeholder bg (stands in for a real photo/video) — light on .soft, dark on .ink */
+.section-lab .lab-hero__cinema-bg{position:absolute;inset:0;z-index:-2;background:linear-gradient(160deg, color-mix(in oklab,var(--violet) 14%, var(--bg-soft)) 0%, var(--bg-soft) 55%, color-mix(in oklab,var(--cyan) 12%, var(--bg-soft)) 100%);}
+.section-lab .lab-hero.ink .lab-hero__cinema-bg{background:radial-gradient(90% 80% at 72% 22%, color-mix(in oklab,var(--violet) 40%,transparent), transparent 60%),radial-gradient(70% 60% at 14% 28%, color-mix(in oklab,var(--cyan) 22%,transparent), transparent 62%),var(--ink-grad);}
+/* scrim — bottom→up, adaptive (light wash on .soft, black on .ink) */
+.section-lab .lab-hero__cinema-scrim{position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(0deg, color-mix(in oklab,var(--bg-soft) 88%, transparent) 0%, color-mix(in oklab,var(--bg-soft) 32%, transparent) 40%, transparent 72%);}
+.section-lab .lab-hero.ink .lab-hero__cinema-scrim{background:linear-gradient(0deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.30) 38%, transparent 70%);}
+.section-lab .lab-hero__overlay--cinema{align-items:flex-start;text-align:left;padding:clamp(36px,5vw,72px) 0 clamp(40px,5vw,80px);}
+.section-lab .lab-hero__overlay--cinema .lab-hero__title--over,
+.section-lab .lab-hero__overlay--cinema .lab-hero__sub--over{text-align:left;}
+.section-lab .lab-hero__v4 .cta-row{justify-content:flex-start;}
 
 .section-lab .lab-statement{min-height:72svh;display:grid;align-items:center;}
 .section-lab .lab-statement__inner{max-width:min(920px,100%);margin-inline:auto;text-align:center;}
@@ -4506,13 +4562,71 @@ section[id]{scroll-margin-top:72px;}
   .section-lab .lab-process--video .lab-process__bg{transform:none;}
 }
 
-.section-lab .lab-scrub__split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;}
-.section-lab .lab-scrub__copy{min-width:0;}
-.section-lab .lab-scrub__visual{display:flex;flex-direction:column;align-items:center;gap:clamp(20px,3vw,30px);min-width:0;}
-.section-lab .lab-ring{position:relative;width:clamp(180px,26vw,270px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--violet) calc(var(--scrub,0)*296deg), var(--hairline) 0);box-shadow:var(--shadow-soft);}
-.section-lab .lab-ring::before{content:"";position:absolute;width:66%;aspect-ratio:1;border-radius:50%;background:var(--bg-soft);}
-.section-lab .lab-ring__label{position:relative;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
-.section-lab .lab-scrub__media{max-width:420px;}
+/* ── 05 · Editorial split + scrub-ring ──────────────────────────────────
+   Copy on the left; a scroll-driven confidence readout on the right. The
+   ring arc AND the numeric readout fill toward --ring-target as the block
+   crosses the viewport (data-scrub → --scrub, ScrollFX). Surface-adaptive,
+   so the Light/Dark inspector toggle works on both saved versions. */
+@property --lab-ring-pct{syntax:"<integer>";inherits:true;initial-value:0;}
+
+.section-lab .lab-splitring__grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(28px,6vw,80px);align-items:center;}
+.section-lab .lab-splitring__copy{min-width:0;}
+.section-lab .lab-splitring__title{max-width:18ch;}
+.section-lab .lab-splitring__copy .sub{max-width:46ch;}
+
+/* v1 — composed evidence card: ring readout + evidence panel in one
+   elevated, token-bordered artifact. */
+.section-lab .lab-splitring__panel{
+  min-width:0;display:flex;flex-direction:column;gap:clamp(20px,3vw,30px);
+  padding:clamp(20px,3vw,32px);
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius-stage);
+  box-shadow:var(--sh-2);
+}
+.section-lab .lab-splitring.ink .lab-splitring__panel{
+  background:rgba(255,255,255,.04);border-color:var(--border-on-dark);box-shadow:var(--sh-3);
+}
+
+/* v2 — restrained stack: ring centered above the evidence panel. */
+.section-lab .lab-splitring__visual{display:flex;flex-direction:column;align-items:center;gap:clamp(20px,3vw,30px);min-width:0;}
+.section-lab .lab-splitring__grid--plain .lab-splitring__media{max-width:440px;}
+
+.section-lab .lab-splitring__readout{display:flex;flex-direction:column;align-items:center;gap:14px;}
+
+/* The ring is a masked conic donut (::before) with the readout layered on
+   top — arc thickness is constant and the centre stays transparent, so it
+   reads the same over the white card or the dark band. */
+.section-lab .lab-ring{
+  --ring-w:clamp(12px,1.6vw,16px);
+  --ring-arc:var(--violet);
+  --ring-track:var(--hairline);
+  --lab-ring-pct:calc(var(--scrub,0) * var(--ring-target,0));
+  position:relative;width:clamp(168px,22vw,238px);aspect-ratio:1;
+  display:grid;place-items:center;text-align:center;
+}
+.section-lab .lab-splitring.ink .lab-ring{--ring-arc:var(--lavender);--ring-track:var(--border-on-dark);}
+.section-lab .lab-ring::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(var(--ring-arc) calc(var(--scrub,0) * var(--ring-target,0) * 3.6deg), var(--ring-track) 0);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - var(--ring-w)),#000 calc(100% - var(--ring-w)));
+          mask:radial-gradient(farthest-side,transparent calc(100% - var(--ring-w)),#000 calc(100% - var(--ring-w)));
+}
+.section-lab .lab-ring__pct{
+  position:relative;font-family:var(--font-mono);font-size:clamp(34px,4.6vw,52px);
+  line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--fg);
+}
+.section-lab .lab-ring__pct::after{counter-reset:p var(--lab-ring-pct);content:counter(p) "%";}
+.section-lab .lab-splitring.ink .lab-ring__pct{color:var(--fg-on-dark);}
+.section-lab .lab-ring__label{
+  position:relative;margin-top:6px;font-family:var(--font-mono);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--violet);
+}
+.section-lab .lab-splitring.ink .lab-ring__label{color:var(--lavender);}
+.section-lab .lab-ring__cap{
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;line-height:1.4;
+  text-align:center;max-width:34ch;color:var(--muted);
+}
+.section-lab .lab-splitring.ink .lab-ring__cap{color:var(--muted-on-dark);}
+.section-lab .lab-splitring__media{width:100%;}
 
 .section-lab .lab-gallery .head{margin-bottom:clamp(32px,5vw,56px);}
 .section-lab .lab-gallery__lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
@@ -4655,7 +4769,7 @@ section[id]{scroll-margin-top:72px;}
 
 @media (max-width:900px){
   .section-lab .lab-process__grid,
-  .section-lab .lab-scrub__split{grid-template-columns:1fr;}
+  .section-lab .lab-splitring__grid{grid-template-columns:1fr;}
   .section-lab .lab-process{min-height:0;}
   .section-lab .lab-process__stage{position:static;min-height:0;overflow:visible;}
   .section-lab .lab-process__media{order:-1;max-width:none;}
@@ -4699,7 +4813,8 @@ section[id]{scroll-margin-top:72px;}
 }
 @media (prefers-reduced-motion:reduce){
   .section-lab .lab-step__desc{max-height:none;opacity:1;}
-  .section-lab .lab-ring{background:conic-gradient(var(--violet) 296deg, var(--hairline) 0);}
+  /* ScrollFX pins --scrub to 1 under reduced motion, so the ring arc + the
+     numeric readout both settle on their target with no scroll dependency. */
 }
 
 /* ============================================================

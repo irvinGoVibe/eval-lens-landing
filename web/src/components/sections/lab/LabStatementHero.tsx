@@ -1,31 +1,31 @@
 import type { CSSProperties } from "react";
 import { Button } from "@/components/ui/Button";
-import { LabEyebrow, MediaPlaceholder } from "./_kit";
+import { LabEyebrow } from "./_kit";
 
 /**
  * Section type 01 — Statement hero.
  *
- * The opening section of every inner page: light `.band.soft`, lots of air,
- * centered mono eyebrow → quiet `clamp(44–96px)` title with one lens-accented
- * phrase → short sub → CTA row → a wide ratio-locked media slot.
+ * Carries the SAME content in four saved design versions (switch in the
+ * LabMarkers inspector), all surface-adaptive (`.band.soft` / `.band.ink`):
+ *   • **v1** — quiet centered statement (no media slot), gradient + ghost CTAs.
+ *   • **v2** — near-full-bleed cinematic gradient stage, content over it, glass CTAs.
+ *   • **v3** — editorial: text left-aligned + a lens graphic on the right.
+ *   • **v4** — full-bleed photo/video background, bottom→up scrim, glass CTAs.
  *
- * Scroll-FX: `data-reveal="up"` staggered by `--reveal-delay`, `scale` on media.
+ * Buttons follow the rail: filled gradient on light, liquid-glass on the dark
+ * cinematic versions. Content/slots are the invariant; only layout differs.
  * See [section-types#1-statement-hero](../../../../../wiki/architecture/section-types.md).
  */
 export type LabStatementHeroProps = {
   id?: string;
-  /** Eyebrow text after the dot, e.g. `01 · Statement hero`. */
   eyebrow: string;
-  /** Plain text before the lens-accented phrase. */
   titleLead: string;
-  /** The lens-gradient (`.grad-word`) phrase inside the title. */
   titleAccent: string;
-  /** Optional plain text after the accent. */
   titleTrail?: string;
   sub: string;
   ctas: { label: string; href: string; variant?: "primary" | "ghost" | "glass" }[];
   media: { ratio: string; label: string; hint: string; ariaLabel: string };
-  /** Show the ambient lens-grid pattern behind the hero. */
+  /** Show the ambient lens-grid pattern behind v1. */
   pattern?: boolean;
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
   marker?: string;
@@ -43,47 +43,99 @@ export function LabStatementHero({
   pattern = true,
   marker,
 }: LabStatementHeroProps) {
+  const Heading = (
+    <>
+      {titleLead} <span className="grad-word">{titleAccent}</span>
+      {titleTrail ? ` ${titleTrail}` : null}
+    </>
+  );
+
+  // Buttons follow the surface rail: filled gradient on light, glass on dark.
+  const ctaSet = (scheme: "filled" | "glass") =>
+    ctas.map((c, i) => (
+      <Button
+        key={c.label}
+        href={c.href}
+        variant={scheme === "glass" ? "glass" : i === 0 ? "gradient" : "ghost"}
+      >
+        {c.label}
+      </Button>
+    ));
+
   return (
     <section id={id} className="band soft lab-hero" data-marker={marker}>
-      {pattern ? <div className="lab-pattern" aria-hidden="true" /> : null}
-      <div className="wrap lab-hero__inner">
-        <LabEyebrow reveal="up" delay={0}>
-          {eyebrow}
-        </LabEyebrow>
-        <h1
-          className="lab-hero__title"
-          data-reveal="up"
-          style={{ "--reveal-delay": "90ms" } as CSSProperties}
-        >
-          {titleLead} <span className="grad-word">{titleAccent}</span>
-          {titleTrail ? ` ${titleTrail}` : null}
-        </h1>
-        <p
-          className="sub lab-hero__sub"
-          data-reveal="up"
-          style={{ "--reveal-delay": "180ms" } as CSSProperties}
-        >
-          {sub}
-        </p>
-        <div
-          className="cta-row"
-          data-reveal="up"
-          style={{ "--reveal-delay": "270ms" } as CSSProperties}
-        >
-          {ctas.map((cta) => (
-            <Button key={cta.label} href={cta.href} variant={cta.variant}>
-              {cta.label}
-            </Button>
-          ))}
+      {/* ---- v1 — quiet centered statement (no media) ---- */}
+      <div className="lab-hero__v" data-version="1">
+        {pattern ? <div className="lab-pattern" aria-hidden="true" /> : null}
+        <div className="wrap lab-hero__inner">
+          <LabEyebrow reveal="up" delay={0}>
+            {eyebrow}
+          </LabEyebrow>
+          <h1
+            className="lab-hero__title"
+            data-reveal="up"
+            style={{ "--reveal-delay": "90ms" } as CSSProperties}
+          >
+            {Heading}
+          </h1>
+          <p
+            className="sub lab-hero__sub"
+            data-reveal="up"
+            style={{ "--reveal-delay": "180ms" } as CSSProperties}
+          >
+            {sub}
+          </p>
+          <div
+            className="cta-row"
+            data-reveal="up"
+            style={{ "--reveal-delay": "270ms" } as CSSProperties}
+          >
+            {ctaSet("filled")}
+          </div>
         </div>
-        <MediaPlaceholder
-          className="lab-hero__media"
-          reveal="scale"
-          ratio={media.ratio}
-          label={media.label}
-          hint={media.hint}
-          ariaLabel={media.ariaLabel}
-        />
+      </div>
+
+      {/* ---- v2 — near-full-bleed cinematic gradient stage; content over it ---- */}
+      <div className="lab-hero__v lab-hero__v2" data-version="2" hidden>
+        <div className="lab-hero__stage lab-hero__stage--wide">
+          <div className="lab-hero__bg" aria-hidden="true" />
+          <div className="lab-hero__overlay">
+            <LabEyebrow>{eyebrow}</LabEyebrow>
+            <h1 className="lab-hero__title lab-hero__title--over">{Heading}</h1>
+            <p className="sub lab-hero__sub lab-hero__sub--over">{sub}</p>
+            <div className="cta-row">{ctaSet("filled")}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ---- v3 — editorial: text left, lens graphic right ---- */}
+      <div className="lab-hero__v lab-hero__v3" data-version="3" hidden>
+        <div className="wrap lab-hero__editorial">
+          <div className="lab-hero__ed-copy">
+            <LabEyebrow>{eyebrow}</LabEyebrow>
+            <h1 className="lab-hero__title lab-hero__title--left">{Heading}</h1>
+            <p className="sub lab-hero__sub lab-hero__sub--left">{sub}</p>
+            <div className="cta-row cta-row--left">{ctaSet("filled")}</div>
+          </div>
+          <div className="lab-hero__ed-graphic" aria-hidden="true">
+            <div className="lab-hero__orb" />
+          </div>
+        </div>
+      </div>
+
+      {/* ---- v4 — full-bleed photo/video background; bottom→up scrim ---- */}
+      <div className="lab-hero__v lab-hero__v4" data-version="4" hidden>
+        <div className="lab-hero__cinema" role="img" aria-label={media.ariaLabel}>
+          <div className="lab-hero__cinema-bg" aria-hidden="true" />
+          <span className="lab-hero__bg-tag">{media.label} · video / photo</span>
+          <div className="lab-hero__cinema-scrim" aria-hidden="true" />
+          <div className="wrap lab-hero__overlay lab-hero__overlay--cinema">
+            <LabEyebrow>{eyebrow}</LabEyebrow>
+            <h1 className="lab-hero__title lab-hero__title--over">{Heading}</h1>
+            <p className="sub lab-hero__sub lab-hero__sub--over">{sub}</p>
+            <div className="cta-row">{ctaSet("filled")}</div>
+          </div>
+        </div>
       </div>
     </section>
   );
