@@ -1,7 +1,7 @@
 ---
 title: Pricing
 status: generated
-version: 0.3
+version: 0.4
 updated: 2026-06-17
 route: /pricing
 section: pricing
@@ -55,7 +55,7 @@ cta: Book a Demo
 | 1 | Hero | statement-hero | reveal | light | «Pay per event, not per seat» + lens-акцент + Start Free / Book a Demo |
 | 2 | Тарифы (4 карточки) | pricing-tiers | reveal | light | Free · Standard (рекоменд.) · Pro · Enterprise + строка smaller plans (Starter/Pilot) |
 | 3 | Что входит | comparison-table | reveal | light | матрица фич × 6 уровней (Free · Starter · Pilot · Standard · Pro · Enterprise) |
-| 4 | EvalLense vs альтернативы | versus-table | reveal | ink | named-матрица фич (без чужих цен) + 2 positioning-строки |
+| 4 | Where EvalLense fits | category-positioning (unnamed) | reveal | ink | 2 unnamed-категории + EvalLense + 2 positioning-строки (БЕЗ названий конкурентов) |
 | 5 | Возможности по категориям | bento | reveal | light | Intake · AI Evaluation · Reports · Review & Decision · Security & Trust · Admin |
 | 6 | FAQ по прайсингу | faq | reveal | light | что такое «заявка», срок, top-up, подписка, пилот, данные, кто решает |
 | 7 | Final CTA | quiet-cta | reveal | ink | призыв + Book a Demo / Start Free |
@@ -107,32 +107,25 @@ cta: Book a Demo
 > evidence-linked scoring, human-in-the-loop) — **на всех тарифах, включая Free
 > Trial.** Дифференцируем объёмом и admin-возможностями, не доверием.
 
-### 4. EvalLense vs альтернативы — `ink`
-- **Eyebrow:** How we compare
-- **Heading:** One column with the whole picture
-- **Subhead:** Workflow platforms run the event; AI analysts review a single deck. EvalLense does both — structured AI evaluation across a whole competition, with a person deciding.
-- **Named-матрица (БЕЗ чужих цен; колонки из `competitor-landscape.md`):** YouNoodle (competition workflow) · Evalato (awards/applications) · PitchBob VC (AI deck analyst) · **EvalLense**
+### 4. Where EvalLense fits — `ink`
+- **Eyebrow:** Where EvalLense fits
+- **Heading:** Two half-solutions, or one that does both
+- **Subhead:** Most tools cover one side. Event-workflow platforms run the competition but don't evaluate the pitches. AI deck-analysts score a single deck but have no event, no panel, no leaderboard. EvalLense does both — structured AI evaluation across a whole competition, with the human deciding.
+- **Category framing (БЕЗ названий конкурентов — две unnamed-категории + EvalLense):**
+  - **Event-workflow platforms** — collect submissions, assign judges, publish results. *Gap:* no AI-first pitch evaluation; judging stays manual.
+  - **AI deck-analysts** — score and summarize one deck at a time. *Gap:* no event workflow, no judge panel, no leaderboard.
+  - **EvalLense** — both, plus what neither has: six independent judges (P1–P6), transparent evidence-linked rationale, a leaderboard, and human-in-the-loop final scoring.
+- **Positioning lines:**
+  - **«They manage the competition. We help understand who should win and why.»**
+  - **«They review decks. We run structured evaluation across an entire competition.»**
 
-| Feature | YouNoodle | Evalato | PitchBob VC | **EvalLense** |
-|---|:--:|:--:|:--:|:--:|
-| AI deck evaluation at the core | ✗ | ✗ | ✓ | ✅ |
-| Six independent judges (P1–P6) | ✗ | ✗ | partial | ✅ |
-| Transparent rationale (no black box) | ✗ | ✗ | partial | ✅ |
-| Evidence-linked scoring | ✗ | ✗ | partial | ✅ |
-| Evaluation across a whole event (not one deck) | ✓ | ✓ | ✗ | ✅ |
-| Leaderboard / ranking | ✓ | ✓ | ✗ | ✅ |
-| Human-in-the-loop final decision | manual | manual | ✗ | ✅ |
-| Questions for live jury | ✗ | ✗ | ✗ | ✅ |
-
-- **Positioning-строки под таблицей (verbatim из `competitor-landscape.md` §8):**
-  - vs workflow-платформы: **«They manage the competition. We help understand who should win and why.»**
-  - vs AI-аналитики деков: **«They review decks. We run structured evaluation across an entire competition.»**
-
-> ⚠️ Цены конкурентов на странице НЕ показываем (решение user) — снимает риск
-> устаревания. Значения ✓/✗/partial сверены с `competitor-landscape.md` §5
-> (feature matrix) и §8 (differentiation): PitchBob = single-deck AI analyst, без
-> event-workflow и leaderboard; YouNoodle/Evalato = workflow без AI-first оценки.
-> Research — draft v0.2, перед публикацией финально верифицировать фичи.
+> ⚠️ Named-таблицу конкурентов сознательно **НЕ показываем** (решение user,
+> 2026-06-17 — пересматривает прежнее «named-матрица без цен»). Причины: чужие
+> фичи устаревают и неверифицируемы (research draft v0.2), named-таблица
+> образовывает покупателя об альтернативах и звучит оборонительно против
+> сдержанного бренд-войса. Категориальная рамка даёт differentiation без
+> named-liability. Если понадобится named-сравнение — на отдельной «Why EvalLense»
+> с верифицированными, датированными фактами, **не на pricing**.
 
 ### 5. Возможности по категориям — `light`
 - **Eyebrow:** Everything included
@@ -243,16 +236,18 @@ cta: Book a Demo
 ## Открытые вопросы
 
 **Решено (user, 2026-06-16):** 4 карточки = Free · Standard ⭐ · Pro · Enterprise
-(Starter/Pilot → матрица); сравнение = named-матрица фич без чужих цен;
-Enterprise = «от $15 000» + Talk to Sales; валюта — только USD.
+(Starter/Pilot → матрица); Enterprise = «от $15 000» + Talk to Sales; валюта — USD.
+**Обновлено (user, 2026-06-17):** named-таблицу конкурентов **не показываем** —
+секция 4 переведена в unnamed категориальную рамку.
 
 Осталось:
 - **Расхождение раскладки карточек.** `pricing-model.en.md` §13 даёт публичные
   карточки Starter · Standard · Pro · Enterprise (Free = top-block, Pilot = bridge).
   Бриф следует **решению user**: карточки Free · Standard · Pro · Enterprise,
   Starter/Pilot → матрица. Если переиграем — синхронизировать.
-- **Верификация фич конкурентов.** ✓/✗/partial сверены с `competitor-landscape.md`
-  §5/§8, но research — draft v0.2; финально подтвердить факты перед публикацией.
+- **✅ Конкуренты — решено: без named-сравнения** на pricing. Верификация фич
+  конкурентов больше не блокер для этой страницы (имён не публикуем). Если заведём
+  отдельную «Why EvalLense» — там верифицировать и датировать.
 - **Wording «validity window»** — как подавать покупателю: «150 submissions, valid
   for 120 days»? Подтвердить формулировку.
 - **Прайсинг = Phase 2 (post-MVP) в roadmap.** Эта страница выносит монетизацию

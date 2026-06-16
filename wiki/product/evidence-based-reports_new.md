@@ -1,7 +1,7 @@
 ---
 title: Evidence-Based Reports
 status: generated
-version: 1.2
+version: 1.3
 updated: 2026-06-17
 route: /product/evidence-based-reports
 section: product
@@ -68,6 +68,11 @@ Product-страница: объясняет главный output EvalLense —
 - **Subhead:** Walk into every review with a defensible read on each team — scores across each dimension, the reasoning behind them, and the questions to ask live. The final call always yours. *(outcome-first: ведём результатом «defensible read», потом перечислением)*
 - **CTA:** Book a Demo
 - **Secondary CTA:** View Sample Report → открывает реальный отчёт в кабинете
+- **Outcome stats (trust-row под hero CTA; stat-band):** *(источник — оценка фаундера по времени ручного ревью, не measured benchmark; подавать как illustrative «based on a 20–30 min manual read»)*
+  - **20–30 min → 0** — human reading per deck: you start at the report, not the raw slides
+  - **~40 hours reclaimed** — per 100-deck batch (a full review week of reading)
+  - **The whole batch, unattended** — decks are evaluated in parallel, not one at a time
+- **Outcome line (для секции 2 или hero):** A careful first read runs 20–30 minutes a deck — 30 to 50 hours across a 100-deck batch, before you've compared anything. EvalLense does the reading unattended; you start at the report.
 
 ### 2. Почему балла мало — `ink`
 - **Eyebrow:** Beyond the number
