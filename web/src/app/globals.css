@@ -4834,3 +4834,102 @@ section[id]{scroll-margin-top:72px;}
 
 /* ---- 5. Final CTA — quiet CTA (DARK) ---- */
 .contact .ct-cta .sect-cta{margin-top:34px;}
+
+/* ============================================================
+   /product and /trust — section HUB (разводящие) pages.
+   Apple-grade wayfinding layout shared by both section landing
+   pages (Story 16 product, Story 17 trust). Layout-only CSS that
+   consumes the generic scroll engine (data-reveal / data-pin).
+   Canonical :root tokens only — no new colors/shadows/radii.
+   Wrapper is .hub (both pages add it) to avoid colliding with the
+   homepage .product / .trust-* scopes.
+   ============================================================ */
+
+/* hero lens-gradient accent — .grad-word is otherwise scoped to .hero only */
+.hub .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* section spacing rhythm — generous Apple-grade breathing room */
+.hub section.band{padding:clamp(64px,10vw,140px) var(--gutter);}
+
+/* ---- 1. Hero — statement-hero (light, centered) ---- */
+.hub .hub-hero{padding-top:clamp(132px,18vw,200px);}
+.hub .hub-hero__inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;min-width:0;}
+.hub .hub-hero .eyebrow{margin-bottom:22px;}
+.hub .hub-hero__title{font-size:clamp(44px,7vw,92px);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:18ch;}
+.hub .hub-hero__sub{max-width:62ch;margin-top:26px;}
+.hub .hub-hero .cta-row{justify-content:center;margin-top:30px;}
+.hub .hub-hero__media{width:min(100%,920px);margin-top:clamp(48px,7vw,88px);box-shadow:var(--shadow-soft);}
+
+/* ---- 2. Full-bleed statement (DARK) — one thought, breathing room ---- */
+.hub .hub-statement{min-height:78svh;display:grid;align-content:center;}
+.hub .hub-statement .eyebrow{margin-bottom:26px;}
+.hub .hub-statement__text{font-size:clamp(30px,5.2vw,62px);line-height:1.1;letter-spacing:-.02em;font-weight:600;color:var(--fg-on-dark);max-width:20ch;}
+.hub .hub-statement__sub{margin-top:26px;font-size:clamp(15px,1.9vw,19px);line-height:1.55;color:var(--muted-on-dark);max-width:58ch;}
+
+/* ---- 3. Section map — bento directory of link tiles (light) ---- */
+.hub .hub-map .head{margin-bottom:clamp(32px,5vw,56px);}
+.hub .hub-map__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,2vw,22px);}
+.hub .hub-tile{grid-column:span 1;display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:clamp(22px,3vw,30px);box-shadow:var(--shadow-soft);min-width:0;text-decoration:none;color:inherit;transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .4s var(--ease);}
+.hub .hub-tile:hover{transform:translateY(-4px);border-color:color-mix(in oklab,var(--violet) 32%, var(--border));box-shadow:var(--shadow-mid,var(--shadow-soft));}
+.hub .hub-tile:focus-visible{outline:2px solid var(--violet);outline-offset:3px;}
+.hub .hub-tile--feature{grid-column:span 2;background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 26%, transparent);}
+.hub .hub-tile .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.hub .hub-tile__h{font-size:clamp(19px,2.3vw,26px);letter-spacing:-.01em;color:var(--fg);}
+.hub .hub-tile__p{font-size:14.5px;line-height:1.55;color:var(--muted);}
+.hub .hub-tile__more{margin-top:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);display:inline-flex;align-items:center;gap:8px;}
+.hub .hub-tile__more span{transition:transform .4s var(--ease);}
+.hub .hub-tile:hover .hub-tile__more span{transform:translateX(4px);}
+@media (max-width:780px){
+  .hub .hub-map__grid{grid-template-columns:1fr;}
+  .hub .hub-tile--feature{grid-column:span 1;}
+}
+
+/* ---- 4. Section flow — pinned multi-screen (DARK), steps light up ---- */
+.hub .hub-flow{padding:0;min-height:240vh;}
+.hub .hub-flow__stage{min-height:100svh;padding:clamp(36px,6vh,72px) var(--gutter);display:grid;align-content:center;box-sizing:border-box;}
+.hub .hub-flow__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,6vw,80px);align-items:center;}
+.hub .hub-flow__col{min-width:0;}
+.hub .hub-flow__media{align-self:center;min-width:0;width:100%;max-width:520px;justify-self:center;}
+.hub .hub-flow__track{list-style:none;margin:clamp(32px,4vw,48px) 0 0;padding:0;max-width:560px;display:flex;flex-direction:column;gap:clamp(14px,2.2vw,22px);}
+.hub .hub-fstep{display:grid;grid-template-columns:auto 1fr;column-gap:clamp(16px,2.6vw,26px);row-gap:6px;align-items:baseline;border-top:1px solid var(--border-on-dark);padding-top:clamp(12px,1.8vw,18px);}
+.hub .hub-fstep__num{grid-row:1 / span 3;font-family:var(--font-mono);font-size:clamp(16px,2.4vw,26px);line-height:1;letter-spacing:-.01em;color:var(--muted-on-dark);transition:color .5s var(--ease);min-width:0;}
+.hub .hub-fstep.is-active .hub-fstep__num{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hub .hub-fstep__label{font-family:var(--font-mono);font-size:clamp(14px,1.8vw,18px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-on-dark);}
+.hub .hub-fstep__desc{grid-column:2;font-size:clamp(14px,1.6vw,17px);line-height:1.5;color:var(--muted-on-dark);max-height:0;overflow:hidden;opacity:0;transition:max-height .55s var(--ease),opacity .45s var(--ease);}
+.hub .hub-fstep.is-current .hub-fstep__desc{max-height:10em;opacity:1;}
+.hub .hub-fstep__link{grid-column:2;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--lavender);text-decoration:none;display:inline-flex;align-items:center;gap:8px;max-height:0;overflow:hidden;opacity:0;transition:max-height .55s var(--ease),opacity .45s var(--ease);}
+.hub .hub-fstep.is-current .hub-fstep__link{max-height:3em;opacity:1;margin-top:8px;}
+.hub .hub-fstep__link span{transition:transform .4s var(--ease);}
+.hub .hub-fstep__link:hover span{transform:translateX(4px);}
+@media (max-width:880px){
+  .hub .hub-flow__grid{grid-template-columns:1fr;}
+  .hub .hub-flow__media{order:-1;max-width:none;}
+  .hub .hub-flow{min-height:0;}
+  .hub .hub-flow__stage{position:static;min-height:0;}
+  .hub .hub-fstep__desc,.hub .hub-fstep__link{max-height:none;opacity:1;}
+}
+@media (prefers-reduced-motion:reduce){
+  .hub .hub-fstep__desc,.hub .hub-fstep__link{max-height:none;opacity:1;}
+}
+
+/* ---- 5. Browse — horizontal scroll-snap gallery (light) ---- */
+.hub .hub-gallery .head{margin-bottom:clamp(32px,5vw,56px);}
+.hub .hub-lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
+.hub .hub-lane:focus-visible{outline:2px solid var(--violet);outline-offset:4px;border-radius:var(--radius-card);}
+.hub .hub-card{flex:0 0 clamp(244px,29vw,320px);scroll-snap-align:start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;position:relative;min-width:0;min-height:226px;text-decoration:none;color:inherit;transition:transform .4s var(--ease),border-color .4s var(--ease);}
+.hub a.hub-card:hover{transform:translateY(-4px);border-color:color-mix(in oklab,var(--violet) 32%, var(--border));}
+.hub a.hub-card:focus-visible{outline:2px solid var(--violet);outline-offset:3px;}
+.hub .hub-card__signal{width:10px;height:10px;border-radius:50%;background:var(--lens);}
+.hub .hub-card .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.hub .hub-card__h{font-size:21px;letter-spacing:-.01em;margin-top:6px;color:var(--fg);}
+.hub .hub-card__p{font-size:14px;line-height:1.5;color:var(--muted);}
+.hub .hub-card__more{margin-top:auto;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);display:inline-flex;align-items:center;gap:8px;}
+.hub .hub-gallery__cta{display:flex;justify-content:center;margin-top:clamp(28px,4vw,44px);}
+
+/* ---- 6. Final CTA — quiet CTA (DARK) ---- */
+.hub .hub-cta .head{display:flex;flex-direction:column;align-items:center;text-align:center;}
+.hub .hub-cta__sub{max-width:56ch;}
+.hub .hub-cta .sect-cta{margin-top:34px;}
+/* footer column heading that links to its section hub (Product / Trust) */
+.foot .col h5 a{color:inherit;text-decoration:none;transition:color .3s var(--ease);}
+.foot .col h5 a:hover{color:var(--violet);}

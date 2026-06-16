@@ -57,7 +57,9 @@ export function Footer({ variant = "light" }: FooterProps) {
           </div>
           <div className="nav-cluster">
             <div className="col">
-              <h5>Product</h5>
+              <h5>
+                <Link href="/product">Product</Link>
+              </h5>
               <nav>
                 <Link href="/product/overview">Overview</Link>
                 <Link href="/product/entry-hub">Entry hub</Link>

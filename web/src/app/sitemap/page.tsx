@@ -42,6 +42,7 @@ const TREE: TreeNode = {
     { label: "Conversion Page", path: "/", status: "ready" },
     {
       label: "Product",
+      path: "/product",
       status: "ready",
       children: [
         { label: "Overview", path: "/product/overview", status: "ready" },
