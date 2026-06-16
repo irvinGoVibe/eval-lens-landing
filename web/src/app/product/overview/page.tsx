@@ -20,7 +20,7 @@ const HEADER_NAV: SectionNav = {
 export const metadata: Metadata = {
   title: "EvalLense — Product Overview: Batch Pitch Deck Evaluation",
   description:
-    "How EvalLense works: collect decks in the Entry Hub, evaluate with 6 AI judges, get evidence reports and a Review Board with a leaderboard — the human decides.",
+    "How EvalLense works: collect decks in the Entry Hub, evaluate with 6 AI judges, get evidence-based reports and a Review Board with a leaderboard — the human decides.",
 };
 
 /*
@@ -67,38 +67,38 @@ export const metadata: Metadata = {
 const PATH_STEPS = [
   {
     num: "01",
-    label: "Login / Sign Up",
-    desc: "Email and password or Google OAuth — the organizer enters their own workspace.",
+    label: "Sign in",
+    desc: "Email and password, or Google OAuth. You land in your own workspace.",
   },
   {
     num: "02",
     label: "Dashboard",
-    desc: "A list of projects with their statuses, and a place to start a new one.",
+    desc: "Your projects and their status, with a place to start a new one.",
   },
   {
     num: "03",
-    label: "Wizard",
-    desc: "A 5-step setup: mode, details, criteria and weights, judges, and how applications are collected.",
+    label: "Set up the project",
+    desc: "A five-step wizard: details, criteria and weights, judges, how decks are collected, and a final review. Mode — Pitch Competition — is chosen before the wizard opens.",
   },
   {
     num: "04",
-    label: "Collect",
-    desc: "Project overview gathers applications — added manually or via a self-upload link.",
+    label: "Collect decks",
+    desc: "Add applications by hand, or share a self-upload link and let teams submit their own.",
   },
   {
     num: "05",
-    label: "Start Judging",
-    desc: "The AI pipeline runs on every application in the batch.",
+    label: "Start judging",
+    desc: "The AI pipeline runs across every deck in the batch.",
   },
   {
     num: "06",
-    label: "Jury Review",
-    desc: "Human-in-the-loop: the organizer sets the final dimension scores, guided by the AI report.",
+    label: "Jury review",
+    desc: "You set the Jury Score on each dimension, guided by the AI report.",
   },
   {
     num: "07",
     label: "Leaderboard",
-    desc: "Ranking is built from the human Final Score — not from the AI score.",
+    desc: "Ranked by your Final Score, not by the AI score.",
   },
 ];
 
@@ -107,27 +107,27 @@ const PIPELINE = [
   {
     num: "01",
     name: "Decoder",
-    body: "Brings a deck — PDF, PPTX or Google Slides — to a structured slide-level view through Vision.",
+    body: "Brings any deck — PDF, PPTX, or Google Slides — to a structured, slide-level view.",
   },
   {
     num: "02",
     name: "AI Judges",
-    body: "Six independent judges evaluate the deck across P1–P6 in parallel.",
+    body: "Six independent judges score the deck across P1–P6, in parallel.",
   },
   {
     num: "03",
     name: "Summarizer",
-    body: "Function 1 runs deterministic math, Function 2 the narrative; together they produce the AI Total Score.",
+    body: "Function 1 runs deterministic math; Function 2 writes the narrative and the questions to ask each team.",
   },
   {
     num: "04",
     name: "Scoring",
-    body: "Criterion weights are applied to the human Jury Score to form the Final Score.",
+    body: "Your criterion weights apply to the human Jury Score to form the Final Score.",
   },
   {
     num: "05",
     name: "Report",
-    body: "An explainable report is assembled for each participant.",
+    body: "An explainable report is assembled for every participant.",
   },
 ];
 
@@ -136,18 +136,18 @@ const MODULES = [
   {
     tag: "Entry Hub",
     title: "One entry point for the batch",
-    body: "Applications and pitch decks land in a single place — collected manually or through a self-upload link, ready to evaluate.",
+    body: "Applications and decks land in a single place — added by hand or through a self-upload link, ready to evaluate.",
     feature: true,
   },
   {
     tag: "Evidence-Based Reports",
     title: "Scores tied to evidence",
-    body: "Reports where scores and conclusions are linked to evidence in the deck, not to a black-box verdict.",
+    body: "Every score and conclusion links back to evidence in the deck, not to a black-box verdict.",
   },
   {
     tag: "Review Board",
-    title: "A board for human review",
-    body: "A working board for human review, comparison and a leaderboard ranked by the human Final Score.",
+    title: "The board for the human decision",
+    body: "Review, compare, and rank — with a leaderboard built from your Final Score.",
   },
 ];
 
@@ -156,32 +156,32 @@ const JUDGES = [
   {
     code: "J-P1",
     title: "Problem",
-    body: "Pain, user, urgency and the alternatives a deck claims to beat.",
+    body: "The pain, the user, the urgency, and the alternatives a deck claims to beat.",
   },
   {
     code: "J-P2",
     title: "Solution Logic",
-    body: "Product logic, differentiation and how coherently the solution holds together.",
+    body: "Product logic, differentiation, and how coherently the solution holds together.",
   },
   {
     code: "J-P3",
     title: "Business Value / Market",
-    body: "Market, value and how the business intends to make money.",
+    body: "The market, the value, and how the business intends to make money.",
   },
   {
     code: "J-P4",
     title: "Pitch Quality",
-    body: "Clarity, narrative, structure and delivery of the pitch itself.",
+    body: "Clarity, narrative, structure, and delivery.",
   },
   {
     code: "J-P5",
     title: "Team Readiness",
-    body: "Founder-market fit, skills and the ability to execute.",
+    body: "Founder-market fit, skills, and the ability to execute.",
   },
   {
     code: "J-P6",
     title: "Feasibility",
-    body: "Roadmap, resources and operational realism.",
+    body: "Roadmap, resources, and operational realism.",
   },
 ];
 
@@ -189,29 +189,29 @@ const JUDGES = [
 const OUTPUTS = [
   {
     tag: "Workspace",
-    title: "Structured batch workspace",
-    body: "Every application sits in one organized space instead of scattered files and threads.",
+    title: "Structured workspace",
+    body: "Every application in one organized space, instead of scattered files and threads.",
     feature: true,
   },
   {
     tag: "Evaluations",
     title: "Deck-level evaluations",
-    body: "Scores across P1–P6 with a confidence signal on each dimension.",
+    body: "Scores across P1–P6 with a confidence signal on each.",
   },
   {
     tag: "Evidence",
     title: "Judge assessments & evidence",
-    body: "Each judge assessment is tied back to evidence in the deck.",
+    body: "Each assessment tied back to evidence in the deck.",
   },
   {
     tag: "Signals",
     title: "Strengths, weaknesses, gaps",
-    body: "Strengths and weaknesses surfaced alongside deck completeness signals.",
+    body: "Surfaced alongside deck-completeness signals.",
   },
   {
     tag: "Leaderboard",
     title: "Leaderboard & comparison",
-    body: "A comparison view ranked by the human Final Score.",
+    body: "Ranked by your Final Score.",
   },
 ];
 
@@ -244,9 +244,9 @@ export default function ProductOverviewPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "180ms" }}
             >
-              Collect decks, evaluate them consistently, get evidence-based
-              reports and compare the results in one review process — the
-              decision stays with a person.
+              Collect every deck in one place, evaluate it against one rubric,
+              and compare evidence-based reports in a single review. The final
+              call always yours.
             </p>
             <div
               className="cta-row"
@@ -343,8 +343,9 @@ export default function ProductOverviewPage() {
               <h2 className="title">Every deck runs the same five stages</h2>
               <p className="sub">
                 Each application passes a fixed pipeline. The numeric layer is
-                deterministic — the same judge findings and weights produce the
-                same AI Total Score on a 0.0–10.0 scale.
+                deterministic — the same findings and weights produce the same
+                AI Total Score, an advisory reference. Ranking is built from your
+                score, not this one.
               </p>
               <ol className="po-pipeline__track">
                 {PIPELINE.map((p) => (
@@ -396,8 +397,8 @@ export default function ProductOverviewPage() {
               </span>
               <h2 className="title">One product, three connected modules</h2>
               <p className="sub">
-                EvalLense is an Entry Hub for intake, Evidence-Based Reports for
-                the analysis and a Review Board where a person makes the call.
+                An Entry Hub for intake, Evidence-Based Reports for the
+                analysis, and a Review Board where a person makes the call.
               </p>
             </div>
             <ul className="po-modules__grid" data-reveal="up">
@@ -447,8 +448,8 @@ export default function ProductOverviewPage() {
               <h2 className="title">Six independent judges, six lenses</h2>
               <p className="sub">
                 Evaluation runs through a jury of six AI judges, each with its
-                own lens across P1–P6. The judges work independently and never
-                see one another's scores.
+                own lens across P1–P6. They work independently and never see one
+                another's scores — and where they disagree, the report shows it.
               </p>
             </div>
           </div>
@@ -479,18 +480,18 @@ export default function ProductOverviewPage() {
               </span>
               <h2 className="title">Less manual review, a clearer trail</h2>
               <p className="sub">
-                EvalLense cuts the load of manual review, raises the consistency
-                of evaluation and gives a team a clearer decision trail — without
-                turning the choice into a black box.
+                EvalLense cuts the hours spent reading decks by hand, holds every
+                evaluation to one standard, and leaves your team a decision trail
+                it can defend.
               </p>
             </div>
             <div className="po-why__claim" data-reveal="right">
               <p className="po-why__claim-text">
-                The goal is higher evaluation quality — structured,
-                evidence-linked and inspectable — not a verdict on the future.
+                Six AI lenses do the reading. You make the decision — with the
+                evidence in front of you.
               </p>
               <span className="po-why__claim-tag">
-                Pitch Competition mode · P1–P6
+                Pitch Competition · P1–P6
               </span>
             </div>
           </div>
@@ -506,8 +507,8 @@ export default function ProductOverviewPage() {
               </span>
               <h2 className="title">Everything a run leaves behind</h2>
               <p className="sub">
-                After a batch runs, the organizer is left with a structured set
-                of outputs — workspace, evaluations, evidence and a leaderboard.
+                After a batch runs, you're left with a structured set of
+                outputs — not a folder of scattered files and threads.
               </p>
             </div>
             <ul className="po-outputs__grid" data-reveal="up">
@@ -548,7 +549,7 @@ export default function ProductOverviewPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "180ms" }}
             >
-              Book a demo and watch intake, evaluation and human review play out
+              Book a demo and watch intake, evaluation, and human review play out
               end to end.
             </p>
             <div
