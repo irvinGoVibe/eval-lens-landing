@@ -40,7 +40,7 @@ export function Footer() {
         </div>
         <div className="col">
           <h5>Company</h5>
-          <a href="#">About</a>
+          <Link href="/company/about">About</Link>
           <Link href="/blog">Newsroom</Link>
           <a href="#">Contact</a>
           <a href="#">careers@evallense.com</a>

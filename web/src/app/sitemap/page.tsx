@@ -88,7 +88,7 @@ const TREE: TreeNode = {
       path: "/company",
       status: "soon",
       children: [
-        { label: "About", path: "/company/about", status: "soon" },
+        { label: "About", path: "/company/about", status: "ready" },
         // Newsroom currently lives at /blog on the live site.
         {
           label: "Newsroom",
