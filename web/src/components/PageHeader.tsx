@@ -34,9 +34,18 @@ export function PageHeader({
   const className = ["page-header", theme === "dark" && "page-header--dark"]
     .filter(Boolean)
     .join(" ");
+  const glassStyle = {
+    WebkitBackdropFilter: "saturate(220%) blur(36px)",
+    backdropFilter: "saturate(220%) blur(36px)",
+  };
 
   return (
     <header className={className}>
+      <div
+        className="page-header__glass"
+        aria-hidden="true"
+        style={glassStyle}
+      ></div>
       <div className="page-header__inner">
         <Link
           href="/"

@@ -147,21 +147,22 @@ body{
    trigger a horizontal scroll on mobile). `clip` over `hidden` so it doesn't
    create a scroll container (which would break sticky scroll-scrub).
 
-   WHERE the clip lives is load-bearing for Chrome's `backdrop-filter` (Safari
-   is lenient; Blink is not), so it differs per page:
+   WHERE the clip lives is load-bearing for Chrome's `backdrop-filter`: Blink
+   disables backdrop-filter on any element with an `overflow:clip` ancestor
+   (verified — even a `position:fixed` direct child of a clipped `body` won't
+   blur). So the clip must never land on a header's ancestor chain.
 
-   - Homepage (`#hero` present): clip at the ROOT (`html`/`body`). Root-level
-     clip does NOT disable the bento horse scene's backdrop-filter blur, but a
-     non-root `<main>` clip container WOULD — so the homepage main (`#top`) is
-     left un-clipped.
-   - Internal pages: clip on `<main>` instead. The sticky `.page-header` is a
-     *sibling* of main, so main's clip isn't on the header's ancestor chain (its
-     own blur keeps working), while main being its own clip context is what lets
-     Chrome composite it as the header's backdrop — without it the bar renders
-     with no blur. Root clip stays OFF internal pages so it never lands on the
-     header's ancestors. */
-html:has(#hero), body:has(#hero){overflow-x:clip;}
-main:not(#top){overflow-x:clip;}
+   - Homepage: clip every top-level section EXCEPT the bento (`#top > *:not(#system)`).
+     NOT html/body — `.site-header` is a child of body, so a clipped body would
+     kill its blur. NOT `<main>`/`#top` as a whole — the bento horse scene's
+     blurred glow (a `filter:blur` halo, not backdrop-filter) lives in `#system`
+     and an ancestor clip would crop it, so that one section is left un-clipped
+     (its 860px aura is `lg`-only and fits the viewport, so it doesn't overflow).
+   - Internal pages: do NOT clip `<main>` as a whole. Chrome will not reliably
+     sample a clipped sibling as the backdrop for the fixed header. Clip the
+     page's direct sections instead, matching the working debug page. */
+#top > *:not(#system){overflow-x:clip;}
+main:not(#top) > *{overflow-x:clip;}
 h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0;letter-spacing:-.022em;line-height:1.06;text-wrap:balance;}
 p{margin:0;text-wrap:pretty;}
 a{color:inherit;text-decoration:none;}
@@ -228,17 +229,46 @@ a{color:inherit;text-decoration:none;}
 
 /* ---------- site header ---------- */
 .site-header{
-  position:fixed;top:0;left:0;right:0;z-index:150;
+  position:fixed;top:calc(-64px - max(12px,env(safe-area-inset-top)));left:0;right:0;z-index:150;
   padding-top:max(12px,env(safe-area-inset-top));
-  background:transparent;
+  height:calc(64px + max(12px,env(safe-area-inset-top)));
   pointer-events:none;
+  isolation:isolate;
+  opacity:0;
+  transition:top .48s var(--ease), opacity .32s var(--ease);
+  will-change:top,opacity;
+}
+body.hero-ready .site-header{
+  top:0;
+  opacity:1;
+}
+body.hero-ready .site-header.is-hidden{
+  top:calc(-64px - max(12px,env(safe-area-inset-top)));
+  opacity:0;
+}
+.site-header__glass{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-color:rgba(5,6,12,.48);
+  -webkit-backdrop-filter:saturate(220%) blur(36px);
+  backdrop-filter:saturate(220%) blur(36px);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 58%,rgba(0,0,0,.72) 76%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 58%,rgba(0,0,0,.72) 76%,transparent 100%);
+  transition:background-color .24s var(--ease);
+}
+.site-header.is-light .site-header__glass{
+  background-color:rgba(255,255,255,.34);
 }
 /* same horizontal grid as .hero-content — logo aligns with hero title */
 .site-header__inner{
+  position:relative;
+  z-index:1;
+  height:100%;
   width:100%;max-width:var(--maxw);margin:0 auto;
   padding-left:var(--gutter);padding-right:var(--gutter);
   display:flex;align-items:center;justify-content:space-between;gap:20px;
-  min-height:52px;
   pointer-events:auto;
 }
 .site-header .brand{
@@ -2759,23 +2789,49 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 .blog{background:var(--bg);color:var(--fg);}
 .blog-wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter);width:100%;}
 
-/* ---- Internal-page header (sticky, opaque, blurred) ----
+/* ---- Internal-page header (fixed, translucent, blurred) ----
    Shared chrome for every page that isn't the homepage — Newsroom, Product,
    Trust, Company, Legal. Two surfaces: light (default, white bar / dark text)
    and `--dark` (near-black bar / light text). Component: PageHeader.tsx. */
 .page-header{
-  position:sticky;top:0;z-index:150;
-  /* translucent glass, not a solid plate — the band beneath shows through */
-  background:color-mix(in oklab,var(--bg) 62%,transparent);
-  backdrop-filter:saturate(180%) blur(20px);
-  -webkit-backdrop-filter:saturate(180%) blur(20px);
-  border-bottom:1px solid var(--border-2);
-  /* cross-fade between light/dark variants as HeaderThemeSync toggles --dark */
-  transition:background-color .45s var(--ease), border-color .45s var(--ease);
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  height:56px;
+  isolation:isolate;
+  opacity:1;
+  pointer-events:auto;
+}
+.page-header__glass{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-color:rgba(255,255,255,.34);
+  -webkit-backdrop-filter:saturate(220%) blur(36px);
+  backdrop-filter:saturate(220%) blur(36px);
+  border-bottom:1px solid rgba(55,55,80,.18);
+  box-shadow:0 18px 55px rgba(80,70,130,.16);
+  opacity:1;
+  transition:background-color .24s var(--ease), border-color .24s var(--ease), box-shadow .24s var(--ease), opacity .28s var(--ease);
 }
 .page-header__inner{
+  position:relative;
+  z-index:1;
   max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);
-  display:flex;align-items:center;gap:16px;min-height:56px;
+  display:flex;align-items:center;gap:16px;height:100%;
+  transform:translate3d(0,0,0);
+  opacity:1;
+  transition:transform .42s var(--ease), opacity .28s var(--ease);
+  will-change:transform,opacity;
+}
+.page-header.is-hidden{
+  pointer-events:none;
+}
+.page-header.is-hidden .page-header__glass{
+  opacity:0;
+}
+.page-header.is-hidden .page-header__inner{
+  opacity:0;
+  transform:translate3d(0,-110%,0);
 }
 .page-header__brand{
   color:var(--fg);font-size:18px;flex:none;
@@ -2830,11 +2886,21 @@ a.page-header__section:hover{color:var(--fg);}
   .page-header__nav,.page-header__divider,.page-header__section{display:none;}
   .page-header__cta{margin-left:auto;}
 }
+@media (prefers-reduced-motion: reduce){
+  .site-header,
+  .page-header{
+    transition:none;
+  }
+}
 
 /* ---- Internal-page header — dark surface ---- */
 .page-header--dark{
-  background:color-mix(in oklab,var(--ink) 68%,transparent);
-  border-bottom:1px solid var(--border-on-dark);
+  color:var(--fg-on-dark);
+}
+.page-header--dark .page-header__glass{
+  background-color:rgba(5,6,12,.48);
+  border-bottom-color:rgba(255,255,255,.16);
+  box-shadow:0 18px 55px rgba(0,0,0,.22);
 }
 .page-header--dark .page-header__brand{color:var(--fg-on-dark);}
 .page-header--dark .page-header__brand .mark{
@@ -4287,6 +4353,241 @@ section[id]{scroll-margin-top:72px;}
 
 /* ---- 8. Final CTA — quiet CTA (DARK) ---- */
 .product-overview .po-cta .sect-cta{margin-top:34px;}
+
+/* ============================================================
+   /dev/section-lab — internal section design canvas.
+   Uses canonical tokens + ScrollFX data attributes only. This route is a
+   working lab for refining inner-page section archetypes before moving them
+   into product pages.
+   ============================================================ */
+.section-lab .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.section-lab section.band{padding:clamp(64px,10vw,140px) var(--gutter);position:relative;}
+
+/* Section marker — dev affordance: a corner chip naming the section type from
+   the Section Types catalog (wiki/architecture/section-types.md). Hidden by
+   default, lights up when the section is hovered so you can tell which
+   archetype is which on the stand, and copies its name to the clipboard on
+   click. The chip is a real <button> injected per [data-marker] section by the
+   LabMarkers client component (sections/lab/LabMarkers.tsx) — same imperative
+   pattern as ScrollFX. Scoped to `.section-lab`, so sections stay clean when
+   reused on a real page. */
+.section-lab .lab-marker{
+  position:absolute;top:14px;right:clamp(14px,3vw,28px);z-index:30;
+  pointer-events:none;cursor:pointer;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;padding:7px 13px;border-radius:980px;white-space:nowrap;
+  background:var(--lens);box-shadow:var(--shadow-soft);
+  border:1px solid color-mix(in oklab,#fff 35%, transparent);
+  opacity:0;transform:translateY(-6px) scale(.96);transform-origin:top right;
+  transition:opacity .22s var(--ease),transform .22s var(--ease),filter .15s var(--ease);
+}
+.section-lab section.band:hover .lab-marker{opacity:1;transform:none;pointer-events:auto;}
+.section-lab .lab-marker:hover{filter:brightness(1.08);}
+.section-lab .lab-marker:active{transform:scale(.95);}
+.section-lab .lab-marker.is-copied{background:var(--violet);}
+@media (prefers-reduced-motion:reduce){
+  .section-lab .lab-marker{transition:opacity .22s linear;transform:none;}
+}
+.section-lab .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.section-lab .ink .mini-tag{color:var(--lavender);}
+.section-lab .lab-pattern{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.section-lab .lab-pattern::before{content:"";position:absolute;inset:clamp(80px,12vw,150px) max(18px,calc((100vw - var(--maxw)) / 2));border-radius:var(--radius-stage);background:linear-gradient(90deg,color-mix(in oklab,var(--violet) 9%, transparent) 1px,transparent 1px),linear-gradient(180deg,color-mix(in oklab,var(--cyan) 8%, transparent) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at 50% 30%, #000 0%, transparent 72%);opacity:.75;}
+.section-lab .lab-pattern::after{content:"";position:absolute;left:50%;top:16%;width:min(72vw,880px);aspect-ratio:1;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle,color-mix(in oklab,var(--violet) 20%, transparent),transparent 62%);filter:blur(44px);opacity:.65;}
+
+.section-lab .lab-hero{padding-top:clamp(132px,18vw,200px);overflow:hidden;}
+.section-lab .lab-hero__inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;width:100%;}
+.section-lab .lab-hero .eyebrow{margin-bottom:22px;}
+.section-lab .lab-hero__title{font-size:clamp(44px,7vw,96px);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:15ch;}
+.section-lab .lab-hero__sub{width:min(100%,68ch);margin-top:26px;}
+.section-lab .lab-hero .cta-row{justify-content:center;}
+.section-lab .lab-hero__media{width:min(100%,980px);max-width:100%;margin-top:clamp(48px,7vw,88px);box-shadow:var(--shadow-soft);}
+.section-lab .lab-hero [data-reveal]{opacity:1;transform:none;}
+
+.section-lab .lab-statement{min-height:72svh;display:grid;align-items:center;}
+.section-lab .lab-statement__inner{max-width:min(920px,100%);margin-inline:auto;text-align:center;}
+.section-lab .lab-statement__text{font-family:var(--font-display);font-weight:600;font-size:clamp(36px,6vw,76px);line-height:1.06;letter-spacing:-.03em;text-wrap:balance;color:var(--fg-on-dark);}
+
+.section-lab .lab-split__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,80px);align-items:center;}
+.section-lab .lab-split__copy{min-width:0;}
+.section-lab .lab-split__media{min-width:0;}
+
+.section-lab .lab-process{padding:0;min-height:240vh;}
+.section-lab .lab-process__stage{min-height:100svh;padding:clamp(36px,6vh,72px) var(--gutter);display:grid;align-content:center;box-sizing:border-box;}
+.section-lab .lab-process__grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(32px,6vw,80px);align-items:center;}
+.section-lab .lab-process__copy{min-width:0;}
+.section-lab .lab-process__steps{list-style:none;margin:clamp(32px,4vw,48px) 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(14px,2.2vw,22px);max-width:580px;}
+.section-lab .lab-step{display:grid;grid-template-columns:auto 1fr;column-gap:clamp(16px,2.6vw,26px);row-gap:6px;align-items:baseline;border-top:1px solid var(--border-on-dark);padding-top:clamp(12px,1.8vw,18px);}
+.section-lab .lab-step__num{grid-row:1 / span 2;font-family:var(--font-mono);font-size:clamp(16px,2.4vw,26px);line-height:1;color:var(--muted-on-dark);transition:color .5s var(--ease);}
+.section-lab .lab-step.is-active .lab-step__num{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.section-lab .lab-step__label{font-family:var(--font-mono);font-size:clamp(14px,1.8vw,18px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-on-dark);}
+.section-lab .lab-step__desc{grid-column:2;font-size:clamp(14px,1.6vw,17px);line-height:1.5;color:var(--muted-on-dark);max-height:0;overflow:hidden;opacity:0;transition:max-height .55s var(--ease),opacity .45s var(--ease);}
+.section-lab .lab-step.is-current .lab-step__desc{max-height:8em;opacity:1;}
+.section-lab .lab-process__media{width:100%;max-width:520px;justify-self:center;}
+
+.section-lab .lab-scrub__split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;}
+.section-lab .lab-scrub__copy{min-width:0;}
+.section-lab .lab-scrub__visual{display:flex;flex-direction:column;align-items:center;gap:clamp(20px,3vw,30px);min-width:0;}
+.section-lab .lab-ring{position:relative;width:clamp(180px,26vw,270px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--violet) calc(var(--scrub,0)*296deg), var(--hairline) 0);box-shadow:var(--shadow-soft);}
+.section-lab .lab-ring::before{content:"";position:absolute;width:66%;aspect-ratio:1;border-radius:50%;background:var(--bg-soft);}
+.section-lab .lab-ring__label{position:relative;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.section-lab .lab-scrub__media{max-width:420px;}
+
+.section-lab .lab-gallery .head{margin-bottom:clamp(32px,5vw,56px);}
+.section-lab .lab-gallery__lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
+.section-lab .lab-gallery__lane:focus-visible{outline:2px solid var(--violet);outline-offset:4px;border-radius:var(--radius-card);}
+.section-lab .lab-gallery__card{flex:0 0 clamp(250px,29vw,330px);scroll-snap-align:start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;min-width:0;min-height:240px;}
+.section-lab .lab-gallery__card h3{font-size:22px;letter-spacing:-.01em;margin-top:6px;color:var(--fg);}
+.section-lab .lab-gallery__card p{font-size:14px;line-height:1.5;color:var(--muted);}
+.section-lab .lab-signal{width:10px;height:10px;border-radius:50%;background:var(--lens);}
+
+.section-lab .lab-bento .head{margin-bottom:clamp(32px,5vw,56px);}
+.section-lab .lab-bento__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);}
+.section-lab .lab-bento__tile{background:rgba(255,255,255,.04);border:1px solid var(--border-on-dark);border-radius:var(--radius-card);padding:24px;display:flex;flex-direction:column;gap:9px;min-width:0;}
+.section-lab .lab-bento__tile--feature{grid-column:span 2;grid-row:span 2;background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 32%, transparent);}
+.section-lab .lab-bento__tile h3{font-size:clamp(18px,2.2vw,25px);letter-spacing:-.01em;color:var(--fg-on-dark);}
+.section-lab .lab-bento__tile p{font-size:14px;line-height:1.55;color:var(--muted-on-dark);}
+.section-lab .lab-bento__media{margin-top:auto;}
+
+.section-lab .lab-hubmap .head,
+.section-lab .lab-numbered .head,
+.section-lab .lab-risk .head,
+.section-lab .lab-pricing .head,
+.section-lab .lab-table .head,
+.section-lab .lab-versus .head,
+.section-lab .lab-faq .head,
+.section-lab .lab-contact .head,
+.section-lab .lab-news .head,
+.section-lab .lab-sitemap .head{margin-bottom:clamp(32px,5vw,56px);}
+
+.section-lab .lab-link-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);}
+.section-lab .lab-link-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:24px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:9px;min-width:0;transition:transform .25s var(--ease),border-color .25s var(--ease);}
+.section-lab .lab-link-card:hover{transform:translateY(-2px);border-color:color-mix(in oklab,var(--violet) 34%,var(--border));}
+.section-lab .lab-link-card--feature{grid-column:span 2;background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 32%,transparent);}
+.section-lab .lab-link-card h3{font-size:clamp(19px,2.2vw,25px);letter-spacing:-.01em;color:var(--fg);}
+.section-lab .lab-link-card p{font-size:14px;line-height:1.55;color:var(--muted);}
+.section-lab .lab-link-card__more{margin-top:auto;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);}
+
+.section-lab .lab-stats{padding-top:clamp(72px,9vw,120px);padding-bottom:clamp(72px,9vw,120px);}
+.section-lab .lab-stats .head{margin-bottom:clamp(28px,4vw,48px);}
+.section-lab .lab-stats__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);}
+.section-lab .lab-stats__grid li{border:1px solid var(--border-on-dark);border-radius:var(--radius-card);padding:clamp(22px,3vw,32px);background:rgba(255,255,255,.04);display:flex;flex-direction:column;gap:8px;min-width:0;text-align:center;}
+.section-lab .lab-stats__grid strong{font-family:var(--font-mono);font-size:clamp(36px,6vw,72px);line-height:1;background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums;}
+.section-lab .lab-stats__grid span{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-on-dark);}
+.section-lab .lab-cta .sect-cta{margin-top:34px;}
+
+.section-lab .lab-numbered__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
+.section-lab .lab-numbered__list li{display:grid;grid-template-columns:clamp(70px,10vw,140px) 1fr;gap:clamp(18px,4vw,54px);align-items:baseline;border-top:1px solid var(--border);padding:clamp(26px,4vw,46px) 0;min-width:0;}
+.section-lab .lab-numbered__list li:last-child{border-bottom:1px solid var(--border);}
+.section-lab .lab-numbered__list span{font-family:var(--font-mono);font-size:clamp(28px,4vw,48px);line-height:1;background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.section-lab .lab-numbered__list h3{font-size:clamp(24px,3.4vw,40px);letter-spacing:-.02em;line-height:1.08;color:var(--fg);}
+.section-lab .lab-numbered__list p{font-size:clamp(16px,1.6vw,19px);line-height:1.55;color:var(--muted);margin-top:12px;max-width:58ch;}
+
+.section-lab .lab-risk__grid{display:flex;flex-direction:column;border-top:1px solid var(--border);}
+.section-lab .lab-risk__row{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(18px,4vw,60px);padding:clamp(22px,3vw,34px) 0;border-bottom:1px solid var(--border);min-width:0;}
+.section-lab .lab-risk__row > div{min-width:0;}
+.section-lab .lab-risk__row strong{display:block;margin-top:8px;font-size:clamp(19px,2.4vw,28px);line-height:1.16;letter-spacing:-.01em;color:var(--fg);}
+.section-lab .lab-risk__row p{margin-top:8px;font-size:clamp(16px,1.6vw,18px);line-height:1.55;color:var(--muted);}
+.section-lab .lab-quiet-cta .sect-cta{margin-top:34px;}
+
+.section-lab .lab-pricing__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,22px);}
+.section-lab .lab-pricing__card{position:relative;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:24px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:12px;min-width:0;}
+.section-lab .lab-pricing__card--recommended{background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 32%,transparent);}
+.section-lab .lab-pricing__card .chip{align-self:flex-start;margin-bottom:4px;}
+.section-lab .lab-pricing__card h3{font-size:21px;letter-spacing:-.01em;color:var(--fg);}
+.section-lab .lab-pricing__card strong{font-family:var(--font-mono);font-size:clamp(28px,3.2vw,40px);letter-spacing:-.02em;color:var(--fg);}
+.section-lab .lab-pricing__card p{font-size:14px;line-height:1.5;color:var(--muted);}
+.section-lab .lab-pricing__card .btn{margin-top:auto;justify-content:center;}
+
+.section-lab .lab-table__scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-card);box-shadow:var(--shadow-soft);}
+.section-lab .lab-table__scroll:focus-visible{outline:2px solid var(--violet);outline-offset:4px;}
+.section-lab .lab-table table{width:100%;min-width:720px;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden;}
+.section-lab .lab-table th,
+.section-lab .lab-table td{padding:15px 18px;border-bottom:1px solid var(--hairline);text-align:center;font-size:14px;line-height:1.4;color:var(--muted);}
+.section-lab .lab-table th{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--fg);}
+.section-lab .lab-table tbody th{text-align:left;color:var(--fg);text-transform:none;letter-spacing:0;font-family:var(--font-text);font-size:14px;}
+
+.section-lab .lab-versus__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--border-on-dark);border-radius:var(--radius-card);overflow:hidden;background:rgba(255,255,255,.03);}
+.section-lab .lab-versus__grid > div{padding:clamp(22px,3vw,34px);border-bottom:1px solid var(--border-on-dark-2);min-width:0;}
+.section-lab .lab-versus__grid > div:nth-child(odd){border-right:1px solid var(--border-on-dark-2);}
+.section-lab .lab-versus__grid p{margin-top:12px;font-size:clamp(17px,2vw,23px);line-height:1.35;letter-spacing:-.01em;color:var(--fg-on-dark);}
+
+.section-lab .lab-faq__grid{margin:0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 clamp(28px,4vw,56px);}
+.section-lab .lab-faq__grid > div{padding:clamp(22px,3vw,32px) 0;border-top:1px solid var(--border);min-width:0;}
+.section-lab .lab-faq dt{font-size:clamp(17px,1.8vw,20px);font-weight:600;line-height:1.25;letter-spacing:-.01em;color:var(--fg);}
+.section-lab .lab-faq dd{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--muted);}
+
+.section-lab .lab-contact__grid,
+.section-lab .lab-news__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);}
+.section-lab .lab-contact__card,
+.section-lab .lab-news__grid li{background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:24px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:9px;min-width:0;}
+.section-lab .lab-contact__card--feature{grid-column:span 2;background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 32%,transparent);}
+.section-lab .lab-contact h3,
+.section-lab .lab-news h3{font-size:clamp(19px,2.1vw,24px);letter-spacing:-.01em;color:var(--fg);}
+.section-lab .lab-contact p,
+.section-lab .lab-news p{font-size:14px;line-height:1.55;color:var(--muted);}
+.section-lab .lab-contact a,
+.section-lab .lab-news a{margin-top:auto;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);}
+
+.section-lab .lab-legal__grid{display:grid;grid-template-columns:280px 1fr;gap:clamp(28px,5vw,70px);align-items:start;}
+.section-lab .lab-legal__toc{position:sticky;top:86px;display:flex;flex-direction:column;gap:14px;min-width:0;}
+.section-lab .lab-legal__toc .eyebrow{margin-bottom:8px;}
+.section-lab .lab-legal__toc a{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.section-lab .lab-legal__toc a:hover{color:var(--violet);}
+.section-lab .lab-legal__article{background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:clamp(26px,4vw,48px);box-shadow:var(--shadow-soft);min-width:0;}
+.section-lab .lab-legal__article section{padding:clamp(22px,3vw,34px) 0;border-top:1px solid var(--border);}
+.section-lab .lab-legal__article h3{font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);}
+.section-lab .lab-legal__article p{margin-top:10px;font-size:16px;line-height:1.65;color:var(--muted);}
+
+.section-lab .lab-sitemap__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);}
+.section-lab .lab-sitemap__grid > div{background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:24px;box-shadow:var(--shadow-soft);min-width:0;}
+.section-lab .lab-sitemap h3{font-size:21px;letter-spacing:-.01em;color:var(--fg);}
+.section-lab .lab-sitemap ul{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.section-lab .lab-sitemap li{position:relative;padding-left:18px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.section-lab .lab-sitemap li::before{content:"";position:absolute;left:0;top:.45em;width:7px;height:7px;border-radius:50%;background:var(--lens);}
+
+@media (max-width:900px){
+  .section-lab .lab-process__grid,
+  .section-lab .lab-scrub__split{grid-template-columns:1fr;}
+  .section-lab .lab-process{min-height:0;}
+  .section-lab .lab-process__stage{position:static;min-height:0;}
+  .section-lab .lab-process__media{order:-1;max-width:none;}
+  .section-lab .lab-step__desc{max-height:none;opacity:1;}
+  .section-lab .lab-split__grid,
+  .section-lab .lab-legal__grid{grid-template-columns:1fr;}
+  .section-lab .lab-legal__toc{position:static;}
+  .section-lab .lab-bento__grid{grid-template-columns:repeat(2,1fr);}
+  .section-lab .lab-bento__tile--feature{grid-column:span 2;}
+  .section-lab .lab-pricing__grid,
+  .section-lab .lab-contact__grid,
+  .section-lab .lab-news__grid,
+  .section-lab .lab-sitemap__grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:620px){
+  .section-lab .lab-hero__title{max-width:11ch;}
+  .section-lab .lab-hero .cta-row{flex-direction:column;align-items:center;gap:12px;}
+  .section-lab .lab-hero .btn{width:min(100%,240px);justify-content:center;}
+  .section-lab .media-ph__label{max-width:100%;white-space:normal;line-height:1.35;}
+  .section-lab .media-ph__hint{max-width:100%;overflow-wrap:anywhere;}
+  .section-lab .lab-link-grid,
+  .section-lab .lab-bento__grid,
+  .section-lab .lab-stats__grid,
+  .section-lab .lab-pricing__grid,
+  .section-lab .lab-versus__grid,
+  .section-lab .lab-faq__grid,
+  .section-lab .lab-contact__grid,
+  .section-lab .lab-news__grid,
+  .section-lab .lab-sitemap__grid{grid-template-columns:1fr;}
+  .section-lab .lab-link-card--feature,
+  .section-lab .lab-bento__tile--feature,
+  .section-lab .lab-contact__card--feature{grid-column:span 1;}
+  .section-lab .lab-versus__grid > div:nth-child(odd){border-right:0;}
+  .section-lab .lab-numbered__list li,
+  .section-lab .lab-risk__row{grid-template-columns:1fr;gap:12px;}
+}
+@media (prefers-reduced-motion:reduce){
+  .section-lab .lab-step__desc{max-height:none;opacity:1;}
+  .section-lab .lab-ring{background:conic-gradient(var(--violet) 296deg, var(--hairline) 0);}
+}
 
 /* ============================================================
    /product/entry-hub — Apple-grade scroll page (Story 11)

@@ -60,30 +60,46 @@ function runScript() {
   (function () {
     const header = document.getElementById("site-header");
     if (!header) return;
-    // Dark zones, top → bottom: hero, the black Problem scrub, the orange-glow
-    // hand-off (dark only in its top portion — it fades to white), the bento
-    // `.band.ink`, and the dark CTA band. `frac` = fraction of the element's
-    // height (from its top) that still reads as dark, so the flip lands at the
-    // visual midpoint of the fade rather than at a solid edge.
-    const zones: { el: HTMLElement; frac: number }[] = [];
-    document
-      .querySelectorAll<HTMLElement>("#hero, .scroll-scrub, .band.ink, .cta-band--dark")
-      .forEach((el) => zones.push({ el, frac: 1 }));
-    const og = document.querySelector<HTMLElement>(".section-orange-glow");
-    if (og) zones.push({ el: og, frac: 0.5 });
-    if (!zones.length) return;
+    let lastY = window.scrollY;
     const sync = () => {
       const r = header.getBoundingClientRect();
-      const probe = (r.top + r.bottom) / 2; // header vertical centre
-      let overDark = false;
-      for (const { el, frac } of zones) {
-        const zr = el.getBoundingClientRect();
-        if (zr.top <= probe && zr.top + zr.height * frac > probe) {
-          overDark = true;
-          break;
-        }
-      }
+      const x = Math.round(window.innerWidth / 2);
+      const y = Math.max(1, Math.round(r.bottom - 2));
+      const surface = document
+        .elementsFromPoint(x, y)
+        .find((el): el is HTMLElement => {
+          if (!(el instanceof HTMLElement)) return false;
+          return (
+            el.id === "hero" ||
+            el.classList.contains("scroll-scrub") ||
+            el.classList.contains("section-orange-glow") ||
+            el.classList.contains("band") ||
+            el.classList.contains("cta-band--dark")
+          );
+        });
+      const overDark = Boolean(
+        surface &&
+          (surface.id === "hero" ||
+            surface.classList.contains("scroll-scrub") ||
+            surface.classList.contains("cta-band--dark") ||
+            surface.classList.contains("ink") ||
+            (surface.classList.contains("section-orange-glow") &&
+              surface.getBoundingClientRect().top <= y &&
+              surface.getBoundingClientRect().top +
+                surface.getBoundingClientRect().height * 0.5 >
+                y)),
+      );
       header.classList.toggle("is-light", !overDark);
+
+      const yNow = window.scrollY;
+      const delta = yNow - lastY;
+      if (yNow <= 4) {
+        header.classList.remove("is-hidden");
+      } else if (document.body.classList.contains("hero-ready")) {
+        if (delta > 8) header.classList.add("is-hidden");
+        else if (delta < -6) header.classList.remove("is-hidden");
+      }
+      if (Math.abs(delta) > 1) lastY = yNow;
     };
     sync();
     window.addEventListener("scroll", sync, { passive: true });
