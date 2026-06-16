@@ -25,6 +25,19 @@ import { useEffect } from "react";
  */
 export function ScrollFX() {
   useEffect(() => {
+    /* Release the homepage hero scroll-lock on internal pages. The global
+     * `body:not(.hero-ready){overflow:hidden}` rule is lifted on the homepage
+     * by ScrollOrchestrator; internal pages have no orchestrator, so without
+     * this the body stays an overflow:hidden clip container and every
+     * `position:sticky` pin stage (data-pin) silently fails to stick. ScrollFX
+     * is mounted once on every internal page, so this is the canonical place
+     * to lift it (mirrors web/src/app/bento/ScrollUnlock.tsx). */
+    const bodyWasLocked = !document.body.classList.contains("hero-ready");
+    if (bodyWasLocked) document.body.classList.add("hero-ready");
+    const unlock = () => {
+      if (bodyWasLocked) document.body.classList.remove("hero-ready");
+    };
+
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 
@@ -62,11 +75,17 @@ export function ScrollFX() {
           it.classList.add("is-active", "is-current");
         });
       });
-      return () => io?.disconnect();
+      return () => {
+        io?.disconnect();
+        unlock();
+      };
     }
 
     if (!scrubs.length && !pins.length) {
-      return () => io?.disconnect();
+      return () => {
+        io?.disconnect();
+        unlock();
+      };
     }
 
     const paintScrub = (el: HTMLElement) => {
@@ -114,6 +133,7 @@ export function ScrollFX() {
 
     return () => {
       io?.disconnect();
+      unlock();
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
