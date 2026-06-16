@@ -1,0 +1,22 @@
+<!-- @dsCard group="Foundations" viewport="700x160" name="Radii" subtitle="8 / 12 / 18 / 24 / pill — cards use 22px" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-text);}
+  .sw{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;}
+  .chip{display:flex;flex-direction:column;gap:6px;align-items:center;}
+  .box{width:72px;height:56px;background:var(--bg-soft);border:1px solid var(--border);}
+  .n{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+  .pill{width:96px;height:40px;border-radius:var(--r-pill);}
+</style></head>
+<body>
+  <div class="sw">
+    <div class="chip"><div class="box" style="border-radius:var(--r-xs)"></div><span class="n">--r-xs 8</span></div>
+    <div class="chip"><div class="box" style="border-radius:var(--r-sm)"></div><span class="n">--r-sm 12</span></div>
+    <div class="chip"><div class="box" style="border-radius:var(--r-md)"></div><span class="n">--r-md 18</span></div>
+    <div class="chip"><div class="box" style="border-radius:var(--radius-card)"></div><span class="n">--radius-card 22</span></div>
+    <div class="chip"><div class="box" style="border-radius:var(--r-lg)"></div><span class="n">--r-lg 24</span></div>
+    <div class="chip"><div class="box pill"></div><span class="n">--r-pill</span></div>
+  </div>
+</body></html>

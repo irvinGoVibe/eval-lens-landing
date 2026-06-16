@@ -1,0 +1,111 @@
+/* EvalLense — component CSS (buttons).
+   Mirrored VERBATIM from web/src/app/globals.css so the glass and gradient
+   CTAs match the live homepage exactly. The liquid-glass treatment is the
+   shared hero/header/footer/cta-band material; the gradient is the in-app /
+   footer purple→blue CTA. Collapsed the site's multi-selector groups onto the
+   single .ds-btn-glass / .ds-btn-gradient classes the bundle exposes. */
+
+.ds-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-text);font-weight:400;font-size:15px;line-height:1;
+  border:0;cursor:pointer;border-radius:var(--r-pill);padding:11px 20px;
+  text-decoration:none;
+  transition:transform .2s var(--ease), box-shadow .25s, background .25s;
+}
+.ds-btn .btn-txt,.ds-btn .arr{position:relative;z-index:1;}
+.ds-btn .arr{transition:transform .25s var(--ease);}
+.ds-btn-sm{padding:8px 15px;font-size:13.5px;}
+
+/* primary — solid violet */
+.ds-btn-primary{background:var(--violet);color:#fff;box-shadow:0 8px 22px -10px var(--violet);}
+.ds-btn-primary:hover{background:var(--violet-2);box-shadow:0 12px 30px -10px var(--violet);}
+
+/* dark — solid ink */
+.ds-btn-dark{background:var(--fg);color:#fff;}
+.ds-btn-dark:hover{background:#000;}
+
+/* ghost — violet hairline outline */
+.ds-btn-ghost{background:transparent;color:var(--violet);border:1px solid color-mix(in oklab,var(--violet) 35%, var(--border));}
+.ds-btn-ghost:hover{background:color-mix(in oklab,var(--violet) 8%, transparent);}
+
+/* gradient — purple→blue, dark-surface CTA with top sheen + hover bloom */
+.ds-btn-gradient{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:var(--grad-cta);color:#fff;font-weight:500;
+  box-shadow:0 6px 22px -6px rgba(99,76,241,.5), 0 0 18px -2px rgba(168,85,247,.35);
+  transition:box-shadow .4s var(--ease);
+}
+.ds-btn-gradient::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
+  background:linear-gradient(180deg, rgba(255,255,255,.30) 0%, rgba(255,255,255,.06) 42%, transparent 72%);
+}
+.ds-btn-gradient::after{
+  content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(ellipse 95% 75% at 42% -18%, rgba(255,255,255,.34), transparent 52%),
+    radial-gradient(ellipse 60% 50% at 90% 110%, rgba(255,255,255,.14), transparent 54%);
+  opacity:.7;
+  transition:opacity .45s var(--ease), transform .65s var(--ease);
+}
+.ds-btn-gradient:hover{box-shadow:0 12px 34px -8px rgba(99,76,241,.7), 0 0 40px -2px rgba(168,85,247,.7);}
+.ds-btn-gradient:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
+
+/* glass — the shared "liquid glass" hero/header/footer/cta material.
+   Large pill (the real hero CTA size). Built for dark/cinematic surfaces. */
+.ds-btn-glass{
+  position:relative;isolation:isolate;overflow:hidden;z-index:0;
+  font-weight:500;letter-spacing:-.02em;
+  font-size:17px;line-height:1.1;
+  padding:17px 34px;min-height:56px;
+  backdrop-filter:blur(44px) saturate(1.9) brightness(1.06);
+  -webkit-backdrop-filter:blur(44px) saturate(1.9) brightness(1.06);
+  border:1px solid rgba(255,255,255,.38);
+  background:
+    linear-gradient(145deg,
+      rgba(255,255,255,.22) 0%,
+      rgba(220,232,248,.1) 38%,
+      rgba(255,255,255,.04) 100%),
+    rgba(255,255,255,.06);
+  color:#f8fafc;
+  text-shadow:0 1px 2px rgba(0,0,0,.22);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.72),
+    inset 0 -1px 0 rgba(255,255,255,.14),
+    inset 1px 0 0 rgba(255,255,255,.18),
+    inset -1px 0 0 rgba(200,220,240,.12),
+    0 14px 48px -10px rgba(0,0,0,.42),
+    0 4px 20px -6px rgba(180,200,220,.18);
+  transition:transform .28s var(--ease), box-shadow .4s var(--ease), border-color .4s, background .4s, backdrop-filter .4s;
+}
+.ds-btn-glass::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
+  background:
+    linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.14) 22%, transparent 48%),
+    linear-gradient(25deg, transparent 55%, rgba(210,228,248,.12) 100%);
+}
+.ds-btn-glass::after{
+  content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(ellipse 95% 75% at 42% -18%, rgba(255,255,255,.55), transparent 52%),
+    radial-gradient(ellipse 70% 60% at 92% 108%, rgba(190,210,235,.22), transparent 54%),
+    radial-gradient(ellipse 55% 45% at 8% 92%, rgba(220,232,248,.16), transparent 50%);
+  opacity:.85;
+  transition:opacity .45s var(--ease), transform .65s var(--ease);
+}
+.ds-btn-glass:hover{
+  border-color:rgba(255,255,255,.52);
+  backdrop-filter:blur(48px) saturate(2) brightness(1.1);
+  -webkit-backdrop-filter:blur(48px) saturate(2) brightness(1.1);
+  background:
+    linear-gradient(145deg,
+      rgba(255,255,255,.3) 0%,
+      rgba(230,240,252,.14) 40%,
+      rgba(255,255,255,.08) 100%),
+    rgba(255,255,255,.1);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.82),
+    inset 0 -1px 0 rgba(255,255,255,.2),
+    0 20px 56px -12px rgba(0,0,0,.48),
+    0 0 40px -8px rgba(200,220,240,.28);
+}
+.ds-btn-glass:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}

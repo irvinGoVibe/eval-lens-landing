@@ -1,0 +1,30 @@
+<!-- @dsCard group="Colors" viewport="700x210" name="Neutral foundation" subtitle="Apple-neutral light + ink surfaces and text" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-text);}
+  .sw{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
+  .chip{display:flex;flex-direction:column;gap:6px;}
+  .dot{width:70px;height:44px;border-radius:var(--r-xs);border:1px solid var(--border-2);}
+  .n{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+  .grp{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;}
+</style></head>
+<body>
+  <p class="grp">Light</p>
+  <div class="sw">
+    <div class="chip"><div class="dot" style="background:var(--bg)"></div><span class="n">--bg</span></div>
+    <div class="chip"><div class="dot" style="background:var(--bg-soft)"></div><span class="n">--bg-soft</span></div>
+    <div class="chip"><div class="dot" style="background:var(--fg)"></div><span class="n">--fg</span></div>
+    <div class="chip"><div class="dot" style="background:var(--muted)"></div><span class="n">--muted</span></div>
+    <div class="chip"><div class="dot" style="background:var(--border)"></div><span class="n">--border</span></div>
+  </div>
+  <p class="grp">Ink</p>
+  <div class="sw">
+    <div class="chip"><div class="dot" style="background:var(--ink)"></div><span class="n">--ink</span></div>
+    <div class="chip"><div class="dot" style="background:var(--panel)"></div><span class="n">--panel</span></div>
+    <div class="chip"><div class="dot" style="background:var(--panel-2)"></div><span class="n">--panel-2</span></div>
+    <div class="chip"><div class="dot" style="background:var(--fg-on-dark)"></div><span class="n">--fg-on-dark</span></div>
+    <div class="chip"><div class="dot" style="background:var(--body-on-dark)"></div><span class="n">--body-on-dark</span></div>
+  </div>
+</body></html>

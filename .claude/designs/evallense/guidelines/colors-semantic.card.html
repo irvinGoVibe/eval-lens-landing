@@ -1,0 +1,21 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Semantic" subtitle="One job each — ready / attention. Never decorative." -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-text);}
+  .sw{display:flex;gap:14px;flex-wrap:wrap;}
+  .chip{display:flex;flex-direction:column;gap:6px;}
+  .dot{width:78px;height:44px;border-radius:var(--r-xs);}
+  .n{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+  .role{font-size:11px;color:var(--muted);}
+</style></head>
+<body>
+  <div class="sw">
+    <div class="chip"><div class="dot" style="background:var(--green)"></div><span class="n">--green</span><span class="role">ready / approved</span></div>
+    <div class="chip"><div class="dot" style="background:var(--amber)"></div><span class="n">--amber</span><span class="role">attention</span></div>
+    <div class="chip"><div class="dot" style="background:var(--amber-ink)"></div><span class="n">--amber-ink</span><span class="role">amber text pair</span></div>
+    <div class="chip"><div class="dot" style="background:var(--green-on-dark)"></div><span class="n">--green-on-dark</span></div>
+    <div class="chip"><div class="dot" style="background:var(--amber-on-dark)"></div><span class="n">--amber-on-dark</span></div>
+  </div>
+</body></html>

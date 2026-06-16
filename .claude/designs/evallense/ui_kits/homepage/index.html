@@ -1,0 +1,170 @@
+<!-- @dsCard group="Homepage" viewport="1280x760" name="Homepage" subtitle="Hero → problem → workflow → bento → CTA (cosmetic recreation)" -->
+<!-- @startingPoint section="Homepage" subtitle="EvalLense marketing homepage" viewport="1280x760" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--ink); font-family: var(--font-text); color: var(--fg-on-dark); }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+
+  /* header */
+  .hdr { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between;
+         padding: 16px var(--gutter); background: rgba(10,10,13,.5); backdrop-filter: blur(18px) saturate(160%);
+         -webkit-backdrop-filter: blur(18px) saturate(160%); border-bottom: 1px solid var(--border-on-dark-2); }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; }
+  .mark { width: 22px; height: 22px; border-radius: 50%; background: var(--lens); box-shadow: inset 0 0 0 1px rgba(255,255,255,.6), 0 4px 14px -4px var(--violet); }
+  .nav { display: flex; gap: 30px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-on-dark); }
+
+  /* hero */
+  .hero { position: relative; min-height: 660px; display: flex; align-items: center; overflow: hidden; }
+  /* Dark cinematic violet stand-in for the real video bg — no green/teal. */
+  .hero-bg { position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(120% 90% at 78% 18%, rgba(108,76,241,.42), transparent 55%),
+      radial-gradient(90% 80% at 10% 92%, rgba(123,92,246,.22), transparent 58%),
+      linear-gradient(160deg, #07070b 0%, #0c0a16 60%, #060509 100%); }
+  .hero-bg::after { content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px); background-size: 4px 4px; opacity: .5; }
+  .hero .wrap { position: relative; z-index: 1; }
+  .h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(54px, 8vw, 104px); line-height: .98;
+        letter-spacing: -.035em; text-wrap: balance; margin: 18px 0 0; }
+  .accent { background: var(--lens); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { font-family: var(--font-ui); font-size: clamp(18px, 1.6vw, 22px); line-height: 1.45; color: var(--body-on-dark);
+         max-width: 30ch; margin: 22px 0 30px; }
+  .cta-row { display: flex; gap: 14px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+  const { Button, Eyebrow, Chip, Tile } = window.Evallense_c7d744;
+
+  function Header() {
+    return (
+      <header className="hdr">
+        <div className="brand"><span className="mark"></span>EvalLense</div>
+        <nav className="nav"><span>Product</span><span>Trust</span><span>Pricing</span><span>Contact</span></nav>
+        <Button variant="glass" arrow style={{ padding: "9px 18px", minHeight: "auto", fontSize: 14 }}>Launch app</Button>
+      </header>
+    );
+  }
+
+  function Hero() {
+    return (
+      <section className="hero">
+        <div className="hero-bg"></div>
+        <div className="wrap">
+          <Eyebrow onDark>Batch pitch-deck evaluation</Eyebrow>
+          <h1 className="h1">Lens Your<br /><span className="accent">Next Unicorn</span></h1>
+          <p className="sub">Batch-review pitch decks, rank the strongest startups, and give every team a clear report.</p>
+          <div className="cta-row">
+            <Button variant="glass" arrow>Book a demo</Button>
+            <Button variant="glass">Try live demo</Button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // dark statement bridge (Problem)
+  function Statement() {
+    return (
+      <section style={{ background: "var(--ink)", padding: "180px var(--gutter)", textAlign: "center" }}>
+        <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(40px,5.5vw,60px)",
+          letterSpacing: "-.03em", lineHeight: 1.05, margin: 0, color: "var(--fg-on-dark)" }}>
+          Find the leaders<br /><span className="accent">hidden in your flow</span>.
+        </h2>
+      </section>
+    );
+  }
+
+  // light pinned-style workflow slice
+  function Workflow() {
+    const steps = ["Create entry point", "Share submission link", "Teams upload decks", "Applications collected", "Batch ready", "Run evaluation"];
+    return (
+      <section style={{ background: "var(--bg)", color: "var(--fg)", padding: "120px var(--gutter)" }}>
+        <div className="wrap" style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 48, alignItems: "start" }}>
+          <div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 18 }}>The workflow</div>
+            {steps.map((s, i) => (
+              <div key={i} style={{ display: "flex", gap: 12, alignItems: "center", padding: "14px 16px", borderRadius: "var(--r-md)",
+                background: i === 0 ? "var(--bg-soft)" : "transparent", marginBottom: 6,
+                boxShadow: i === 0 ? "inset 0 -2px 0 0 var(--violet)" : "none" }}>
+                <span style={{ width: 22, height: 22, borderRadius: "50%", display: "grid", placeItems: "center", fontSize: 10,
+                  fontFamily: "var(--font-mono)", color: i === 0 ? "#fff" : "var(--muted)", background: i === 0 ? "var(--violet)" : "var(--bg-soft)" }}>{String(i + 1).padStart(2, "0")}</span>
+                <span style={{ fontSize: 15, color: i === 0 ? "var(--fg)" : "var(--muted)" }}>{s}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{ borderRadius: "var(--radius-stage)", background: "var(--bg-soft)", border: "1px solid var(--border-2)", boxShadow: "var(--sh-3)", overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 16px", borderBottom: "1px solid var(--border-2)" }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#e6e6ea" }}></span>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#e6e6ea" }}></span>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--lens)" }}></span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--muted)", marginLeft: 8 }}>New entry point</span>
+            </div>
+            <div style={{ padding: 28 }}>
+              <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 22, margin: "0 0 18px" }}>New entry point</h3>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 8 }}>Required materials</div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
+                <Chip checked>Pitch deck (PDF)</Chip><Chip checked>Repository</Chip><Chip>Demo video</Chip>
+              </div>
+              <Button variant="gradient" arrow>Create entry point</Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  function Bento() {
+    return (
+      <section style={{ background: "var(--ink)", padding: "120px var(--gutter)" }}>
+        <div className="wrap" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 16 }}>
+          <Tile surface="ink" title="Private" titleAccent="deck vault"
+            body="Pitch decks are stored and processed inside controlled project workspaces." style={{ minHeight: 200 }} />
+          <Tile surface="ink" eyebrow="1,000+ evaluation runs" title="Built for your batch">
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, margin: "16px 0 18px" }}>
+              <Chip onDark>VC Funds</Chip><Chip onDark>Accelerators</Chip><Chip onDark>Hackathons</Chip>
+              <Chip onDark>Grant Programs</Chip><Chip onDark>Universities</Chip><Chip onDark>Research</Chip>
+            </div>
+            <a href="#" style={{ fontSize: 14, color: "var(--lavender)" }}>Explore use cases →</a>
+          </Tile>
+        </div>
+      </section>
+    );
+  }
+
+  function CTA() {
+    return (
+      <section style={{ position: "relative", padding: "150px var(--gutter)", textAlign: "center", overflow: "hidden",
+        background: "radial-gradient(80% 120% at 50% 0%, rgba(108,76,241,.30), transparent 60%), var(--ink)" }}>
+        <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(40px,6vw,72px)", letterSpacing: "-.03em",
+          lineHeight: 1.02, margin: 0, color: "var(--fg-on-dark)" }}>
+          See your next cohort<br /><span className="accent">ranked in a day</span>
+        </h2>
+        <p style={{ maxWidth: "44ch", margin: "22px auto 30px", color: "var(--body-on-dark)", fontSize: 18 }}>
+          Batch-review every pitch deck, surface the strongest startups, and hand each team an evidence-based report — with the final call always yours.
+        </p>
+        <div style={{ display: "flex", gap: 14, justifyContent: "center" }}>
+          <Button variant="glass" arrow>Book a demo</Button>
+          <Button variant="glass">Try live demo</Button>
+        </div>
+      </section>
+    );
+  }
+
+  function Page() {
+    return (<div><Header /><Hero /><Statement /><Workflow /><Bento /><CTA /></div>);
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<Page />);
+</script>
+</body>
+</html>

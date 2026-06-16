@@ -28,6 +28,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4311", "--directory", "designs"],
       "port": 4311
+    },
+    {
+      "name": "designs-claude",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4312", "--directory", ".claude/designs"],
+      "port": 4312
     }
   ]
 }

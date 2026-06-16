@@ -1,0 +1,109 @@
+<!-- @dsCard group="Newsroom" viewport="1280x820" name="Newsroom" subtitle="Blog hub: masthead + feature + list rail (cosmetic recreation)" -->
+<!-- @startingPoint section="Newsroom" subtitle="EvalLense Newsroom hub" viewport="1280x820" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--bg); font-family: var(--font-text); color: var(--fg); }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+
+  .hdr { display: flex; align-items: center; justify-content: space-between; padding: 16px var(--gutter);
+         border-bottom: 1px solid var(--border-2); position: sticky; top: 0; background: rgba(255,255,255,.8);
+         backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); z-index: 20; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; }
+  .brand .mark { width: 22px; height: 22px; border-radius: 50%; background: var(--lens); }
+  .brand .div { color: var(--border); }
+  .brand .nr { font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .nav { display: flex; gap: 28px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+  .masthead { padding: 54px 0 34px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--lavender); }
+  .title { font-family: var(--font-display); font-weight: 600; font-size: clamp(48px, 7vw, 84px); letter-spacing: -.03em; margin: 12px 0 0; }
+  .accent { background: var(--lens); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  .grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; align-items: start; padding-bottom: 32px; }
+  .feature .img { aspect-ratio: 16/9; border-radius: var(--radius-card); overflow: hidden; position: relative;
+    background: radial-gradient(90% 90% at 70% 25%, rgba(108,76,241,.5), transparent 55%),
+      radial-gradient(70% 80% at 20% 90%, rgba(46,197,232,.32), transparent 60%), var(--ink); }
+  .feature .panels { position: absolute; inset: 0; display: flex; gap: 14px; align-items: center; justify-content: center; }
+  .panel { width: 86px; height: 112px; border-radius: 14px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.14);
+    backdrop-filter: blur(6px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--fg-on-dark); }
+  .panel .lab { font-family: var(--font-mono); font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-on-dark); }
+  .panel .num { font-family: var(--font-display); font-weight: 600; font-size: 26px; background: var(--lens); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cat { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+  .cat.product { color: var(--green); }
+  .cat.research { color: var(--violet); }
+  .feature h2 { font-family: var(--font-display); font-weight: 600; font-size: 34px; line-height: 1.08; letter-spacing: -.02em; margin: 16px 0 10px; }
+  .feature p { color: var(--muted); font-size: 16px; line-height: 1.55; max-width: 52ch; margin: 0 0 12px; }
+  .meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+
+  .rail { display: flex; flex-direction: column; }
+  .item { padding: 18px 0; border-top: 1px solid var(--border-2); }
+  .item:first-child { border-top: 0; }
+  .item h3 { font-family: var(--font-display); font-weight: 600; font-size: 18px; line-height: 1.25; letter-spacing: -.01em; margin: 8px 0 8px; }
+  .seeall { text-align: right; padding: 8px 0 60px; }
+  .seeall a { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; color: var(--violet); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+  const { Button } = window.Evallense_c7d744;
+  const railItems = [
+    { cat: "Product", cls: "product", title: "Every score, explained: inside EvalLense reports", meta: "June 4, 2026 · 6 min read" },
+    { cat: "Research", cls: "research", title: "How EvalLense blocks prompt injection inside decks", meta: "May 28, 2026 · 7 min read" },
+    { cat: "Product", cls: "product", title: "Deck Vault: a secure home for every submission", meta: "May 19, 2026 · 4 min read" },
+  ];
+  function Newsroom() {
+    return (
+      <div>
+        <header className="hdr">
+          <div className="brand"><span className="mark"></span>EvalLense <span className="div">|</span> <span className="nr">Newsroom</span></div>
+          <nav className="nav"><span>Latest News</span><span>In the Loop</span><span>More</span></nav>
+          <Button variant="gradient" arrow>Book a demo</Button>
+        </header>
+        <div className="wrap">
+          <div className="masthead">
+            <div className="eyebrow">EvalLense Newsroom</div>
+            <h1 className="title">Latest <span className="accent">News</span></h1>
+          </div>
+          <div className="grid">
+            <article className="feature">
+              <div className="img">
+                <div className="panels">
+                  <div className="panel"><span className="lab">Scores</span><span className="num">8.7</span></div>
+                  <div className="panel"><span className="lab">Risks</span><span className="num">6.9</span></div>
+                  <div className="panel"><span className="lab">Evidence</span><span className="num">9.1</span></div>
+                </div>
+              </div>
+              <div className="cat product" style={{ marginTop: 18 }}>Press release</div>
+              <h2>EvalLense launches the AI Jury for high-volume pitch review</h2>
+              <p>A panel of six independent AI reviewers scores every deck on the same rubric, so investment teams can rank hundreds of startups in an afternoon — without losing the human verdict.</p>
+              <div className="meta">June 10, 2026 · 5 min read</div>
+            </article>
+            <div className="rail">
+              {railItems.map((it, i) => (
+                <div className="item" key={i}>
+                  <span className={"cat " + it.cls}>{it.cat}</span>
+                  <h3>{it.title}</h3>
+                  <div className="meta">{it.meta}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="seeall"><a href="#">See all →</a></div>
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<Newsroom />);
+</script>
+</body>
+</html>
