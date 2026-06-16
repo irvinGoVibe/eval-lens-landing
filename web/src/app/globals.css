@@ -863,19 +863,26 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
     0 10px 28px -10px rgba(108,76,241,.55);
 }
 .site-header__cta.btn:hover .arr{transform:translateX(3px);opacity:1;}
-/* light section variant */
+/* light section variant — our bright purple gradient (the footer/internal CTA),
+   reads as the primary action against the light bands */
 .site-header.is-light .site-header__cta.btn{
-  color:var(--violet);
-  background:rgba(108,76,241,.05);
-  border-color:color-mix(in oklab, var(--violet) 26%, transparent);
+  color:#fff;
+  background:var(--grad-cta);
+  border-color:transparent;
   backdrop-filter:none;-webkit-backdrop-filter:none;
-  box-shadow:0 4px 14px -10px rgba(108,76,241,.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.25),
+    0 6px 22px -6px rgba(99,76,241,.5),
+    0 0 18px -2px rgba(168,85,247,.30);
 }
 .site-header.is-light .site-header__cta.btn:hover{
   color:#fff;
-  background:var(--violet);
-  border-color:var(--violet);
-  box-shadow:0 10px 28px -10px rgba(108,76,241,.55);
+  background:var(--grad-cta);
+  border-color:transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.30),
+    0 11px 30px -8px rgba(99,76,241,.65),
+    0 0 34px -2px rgba(168,85,247,.5);
 }
 
 .hero-fade{
@@ -2763,12 +2770,6 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   backdrop-filter:saturate(180%) blur(20px);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:1px solid var(--border-2);
-  /* Force a GPU compositing layer. Chrome (Blink) frequently fails to apply
-     `backdrop-filter` on a `position:sticky` bar until it's promoted to its own
-     layer; this hint fixes the missing-blur-in-Chrome case (Safari composites
-     it regardless). translateZ(0) doesn't affect sticky behaviour. */
-  transform:translateZ(0);
-  will-change:transform;
   /* cross-fade between light/dark variants as HeaderThemeSync toggles --dark */
   transition:background-color .45s var(--ease), border-color .45s var(--ease);
 }

@@ -52,14 +52,38 @@ function runScript() {
   document.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* site header — light text on hero, dark text on light bands */
+  /* site header — flip text colour to contrast whatever section sits under the
+     bar. Light text (lavender/white) over the dark zones — the hero, the bento
+     `.band.ink`, the dark CTA band — and dark text (violet/ink) over the light
+     sections between them. Without this the nav goes dark-on-dark and vanishes
+     over the bento + CTA below the hero. */
   (function () {
     const header = document.getElementById("site-header");
-    const hero = document.getElementById("hero");
-    if (!header || !hero) return;
+    if (!header) return;
+    // Dark zones, top → bottom: hero, the black Problem scrub, the orange-glow
+    // hand-off (dark only in its top portion — it fades to white), the bento
+    // `.band.ink`, and the dark CTA band. `frac` = fraction of the element's
+    // height (from its top) that still reads as dark, so the flip lands at the
+    // visual midpoint of the fade rather than at a solid edge.
+    const zones: { el: HTMLElement; frac: number }[] = [];
+    document
+      .querySelectorAll<HTMLElement>("#hero, .scroll-scrub, .band.ink, .cta-band--dark")
+      .forEach((el) => zones.push({ el, frac: 1 }));
+    const og = document.querySelector<HTMLElement>(".section-orange-glow");
+    if (og) zones.push({ el: og, frac: 0.5 });
+    if (!zones.length) return;
     const sync = () => {
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      header.classList.toggle("is-light", heroBottom < 72);
+      const r = header.getBoundingClientRect();
+      const probe = (r.top + r.bottom) / 2; // header vertical centre
+      let overDark = false;
+      for (const { el, frac } of zones) {
+        const zr = el.getBoundingClientRect();
+        if (zr.top <= probe && zr.top + zr.height * frac > probe) {
+          overDark = true;
+          break;
+        }
+      }
+      header.classList.toggle("is-light", !overDark);
     };
     sync();
     window.addEventListener("scroll", sync, { passive: true });

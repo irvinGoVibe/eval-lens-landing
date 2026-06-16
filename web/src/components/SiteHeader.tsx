@@ -2,10 +2,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 /**
- * Homepage header — transparent over the hero with light text. On scroll past
- * the hero, `ScrollOrchestrator` toggles `is-light` so the text flips to dark
- * for the light sections below (the bar itself stays transparent). Internal
- * pages use `PageHeader` instead.
+ * Homepage header — fixed and transparent, sitting over the page. The bar never
+ * gets a background; instead `ScrollOrchestrator` flips `is-light` as you scroll
+ * so the text always contrasts the section beneath it: light (lavender / white)
+ * over the dark sections (hero, bento `#system`, dark CTA band), dark (violet /
+ * ink) over the light sections in between. Internal pages use `PageHeader`.
  */
 export function SiteHeader() {
   return (
@@ -16,13 +17,21 @@ export function SiteHeader() {
           EvalLense
         </a>
         <nav className="site-header__nav" aria-label="Primary">
-          <a className="site-header__link" href="#workflow">Product</a>
-          <a className="site-header__link" href="#problem">Block</a>
-          <a className="site-header__link" href="#results">Pricing</a>
-          <Link className="site-header__link" href="/blog">Newsroom</Link>
+          <Link className="site-header__link" href="/product/overview">
+            Product
+          </Link>
+          <Link className="site-header__link" href="/trust/methodology">
+            Trust
+          </Link>
+          <a className="site-header__link" href="#pricing">
+            Pricing
+          </a>
+          <Link className="site-header__link" href="/company/contact">
+            Contact
+          </Link>
         </nav>
-        <Button href="#demo" className="site-header__cta" arrow>
-          Book a demo
+        <Button href="/#demo" className="site-header__cta" arrow>
+          Launch App
         </Button>
       </div>
     </header>
