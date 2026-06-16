@@ -20,6 +20,7 @@ export function HeaderThemeSync() {
     const header = document.querySelector<HTMLElement>(".page-header");
     if (!header) return;
     let raf = 0;
+    let lastY = window.scrollY;
     const sync = () => {
       raf = 0;
       const r = header.getBoundingClientRect();
@@ -33,6 +34,17 @@ export function HeaderThemeSync() {
         );
       const dark = Boolean(band?.classList.contains("ink"));
       header.classList.toggle("page-header--dark", dark);
+
+      const yNow = window.scrollY;
+      const delta = yNow - lastY;
+      if (yNow <= 4) {
+        header.classList.remove("is-hidden");
+      } else if (delta > 8) {
+        header.classList.add("is-hidden");
+      } else if (delta < -6) {
+        header.classList.remove("is-hidden");
+      }
+      if (Math.abs(delta) > 1) lastY = yNow;
     };
     const schedule = () => {
       if (!raf) raf = requestAnimationFrame(sync);

@@ -60,6 +60,7 @@ function runScript() {
   (function () {
     const header = document.getElementById("site-header");
     if (!header) return;
+    let lastY = window.scrollY;
     const sync = () => {
       const r = header.getBoundingClientRect();
       const x = Math.round(window.innerWidth / 2);
@@ -89,6 +90,16 @@ function runScript() {
                 y)),
       );
       header.classList.toggle("is-light", !overDark);
+
+      const yNow = window.scrollY;
+      const delta = yNow - lastY;
+      if (yNow <= 4) {
+        header.classList.remove("is-hidden");
+      } else if (document.body.classList.contains("hero-ready")) {
+        if (delta > 8) header.classList.add("is-hidden");
+        else if (delta < -6) header.classList.remove("is-hidden");
+      }
+      if (Math.abs(delta) > 1) lastY = yNow;
     };
     sync();
     window.addEventListener("scroll", sync, { passive: true });
