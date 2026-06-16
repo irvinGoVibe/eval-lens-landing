@@ -334,13 +334,138 @@
   font-size: 12px;
 }
 
-/* Markdown editor: textarea + live preview side by side. The preview keeps a
-   white canvas so .article-* renders exactly like the public article page —
-   it must NOT inherit admin surface/text colors. */
+/* ── Markdown editor (Story 05.1) ──────────────────────────────────────────
+   Enhanced surface over the plain Markdown textarea: a formatting toolbar +
+   view tabs, a slash-menu, cursor-position media insertion, a restore banner,
+   and a footer meta row. Built only on design-system tokens (violet primary,
+   hairline borders, --r-*, --sh-*, --ease) — no new color/shadow dialect. */
+.admin-mdeditor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toolbar + tabs share one row; wraps on narrow screens. */
+.admin-mdbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+/* Right cluster: view tabs + the expand-to-full-screen toggle. */
+.admin-mdbar__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Expand toggle reuses the ghost icon-button look but stands alone (outside the
+   toolbar container), so it carries its own hairline border. */
+.admin-mdbar__expand {
+  border: 1px solid var(--border-2);
+  color: var(--muted);
+}
+.admin-mdbar__expand:hover {
+  background: var(--bg-soft);
+  color: var(--violet);
+}
+
+/* Formatting toolbar — ghost icon buttons with hairline separators. */
+.admin-mdtoolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-sm);
+  background: var(--bg);
+}
+.admin-mdtoolbar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: var(--r-xs);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.admin-mdtoolbar__btn:hover {
+  background: var(--bg-soft);
+  color: var(--violet);
+}
+.admin-mdtoolbar__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--violet) 35%, transparent);
+}
+.admin-mdtoolbar__txt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.admin-mdtoolbar__sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 4px 4px;
+  background: var(--hairline);
+}
+
+/* View tabs — segmented control (Write / Preview / Split). */
+.admin-mdtabs {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-sm);
+  background: var(--bg-soft);
+}
+.admin-mdtabs__tab {
+  padding: 5px 12px;
+  border: none;
+  border-radius: var(--r-xs);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+}
+.admin-mdtabs__tab:hover {
+  color: var(--fg);
+}
+.admin-mdtabs__tab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--violet) 35%, transparent);
+}
+.admin-mdtabs__tab.is-active {
+  background: var(--bg);
+  color: var(--violet);
+  box-shadow: var(--sh-1);
+}
+
+/* Markdown editor: textarea + live preview. The preview keeps a white canvas so
+   .article-* renders exactly like the public article page — it must NOT inherit
+   admin surface/text colors. Split (≥1100px) shows both panes side by side;
+   single-pane modes give the active pane the full width. */
 .admin-md {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+.admin-md--split {
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  height: 520px;
+}
+.admin-md--write,
+.admin-md--preview {
+  grid-template-columns: 1fr;
 }
 .admin-md__preview {
   background: #fff;
@@ -350,6 +475,203 @@
   padding: 18px 20px;
   overflow: auto;
   max-height: 520px;
+}
+/* The preview reuses the public `.article-body` class, which carries a large top
+   margin (clamp 36–60px) for the real article page. Inside the editor that
+   margin pushed the preview box down, out of line with the textarea — zero it so
+   both panes share one top edge. (Public article rendering is untouched.) */
+.admin-md__preview.article-body {
+  margin-top: 0;
+}
+
+/* Split: both panes share one top edge and one height — the textarea and the
+   preview fill their column instead of sizing to their own content (which made
+   them mismatched). Resize is disabled here so one pane can't desync the pair. */
+.admin-md--split .admin-mdpane {
+  height: 100%;
+  min-height: 0;
+}
+.admin-md--split .admin-mdpane .admin-textarea {
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  resize: none;
+}
+.admin-md--split .admin-md__preview {
+  height: 100%;
+  max-height: none;
+}
+
+/* Full-screen overlay: the editor is promoted in place (still inside the form)
+   to a fixed pane covering the viewport, so all features stay usable with far
+   more room. The panes fill the remaining height via flex instead of the fixed
+   520px used inline. */
+.admin-mdeditor.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  padding: 18px clamp(16px, 4vw, 48px) 22px;
+  margin: 0;
+  overflow: hidden;
+}
+.admin-mdeditor.is-fullscreen .admin-md {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+.admin-mdeditor.is-fullscreen .admin-mdpane,
+.admin-mdeditor.is-fullscreen .admin-md__preview {
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+}
+.admin-mdeditor.is-fullscreen .admin-mdpane .admin-textarea {
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  resize: none;
+}
+
+/* Write pane wraps the textarea so the slash-menu / drop highlight anchor to it. */
+.admin-mdpane {
+  position: relative;
+}
+.admin-mdpane .admin-textarea {
+  max-height: 520px;
+}
+.admin-mdpane.is-over .admin-textarea {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--violet) 18%, transparent);
+}
+.admin-mdpane__busy {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--violet);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: var(--sh-1);
+}
+
+/* Slash menu — keyboard-navigable insert palette anchored to the caret pane. */
+.admin-slashmenu {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 20;
+  width: 220px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-sm);
+  background: var(--bg);
+  box-shadow: var(--sh-3);
+  max-height: 280px;
+  overflow-y: auto;
+}
+.admin-slashmenu li {
+  margin: 0;
+}
+.admin-slashmenu__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 9px;
+  border: none;
+  border-radius: var(--r-xs);
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.admin-slashmenu__item:hover,
+.admin-slashmenu__item.is-active {
+  background: color-mix(in oklab, var(--violet) 12%, transparent);
+  color: var(--violet);
+}
+.admin-slashmenu__label {
+  font-weight: 550;
+}
+.admin-slashmenu__hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted-2);
+}
+.admin-slashmenu__item.is-active .admin-slashmenu__hint {
+  color: color-mix(in oklab, var(--violet) 70%, var(--muted-2));
+}
+
+/* Restore banner — unobtrusive hairline strip, never a blocking modal. */
+.admin-mdrestore {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in oklab, var(--violet) 30%, var(--border-2));
+  border-radius: var(--r-sm);
+  background: color-mix(in oklab, var(--violet) 6%, var(--bg));
+  font-size: 13px;
+  color: var(--fg);
+}
+.admin-mdrestore__actions {
+  display: flex;
+  gap: 8px;
+}
+.admin-mdrestore__btn {
+  padding: 4px 12px;
+  border: 1px solid var(--violet);
+  border-radius: var(--r-xs);
+  background: var(--violet);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s var(--ease);
+}
+.admin-mdrestore__btn:hover {
+  background: var(--violet-2);
+}
+.admin-mdrestore__btn--ghost {
+  background: transparent;
+  border-color: var(--border-2);
+  color: var(--muted);
+}
+.admin-mdrestore__btn--ghost:hover {
+  background: var(--bg-soft);
+  color: var(--fg);
+}
+
+/* Footer meta — informative counts (read_minutes stays a manual field). */
+.admin-mdmeta {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted-2);
+}
+.admin-mdeditor__error {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-mdtoolbar__btn,
+  .admin-mdtabs__tab,
+  .admin-slashmenu__item,
+  .admin-mdrestore__btn {
+    transition: none;
+  }
 }
 
 /* Image dropzone (native HTML5 DnD + preview). */

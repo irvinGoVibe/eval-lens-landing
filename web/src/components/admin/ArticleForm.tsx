@@ -170,7 +170,12 @@ export function ArticleForm({
         <h2 className="admin-section__title">Content</h2>
       <div className="admin-field">
         <label htmlFor="f-body">Body (Markdown)</label>
-        <MarkdownEditor name="body" defaultValue={a?.body ?? ""} textareaId="f-body" />
+        <MarkdownEditor
+          name="body"
+          defaultValue={a?.body ?? ""}
+          textareaId="f-body"
+          draftKey={a?.slug ?? "new"}
+        />
       </div>
       </section>
 
