@@ -30,6 +30,9 @@ export function Footer() {
           <Link href="/trust/consistency-reliability">
             Consistency &amp; reliability
           </Link>
+          <Link href="/trust/prompt-injection-safety">
+            Prompt injection safety
+          </Link>
           <Link href="/#trust">Human review</Link>
           <Link href="/#trust">Security &amp; privacy</Link>
           <Link href="/#trust">Research</Link>
