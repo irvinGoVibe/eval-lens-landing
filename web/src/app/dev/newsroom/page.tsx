@@ -7,6 +7,7 @@
 import { ScrollOrchestrator } from "@/components/ScrollOrchestrator";
 import { HomeBlogBlock } from "@/components/sections/HomeBlogBlock";
 import { HomeBlogBlockClassic } from "@/components/sections/HomeBlogBlockClassic";
+import { HomeBlogBlockDark } from "@/components/sections/HomeBlogBlockDark";
 
 export const metadata = {
   title: "Newsroom block — A/B compare",
@@ -53,6 +54,11 @@ export default function NewsroomComparePage() {
 
       <Label n="Version 2" text="Стало — Apple-style carousel (live)" />
       <HomeBlogBlock />
+
+      <div style={{ height: 1, background: "var(--border-2)", margin: "8px 0" }} />
+
+      <Label n="Version 3" text="Тёмная тема — carousel на чёрном фоне" />
+      <HomeBlogBlockDark />
 
       <ScrollOrchestrator />
     </main>
