@@ -41,6 +41,13 @@ When the user does ask:
 - `<html>` carries `suppressHydrationWarning` because the `safari-detect`
   `beforeInteractive` script adds `ua-safari` before React hydrates — that
   mismatch is intentional.
+- **The glass button (`<Button variant="glass">`) must always render the
+  shared "liquid glass" material** — the exact look used in the Hero CTA row
+  and the dark footer (not the flat base `.btn-glass`). That treatment is one
+  multi-selector group in `globals.css` (search `liquid glass` / `.btn-glass`):
+  Hero, header, footer, bento horse, CTA band. When a new surface uses a glass
+  button, **add its selector to that group** instead of restyling it locally —
+  never invent a one-off glass look.
 
 ## Стек (по факту)
 

@@ -340,6 +340,142 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px;}
 .sect-cta{display:flex;justify-content:center;margin-top:38px;}
 
+/* ---------- reusable CTA band (CtaBand.tsx) ----------
+   One closer used on the homepage (dark) and the internal pages. The animated
+   aurora (or an optional looping video) lives behind the copy; with --bleed it
+   spills past the section onto the footer below. */
+.cta-band{
+  position:relative;
+  isolation:isolate;
+  text-align:center;
+  padding:clamp(96px,12vw,168px) var(--gutter);
+  overflow:hidden;
+}
+.cta-band--light{background:var(--bg-soft);color:var(--fg);}
+.cta-band--dark{background:var(--bg-ink);color:var(--fg-on-dark);}
+/* let the aurora paint over the footer below — the whole band composites at
+   z-index:1, above the (positioned, auto-z) footer, so the glow overlays it
+   while the footer stays interactive (aurora is pointer-blind) */
+.cta-band--bleed{overflow:visible;z-index:1;}
+
+.cta-band__inner{position:relative;z-index:1;max-width:760px;margin:0 auto;}
+.cta-band__eyebrow{justify-content:center;}
+.cta-band--dark .cta-band__eyebrow{color:var(--lavender);}
+.cta-band__title{
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(36px,6vw,72px);line-height:1.04;letter-spacing:-.03em;
+  text-wrap:balance;
+}
+.cta-band__accent{
+  background:var(--lens);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta-band__sub{
+  margin:20px auto 0;max-width:560px;
+  font-family:var(--font-text);font-weight:400;
+  font-size:clamp(17px,2vw,21px);line-height:1.45;
+  color:var(--muted);
+}
+.cta-band--dark .cta-band__sub{color:var(--muted-on-dark);}
+.cta-band__actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;}
+/* gradient primary matches the shared glass material's hero sizing so both
+   CTAs are the same height (see the .btn-glass liquid-glass group) */
+.cta-band__actions .btn-gradient{
+  font-size:17px;line-height:1.1;font-weight:500;letter-spacing:-.02em;
+  padding:17px 34px;min-height:56px;
+}
+
+/* ---- aurora background ---- */
+.cta-band__aurora{
+  position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  /* feather every edge so the radial glows dissolve BEFORE the section border
+     instead of being hard-clipped into a visible band. The bottom fade is the
+     gentlest so the glow still melts down into the footer on --bleed. */
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 15%, #000 82%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 15%, #000 82%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-composite:intersect;
+  /* slow breathing of the whole field on top of the per-bloom drift */
+  animation:cta-aurora-breathe 7.5s ease-in-out infinite;
+}
+/* keep the bleed shallow — the glow only kisses the top of the footer */
+.cta-band--bleed .cta-band__aurora{bottom:calc(-1 * var(--cta-bleed,96px));}
+.cta-band__video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:.5;
+}
+.cta-band--dark .cta-band__video{mix-blend-mode:screen;}
+/* legibility scrim — only when a video plays (the CSS blooms read fine without
+   it). Strong darkening at the TOP edge so the video melts out of the dark
+   section above; eased through the middle; denser again at the bottom so the
+   bleed dissolves into the footer. */
+.cta-band--dark .cta-band__aurora:has(.cta-band__video)::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(0,0,0,.88) 0%,
+    rgba(0,0,0,.45) 16%,
+    rgba(0,0,0,.18) 40%,
+    rgba(0,0,0,.32) 72%,
+    rgba(0,0,0,.6) 100%);
+}
+
+.cta-band__bloom{position:absolute;border-radius:50%;filter:blur(70px);will-change:transform;}
+.cta-band--dark .cta-band__bloom{mix-blend-mode:screen;}
+.cta-band__bloom--core{
+  left:50%;bottom:-22%;width:min(74vw,820px);height:min(74vw,820px);
+  transform:translateX(-50%);
+  background:radial-gradient(circle,color-mix(in oklab,var(--violet) 62%,transparent),transparent 66%);
+  opacity:.55;animation:cta-bloom-core 9s ease-in-out infinite;
+}
+.cta-band__bloom--left{
+  left:10%;top:8%;width:min(44vw,500px);height:min(44vw,500px);
+  background:radial-gradient(circle,color-mix(in oklab,var(--cyan) 55%,transparent),transparent 64%);
+  opacity:.42;animation:cta-bloom-left 8s ease-in-out infinite;
+}
+.cta-band__bloom--right{
+  right:9%;top:16%;width:min(40vw,460px);height:min(40vw,460px);
+  background:radial-gradient(circle,color-mix(in oklab,var(--lavender) 58%,transparent),transparent 64%);
+  opacity:.36;animation:cta-bloom-right 11s ease-in-out infinite;
+}
+/* on the light surface the screen blend washes out — drop blend, soften */
+.cta-band--light .cta-band__bloom--core{opacity:.3;}
+.cta-band--light .cta-band__bloom--left{opacity:.22;}
+.cta-band--light .cta-band__bloom--right{opacity:.2;}
+
+@keyframes cta-aurora-breathe{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.04);}
+}
+/* each light wanders its own slow looping path (mismatched durations keep them
+   from ever syncing) — motion stays gentle and brightness barely shifts so it
+   reads as ambient drift, not a distraction over the CTA copy */
+@keyframes cta-bloom-core{
+  0%,100%{transform:translateX(-50%) translateY(0) scale(1);opacity:.5;}
+  25%{transform:translateX(-58%) translateY(-4%) scale(1.08);opacity:.56;}
+  50%{transform:translateX(-44%) translateY(-7%) scale(1.13);opacity:.6;}
+  75%{transform:translateX(-53%) translateY(-3%) scale(1.06);opacity:.54;}
+}
+@keyframes cta-bloom-left{
+  0%,100%{transform:translate(0,0) scale(1);opacity:.4;}
+  20%{transform:translate(9%,6%) scale(1.08);opacity:.46;}
+  45%{transform:translate(16%,12%) scale(1.15);opacity:.5;}
+  70%{transform:translate(6%,16%) scale(1.07);opacity:.45;}
+}
+@keyframes cta-bloom-right{
+  0%,100%{transform:translate(0,0) scale(1);opacity:.34;}
+  30%{transform:translate(-8%,7%) scale(1.1);opacity:.4;}
+  55%{transform:translate(-15%,13%) scale(1.16);opacity:.44;}
+  80%{transform:translate(-5%,6%) scale(1.06);opacity:.38;}
+}
+@media (prefers-reduced-motion: reduce){
+  .cta-band__aurora,
+  .cta-band__bloom{animation:none;}
+}
+
 /* ---------- stage (the media-ready visual area) ---------- */
 .stage{
   position:relative;margin-top:clamp(40px,6vw,72px);
@@ -507,7 +643,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row{gap:18px;}
 .hero .cta-row .btn,
 .site-header__cta.btn,
-.foot.is-dark .btn-glass{
+.foot.is-dark .btn-glass,
+.cta-band .btn-glass{
   position:relative;isolation:isolate;overflow:hidden;z-index:0;
   font-weight:500;letter-spacing:-.02em;
   font-size:17px;line-height:1.1;
@@ -529,14 +666,16 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero .cta-row .btn::before,
 .site-header__cta.btn::before,
-.foot.is-dark .btn-glass::before{
+.foot.is-dark .btn-glass::before,
+.cta-band .btn-glass::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
   background:
     linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.14) 22%, transparent 48%),
     linear-gradient(25deg, transparent 55%, rgba(210,228,248,.12) 100%);}
 .hero .cta-row .btn::after,
 .site-header__cta.btn::after,
-.foot.is-dark .btn-glass::after{
+.foot.is-dark .btn-glass::after,
+.cta-band .btn-glass::after{
   content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
   background:
     radial-gradient(ellipse 95% 75% at 42% -18%, rgba(255,255,255,.55), transparent 52%),
@@ -546,7 +685,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   transition:opacity .45s var(--ease), transform .65s var(--ease);}
 .hero .cta-row .btn:hover,
 .site-header__cta.btn:hover,
-.foot.is-dark .btn-glass:hover{
+.foot.is-dark .btn-glass:hover,
+.cta-band .btn-glass:hover{
   border-color:rgba(255,255,255,.52);
   backdrop-filter:blur(48px) saturate(2) brightness(1.1);
   -webkit-backdrop-filter:blur(48px) saturate(2) brightness(1.1);
@@ -558,10 +698,12 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero .cta-row .btn:hover::after,
 .site-header__cta.btn:hover::after,
-.foot.is-dark .btn-glass:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
+.foot.is-dark .btn-glass:hover::after,
+.cta-band .btn-glass:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
 .hero .cta-row .btn-primary,
 .site-header__cta.btn-primary,
-.foot.is-dark .btn-glass{
+.foot.is-dark .btn-glass,
+.cta-band .btn-glass{
   background:
     linear-gradient(145deg,
       rgba(255,255,255,.22) 0%,
@@ -571,7 +713,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero .cta-row .btn-primary:hover,
 .site-header__cta.btn-primary:hover,
-.foot.is-dark .btn-glass:hover{
+.foot.is-dark .btn-glass:hover,
+.cta-band .btn-glass:hover{
   background:
     linear-gradient(145deg,
       rgba(255,255,255,.3) 0%,
@@ -600,7 +743,9 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row .btn .arr,
 .site-header__cta.btn .btn-txt,
 .foot.is-dark .btn-glass .btn-txt,
-.foot.is-dark .btn-glass .arr{position:relative;z-index:1;}
+.foot.is-dark .btn-glass .arr,
+.cta-band .btn-glass .btn-txt,
+.cta-band .btn-glass .arr{position:relative;z-index:1;}
 .hero .cta-row .btn .arr{
   opacity:.95;
   filter:drop-shadow(0 0 10px rgba(220,235,255,.45));
