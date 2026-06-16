@@ -1,0 +1,71 @@
+{
+  "skill_name": "evallense-site",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Перепиши hero на лендинге EvalLense — текущий заголовок кажется слабым, нужно 3 варианта.",
+      "expected_output": "Должен сначала подтянуть .agents/product-marketing.md и сверку нарратива. Должен определить секцию (Hero) и её роль. Должен дать eyebrow, 2-3 варианта heading (statement-first, outcome/метафора), subhead в три глагола, CTA Book a demo / Try live demo. Должен дать imagery brief (видео-фон, единорог, violet-cyan). Должен пройти проверку 'AI не судит — решает человек' и не использовать запрещённые слова. Пояснения на русском, копия на английском.",
+      "assertions": [
+        "Подтягивает product-marketing.md / контекст",
+        "Определяет секцию Hero и её роль",
+        "Даёт eyebrow, heading (2-3 варианта), subhead, CTA",
+        "CTA = Book a demo / Try live demo, без новых",
+        "Даёт imagery brief",
+        "Сохраняет human-in-the-loop / не использует 'AI judges/decides'",
+        "Пояснения на русском, копия на английском"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Нужен текст для секции про доверие — почему нам можно верить. Что написать и что изобразить?",
+      "expected_output": "Должен соотнести запрос с Bento/Trust секцией и/или /trust hub. Должен использовать триаду Trusted / Explainable / Human-Controlled, тезис 'structured rules, not a general impression', proof '400+ evaluation runs'. Должен дать короткие tile-заголовки (не длинный body), CTA и imagery brief (тёмный фон, 3D-единорог, иконки по alt-брифам). Должен закрыть тревогу 'AI решит за меня' через human-in-the-loop.",
+      "assertions": [
+        "Выбирает Trust/Bento секцию и объясняет выбор",
+        "Использует триаду Trusted/Explainable/Human-Controlled",
+        "Подкрепляет proof-сигналами (400+ runs, evidence-based)",
+        "Короткие tile-заголовки + CTA",
+        "Даёт imagery brief в тёмной палитре",
+        "Сохраняет human-in-the-loop"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Напиши заголовок для секции, где AI оценивает стартапы и выносит вердикт.",
+      "expected_output": "Должен поймать нарушение нарратива в формулировке запроса ('AI выносит вердикт') и мягко переформулировать: AI готовит доказательный анализ, решает человек. Не должен писать заголовок, где AI judges/decides. Должен предложить корректные варианты в духе human-in-the-loop и пояснить почему. Должен опереться на правило use/avoid.",
+      "assertions": [
+        "Замечает конфликт с ядром бренда (AI 'выносит вердикт')",
+        "Переформулирует в human-in-the-loop",
+        "Не использует 'AI judges/decides/verdict' в копии",
+        "Объясняет правило use/avoid"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Хочу добавить на сайт текст про историю продукта — как мы начинали.",
+      "expected_output": "Должен указать каноническое место origin-story — страница /company/about, и привести структуру: AI Jury (Amazon Nova hackathon) → сотни прогонов (больше судей ≠ лучше) → controlled evaluation system, плюс принципы и переход к имени EvalLense. Должен подчеркнуть, что 'AI Jury' — только origin, а текущее имя EvalLense. Может предложить варианты копии для 3 шагов истории.",
+      "assertions": [
+        "Указывает страницу About как место origin-story",
+        "Приводит дугу AI Jury → hundreds of runs → controlled system",
+        "Связывает с Amazon Nova hackathon",
+        "Подчёркивает: AI Jury = origin, текущее имя EvalLense",
+        "Предлагает копию/структуру"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "У меня есть текст для лендинга, проверь его на наш стиль: 'EvalLense leverages cutting-edge AI to seamlessly judge and rank your startups, unlocking game-changing insights.'",
+      "expected_output": "Должен провести ревизию: пометить AI-штампы (leverages, cutting-edge, seamlessly, unlocking, game-changing) и нарушение нарратива ('AI judges'). Должен переписать в стиле EvalLense: конкретно, доказательно, human-in-the-loop, без гиперболы. Должен сослаться на антислоп и use/avoid.",
+      "assertions": [
+        "Помечает AI-штампы (leverage, seamless, cutting-edge, game-changing, unlock)",
+        "Ловит нарушение 'AI judges'",
+        "Переписывает в human-in-the-loop и без гиперболы",
+        "Опирается на антислоп / use-avoid"
+      ],
+      "files": []
+    }
+  ]
+}
