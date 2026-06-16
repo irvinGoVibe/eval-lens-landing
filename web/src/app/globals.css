@@ -233,10 +233,17 @@ a{color:inherit;text-decoration:none;}
   padding-top:max(12px,env(safe-area-inset-top));
   height:calc(64px + max(12px,env(safe-area-inset-top)));
   pointer-events:none;
-  isolation:isolate;
+  /* NOTE: do NOT add `isolation:isolate` here. It makes .site-header a
+     backdrop root, which confines .site-header__glass's backdrop-filter to
+     the (empty) header group instead of the page behind it — the gradient
+     blur silently disappears. Stacking order is already handled by
+     position:fixed + z-index:150 on this element. */
   opacity:0;
   transition:top .48s var(--ease), opacity .32s var(--ease);
-  will-change:top,opacity;
+  /* No `will-change:opacity` — it can promote .site-header to a backdrop root
+     in Chromium, which (like isolation:isolate above) kills the glass
+     backdrop-filter. The reveal transition is a short one-shot and doesn't
+     need the hint. */
 }
 body.hero-ready .site-header{
   top:0;
