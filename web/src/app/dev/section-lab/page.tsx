@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import { LabMarkers } from "@/components/sections/lab/LabMarkers";
 import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
+import { LabSplitRing } from "@/components/sections/lab/LabSplitRing";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
 import { Button } from "@/components/ui/Button";
 import type { SectionNav } from "@/lib/site-nav";
@@ -325,45 +326,35 @@ export default function SectionLabPage() {
           </div>
         </section>
 
-        <section className="band soft lab-scrub" data-marker="05 · Editorial split + scrub-ring">
-          <div className="wrap lab-scrub__split">
-            <div className="lab-scrub__copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                05 · Editorial split + scrub-ring
-              </span>
-              <h2 className="title">Show a calculation, not another paragraph</h2>
-              <p className="sub">
-                For scoring, confidence, completeness, or progress, pair
-                editorial copy with a visual that responds to scroll.
-              </p>
-            </div>
-            <div className="lab-scrub__visual" data-reveal="right">
-              <div
-                className="lab-ring"
-                data-scrub
-                role="img"
-                aria-label="Scroll-filled confidence ring"
-              >
-                <span className="lab-ring__label">Confidence</span>
-              </div>
-              <figure
-                className="media-ph lab-scrub__media"
-                style={{ ["--ratio" as string]: "16/10" }}
-                role="img"
-                aria-label="Evidence panel visual slot"
-              >
-                <span className="media-ph__label">
-                  Image · evidence panel · 16:10
-                </span>
-                <span className="media-ph__hint">
-                  A report surface with highlighted evidence rows and one
-                  lens-lit confidence indicator.
-                </span>
-              </figure>
-            </div>
-          </div>
-        </section>
+        <LabSplitRing
+          id="split-ring"
+          surface="ink"
+          marker="05 · Editorial split + scrub-ring"
+          ariaLabel="Editorial split with a scroll-driven confidence ring"
+          eyebrow="05 · Editorial split + scrub-ring"
+          titleLead="Show a"
+          titleAccent="calculation"
+          titleTrail=", not another paragraph"
+          sub="For scoring, confidence, completeness, or progress, pair editorial copy with a visual that responds to scroll."
+          ring={{
+            label: "Confidence",
+            value: 92,
+            caption: "Scroll-driven demo — arc and readout fill toward the target",
+          }}
+          breakdown={[
+            { label: "Team", value: 94 },
+            { label: "Market", value: 88 },
+            { label: "Traction", value: 90 },
+            { label: "Evidence", value: 96 },
+          ]}
+          breakdownCaption="Demo · weighted inputs roll up to confidence"
+          media={{
+            ratio: "16/10",
+            label: "Image · evidence panel · 16:10",
+            hint: "A report surface with highlighted evidence rows and one lens-lit confidence indicator.",
+            ariaLabel: "Evidence panel visual slot",
+          }}
+        />
 
         <section id="gallery" className="band lab-gallery" data-marker="06 · Horizontal gallery">
           <div className="wrap">

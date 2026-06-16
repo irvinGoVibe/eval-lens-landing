@@ -1,0 +1,44 @@
+{
+  "type": "design",
+  "designSystems": [
+    {
+      "name": "EvalLense Design System",
+      "slug": "evallense",
+      "namespace": "Evallense_c7d744",
+      "dsFolder": "_ds/evallense",
+      "sourcePath": "designs/evallense"
+    }
+  ],
+  "primaryDesignSystem": "evallense",
+  "createdAt": "2026-06-16T21:50:40.804Z",
+  "updatedAt": "2026-06-16T22:22:27.843Z",
+  "assets": {
+    "Section 05 directions": {
+      "versions": [
+        {
+          "path": "Section 05 — Split + Scrub-ring.html",
+          "createdAt": "2026-06-16T21:53:31.413Z",
+          "status": "needs-review",
+          "subtitle": "3 layout/scrub-ring directions, light+ink, scrub slider",
+          "viewport": {
+            "width": 1280
+          },
+          "section": "redraw-block 05"
+        }
+      ]
+    },
+    "Section 05 — Split + Scrub-ring": {
+      "versions": [
+        {
+          "path": "Section 05 — Split + Scrub-ring.html",
+          "createdAt": "2026-06-16T22:22:27.842Z",
+          "status": "needs-review",
+          "subtitle": "v1 cinematic + v2 gauge/bars, guideline ring, light+ink",
+          "viewport": {
+            "width": 1280
+          }
+        }
+      ]
+    }
+  }
+}

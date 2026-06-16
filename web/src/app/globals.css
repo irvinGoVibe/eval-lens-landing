@@ -4563,70 +4563,145 @@ section[id]{scroll-margin-top:72px;}
 }
 
 /* ── 05 · Editorial split + scrub-ring ──────────────────────────────────
-   Copy on the left; a scroll-driven confidence readout on the right. The
-   ring arc AND the numeric readout fill toward --ring-target as the block
-   crosses the viewport (data-scrub → --scrub, ScrollFX). Surface-adaptive,
-   so the Light/Dark inspector toggle works on both saved versions. */
+   Two saved versions, both surface-adaptive (Light/Dark inspector toggle):
+   • v1 (cine)  — ink/light full-bleed cinematic moment: the evidence scene
+     fills the band, copy + a glass confidence chip sit over it.
+   • v2 (gauge) — the calculation, shown: a confidence gauge + weighted-input
+     bars that roll up to it, over an evidence panel.
+   The ring arc, the numeric readout, and the input bars all fill toward
+   their targets as the block crosses the viewport (data-scrub → --scrub,
+   ScrollFX). The whole section drops its band padding; each version owns it. */
 @property --lab-ring-pct{syntax:"<integer>";inherits:true;initial-value:0;}
 
-.section-lab .lab-splitring__grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(28px,6vw,80px);align-items:center;}
-.section-lab .lab-splitring__copy{min-width:0;}
-.section-lab .lab-splitring__title{max-width:18ch;}
-.section-lab .lab-splitring__copy .sub{max-width:46ch;}
+.section-lab .band.lab-splitring{padding:0;}
 
-/* v1 — composed evidence card: ring readout + evidence panel in one
-   elevated, token-bordered artifact. */
-.section-lab .lab-splitring__panel{
-  min-width:0;display:flex;flex-direction:column;gap:clamp(20px,3vw,30px);
-  padding:clamp(20px,3vw,32px);
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius-stage);
-  box-shadow:var(--sh-2);
-}
-.section-lab .lab-splitring.ink .lab-splitring__panel{
-  background:rgba(255,255,255,.04);border-color:var(--border-on-dark);box-shadow:var(--sh-3);
-}
+/* shared title measure + size — PINNED so the size is identical on light and
+   ink (the base `.ink .title` rule is larger, which made the surface toggle
+   jump). The cinematic copy scales it up again on its own. */
+.section-lab .lab-splitring__title{max-width:18ch;font-size:clamp(34px,4.6vw,58px);line-height:1.05;letter-spacing:-.03em;}
 
-/* v2 — restrained stack: ring centered above the evidence panel. */
-.section-lab .lab-splitring__visual{display:flex;flex-direction:column;align-items:center;gap:clamp(20px,3vw,30px);min-width:0;}
-.section-lab .lab-splitring__grid--plain .lab-splitring__media{max-width:440px;}
-
-.section-lab .lab-splitring__readout{display:flex;flex-direction:column;align-items:center;gap:14px;}
-
-/* The ring is a masked conic donut (::before) with the readout layered on
-   top — arc thickness is constant and the centre stays transparent, so it
-   reads the same over the white card or the dark band. */
+/* Confidence ring — from the EvalLense interface style guide: conic from
+   -90deg, semantic colour (green = high confidence), soft glow, and a centre
+   disc the colour of the surface so the numeric readout sits inside. The arc
+   and the readout fill toward --ring-target as --scrub (set on an ancestor by
+   ScrollFX) advances; no transition, so the calc resolves frame-by-frame. */
 .section-lab .lab-ring{
-  --ring-w:clamp(12px,1.6vw,16px);
-  --ring-arc:var(--violet);
-  --ring-track:var(--hairline);
+  --ring-c:var(--green);
+  --ring-track:var(--border-2);
+  --ring-center:#fff;
   --lab-ring-pct:calc(var(--scrub,0) * var(--ring-target,0));
-  position:relative;width:clamp(168px,22vw,238px);aspect-ratio:1;
+  position:relative;width:var(--ring-size,clamp(168px,22vw,238px));aspect-ratio:1;border-radius:50%;
   display:grid;place-items:center;text-align:center;
+  background:
+    radial-gradient(circle at center, var(--ring-center) 0 63%, transparent 64%),
+    conic-gradient(from -90deg, var(--ring-c) calc(var(--scrub,0) * var(--ring-target,0) * 1%), var(--ring-track) 0);
+  filter:drop-shadow(0 0 12px color-mix(in oklab, var(--ring-c) 28%, transparent));
 }
-.section-lab .lab-splitring.ink .lab-ring{--ring-arc:var(--lavender);--ring-track:var(--border-on-dark);}
-.section-lab .lab-ring::before{
-  content:"";position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(var(--ring-arc) calc(var(--scrub,0) * var(--ring-target,0) * 3.6deg), var(--ring-track) 0);
-  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - var(--ring-w)),#000 calc(100% - var(--ring-w)));
-          mask:radial-gradient(farthest-side,transparent calc(100% - var(--ring-w)),#000 calc(100% - var(--ring-w)));
-}
+.section-lab .lab-splitring.ink .lab-ring{--ring-c:var(--green-on-dark);--ring-track:var(--border-on-dark);--ring-center:#0c0b12;}
 .section-lab .lab-ring__pct{
-  position:relative;font-family:var(--font-mono);font-size:clamp(34px,4.6vw,52px);
+  position:relative;font-family:var(--font-mono);font-size:clamp(32px,4.2vw,50px);
   line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--fg);
 }
 .section-lab .lab-ring__pct::after{counter-reset:p var(--lab-ring-pct);content:counter(p) "%";}
 .section-lab .lab-splitring.ink .lab-ring__pct{color:var(--fg-on-dark);}
 .section-lab .lab-ring__label{
   position:relative;margin-top:6px;font-family:var(--font-mono);font-size:11px;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--violet);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--green);
 }
-.section-lab .lab-splitring.ink .lab-ring__label{color:var(--lavender);}
+.section-lab .lab-splitring.ink .lab-ring__label{color:var(--green-on-dark);}
 .section-lab .lab-ring__cap{
   font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;line-height:1.4;
-  text-align:center;max-width:34ch;color:var(--muted);
+  text-align:center;max-width:34ch;color:var(--muted);margin:0;
 }
 .section-lab .lab-splitring.ink .lab-ring__cap{color:var(--muted-on-dark);}
-.section-lab .lab-splitring__media{width:100%;}
+
+/* ── v1 — cinematic full-bleed moment (Direction C) ──────────────────── */
+.section-lab .splitring-cine{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:clamp(540px,84svh,800px);
+  display:grid;align-items:end;
+  padding:clamp(40px,6vw,96px) var(--gutter) clamp(40px,6vw,80px);
+}
+/* the scene = where the evidence-panel asset drops in (light base / ink) */
+.section-lab .splitring-cine__scene{
+  position:absolute;inset:0;z-index:-2;
+  background:
+    radial-gradient(72% 60% at 70% 16%, color-mix(in oklab,var(--violet) 22%,transparent), transparent 60%),
+    radial-gradient(58% 55% at 14% 94%, color-mix(in oklab,var(--cyan) 15%,transparent), transparent 62%),
+    var(--bg-soft);
+}
+.section-lab .lab-splitring.ink .splitring-cine__scene{
+  background:
+    radial-gradient(80% 70% at 72% 12%, color-mix(in oklab,var(--violet) 42%,transparent), transparent 56%),
+    radial-gradient(60% 60% at 14% 96%, color-mix(in oklab,var(--cyan) 22%,transparent), transparent 60%),
+    linear-gradient(160deg,#0a0a0d 0%,#16131f 100%);
+}
+.section-lab .splitring-cine__scene::after{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(color-mix(in oklab,var(--fg) 8%,transparent) 1px,transparent 1px);
+  background-size:24px 24px;opacity:.5;
+  -webkit-mask-image:radial-gradient(ellipse at 60% 30%,#000,transparent 75%);
+          mask-image:radial-gradient(ellipse at 60% 30%,#000,transparent 75%);
+}
+.section-lab .lab-splitring.ink .splitring-cine__scene::after{background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);}
+/* scrim under the copy — light fades to soft, ink fades to black */
+.section-lab .splitring-cine__scrim{
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg, color-mix(in oklab,var(--bg-soft) 88%,transparent) 0%, color-mix(in oklab,var(--bg-soft) 40%,transparent) 44%, transparent 72%);
+}
+.section-lab .lab-splitring.ink .splitring-cine__scrim{
+  background:linear-gradient(90deg, rgba(5,5,8,.78) 0%, rgba(5,5,8,.4) 44%, transparent 72%);
+}
+/* media-slot tag — marks where the real evidence photo/video drops in */
+.section-lab .splitring-cine__tag{
+  position:absolute;top:16px;left:18px;z-index:1;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);background:color-mix(in oklab,var(--bg) 70%,transparent);
+  border:1px solid var(--border-2);border-radius:var(--r-pill);padding:4px 10px;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+}
+.section-lab .lab-splitring.ink .splitring-cine__tag{color:var(--muted-on-dark);background:rgba(0,0,0,.32);border-color:var(--border-on-dark);}
+.section-lab .splitring-cine__inner{
+  position:relative;z-index:1;width:100%;max-width:var(--maxw);margin:0 auto;
+  display:grid;grid-template-columns:1fr auto;gap:clamp(28px,5vw,64px);align-items:end;
+}
+.section-lab .splitring-cine__copy{min-width:0;max-width:30ch;}
+.section-lab .splitring-cine__copy .lab-splitring__title{font-size:clamp(40px,5.5vw,72px);letter-spacing:-.03em;line-height:1.03;}
+.section-lab .splitring-cine__copy .sub{max-width:34ch;}
+/* glass confidence chip — shared liquid-glass material, light & ink */
+.section-lab .splitring-cine__chip{
+  display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0;
+  padding:clamp(20px,2.6vw,30px);border-radius:var(--r-lg);
+  background:color-mix(in oklab,var(--bg) 72%,transparent);border:1px solid var(--border);
+  box-shadow:var(--sh-3);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
+}
+.section-lab .lab-splitring.ink .splitring-cine__chip{background:rgba(18,16,26,.55);border-color:rgba(255,255,255,.16);box-shadow:0 30px 70px -30px rgba(0,0,0,.7);}
+.section-lab .splitring-cine__chip .lab-ring{--ring-size:clamp(150px,16vw,196px);}
+
+/* ── v2 — gauge + weighted inputs (Direction B) ──────────────────────── */
+.section-lab .splitring-gauge{padding:clamp(56px,8vw,120px) var(--gutter);}
+.section-lab .splitring-gauge__head{max-width:760px;}
+.section-lab .splitring-gauge__head .sub{max-width:50ch;}
+.section-lab .splitring-gauge__panel{
+  margin-top:clamp(34px,5vw,56px);
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,5vw,64px);align-items:center;
+  padding:clamp(24px,3.5vw,40px);border-radius:var(--radius-stage);
+  background:#fff;border:1px solid var(--border);box-shadow:var(--sh-2);
+}
+.section-lab .lab-splitring.ink .splitring-gauge__panel{background:rgba(255,255,255,.04);border-color:var(--border-on-dark);box-shadow:var(--sh-3);}
+.section-lab .splitring-gauge__readout{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.section-lab .splitring-gauge__bars{display:flex;flex-direction:column;gap:clamp(14px,2vw,20px);min-width:0;}
+.section-lab .splitring-bar{display:grid;grid-template-columns:9ch 1fr 4ch;gap:14px;align-items:center;}
+.section-lab .splitring-bar__label{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.section-lab .lab-splitring.ink .splitring-bar__label{color:var(--muted-on-dark);}
+.section-lab .splitring-bar__track{height:8px;border-radius:999px;background:var(--hairline);overflow:hidden;}
+.section-lab .lab-splitring.ink .splitring-bar__track{background:var(--border-on-dark);}
+.section-lab .splitring-bar__fill{height:100%;border-radius:999px;background:var(--lens);width:calc(var(--scrub,0) * var(--w,0) * 1%);}
+.section-lab .splitring-bar__val{font-family:var(--font-mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--fg);text-align:right;}
+.section-lab .lab-splitring.ink .splitring-bar__val{color:var(--fg-on-dark);}
+.section-lab .splitring-gauge__evidence{margin-top:clamp(20px,3vw,32px);}
+.section-lab .splitring-gauge__media{width:100%;}
 
 .section-lab .lab-gallery .head{margin-bottom:clamp(32px,5vw,56px);}
 .section-lab .lab-gallery__lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
@@ -4769,7 +4844,12 @@ section[id]{scroll-margin-top:72px;}
 
 @media (max-width:900px){
   .section-lab .lab-process__grid,
-  .section-lab .lab-splitring__grid{grid-template-columns:1fr;}
+  .section-lab .splitring-cine__inner,
+  .section-lab .splitring-gauge__panel{grid-template-columns:1fr;}
+  .section-lab .splitring-cine{align-items:start;}
+  .section-lab .splitring-cine__chip{justify-self:start;margin-top:clamp(24px,5vw,40px);}
+  .section-lab .splitring-gauge__panel{justify-items:center;}
+  .section-lab .splitring-bar{grid-template-columns:8ch 1fr 4ch;}
   .section-lab .lab-process{min-height:0;}
   .section-lab .lab-process__stage{position:static;min-height:0;overflow:visible;}
   .section-lab .lab-process__media{order:-1;max-width:none;}
