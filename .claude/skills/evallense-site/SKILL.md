@@ -43,10 +43,13 @@ metadata:
 
 Копия не живёт в вакууме — выбор **блок-архетипа** определяет, как читатель воспримет смысл. Перед тем как писать или проверять секцию (на лендинге, внутренней странице или **в новостях / ньюслетере**), сверься со справочником композиции:
 
-Паттерны раскладки: !`cat eval-lens-landing/wiki/architecture/page-design-patterns.md 2>/dev/null || cat wiki/architecture/page-design-patterns.md 2>/dev/null || echo "НЕ НАЙДЕН page-design-patterns.md — проверь путь eval-lens-landing/wiki/architecture/page-design-patterns.md"`
+Два справочника — держи оба:
+- **Как собирать** (предписывающий: архетипы, ритм, движок, QA): !`cat eval-lens-landing/wiki/architecture/page-design-patterns.md 2>/dev/null || cat wiki/architecture/page-design-patterns.md 2>/dev/null || echo "НЕ НАЙДЕН page-design-patterns.md — проверь путь eval-lens-landing/wiki/architecture/page-design-patterns.md"`
+- **Что реально используется** (фактический инвентарь типов секций с классами, поверхностями и скриншотами): !`cat eval-lens-landing/wiki/architecture/section-types.md 2>/dev/null || cat wiki/architecture/section-types.md 2>/dev/null || echo "НЕ НАЙДЕН section-types.md — проверь путь eval-lens-landing/wiki/architecture/section-types.md"`
 
 Как пользоваться:
-- Подбирай архетип под смысл, а не наоборот. Statement → большой тихий заголовок (statement hero / full-bleed); процесс/«как это работает» → pinned multi-screen; набор (роли судей, use cases, выпуски ньюслетера) → horizontal gallery; числа/доказательность → stat band; обзор возможностей → bento; финальный призыв → quiet CTA band.
+- Подбирай архетип под смысл, а не наоборот. Statement → большой тихий заголовок (statement hero / full-bleed); процесс/«как это работает» → pinned multi-screen; набор (роли судей, use cases) → horizontal gallery; числа/доказательность → stat band; обзор возможностей → bento; парные «риск ↔ контроль» → risk-control grid; вопросы → FAQ list; **новости / ньюслетер → news / article grid** (`ct-news`, `ArticleCard` + `.blog-grid`); финальный призыв → quiet CTA band.
+- Сверяйся с фактическим каталогом `section-types.md`: у каждого типа есть реальный класс-пример (`po-why`, `po-jury`, `ct-news`…), поверхность (`soft`/`ink`) и scroll-FX — переиспользуй существующий тип, не плоди near-дубли.
 - **Не повторяй один архетип** секцию за секцией: чередуй масштаб (full-bleed ↔ плотный блок), поверхность (светлая ↔ тёмная `.band.ink`), раскладку (editorial-split меняет сторону, галерея горизонтальна среди вертикальных). Это и есть «не плоско».
 - Каждая смысловая секция заслуживает **визуала** (картинка / диаграмма / визуализация числа-процесса). Нет ассета → в imagery brief описывай видимый плейсхолдер `.media-ph` с лейблом и `--ratio`.
 - Можно и нужно **комбинировать** несколько паттернов — выбор за тем, как лучше донести смысл.
@@ -77,7 +80,7 @@ metadata:
 Для заголовков и CTA — всегда 2–3 варианта с короткой логикой выбора.
 
 ### 🧱 Паттерн раскладки (block-архетип)
-Какой архетип из [page-design-patterns.md](eval-lens-landing/wiki/architecture/page-design-patterns.md) лучше всего передаёт смысл этой секции (statement hero / full-bleed / pinned multi-screen / editorial split / horizontal gallery / stat band / bento / quiet CTA) и почему. Как он чередуется с соседними по масштабу/поверхности, чтобы не вышло плоско.
+Какой архетип лучше всего передаёт смысл этой секции и почему. Назови конкретный тип из каталога `section-types.md` с его классом-примером и поверхностью (напр. editorial split `po-why` / soft; news grid `ct-news` / свет; quiet CTA band `*-cta` / ink). Сверь композицию с `page-design-patterns.md` — как он чередуется с соседними по масштабу/поверхности, чтобы не вышло плоско.
 
 ### 🎨 Что изобразить (imagery brief)
 Что показать визуально (видео / 3D / UI-мокап / иллюстрация), какой сюжет, какие данные/подписи на мокапе, тон и палитра (фиолетово-cyan «линза» / оранжевый переход / тёмные секции доверия). Если есть placeholder `Image · … · aspect` — предложи финальный сюжет и alt-текст. Если ассета нет — опиши видимый `.media-ph` (лейбл `Image/Video/Diagram` + о чём + `--ratio`).
@@ -95,7 +98,7 @@ metadata:
 - [ ] Нет AI-штампов и воды (см. антислоп в copy-system).
 - [ ] Дан imagery brief, если секция визуальная.
 - [ ] Секция не дублирует соседей по смыслу.
-- [ ] Выбран осмысленный block-архетип (см. page-design-patterns.md); не «плоская сетка», чередование масштаба/поверхности соблюдено.
+- [ ] Выбран осмысленный block-архетип (тип из section-types.md + сверка с page-design-patterns.md); не «плоская сетка», чередование масштаба/поверхности соблюдено; для новостей/ньюслетера — news grid (`ct-news`), а не текст-стена.
 
 ## Вопросы, которые задаёшь пользователю
 
