@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader />
       <main className="notfound">
         <section className="band soft notfound-hero">
           <div className="wrap notfound-hero__inner">

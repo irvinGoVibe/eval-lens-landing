@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
@@ -139,10 +140,21 @@ const USES = [
   },
 ];
 
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Product",
+  sectionHref: "/product/overview",
+  links: [
+    { label: "Anatomy", href: "#anatomy" },
+    { label: "Score", href: "#score" },
+    { label: "Evidence", href: "#evidence" },
+  ],
+};
+
 export default function EvidenceBasedReportsPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="ev-reports">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft evr-hero">
@@ -223,7 +235,7 @@ export default function EvidenceBasedReportsPage() {
         </section>
 
         {/* 3. Report anatomy — horizontal scroll-snap gallery, light. */}
-        <section className="band evr-anatomy">
+        <section id="anatomy" className="band evr-anatomy">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -258,7 +270,7 @@ export default function EvidenceBasedReportsPage() {
         </section>
 
         {/* 4. How the score is computed — editorial split + scrubbed ring, DARK. */}
-        <section className="band ink evr-score">
+        <section id="score" className="band ink evr-score">
           <div className="wrap evr-score__split">
             <div className="evr-score__copy" data-reveal="left">
               <span className="eyebrow">
@@ -345,7 +357,7 @@ export default function EvidenceBasedReportsPage() {
         </section>
 
         {/* 5. Linked to evidence — editorial split, light. */}
-        <section className="band soft evr-evidence">
+        <section id="evidence" className="band soft evr-evidence">
           <div className="wrap evr-evidence__split">
             <div className="evr-evidence__copy" data-reveal="left">
               <span className="eyebrow">

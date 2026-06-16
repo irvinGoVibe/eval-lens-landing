@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Trust",
+  sectionHref: "/trust",
+  links: [
+    { label: "Pattern", href: "#pattern" },
+    { label: "Building Blocks", href: "#common" },
+  ],
+};
 
 export const metadata: Metadata = {
   title:
@@ -115,7 +126,7 @@ const COMMON = [
 export default function UseCasesPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="usecases">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft usecases-hero">
@@ -173,7 +184,7 @@ export default function UseCasesPage() {
         </section>
 
         {/* 2. The common pattern — full-bleed statement, DARK. */}
-        <section className="band ink usecases-pattern">
+        <section id="pattern" className="band ink usecases-pattern">
           <div className="wrap usecases-pattern__inner">
             <span className="eyebrow" data-reveal="up">
               <span className="dot" aria-hidden="true"></span>
@@ -268,7 +279,7 @@ export default function UseCasesPage() {
         </section>
 
         {/* 5. What every segment gets — bento, DARK. */}
-        <section className="band ink usecases-common">
+        <section id="common" className="band ink usecases-common">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">

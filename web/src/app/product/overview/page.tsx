@@ -1,8 +1,21 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+
+/** Header nav for this page — anchor links to its own sections (see the
+ *  matching `id`s on the bands below). Each page declares its own. */
+const HEADER_NAV: SectionNav = {
+  section: "Product",
+  sectionHref: "/product/overview",
+  links: [
+    { label: "Path", href: "#path" },
+    { label: "Modules", href: "#modules" },
+    { label: "Outputs", href: "#outputs" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "EvalLense — Product Overview: Batch Pitch Deck Evaluation",
@@ -205,7 +218,7 @@ const OUTPUTS = [
 export default function ProductOverviewPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="product-overview">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft po-hero">
@@ -264,6 +277,7 @@ export default function ProductOverviewPage() {
 
         {/* 2. Organizer path — pinned multi-screen, DARK. Seven steps light up. */}
         <section
+          id="path"
           className="band ink po-path"
           data-pin
           data-pin-steps="7"
@@ -373,7 +387,7 @@ export default function ProductOverviewPage() {
         </section>
 
         {/* 4. Three modules — bento, DARK. */}
-        <section className="band ink po-modules">
+        <section id="modules" className="band ink po-modules">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -423,7 +437,7 @@ export default function ProductOverviewPage() {
         </section>
 
         {/* 5. AI jury — horizontal scroll-snap gallery, light. Six judges. */}
-        <section className="band po-jury">
+        <section id="jury" className="band po-jury">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -483,7 +497,7 @@ export default function ProductOverviewPage() {
         </section>
 
         {/* 7. What you get — stat / bento, DARK. */}
-        <section className="band ink po-outputs">
+        <section id="outputs" className="band ink po-outputs">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">

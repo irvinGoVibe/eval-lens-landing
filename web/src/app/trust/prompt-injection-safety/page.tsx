@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Trust",
+  sectionHref: "/trust",
+  links: [
+    { label: "Boundary", href: "#boundary" },
+    { label: "Layers", href: "#layers" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "EvalLense — Prompt Injection Safety for Pitch Evaluation",
@@ -110,7 +121,7 @@ const HOLDING_LAYERS = [
 export default function PromptInjectionSafetyPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="injection">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft injection-hero">
@@ -198,7 +209,7 @@ export default function PromptInjectionSafetyPage() {
         </section>
 
         {/* 3. Content / control boundary — full-bleed statement, DARK. */}
-        <section className="band ink injection-boundary">
+        <section id="boundary" className="band ink injection-boundary">
           <div className="wrap boundary-statement">
             <span className="eyebrow" data-reveal="up">
               <span className="dot" aria-hidden="true"></span>
@@ -258,6 +269,7 @@ export default function PromptInjectionSafetyPage() {
 
         {/* 5. Holding layers — pinned multi-screen, DARK. Four layers light up. */}
         <section
+          id="layers"
           className="band ink injection-layers"
           data-pin
           data-pin-steps="4"

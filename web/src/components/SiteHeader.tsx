@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
-export function SiteHeader({ light = false }: { light?: boolean } = {}) {
+/**
+ * Homepage header — transparent over the hero with light text. On scroll past
+ * the hero, `ScrollOrchestrator` toggles `is-light` so the text flips to dark
+ * for the light sections below (the bar itself stays transparent). Internal
+ * pages use `PageHeader` instead.
+ */
+export function SiteHeader() {
   return (
-    <header
-      className={light ? "site-header is-light" : "site-header"}
-      id="site-header"
-    >
+    <header className="site-header" id="site-header">
       <div className="site-header__inner">
         <a className="brand" href="#top" aria-label="EvalLense home">
           <span className="mark" aria-hidden="true"></span>

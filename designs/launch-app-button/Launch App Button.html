@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Launch App — header CTA exploration</title>
+<style>
+  /* ── EvalLense tokens (copied 1:1 from web/src/app/globals.css) ───────── */
+  :root{
+    --violet:#6c4cf1; --violet-2:#7b5cf6; --lavender:#a99bff;
+    --cyan:#2ec5e8; --aqua:#36e0c2;
+    --grad-cta:linear-gradient(90deg,#9333ea 0%,#3b82f6 100%);
+    --lens:linear-gradient(118deg,var(--violet) 0%,var(--lavender) 32%,var(--cyan) 68%,var(--aqua) 100%);
+    --bg:#ffffff; --bg-soft:#f5f5f7; --bg-ink:#000;
+    --fg:#1d1d1f; --muted:#6e6e73; --border-2:#e6e6ea;
+    --fg-on-dark:#f5f5f7; --muted-on-dark:#a9a9b2; --border-on-dark:rgba(255,255,255,.12);
+    --font-ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-mono:Menlo,"SF Mono",ui-monospace,"JetBrains Mono",monospace;
+    --font-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#ececf1;color:var(--fg);font-family:var(--font-ui);
+    -webkit-font-smoothing:antialiased;}
+  .page{max-width:1080px;margin:0 auto;padding:40px 28px 90px;}
+
+  /* ── doc chrome ───────────────────────────────────────────────────────── */
+  .lede{margin:0 0 6px;font-family:var(--font-display);font-weight:600;
+    font-size:26px;letter-spacing:-.02em;}
+  .sub{margin:0 0 26px;color:var(--muted);font-size:14.5px;max-width:62ch;line-height:1.55;}
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:30px;
+    position:sticky;top:0;z-index:50;padding:12px 0;background:#ececf1;}
+  .tgl{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--fg);
+    background:#fff;border:1px solid #dcdce3;border-radius:999px;padding:7px 14px;cursor:pointer;
+    user-select:none;transition:border-color .2s,box-shadow .2s;}
+  .tgl:hover{border-color:#c2c2cc;}
+  .tgl[aria-pressed="true"]{border-color:var(--violet);box-shadow:0 0 0 3px rgba(108,76,241,.14);}
+  .tgl .dot{width:8px;height:8px;border-radius:50%;background:#cfcfd8;}
+  .tgl[aria-pressed="true"] .dot{background:var(--violet);}
+
+  .hint{font-size:12px;color:var(--muted);margin-left:auto;}
+
+  /* ── realistic header bar (matches PageHeader glass) ──────────────────── */
+  .stage{border-radius:18px;overflow:hidden;border:1px solid #dcdce3;margin-bottom:14px;
+    box-shadow:0 18px 50px -28px rgba(20,16,45,.5);}
+  .band{position:relative;min-height:178px;padding:0;}
+  .band--ink{background:#000;color:var(--fg-on-dark);}
+  .band--ink::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 120% at 18% -10%,rgba(108,76,241,.28),transparent 60%),
+               radial-gradient(50% 120% at 92% 120%,rgba(54,224,194,.12),transparent 60%);}
+  .band--soft{background:var(--bg-soft);color:var(--fg);}
+  .band__body{position:relative;z-index:1;padding:78px 30px 26px;}
+  .band__eye{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--lavender);margin:0 0 8px;}
+  .band--soft .band__eye{color:var(--violet);}
+  .band__h{margin:0;font-family:var(--font-display);font-weight:600;letter-spacing:-.02em;
+    font-size:26px;max-width:18ch;line-height:1.1;}
+
+  /* the bar itself — translucent blurred glass, sticky-style at top of band */
+  .bar{position:absolute;inset:0 0 auto 0;z-index:3;display:flex;align-items:center;gap:16px;
+    padding:0 24px;min-height:56px;
+    background:color-mix(in oklab,var(--bg) 62%,transparent);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid var(--border-2);}
+  .bar--dark{background:color-mix(in oklab,var(--bg-ink) 68%,transparent);
+    border-bottom:1px solid var(--border-on-dark);}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);
+    font-weight:600;font-size:18px;letter-spacing:-.02em;color:var(--fg);}
+  .bar--dark .brand{color:var(--fg-on-dark);}
+  .brand .mark{width:20px;height:20px;border-radius:50%;background:var(--lens);position:relative;
+    box-shadow:0 0 0 1px rgba(255,255,255,.5) inset,0 4px 14px -4px var(--violet);}
+  .brand .mark::after{content:"";position:absolute;inset:5px;border-radius:50%;
+    background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.95),rgba(255,255,255,.1) 55%,transparent 70%);}
+  .divider{width:1px;height:20px;background:var(--border-2);}
+  .bar--dark .divider{background:var(--border-on-dark);}
+  .sect{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--violet);}
+  .bar--dark .sect{color:var(--lavender);}
+  .nav{display:flex;gap:24px;margin-left:auto;margin-right:18px;}
+  .nav a{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);text-decoration:none;}
+  .bar--dark .nav a{color:var(--muted-on-dark);}
+
+  /* ── base CTA (matches .btn + .btn-sm sizing) ─────────────────────────── */
+  .cta{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--font-ui);font-weight:500;font-size:13.5px;line-height:1;
+    padding:8px 16px;border:0;border-radius:980px;cursor:pointer;color:#fff;text-decoration:none;
+    white-space:nowrap;overflow:hidden;
+    transition:transform .2s var(--ease),box-shadow .35s var(--ease),background .3s var(--ease),filter .3s var(--ease);}
+  .cta .arr{transition:transform .25s var(--ease);opacity:.9;}
+  .cta:hover,.cta.force-hover{transform:translateY(-1px);}
+  .cta:hover .arr,.cta.force-hover .arr{transform:translateX(3px);opacity:1;}
+
+  /* A — Solid Brand: flat brand violet, one soft shadow. Calmest. */
+  .cta--a{background:var(--violet);box-shadow:0 5px 16px -9px rgba(108,76,241,.7);}
+  .cta--a::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+    background:linear-gradient(180deg,rgba(255,255,255,.16),transparent 50%);}
+  .cta--a:hover,.cta--a.force-hover{background:var(--violet-2);box-shadow:0 9px 22px -10px rgba(108,76,241,.8);}
+
+  /* B — Adaptive: the bright footer gradient (--grad-cta) on light glass;
+     translucent violet + lavender outline on dark glass (so it doesn't blow out). */
+  .cta--b{background:var(--grad-cta);
+    box-shadow:0 6px 22px -6px rgba(99,76,241,.5),0 0 18px -2px rgba(168,85,247,.35);}
+  .cta--b::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+    background:linear-gradient(180deg,rgba(255,255,255,.30) 0%,rgba(255,255,255,.06) 42%,transparent 72%);}
+  .cta--b:hover,.cta--b.force-hover{transform:translateY(-1px);
+    box-shadow:0 12px 34px -8px rgba(99,76,241,.7),0 0 40px -2px rgba(168,85,247,.7);}
+  .bar--dark .cta--b,.sw--dark .cta--b{background:color-mix(in oklab,var(--violet) 22%,transparent);
+    color:var(--fg-on-dark);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--lavender) 52%,transparent);}
+  .bar--dark .cta--b::before,.sw--dark .cta--b::before{display:none;}
+  .bar--dark .cta--b:hover,.sw--dark .cta--b:hover,
+  .bar--dark .cta--b.force-hover,.sw--dark .cta--b.force-hover{background:var(--violet);color:#fff;
+    box-shadow:inset 0 0 0 1px transparent,0 10px 24px -10px rgba(108,76,241,.8),0 0 22px -8px rgba(123,92,246,.55);}
+
+  /* C — Lens Edge: violet fill, 1px lens-gradient ring, faint outer bloom. */
+  .cta--c{background:var(--violet);
+    box-shadow:0 5px 16px -9px rgba(108,76,241,.7),0 0 0 1px rgba(255,255,255,.04);}
+  .cta--c::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+    background:var(--lens);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:.9;}
+  .cta--c:hover,.cta--c.force-hover{background:var(--violet-2);
+    box-shadow:0 9px 22px -10px rgba(108,76,241,.8),0 0 26px -6px rgba(78,200,232,.45);}
+
+  /* D — Current (baseline): the live --grad-cta purple→blue + sheen. */
+  .cta--d{background:var(--grad-cta);font-weight:500;
+    box-shadow:0 6px 22px -6px rgba(99,76,241,.5),0 0 18px -2px rgba(168,85,247,.35);}
+  .cta--d::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+    background:linear-gradient(180deg,rgba(255,255,255,.30) 0%,rgba(255,255,255,.06) 42%,transparent 72%);}
+  .cta--d:hover,.cta--d.force-hover{box-shadow:0 12px 34px -8px rgba(99,76,241,.7),0 0 40px -2px rgba(168,85,247,.7);}
+
+  /* E — Soft Ghost: translucent violet wash, violet text, hairline. Quietest. */
+  .cta--e{background:color-mix(in oklab,var(--violet) 12%,transparent);color:var(--violet);
+    box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--violet) 36%,transparent);}
+  .bar--dark .cta--e{background:color-mix(in oklab,var(--lavender) 16%,transparent);color:#fff;
+    box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--lavender) 46%,transparent);}
+  .cta--e:hover,.cta--e.force-hover{background:var(--violet);color:#fff;
+    box-shadow:inset 0 0 0 1px transparent,0 8px 20px -10px rgba(108,76,241,.7);}
+  .bar--dark .cta--e:hover,.bar--dark .cta--e.force-hover{background:var(--violet-2);}
+
+  /* F — Aurora: violet base, light sweep sheen on hover, cool bloom. */
+  .cta--f{background:linear-gradient(180deg,#7b5cf6 0%,#6c4cf1 100%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 6px 18px -10px rgba(108,76,241,.7);}
+  .cta--f::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;pointer-events:none;z-index:1;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);
+    transform:skewX(-18deg);transition:left .6s var(--ease);}
+  .cta--f .arr,.cta--f span{position:relative;z-index:2;}
+  .cta--f:hover::after,.cta--f.force-hover::after{left:120%;}
+  .cta--f:hover,.cta--f.force-hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.24),
+    0 11px 26px -10px rgba(108,76,241,.85),0 0 28px -6px rgba(54,224,194,.4);}
+
+  /* ── comparison grid ──────────────────────────────────────────────────── */
+  h2.section{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-.01em;
+    margin:38px 0 4px;}
+  .section-sub{color:var(--muted);font-size:13.5px;margin:0 0 18px;}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  @media (max-width:720px){.grid{grid-template-columns:1fr;}}
+  .card{background:#fff;border:1px solid #dcdce3;border-radius:16px;overflow:hidden;
+    box-shadow:0 10px 30px -22px rgba(20,16,45,.5);}
+  .card.is-pick{border-color:var(--violet);box-shadow:0 0 0 2px rgba(108,76,241,.18),0 12px 34px -22px rgba(108,76,241,.6);}
+  .card__head{display:flex;align-items:baseline;gap:10px;padding:14px 16px 10px;}
+  .card__tag{font-family:var(--font-mono);font-size:12px;color:var(--violet);}
+  .card__name{font-weight:600;font-size:14.5px;}
+  .card__pick{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:#fff;background:var(--violet);border-radius:999px;padding:3px 9px;}
+  .card__why{padding:0 16px 14px;color:var(--muted);font-size:13px;line-height:1.5;}
+  .swatches{display:grid;grid-template-columns:1fr 1fr;}
+  .sw{display:flex;align-items:center;justify-content:center;min-height:92px;padding:14px;}
+  .sw--light{background:
+    color-mix(in oklab,var(--bg) 62%,transparent),
+    var(--bg-soft);
+    background-blend-mode:normal;}
+  .sw--light{background:var(--bg-soft);}
+  .sw--dark{background:#000;position:relative;}
+  .sw--dark::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(70% 120% at 20% -10%,rgba(108,76,241,.30),transparent 60%);}
+  .sw .cta{position:relative;z-index:1;}
+  .sw-label{position:absolute;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin:0;}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1 class="lede">Launch App — кнопка хедера</h1>
+  <p class="sub">Проработка CTA в брендовой палитре EvalLense. Текущий вариант — громкий
+    фиолетово-синий градиент (D). Кандидаты A–F держатся брендового фиолетового
+    <code>#6c4cf1</code>: цель — органично, не «выбивается», но взгляд цепляет. Все кнопки
+    показаны на реальном стекле хедера (light и dark) в точных токенах и размере (<code>btn-sm</code>).</p>
+
+  <div class="toolbar">
+    <button class="tgl" id="hoverTgl" aria-pressed="false"><span class="dot"></span>Показать hover-состояние</button>
+    <span class="hint">Наведи на любую кнопку, чтобы увидеть микро-анимацию вживую</span>
+  </div>
+
+  <!-- In-context: recommended candidate on both surfaces -->
+  <h2 class="section">В контексте — рекомендация (B · Adaptive)</h2>
+  <p class="section-sub">Залитый фиолетовый на светлом баре, прозрачная обводка на тёмном — кнопка меняется вместе с хедером при скролле.</p>
+
+  <div class="stage">
+    <div class="band band--ink">
+      <div class="bar bar--dark">
+        <span class="brand"><span class="mark"></span>EvalLense</span>
+        <span class="divider"></span>
+        <span class="sect">Product</span>
+        <nav class="nav"><a>Path</a><a>Modules</a><a>Jury</a><a>Outputs</a></nav>
+        <a class="cta cta--b" href="#"><span>Launch App</span><span class="arr">→</span></a>
+      </div>
+      <div class="band__body">
+        <p class="band__eye">The organizer path</p>
+        <h3 class="band__h">Seven steps, one evaluation run.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="band band--soft">
+      <div class="bar">
+        <span class="brand"><span class="mark"></span>EvalLense</span>
+        <span class="divider"></span>
+        <span class="sect">Product</span>
+        <nav class="nav"><a>Path</a><a>Modules</a><a>Jury</a><a>Outputs</a></nav>
+        <a class="cta cta--b" href="#"><span>Launch App</span><span class="arr">→</span></a>
+      </div>
+      <div class="band__body">
+        <p class="band__eye">Every deck</p>
+        <h3 class="band__h">Runs the same five stages.</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Candidate grid -->
+  <h2 class="section">Кандидаты</h2>
+  <p class="section-sub">Каждый — на светлом и тёмном стекле. Бейдж — рекомендация.</p>
+
+  <div class="grid" id="grid">
+    <div class="card is-pick">
+      <div class="card__head"><span class="card__tag">B</span><span class="card__name">Adaptive (light/dark)</span><span class="card__pick">Внедрено</span></div>
+      <p class="card__why">На белом — наш яркий футерный градиент <code>--grad-cta</code> (как кнопка в футере); на чёрном — прозрачная фиолетовая заливка + лавандовая обводка, чтобы не вырывалась. На hover заливается фиолетовым.</p>
+      <div class="swatches">
+        <div class="sw sw--light"><a class="cta cta--b" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+        <div class="sw sw--dark"><a class="cta cta--b" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__tag">A</span><span class="card__name">Solid Brand</span></div>
+      <p class="card__why">Плоский брендовый <code>--violet</code>, одна мягкая тень. Самый сдержанный — максимально не отвлекает, но и объёма меньше.</p>
+      <div class="swatches">
+        <div class="sw sw--light"><a class="cta cta--a" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+        <div class="sw sw--dark"><a class="cta cta--a" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__tag">C</span><span class="card__name">Lens Edge</span></div>
+      <p class="card__why">Фиолетовая заливка + 1px кольцо из бренд-градиента <code>--lens</code> и холодный отблеск на hover. Заметнее остальных — тянет взгляд сильнее.</p>
+      <div class="swatches">
+        <div class="sw sw--light"><a class="cta cta--c" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+        <div class="sw sw--dark"><a class="cta cta--c" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__tag">F</span><span class="card__name">Aurora</span></div>
+      <p class="card__why">Фиолетовая база + световой блик-свайп и бирюзовое свечение только при наведении. В покое — тихая, на hover — живая.</p>
+      <div class="swatches">
+        <div class="sw sw--light"><a class="cta cta--f" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+        <div class="sw sw--dark"><a class="cta cta--f" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__tag">E</span><span class="card__name">Soft Ghost</span></div>
+      <p class="card__why">Полупрозрачная фиолетовая заливка + волосяная рамка, заливается на hover. Самый ненавязчивый — но как главный CTA может читаться слабовато.</p>
+      <div class="swatches">
+        <div class="sw sw--light"><a class="cta cta--e" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+        <div class="sw sw--dark"><a class="cta cta--e" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__head"><span class="card__tag">D</span><span class="card__name">Current (baseline)</span></div>
+      <p class="card__why">Живой <code>--grad-cta</code> фиолетово-синий с бликом. Для сравнения — самый «громкий» и наиболее выбивается из брендового фиолетового.</p>
+      <div class="swatches">
+        <div class="sw sw--light"><a class="cta cta--d" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+        <div class="sw sw--dark"><a class="cta cta--d" href="#"><span>Launch App</span><span class="arr">→</span></a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const tgl = document.getElementById('hoverTgl');
+  tgl.addEventListener('click', () => {
+    const on = tgl.getAttribute('aria-pressed') === 'true';
+    tgl.setAttribute('aria-pressed', String(!on));
+    document.querySelectorAll('.cta').forEach(b => b.classList.toggle('force-hover', !on));
+  });
+</script>
+</body>
+</html>

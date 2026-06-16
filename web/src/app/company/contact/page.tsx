@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { ScrollFX } from "@/components/ScrollFX";
@@ -120,13 +121,23 @@ const SOCIALS = [
   },
 ];
 
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Company",
+  links: [
+    { label: "Channels", href: "#channels" },
+    { label: "Docs", href: "#docs" },
+    { label: "Newsroom", href: "#news" },
+  ],
+};
+
 export default async function ContactPage() {
   // Latest news — read at build time, exactly like /blog. Gracefully empty.
   const posts = (await getAllPosts()).slice(0, 3);
 
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="contact">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft ct-hero">
@@ -184,7 +195,7 @@ export default async function ContactPage() {
         </section>
 
         {/* 2. Ways to reach us — bento / feature-grid, light. */}
-        <section className="band ct-channels">
+        <section id="channels" className="band ct-channels">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -228,7 +239,7 @@ export default async function ContactPage() {
         </section>
 
         {/* 3. Documentation (external) — editorial split / full-bleed, DARK. */}
-        <section className="band ink ct-docs">
+        <section id="docs" className="band ink ct-docs">
           <div className="wrap ct-docs__split">
             <div className="ct-docs__copy" data-reveal="left">
               <span className="eyebrow">
@@ -275,7 +286,7 @@ export default async function ContactPage() {
         </section>
 
         {/* 4. Latest news — horizontal-gallery, light. 3 newest posts. */}
-        <section className="band ct-news">
+        <section id="news" className="band ct-news">
           <div className="wrap">
             <div className="head ct-news__head" data-reveal="up">
               <div className="ct-news__heading">

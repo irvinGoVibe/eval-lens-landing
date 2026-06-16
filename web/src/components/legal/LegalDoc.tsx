@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 
 /*
@@ -34,9 +35,16 @@ export function LegalDoc({
   intro: ReactNode;
   sections: LegalSection[];
 }) {
+  // Header anchors = this page's first three document sections (each already
+  // carries an id). Adjust per page later — keep it to ≤3.
+  const headerNav: SectionNav = {
+    section: "Legal",
+    links: sections.slice(0, 3).map((s) => ({ label: s.heading, href: `#${s.id}` })),
+  };
+
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={headerNav} />
       <main className="legal">
         <section className="band soft legal-hero">
           <div className="wrap legal-hero__inner">

@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Trust",
+  sectionHref: "/trust",
+  links: [
+    { label: "Workspace", href: "#workspace" },
+    { label: "Access", href: "#flow" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "EvalLense — Security & Privacy for Pitch Deck Evaluation",
@@ -113,7 +124,7 @@ const ACCESS_STEPS = [
 export default function SecurityPrivacyPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="security">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft security-hero">
@@ -201,7 +212,7 @@ export default function SecurityPrivacyPage() {
         </section>
 
         {/* 3. Private workspace — bento, DARK. */}
-        <section className="band ink security-workspace">
+        <section id="workspace" className="band ink security-workspace">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -283,6 +294,7 @@ export default function SecurityPrivacyPage() {
 
         {/* 5. Under the hood — pinned multi-screen, DARK. Four steps light up. */}
         <section
+          id="flow"
           className="band ink security-flow"
           data-pin
           data-pin-steps="4"

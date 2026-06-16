@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
@@ -111,10 +112,21 @@ const COLLECTED = [
   },
 ];
 
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Product",
+  sectionHref: "/product/overview",
+  links: [
+    { label: "Problem", href: "#problem" },
+    { label: "How It Works", href: "#flow" },
+    { label: "Collected", href: "#collect" },
+  ],
+};
+
 export default function EntryHubPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="entry-hub">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft eh-hero">
@@ -171,7 +183,7 @@ export default function EntryHubPage() {
         </section>
 
         {/* 2. The intake problem — full-bleed statement, DARK. */}
-        <section className="band ink eh-problem">
+        <section id="problem" className="band ink eh-problem">
           <div className="wrap eh-problem__statement">
             <span className="eyebrow" data-reveal="up">
               <span className="dot" aria-hidden="true"></span>
@@ -200,6 +212,7 @@ export default function EntryHubPage() {
 
         {/* 3. How Entry Hub works — pinned multi-screen, light. Six steps light up. */}
         <section
+          id="flow"
           className="band eh-flow"
           data-pin
           data-pin-steps="6"
@@ -256,7 +269,7 @@ export default function EntryHubPage() {
         </section>
 
         {/* 4. What gets collected — feature grid, light. */}
-        <section className="band eh-collect">
+        <section id="collect" className="band eh-collect">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">

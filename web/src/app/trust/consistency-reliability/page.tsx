@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Trust",
+  sectionHref: "/trust",
+  links: [
+    { label: "Mechanisms", href: "#mechanisms" },
+    { label: "Spread", href: "#spread" },
+    { label: "Benchmark", href: "#benchmark" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "EvalLense — Consistency & Reliability of Pitch Evaluation",
@@ -170,7 +182,7 @@ const BENCHMARK_STATS = [
 export default function ConsistencyReliabilityPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="consistency">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft consistency-hero">
@@ -281,7 +293,7 @@ export default function ConsistencyReliabilityPage() {
         </section>
 
         {/* 3. Reliability mechanisms — bento / feature grid, DARK. */}
-        <section className="band ink consistency-mechanisms">
+        <section id="mechanisms" className="band ink consistency-mechanisms">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -379,6 +391,7 @@ export default function ConsistencyReliabilityPage() {
 
         {/* 5. Spread — pinned multi-screen, DARK. Three thresholds light up. */}
         <section
+          id="spread"
           className="band ink consistency-spread"
           data-pin
           data-pin-steps="3"
@@ -468,7 +481,7 @@ export default function ConsistencyReliabilityPage() {
         </section>
 
         {/* 7. Benchmark evidence — stat band, DARK. */}
-        <section className="band ink consistency-benchmark">
+        <section id="benchmark" className="band ink consistency-benchmark">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">

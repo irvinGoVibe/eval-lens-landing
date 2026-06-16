@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
@@ -113,10 +114,21 @@ const HITL_STEPS = [
   },
 ];
 
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Product",
+  sectionHref: "/product/overview",
+  links: [
+    { label: "Board", href: "#board" },
+    { label: "Human Loop", href: "#hitl" },
+    { label: "Compare", href: "#compare" },
+  ],
+};
+
 export default function ReviewBoardPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="review-board">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft rb-hero">
@@ -234,7 +246,7 @@ export default function ReviewBoardPage() {
         </section>
 
         {/* 3. What lives on the board — bento, DARK. Visual slot via .media-ph. */}
-        <section className="band ink rb-board">
+        <section id="board" className="band ink rb-board">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -285,6 +297,7 @@ export default function ReviewBoardPage() {
 
         {/* 4. Human-in-the-loop — pinned multi-screen, light. Four steps light up. */}
         <section
+          id="hitl"
           className="band rb-hitl"
           data-pin
           data-pin-steps="4"
@@ -340,7 +353,7 @@ export default function ReviewBoardPage() {
         </section>
 
         {/* 5. Compare and leaderboard — editorial split, DARK. */}
-        <section className="band ink rb-compare">
+        <section id="compare" className="band ink rb-compare">
           <div className="wrap rb-compare__split">
             <div className="rb-compare__copy" data-reveal="left">
               <span className="eyebrow">

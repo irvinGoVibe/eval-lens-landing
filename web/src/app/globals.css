@@ -125,6 +125,10 @@ button,input,textarea,select{font:inherit}
 html{
   -webkit-text-size-adjust:100%;
   scroll-behavior:smooth;
+  /* black page canvas: this is what shows in the overscroll / rubber-band strip
+     past the bottom of the footer (and above the top). Set on the ROOT so it
+     paints the viewport canvas instead of body's white propagating there. */
+  background:var(--bg-ink);
 }
 body{
   margin:0;
@@ -138,15 +142,26 @@ body{
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
-/* Hard-clip horizontal overflow on the page body (decorative elements — hero
-   splash SVGs, orange-glow blooms sized in vw, scrub-files positioned
-   off-screen — must not trigger a horizontal scroll on mobile). `clip` is
-   preferred over `hidden` because it doesn't create a scroll container, which
-   would break sticky scroll-scrub. Scoped to `main` rather than html/body on
-   purpose: the sticky `.page-header` is a *sibling* of `main`, so keeping the
-   clip off its ancestors lets its `backdrop-filter` blur work in Chrome —
-   Blink drops backdrop-filter when any ancestor has `overflow: clip`. */
-main{overflow-x:clip;}
+/* Hard-clip horizontal overflow (decorative elements — hero splash SVGs,
+   orange-glow blooms sized in vw, scrub-files positioned off-screen — must not
+   trigger a horizontal scroll on mobile). `clip` over `hidden` so it doesn't
+   create a scroll container (which would break sticky scroll-scrub).
+
+   WHERE the clip lives is load-bearing for Chrome's `backdrop-filter` (Safari
+   is lenient; Blink is not), so it differs per page:
+
+   - Homepage (`#hero` present): clip at the ROOT (`html`/`body`). Root-level
+     clip does NOT disable the bento horse scene's backdrop-filter blur, but a
+     non-root `<main>` clip container WOULD — so the homepage main (`#top`) is
+     left un-clipped.
+   - Internal pages: clip on `<main>` instead. The sticky `.page-header` is a
+     *sibling* of main, so main's clip isn't on the header's ancestor chain (its
+     own blur keeps working), while main being its own clip context is what lets
+     Chrome composite it as the header's backdrop — without it the bar renders
+     with no blur. Root clip stays OFF internal pages so it never lands on the
+     header's ancestors. */
+html:has(#hero), body:has(#hero){overflow-x:clip;}
+main:not(#top){overflow-x:clip;}
 h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0;letter-spacing:-.022em;line-height:1.06;text-wrap:balance;}
 p{margin:0;text-wrap:pretty;}
 a{color:inherit;text-decoration:none;}
@@ -361,6 +376,14 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cta-band--bleed{overflow:visible;z-index:1;}
 
 .cta-band__inner{position:relative;z-index:1;max-width:760px;margin:0 auto;}
+/* test-only HUD: which candidate clip is on screen while cycling via the CTA */
+.cta-band__test-hud{
+  position:absolute;z-index:2;top:16px;left:16px;pointer-events:none;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;
+  color:rgba(255,255,255,.82);background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.18);border-radius:980px;
+  padding:5px 11px;backdrop-filter:blur(8px);
+}
 .cta-band__eyebrow{justify-content:center;}
 .cta-band--dark .cta-band__eyebrow{color:var(--lavender);}
 .cta-band__title{
@@ -389,6 +412,15 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 
 /* ---- aurora background ---- */
 .cta-band__aurora{
+  /* palette + pulse speeds — overridden per variation (.cta-band__aurora--<id>);
+     defaults = the "violet" variation */
+  --cta-c1:var(--violet);
+  --cta-c2:var(--cyan);
+  --cta-c3:var(--lavender);
+  --cta-spd1:9s;
+  --cta-spd2:8s;
+  --cta-spd3:11s;
+  --cta-breathe:7.5s;
   position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
   /* feather every edge so the radial glows dissolve BEFORE the section border
      instead of being hard-clipped into a visible band. The bottom fade is the
@@ -402,7 +434,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
     linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
   mask-composite:intersect;
   /* slow breathing of the whole field on top of the per-bloom drift */
-  animation:cta-aurora-breathe 7.5s ease-in-out infinite;
+  animation:cta-aurora-breathe var(--cta-breathe) ease-in-out infinite;
 }
 /* keep the bleed shallow — the glow only kisses the top of the footer */
 .cta-band--bleed .cta-band__aurora{bottom:calc(-1 * var(--cta-bleed,96px));}
@@ -430,18 +462,41 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cta-band__bloom--core{
   left:50%;bottom:-22%;width:min(74vw,820px);height:min(74vw,820px);
   transform:translateX(-50%);
-  background:radial-gradient(circle,color-mix(in oklab,var(--violet) 62%,transparent),transparent 66%);
-  opacity:.55;animation:cta-bloom-core 9s ease-in-out infinite;
+  background:radial-gradient(circle,color-mix(in oklab,var(--cta-c1) 62%,transparent),transparent 66%);
+  opacity:.55;animation:cta-bloom-core var(--cta-spd1) ease-in-out infinite;
 }
 .cta-band__bloom--left{
   left:10%;top:8%;width:min(44vw,500px);height:min(44vw,500px);
-  background:radial-gradient(circle,color-mix(in oklab,var(--cyan) 55%,transparent),transparent 64%);
-  opacity:.42;animation:cta-bloom-left 8s ease-in-out infinite;
+  background:radial-gradient(circle,color-mix(in oklab,var(--cta-c2) 55%,transparent),transparent 64%);
+  opacity:.42;animation:cta-bloom-left var(--cta-spd2) ease-in-out infinite;
 }
 .cta-band__bloom--right{
   right:9%;top:16%;width:min(40vw,460px);height:min(40vw,460px);
-  background:radial-gradient(circle,color-mix(in oklab,var(--lavender) 58%,transparent),transparent 64%);
-  opacity:.36;animation:cta-bloom-right 11s ease-in-out infinite;
+  background:radial-gradient(circle,color-mix(in oklab,var(--cta-c3) 58%,transparent),transparent 64%);
+  opacity:.36;animation:cta-bloom-right var(--cta-spd3) ease-in-out infinite;
+}
+
+/* ---- aurora palettes (id passed via auroraVariant; cycled by the test cycler).
+   "violet" is the default declared on .cta-band__aurora above. ---- */
+.cta-band__aurora--ember{
+  --cta-c1:var(--orange-hot);--cta-c2:var(--orange-core);--cta-c3:var(--orange-soft);
+  --cta-spd1:7s;--cta-spd2:6s;--cta-spd3:9s;--cta-breathe:6s;
+}
+.cta-band__aurora--ocean{
+  --cta-c1:#3b82f6;--cta-c2:#06b6d4;--cta-c3:#7dd3fc;
+  --cta-spd1:13s;--cta-spd2:15s;--cta-spd3:17s;--cta-breathe:9.5s;
+}
+.cta-band__aurora--magenta{
+  --cta-c1:#d946ef;--cta-c2:#ec4899;--cta-c3:#c084fc;
+  --cta-spd1:8s;--cta-spd2:10s;--cta-spd3:12s;--cta-breathe:7s;
+}
+.cta-band__aurora--emerald{
+  --cta-c1:#10b981;--cta-c2:#34d399;--cta-c3:#5eead4;
+  --cta-spd1:10s;--cta-spd2:9s;--cta-spd3:13s;--cta-breathe:8s;
+}
+.cta-band__aurora--gold{
+  --cta-c1:#f59e0b;--cta-c2:#fbbf24;--cta-c3:#a78bfa;
+  --cta-spd1:6s;--cta-spd2:7s;--cta-spd3:8s;--cta-breathe:5.5s;
 }
 /* on the light surface the screen blend washes out — drop blend, soften */
 .cta-band--light .cta-band__bloom--core{opacity:.3;}
@@ -2708,6 +2763,12 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   backdrop-filter:saturate(180%) blur(20px);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:1px solid var(--border-2);
+  /* Force a GPU compositing layer. Chrome (Blink) frequently fails to apply
+     `backdrop-filter` on a `position:sticky` bar until it's promoted to its own
+     layer; this hint fixes the missing-blur-in-Chrome case (Safari composites
+     it regardless). translateZ(0) doesn't affect sticky behaviour. */
+  transform:translateZ(0);
+  will-change:transform;
   /* cross-fade between light/dark variants as HeaderThemeSync toggles --dark */
   transition:background-color .45s var(--ease), border-color .45s var(--ease);
 }
@@ -4830,10 +4891,6 @@ section[id]{scroll-margin-top:72px;}
 .contact .seg-card__signal{width:10px;height:10px;border-radius:50%;background:var(--lens);}
 .contact .ct-news-card .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
 .contact .ct-news-card__title{font-size:clamp(18px,2.1vw,22px);line-height:1.2;letter-spacing:-.01em;color:var(--fg);}
-.contact .ct-news-card__date{margin-top:auto;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.02em;color:var(--muted);}
-
-/* ---- 5. Final CTA — quiet CTA (DARK) ---- */
-.contact .ct-cta .sect-cta{margin-top:34px;}
 
 /* ============================================================
    /product and /trust — section HUB (разводящие) pages.
@@ -4930,6 +4987,11 @@ section[id]{scroll-margin-top:72px;}
 .hub .hub-cta .head{display:flex;flex-direction:column;align-items:center;text-align:center;}
 .hub .hub-cta__sub{max-width:56ch;}
 .hub .hub-cta .sect-cta{margin-top:34px;}
+.contact .ct-news-card__date{margin-top:auto;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.02em;color:var(--muted);}
+
+/* ---- 5. Final CTA — quiet CTA (DARK) ---- */
+.contact .ct-cta .sect-cta{margin-top:34px;}
+
 /* footer column heading that links to its section hub (Product / Trust) */
 .foot .col h5 a{color:inherit;text-decoration:none;transition:color .3s var(--ease);}
 .foot .col h5 a:hover{color:var(--violet);}

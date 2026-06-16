@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Trust",
+  sectionHref: "/trust",
+  links: [
+    { label: "Pipeline", href: "#pipeline" },
+    { label: "Report", href: "#report" },
+    { label: "Rubric", href: "#rubric" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "EvalLense Methodology — How AI Jury Evaluates Pitch Decks",
@@ -131,7 +143,7 @@ const REPORT_CARDS = [
 export default function MethodologyPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="methodology">
         {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft methodology-hero">
@@ -253,6 +265,7 @@ export default function MethodologyPage() {
             sticky stage; 5 steps light up sequentially via the pin engine.
             A pipeline-diagram .media-ph sits beside the steps. */}
         <section
+          id="pipeline"
           className="band ink methodology-pipeline"
           data-pin
           data-pin-steps="5"
@@ -349,7 +362,7 @@ export default function MethodologyPage() {
 
         {/* 5. Anatomy of a report — horizontal gallery, DARK. Five report
             artefacts, each with a visible .media-ph for its visual. */}
-        <section className="band ink methodology-report">
+        <section id="report" className="band ink methodology-report">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -451,7 +464,7 @@ export default function MethodologyPage() {
         </section>
 
         {/* 7. Rubric system — full-bleed statement, DARK. */}
-        <section className="band ink methodology-rubric">
+        <section id="rubric" className="band ink methodology-rubric">
           <div className="wrap rubric-statement">
             <span className="eyebrow" data-reveal="up">
               <span className="dot" aria-hidden="true"></span>

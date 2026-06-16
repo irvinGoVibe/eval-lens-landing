@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -194,7 +194,7 @@ export default function SiteMapPage() {
 
   return (
     <>
-      <SiteHeader light />
+      <PageHeader />
       <main className="sitemap">
         <section className="band soft sitemap-hero">
           <div className="wrap head">

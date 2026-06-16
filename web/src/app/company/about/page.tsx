@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
+import { PageHeader } from "@/components/PageHeader";
+import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
@@ -138,10 +139,20 @@ const SEGMENTS = [
   { tag: "Universities", body: "Transparent, comparable evaluation across a round." },
 ];
 
+/** Header nav for this page — anchor links to its own sections. ≤3. */
+const HEADER_NAV: SectionNav = {
+  section: "Company",
+  links: [
+    { label: "Story", href: "#story" },
+    { label: "Principles", href: "#principles" },
+    { label: "Team", href: "#team" },
+  ],
+};
+
 export default function AboutPage() {
   return (
     <>
-      <SiteHeader light />
+      <PageHeader nav={HEADER_NAV} />
       <main className="about">
         {/* 1. Hero / mission — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft ab-hero">
@@ -228,6 +239,7 @@ export default function AboutPage() {
 
         {/* 3. From AI Jury to EvalLense — pinned multi-screen, DARK. */}
         <section
+          id="story"
           className="band ink ab-story"
           data-pin
           data-pin-steps="3"
@@ -308,7 +320,7 @@ export default function AboutPage() {
         </section>
 
         {/* 4. Our principles — bento, light. Authored, verbatim. */}
-        <section className="band soft ab-principles">
+        <section id="principles" className="band soft ab-principles">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -340,6 +352,7 @@ export default function AboutPage() {
 
         {/* 5. Team — creative pinned reveal, DARK. Three members. */}
         <section
+          id="team"
           className="band ink ab-team"
           data-pin
           data-pin-steps="3"
