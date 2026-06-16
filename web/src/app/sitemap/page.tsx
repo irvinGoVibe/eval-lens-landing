@@ -61,6 +61,7 @@ const TREE: TreeNode = {
     },
     {
       label: "Trust",
+      path: "/trust",
       status: "ready",
       children: [
         { label: "Methodology", path: "/trust/methodology", status: "ready" },

@@ -69,7 +69,9 @@ export function Footer({ variant = "light" }: FooterProps) {
               </nav>
             </div>
             <div className="col">
-              <h5>Trust</h5>
+              <h5>
+                <Link href="/trust">Trust</Link>
+              </h5>
               <nav>
                 <Link href="/trust/methodology">Methodology</Link>
                 <Link href="/trust/consistency-reliability">
