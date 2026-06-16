@@ -372,6 +372,19 @@ export default function AboutPage() {
                     role="img"
                     aria-label={`Full-height portrait of ${m.name}`}
                   >
+                    <svg
+                      className="ab-member__avatar"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="8.5" r="4" />
+                      <path d="M4.5 21c0-4.4 3.4-7.5 7.5-7.5s7.5 3.1 7.5 7.5" />
+                    </svg>
                     <span className="media-ph__label">
                       Portrait · {m.name} · 3:4
                     </span>

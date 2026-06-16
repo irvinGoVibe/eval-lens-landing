@@ -4143,40 +4143,55 @@ body:not(.hero-ready){overflow:hidden;}
   .about .ab-prin-tile--feature{grid-column:span 1;}
 }
 
-/* ---- 5. Team — creative pinned reveal (DARK) ---- */
+/* ---- 5. Team — creative pinned reveal (DARK) ----
+   Pinned scene: members are stacked absolutely and cross-fade as the pin
+   advances. The stage MUST be a flex column (not grid) so the relative scene
+   keeps full width — its only children are absolute members, so a grid track
+   would collapse it to 0 and crush the layout into a sliver. */
 .about .ab-team{padding:0;min-height:300vh;}
-.about .ab-team__stage{min-height:100svh;padding:clamp(36px,6vh,72px) 0;display:grid;align-content:center;box-sizing:border-box;}
-.about .ab-team__intro{margin-bottom:clamp(28px,4vw,48px);}
+.about .ab-team__stage{min-height:100svh;padding:clamp(48px,7vh,96px) 0;display:flex;flex-direction:column;justify-content:center;gap:clamp(24px,4vw,44px);box-sizing:border-box;}
 .about .ab-team__intro .title{color:var(--fg-on-dark);}
-.about .ab-team__scene{position:relative;min-height:clamp(420px,56vh,620px);min-width:0;}
-.about .ab-member{position:absolute;inset:0;display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,72px);align-items:center;min-width:0;opacity:0;transform:translateX(48px);transition:opacity .6s var(--ease),transform .6s var(--ease);pointer-events:none;}
+.about .ab-team__scene{position:relative;width:100%;min-height:clamp(440px,56vh,600px);min-width:0;}
+.about .ab-member{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px);align-items:center;opacity:0;transform:translateX(40px);transition:opacity .6s var(--ease),transform .6s var(--ease);pointer-events:none;}
 .about .ab-member.is-current{opacity:1;transform:none;pointer-events:auto;}
 /* surname backdrop — large type behind the portrait, lens-tinted */
-.about .ab-member__surname{position:absolute;left:0;bottom:8%;z-index:0;font-family:var(--font-mono);font-weight:600;font-size:clamp(80px,16vw,200px);line-height:.86;letter-spacing:-.04em;color:transparent;background:var(--lens);-webkit-background-clip:text;background-clip:text;opacity:.12;white-space:nowrap;pointer-events:none;max-width:100%;overflow:hidden;}
-.about .ab-member__media{position:relative;z-index:1;min-width:0;width:100%;max-width:clamp(220px,30vw,360px);justify-self:center;align-self:end;}
+.about .ab-member__surname{position:absolute;left:0;bottom:4%;z-index:0;font-family:var(--font-mono);font-weight:600;font-size:clamp(72px,13vw,176px);line-height:.84;letter-spacing:-.04em;color:transparent;background:var(--lens);-webkit-background-clip:text;background-clip:text;opacity:.14;white-space:nowrap;pointer-events:none;max-width:100%;overflow:hidden;}
+.about .ab-member__media{position:relative;z-index:1;min-width:0;width:100%;max-width:clamp(240px,28vw,340px);justify-self:center;align-self:end;}
+/* portrait placeholder reads as a person-photo slot */
+.about .ab-member__avatar{position:absolute;top:46%;left:50%;width:42%;height:auto;transform:translate(-50%,-50%);color:var(--violet);opacity:.45;z-index:0;}
 .about .ab-member__copy{position:relative;z-index:1;min-width:0;display:flex;flex-direction:column;gap:14px;}
 .about .ab-member__copy .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
 .about .ab-member__name{font-size:clamp(28px,4vw,52px);letter-spacing:-.03em;font-weight:600;line-height:1.04;color:var(--fg-on-dark);}
 .about .ab-member__bio{font-size:clamp(15px,1.7vw,18px);line-height:1.6;color:var(--muted-on-dark);max-width:58ch;}
-/* narrow screens: relax the pin into a vertical editorial stack — every
-   member fully visible, portrait above the copy, surname tucked behind */
-@media (max-width:880px){
-  .about .ab-team{min-height:0;}
-  .about .ab-team__stage{position:static;min-height:0;padding:clamp(36px,6vh,72px) var(--gutter);}
-  .about .ab-team__scene{position:static;min-height:0;display:flex;flex-direction:column;gap:clamp(48px,8vw,80px);}
-  .about .ab-member{position:static;inset:auto;grid-template-columns:1fr;gap:clamp(20px,4vw,32px);opacity:1;transform:none;pointer-events:auto;}
-  .about .ab-member__media{order:-1;max-width:clamp(220px,60vw,320px);justify-self:start;align-self:auto;}
-  .about .ab-member__surname{position:static;font-size:clamp(56px,18vw,120px);opacity:.16;white-space:normal;margin-bottom:-.18em;}
-}
-/* reduced-motion: same vertical-stack escape, content never hidden behind
-   .is-current; the scene lays out statically regardless of viewport width */
+
+/* reduced-motion: un-pin into a full-width editorial stack (portrait left,
+   copy right). Every member visible, never hidden behind .is-current. */
 @media (prefers-reduced-motion:reduce){
   .about .ab-team{min-height:0;}
-  .about .ab-team__stage{position:static;min-height:0;padding:clamp(36px,6vh,72px) var(--gutter);}
-  .about .ab-team__scene{position:static;min-height:0;display:flex;flex-direction:column;gap:clamp(48px,8vw,80px);}
-  .about .ab-member{position:static;inset:auto;grid-template-columns:1fr;gap:clamp(20px,4vw,32px);opacity:1;transform:none;transition:none;pointer-events:auto;}
-  .about .ab-member__media{order:-1;max-width:clamp(220px,60vw,320px);justify-self:start;align-self:auto;}
-  .about .ab-member__surname{position:static;font-size:clamp(56px,16vw,120px);opacity:.16;white-space:normal;margin-bottom:-.18em;}
+  .about .ab-team__stage{position:static;min-height:0;padding:clamp(48px,7vh,96px) var(--gutter);gap:clamp(40px,6vw,64px);}
+  .about .ab-team__scene{position:static;min-height:0;display:flex;flex-direction:column;gap:0;}
+  .about .ab-member{position:relative;inset:auto;grid-template-columns:minmax(0,clamp(220px,26vw,300px)) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:center;opacity:1;transform:none;transition:none;pointer-events:auto;padding:clamp(36px,5vw,56px) 0;border-top:1px solid rgba(255,255,255,.12);}
+  .about .ab-member:first-of-type{border-top:none;padding-top:0;}
+  .about .ab-member__media{max-width:none;width:100%;justify-self:start;align-self:start;}
+  .about .ab-member__surname{bottom:auto;top:-.12em;font-size:clamp(44px,8vw,84px);opacity:.1;}
+}
+
+/* tablet & mobile: same editorial stack; portrait left, copy right */
+@media (max-width:880px){
+  .about .ab-team{min-height:0;}
+  .about .ab-team__stage{position:static;min-height:0;padding:clamp(48px,9vw,80px) var(--gutter);gap:clamp(36px,6vw,56px);}
+  .about .ab-team__scene{position:static;min-height:0;display:flex;flex-direction:column;gap:0;}
+  .about .ab-member{position:relative;inset:auto;grid-template-columns:minmax(0,clamp(160px,30vw,230px)) minmax(0,1fr);gap:clamp(20px,4vw,36px);align-items:center;opacity:1;transform:none;transition:none;pointer-events:auto;padding:clamp(32px,6vw,44px) 0;border-top:1px solid rgba(255,255,255,.12);}
+  .about .ab-member:first-of-type{border-top:none;padding-top:0;}
+  .about .ab-member__media{max-width:none;width:100%;justify-self:start;align-self:start;}
+  .about .ab-member__surname{position:absolute;bottom:auto;top:-.06em;font-size:clamp(40px,9vw,72px);opacity:.12;}
+}
+
+/* narrow phones: portrait above copy */
+@media (max-width:560px){
+  .about .ab-member{grid-template-columns:1fr;gap:clamp(16px,4vw,24px);}
+  .about .ab-member__media{max-width:clamp(190px,62vw,280px);justify-self:start;}
+  .about .ab-member__surname{font-size:clamp(40px,13vw,64px);}
 }
 
 /* ---- 6. Who we build for — horizontal scroll-snap gallery (light) ---- */
