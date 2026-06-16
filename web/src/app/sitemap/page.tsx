@@ -44,7 +44,7 @@ const TREE: TreeNode = {
       label: "Product",
       status: "ready",
       children: [
-        { label: "Overview", path: "/product", status: "ready" },
+        { label: "Overview", path: "/product/overview", status: "ready" },
         { label: "Entry Hub", path: "/product/entry-hub", status: "ready" },
         {
           label: "Evidence-Based Reports",

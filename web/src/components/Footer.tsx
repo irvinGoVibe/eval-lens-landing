@@ -59,7 +59,7 @@ export function Footer({ variant = "light" }: FooterProps) {
             <div className="col">
               <h5>Product</h5>
               <nav>
-                <Link href="/product">Overview</Link>
+                <Link href="/product/overview">Overview</Link>
                 <Link href="/product/entry-hub">Entry hub</Link>
                 <Link href="/product/evidence-based-reports">Reports</Link>
                 <Link href="/product/review-board">Review board</Link>
