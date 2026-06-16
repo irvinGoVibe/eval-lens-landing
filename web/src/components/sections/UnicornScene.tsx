@@ -287,7 +287,7 @@ function BackgroundGlow() {
           fog={false}
           depthWrite={false}
           transparent
-          opacity={0.14}
+          opacity={0.05}
         />
       </sprite>
       <sprite scale={[6, 6, 1]} position={[1.5, -0.5, 0]}>
@@ -298,7 +298,7 @@ function BackgroundGlow() {
           fog={false}
           depthWrite={false}
           transparent
-          opacity={0.11}
+          opacity={0.038}
         />
       </sprite>
       <sprite scale={[4.5, 4.5, 1]} position={[0.2, 1.3, 0]}>
@@ -309,7 +309,7 @@ function BackgroundGlow() {
           fog={false}
           depthWrite={false}
           transparent
-          opacity={0.09}
+          opacity={0.028}
         />
       </sprite>
     </group>
@@ -810,16 +810,24 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   );
 }
 
-export default function UnicornScene({ isMobile, active, zoom = 1 }: UnicornSceneProps) {
+export default function UnicornScene({ isMobile, active, zoom = 1, noBackdrop }: UnicornSceneProps) {
   const camZ = 3.2 / zoom;
   return (
     <Canvas
       frameloop={active ? "always" : "never"}
       dpr={isMobile ? [1, 1.5] : [1, 2]}
       camera={{ position: [0, 0.05, camZ], fov: 38 }}
-      gl={{ antialias: true, powerPreference: "high-performance" }}
+      gl={{ antialias: true, powerPreference: "high-performance", alpha: noBackdrop }}
     >
-      <color attach="background" args={["#000000"]} />
+      {/* noBackdrop drops only the OPAQUE black clear: the canvas goes
+          transparent (alpha gl, no scene background) so every empty pixel
+          shows the page's own wash straight through — a smaller head can no
+          longer expose a hard scene-background box. The soft halo (Background
+          glow) still renders: its sprites feather to full transparency at the
+          edges, so on the transparent canvas the glow melts seamlessly into
+          the bento wash instead of reading as a rectangle. mix-blend-screen +
+          the black fog keep fading the model's dark facets into the page. */}
+      {!noBackdrop && <color attach="background" args={["#000000"]} />}
       {/* depth dimmer: black fog keyed to camera distance — the muzzle
           (nearest) stays full-contrast while the neck and far facets sink
           into darkness; background/eye sprites opt out via fog={false} */}
@@ -867,7 +875,7 @@ export default function UnicornScene({ isMobile, active, zoom = 1 }: UnicornScen
         <Bloom
           mipmapBlur
           intensity={isMobile ? 0.3 : 0.5}
-          luminanceThreshold={0.3}
+          luminanceThreshold={0.42}
           luminanceSmoothing={0.25}
           radius={0.75}
         />

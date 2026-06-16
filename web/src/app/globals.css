@@ -125,12 +125,6 @@ button,input,textarea,select{font:inherit}
 html{
   -webkit-text-size-adjust:100%;
   scroll-behavior:smooth;
-  /* hard-clip horizontal overflow at the root so decorative elements
-     (hero splash SVGs, orange-glow blooms sized in vw, scrub-files
-     positioned off-screen) can't trigger a horizontal scroll on mobile.
-     `clip` is preferred over `hidden` because it doesn't create a scroll
-     container, which would break sticky positioning in scroll-scrub. */
-  overflow-x:clip;
 }
 body{
   margin:0;
@@ -143,8 +137,16 @@ body{
   letter-spacing:0;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
-  overflow-x:clip;
 }
+/* Hard-clip horizontal overflow on the page body (decorative elements — hero
+   splash SVGs, orange-glow blooms sized in vw, scrub-files positioned
+   off-screen — must not trigger a horizontal scroll on mobile). `clip` is
+   preferred over `hidden` because it doesn't create a scroll container, which
+   would break sticky scroll-scrub. Scoped to `main` rather than html/body on
+   purpose: the sticky `.page-header` is a *sibling* of `main`, so keeping the
+   clip off its ancestors lets its `backdrop-filter` blur work in Chrome —
+   Blink drops backdrop-filter when any ancestor has `overflow: clip`. */
+main{overflow-x:clip;}
 h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0;letter-spacing:-.022em;line-height:1.06;text-wrap:balance;}
 p{margin:0;text-wrap:pretty;}
 a{color:inherit;text-decoration:none;}
@@ -644,6 +646,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row .btn,
 .site-header__cta.btn,
 .foot.is-dark .btn-glass,
+.horse-ctas .btn-glass,
 .cta-band .btn-glass{
   position:relative;isolation:isolate;overflow:hidden;z-index:0;
   font-weight:500;letter-spacing:-.02em;
@@ -667,6 +670,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row .btn::before,
 .site-header__cta.btn::before,
 .foot.is-dark .btn-glass::before,
+.horse-ctas .btn-glass::before,
 .cta-band .btn-glass::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
   background:
@@ -675,6 +679,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row .btn::after,
 .site-header__cta.btn::after,
 .foot.is-dark .btn-glass::after,
+.horse-ctas .btn-glass::after,
 .cta-band .btn-glass::after{
   content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
   background:
@@ -686,6 +691,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row .btn:hover,
 .site-header__cta.btn:hover,
 .foot.is-dark .btn-glass:hover,
+.horse-ctas .btn-glass:hover,
 .cta-band .btn-glass:hover{
   border-color:rgba(255,255,255,.52);
   backdrop-filter:blur(48px) saturate(2) brightness(1.1);
@@ -699,10 +705,12 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row .btn:hover::after,
 .site-header__cta.btn:hover::after,
 .foot.is-dark .btn-glass:hover::after,
+.horse-ctas .btn-glass:hover::after,
 .cta-band .btn-glass:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
 .hero .cta-row .btn-primary,
 .site-header__cta.btn-primary,
 .foot.is-dark .btn-glass,
+.horse-ctas .btn-glass,
 .cta-band .btn-glass{
   background:
     linear-gradient(145deg,
@@ -714,6 +722,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row .btn-primary:hover,
 .site-header__cta.btn-primary:hover,
 .foot.is-dark .btn-glass:hover,
+.horse-ctas .btn-glass:hover,
 .cta-band .btn-glass:hover{
   background:
     linear-gradient(145deg,
@@ -744,6 +753,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .site-header__cta.btn .btn-txt,
 .foot.is-dark .btn-glass .btn-txt,
 .foot.is-dark .btn-glass .arr,
+.horse-ctas .btn-glass .btn-txt,
+.horse-ctas .btn-glass .arr,
 .cta-band .btn-glass .btn-txt,
 .cta-band .btn-glass .arr{position:relative;z-index:1;}
 .hero .cta-row .btn .arr{
@@ -828,7 +839,12 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero-ready .hero-fade.d3{transition-delay:.12s;}
 .hero-ready .hero-fade.d4{transition-delay:.18s;}
 
-body:not(.hero-ready){overflow:hidden;}
+/* Homepage hero scroll-lock until the hero is ready. Scoped to `:has(#hero)`
+   so it only applies on the homepage — on internal pages an `overflow:hidden`
+   body would (a) silently break the sticky header's `backdrop-filter` in Chrome
+   (Blink drops it under any non-visible-overflow ancestor) and (b) never lift,
+   since legal/sitemap/404 don't mount ScrollFX to add `.hero-ready`. */
+body:not(.hero-ready):has(#hero){overflow:hidden;}
 
 /* glitch-smash: text shudders and RGB-splits as the unicorn punches through */
 .hero-smash .hero-fade{
@@ -2496,8 +2512,46 @@ body:not(.hero-ready){overflow:hidden;}
 .foot.is-dark .foot-social a{color:var(--muted-on-dark);}
 .foot.is-dark .foot-social a:hover{color:var(--fg-on-dark);background:rgba(255,255,255,.08);}
 /* the glass CTA reuses the hero "liquid glass" treatment (see hero .cta-row
-   rules) — pull its hardcoded hero sizing back down to the footer's sm scale */
-.foot.is-dark .btn-glass{padding:8px 18px;min-height:0;font-size:13.5px;letter-spacing:0;font-weight:500;}
+   rules) — pull its hardcoded hero sizing back down to the sm scale. Shared by
+   the footer CTAs and the bento horse hover CTAs so the glass button matches
+   the gradient (Book a call) one next to it. */
+.foot.is-dark .btn-glass,
+.horse-ctas .btn-glass{padding:8px 18px;min-height:0;font-size:13.5px;letter-spacing:0;font-weight:500;}
+
+/* The unicorn canvas is a hard rectangle: even with a transparent gl buffer the
+   bloom/post pass outputs opaque pixels, so the lit halo gets clipped at the
+   canvas edge and reads as a box against the bento block. Feather all four
+   edges so the scene melts into the block. The bottom fade is gentle (starts at
+   84%) so it softens the lower seam without clipping the muzzle — the lower
+   neck is already sinking into the in-scene fog there. */
+.horse-stage-mask{
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 13%, #000 84%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 13%, #000 84%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
+  mask-composite:intersect;
+}
+
+/* Horse hover CTAs — reveal one-by-one (desktop only; on touch they stay
+   visible). Authored here, not via Tailwind utilities, because the legacy .btn
+   `transition` (liquid-glass + .btn-gradient) omits opacity AND sits outside
+   Tailwind's @layer, so it outranks `transition-opacity`/`delay-*` — the fade
+   would be instant and the delay would never apply. Both buttons rest hidden +
+   nudged down; on group hover/focus they rise and fade in, the second trailing
+   the first by .22s so they read as a sequence. */
+@media (min-width:1024px){
+  .horse-ctas .btn{
+    opacity:0;transform:translateY(8px);
+    transition:opacity .32s var(--ease), transform .32s var(--ease),
+      box-shadow .4s var(--ease), border-color .4s, background .4s, backdrop-filter .4s;
+  }
+  .horse-ctas .btn:nth-child(2){transition-delay:.22s;}
+  .group\/horse:hover .horse-ctas .btn,
+  .group\/horse:focus-within .horse-ctas .btn{opacity:1;transform:none;}
+}
 
 /* ── bento tiles: on hover the hairline edge twinkles like the unicorn's
       facet seams — whole stretches of the border breathe in, crawl a few
@@ -2643,36 +2697,94 @@ body:not(.hero-ready){overflow:hidden;}
 .blog{background:var(--bg);color:var(--fg);}
 .blog-wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter);width:100%;}
 
-/* ---- Newsroom header (sticky, opaque, dark-text) ---- */
-.blog-header{
+/* ---- Internal-page header (sticky, opaque, blurred) ----
+   Shared chrome for every page that isn't the homepage — Newsroom, Product,
+   Trust, Company, Legal. Two surfaces: light (default, white bar / dark text)
+   and `--dark` (near-black bar / light text). Component: PageHeader.tsx. */
+.page-header{
   position:sticky;top:0;z-index:150;
-  background:color-mix(in oklab,var(--bg) 80%,transparent);
-  backdrop-filter:saturate(180%) blur(18px);
-  -webkit-backdrop-filter:saturate(180%) blur(18px);
+  /* translucent glass, not a solid plate — the band beneath shows through */
+  background:color-mix(in oklab,var(--bg) 62%,transparent);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:1px solid var(--border-2);
+  /* cross-fade between light/dark variants as HeaderThemeSync toggles --dark */
+  transition:background-color .45s var(--ease), border-color .45s var(--ease);
 }
-.blog-header__inner{
+.page-header__inner{
   max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);
   display:flex;align-items:center;gap:16px;min-height:56px;
 }
-.blog-header__brand{color:var(--fg);font-size:18px;flex:none;}
-.blog-header__divider{width:1px;height:20px;background:var(--border);flex:none;}
-.blog-header__news{
+.page-header__brand{
+  color:var(--fg);font-size:18px;flex:none;
+  transition:color .45s var(--ease);
+}
+/* bare pages (no section nav): brand + CTA only — push the CTA to the edge */
+.page-header__inner > .page-header__cta:nth-child(2){margin-left:auto;}
+.page-header__divider{
+  width:1px;height:20px;background:var(--border);flex:none;
+  transition:background-color .45s var(--ease);
+}
+.page-header__section{
   font-family:var(--font-mono);font-size:12px;font-weight:400;
   letter-spacing:.16em;text-transform:uppercase;color:var(--violet);flex:none;
+  transition:color .25s var(--ease);
 }
-.blog-header__nav{display:flex;align-items:center;gap:clamp(16px,2.4vw,30px);margin-left:auto;margin-right:clamp(12px,2vw,26px);}
-.blog-header__link{
+a.page-header__section:hover{color:var(--fg);}
+.page-header__nav{display:flex;align-items:center;gap:clamp(16px,2.4vw,30px);margin-left:auto;margin-right:clamp(12px,2vw,26px);}
+.page-header__link{
   font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--muted);white-space:nowrap;
   transition:color .25s var(--ease);
 }
-.blog-header__link:hover{color:var(--fg);}
-.blog-header__cta{flex:none;}
-@media (max-width:820px){
-  .blog-header__nav,.blog-header__divider,.blog-header__news{display:none;}
-  .blog-header__cta{margin-left:auto;}
+.page-header__link:hover{color:var(--fg);}
+/* Launch App CTA — adapts to the header surface.
+   On the light bar it's the bright footer gradient (`btn-gradient` / --grad-cta,
+   set by variant="gradient"). On the dark bar that gradient blows out against
+   black, so it drops to a translucent violet glass with a lavender hairline
+   outline + white text — present but calm. Outline fades in with the theme
+   switch; the gradient fill swaps under it. */
+.page-header__cta.btn{flex:none;}
+
+/* dark bar — outline / translucent glass instead of the bright footer gradient */
+.page-header--dark .page-header__cta.btn{
+  background:color-mix(in oklab,var(--violet) 22%,transparent);
+  color:var(--fg-on-dark);font-weight:500;
+  box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--lavender) 52%,transparent);
+  transition:background-color .4s var(--ease), box-shadow .4s var(--ease),
+             color .4s var(--ease), transform .2s var(--ease);
 }
+/* drop btn-gradient's sheen + radial bloom on the dark outline */
+.page-header--dark .page-header__cta.btn::before,
+.page-header--dark .page-header__cta.btn::after{display:none;}
+.page-header--dark .page-header__cta.btn:hover{
+  transform:translateY(-1px);background:var(--violet);color:#fff;
+  box-shadow:inset 0 0 0 1px transparent,
+             0 10px 24px -10px rgba(108,76,241,.8),
+             0 0 22px -8px rgba(123,92,246,.55);
+}
+.page-header--dark .page-header__cta.btn:hover .arr{transform:translateX(3px);opacity:1;}
+@media (max-width:820px){
+  .page-header__nav,.page-header__divider,.page-header__section{display:none;}
+  .page-header__cta{margin-left:auto;}
+}
+
+/* ---- Internal-page header — dark surface ---- */
+.page-header--dark{
+  background:color-mix(in oklab,var(--ink) 68%,transparent);
+  border-bottom:1px solid var(--border-on-dark);
+}
+.page-header--dark .page-header__brand{color:var(--fg-on-dark);}
+.page-header--dark .page-header__brand .mark{
+  box-shadow:0 0 0 1px rgba(255,255,255,.45) inset, 0 4px 14px -4px var(--violet);
+}
+.page-header--dark .page-header__divider{background:var(--border-on-dark);}
+.page-header--dark .page-header__section{color:var(--lavender);}
+.page-header--dark a.page-header__section:hover{color:var(--fg-on-dark);}
+.page-header--dark .page-header__link{color:var(--muted-on-dark);}
+.page-header--dark .page-header__link:hover{color:var(--fg-on-dark);}
+/* anchored sections clear the sticky header when jumped to from the nav */
+section[id]{scroll-margin-top:72px;}
 
 /* ---- Section scaffolding ---- */
 .blog-section{padding:clamp(48px,7vw,86px) 0;}
@@ -3991,7 +4103,7 @@ body:not(.hero-ready){overflow:hidden;}
 }
 
 /* ============================================================
-   /product — Product Overview, Apple-grade scroll page (Story 10)
+   /product/overview — Product Overview, Apple-grade scroll page (Story 10)
    Layout-only CSS that consumes the generic scroll engine
    (data-reveal / data-scrub / data-pin). Canonical :root tokens
    only — no new colors/shadows/radii, no --wf-* / --sd-* vars.

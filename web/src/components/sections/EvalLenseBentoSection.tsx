@@ -148,13 +148,16 @@ function ArtTile({
 function HorseStage() {
   return (
     /* runs up over the summary card's lower edge (z-30, pointer-blind, so
-       the card stays hoverable). mix-blend-screen composites the canvas
-       additively onto the page: the scene's black background is the
-       identity under screen blending, so the page wash shows through
-       UNCHANGED at every canvas pixel — no seam can exist, and no edge
-       masks are needed. Neck depth-dimming comes from the in-scene fog. */
+       the card stays hoverable). The scene renders with noBackdrop — a
+       transparent canvas (no opaque black clear) — and mix-blend-screen
+       composites the lit head additively onto the bento wash. The canvas is a
+       hard rectangle, though, and the bloom pass outputs opaque pixels, so the
+       halo would clip into a box at the edge. `.horse-stage-mask` feathers the
+       wrapper (top + both sides → transparent) so the scene melts seamlessly
+       into the block; the bottom stays solid where the head/neck fades on its
+       own via the in-scene fog. */
     <div className="pointer-events-none relative z-10 mt-1 min-h-[340px] flex-1 self-stretch lg:-mt-10">
-      <div className="absolute inset-0 mix-blend-screen">
+      <div className="horse-stage-mask absolute inset-0 mix-blend-screen">
         <BentoHorse />
       </div>
     </div>
@@ -210,11 +213,17 @@ export function EvalLenseBentoSection() {
               mobile where there is no hover */}
           <div className="group/horse relative flex w-full flex-1 flex-col items-center">
             <HorseStage />
-            <div className="relative z-40 flex flex-wrap items-center justify-center gap-3 pb-4 pt-3 opacity-100 transition-opacity duration-300 lg:pointer-events-none lg:opacity-0 lg:group-hover/horse:pointer-events-auto lg:group-hover/horse:opacity-100 lg:group-focus-within/horse:pointer-events-auto lg:group-focus-within/horse:opacity-100">
-              <Button variant="glass" size="sm" href="/book-call">
+            {/* CTAs reveal one-by-one on hover — Book a call first, then Try
+                live demo. The stagger lives in CSS (`.horse-ctas` rules in
+                globals.css): the legacy .btn `transition` omits opacity and
+                outranks Tailwind utilities, so the fade/slide + delay must be
+                authored there. The wrapper only toggles pointer-events; on
+                touch (no hover) both buttons stay visible. */}
+            <div className="horse-ctas relative z-40 flex flex-wrap items-center justify-center gap-3 pb-4 pt-3 lg:pointer-events-none lg:group-hover/horse:pointer-events-auto lg:group-focus-within/horse:pointer-events-auto">
+              <Button variant="gradient" size="sm" href="/book-call">
                 Book a call
               </Button>
-              <Button variant="glass" size="sm" arrow href="/try-live-demo">
+              <Button variant="glass" size="sm" href="/try-live-demo">
                 Try live demo
               </Button>
             </div>
