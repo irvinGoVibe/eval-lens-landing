@@ -87,6 +87,16 @@ body[data-cta] .focus__content{opacity:1;}
 .bg{position:absolute;inset:0;overflow:hidden;background:#000;}
 .bg i{position:absolute;display:block;}
 .bg.paused i{animation-play-state:paused!important;}
+/* edge shadow — same idea as the video scrim: the animation lives in the CENTRE
+   and dissolves into black before the border, so there are never hard edges.
+   Strength is tunable via --edge (controls bar). */
+.bg::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:radial-gradient(125% 115% at 50% 48%,
+    transparent 34%,
+    rgba(0,0,0,.28) 60%,
+    rgba(0,0,0,.72) 82%,
+    #000 100%);
+  opacity:var(--edge,1);transition:opacity .25s;}
 
 /* shared motion */
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -102,15 +112,6 @@ body[data-cta] .focus__content{opacity:1;}
 @keyframes neb2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(12%,9%) scale(1.15);}}
 @keyframes neb3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-11%,11%) scale(1.18);}}
 
-/* ---- 2. pulse (orbs / rings) ---- */
-.bg--pulse{background:radial-gradient(circle at 50% 52%,#0a0820,#000 70%);}
-.bg--pulse .l1{width:34%;aspect-ratio:1;left:50%;top:50%;margin:-17% 0 0 -17%;border-radius:50%;filter:blur(36px);mix-blend-mode:screen;background:radial-gradient(circle,color-mix(in oklab,var(--violet-2) 85%,transparent),transparent 65%);animation:pcore calc(4.5s/var(--speed)) ease-in-out infinite;}
-.bg--pulse .l2,.bg--pulse .l3{width:24%;aspect-ratio:1;left:50%;top:50%;margin:-12% 0 0 -12%;border-radius:50%;border:1.5px solid color-mix(in oklab,var(--cyan) 70%,transparent);mix-blend-mode:screen;animation:pring calc(5s/var(--speed)) ease-out infinite;}
-.bg--pulse .l3{border-color:color-mix(in oklab,var(--lavender) 70%,transparent);animation-delay:calc(-2.5s/var(--speed));}
-.bg--pulse .l4{width:80%;aspect-ratio:1;left:50%;top:55%;margin-left:-40%;border-radius:50%;filter:blur(70px);background:radial-gradient(circle,color-mix(in oklab,var(--violet) 30%,transparent),transparent 60%);}
-@keyframes pcore{0%,100%{transform:scale(.9);opacity:.85;}50%{transform:scale(1.18);opacity:1;}}
-@keyframes pring{0%{transform:scale(.5);opacity:.9;}100%{transform:scale(3.6);opacity:0;}}
-
 /* ---- 3. lava (orbs / metaball morph) ---- */
 .bg--lava i{filter:blur(46px);mix-blend-mode:screen;}
 .bg--lava .l1{width:50%;height:50%;left:8%;top:18%;background:var(--violet);border-radius:42% 58% 63% 37%/45% 38% 62% 55%;animation:lava1 calc(14s/var(--speed)) ease-in-out infinite;}
@@ -120,14 +121,6 @@ body[data-cta] .focus__content{opacity:1;}
 @keyframes lava1{0%,100%{transform:translate(0,0) rotate(0deg);border-radius:42% 58% 63% 37%/45% 38% 62% 55%;}50%{transform:translate(8%,-8%) rotate(40deg);border-radius:60% 40% 35% 65%/55% 60% 40% 45%;}}
 @keyframes lava2{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(-10%,10%) rotate(-50deg);}}
 @keyframes lava3{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(6%,-6%) rotate(60deg);}}
-
-/* ---- 4. prism (geometry / triangles) ---- */
-.bg--prism{background:radial-gradient(circle at 50% 60%,#0a0818,#000 75%);}
-.bg--prism i{clip-path:polygon(50% 0,100% 100%,0 100%);filter:blur(6px);mix-blend-mode:screen;transform-origin:50% 60%;}
-.bg--prism .l1{width:46%;aspect-ratio:1;left:27%;top:14%;background:linear-gradient(160deg,var(--violet),var(--cyan));opacity:.6;animation:spin calc(26s/var(--speed)) linear infinite;}
-.bg--prism .l2{width:32%;aspect-ratio:1;left:34%;top:24%;background:linear-gradient(160deg,var(--lavender),var(--aqua));opacity:.55;animation:spinR calc(19s/var(--speed)) linear infinite;}
-.bg--prism .l3{width:20%;aspect-ratio:1;left:40%;top:32%;background:linear-gradient(160deg,var(--cyan),var(--violet-2));opacity:.7;animation:spin calc(13s/var(--speed)) linear infinite;}
-.bg--prism .l4{display:none;}
 
 /* ---- 5. grid (geometry / tron floor) ---- */
 .bg--grid{background:radial-gradient(circle at 50% 30%,#0b0a1c,#000 80%);}
@@ -149,16 +142,6 @@ body[data-cta] .focus__content{opacity:1;}
 .bg--shards .l4{width:13%;aspect-ratio:1;right:30%;bottom:14%;background:linear-gradient(135deg,var(--lavender),transparent 70%);animation:shard2 calc(13s/var(--speed)) ease-in-out infinite;}
 @keyframes shard1{0%,100%{transform:translate(0,0) rotate(40deg);}50%{transform:translate(8%,-12%) rotate(70deg);}}
 @keyframes shard2{0%,100%{transform:translate(0,0) rotate(20deg);}50%{transform:translate(-10%,10%) rotate(-20deg);}}
-
-/* ---- 7. aurora (mesh / curtains) ---- */
-.bg--aurora{background:radial-gradient(circle at 50% 120%,#0a0a1e,#000 70%);}
-.bg--aurora i{top:-30%;height:170%;width:36%;filter:blur(44px);mix-blend-mode:screen;border-radius:50%/42%;}
-.bg--aurora .l1{left:4%;background:linear-gradient(180deg,transparent,var(--violet) 45%,transparent);animation:aur1 calc(9s/var(--speed)) ease-in-out infinite;}
-.bg--aurora .l2{left:32%;background:linear-gradient(180deg,transparent,var(--cyan) 50%,transparent);animation:aur2 calc(11s/var(--speed)) ease-in-out infinite;}
-.bg--aurora .l3{left:58%;background:linear-gradient(180deg,transparent,var(--aqua) 48%,transparent);animation:aur1 calc(13s/var(--speed)) ease-in-out infinite;animation-delay:calc(-3s/var(--speed));}
-.bg--aurora .l4{left:80%;width:28%;background:linear-gradient(180deg,transparent,var(--lavender) 50%,transparent);animation:aur2 calc(15s/var(--speed)) ease-in-out infinite;animation-delay:calc(-4s/var(--speed));}
-@keyframes aur1{0%,100%{transform:translateX(0) skewX(-8deg) scaleY(1);}50%{transform:translateX(14%) skewX(10deg) scaleY(1.12);}}
-@keyframes aur2{0%,100%{transform:translateX(0) skewX(6deg) scaleY(1);}50%{transform:translateX(-12%) skewX(-8deg) scaleY(1.1);}}
 
 /* ---- 8. mesh (mesh gradient drift) ---- */
 .bg--mesh .l1{inset:-25%;mix-blend-mode:screen;filter:blur(26px);
@@ -225,6 +208,7 @@ body[data-cta] .focus__content{opacity:1;}
 
   <div class="controls">
     <div class="grp"><span>Скорость</span><input id="speed" type="range" min="0.25" max="2" step="0.05" value="1" /><span class="val" id="speedVal">1.0×</span></div>
+    <div class="grp"><span>Тень по краям</span><input id="edge" type="range" min="0" max="1" step="0.05" value="1" /><span class="val" id="edgeVal">100%</span></div>
     <label class="tgl"><input type="checkbox" id="pause" />Пауза</label>
     <label class="tgl"><input type="checkbox" id="scrim" checked />Скрим (как в CTA)</label>
     <label class="tgl"><input type="checkbox" id="cta" checked />Текст CTA</label>
@@ -253,12 +237,9 @@ body[data-cta] .focus__content{opacity:1;}
 <script>
 const VARIANTS = [
   {id:"nebula",       fam:"orbs",      name:"Nebula"},
-  {id:"pulse",        fam:"orbs",      name:"Pulse"},
   {id:"lava",         fam:"orbs",      name:"Lava"},
-  {id:"prism",        fam:"geometry",  name:"Prism"},
   {id:"grid",         fam:"geometry",  name:"Grid"},
   {id:"shards",       fam:"geometry",  name:"Shards"},
-  {id:"aurora",       fam:"aurora",    name:"Aurora"},
   {id:"mesh",         fam:"aurora",    name:"Mesh"},
   {id:"silk",         fam:"aurora",    name:"Silk"},
   {id:"starfield",    fam:"particles", name:"Starfield", cls:"star"},
@@ -286,6 +267,9 @@ const root = document.documentElement;
 const speed = document.getElementById("speed");
 const speedVal = document.getElementById("speedVal");
 speed.addEventListener("input",()=>{root.style.setProperty("--speed",speed.value);speedVal.textContent=parseFloat(speed.value).toFixed(2).replace(/0$/,"")+"×";});
+const edge = document.getElementById("edge");
+const edgeVal = document.getElementById("edgeVal");
+edge.addEventListener("input",()=>{root.style.setProperty("--edge",edge.value);edgeVal.textContent=Math.round(edge.value*100)+"%";});
 document.getElementById("pause").addEventListener("change",e=>{
   document.querySelectorAll(".bg").forEach(b=>b.classList.toggle("paused",e.target.checked));
 });
