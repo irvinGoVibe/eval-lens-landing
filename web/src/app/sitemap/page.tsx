@@ -107,6 +107,8 @@ const TREE: TreeNode = {
         { label: "Privacy", path: "/privacy", status: "ready" },
         { label: "Terms", path: "/terms", status: "ready" },
         { label: "Security", path: "/security", status: "ready" },
+        // Error page shown on any unknown URL — visiting /404 renders it.
+        { label: "Not Found (404)", path: "/404", status: "ready" },
       ],
     },
   ],
