@@ -21,7 +21,7 @@ export function Footer() {
           <h5>Product</h5>
           <Link href="/product">Overview</Link>
           <Link href="/product/entry-hub">Entry hub</Link>
-          <Link href="/#decisions">Reports</Link>
+          <Link href="/product/evidence-based-reports">Reports</Link>
           <Link href="/#results">Batch results</Link>
         </div>
         <div className="col">
