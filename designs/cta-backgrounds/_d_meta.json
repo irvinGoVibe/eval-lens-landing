@@ -1,0 +1,18 @@
+{
+  "type": "design",
+  "designSystems": [],
+  "primaryDesignSystem": null,
+  "assets": {
+    "CTA Backgrounds Gallery": {
+      "versions": [
+        {
+          "path": "CTA Backgrounds Gallery.html",
+          "createdAt": "2026-06-16T12:24:51.577Z",
+          "status": "needs-review"
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-06-16T12:24:51.578Z",
+  "updatedAt": "2026-06-16T12:24:51.578Z"
+}

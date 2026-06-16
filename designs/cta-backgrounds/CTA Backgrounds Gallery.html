@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EvalLense · CTA background animations</title>
+<style>
+:root{
+  /* EvalLense brand palette (from web/src/app/globals.css) */
+  --violet:#6c4cf1; --violet-2:#7b5cf6; --lavender:#a99bff;
+  --cyan:#2ec5e8; --aqua:#36e0c2; --tag-tint:#cdbfff;
+  --orange-hot:#ff6a2e; --orange-core:#ff8f4f; --orange-soft:#ffb27a;
+  --ink:#000; --panel:#0a0a0d; --panel-2:#121218;
+  --fg-on-dark:#f5f5f7; --muted-on-dark:#a9a9b2;
+  --lens:linear-gradient(118deg,var(--violet) 0%,var(--lavender) 32%,var(--cyan) 68%,var(--aqua) 100%);
+  --font-text:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --font-mono:Menlo,"SF Mono",ui-monospace,"JetBrains Mono",monospace;
+  /* global animation speed multiplier (controls bar) */
+  --speed:1;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;background:#060608;color:var(--fg-on-dark);font-family:var(--font-text);}
+body{padding:40px clamp(20px,4vw,56px) 80px;}
+
+/* ---------- page chrome ---------- */
+.page-head{max-width:1320px;margin:0 auto 28px;}
+.page-head h1{font-size:clamp(24px,3vw,38px);font-weight:600;letter-spacing:-.03em;margin:0 0 8px;}
+.page-head h1 b{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600;}
+.page-head p{margin:0;color:var(--muted-on-dark);font-size:15px;max-width:62ch;line-height:1.5;}
+.swatches{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.swatch{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11px;color:var(--muted-on-dark);}
+.swatch i{width:14px;height:14px;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);}
+
+/* ---------- controls bar ---------- */
+.controls{position:sticky;top:0;z-index:30;display:flex;flex-wrap:wrap;gap:18px 26px;align-items:center;
+  max-width:1320px;margin:0 auto 26px;padding:13px 18px;border-radius:16px;
+  background:rgba(14,14,20,.82);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);}
+.controls .grp{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted-on-dark);}
+.controls input[type=range]{accent-color:var(--violet-2);width:130px;}
+.controls .val{font-family:var(--font-mono);font-size:12px;color:var(--fg-on-dark);min-width:34px;}
+.tgl{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-size:13px;color:var(--muted-on-dark);}
+.tgl input{accent-color:var(--violet-2);width:16px;height:16px;}
+
+/* ---------- grid ---------- */
+.grid{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+.tile{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/10;cursor:pointer;
+  border:1px solid rgba(255,255,255,.09);background:#000;transition:transform .3s var(--e,cubic-bezier(.22,1,.36,1)),box-shadow .3s,border-color .3s;}
+.tile:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.18);box-shadow:0 30px 70px -40px rgba(108,76,241,.7);}
+.tile__meta{position:absolute;z-index:4;left:14px;top:13px;display:flex;flex-direction:column;gap:3px;pointer-events:none;}
+.tile__name{font-size:15px;font-weight:600;letter-spacing:-.01em;text-shadow:0 1px 8px rgba(0,0,0,.6);}
+.tile__fam{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lavender);text-shadow:0 1px 6px rgba(0,0,0,.7);}
+.tile__id{position:absolute;z-index:4;right:13px;bottom:12px;font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.72);
+  background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.16);border-radius:980px;padding:4px 10px;backdrop-filter:blur(6px);pointer-events:none;}
+.tile__expand{position:absolute;z-index:4;right:13px;top:13px;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.16);color:#fff;opacity:0;transition:opacity .25s;font-size:13px;}
+.tile:hover .tile__expand{opacity:1;}
+
+/* ---------- focus overlay ---------- */
+.focus{position:fixed;inset:0;z-index:60;display:none;}
+.focus.is-open{display:block;}
+.focus__bg{position:absolute;inset:0;background:#000;}
+.focus__scrim{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:linear-gradient(180deg,rgba(0,0,0,.86) 0%,rgba(0,0,0,.4) 16%,rgba(0,0,0,.14) 42%,rgba(0,0,0,.3) 74%,rgba(0,0,0,.6) 100%);}
+body[data-scrim] .focus__scrim{opacity:1;}
+.focus__content{position:absolute;z-index:3;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;opacity:0;transition:opacity .3s;}
+body[data-cta] .focus__content{opacity:1;}
+.focus__content h2{font-size:clamp(36px,6vw,76px);font-weight:600;letter-spacing:-.03em;line-height:1.04;margin:0;max-width:18ch;}
+.focus__content h2 b{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600;}
+.focus__content p{margin:18px 0 0;max-width:54ch;font-size:clamp(16px,2vw,20px);color:var(--muted-on-dark);line-height:1.45;}
+.focus__btns{display:flex;gap:16px;margin-top:32px;flex-wrap:wrap;justify-content:center;}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:980px;padding:15px 30px;font-size:16px;font-weight:500;border:0;cursor:pointer;font-family:var(--font-text);}
+.btn--grad{background:linear-gradient(90deg,#9333ea,#3b82f6);color:#fff;box-shadow:0 8px 30px -8px rgba(124,92,246,.6);}
+.btn--glass{background:rgba(255,255,255,.08);color:#f8fafc;border:1px solid rgba(255,255,255,.32);backdrop-filter:blur(20px);}
+.focus__bar{position:absolute;z-index:5;left:0;right:0;bottom:0;display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap;
+  padding:16px;background:linear-gradient(0deg,rgba(0,0,0,.6),transparent);}
+.focus__bar .pill{font-family:var(--font-mono);font-size:13px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);border-radius:980px;padding:7px 14px;}
+.focus__close{position:absolute;z-index:6;top:18px;right:20px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.22);
+  background:rgba(0,0,0,.45);color:#fff;font-size:20px;cursor:pointer;backdrop-filter:blur(8px);}
+.focus__nav{position:absolute;z-index:6;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
+  background:rgba(0,0,0,.4);color:#fff;font-size:20px;cursor:pointer;backdrop-filter:blur(8px);}
+.focus__nav.prev{left:20px;} .focus__nav.next{right:20px;}
+
+/* ======================================================================
+   BACKGROUND ANIMATIONS  (each = .bg.bg--<id>; maps to cta-band__aurora--<id>)
+   Uniform markup: .bg holds 4 layers <i class="l1..l4">.
+   ====================================================================== */
+.bg{position:absolute;inset:0;overflow:hidden;background:#000;}
+.bg i{position:absolute;display:block;}
+.bg.paused i{animation-play-state:paused!important;}
+
+/* shared motion */
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes spinR{to{transform:rotate(-360deg);}}
+
+/* ---- 1. nebula (orbs) ---- */
+.bg--nebula i{border-radius:50%;filter:blur(58px);mix-blend-mode:screen;}
+.bg--nebula .l1{width:62%;aspect-ratio:1;left:50%;bottom:-22%;margin-left:-31%;background:radial-gradient(circle,color-mix(in oklab,var(--violet) 72%,transparent),transparent 66%);animation:neb1 calc(11s/var(--speed)) ease-in-out infinite;}
+.bg--nebula .l2{width:46%;aspect-ratio:1;left:5%;top:3%;background:radial-gradient(circle,color-mix(in oklab,var(--cyan) 66%,transparent),transparent 64%);animation:neb2 calc(13s/var(--speed)) ease-in-out infinite;}
+.bg--nebula .l3{width:42%;aspect-ratio:1;right:4%;top:14%;background:radial-gradient(circle,color-mix(in oklab,var(--aqua) 60%,transparent),transparent 64%);animation:neb3 calc(16s/var(--speed)) ease-in-out infinite;}
+.bg--nebula .l4{width:38%;aspect-ratio:1;right:18%;bottom:-10%;background:radial-gradient(circle,color-mix(in oklab,var(--lavender) 55%,transparent),transparent 64%);animation:neb2 calc(19s/var(--speed)) ease-in-out infinite;}
+@keyframes neb1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(4%,-6%) scale(1.12);}}
+@keyframes neb2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(12%,9%) scale(1.15);}}
+@keyframes neb3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-11%,11%) scale(1.18);}}
+
+/* ---- 2. pulse (orbs / rings) ---- */
+.bg--pulse{background:radial-gradient(circle at 50% 52%,#0a0820,#000 70%);}
+.bg--pulse .l1{width:34%;aspect-ratio:1;left:50%;top:50%;margin:-17% 0 0 -17%;border-radius:50%;filter:blur(36px);mix-blend-mode:screen;background:radial-gradient(circle,color-mix(in oklab,var(--violet-2) 85%,transparent),transparent 65%);animation:pcore calc(4.5s/var(--speed)) ease-in-out infinite;}
+.bg--pulse .l2,.bg--pulse .l3{width:24%;aspect-ratio:1;left:50%;top:50%;margin:-12% 0 0 -12%;border-radius:50%;border:1.5px solid color-mix(in oklab,var(--cyan) 70%,transparent);mix-blend-mode:screen;animation:pring calc(5s/var(--speed)) ease-out infinite;}
+.bg--pulse .l3{border-color:color-mix(in oklab,var(--lavender) 70%,transparent);animation-delay:calc(-2.5s/var(--speed));}
+.bg--pulse .l4{width:80%;aspect-ratio:1;left:50%;top:55%;margin-left:-40%;border-radius:50%;filter:blur(70px);background:radial-gradient(circle,color-mix(in oklab,var(--violet) 30%,transparent),transparent 60%);}
+@keyframes pcore{0%,100%{transform:scale(.9);opacity:.85;}50%{transform:scale(1.18);opacity:1;}}
+@keyframes pring{0%{transform:scale(.5);opacity:.9;}100%{transform:scale(3.6);opacity:0;}}
+
+/* ---- 3. lava (orbs / metaball morph) ---- */
+.bg--lava i{filter:blur(46px);mix-blend-mode:screen;}
+.bg--lava .l1{width:50%;height:50%;left:8%;top:18%;background:var(--violet);border-radius:42% 58% 63% 37%/45% 38% 62% 55%;animation:lava1 calc(14s/var(--speed)) ease-in-out infinite;}
+.bg--lava .l2{width:46%;height:52%;right:6%;top:6%;background:var(--cyan);border-radius:60% 40% 47% 53%/55% 62% 38% 45%;animation:lava2 calc(17s/var(--speed)) ease-in-out infinite;}
+.bg--lava .l3{width:52%;height:50%;left:24%;bottom:-12%;background:var(--aqua);border-radius:50% 50% 55% 45%/52% 48% 52% 48%;animation:lava3 calc(20s/var(--speed)) ease-in-out infinite;}
+.bg--lava .l4{width:38%;height:42%;right:22%;bottom:-6%;background:var(--lavender);border-radius:55% 45% 40% 60%/50% 55% 45% 50%;animation:lava1 calc(22s/var(--speed)) ease-in-out infinite;}
+@keyframes lava1{0%,100%{transform:translate(0,0) rotate(0deg);border-radius:42% 58% 63% 37%/45% 38% 62% 55%;}50%{transform:translate(8%,-8%) rotate(40deg);border-radius:60% 40% 35% 65%/55% 60% 40% 45%;}}
+@keyframes lava2{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(-10%,10%) rotate(-50deg);}}
+@keyframes lava3{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(6%,-6%) rotate(60deg);}}
+
+/* ---- 4. prism (geometry / triangles) ---- */
+.bg--prism{background:radial-gradient(circle at 50% 60%,#0a0818,#000 75%);}
+.bg--prism i{clip-path:polygon(50% 0,100% 100%,0 100%);filter:blur(6px);mix-blend-mode:screen;transform-origin:50% 60%;}
+.bg--prism .l1{width:46%;aspect-ratio:1;left:27%;top:14%;background:linear-gradient(160deg,var(--violet),var(--cyan));opacity:.6;animation:spin calc(26s/var(--speed)) linear infinite;}
+.bg--prism .l2{width:32%;aspect-ratio:1;left:34%;top:24%;background:linear-gradient(160deg,var(--lavender),var(--aqua));opacity:.55;animation:spinR calc(19s/var(--speed)) linear infinite;}
+.bg--prism .l3{width:20%;aspect-ratio:1;left:40%;top:32%;background:linear-gradient(160deg,var(--cyan),var(--violet-2));opacity:.7;animation:spin calc(13s/var(--speed)) linear infinite;}
+.bg--prism .l4{display:none;}
+
+/* ---- 5. grid (geometry / tron floor) ---- */
+.bg--grid{background:radial-gradient(circle at 50% 30%,#0b0a1c,#000 80%);}
+.bg--grid .l1{inset:-60% -20% -20% -20%;
+  background-image:linear-gradient(color-mix(in oklab,var(--violet) 75%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in oklab,var(--violet) 75%,transparent) 1px,transparent 1px);
+  background-size:60px 60px;transform:perspective(420px) rotateX(62deg);transform-origin:50% 100%;
+  -webkit-mask-image:linear-gradient(to top,#000 8%,transparent 78%);mask-image:linear-gradient(to top,#000 8%,transparent 78%);
+  animation:gridmove calc(3.2s/var(--speed)) linear infinite;}
+.bg--grid .l2{inset:auto 0 0 0;height:55%;background:linear-gradient(0deg,color-mix(in oklab,var(--violet) 32%,transparent),transparent);mix-blend-mode:screen;}
+.bg--grid .l3,.bg--grid .l4{display:none;}
+@keyframes gridmove{to{background-position:0 60px,60px 0;}}
+
+/* ---- 6. shards (geometry / diamonds) ---- */
+.bg--shards{background:radial-gradient(circle at 50% 50%,#0a0916,#000 80%);}
+.bg--shards i{mix-blend-mode:screen;filter:blur(1px);border-radius:6px;}
+.bg--shards .l1{width:24%;aspect-ratio:1;left:12%;top:18%;background:linear-gradient(135deg,var(--violet),transparent 70%);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--lavender) 60%,transparent);animation:shard1 calc(15s/var(--speed)) ease-in-out infinite;}
+.bg--shards .l2{width:17%;aspect-ratio:1;right:16%;top:22%;background:linear-gradient(135deg,var(--cyan),transparent 70%);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--cyan) 60%,transparent);animation:shard2 calc(18s/var(--speed)) ease-in-out infinite;}
+.bg--shards .l3{width:20%;aspect-ratio:1;left:30%;bottom:6%;background:linear-gradient(135deg,var(--aqua),transparent 70%);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--aqua) 55%,transparent);animation:shard1 calc(21s/var(--speed)) ease-in-out infinite;}
+.bg--shards .l4{width:13%;aspect-ratio:1;right:30%;bottom:14%;background:linear-gradient(135deg,var(--lavender),transparent 70%);animation:shard2 calc(13s/var(--speed)) ease-in-out infinite;}
+@keyframes shard1{0%,100%{transform:translate(0,0) rotate(40deg);}50%{transform:translate(8%,-12%) rotate(70deg);}}
+@keyframes shard2{0%,100%{transform:translate(0,0) rotate(20deg);}50%{transform:translate(-10%,10%) rotate(-20deg);}}
+
+/* ---- 7. aurora (mesh / curtains) ---- */
+.bg--aurora{background:radial-gradient(circle at 50% 120%,#0a0a1e,#000 70%);}
+.bg--aurora i{top:-30%;height:170%;width:36%;filter:blur(44px);mix-blend-mode:screen;border-radius:50%/42%;}
+.bg--aurora .l1{left:4%;background:linear-gradient(180deg,transparent,var(--violet) 45%,transparent);animation:aur1 calc(9s/var(--speed)) ease-in-out infinite;}
+.bg--aurora .l2{left:32%;background:linear-gradient(180deg,transparent,var(--cyan) 50%,transparent);animation:aur2 calc(11s/var(--speed)) ease-in-out infinite;}
+.bg--aurora .l3{left:58%;background:linear-gradient(180deg,transparent,var(--aqua) 48%,transparent);animation:aur1 calc(13s/var(--speed)) ease-in-out infinite;animation-delay:calc(-3s/var(--speed));}
+.bg--aurora .l4{left:80%;width:28%;background:linear-gradient(180deg,transparent,var(--lavender) 50%,transparent);animation:aur2 calc(15s/var(--speed)) ease-in-out infinite;animation-delay:calc(-4s/var(--speed));}
+@keyframes aur1{0%,100%{transform:translateX(0) skewX(-8deg) scaleY(1);}50%{transform:translateX(14%) skewX(10deg) scaleY(1.12);}}
+@keyframes aur2{0%,100%{transform:translateX(0) skewX(6deg) scaleY(1);}50%{transform:translateX(-12%) skewX(-8deg) scaleY(1.1);}}
+
+/* ---- 8. mesh (mesh gradient drift) ---- */
+.bg--mesh .l1{inset:-25%;mix-blend-mode:screen;filter:blur(26px);
+  background:
+    radial-gradient(38% 38% at 22% 30%,color-mix(in oklab,var(--violet) 82%,transparent),transparent 70%),
+    radial-gradient(40% 40% at 80% 20%,color-mix(in oklab,var(--cyan) 72%,transparent),transparent 70%),
+    radial-gradient(44% 44% at 72% 82%,color-mix(in oklab,var(--aqua) 66%,transparent),transparent 70%),
+    radial-gradient(40% 40% at 24% 78%,color-mix(in oklab,var(--lavender) 70%,transparent),transparent 70%);
+  animation:meshmove calc(18s/var(--speed)) ease-in-out infinite;}
+.bg--mesh .l2,.bg--mesh .l3,.bg--mesh .l4{display:none;}
+@keyframes meshmove{0%,100%{transform:translate(0,0) scale(1) rotate(0deg);}33%{transform:translate(4%,-3%) scale(1.08) rotate(4deg);}66%{transform:translate(-4%,3%) scale(1.05) rotate(-3deg);}}
+
+/* ---- 9. silk (conic sheen) ---- */
+.bg--silk .l1{inset:-50%;mix-blend-mode:screen;filter:blur(38px) saturate(1.15);opacity:.6;
+  background:conic-gradient(from 0deg,var(--violet),var(--cyan),var(--aqua),var(--lavender),var(--violet-2),var(--violet));
+  animation:spin calc(22s/var(--speed)) linear infinite;}
+.bg--silk .l2{inset:-30%;mix-blend-mode:screen;filter:blur(50px);opacity:.5;
+  background:conic-gradient(from 180deg,transparent,var(--cyan),transparent 40%,var(--violet),transparent 80%);
+  animation:spinR calc(30s/var(--speed)) linear infinite;}
+.bg--silk .l3,.bg--silk .l4{display:none;}
+
+/* ---- 10. starfield (particles) ---- */
+.bg--star{background:radial-gradient(circle at 50% 40%,#0a0a18,#000 80%);}
+.bg--star .l1,.bg--star .l2{inset:-50% 0 0 0;background-repeat:repeat;}
+.bg--star .l1{background-image:radial-gradient(1.6px 1.6px at 20px 30px,#fff,transparent),radial-gradient(1.4px 1.4px at 120px 90px,var(--lavender),transparent),radial-gradient(1.2px 1.2px at 200px 150px,#fff,transparent),radial-gradient(1.5px 1.5px at 80px 200px,var(--cyan),transparent);background-size:240px 240px;animation:starup calc(22s/var(--speed)) linear infinite;}
+.bg--star .l2{background-image:radial-gradient(1px 1px at 60px 50px,#fff,transparent),radial-gradient(1.2px 1.2px at 160px 120px,var(--aqua),transparent),radial-gradient(1px 1px at 30px 170px,var(--lavender),transparent);background-size:200px 200px;opacity:.6;animation:starup calc(38s/var(--speed)) linear infinite;}
+.bg--star .l3{inset:0;background:radial-gradient(60% 50% at 50% 50%,color-mix(in oklab,var(--violet) 26%,transparent),transparent 70%);mix-blend-mode:screen;animation:twinkle calc(6s/var(--speed)) ease-in-out infinite;}
+.bg--star .l4{display:none;}
+@keyframes starup{to{transform:translateY(-240px);}}
+@keyframes twinkle{0%,100%{opacity:.5;}50%{opacity:.9;}}
+
+/* ---- 11. streams (particles / light rain) ---- */
+.bg--streams{background:radial-gradient(circle at 50% 50%,#080a16,#000 80%);}
+.bg--streams i{inset:-40%;mix-blend-mode:screen;}
+.bg--streams .l1{background:repeating-linear-gradient(115deg,transparent 0 16px,color-mix(in oklab,var(--cyan) 60%,transparent) 16px 17px,transparent 17px 46px);filter:blur(1.5px);-webkit-mask-image:radial-gradient(70% 70% at 50% 50%,#000,transparent);mask-image:radial-gradient(70% 70% at 50% 50%,#000,transparent);animation:stream1 calc(7s/var(--speed)) linear infinite;}
+.bg--streams .l2{background:repeating-linear-gradient(115deg,transparent 0 26px,color-mix(in oklab,var(--violet) 55%,transparent) 26px 27px,transparent 27px 70px);filter:blur(2px);animation:stream2 calc(11s/var(--speed)) linear infinite;}
+.bg--streams .l3{background:repeating-linear-gradient(115deg,transparent 0 40px,color-mix(in oklab,var(--lavender) 45%,transparent) 40px 41px,transparent 41px 110px);filter:blur(1px);animation:stream1 calc(15s/var(--speed)) linear infinite;}
+.bg--streams .l4{display:none;}
+@keyframes stream1{to{transform:translate(-180px,86px);}}
+@keyframes stream2{to{transform:translate(-120px,57px);}}
+
+/* ---- 12. constellation (particles / network) ---- */
+.bg--constellation{background:radial-gradient(circle at 50% 50%,#0a0917,#000 80%);}
+.bg--constellation .l1{inset:0;background-image:radial-gradient(2px 2px at 40px 40px,var(--lavender),transparent),radial-gradient(2px 2px at 160px 90px,#fff,transparent),radial-gradient(2px 2px at 240px 180px,var(--cyan),transparent),radial-gradient(1.6px 1.6px at 90px 220px,var(--aqua),transparent),radial-gradient(2px 2px at 300px 60px,#fff,transparent);background-size:330px 300px;animation:twinkle calc(5s/var(--speed)) ease-in-out infinite;}
+.bg--constellation .l2{inset:-40%;mix-blend-mode:screen;opacity:.22;background:repeating-linear-gradient(60deg,transparent 0 38px,color-mix(in oklab,var(--violet) 70%,transparent) 38px 39px,transparent 39px 78px);animation:spin calc(60s/var(--speed)) linear infinite;}
+.bg--constellation .l3{inset:-40%;mix-blend-mode:screen;opacity:.18;background:repeating-linear-gradient(-50deg,transparent 0 52px,color-mix(in oklab,var(--cyan) 65%,transparent) 52px 53px,transparent 53px 104px);animation:spinR calc(80s/var(--speed)) linear infinite;}
+.bg--constellation .l4{width:30%;aspect-ratio:1;left:50%;top:50%;margin:-15% 0 0 -15%;border-radius:50%;filter:blur(50px);background:radial-gradient(circle,color-mix(in oklab,var(--violet) 34%,transparent),transparent 65%);animation:twinkle calc(7s/var(--speed)) ease-in-out infinite;}
+
+@media (prefers-reduced-motion:reduce){.bg i{animation:none!important;}}
+</style>
+</head>
+<body data-cta>
+  <header class="page-head">
+    <h1>EvalLense · <b>фоновые анимации CTA</b></h1>
+    <p>12 чистых CSS-анимаций на фирменной палитре — шары, геометрия, mesh/aurora и частицы. Клик по плитке — превью на весь экран с образцом CTA-текста. id под каждой = будущий <code style="font-family:var(--font-mono)">auroraVariant</code>.</p>
+    <div class="swatches">
+      <span class="swatch"><i style="background:#6c4cf1"></i>violet</span>
+      <span class="swatch"><i style="background:#a99bff"></i>lavender</span>
+      <span class="swatch"><i style="background:#2ec5e8"></i>cyan</span>
+      <span class="swatch"><i style="background:#36e0c2"></i>aqua</span>
+      <span class="swatch"><i style="background:#ff6a2e"></i>orange-hot</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="grp"><span>Скорость</span><input id="speed" type="range" min="0.25" max="2" step="0.05" value="1" /><span class="val" id="speedVal">1.0×</span></div>
+    <label class="tgl"><input type="checkbox" id="pause" />Пауза</label>
+    <label class="tgl"><input type="checkbox" id="scrim" checked />Скрим (как в CTA)</label>
+    <label class="tgl"><input type="checkbox" id="cta" checked />Текст CTA</label>
+  </div>
+
+  <main class="grid" id="grid"></main>
+
+  <!-- focus overlay -->
+  <div class="focus" id="focus">
+    <div class="focus__bg bg" id="focusBg"><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i></div>
+    <div class="focus__scrim"></div>
+    <div class="focus__content">
+      <h2>See your next cohort <b>ranked in a day</b></h2>
+      <p>Batch-review every pitch deck, surface the strongest startups, and hand each team an evidence-based report.</p>
+      <div class="focus__btns">
+        <button class="btn btn--grad">Book a demo →</button>
+        <button class="btn btn--glass">Try live demo</button>
+      </div>
+    </div>
+    <button class="focus__close" id="focusClose" aria-label="close">×</button>
+    <button class="focus__nav prev" id="focusPrev" aria-label="prev">‹</button>
+    <button class="focus__nav next" id="focusNext" aria-label="next">›</button>
+    <div class="focus__bar"><span class="pill" id="focusPill"></span></div>
+  </div>
+
+<script>
+const VARIANTS = [
+  {id:"nebula",       fam:"orbs",      name:"Nebula"},
+  {id:"pulse",        fam:"orbs",      name:"Pulse"},
+  {id:"lava",         fam:"orbs",      name:"Lava"},
+  {id:"prism",        fam:"geometry",  name:"Prism"},
+  {id:"grid",         fam:"geometry",  name:"Grid"},
+  {id:"shards",       fam:"geometry",  name:"Shards"},
+  {id:"aurora",       fam:"aurora",    name:"Aurora"},
+  {id:"mesh",         fam:"aurora",    name:"Mesh"},
+  {id:"silk",         fam:"aurora",    name:"Silk"},
+  {id:"starfield",    fam:"particles", name:"Starfield", cls:"star"},
+  {id:"streams",      fam:"particles", name:"Streams"},
+  {id:"constellation",fam:"particles", name:"Constellation"},
+];
+const cls = v => "bg--" + (v.cls || v.id);
+
+const grid = document.getElementById("grid");
+VARIANTS.forEach((v,i) => {
+  const t = document.createElement("div");
+  t.className = "tile";
+  t.dataset.idx = i;
+  t.innerHTML =
+    `<div class="bg ${cls(v)}"><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i></div>`+
+    `<div class="tile__meta"><span class="tile__fam">${v.fam}</span><span class="tile__name">${v.name}</span></div>`+
+    `<span class="tile__expand">⤢</span>`+
+    `<span class="tile__id">${v.id}</span>`;
+  t.addEventListener("click",()=>openFocus(i));
+  grid.appendChild(t);
+});
+
+// controls
+const root = document.documentElement;
+const speed = document.getElementById("speed");
+const speedVal = document.getElementById("speedVal");
+speed.addEventListener("input",()=>{root.style.setProperty("--speed",speed.value);speedVal.textContent=parseFloat(speed.value).toFixed(2).replace(/0$/,"")+"×";});
+document.getElementById("pause").addEventListener("change",e=>{
+  document.querySelectorAll(".bg").forEach(b=>b.classList.toggle("paused",e.target.checked));
+});
+document.getElementById("scrim").addEventListener("change",e=>document.body.toggleAttribute("data-scrim",e.target.checked));
+document.getElementById("cta").addEventListener("change",e=>document.body.toggleAttribute("data-cta",e.target.checked));
+document.body.toggleAttribute("data-scrim",true);
+
+// focus overlay
+const focus = document.getElementById("focus");
+const focusBg = document.getElementById("focusBg");
+const focusPill = document.getElementById("focusPill");
+let cur = 0;
+function renderFocus(){
+  const v = VARIANTS[cur];
+  focusBg.className = "focus__bg bg " + cls(v);
+  if(document.getElementById("pause").checked) focusBg.classList.add("paused");
+  focusPill.textContent = `${v.name} · auroraVariant="${v.id}"`;
+}
+function openFocus(i){cur=i;renderFocus();focus.classList.add("is-open");}
+function closeFocus(){focus.classList.remove("is-open");}
+function step(d){cur=(cur+d+VARIANTS.length)%VARIANTS.length;renderFocus();}
+document.getElementById("focusClose").addEventListener("click",closeFocus);
+document.getElementById("focusPrev").addEventListener("click",()=>step(-1));
+document.getElementById("focusNext").addEventListener("click",()=>step(1));
+focus.addEventListener("click",e=>{if(e.target===focus)closeFocus();});
+document.addEventListener("keydown",e=>{
+  if(!focus.classList.contains("is-open"))return;
+  if(e.key==="Escape")closeFocus();
+  if(e.key==="ArrowRight")step(1);
+  if(e.key==="ArrowLeft")step(-1);
+});
+</script>
+</body>
+</html>
