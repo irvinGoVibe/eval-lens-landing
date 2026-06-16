@@ -19,25 +19,19 @@ export function HeaderThemeSync() {
   useEffect(() => {
     const header = document.querySelector<HTMLElement>(".page-header");
     if (!header) return;
-    const bands = Array.from(
-      document.querySelectorAll<HTMLElement>(".band"),
-    );
-    if (!bands.length) return;
-
     let raf = 0;
     const sync = () => {
       raf = 0;
-      // Sample just below the header's lower edge — that's the surface the bar
-      // visually overlaps.
-      const line = header.getBoundingClientRect().bottom - 1;
-      let dark = false;
-      for (const band of bands) {
-        const r = band.getBoundingClientRect();
-        if (r.top <= line && r.bottom > line) {
-          dark = band.classList.contains("ink");
-          break;
-        }
-      }
+      const r = header.getBoundingClientRect();
+      const x = Math.round(window.innerWidth / 2);
+      const y = Math.max(1, Math.round(r.bottom - 2));
+      const band = document
+        .elementsFromPoint(x, y)
+        .find(
+          (el): el is HTMLElement =>
+            el instanceof HTMLElement && el.classList.contains("band"),
+        );
+      const dark = Boolean(band?.classList.contains("ink"));
       header.classList.toggle("page-header--dark", dark);
     };
     const schedule = () => {

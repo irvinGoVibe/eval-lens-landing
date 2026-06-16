@@ -1,9 +1,29 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { Component, type ErrorInfo, type ReactNode, useEffect, useRef, useState } from "react";
 
 const UnicornScene = dynamic(() => import("./UnicornScene"), { ssr: false });
+
+class SceneErrorBoundary extends Component<
+  { children: ReactNode; onError: () => void },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(_error: Error, _info: ErrorInfo) {
+    this.props.onError();
+  }
+
+  render() {
+    if (this.state.failed) return null;
+    return this.props.children;
+  }
+}
 
 function canUseWebGL(): boolean {
   try {
@@ -57,7 +77,9 @@ export function BentoHorse() {
   return (
     <div ref={holder} className="absolute inset-0">
       {mounted && !fallback ? (
-        <UnicornScene isMobile={isMobile} active={inView} zoom={1.09} noBackdrop />
+        <SceneErrorBoundary onError={() => setFallback(true)}>
+          <UnicornScene isMobile={isMobile} active={inView} zoom={1.09} noBackdrop />
+        </SceneErrorBoundary>
       ) : (
         <div
           aria-hidden

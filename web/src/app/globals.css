@@ -147,21 +147,22 @@ body{
    trigger a horizontal scroll on mobile). `clip` over `hidden` so it doesn't
    create a scroll container (which would break sticky scroll-scrub).
 
-   WHERE the clip lives is load-bearing for Chrome's `backdrop-filter` (Safari
-   is lenient; Blink is not), so it differs per page:
+   WHERE the clip lives is load-bearing for Chrome's `backdrop-filter`: Blink
+   disables backdrop-filter on any element with an `overflow:clip` ancestor
+   (verified — even a `position:fixed` direct child of a clipped `body` won't
+   blur). So the clip must never land on a header's ancestor chain.
 
-   - Homepage (`#hero` present): clip at the ROOT (`html`/`body`). Root-level
-     clip does NOT disable the bento horse scene's backdrop-filter blur, but a
-     non-root `<main>` clip container WOULD — so the homepage main (`#top`) is
-     left un-clipped.
-   - Internal pages: clip on `<main>` instead. The sticky `.page-header` is a
-     *sibling* of main, so main's clip isn't on the header's ancestor chain (its
-     own blur keeps working), while main being its own clip context is what lets
-     Chrome composite it as the header's backdrop — without it the bar renders
-     with no blur. Root clip stays OFF internal pages so it never lands on the
-     header's ancestors. */
-html:has(#hero), body:has(#hero){overflow-x:clip;}
-main:not(#top){overflow-x:clip;}
+   - Homepage: clip every top-level section EXCEPT the bento (`#top > *:not(#system)`).
+     NOT html/body — `.site-header` is a child of body, so a clipped body would
+     kill its blur. NOT `<main>`/`#top` as a whole — the bento horse scene's
+     blurred glow (a `filter:blur` halo, not backdrop-filter) lives in `#system`
+     and an ancestor clip would crop it, so that one section is left un-clipped
+     (its 860px aura is `lg`-only and fits the viewport, so it doesn't overflow).
+   - Internal pages: do NOT clip `<main>` as a whole. Chrome will not reliably
+     sample a clipped sibling as the backdrop for the fixed header. Clip the
+     page's direct sections instead, matching the working debug page. */
+#top > *:not(#system){overflow-x:clip;}
+main:not(#top) > *{overflow-x:clip;}
 h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0;letter-spacing:-.022em;line-height:1.06;text-wrap:balance;}
 p{margin:0;text-wrap:pretty;}
 a{color:inherit;text-decoration:none;}
@@ -230,15 +231,33 @@ a{color:inherit;text-decoration:none;}
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:150;
   padding-top:max(12px,env(safe-area-inset-top));
-  background:transparent;
+  height:calc(64px + max(12px,env(safe-area-inset-top)));
   pointer-events:none;
+  isolation:isolate;
+}
+.site-header__glass{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-color:rgba(5,6,12,.48);
+  -webkit-backdrop-filter:saturate(220%) blur(36px);
+  backdrop-filter:saturate(220%) blur(36px);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 58%,rgba(0,0,0,.72) 76%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 58%,rgba(0,0,0,.72) 76%,transparent 100%);
+  transition:background-color .24s var(--ease);
+}
+.site-header.is-light .site-header__glass{
+  background-color:rgba(255,255,255,.34);
 }
 /* same horizontal grid as .hero-content — logo aligns with hero title */
 .site-header__inner{
+  position:relative;
+  z-index:1;
+  height:100%;
   width:100%;max-width:var(--maxw);margin:0 auto;
   padding-left:var(--gutter);padding-right:var(--gutter);
   display:flex;align-items:center;justify-content:space-between;gap:20px;
-  min-height:52px;
   pointer-events:auto;
 }
 .site-header .brand{
@@ -2759,23 +2778,32 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 .blog{background:var(--bg);color:var(--fg);}
 .blog-wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter);width:100%;}
 
-/* ---- Internal-page header (sticky, opaque, blurred) ----
+/* ---- Internal-page header (fixed, translucent, blurred) ----
    Shared chrome for every page that isn't the homepage — Newsroom, Product,
    Trust, Company, Legal. Two surfaces: light (default, white bar / dark text)
    and `--dark` (near-black bar / light text). Component: PageHeader.tsx. */
 .page-header{
-  position:sticky;top:0;z-index:150;
-  /* translucent glass, not a solid plate — the band beneath shows through */
-  background:color-mix(in oklab,var(--bg) 62%,transparent);
-  backdrop-filter:saturate(180%) blur(20px);
-  -webkit-backdrop-filter:saturate(180%) blur(20px);
-  border-bottom:1px solid var(--border-2);
-  /* cross-fade between light/dark variants as HeaderThemeSync toggles --dark */
-  transition:background-color .45s var(--ease), border-color .45s var(--ease);
+  position:fixed;top:0;left:0;right:0;z-index:150;
+  height:56px;
+  isolation:isolate;
+}
+.page-header__glass{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-color:rgba(255,255,255,.34);
+  -webkit-backdrop-filter:saturate(220%) blur(36px);
+  backdrop-filter:saturate(220%) blur(36px);
+  border-bottom:1px solid rgba(55,55,80,.18);
+  box-shadow:0 18px 55px rgba(80,70,130,.16);
+  transition:background-color .24s var(--ease), border-color .24s var(--ease), box-shadow .24s var(--ease);
 }
 .page-header__inner{
+  position:relative;
+  z-index:1;
   max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);
-  display:flex;align-items:center;gap:16px;min-height:56px;
+  display:flex;align-items:center;gap:16px;height:100%;
 }
 .page-header__brand{
   color:var(--fg);font-size:18px;flex:none;
@@ -2833,8 +2861,12 @@ a.page-header__section:hover{color:var(--fg);}
 
 /* ---- Internal-page header — dark surface ---- */
 .page-header--dark{
-  background:color-mix(in oklab,var(--ink) 68%,transparent);
-  border-bottom:1px solid var(--border-on-dark);
+  color:var(--fg-on-dark);
+}
+.page-header--dark .page-header__glass{
+  background-color:rgba(5,6,12,.48);
+  border-bottom-color:rgba(255,255,255,.16);
+  box-shadow:0 18px 55px rgba(0,0,0,.22);
 }
 .page-header--dark .page-header__brand{color:var(--fg-on-dark);}
 .page-header--dark .page-header__brand .mark{

@@ -9,8 +9,18 @@ import { Button } from "@/components/ui/Button";
  * ink) over the light sections in between. Internal pages use `PageHeader`.
  */
 export function SiteHeader() {
+  const glassStyle = {
+    WebkitBackdropFilter: "saturate(220%) blur(36px)",
+    backdropFilter: "saturate(220%) blur(36px)",
+  };
+
   return (
     <header className="site-header" id="site-header">
+      <div
+        className="site-header__glass"
+        aria-hidden="true"
+        style={glassStyle}
+      ></div>
       <div className="site-header__inner">
         <a className="brand" href="#top" aria-label="EvalLense home">
           <span className="mark" aria-hidden="true"></span>
