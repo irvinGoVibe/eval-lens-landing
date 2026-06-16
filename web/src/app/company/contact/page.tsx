@@ -4,7 +4,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { ScrollFX } from "@/components/ScrollFX";
-import { getAllPosts, formatDate } from "@/lib/blog";
+import { getAllPosts } from "@/lib/blog";
+import { ArticleCard } from "@/components/blog/ArticleCard";
 
 export const metadata: Metadata = {
   title: "Contact EvalLense — Book a Demo & Talk to Us",
@@ -263,30 +264,20 @@ export default async function ContactPage() {
                 <span aria-hidden="true">→</span>
               </Link>
             </div>
+            {posts.length > 0 && (
+              /* Reuse the canonical Newsroom card (ArticleCard) in the shared
+                 .blog-grid — same element/layout as /blog, no custom markup. */
+              <div
+                className="blog-grid blog-grid--surface"
+                data-reveal="up"
+                style={{ marginTop: "clamp(28px,4vw,48px)" }}
+              >
+                {posts.map((post) => (
+                  <ArticleCard key={post.slug} post={post} variant="grid" />
+                ))}
+              </div>
+            )}
           </div>
-          {posts.length > 0 && (
-            /* horizontal gallery — scrolls INSIDE its own overflow container,
-               never moving the page; scroll-snap like .usecases .seg-lane */
-            <ul
-              className="seg-lane"
-              data-reveal="up"
-              tabIndex={0}
-              aria-label="Latest news — scroll horizontally"
-            >
-              {posts.map((post) => (
-                <li key={post.slug} className="seg-card ct-news-card">
-                  <Link className="ct-news-card__link" href={`/blog/${post.slug}`}>
-                    <span className="seg-card__signal" aria-hidden="true"></span>
-                    <span className="mini-tag">{post.category}</span>
-                    <h3 className="ct-news-card__title">{post.title}</h3>
-                    <time className="ct-news-card__date" dateTime={post.date}>
-                      {formatDate(post.date)}
-                    </time>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
         </section>
 
         {/* 5. Final CTA — quiet CTA, DARK. */}
