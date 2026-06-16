@@ -5,7 +5,6 @@ version: 1.0
 updated: 2026-06-16
 source: фактический аудит свёрстанных внутренних страниц web/src/app/** (product/*, trust/*, pricing, company/*, legal, sitemap)
 ---
-
 # Section Types — визуальный каталог
 
 ← [[index|Wiki]] · [[page-design-patterns|Page Design Patterns]] · [[design-system|Design System]]

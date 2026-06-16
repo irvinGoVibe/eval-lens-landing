@@ -1,0 +1,84 @@
+# Section componentization — извлечение секции в prop-driven компонент
+
+Применяется, когда вход — **архетип секции** (инлайн-вёрстка в `section-lab` или
+на странице), который надо превратить в **переиспользуемый prop-driven Server
+Component**: контент пропсами, поверхность пропсом, крафт поднят. Это
+«разрезка на компоненты», которую крафт-апгрейд (`apple-block-grammar` +
+`craft-quality-bar`) делает в том же проходе — не двумя.
+
+> Эталон паттерна уже в репо — читай и повторяй:
+> `web/src/components/sections/lab/_kit.tsx` (общие примитивы),
+> `web/src/components/sections/lab/LabStatementHero.tsx` (полный пример типа),
+> `web/src/components/sections/lab/LabPinnedSteps.tsx`.
+> Стенд-витрина: `web/src/app/dev/section-lab/page.tsx`.
+
+## Текущее состояние (не выдумывай — проверь)
+
+В `section-lab` 20 архетипов; на момент написания извлечены только #01
+(`LabStatementHero`), #03 (`LabPinnedSteps`) + примитивы `_kit`. Остальные —
+инлайн в `page.tsx`, но их **контент уже вынесен в data-массивы** наверху файла
+(`GALLERY_ITEMS`, `BENTO_ITEMS`, `RISK_CONTROLS`, …) — это и есть будущая форма
+пропсов. Сверься с живым `page.tsx`, прежде чем извлекать.
+
+## Правила извлечения
+
+1. **Один архетип → один компонент** в `components/sections/lab/Lab<Archetype>.tsx`.
+   Имя и роль — по строке из `section-types.md` (тип #N). Не плодить near-дубли:
+   если архетип уже есть — расширить пропсами, а не клонировать.
+2. **Server Component** (без `"use client"`). Движение — только `data-*`
+   (`data-reveal`/`data-scrub`/`data-pin`), его крутит общий `ScrollFX` /
+   `ScrollOrchestrator`. Никаких локальных `useEffect`.
+3. **Контент — через типизированные пропсы.** Возьми существующий инлайн-data
+   массив как форму пропса (тот же контент, ничего не выдумывая). Экспортируй
+   `type Lab<Archetype>Props`.
+4. **Поверхность — пропсом `surface?: 'light' | 'ink'`** → маппится на класс
+   `.band.soft` (light) / `.band.ink` (ink). По умолчанию — как в каталоге для
+   этого типа. Это включает «light/dark combinable»: страница чередует или ведёт
+   несколько одной поверхности подряд, выбирая пропс. Стыковка соседей —
+   бесшовная (`apple-block-grammar` правило 5).
+5. **Переиспользуй примитивы `_kit`** — `LabEyebrow`, `MediaPlaceholder` — вместо
+   копипасты разметки. Не хватает общего примитива — добавь его в `_kit`, а не
+   локально в N компонентов.
+6. **Стиль — токенами**, классы `.section-lab .lab-*` в `globals.css`. При
+   крафт-апгрейде правь/добавляй там же, не хардкодь значения. liquid-glass —
+   общая группа (рейл CLAUDE.md).
+7. **Markdown-контракт сохрани:** что секция показывает (слоты, порядок, медиа) —
+   не меняем; меняем исполнение и параметризацию. Медиа без ассета → видимый
+   `MediaPlaceholder` (ratio-locked), не пустота.
+8. **Зарегистрируй в `section-types.md`**: убедись, что строка типа актуальна
+   (класс-пример, поверхность, scroll-FX); если вёрстка изменилась — пометь, что
+   нужен новый скриншот (кадр снимается тем же CSS-селектором с дев-сервера).
+
+## Вынос из лаборатории на боевую страницу (отдельный шаг)
+
+CSS секций сейчас **заскоуплен под `.section-lab .lab-*`**. Пока компонент живёт
+только в стенде — это ок. При переносе на реальную страницу:
+- **Де-скоупни CSS** — убери префикс `.section-lab`, чтобы стили работали вне
+  стенда (разовая операция «выпуска»).
+- На боевых страницах один тип сейчас продублирован **разными классами-копиями**
+  (напр. тип 03 = `po-path`, `methodology-pipeline`, `eh-flow`… — это НЕ разные
+  типы, а копии одного). Замена inline-копии на компонент с пропсами убирает эту
+  дупликацию — в этом вся цель ([[section-types-as-components]]).
+- Downstream сборку страниц из этих компонентов делает **build-pages**.
+
+## Маппинг архетипов (section-types.md → компонент)
+
+20 типов из `section-types.md` — это и есть очередь на извлечение. Имя компонента
+бери по типу: Statement hero → `LabStatementHero` (есть), Pinned multi-screen →
+`LabPinnedSteps` (есть), Editorial split → `LabEditorialSplit`, Horizontal
+gallery → `LabGallery`, Bento overview → `LabBento`, Stat band → `LabStatBand`,
+Risk→control → `LabRiskControl`, Quiet CTA → `LabQuietCta`, Pricing tiers →
+`LabPricing`, Comparison table → `LabCompareTable`, и т.д. Сверяйся со свежим
+`section-types.md` — не по этому списку из памяти.
+
+## Definition of done для извлечённого компонента
+
+- [ ] `Lab<Archetype>.tsx` — Server Component, `type ...Props` экспортирован.
+- [ ] Контент 1:1 перенесён в пропсы (из инлайн-data); ничего не выдумано.
+- [ ] `surface` пропсом (`light`/`ink`); дефолт по каталогу; стыковка бесшовная.
+- [ ] Примитивы из `_kit`; общий код — в `_kit`, не дубль.
+- [ ] Движение через `data-*` (ScrollFX), без `useEffect`; reduced-motion ок.
+- [ ] Крафт поднят по `craft-quality-bar`; композиция по `apple-block-grammar`.
+- [ ] `section-lab/page.tsx` рендерит компонент вместо инлайна (витрина не сломана).
+- [ ] Строка в `section-types.md` актуальна (+ пометка пере-снять скриншот, если надо).
+- [ ] `cd web && pnpm build` проходит.
