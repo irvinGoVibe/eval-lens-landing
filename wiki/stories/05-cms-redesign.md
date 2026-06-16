@@ -1,5 +1,5 @@
 ---
-status: draft
+status: locked
 version: 0.1
 updated: 2026-06-15
 linear_project:
