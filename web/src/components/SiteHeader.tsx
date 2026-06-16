@@ -23,9 +23,9 @@ export function SiteHeader() {
           <Link className="site-header__link" href="/trust/methodology">
             Trust
           </Link>
-          <a className="site-header__link" href="#pricing">
+          <Link className="site-header__link" href="/pricing">
             Pricing
-          </a>
+          </Link>
           <Link className="site-header__link" href="/company/contact">
             Contact
           </Link>

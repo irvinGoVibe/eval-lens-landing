@@ -65,6 +65,7 @@ export function Footer({ variant = "light" }: FooterProps) {
                 <Link href="/product/entry-hub">Entry hub</Link>
                 <Link href="/product/evidence-based-reports">Reports</Link>
                 <Link href="/product/review-board">Review board</Link>
+                <Link href="/pricing">Pricing</Link>
                 <Link href="/sitemap">Site map</Link>
               </nav>
             </div>

@@ -4996,3 +4996,103 @@ section[id]{scroll-margin-top:72px;}
 /* footer column heading that links to its section hub (Product / Trust) */
 .foot .col h5 a{color:inherit;text-decoration:none;transition:color .3s var(--ease);}
 .foot .col h5 a:hover{color:var(--violet);}
+
+/* ============================================================
+   /pricing — dense conversion utility (Story 18)
+   Layout-only CSS on canonical :root tokens. No new colors.
+   Wrapper is .pricing. Intentionally breaks editorial scroll.
+   ============================================================ */
+.pricing .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.pricing section.band{padding:clamp(64px,10vw,140px) var(--gutter);}
+
+/* ---- 1. Hero ---- */
+.pricing .pr-hero__inner{max-width:var(--maxw);margin-inline:auto;text-align:center;display:flex;flex-direction:column;align-items:center;}
+.pricing .pr-hero__title{font-size:clamp(40px,7vw,84px);line-height:1.03;letter-spacing:-.03em;font-weight:600;max-width:18ch;min-width:0;}
+.pricing .pr-hero__sub{max-width:60ch;}
+.pricing .pr-hero__media{margin-top:clamp(36px,5vw,60px);max-width:980px;}
+
+/* ---- 2. Plans — pricing cards ---- */
+.pricing .pr-plans .head{margin-bottom:clamp(36px,5vw,60px);}
+.pricing .pr-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,22px);align-items:stretch;}
+.pricing .pr-card{position:relative;min-width:0;display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:clamp(22px,2.4vw,30px);box-shadow:var(--shadow-soft);}
+.pricing .pr-card--recommended{background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 32%,transparent);}
+.pricing .pr-card__badge{position:absolute;top:-14px;left:clamp(22px,2.4vw,30px);background:#fff;}
+.pricing .pr-card__name{font-size:clamp(18px,1.6vw,21px);letter-spacing:-.01em;font-weight:600;color:var(--fg);margin-top:6px;}
+.pricing .pr-card__price{font-family:var(--font-mono);font-size:clamp(28px,3.4vw,40px);line-height:1.05;letter-spacing:-.02em;color:var(--fg);margin-top:4px;}
+.pricing .pr-card__cadence{display:flex;flex-direction:column;gap:2px;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.02em;color:var(--muted);}
+.pricing .pr-card__bullets{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;}
+.pricing .pr-card__bullet{position:relative;padding-left:20px;font-size:14px;line-height:1.45;color:var(--muted);min-width:0;}
+.pricing .pr-card__bullet::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--lens);}
+.pricing .pr-card__cta{margin-top:auto;padding-top:22px;}
+.pricing .pr-card__cta .btn{width:100%;justify-content:center;}
+.pricing .pr-smaller{margin-top:clamp(24px,3vw,36px);text-align:center;font-size:14px;line-height:1.55;color:var(--muted);max-width:72ch;margin-inline:auto;}
+@media (max-width:980px){
+  .pricing .pr-cards{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:560px){
+  .pricing .pr-cards{grid-template-columns:1fr;}
+}
+
+/* ---- comparison tables (sections 3 & 4) ---- */
+.pricing .pr-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-card);}
+.pricing .pr-table-scroll:focus-visible{outline:2px solid var(--violet);outline-offset:4px;}
+.pricing .pr-table{border-collapse:collapse;width:100%;min-width:760px;}
+.pricing .pr-table__caption{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.pricing .pr-th,
+.pricing .pr-td,
+.pricing .pr-cell{padding:13px 16px;text-align:center;border-bottom:1px solid var(--hairline);font-size:14px;line-height:1.4;min-width:0;}
+.pricing .pr-th{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:var(--muted);vertical-align:bottom;border-bottom:1px solid var(--border);}
+.pricing .pr-th--row,
+.pricing .pr-td--row{text-align:left;font-family:var(--font-text);font-weight:400;color:var(--fg);text-transform:none;letter-spacing:0;font-size:14px;white-space:normal;min-width:160px;}
+.pricing .pr-td--row{color:var(--muted);}
+.pricing .pr-cell--num{font-family:var(--font-mono);font-size:13px;letter-spacing:.01em;color:var(--fg);}
+.pricing .pr-cell--yes{color:var(--green);font-weight:600;}
+.pricing .pr-cell--no{color:var(--muted);}
+.pricing .pr-th--reco{color:var(--violet);}
+.pricing .pr-th__note{display:block;font-size:9.5px;letter-spacing:.1em;color:var(--violet);margin-top:3px;}
+.pricing .pr-td--reco{background:color-mix(in oklab,var(--violet) 7%,transparent);}
+
+/* ---- 4. EvalLense vs alternatives — DARK ---- */
+.pricing .pr-versus .pr-table-scroll{margin-top:clamp(28px,4vw,48px);}
+.pricing .pr-versus .pr-th{color:var(--muted-on-dark);border-bottom-color:var(--border-on-dark);}
+.pricing .pr-versus .pr-th--row,
+.pricing .pr-versus .pr-td--row{color:var(--fg-on-dark);}
+.pricing .pr-versus .pr-td--row{color:var(--muted-on-dark);}
+.pricing .pr-versus .pr-th,
+.pricing .pr-versus .pr-td,
+.pricing .pr-versus .pr-cell{border-bottom-color:var(--border-on-dark-2);}
+.pricing .pr-versus .pr-cell--num{color:var(--fg-on-dark);}
+.pricing .pr-versus .pr-cell--no{color:var(--muted-on-dark);}
+.pricing .pr-versus .pr-th--us{color:var(--lavender);}
+.pricing .pr-versus .pr-td--us{background:color-mix(in oklab,var(--violet) 18%,transparent);}
+.pricing .pr-versus__statements{margin-top:clamp(32px,5vw,56px);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,32px);}
+.pricing .pr-statement{margin:0;min-width:0;font-family:var(--font-display);font-size:clamp(19px,2.2vw,26px);line-height:1.32;letter-spacing:-.01em;color:var(--fg-on-dark);padding-left:18px;border-left:2px solid color-mix(in oklab,var(--violet) 55%,transparent);}
+@media (max-width:720px){
+  .pricing .pr-versus__statements{grid-template-columns:1fr;}
+}
+
+/* ---- 5. Capabilities — horizontal scroll gallery ---- */
+.pricing .pr-caps .head{margin-bottom:clamp(32px,5vw,56px);}
+.pricing .pr-caps-lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
+.pricing .pr-caps-lane:focus-visible{outline:2px solid var(--violet);outline-offset:4px;border-radius:var(--radius-card);}
+.pricing .pr-cap{flex:0 0 clamp(244px,29vw,320px);scroll-snap-align:start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;position:relative;min-width:0;min-height:230px;}
+.pricing .pr-cap__signal{width:10px;height:10px;border-radius:50%;background:var(--lens);}
+.pricing .pr-cap .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.pricing .pr-cap__h{font-size:21px;letter-spacing:-.01em;margin-top:6px;color:var(--fg);min-width:0;}
+.pricing .pr-cap__p{font-size:14px;line-height:1.5;color:var(--muted);min-width:0;}
+
+/* ---- 6. FAQ — static Q/A, two-column on desktop ---- */
+.pricing .pr-faq .head{margin-bottom:clamp(32px,5vw,56px);}
+.pricing .pr-faq__grid{margin:0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 clamp(28px,4vw,56px);max-width:var(--maxw);margin-inline:auto;}
+.pricing .pr-faq__item{min-width:0;padding:clamp(22px,3vw,32px) 0;border-top:1px solid var(--border);}
+.pricing .pr-faq__q{font-size:clamp(17px,1.8vw,20px);letter-spacing:-.01em;font-weight:600;color:var(--fg);line-height:1.25;}
+.pricing .pr-faq__a{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--muted);max-width:48ch;}
+.pricing .pr-faq__a a{color:var(--violet);text-decoration:none;}
+.pricing .pr-faq__a a:hover{text-decoration:underline;}
+@media (max-width:720px){
+  .pricing .pr-faq__grid{grid-template-columns:1fr;}
+}
+
+/* ---- 7. Final CTA ---- */
+.pricing .pr-cta .head{display:flex;flex-direction:column;align-items:center;text-align:center;}
+.pricing .pr-cta .cta-row{margin-top:34px;}
