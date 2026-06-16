@@ -97,7 +97,7 @@ const TREE: TreeNode = {
           status: "ready",
         },
         { label: "Careers", path: "/company/careers", status: "soon" },
-        { label: "Contact", path: "/company/contact", status: "soon" },
+        { label: "Contact", path: "/company/contact", status: "ready" },
       ],
     },
     {
