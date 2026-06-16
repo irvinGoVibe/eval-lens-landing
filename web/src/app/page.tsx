@@ -22,10 +22,10 @@ export default function HomePage() {
         {/* <MistBridge /> — kept for upcoming iteration; styles in globals.css */}
         <Workflow />
         <Decisions />
-        <EvalLenseBentoSection />
         <HomeBlogBlock />
+        <EvalLenseBentoSection />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollOrchestrator />
     </>
   );

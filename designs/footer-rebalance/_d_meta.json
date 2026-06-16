@@ -1,0 +1,18 @@
+{
+  "type": "design",
+  "designSystems": [],
+  "primaryDesignSystem": null,
+  "assets": {
+    "Footer": {
+      "versions": [
+        {
+          "path": "Footer.html",
+          "createdAt": "2026-06-16T09:14:05.911Z",
+          "status": "needs-review"
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-06-16T09:14:05.912Z",
+  "updatedAt": "2026-06-16T09:14:05.912Z"
+}

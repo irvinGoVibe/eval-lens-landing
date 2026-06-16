@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 
 /**
  * Newsroom chrome. Unlike the homepage SiteHeader (transparent, light text
@@ -29,10 +30,9 @@ export function BlogHeader() {
             More
           </Link>
         </nav>
-        <Link className="btn btn-primary btn-sm blog-header__cta" href="/#demo">
-          <span className="btn-txt">Book a demo</span>
-          <span className="arr" aria-hidden="true">→</span>
-        </Link>
+        <Button size="sm" className="blog-header__cta" href="/#demo" arrow>
+          Book a demo
+        </Button>
       </div>
     </header>
   );

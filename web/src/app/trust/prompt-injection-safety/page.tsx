@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
+import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
   title: "EvalLense — Prompt Injection Safety for Pitch Evaluation",
@@ -144,9 +145,7 @@ export default function PromptInjectionSafetyPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              <a className="btn btn-primary" href="/#demo">
-                Book a Demo
-              </a>
+              <Button href="/#demo">Book a Demo</Button>
             </div>
             {/* hero visual slot — see prompt 1 in file header */}
             <figure
@@ -410,9 +409,7 @@ export default function PromptInjectionSafetyPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              <a className="btn btn-primary" href="/#demo">
-                Book a Demo
-              </a>
+              <Button href="/#demo">Book a Demo</Button>
             </div>
           </div>
         </section>

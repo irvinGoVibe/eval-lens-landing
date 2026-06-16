@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+
 export function Results() {
   return (
     <section
@@ -158,9 +160,9 @@ export function Results() {
           <span className="chip"><span className="tick"></span>Reusable reports</span>
         </div>
         <div className="sect-cta reveal d2">
-          <button className="btn btn-ghost">
-            View sample feedback&nbsp;<span className="arr">→</span>
-          </button>
+          <Button variant="ghost" arrow>
+            View sample feedback
+          </Button>
         </div>
       </div>
     </section>

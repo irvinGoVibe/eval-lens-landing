@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+
 export function Trust() {
   return (
     <section
@@ -142,9 +144,9 @@ export function Trust() {
           <span className="chip"><span className="tick"></span>Research-backed</span>
         </div>
         <div className="sect-cta reveal d2">
-          <button className="btn btn-dark">
-            Explore trust center&nbsp;<span className="arr">→</span>
-          </button>
+          <Button variant="dark" arrow>
+            Explore trust center
+          </Button>
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
+import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
   title: "Page not found — EvalLense",
@@ -29,12 +29,10 @@ export default function NotFound() {
               Let&rsquo;s get you back on track.
             </p>
             <div className="cta-row notfound-cta">
-              <Link className="btn btn-primary" href="/">
-                Back to home
-              </Link>
-              <Link className="btn btn-ghost" href="/sitemap">
+              <Button href="/">Back to home</Button>
+              <Button variant="ghost" href="/sitemap">
                 Browse the site map
-              </Link>
+              </Button>
             </div>
           </div>
         </section>

@@ -22,6 +22,12 @@
       "runtimeArgs": ["exec", "next", "dev", "--port", "3011"],
       "port": 3011,
       "autoPort": false
+    },
+    {
+      "name": "designs",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4311", "--directory", "designs"],
+      "port": 4311
     }
   ]
 }

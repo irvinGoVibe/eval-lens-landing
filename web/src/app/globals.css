@@ -96,6 +96,8 @@
   --lens-deep: linear-gradient(135deg, #3a1d8f 0%, #1d8f7e 100%);
   /* Ink — mono: 160°, dark panels & statement surfaces */
   --ink-grad: linear-gradient(160deg, #0a0a0d 0%, #1b1b26 100%);
+  /* CTA — filled "Publish Now" gradient reused from the ai-jury app (purple-600 → blue-500) */
+  --grad-cta: linear-gradient(90deg, #9333ea 0%, #3b82f6 100%);
 
   --maxw: 1180px;
   --gutter: clamp(20px, 5vw, 72px);
@@ -280,6 +282,34 @@ a{color:inherit;text-decoration:none;}
 .btn-ghost:hover{background:color-mix(in oklab,var(--violet) 8%, transparent);}
 .btn-glass{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);}
 .btn-glass:hover{background:rgba(255,255,255,.18);}
+/* gradient — filled "Publish Now" CTA reused from the ai-jury app
+   (purple-600 → blue-500). Built for dark surfaces; soft violet glow,
+   top sheen for depth and a light sweep that crosses on hover. */
+.btn-gradient{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:var(--grad-cta);color:#fff;font-weight:500;
+  box-shadow:0 6px 22px -6px rgba(99,76,241,.5), 0 0 18px -2px rgba(168,85,247,.35);
+  transition:box-shadow .4s var(--ease);
+}
+/* fixed top sheen — glassy highlight over the gradient */
+.btn-gradient::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
+  background:linear-gradient(180deg, rgba(255,255,255,.30) 0%, rgba(255,255,255,.06) 42%, transparent 72%);
+}
+/* soft radial sheen — blooms on hover; identical motion to the glass CTA
+   (same opacity/transform + .45s/.65s timing), tuned softer to keep the
+   purple vivid */
+.btn-gradient::after{
+  content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(ellipse 95% 75% at 42% -18%, rgba(255,255,255,.34), transparent 52%),
+    radial-gradient(ellipse 60% 50% at 90% 110%, rgba(255,255,255,.14), transparent 54%);
+  opacity:.7;
+  transition:opacity .45s var(--ease), transform .65s var(--ease);
+}
+.btn-gradient:hover{box-shadow:0 12px 34px -8px rgba(99,76,241,.7), 0 0 40px -2px rgba(168,85,247,.7);}
+.btn-gradient:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
+.btn-gradient .btn-txt,.btn-gradient .arr{position:relative;z-index:1;}
 .btn-sm{padding:8px 15px;font-size:13.5px;}
 .btn .arr{transition:transform .25s var(--ease);}
 .btn:hover .arr{transform:translateX(3px);}
@@ -476,7 +506,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 /* Hero — iOS-style Liquid Glass CTAs (steel / ice crystal) */
 .hero .cta-row{gap:18px;}
 .hero .cta-row .btn,
-.site-header__cta.btn{
+.site-header__cta.btn,
+.foot.is-dark .btn-glass{
   position:relative;isolation:isolate;overflow:hidden;z-index:0;
   font-weight:500;letter-spacing:-.02em;
   font-size:17px;line-height:1.1;
@@ -497,13 +528,15 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   transition:transform .28s var(--ease), box-shadow .4s var(--ease), border-color .4s, background .4s, backdrop-filter .4s;
 }
 .hero .cta-row .btn::before,
-.site-header__cta.btn::before{
+.site-header__cta.btn::before,
+.foot.is-dark .btn-glass::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
   background:
     linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.14) 22%, transparent 48%),
     linear-gradient(25deg, transparent 55%, rgba(210,228,248,.12) 100%);}
 .hero .cta-row .btn::after,
-.site-header__cta.btn::after{
+.site-header__cta.btn::after,
+.foot.is-dark .btn-glass::after{
   content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
   background:
     radial-gradient(ellipse 95% 75% at 42% -18%, rgba(255,255,255,.55), transparent 52%),
@@ -512,7 +545,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   opacity:.85;
   transition:opacity .45s var(--ease), transform .65s var(--ease);}
 .hero .cta-row .btn:hover,
-.site-header__cta.btn:hover{
+.site-header__cta.btn:hover,
+.foot.is-dark .btn-glass:hover{
   border-color:rgba(255,255,255,.52);
   backdrop-filter:blur(48px) saturate(2) brightness(1.1);
   -webkit-backdrop-filter:blur(48px) saturate(2) brightness(1.1);
@@ -523,9 +557,11 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
     0 0 40px -8px rgba(200,220,240,.28);
 }
 .hero .cta-row .btn:hover::after,
-.site-header__cta.btn:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
+.site-header__cta.btn:hover::after,
+.foot.is-dark .btn-glass:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
 .hero .cta-row .btn-primary,
-.site-header__cta.btn-primary{
+.site-header__cta.btn-primary,
+.foot.is-dark .btn-glass{
   background:
     linear-gradient(145deg,
       rgba(255,255,255,.22) 0%,
@@ -534,7 +570,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
     rgba(255,255,255,.06);
 }
 .hero .cta-row .btn-primary:hover,
-.site-header__cta.btn-primary:hover{
+.site-header__cta.btn-primary:hover,
+.foot.is-dark .btn-glass:hover{
   background:
     linear-gradient(145deg,
       rgba(255,255,255,.3) 0%,
@@ -561,7 +598,9 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero .cta-row .btn .btn-txt,
 .hero .cta-row .btn .arr,
-.site-header__cta.btn .btn-txt{position:relative;z-index:1;}
+.site-header__cta.btn .btn-txt,
+.foot.is-dark .btn-glass .btn-txt,
+.foot.is-dark .btn-glass .arr{position:relative;z-index:1;}
 .hero .cta-row .btn .arr{
   opacity:.95;
   filter:drop-shadow(0 0 10px rgba(220,235,255,.45));
@@ -2221,14 +2260,99 @@ body:not(.hero-ready){overflow:hidden;}
 @media (max-width:560px){.trust-grid{grid-template-columns:1fr}.tcard.big{grid-column:auto}}
 
 /* ---------- footer ---------- */
-.foot{background:var(--bg-soft);border-top:1px solid var(--border);padding:56px var(--gutter) 40px;font-size:13px;color:var(--muted);}
-.foot .wrap{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:36px;}
-.foot h5{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg);font-family:var(--font-text);font-weight:400;margin:0 0 14px;}
-.foot a{display:block;color:var(--muted);margin-bottom:9px;transition:color .2s;}
-.foot a:hover{color:var(--violet);}
-.foot .col p{max-width:260px;line-height:1.55;}
-.foot .legal{max-width:var(--maxw);margin:36px auto 0;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;}
-@media (max-width:760px){.foot .wrap{grid-template-columns:1fr 1fr}}
+/* Shared chrome on every page. Two variants via <Footer variant>: light (default,
+   on --bg-soft) and dark (on the ink→violet ramp, used on the homepage). Layout is
+   "right-grouped": the brand fills the left, the three nav columns sit as a tight
+   cluster on the right, the whole block capped at --maxw and centred via .inner.
+   --foot-head-font drives the column headings (Product/Trust/Company) — default is
+   the body UI font; set it to var(--font-mono) to echo the header menu. */
+.foot{background:var(--bg-soft);border-top:1px solid var(--border);padding:60px var(--gutter) 34px;font-size:13px;color:var(--muted);position:relative;overflow:hidden;--foot-head-font:var(--font-text);--foot-head-tracking:.08em;}
+.foot .inner{max-width:var(--maxw);margin:0 auto;position:relative;z-index:1;}
+.foot .wrap{display:grid;grid-template-columns:minmax(280px,1fr) auto;align-items:start;gap:88px;}
+.foot .nav-cluster{display:grid;grid-template-columns:repeat(3,max-content);gap:76px;}
+.foot .col--brand p{max-width:300px;line-height:1.55;margin:0 0 18px;}
+.foot .ctas{display:flex;gap:10px;flex-wrap:wrap;}
+.foot h5{font-family:var(--foot-head-font);font-size:12px;text-transform:uppercase;letter-spacing:var(--foot-head-tracking);color:var(--fg);font-weight:500;margin:0 0 16px;}
+.foot .col nav{display:flex;flex-direction:column;gap:11px;}
+.foot .col nav a{display:block;width:max-content;color:var(--muted);transition:color .2s;}
+.foot .col nav a:hover{color:var(--violet);}
+/* legal row — © + technical-page links share one type (left); socials (right).
+   NB: footer-scoped classnames (.foot-legal*) — NOT .legal/.legal-meta, which
+   belong to the legal-document pages (LegalDoc) and would impose their mono font. */
+.foot .foot-legal{margin-top:40px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:13px;}
+.foot .foot-legal__meta{display:flex;align-items:center;flex-wrap:wrap;gap:20px;}
+.foot .foot-legal__meta a{color:var(--muted);transition:color .2s;}
+.foot .foot-legal__meta a:hover{color:var(--violet);}
+.foot .foot-legal__copy{color:inherit;}
+/* social icon chips — soft tinted square on hover. Live at the bottom of the
+   Company column; the negative margin pulls the first icon's glyph flush with
+   the column's left text edge (cancels the chip's centring inset). */
+.foot .foot-social{display:flex;align-items:center;gap:6px;margin-top:18px;margin-left:-8px;}
+.foot .foot-social a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;color:var(--muted);transition:color .2s, background .2s;}
+.foot .foot-social a:hover{color:var(--violet);background:color-mix(in oklab,var(--violet) 9%, transparent);}
+.foot .foot-social svg{width:17px;height:17px;}
+@media (max-width:860px){
+  .foot .wrap{grid-template-columns:1fr;gap:36px;}
+  .foot .nav-cluster{grid-template-columns:1fr 1fr;gap:28px 36px;}
+}
+@media (max-width:480px){.foot .nav-cluster{grid-template-columns:1fr;}}
+
+/* dark footer variant — black at the top, deepening into a violet ramp. The
+   bottom glow is one cohesive layer (see ::before) that rolls side to side
+   like a slow wave, bright only along the very bottom and fading upward.
+   No top hairline — it blends straight out of the preceding block. */
+.foot.is-dark{
+  position:relative;
+  overflow:hidden;
+  /* exact same black as the section above (.band.ink → --bg-ink) so the seam is
+     invisible; all the violet comes from the ::before glow at the bottom */
+  background:var(--bg-ink);
+  border-top:0;
+  color:var(--muted-on-dark);
+}
+/* one cohesive, muted violet glow that rolls side to side like a slow wave. It
+   hugs the BOTTOM (brightest at the floor) and only covers the lower portion,
+   fading to transparent well before the top — so the top of the footer (the seam
+   with the section above) stays perfectly black. */
+.foot.is-dark::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:50%;
+  bottom:0;
+  width:155%;
+  height:46%;
+  pointer-events:none;
+  transform-origin:50% 100%;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse 58% 60% at 50% 100%,
+    rgba(124,92,246,.30) 0%,
+    rgba(108,76,241,.12) 40%,
+    rgba(108,76,241,.04) 66%,
+    transparent 84%);
+  animation:foot-glow-roll 8s ease-in-out infinite;
+}
+/* scale grows from the floor (origin 50% 100%) — kept small so the peak of the
+   pulse still never reaches the top; opacity swing is wide for a livelier pulse */
+@keyframes foot-glow-roll{
+  0%,100%{ transform:translateX(-70%) scale(1);    opacity:.42; }
+  50%    { transform:translateX(-30%) scale(1.05); opacity:.92; }
+}
+@media (prefers-reduced-motion: reduce){
+  .foot.is-dark::before{animation:none;transform:translateX(-50%);}
+}
+.foot.is-dark .brand{color:var(--fg-on-dark);}
+.foot.is-dark h5{color:var(--fg-on-dark);}
+.foot.is-dark .col nav a,
+.foot.is-dark .foot-legal__meta a{color:var(--muted-on-dark);}
+.foot.is-dark .col nav a:hover,
+.foot.is-dark .foot-legal__meta a:hover{color:var(--fg-on-dark);}
+.foot.is-dark .foot-legal{border-top-color:var(--border-on-dark);}
+.foot.is-dark .foot-social a{color:var(--muted-on-dark);}
+.foot.is-dark .foot-social a:hover{color:var(--fg-on-dark);background:rgba(255,255,255,.08);}
+/* the glass CTA reuses the hero "liquid glass" treatment (see hero .cta-row
+   rules) — pull its hardcoded hero sizing back down to the footer's sm scale */
+.foot.is-dark .btn-glass{padding:8px 18px;min-height:0;font-size:13.5px;letter-spacing:0;font-weight:500;}
 
 /* ── bento tiles: on hover the hairline edge twinkles like the unicorn's
       facet seams — whole stretches of the border breathe in, crawl a few
@@ -2953,6 +3077,53 @@ body:not(.hero-ready){overflow:hidden;}
 }
 .news-arrow:hover:not(:disabled){background:rgba(0,0,0,.12);}
 .news-arrow:disabled{opacity:.35;cursor:default;}
+
+/* ---- Dark variant of the carousel (home-blog--dark) ----------------------
+   Same Apple-style slider, recoloured for a dark theme: near-black section
+   with a violet/cyan ambient glow, dark cards with a faint border, and a
+   PURE-BLACK media well so black-background artwork blends edge-to-edge.
+   Category chips switch to the brighter on-dark accent colours. */
+.home-blog--dark{
+  position:relative;overflow:hidden;
+  background:#070610;
+}
+.home-blog--dark::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(58% 80% at 12% -5%, rgba(108,76,241,.28), transparent 60%),
+    radial-gradient(46% 70% at 92% 108%, rgba(46,197,232,.14), transparent 60%);
+}
+.home-blog--dark > *{position:relative;z-index:1;}
+.home-blog--dark .home-blog__title{color:var(--fg-on-dark);}
+.home-blog--dark .home-blog__seeall{color:var(--lavender);}
+
+.home-blog--dark .news-card{
+  /* bottom half stays pure black so black-background artwork (which sits in
+     the lower media well) blends in with no seam; only the top fades up into
+     a deep violet glow behind the heading */
+  background:linear-gradient(to top, #000 0%, #000 50%, #170f2e 76%, #3a2468 100%);
+  border:1px solid var(--border-on-dark);
+}
+.home-blog--dark .news-card:hover{
+  border-color:rgba(168,155,255,.4);
+  box-shadow:0 28px 64px -30px rgba(108,76,241,.65);
+}
+.home-blog--dark .news-card__title{color:var(--fg-on-dark);}
+.home-blog--dark .news-card:hover .news-card__title{color:var(--lavender);}
+.home-blog--dark .news-card__excerpt{color:var(--muted-on-dark);}
+
+/* chips — brighter accents that read on dark */
+.home-blog--dark .blog-tag{color:var(--lavender);}
+.home-blog--dark .blog-tag[data-accent="cyan"]{color:var(--cyan);}
+.home-blog--dark .blog-tag[data-accent="aqua"]{color:var(--aqua);}
+.home-blog--dark .blog-tag[data-accent="orange"]{color:var(--orange-core);}
+
+/* media shares the card's pure black — no frame, so artwork merges seamlessly */
+.home-blog--dark .news-card__media{background:#000;}
+
+/* arrows on dark */
+.home-blog--dark .news-arrow{background:rgba(255,255,255,.08);color:var(--fg-on-dark);}
+.home-blog--dark .news-arrow:hover:not(:disabled){background:rgba(255,255,255,.16);}
 
 /* ============================================================
    /trust/methodology — Apple-grade scroll page (Story 04)
@@ -4335,3 +4506,74 @@ body:not(.hero-ready){overflow:hidden;}
 
 /* ---- 7. Final CTA — quiet CTA (DARK) ---- */
 .about .ab-cta .sect-cta{margin-top:34px;}
+
+/* ════════════════════════════════════════════════════════════════════════
+   CONTACT PAGE (/company/contact) — page-scoped, canonical tokens only.
+   Wrapper is .contact so every selector is page-scoped. Mirrors .about /
+   .usecases (statement-hero, bento/feature-grid, editorial-split, .seg-lane,
+   quiet-cta). No new tokens/colors/shadows/radii.
+   ════════════════════════════════════════════════════════════════════════ */
+.contact .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* shared section rhythm */
+.contact section.band{padding:clamp(64px,10vw,140px) var(--gutter);}
+
+/* ---- 1. Hero — statement-hero (light) ---- */
+.contact .ct-hero{padding-top:clamp(132px,18vw,200px);}
+.contact .ct-hero__inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;min-width:0;}
+.contact .ct-hero .eyebrow{margin-bottom:22px;}
+.contact .ct-hero__title{font-size:clamp(48px,9vw,108px);line-height:1.0;letter-spacing:-.03em;font-weight:600;max-width:14ch;}
+.contact .ct-hero__sub{max-width:58ch;margin-top:26px;}
+.contact .ct-hero .cta-row{justify-content:center;}
+.contact .ct-hero__media{width:min(100%,920px);margin-top:clamp(48px,7vw,88px);box-shadow:var(--shadow-soft);}
+
+/* ---- 2. Ways to reach us — bento / feature-grid (light) ---- */
+.contact .ct-channels .head{margin-bottom:clamp(32px,5vw,56px);}
+.contact .ct-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(14px,2vw,22px);}
+.contact .ct-tile{grid-column:span 3;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:clamp(22px,2.6vw,30px);box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:8px;min-width:0;}
+.contact .ct-tile--feature{grid-column:span 6;background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 32%, transparent);box-shadow:none;}
+.contact .ct-tile .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.contact .ct-tile__h{font-size:clamp(18px,2.2vw,24px);letter-spacing:-.01em;color:var(--fg);}
+.contact .ct-tile__p{font-size:14px;line-height:1.55;color:var(--muted);}
+.contact .ct-tile__actions{margin-top:auto;padding-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;min-width:0;}
+.contact .ct-tile__mail{font-family:var(--font-mono);font-size:14px;letter-spacing:-.01em;color:var(--violet);text-decoration:none;word-break:break-word;min-width:0;}
+.contact .ct-tile__mail:hover{text-decoration:underline;}
+.contact .ct-tile__link{font-size:13px;letter-spacing:.01em;color:var(--muted);text-decoration:none;}
+.contact .ct-tile__link:hover{color:var(--fg);}
+@media (max-width:900px){
+  .contact .ct-grid{grid-template-columns:repeat(2,1fr);}
+  .contact .ct-tile{grid-column:span 1;}
+  .contact .ct-tile--feature{grid-column:span 2;}
+}
+@media (max-width:560px){
+  .contact .ct-grid{grid-template-columns:1fr;}
+  .contact .ct-tile,
+  .contact .ct-tile--feature{grid-column:span 1;}
+}
+
+/* ---- 3. Documentation (external) — editorial split / full-bleed (DARK) ---- */
+.contact .ct-docs__split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;}
+.contact .ct-docs__copy{min-width:0;}
+.contact .ct-docs__cta{margin-top:clamp(22px,3vw,30px);display:flex;flex-wrap:wrap;gap:14px;}
+.contact .ct-docs__media{min-width:0;width:100%;max-width:520px;justify-self:center;}
+@media (max-width:820px){
+  .contact .ct-docs__split{grid-template-columns:1fr;}
+  .contact .ct-docs__media{order:-1;max-width:none;}
+}
+
+/* ---- 4. Latest news — horizontal scroll-snap gallery (light) ---- */
+.contact .ct-news__head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:clamp(28px,4.5vw,48px);}
+.contact .ct-news__heading{min-width:0;}
+.contact .ct-news__all{flex:none;font-size:14px;letter-spacing:.01em;color:var(--violet);text-decoration:none;white-space:nowrap;}
+.contact .ct-news__all:hover{text-decoration:underline;}
+.contact .seg-lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
+.contact .seg-lane:focus-visible{outline:2px solid var(--violet);outline-offset:4px;border-radius:var(--radius-card);}
+.contact .seg-card{flex:0 0 clamp(248px,30vw,340px);scroll-snap-align:start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);box-shadow:var(--shadow-soft);position:relative;min-width:0;min-height:220px;padding:0;}
+.contact .ct-news-card__link{display:flex;flex-direction:column;gap:12px;height:100%;padding:26px;text-decoration:none;color:inherit;min-width:0;}
+.contact .seg-card__signal{width:10px;height:10px;border-radius:50%;background:var(--lens);}
+.contact .ct-news-card .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.contact .ct-news-card__title{font-size:clamp(18px,2.1vw,22px);line-height:1.2;letter-spacing:-.01em;color:var(--fg);}
+.contact .ct-news-card__date{margin-top:auto;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.02em;color:var(--muted);}
+
+/* ---- 5. Final CTA — quiet CTA (DARK) ---- */
+.contact .ct-cta .sect-cta{margin-top:34px;}

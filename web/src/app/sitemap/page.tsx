@@ -42,7 +42,6 @@ const TREE: TreeNode = {
     { label: "Conversion Page", path: "/", status: "ready" },
     {
       label: "Product",
-      path: "/product",
       status: "ready",
       children: [
         { label: "Overview", path: "/product", status: "ready" },
@@ -61,8 +60,7 @@ const TREE: TreeNode = {
     },
     {
       label: "Trust",
-      path: "/trust",
-      status: "soon",
+      status: "ready",
       children: [
         { label: "Methodology", path: "/trust/methodology", status: "ready" },
         {
@@ -85,8 +83,7 @@ const TREE: TreeNode = {
     },
     {
       label: "Company",
-      path: "/company",
-      status: "soon",
+      status: "ready",
       children: [
         { label: "About", path: "/company/about", status: "ready" },
         // Newsroom currently lives at /blog on the live site.

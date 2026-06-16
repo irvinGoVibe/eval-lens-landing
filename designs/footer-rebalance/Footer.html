@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EvalLense — Footer rebalance</title>
+<style>
+  :root{
+    --violet:#6c4cf1; --violet-2:#7b5cf6;
+    --bg-soft:#f5f5f7; --fg:#1d1d1f; --muted:#6e6e73; --border:#d2d2d7;
+    --ink:#000; --fg-on-dark:#f5f5f7; --muted-on-dark:#a9a9b2;
+    --border-on-dark:rgba(255,255,255,.12);
+    --grad-cta:linear-gradient(90deg,#9333ea 0%,#3b82f6 100%);
+    --lens:linear-gradient(118deg,#6c4cf1,#a99bff 32%,#2ec5e8 68%,#36e0c2);
+    --maxw:1200px; --gutter:clamp(22px,5vw,64px);
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    --font-mono:Menlo,"SF Mono",ui-monospace,"JetBrains Mono",monospace;
+    /* column-heading font — flips to the header's mono menu font via .heads-mono */
+    --head-font:var(--font);
+    --head-tracking:.08em;
+  }
+  body.heads-mono{--head-font:var(--font-mono);--head-tracking:.16em;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{font-family:var(--font);background:#e9e9ee;color:var(--fg);-webkit-font-smoothing:antialiased;}
+
+  /* ---- page chrome (not part of the footer) ---- */
+  .page{max-width:1240px;margin:0 auto;padding:24px 20px 90px;}
+  .toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:13px 16px;margin:0 0 24px;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);
+    border:1px solid #dcdce2;border-radius:14px;}
+  .toolbar h1{font-size:15px;font-weight:600;margin:0;letter-spacing:-.01em;white-space:nowrap;}
+  .seg{display:flex;flex-wrap:wrap;background:#ececf1;border-radius:10px;padding:3px;gap:2px;}
+  .seg button{font:inherit;font-size:12.5px;font-weight:500;border:0;cursor:pointer;padding:7px 12px;
+    border-radius:8px;background:transparent;color:#55555c;transition:.18s;white-space:nowrap;}
+  .seg button[aria-pressed="true"]{background:#fff;color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.12);}
+
+  .variant{display:none;}
+  .variant.is-active{display:block;}
+  .specimen{margin:0 0 28px;border-radius:18px;overflow:hidden;border:1px solid #dcdce2;
+    box-shadow:0 20px 60px -30px rgba(0,0,0,.4);}
+  .specimen__tag{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:#86868c;padding:12px 4px 8px;}
+  .vdesc{font-size:13.5px;color:#55555c;margin:0 0 18px;padding:0 4px;max-width:760px;line-height:1.5;}
+  .vdesc strong{color:var(--fg);font-weight:600;}
+
+  /* ============ FOOTER ============ */
+  .foot{background:var(--bg-soft);padding:60px var(--gutter) 34px;font-size:13px;color:var(--muted);
+    position:relative;overflow:hidden;}
+  .foot .inner{max-width:var(--maxw);margin:0 auto;position:relative;z-index:1;}
+  .foot .wrap{display:grid;gap:40px;}
+
+  .col{min-width:0;}
+  .brand{display:inline-flex;align-items:center;gap:9px;font-size:18px;font-weight:500;color:var(--fg);
+    text-decoration:none;margin-bottom:14px;letter-spacing:-.01em;}
+  .brand .mark{width:22px;height:22px;border-radius:50%;background:var(--lens);
+    box-shadow:0 0 0 1px rgba(255,255,255,.6) inset,0 4px 14px -4px var(--violet);}
+  .col--brand p{max-width:300px;line-height:1.55;margin:0 0 18px;}
+  .ctas{display:flex;gap:10px;flex-wrap:wrap;}
+
+  .col h5{font-family:var(--head-font);font-size:12px;text-transform:uppercase;letter-spacing:var(--head-tracking);color:var(--fg);font-weight:500;margin:0 0 16px;}
+  .col nav{display:flex;flex-direction:column;gap:11px;}
+  .col nav a{color:var(--muted);text-decoration:none;transition:color .2s;width:max-content;}
+  .col nav a:hover{color:var(--violet);}
+
+  .legal{max-width:var(--maxw);margin:40px auto 0;padding-top:22px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:13px;
+    position:relative;z-index:1;}
+  .legal-meta{display:flex;align-items:center;flex-wrap:wrap;gap:20px;}
+  .legal-meta a{color:var(--muted);text-decoration:none;transition:color .2s;}
+  .legal-meta a:hover{color:var(--violet);}
+
+  /* social icon chips */
+  .foot-social{display:flex;align-items:center;gap:6px;}
+  .foot-social a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+    border-radius:9px;color:var(--muted);transition:.2s;}
+  .foot-social a:hover{color:var(--violet);background:color-mix(in oklab,var(--violet) 9%,transparent);}
+  .foot-social svg{width:17px;height:17px;}
+  .brand-social{margin-top:20px;}
+  .brand-social .foot-social{margin-left:-7px;}
+
+  /* social as a labelled list (Follow column) */
+  .social-list a{display:inline-flex;align-items:center;gap:9px;}
+  .social-list svg{width:16px;height:16px;}
+
+  /* ---- pill buttons ---- */
+  .btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:13.5px;font-weight:500;
+    line-height:1;border:0;cursor:pointer;border-radius:980px;padding:9px 17px;text-decoration:none;
+    position:relative;isolation:isolate;overflow:hidden;transition:box-shadow .4s,transform .2s,background .25s,border-color .3s;}
+  .btn-gradient{background:var(--grad-cta);color:#fff;
+    box-shadow:0 6px 22px -6px rgba(99,76,241,.5),0 0 18px -2px rgba(168,85,247,.35);}
+  .btn-gradient::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;
+    background:linear-gradient(180deg,rgba(255,255,255,.30) 0%,rgba(255,255,255,.06) 42%,transparent 72%);}
+  .btn-gradient::after{content:"";position:absolute;inset:-60% -40%;border-radius:inherit;z-index:-1;
+    opacity:.7;transition:opacity .45s,transform .65s;
+    background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(255,255,255,.34),transparent 52%);}
+  .btn-gradient:hover::after{opacity:1;transform:translateY(-2%) scale(1.04);}
+  .btn-ghost{background:transparent;color:var(--violet);border:1px solid color-mix(in oklab,var(--violet) 35%,var(--border));}
+  .btn-ghost:hover{background:color-mix(in oklab,var(--violet) 8%,transparent);}
+  .btn-glass{color:#f8fafc;border:1px solid rgba(255,255,255,.38);text-shadow:0 1px 2px rgba(0,0,0,.22);
+    background:linear-gradient(145deg,rgba(255,255,255,.22) 0%,rgba(220,232,248,.1) 38%,rgba(255,255,255,.04) 100%),rgba(255,255,255,.06);
+    box-shadow:inset 0 1.5px 0 rgba(255,255,255,.72),0 14px 48px -10px rgba(0,0,0,.42);}
+  .btn-glass::after{content:"";position:absolute;inset:-60% -40%;border-radius:inherit;z-index:-1;
+    opacity:.85;transition:opacity .45s,transform .65s;
+    background:radial-gradient(ellipse 95% 75% at 42% -18%,rgba(255,255,255,.5),transparent 52%);}
+  .btn-glass:hover::after{opacity:1;transform:translateY(-2%) scale(1.04);}
+
+  /* ============ DARK ============ */
+  .foot.is-dark{background:linear-gradient(180deg,#060509 0%,#0b0916 52%,#160d2e 100%);color:var(--muted-on-dark);border:0;}
+  .foot.is-dark .brand{color:var(--fg-on-dark);}
+  .foot.is-dark .col h5{color:var(--fg-on-dark);}
+  .foot.is-dark .col nav a,.foot.is-dark .legal-meta a{color:var(--muted-on-dark);}
+  .foot.is-dark .col nav a:hover,.foot.is-dark .legal-meta a:hover{color:var(--fg-on-dark);}
+  .foot.is-dark .legal{border-top-color:var(--border-on-dark);}
+  .foot.is-dark .foot-social a{color:var(--muted-on-dark);}
+  .foot.is-dark .foot-social a:hover{color:var(--fg-on-dark);background:rgba(255,255,255,.08);}
+  .foot.is-dark .glow{position:absolute;z-index:0;left:50%;bottom:0;width:155%;height:95%;pointer-events:none;
+    transform-origin:50% 100%;transform:translateX(-50%);
+    background:radial-gradient(ellipse 52% 82% at 50% 100%,rgba(124,92,246,.30) 0%,rgba(108,76,241,.13) 38%,rgba(108,76,241,.04) 64%,transparent 82%);
+    animation:roll 13s ease-in-out infinite;}
+  @keyframes roll{0%,100%{transform:translateX(-72%) scale(1);opacity:.58;}50%{transform:translateX(-28%) scale(1.06);opacity:.85;}}
+
+  /* ============ LAYOUT VARIANTS ============ */
+  /* 1 — aligned grid */
+  .v1 .wrap{grid-template-columns:1.5fr 1fr 1fr 1fr;}
+  /* 2 — brand left, nav grouped right */
+  .v2 .wrap{grid-template-columns:minmax(280px,1fr) auto;align-items:start;gap:64px;}
+  .v2 .nav-cluster{display:grid;grid-template-columns:repeat(3,max-content);gap:60px;}
+  /* 3 — no socials (the pre-socials layout) */
+  .v3 .wrap{grid-template-columns:1.5fr 1fr 1fr 1fr;}
+  /* 4 — socials under the brand */
+  .v4 .wrap{grid-template-columns:1.5fr 1fr 1fr 1fr;}
+  /* 5 — Follow column (socials as a labelled list) */
+  .v5 .wrap{grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;gap:32px;}
+  /* 7 — copy of 3 + socials as the bottom row of the Company column */
+  .v7 .wrap{grid-template-columns:1.5fr 1fr 1fr 1fr;}
+  .col-social{margin-top:18px;}
+  /* 6 — brand band on top, columns below */
+  .v6 .brand-band{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;
+    padding-bottom:30px;margin-bottom:34px;border-bottom:1px solid var(--border);}
+  .foot.is-dark .brand-band{border-bottom-color:var(--border-on-dark);}
+  .v6 .bb-left p{max-width:440px;line-height:1.55;margin:14px 0 0;}
+  .v6 .bb-right{display:flex;flex-direction:column;align-items:flex-end;gap:16px;}
+  .v6 .wrap--cols{grid-template-columns:repeat(3,1fr);}
+
+  @media (max-width:860px){
+    .foot .wrap{grid-template-columns:1fr 1fr !important;gap:32px;}
+    .v2 .nav-cluster{display:contents;}
+    .col--brand{grid-column:1 / -1;}
+    .v6 .brand-band{flex-direction:column;align-items:flex-start;}
+    .v6 .bb-right{align-items:flex-start;}
+  }
+  @media (max-width:520px){
+    .foot .wrap{grid-template-columns:1fr !important;}
+    .legal{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="toolbar">
+    <h1>EvalLense · Footer</h1>
+    <div class="seg" id="seg" role="group" aria-label="Layout variant"></div>
+    <div class="seg" id="headFont" role="group" aria-label="Heading font">
+      <button data-head="sans" aria-pressed="true">Заголовки: Sans</button>
+      <button data-head="mono" aria-pressed="false">Mono (как в хедере)</button>
+    </div>
+  </div>
+  <div id="stage"></div>
+</div>
+
+<script>
+  var NAV = [
+    {h:"Product", links:["Overview","Entry hub","Reports","Review board","Site map"]},
+    {h:"Trust", links:["Methodology","Consistency & reliability","Prompt injection safety","Security & privacy","Use cases"]},
+    {h:"Company", links:["About","Newsroom","Contact","careers@evallense.com"]}
+  ];
+  var SOCIALS = [
+    {name:"X",path:"M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"},
+    {name:"Instagram",path:"M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"},
+    {name:"Telegram",path:"M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.061 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"},
+    {name:"Medium",path:"M13.54 12a6.8 6.8 0 1 1-13.6 0 6.8 6.8 0 0 1 13.6 0zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75S24 8.83 24 12z"}
+  ];
+
+  var VARIANTS = [
+    {n:1, name:"1 · Aligned grid", desc:"<strong>Aligned grid.</strong> Brand 1.5fr + 3 равные колонки. Соцсети — иконками внизу справа. Всё выровнено по краям."},
+    {n:2, name:"2 · Right-grouped", desc:"<strong>Right-grouped.</strong> Бренд слева, 3 колонки плотной группой справа. Соцсети — внизу справа."},
+    {n:3, name:"3 · Без соцсетей", desc:"<strong>Как было раньше — без соцсетей.</strong> Внизу справа только технические страницы (Privacy / Terms / Security). Соцсети не показываем."},
+    {n:4, name:"4 · Соцсети у бренда", desc:"<strong>Соцсети под брендом.</strong> Иконки живут в бренд-колонке под кнопками; нижняя строка чистая — © + технические ссылки."},
+    {n:5, name:"5 · Колонка Follow", desc:"<strong>Колонка Follow.</strong> Соцсети — отдельной колонкой списком (иконка + название), как полноценная навигация. Низ — только технические ссылки."},
+    {n:6, name:"6 · Brand band", desc:"<strong>Brand band.</strong> Бренд + кнопки + соцсети одной полосой сверху, 3 колонки рядом ниже. Низ — © + технические ссылки."},
+    {n:7, name:"7 · Соцсети в Company", desc:"<strong>Копия «без соцсетей» + соцсети в колонке Company.</strong> Всё как в варианте 3, но в колонке Company последней строкой — иконки соцсетей. Низ — © + технические ссылки."}
+  ];
+
+  function iconSvg(s){ return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="'+s.path+'"/></svg>'; }
+  function socialIcons(){ return '<span class="foot-social">'+SOCIALS.map(function(s){return '<a href="#" aria-label="'+s.name+'">'+iconSvg(s)+'</a>';}).join('')+'</span>'; }
+  function socialList(){ return SOCIALS.map(function(s){return '<a href="#">'+iconSvg(s)+s.name+'</a>';}).join(''); }
+  function navCol(c){ return '<div class="col"><h5>'+c.h+'</h5><nav>'+c.links.map(function(l){return '<a href="#">'+l+'</a>';}).join('')+'</nav></div>'; }
+  function navCols(){ return NAV.map(navCol).join(''); }
+  /* like navCols, but the last column (Company) gets the socials as its bottom row */
+  function navColsSocialInLast(){
+    return NAV.map(function(c,i){
+      var nav = '<nav>'+c.links.map(function(l){return '<a href="#">'+l+'</a>';}).join('')+'</nav>';
+      var social = (i === NAV.length-1) ? '<div class="brand-social col-social">'+socialIcons()+'</div>' : '';
+      return '<div class="col"><h5>'+c.h+'</h5>'+nav+social+'</div>';
+    }).join('');
+  }
+
+  function brandCol(dark, socialsUnder){
+    var second = dark ? 'btn-glass' : 'btn-ghost';
+    var ctas = '<div class="ctas"><a class="btn btn-gradient" href="#">Book a call</a><a class="btn '+second+'" href="#">Try live demo</a></div>';
+    var su = socialsUnder ? '<div class="brand-social">'+socialIcons()+'</div>' : '';
+    return '<div class="col col--brand"><a class="brand" href="#"><span class="mark"></span>EvalLense</a>'
+      + '<p>Batch-review pitch decks, rank the strongest startups, and give every team a clear report. Final decisions stay human-controlled.</p>'
+      + ctas + su + '</div>';
+  }
+  function links(){ return '<a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a>'; }
+  function legal(mode){
+    if(mode === 'socials'){
+      return '<div class="legal"><span class="legal-meta"><span>EvalLense © 2026</span>'+links()+'</span>'+socialIcons()+'</div>';
+    }
+    /* split — copy left, technical links right (the pre-socials look) */
+    return '<div class="legal"><span class="legal-copy">EvalLense © 2026</span><span class="legal-meta">'+links()+'</span></div>';
+  }
+
+  function footer(n, dark){
+    var glow = dark ? '<div class="glow"></div>' : '';
+    var inner;
+    if(n===1){ inner = '<div class="wrap">'+brandCol(dark)+navCols()+'</div>'+legal('socials'); }
+    else if(n===2){ inner = '<div class="wrap">'+brandCol(dark)+'<div class="nav-cluster">'+navCols()+'</div></div>'+legal('socials'); }
+    else if(n===3){ inner = '<div class="wrap">'+brandCol(dark)+navCols()+'</div>'+legal('split'); }
+    else if(n===4){ inner = '<div class="wrap">'+brandCol(dark,true)+navCols()+'</div>'+legal('split'); }
+    else if(n===5){
+      var follow = '<div class="col col--follow"><h5>Follow</h5><nav class="social-list">'+socialList()+'</nav></div>';
+      inner = '<div class="wrap">'+brandCol(dark)+navCols()+follow+'</div>'+legal('split');
+    }
+    else if(n===6){
+      var second = dark?'btn-glass':'btn-ghost';
+      var band = '<div class="brand-band"><div class="bb-left"><a class="brand" href="#"><span class="mark"></span>EvalLense</a>'
+        + '<p>Batch-review pitch decks, rank the strongest startups, and give every team a clear report.</p></div>'
+        + '<div class="bb-right"><div class="ctas"><a class="btn btn-gradient" href="#">Book a call</a><a class="btn '+second+'" href="#">Try live demo</a></div>'+socialIcons()+'</div></div>';
+      inner = band + '<div class="wrap wrap--cols">'+navCols()+'</div>'+legal('split');
+    }
+    else if(n===7){ inner = '<div class="wrap">'+brandCol(dark)+navColsSocialInLast()+'</div>'+legal('split'); }
+    return '<footer class="foot v'+n+(dark?' is-dark':'')+'">'+glow+'<div class="inner">'+inner+'</div></footer>';
+  }
+
+  var seg = document.getElementById("seg");
+  var stage = document.getElementById("stage");
+  seg.innerHTML = VARIANTS.map(function(v,i){
+    return '<button data-v="'+v.n+'" aria-pressed="'+(i===0?'true':'false')+'">'+v.name+'</button>';
+  }).join('');
+  stage.innerHTML = VARIANTS.map(function(v,i){
+    return '<section class="variant'+(i===0?' is-active':'')+'" data-variant="'+v.n+'">'
+      + '<p class="vdesc">'+v.desc+'</p>'
+      + '<div class="specimen__tag">Dark</div><div class="specimen">'+footer(v.n,true)+'</div>'
+      + '<div class="specimen__tag">Light</div><div class="specimen">'+footer(v.n,false)+'</div>'
+      + '</section>';
+  }).join('');
+
+  seg.addEventListener("click", function(e){
+    var btn = e.target.closest("button"); if(!btn) return;
+    var v = btn.getAttribute("data-v");
+    seg.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed", b===btn?"true":"false"); });
+    stage.querySelectorAll(".variant").forEach(function(sec){ sec.classList.toggle("is-active", sec.getAttribute("data-variant")===v); });
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+
+  var headFont = document.getElementById("headFont");
+  headFont.addEventListener("click", function(e){
+    var btn = e.target.closest("button"); if(!btn) return;
+    var mode = btn.getAttribute("data-head");
+    headFont.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed", b===btn?"true":"false"); });
+    document.body.classList.toggle("heads-mono", mode === "mono");
+  });
+</script>
+</body>
+</html>

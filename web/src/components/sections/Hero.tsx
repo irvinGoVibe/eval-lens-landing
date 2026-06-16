@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/Button";
+
 export function Hero() {
   return (
     <section
@@ -212,13 +214,10 @@ export function Hero() {
             team a clear report.
           </p>
           <div className="cta-row hero-fade d4">
-            <button className="btn btn-primary">
-              <span className="btn-txt">Book a demo</span>
-            </button>
-            <button className="btn btn-glass">
-              <span className="btn-txt">Try live demo</span>&nbsp;
-              <span className="arr">→</span>
-            </button>
+            <Button>Book a demo</Button>
+            <Button variant="glass" arrow>
+              Try live demo
+            </Button>
           </div>
         </div>
       </div>

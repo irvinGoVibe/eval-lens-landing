@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { BentoCardTitle, BentoScrollHeading } from "./BentoEpicTitle";
 import { BentoHorse } from "./BentoHorse";
+import { Button } from "@/components/ui/Button";
 
 const HEADING_PLAIN = "Trusted, Explainable,";
 const HEADING_GRAD = "Human-Controlled";
@@ -210,13 +211,12 @@ export function EvalLenseBentoSection() {
           <div className="group/horse relative flex w-full flex-1 flex-col items-center">
             <HorseStage />
             <div className="relative z-40 flex flex-wrap items-center justify-center gap-3 pb-4 pt-3 opacity-100 transition-opacity duration-300 lg:pointer-events-none lg:opacity-0 lg:group-hover/horse:pointer-events-auto lg:group-hover/horse:opacity-100 lg:group-focus-within/horse:pointer-events-auto lg:group-focus-within/horse:opacity-100">
-              <Link href="/book-call" className="btn btn-glass btn-sm">
-                <span className="btn-txt">Book a call</span>
-              </Link>
-              <Link href="/try-live-demo" className="btn btn-glass btn-sm">
-                <span className="btn-txt">Try live demo</span>&nbsp;
-                <span className="arr">→</span>
-              </Link>
+              <Button variant="glass" size="sm" href="/book-call">
+                Book a call
+              </Button>
+              <Button variant="glass" size="sm" arrow href="/try-live-demo">
+                Try live demo
+              </Button>
             </div>
           </div>
         </div>

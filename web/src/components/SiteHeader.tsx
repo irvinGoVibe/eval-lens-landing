@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 
 export function SiteHeader({ light = false }: { light?: boolean } = {}) {
   return (
@@ -17,10 +18,9 @@ export function SiteHeader({ light = false }: { light?: boolean } = {}) {
           <a className="site-header__link" href="#results">Pricing</a>
           <Link className="site-header__link" href="/blog">Newsroom</Link>
         </nav>
-        <a className="btn site-header__cta" href="#demo">
-          <span className="btn-txt">Book a demo</span>
-          <span className="arr" aria-hidden="true">→</span>
-        </a>
+        <Button href="#demo" className="site-header__cta" arrow>
+          Book a demo
+        </Button>
       </div>
     </header>
   );

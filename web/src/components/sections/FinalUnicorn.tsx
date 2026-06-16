@@ -1,4 +1,5 @@
 import { UnicornStage } from "./UnicornStage";
+import { Button } from "@/components/ui/Button";
 
 export function FinalUnicorn() {
   return (
@@ -13,9 +14,7 @@ export function FinalUnicorn() {
           <h2 className="max-w-[20ch] text-balance font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-[var(--fg-on-dark)] md:text-[40px] md:leading-[1.1]">
             Every batch, seen clearly.
           </h2>
-          <button className="btn btn-primary">
-            Book a demo&nbsp;<span className="arr">→</span>
-          </button>
+          <Button arrow>Book a demo</Button>
         </div>
       </div>
     </section>

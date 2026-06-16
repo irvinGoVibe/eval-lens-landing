@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { Button } from "@/components/ui/Button";
 
 export function Decisions() {
   return (
@@ -661,9 +662,9 @@ export function Decisions() {
           </span>
         </div>
         <div className="sect-cta reveal d2">
-          <button type="button" className="btn btn-ghost">
-            View live report demo&nbsp;<span className="arr">→</span>
-          </button>
+          <Button variant="ghost" arrow>
+            View live report demo
+          </Button>
         </div>
       </div>
     </section>

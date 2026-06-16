@@ -21,6 +21,7 @@ updated: 2026-06-15
 - **Architecture** (`architecture/`) — устройство системы, данные, доменные правила
   - [[system|System]] — поверхности, стек, маршруты, данные, интеграции
   - [[design-system|Design System]] — токены, цвет, типографика, компоненты; опора для внутренних страниц
+  - [[footer|Footer]] — подвал сайта: варианты light/dark, раскладка, соцсети, свечение
   - [[blog|Blog (Newsroom)]] — контент-модель блога: `Post`, `Block`, `LoopPost` и репосты In the Loop
   - [[cms|CMS]] — что редактирует CMS: статьи, репосты, блоки контента на главной
 - **Stories** (`stories/`) — story-спеки для разработки; шаблон — `stories/_template.md`
