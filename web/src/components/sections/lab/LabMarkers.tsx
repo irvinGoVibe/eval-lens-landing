@@ -6,15 +6,18 @@ import { useEffect } from "react";
  * Dev inspector for the Section Lab stand. For every `[data-marker]` section it
  * injects a corner panel that:
  *   1. names the catalog archetype (click to copy), and
- *   2. exposes two controls used while iterating on a block —
- *      • a **surface** toggle (Light / Dark → swaps `.band.soft`/`.band.ink`), and
- *      • **version tabs** (v1 / v2 / … ) that switch between saved design
- *        versions of the same block.
+ *   2. exposes three per-block controls used while iterating —
+ *      • a **surface** toggle (Light / Dark → swaps `.band.soft`/`.band.ink`),
+ *      • **version tabs** (v1 / v2 / … ) that switch saved design versions, and
+ *      • a **content** toggle (Placeholder / Real → sets `data-content` on the
+ *        section) that flips between the neutral lab copy and real EvalLense
+ *        copy for blocks that ship both (others just carry the attribute).
  *
- * Versions are declared in the markup: a section that has several variants wraps
- * each one in a `[data-version="1|2|…"]` element. With one (or none) the tabs
- * collapse to a single `v1`. Both choices persist per-section in localStorage so
- * a comparison survives reloads.
+ * All three are PER-SECTION and independent. Versions are declared in the
+ * markup (`[data-version="1|2|…"]`); content modes are declared as sibling
+ * `[data-content-variant="placeholder|real"]` payloads that CSS shows/hides per
+ * the section's `data-content`. Each choice persists per-section in localStorage
+ * so it survives reloads.
  *
  * Imperative, ScrollFX-style: it enhances the existing DOM and renders nothing.
  */
@@ -40,6 +43,7 @@ export function LabMarkers() {
 
       const keySurface = `lab:surface:${marker}`;
       const keyVersion = `lab:version:${marker}`;
+      const keyContent = `lab:content:${marker}`;
 
       // --- build the panel ---
       const panel = document.createElement("div");
@@ -109,6 +113,34 @@ export function LabMarkers() {
         vers.appendChild(b);
       });
 
+      // content tabs (Placeholder | Real) — per block, like surface/version
+      const cont = document.createElement("div");
+      cont.className = "lab-inspector__content";
+      cont.setAttribute("role", "group");
+      cont.setAttribute("aria-label", "Content");
+      const contBtns: Record<string, HTMLButtonElement> = {};
+      (["placeholder", "real"] as const).forEach((mode) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.tabIndex = -1;
+        b.dataset.content = mode;
+        b.textContent = mode === "placeholder" ? "Placeholder" : "Real";
+        b.setAttribute("aria-pressed", "false");
+        b.setAttribute("aria-label", `${mode === "placeholder" ? "Placeholder" : "Real"} content for this block`);
+        b.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          applyContent(mode);
+          try {
+            localStorage.setItem(keyContent, mode);
+          } catch {
+            /* non-fatal */
+          }
+        });
+        contBtns[mode] = b;
+        cont.appendChild(b);
+      });
+
       function applySurface(surf: "soft" | "ink") {
         section.classList.remove("soft", "ink");
         section.classList.add(surf);
@@ -122,6 +154,14 @@ export function LabMarkers() {
         }
         for (const [v, b] of Object.entries(verBtns)) {
           b.classList.toggle("is-active", v === id);
+        }
+      }
+      function applyContent(mode: "placeholder" | "real") {
+        section.dataset.content = mode;
+        for (const [m, b] of Object.entries(contBtns)) {
+          const on = m === mode;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-pressed", String(on));
         }
       }
 
@@ -144,6 +184,7 @@ export function LabMarkers() {
 
       row.appendChild(seg);
       row.appendChild(vers);
+      row.appendChild(cont);
       panel.appendChild(name);
       panel.appendChild(row);
       section.appendChild(panel);
@@ -154,6 +195,8 @@ export function LabMarkers() {
       applySurface(initSurf === "ink" ? "ink" : "soft");
       const storedVer = safeGet(keyVersion);
       applyVersion(storedVer && versionIds.includes(storedVer) ? storedVer : versionIds[0]);
+      // Content default is "placeholder"; any other stored value than "real" falls back.
+      applyContent(safeGet(keyContent) === "real" ? "real" : "placeholder");
 
       cleanups.push(() => {
         window.clearTimeout(resetTimer);

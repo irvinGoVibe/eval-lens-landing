@@ -5,15 +5,23 @@ import { LabEyebrow, MediaPlaceholder } from "./_kit";
 /**
  * Section type 03 — Pinned multi-screen.
  *
- * - **Video variant** (`videoScrub` given): a tall section (~2 screens, height
- *   scales with `steps.length`) that scrolls normally. The video is a ¾-width
- *   sticky backdrop on the right — right edge never cropped, left hidden under a
- *   black left→right veil — and scrubs as the page scrolls past. The steps sit
- *   on the left, dim by default and brightening (lens number) as each scrolls
- *   into view (`data-reveal` → `.is-in`).
- * - **Placeholder variant** (no `videoScrub`): a sticky pin where the steps
- *   light up in place (`data-pin-stage` / `data-pin-step`, `.is-active`
- *   cumulative) next to a static media slot.
+ * A tall section with a sticky stage; as the page scrolls the stage stays
+ * pinned and the numbered steps light up in sequence. Carries the SAME content
+ * in three saved design versions (switch in the LabMarkers inspector), each
+ * surface-adaptive (`.band.soft` / `.band.ink`) — light/dark is a pure
+ * recolour, the geometry is identical:
+ *   • **v1 — Tidy:** copy + numbered steps on the left, a media slot on the
+ *     right; a calm hairline-grid backdrop. Minimal structure, clean tokens.
+ *   • **v2 — Guideline window:** the pipeline shown inside a product window
+ *     (window chrome + per-step status chips), with the numbered track beside.
+ *   • **v3 — Cinematic:** a full-bleed scroll-scrubbed video backdrop with the
+ *     copy + steps over a scrim, gliding with the pin (parallax).
+ *
+ * Motion: the section is `data-pin` (ScrollFX writes `--pin` 0→1). Step
+ * activation is driven from `--pin` in CSS (per-step `--i` vs `--steps`), so the
+ * three versions coexist without fighting over ScrollFX's index model;
+ * reduced-motion pins `--pin` to 1 (everything shown). The v3 video is seeked by
+ * the same pin progress (`data-scrub-video`).
  *
  * See [section-types#3-pinned-multi-screen](../../../../../wiki/architecture/section-types.md).
  */
@@ -37,13 +45,9 @@ export type LabPinnedStepsProps = {
   title: { line1: string; line2: string; line2Accent?: string };
   sub: string;
   steps: LabPinnedStep[];
-  /** Static placeholder slot — used unless `videoScrub` is provided. */
-  media?: { ratio: string; label: string; hint: string; ariaLabel: string };
-  /**
-   * Scroll-scrubbed video backdrop. Its `currentTime` is driven by the
-   * section's pin progress via ScrollFX (`data-scrub-video`); `frames`
-   * quantizes the scrub into N discrete steps across the clip.
-   */
+  /** Static placeholder slot (v1). */
+  media: { ratio: string; label: string; hint: string; ariaLabel: string };
+  /** Scroll-scrubbed video backdrop (v3). Seeked by the section's pin progress. */
   videoScrub?: {
     src: string;
     frames: number;
@@ -77,6 +81,21 @@ function Title({ title }: { title: LabPinnedStepsProps["title"] }) {
   );
 }
 
+/** Numbered track — each step lights from `--pin` via its `--i` index. */
+function Steps({ steps, variant }: { steps: LabPinnedStep[]; variant: string }) {
+  return (
+    <ol className={`lab-process__steps lab-process__steps--${variant}`}>
+      {steps.map((step, i) => (
+        <li key={step.label} className="lab-step" style={{ "--i": i } as CSSProperties}>
+          <span className="lab-step__num">{step.num}</span>
+          <span className="lab-step__label">{step.label}</span>
+          <span className="lab-step__desc">{step.desc}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 export function LabPinnedSteps({
   id = "process",
   surface = "ink",
@@ -91,7 +110,7 @@ export function LabPinnedSteps({
   marker,
 }: LabPinnedStepsProps) {
   const ctaRow = cta ? (
-    <div className="cta-row" style={{ marginTop: "clamp(28px,4vw,40px)" }}>
+    <div className="cta-row lab-process__cta">
       <Button href={cta.href} variant={cta.variant}>
         {cta.label}
       </Button>
@@ -101,7 +120,7 @@ export function LabPinnedSteps({
   return (
     <section
       id={id}
-      className={`band ${surface} lab-process${videoScrub ? " lab-process--video" : ""}`}
+      className={`band ${surface} lab-process`}
       data-marker={marker}
       data-pin
       data-pin-steps={steps.length}
@@ -109,49 +128,17 @@ export function LabPinnedSteps({
       style={{ "--steps": steps.length } as CSSProperties}
     >
       <div className="lab-process__stage" data-pin-stage>
-        {videoScrub ? (
-          <div className="lab-process__bg" aria-hidden="true">
-            {/* No autoPlay: ScrollFX seeks currentTime from the scroll position.
-                Autoplay would fight the scrub on the way back up. */}
-            <video
-              data-scrub-video
-              data-frames={videoScrub.frames}
-              muted
-              playsInline
-              preload="auto"
-              disablePictureInPicture
-              poster={videoScrub.poster}
-              aria-label={videoScrub.ariaLabel}
-            >
-              <source src={videoScrub.src} type="video/mp4" />
-            </video>
-            <span className="lab-process__veil" />
-          </div>
-        ) : null}
-
-        <div
-          className={
-            videoScrub
-              ? "wrap lab-process__grid lab-process__grid--video"
-              : "wrap lab-process__grid"
-          }
-        >
-          <div className="lab-process__copy">
-            <LabEyebrow>{eyebrow}</LabEyebrow>
-            <Title title={title} />
-            <p className="sub">{sub}</p>
-            <ol className="lab-process__steps">
-              {steps.map((step) => (
-                <li key={step.label} className="lab-step" data-pin-step>
-                  <span className="lab-step__num">{step.num}</span>
-                  <span className="lab-step__label">{step.label}</span>
-                  <span className="lab-step__desc">{step.desc}</span>
-                </li>
-              ))}
-            </ol>
-            {ctaRow}
-          </div>
-          {!videoScrub && media ? (
+        {/* ── v1 — Tidy: copy + steps left, media right ── */}
+        <div className="lab-pv lab-pv--tidy" data-version="1">
+          <div className="lab-pattern" aria-hidden="true" />
+          <div className="wrap lab-pv__grid">
+            <div className="lab-process__copy">
+              <LabEyebrow>{eyebrow}</LabEyebrow>
+              <Title title={title} />
+              <p className="sub">{sub}</p>
+              <Steps steps={steps} variant="tidy" />
+              {ctaRow}
+            </div>
             <MediaPlaceholder
               className="lab-process__media"
               ratio={media.ratio}
@@ -159,7 +146,78 @@ export function LabPinnedSteps({
               hint={media.hint}
               ariaLabel={media.ariaLabel}
             />
-          ) : null}
+          </div>
+        </div>
+
+        {/* ── v2 — Guideline window: pipeline in a product window ── */}
+        <div className="lab-pv lab-pv--window" data-version="2" hidden>
+          <div className="wrap lab-pv__grid">
+            <div className="lab-process__copy">
+              <LabEyebrow>{eyebrow}</LabEyebrow>
+              <Title title={title} />
+              <p className="sub">{sub}</p>
+              {ctaRow}
+            </div>
+            <div className="lab-window" role="img" aria-label={media.ariaLabel}>
+              <div className="lab-window__bar" aria-hidden="true">
+                <span className="lab-window__dot" />
+                <span className="lab-window__dot" />
+                <span className="lab-window__dot" />
+                <span className="lab-window__title">EvalLense · pipeline</span>
+              </div>
+              <ol className="lab-window__rows">
+                {steps.map((step, i) => (
+                  <li
+                    key={step.label}
+                    className="lab-window__row"
+                    style={{ "--i": i } as CSSProperties}
+                  >
+                    <span className="lab-window__rnum">{step.num}</span>
+                    <span className="lab-window__rlabel">{step.label}</span>
+                    <span className="lab-window__status">
+                      <span className="lab-window__sd" aria-hidden="true" />
+                      <span className="lab-window__stext" />
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        {/* ── v3 — Cinematic: full-bleed scrubbed video + overlay ── */}
+        <div className="lab-pv lab-pv--cine" data-version="3" hidden>
+          {videoScrub ? (
+            <div className="lab-cine__bg" aria-hidden="true">
+              {/* No autoPlay: ScrollFX seeks currentTime from the pin position. */}
+              <video
+                data-scrub-video
+                data-frames={videoScrub.frames}
+                muted
+                playsInline
+                preload="auto"
+                disablePictureInPicture
+                poster={videoScrub.poster}
+                aria-label={videoScrub.ariaLabel}
+              >
+                <source src={videoScrub.src} type="video/mp4" />
+              </video>
+            </div>
+          ) : (
+            <div className="lab-cine__bg lab-cine__bg--ph" aria-hidden="true">
+              <span className="lab-cine__phlabel">{media.label}</span>
+            </div>
+          )}
+          <div className="lab-cine__scrim" aria-hidden="true" />
+          <div className="wrap lab-cine__inner">
+            <div className="lab-process__copy">
+              <LabEyebrow>{eyebrow}</LabEyebrow>
+              <Title title={title} />
+              <p className="sub">{sub}</p>
+            </div>
+            <Steps steps={steps} variant="cine" />
+            {ctaRow}
+          </div>
         </div>
       </div>
     </section>

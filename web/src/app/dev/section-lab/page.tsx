@@ -6,6 +6,7 @@ import { LabMarkers } from "@/components/sections/lab/LabMarkers";
 import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
 import { LabSplitRing } from "@/components/sections/lab/LabSplitRing";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
+import type { LabContentSet } from "@/components/sections/lab/_kit";
 import { Button } from "@/components/ui/Button";
 import type { SectionNav } from "@/lib/site-nav";
 
@@ -101,33 +102,70 @@ const BENTO_ITEMS = [
   },
 ];
 
-const HUB_LINKS = [
-  {
-    tag: "Product",
-    title: "Overview",
-    body: "A hub tile can point into a child route while still reading as part of the page narrative.",
-    href: "/product/overview",
-    feature: true,
-  },
-  {
-    tag: "Product",
-    title: "Entry Hub",
-    body: "Focused route for intake, upload links and batch setup.",
-    href: "/product/entry-hub",
-  },
-  {
-    tag: "Trust",
-    title: "Methodology",
-    body: "Focused route for scoring principles and review process.",
-    href: "/trust/methodology",
-  },
-  {
-    tag: "Company",
-    title: "Contact",
-    body: "Focused route for demo, sales, press and security channels.",
-    href: "/company/contact",
-  },
-];
+type HubLink = { tag: string; title: string; body: string; href: string; feature?: boolean };
+
+/**
+ * Reference block for the Content axis (08 · Bento link tiles). `placeholder`
+ * keeps the neutral lab copy that explains the archetype; `real` shows real
+ * EvalLense hub destinations — existing routes and navigation labels, product
+ * descriptions grounded in the human-in-the-loop promise, no invented claims.
+ */
+const HUB_LINK_CONTENT: LabContentSet<HubLink[]> = {
+  placeholder: [
+    {
+      tag: "Product",
+      title: "Overview",
+      body: "A hub tile can point into a child route while still reading as part of the page narrative.",
+      href: "/product/overview",
+      feature: true,
+    },
+    {
+      tag: "Product",
+      title: "Entry Hub",
+      body: "Focused route for intake, upload links and batch setup.",
+      href: "/product/entry-hub",
+    },
+    {
+      tag: "Trust",
+      title: "Methodology",
+      body: "Focused route for scoring principles and review process.",
+      href: "/trust/methodology",
+    },
+    {
+      tag: "Company",
+      title: "Contact",
+      body: "Focused route for demo, sales, press and security channels.",
+      href: "/company/contact",
+    },
+  ],
+  real: [
+    {
+      tag: "Product",
+      title: "Overview",
+      body: "How EvalLense scores a pitch deck and prepares the evidence — and where your team makes the final call.",
+      href: "/product/overview",
+      feature: true,
+    },
+    {
+      tag: "Product",
+      title: "Entry Hub",
+      body: "Upload pitch decks and set up batch evaluation runs.",
+      href: "/product/entry-hub",
+    },
+    {
+      tag: "Trust",
+      title: "Methodology",
+      body: "The scoring principles and the human review process behind every report.",
+      href: "/trust/methodology",
+    },
+    {
+      tag: "Company",
+      title: "Contact",
+      body: "Book a demo, or reach sales, security and press.",
+      href: "/company/contact",
+    },
+  ],
+};
 
 const NUMBERED_ITEMS = [
   {
@@ -251,26 +289,58 @@ export default function SectionLabPage() {
           }}
         />
 
-        <section className="band ink lab-statement" data-marker="02 · Full-bleed statement">
+        {/* Reference block for the Content axis (simple text). Each version
+            renders BOTH content modes; the active one is shown by CSS via the
+            root's data-content. (Version stays the design axis; content is the
+            payload axis — they are independent.) */}
+        <section
+          className="band ink lab-statement"
+          data-marker="02 · Full-bleed statement"
+          data-content="placeholder"
+        >
           <div className="wrap lab-statement__inner" data-version="1" data-reveal="up">
-            <span className="eyebrow">
-              <span className="dot" aria-hidden="true"></span>
-              02 · Full-bleed statement
-            </span>
-            <p className="lab-statement__text">
-              Internal pages should feel sequenced, not stacked: a visitor moves
-              through scale changes, visual evidence and quiet decisions.
-            </p>
+            <div data-content-variant="placeholder">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                02 · Full-bleed statement
+              </span>
+              <p className="lab-statement__text">
+                Internal pages should feel sequenced, not stacked: a visitor moves
+                through scale changes, visual evidence and quiet decisions.
+              </p>
+            </div>
+            <div data-content-variant="real">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                Human-controlled evaluation
+              </span>
+              <p className="lab-statement__text">
+                EvalLense scores every pitch deck and prepares the evidence — the
+                final decision always stays with your team.
+              </p>
+            </div>
           </div>
           <div className="wrap lab-statement__inner" data-version="2" data-reveal="up" hidden>
-            <span className="eyebrow">
-              <span className="dot" aria-hidden="true"></span>
-              02 · Full-bleed statement
-            </span>
-            <p className="lab-statement__text">
-              A page is a sequence of decisions — each section earns the next
-              scroll, or it should not be on the page.
-            </p>
+            <div data-content-variant="placeholder">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                02 · Full-bleed statement
+              </span>
+              <p className="lab-statement__text">
+                A page is a sequence of decisions — each section earns the next
+                scroll, or it should not be on the page.
+              </p>
+            </div>
+            <div data-content-variant="real">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                Consistent by design
+              </span>
+              <p className="lab-statement__text">
+                Every deck gets the same structured review, so your shortlist
+                reflects the evidence — not the order the decks arrived in.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -286,6 +356,12 @@ export default function SectionLabPage() {
           }}
           sub="Use this archetype when the user needs to follow a sequence. Each step activates through the shared pin engine."
           steps={PROCESS_STEPS}
+          media={{
+            ratio: "4/3",
+            label: "Image · pinned scene · 4:3",
+            hint: "A lens-lit product scene that advances with the steps — pitch-deck flow, pipeline stages or timeline.",
+            ariaLabel: "Pinned scene visual slot",
+          }}
           videoScrub={{
             src: "/assets/section2-scroll-2.mp4",
             frames: 120,
@@ -436,7 +512,11 @@ export default function SectionLabPage() {
           </div>
         </section>
 
-        <section className="band soft lab-hubmap" data-marker="08 · Bento link tiles">
+        <section
+          className="band soft lab-hubmap"
+          data-marker="08 · Bento link tiles"
+          data-content="placeholder"
+        >
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -449,24 +529,31 @@ export default function SectionLabPage() {
                 tile is a real link into a child page.
               </p>
             </div>
-            <div className="lab-link-grid" data-reveal="up">
-              {HUB_LINKS.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className={
-                    item.feature
-                      ? "lab-link-card lab-link-card--feature"
-                      : "lab-link-card"
-                  }
-                >
-                  <span className="mini-tag">{item.tag}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.body}</p>
-                  <span className="lab-link-card__more">Open route →</span>
-                </a>
-              ))}
-            </div>
+            {/* Reference block for the Content axis (card array). Both grids
+                render; CSS shows the one matching the root's data-content.
+                (No data-reveal on the grids — a display:none variant never
+                fires its IntersectionObserver, so it would stay hidden when
+                switched in; the section head above keeps the reveal.) */}
+            {(["placeholder", "real"] as const).map((mode) => (
+              <div key={mode} className="lab-link-grid" data-content-variant={mode}>
+                {HUB_LINK_CONTENT[mode].map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className={
+                      item.feature
+                        ? "lab-link-card lab-link-card--feature"
+                        : "lab-link-card"
+                    }
+                  >
+                    <span className="mini-tag">{item.tag}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.body}</p>
+                    <span className="lab-link-card__more">Open route →</span>
+                  </a>
+                ))}
+              </div>
+            ))}
           </div>
         </section>
 

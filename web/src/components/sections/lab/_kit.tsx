@@ -1,6 +1,21 @@
 import type { CSSProperties, ReactNode } from "react";
 
 /**
+ * Section Lab content mode — the third PER-SECTION control, alongside the
+ * Light/Dark surface and v1/v2/v3 version toggles in each block's `LabMarkers`
+ * inspector panel. Switching it flips `data-content` on that one section.
+ * Blocks that support both modes render BOTH payloads wrapped in
+ * `[data-content-variant="placeholder"|"real"]`; CSS shows the one matching the
+ * section's `data-content` (see globals.css → "per-block Content axis").
+ * `LabMarkers` owns the control and persists each block's choice in localStorage
+ * under `lab:content:<marker>`.
+ */
+export type LabContentMode = "placeholder" | "real";
+
+/** A payload that exists in both content modes — `set[mode]` picks one. */
+export type LabContentSet<T> = { placeholder: T; real: T };
+
+/**
  * Shared primitives for the Section Lab catalog
  * ([web/src/app/dev/section-lab](../../../app/dev/section-lab/page.tsx)).
  *
