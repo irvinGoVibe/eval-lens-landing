@@ -33,6 +33,7 @@ export function Footer() {
           <Link href="/trust/prompt-injection-safety">
             Prompt injection safety
           </Link>
+          <Link href="/trust/use-cases">Use cases</Link>
           <Link href="/#trust">Human review</Link>
           <Link href="/trust/security-privacy">Security &amp; privacy</Link>
           <Link href="/#trust">Research</Link>
