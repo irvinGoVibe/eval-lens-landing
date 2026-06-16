@@ -100,11 +100,27 @@ export function BentoScrollHeading({
 
       const p = Math.min(1, Math.max(0, (startY - slotCenter) / (startY - endY)));
       const e = easeInOut(p);
-      // hold dead-centre and large until the type-in (incl. the period) has
-      // finished; only then does scroll drive the flight into the card
+      // scroll-driven flight: centre + large → docked + 1× as the slot rises
+      let targetTop = lerp(centerY, slotCenter, e);
+      let targetScale = lerp(BIG, 1, e);
+      // While the per-character type-in is still playing we want the big
+      // centred reveal — but a hard pin ignores scroll, so a fast scroll used
+      // to drop the heading onto the card at full BIG size and only shrink
+      // once the timer elapsed. Make the hold *soft* instead: weight it by
+      // scroll progress so a quick scroll (e→1) docks at the right size
+      // immediately, while a parked/slow reader (e≈0) still gets the big
+      // centred type-in.
       const typing = now - activatedAt < TYPE_MS;
-      const targetTop = typing ? centerY : lerp(centerY, slotCenter, e);
-      const targetScale = typing ? BIG : lerp(BIG, 1, e);
+      if (typing) {
+        targetTop = lerp(centerY, targetTop, e);
+        targetScale = lerp(BIG, targetScale, e);
+      }
+      // The heading must never sit BELOW its centred start line. The slot/card
+      // enters from below, so lerping toward a not-yet-arrived slot would pull
+      // the heading downward to "meet" it. Instead, hold at centre while the
+      // card rises up to the heading, then lock onto the slot and travel up
+      // with it — never dropping past its place.
+      targetTop = Math.min(targetTop, centerY);
       // ease the hold → flight handoff so there's no jump
       smoothTop = smoothTop === null ? targetTop : smoothTop + (targetTop - smoothTop) * 0.16;
       smoothScale += (targetScale - smoothScale) * 0.16;
