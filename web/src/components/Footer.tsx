@@ -20,7 +20,7 @@ export function Footer() {
         <div className="col">
           <h5>Product</h5>
           <Link href="/product">Overview</Link>
-          <Link href="/#workflow">Entry hub</Link>
+          <Link href="/product/entry-hub">Entry hub</Link>
           <Link href="/#decisions">Reports</Link>
           <Link href="/#results">Batch results</Link>
         </div>
