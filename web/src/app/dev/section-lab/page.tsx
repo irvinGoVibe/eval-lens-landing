@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
+import { LabMarkers } from "@/components/sections/lab/LabMarkers";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
 import { Button } from "@/components/ui/Button";
 import type { SectionNav } from "@/lib/site-nav";
@@ -863,6 +864,7 @@ export default function SectionLabPage() {
       </main>
       <Footer />
       <ScrollFX />
+      <LabMarkers />
     </>
   );
 }

@@ -4363,26 +4363,30 @@ section[id]{scroll-margin-top:72px;}
 .section-lab .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .section-lab section.band{padding:clamp(64px,10vw,140px) var(--gutter);position:relative;}
 
-/* Section marker — dev affordance: a corner tag naming the section type from
+/* Section marker — dev affordance: a corner chip naming the section type from
    the Section Types catalog (wiki/architecture/section-types.md). Hidden by
    default, lights up when the section is hovered so you can tell which
-   archetype is which on the stand. Pure CSS via [data-marker] — no JS, no
-   wrapper markup. Not styled outside `.section-lab`, so it stays inert when a
-   section component is reused on a real page. */
-.section-lab section.band[data-marker]::before{
-  content:attr(data-marker);
+   archetype is which on the stand, and copies its name to the clipboard on
+   click. The chip is a real <button> injected per [data-marker] section by the
+   LabMarkers client component (sections/lab/LabMarkers.tsx) — same imperative
+   pattern as ScrollFX. Scoped to `.section-lab`, so sections stay clean when
+   reused on a real page. */
+.section-lab .lab-marker{
   position:absolute;top:14px;right:clamp(14px,3vw,28px);z-index:30;
-  pointer-events:none;
+  pointer-events:none;cursor:pointer;
   font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:#fff;padding:7px 13px;border-radius:980px;white-space:nowrap;
   background:var(--lens);box-shadow:var(--shadow-soft);
   border:1px solid color-mix(in oklab,#fff 35%, transparent);
   opacity:0;transform:translateY(-6px) scale(.96);transform-origin:top right;
-  transition:opacity .22s var(--ease),transform .22s var(--ease);
+  transition:opacity .22s var(--ease),transform .22s var(--ease),filter .15s var(--ease);
 }
-.section-lab section.band[data-marker]:hover::before{opacity:1;transform:none;}
+.section-lab section.band:hover .lab-marker{opacity:1;transform:none;pointer-events:auto;}
+.section-lab .lab-marker:hover{filter:brightness(1.08);}
+.section-lab .lab-marker:active{transform:scale(.95);}
+.section-lab .lab-marker.is-copied{background:var(--violet);}
 @media (prefers-reduced-motion:reduce){
-  .section-lab section.band[data-marker]::before{transition:none;}
+  .section-lab .lab-marker{transition:opacity .22s linear;transform:none;}
 }
 .section-lab .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
 .section-lab .ink .mini-tag{color:var(--lavender);}
