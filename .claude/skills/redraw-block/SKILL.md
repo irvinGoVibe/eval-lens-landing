@@ -51,6 +51,18 @@ metadata:
 - **Компоненты:** `web/src/components/**` (секции — `components/sections/`,
   shared UI — `components/ui/`, стенд prop-driven секций — `components/sections/lab/`).
 - **Токены и классы (источник правды по стилю):** `web/src/app/globals.css`.
+- **Дизайн-система (binding):** loadable бандл **EvalLense** —
+  `.claude/designs/evallense/` (симлинк `designs/evallense`), namespace
+  `Evallense_c7d744`. `readme.md` — текстовый гайд (токены, бренд-инварианты,
+  foundations, инвентарь компонентов). Это **источник дизайн-языка** для
+  внутренних страниц; боевая реализация — компоненты в `web/src/components`.
+- **Канонический style guide (рендер-эталон):**
+  `.claude/designs/evallense/interface-style-guide.html` — «dogfooded» гайд из
+  приложения: light/dark («two worlds»), три типо-голоса (display/text/data),
+  и компоненты, которых нет в бандле — **status-чипы** (ok/warn/act/mut),
+  **confidence-ring**, **score**, **counters**, **window chrome**, кнопки
+  primary/ghost/pill/disabled/success/focus/lift на light и dark. Открой/сними
+  скриншот для визуального эталона (файл большой — не `cat` целиком).
 - **Рейлы проекта:** `CLAUDE.md` (glass-группа, ScrollOrchestrator, серверность, pnpm, порт).
 - **Каталог и ритм секций (живые):** `wiki/architecture/section-types.md`,
   `wiki/architecture/page-design-patterns.md`, `wiki/architecture/design-system.md`.
@@ -68,6 +80,14 @@ metadata:
 
 Жёсткие рейлы проекта (glass, анимации, серверность, pnpm, порт):
 !`cat CLAUDE.md 2>/dev/null || cat eval-lens-landing/CLAUDE.md 2>/dev/null || echo "НЕ НАЙДЕН CLAUDE.md"`
+
+Дизайн-система EvalLense — гайд бандла (токены, бренд-инварианты, foundations,
+инвентарь компонентов). Это binding-источник дизайн-языка для внутренних страниц:
+!`cat .claude/designs/evallense/readme.md 2>/dev/null || cat eval-lens-landing/.claude/designs/evallense/readme.md 2>/dev/null || cat designs/evallense/readme.md 2>/dev/null || echo "НЕ НАЙДЕН бандл EvalLense — .claude/designs/evallense/readme.md"`
+
+> Визуальный эталон DS целиком (light/dark, status-чипы, ring, score, counters,
+> window chrome) — `.claude/designs/evallense/interface-style-guide.html`.
+> Файл большой: не `cat`, а открой/сними скриншот, когда нужен точный вид компонента.
 
 Грамматика Apple-блоков — что это за блок, композиция
 ([references/apple-block-grammar.md](references/apple-block-grammar.md)):

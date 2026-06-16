@@ -154,10 +154,31 @@ const RISK_CONTROLS = [
 ];
 
 const PRICING_TIERS = [
-  ["Free", "$0", "Explore section patterns"],
-  ["Standard", "$49", "Reusable page sections"],
-  ["Professional", "$149", "Custom routes and variants"],
-  ["Enterprise", "Custom", "Full page system"],
+  {
+    name: "Free",
+    price: "$0",
+    body: "Explore section patterns",
+    bullets: ["Statement hero", "Editorial split", "FAQ + sitemap"],
+  },
+  {
+    name: "Standard",
+    price: "$49",
+    body: "Reusable page sections",
+    bullets: ["Everything in Free", "Pinned multi-screen", "Comparison tables"],
+    recommended: true,
+  },
+  {
+    name: "Professional",
+    price: "$149",
+    body: "Custom routes and variants",
+    bullets: ["Everything in Standard", "Generated media slots", "Custom variants"],
+  },
+  {
+    name: "Enterprise",
+    price: "Custom",
+    body: "Full page system",
+    bullets: ["Everything in Pro", "Bespoke archetypes", "Hands-on rollout"],
+  },
 ];
 
 const TABLE_ROWS = [
@@ -185,6 +206,7 @@ const FAQ_ITEMS = [
 const CONTACT_CHANNELS = [
   ["Demo", "Book a walkthrough for a page or workflow."],
   ["Sales", "Discuss pricing, volume and rollout."],
+  ["Careers", "Help build a better lens for human judgment."],
   ["Security", "Send security and privacy questions."],
   ["Press", "Request product notes and media material."],
 ];
@@ -200,6 +222,9 @@ const SITEMAP_GROUPS = [
   ["Trust", ["Methodology", "Consistency", "Prompt Safety", "Security"]],
   ["Company", ["About", "Newsroom", "Contact", "Pricing"]],
 ];
+
+/** Demo "not built yet" markers — drive the `soon` badge in the tree. */
+const SITEMAP_SOON = new Set(["Prompt Safety", "Newsroom"]);
 
 export default function SectionLabPage() {
   return (
@@ -457,16 +482,31 @@ export default function SectionLabPage() {
               <li>
                 <strong>375</strong>
                 <span>mobile width</span>
+                <span className="lab-stats__src">QA · iPhone SE</span>
               </li>
               <li>
                 <strong>768</strong>
                 <span>tablet width</span>
+                <span className="lab-stats__src">QA · iPad portrait</span>
               </li>
               <li>
                 <strong>1280</strong>
                 <span>desktop width</span>
+                <span className="lab-stats__src">QA · laptop</span>
               </li>
             </ul>
+            <figure
+              className="media-ph lab-stats__band"
+              style={{ ["--ratio" as string]: "21/9" }}
+              data-reveal="up"
+              role="img"
+              aria-label="Benchmark band visual slot"
+            >
+              <span className="media-ph__label">Image · benchmark band · 21:9</span>
+              <span className="media-ph__hint">
+                Wide stat band — repeated runs as stable bars on a dark surface.
+              </span>
+            </figure>
           </div>
         </section>
 
@@ -576,25 +616,33 @@ export default function SectionLabPage() {
               </p>
             </div>
             <ul className="lab-pricing__grid" data-reveal="up">
-              {PRICING_TIERS.map(([name, price, body], index) => (
+              {PRICING_TIERS.map((tier) => (
                 <li
-                  key={name}
+                  key={tier.name}
                   className={
-                    index === 1
+                    tier.recommended
                       ? "lab-pricing__card lab-pricing__card--recommended"
                       : "lab-pricing__card"
                   }
                 >
-                  {index === 1 ? <span className="chip">Recommended</span> : null}
-                  <h3>{name}</h3>
-                  <strong>{price}</strong>
-                  <p>{body}</p>
-                  <Button href="#pricing" variant={index === 1 ? "primary" : "ghost"}>
+                  {tier.recommended ? <span className="chip">Recommended</span> : null}
+                  <h3>{tier.name}</h3>
+                  <strong>{tier.price}</strong>
+                  <p>{tier.body}</p>
+                  <ul className="lab-pricing__bullets">
+                    {tier.bullets.map((b) => (
+                      <li key={b}>{b}</li>
+                    ))}
+                  </ul>
+                  <Button href="#pricing" variant={tier.recommended ? "primary" : "ghost"}>
                     Select
                   </Button>
                 </li>
               ))}
             </ul>
+            <p className="lab-pricing__note" data-reveal="up">
+              Smaller one-off and education plans are available on request.
+            </p>
           </div>
         </section>
 
@@ -617,7 +665,10 @@ export default function SectionLabPage() {
                   <tr>
                     <th>Section type</th>
                     <th>Free</th>
-                    <th>Standard</th>
+                    <th className="lab-table__reco">
+                      Standard
+                      <span className="lab-table__note">recommended</span>
+                    </th>
                     <th>Pro</th>
                     <th>Enterprise</th>
                   </tr>
@@ -626,7 +677,16 @@ export default function SectionLabPage() {
                   {TABLE_ROWS.map((row) => (
                     <tr key={row[0]}>
                       {row.map((cell, index) =>
-                        index === 0 ? <th key={cell}>{cell}</th> : <td key={cell}>{cell}</td>,
+                        index === 0 ? (
+                          <th key={`${row[0]}-${index}`}>{cell}</th>
+                        ) : (
+                          <td
+                            key={`${row[0]}-${index}`}
+                            className={index === 2 ? "lab-table__reco" : undefined}
+                          >
+                            {cell}
+                          </td>
+                        ),
                       )}
                     </tr>
                   ))}
@@ -724,13 +784,22 @@ export default function SectionLabPage() {
               </span>
               <h2 className="title">Article grids pull newsroom context in</h2>
             </div>
+            {/* Stand-in for the real `ArticleCard` (variant="grid") used on live
+                pages — mirrors its slot set: cover → category → title → meta. */}
             <ul className="lab-news__grid" data-reveal="up">
               {NEWS_ITEMS.map(([tag, title]) => (
                 <li key={title}>
+                  <figure
+                    className="media-ph lab-news__thumb"
+                    style={{ ["--ratio" as string]: "16/9" }}
+                    role="img"
+                    aria-label="Article cover slot"
+                  >
+                    <span className="media-ph__label">Image · cover · 16:9</span>
+                  </figure>
                   <span className="mini-tag">{tag}</span>
                   <h3>{title}</h3>
-                  <p>Short newsroom-style card using the same site typography and card density.</p>
-                  <a href="/blog">Read more →</a>
+                  <span className="lab-news__meta">June 4, 2026 · 4 min read</span>
                 </li>
               ))}
             </ul>
@@ -750,6 +819,13 @@ export default function SectionLabPage() {
             </aside>
             <article className="lab-legal__article">
               <h2 className="title">Document pages need a stable reading system</h2>
+              <p className="lab-legal__meta">Last updated: June 16, 2026</p>
+              <aside className="lab-legal__disclaimer" role="note">
+                <strong>Draft for review.</strong> This is a working draft for
+                transparency — not reviewed by legal counsel and not legal advice.
+                Bracketed placeholders such as <code>[Legal entity name]</code> must
+                be completed before it is relied upon.
+              </aside>
               <section id="legal-scope">
                 <h3>01 Scope</h3>
                 <p>
@@ -784,17 +860,39 @@ export default function SectionLabPage() {
               </span>
               <h2 className="title">The site map is a compact tree</h2>
             </div>
-            <div className="lab-sitemap__grid" data-reveal="up">
-              {SITEMAP_GROUPS.map(([group, pages]) => (
-                <div key={group as string}>
-                  <h3>{group}</h3>
-                  <ul>
-                    {(pages as string[]).map((page) => (
-                      <li key={page}>{page}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+            <div className="lab-sitemap__legend" aria-hidden="true">
+              <span className="lab-sitemap__leg">
+                <span className="dot dot--ready"></span>Live page
+              </span>
+              <span className="lab-sitemap__leg">
+                <span className="dot dot--soon"></span>Not built yet
+              </span>
+            </div>
+            <div className="lab-sitemap__tree" data-reveal="up" role="tree" aria-label="Site map">
+              {SITEMAP_GROUPS.flatMap(([group, pages], gi) => {
+                const lastGroup = gi === SITEMAP_GROUPS.length - 1;
+                const list = pages as string[];
+                const rows = [
+                  <div className="lab-sm__row lab-sm__row--header" key={group as string}>
+                    <span className="lab-sm__guide">{lastGroup ? "└─ " : "├─ "}</span>
+                    <span className="lab-sm__node">{group as string}</span>
+                  </div>,
+                ];
+                list.forEach((page, pi) => {
+                  const lastPage = pi === list.length - 1;
+                  const guide = (lastGroup ? "   " : "│  ") + (lastPage ? "└─ " : "├─ ");
+                  rows.push(
+                    <div className="lab-sm__row" key={`${group as string}-${page}`}>
+                      <span className="lab-sm__guide">{guide}</span>
+                      <span className="lab-sm__node">{page}</span>
+                      {SITEMAP_SOON.has(page) ? (
+                        <span className="lab-sitemap__badge">soon</span>
+                      ) : null}
+                    </div>,
+                  );
+                });
+                return rows;
+              })}
             </div>
           </div>
         </section>
