@@ -43,16 +43,20 @@ const TREE: TreeNode = {
     {
       label: "Product",
       path: "/product",
-      status: "soon",
+      status: "ready",
       children: [
-        { label: "Overview", path: "/product", status: "soon" },
-        { label: "Entry Hub", path: "/product/entry-hub", status: "soon" },
+        { label: "Overview", path: "/product", status: "ready" },
+        { label: "Entry Hub", path: "/product/entry-hub", status: "ready" },
         {
           label: "Evidence-Based Reports",
           path: "/product/evidence-based-reports",
-          status: "soon",
+          status: "ready",
         },
-        { label: "Review Board", path: "/product/review-board", status: "soon" },
+        {
+          label: "Review Board",
+          path: "/product/review-board",
+          status: "ready",
+        },
       ],
     },
     {
