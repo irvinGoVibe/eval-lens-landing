@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import { LabMarkers } from "@/components/sections/lab/LabMarkers";
+import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
 import { Button } from "@/components/ui/Button";
 import type { SectionNav } from "@/lib/site-nav";
@@ -237,53 +238,25 @@ export default function SectionLabPage() {
           </div>
         </section>
 
-        <section
+        <LabPinnedSteps
           id="process"
-          className="band ink lab-process"
-          data-marker="03 · Pinned multi-screen"
-          data-pin
-          data-pin-steps="4"
-          aria-label="Section design process"
-        >
-          <div className="lab-process__stage" data-pin-stage>
-            <div className="wrap lab-process__grid">
-              <div className="lab-process__copy">
-                <span className="eyebrow">
-                  <span className="dot" aria-hidden="true"></span>
-                  03 · Pinned multi-screen
-                </span>
-                <h2 className="title">A section is designed as a moment</h2>
-                <p className="sub">
-                  Use this archetype when the user needs to follow a sequence.
-                  Each step activates through the shared pin engine.
-                </p>
-                <ol className="lab-process__steps">
-                  {PROCESS_STEPS.map((step) => (
-                    <li key={step.label} className="lab-step" data-pin-step>
-                      <span className="lab-step__num">{step.num}</span>
-                      <span className="lab-step__label">{step.label}</span>
-                      <span className="lab-step__desc">{step.desc}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-              <figure
-                className="media-ph lab-process__media"
-                style={{ ["--ratio" as string]: "4/3" }}
-                role="img"
-                aria-label="Pinned process diagram visual slot"
-              >
-                <span className="media-ph__label">
-                  Diagram · pinned sequence · 4:3
-                </span>
-                <span className="media-ph__hint">
-                  Four nodes on an ink field, one active lens node, subtle
-                  perspective grid and calm depth.
-                </span>
-              </figure>
-            </div>
-          </div>
-        </section>
+          marker="03 · Pinned multi-screen"
+          ariaLabel="Section design process"
+          eyebrow="03 · Pinned multi-screen"
+          title={{
+            line1: "A section is designed",
+            line2: "as a",
+            line2Accent: "moment",
+          }}
+          sub="Use this archetype when the user needs to follow a sequence. Each step activates through the shared pin engine."
+          steps={PROCESS_STEPS}
+          videoScrub={{
+            src: "/assets/section2-scroll-2.mp4",
+            frames: 120,
+            poster: "/assets/section2-scroll-2-poster.jpg",
+            ariaLabel: "Scroll-scrubbed pitch-deck flow sequence",
+          }}
+        />
 
         <section className="band soft lab-split" data-marker="04 · Editorial split">
           <div className="wrap lab-split__grid">

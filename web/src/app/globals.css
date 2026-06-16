@@ -4411,18 +4411,69 @@ section[id]{scroll-margin-top:72px;}
 .section-lab .lab-split__copy{min-width:0;}
 .section-lab .lab-split__media{min-width:0;}
 
-.section-lab .lab-process{padding:0;min-height:240vh;}
-.section-lab .lab-process__stage{min-height:100svh;padding:clamp(36px,6vh,72px) var(--gutter);display:grid;align-content:center;box-sizing:border-box;}
+/* Pin length scales with the step count: ~1 screen pinned + one scroll-step
+   (25svh) per menu item, so N scrolls page through all of them. */
+.section-lab .lab-process{padding:0;min-height:calc(100svh + var(--steps,4) * 25svh);}
+.section-lab .lab-process__stage{position:sticky;top:0;overflow:hidden;min-height:100svh;padding:clamp(36px,6vh,72px) var(--gutter);display:grid;align-content:center;box-sizing:border-box;}
 .section-lab .lab-process__grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(32px,6vw,80px);align-items:center;}
 .section-lab .lab-process__copy{min-width:0;}
-.section-lab .lab-process__steps{list-style:none;margin:clamp(32px,4vw,48px) 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(14px,2.2vw,22px);max-width:580px;}
-.section-lab .lab-step{display:grid;grid-template-columns:auto 1fr;column-gap:clamp(16px,2.6vw,26px);row-gap:6px;align-items:baseline;border-top:1px solid var(--border-on-dark);padding-top:clamp(12px,1.8vw,18px);}
+.section-lab .lab-process__steps{list-style:none;margin:clamp(28px,4vw,44px) 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(14px,2.2vw,22px);max-width:580px;}
+/* Steps are visible from the start but dim; they brighten (and the number
+   takes the lens gradient) as the pin/scroll reaches them. */
+.section-lab .lab-step{display:grid;grid-template-columns:auto 1fr;column-gap:clamp(16px,2.6vw,26px);row-gap:6px;align-items:baseline;border-top:1px solid var(--border-on-dark);padding-top:clamp(12px,1.8vw,18px);opacity:.45;transition:opacity .5s var(--ease);}
+.section-lab .lab-step.is-active,
+.section-lab .lab-step.is-in{opacity:1;}
 .section-lab .lab-step__num{grid-row:1 / span 2;font-family:var(--font-mono);font-size:clamp(16px,2.4vw,26px);line-height:1;color:var(--muted-on-dark);transition:color .5s var(--ease);}
 .section-lab .lab-step.is-active .lab-step__num{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .section-lab .lab-step__label{font-family:var(--font-mono);font-size:clamp(14px,1.8vw,18px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-on-dark);}
 .section-lab .lab-step__desc{grid-column:2;font-size:clamp(14px,1.6vw,17px);line-height:1.5;color:var(--muted-on-dark);max-height:0;overflow:hidden;opacity:0;transition:max-height .55s var(--ease),opacity .45s var(--ease);}
 .section-lab .lab-step.is-current .lab-step__desc{max-height:8em;opacity:1;}
 .section-lab .lab-process__media{width:100%;max-width:520px;justify-self:center;}
+
+/* Video variant (section 03): pinned stage with the scrubbed video as a
+   ¾-width backdrop on the right — right edge never cropped (object-position
+   keeps it; the left hides under a black left→right veil) — and the copy +
+   tightly-spaced stepped menu on the left. Steps light/expand by pin progress
+   (.is-active cumulative, .is-current opens its text); the video scrubs as you
+   scroll the pin. */
+.section-lab .lab-process__grid--video{grid-template-columns:1fr;position:relative;z-index:1;}
+.section-lab .lab-process__grid--video .lab-process__copy{max-width:min(680px,62%);}
+/* Parallax: while the stage is pinned, EVERYTHING — copy, steps and the video
+   backdrop — glides downward together along the block's vertical axis as you
+   scroll (--pin 0→1), slower than the scroll, so the steps have room to open as
+   they go. --par is the total travel; the video is over-sized by that amount
+   (see .lab-process__bg above) so the glide never reveals a gap. */
+/* Travel scales with the step count so the steps reach the end of the (taller
+   for more steps) section. The copy/steps glide the full --par; the video
+   backdrop glides slower (.45x) for a parallax-depth feel ("different speeds"),
+   staying ¾-right at native size — the dark band it uncovers matches the ink
+   surface, so no zoom/over-size is needed. */
+.section-lab .lab-process--video{--par:calc(var(--steps,4) * 19svh);}
+/* Content starts at the top of the pinned stage and travels straight down as
+   you scroll (--pin 0→1), so the steps ride top→bottom and exit at the bottom
+   — never drifting up. The video backdrop rides down slower (.45x). */
+.section-lab .lab-process--video .lab-process__stage{align-content:start;}
+.section-lab .lab-process--video .lab-process__grid--video{transform:translateY(calc(var(--pin,0) * var(--par)));will-change:transform;}
+.section-lab .lab-process--video .lab-process__bg{transform:translateY(calc(var(--pin,0) * var(--par) * .45));will-change:transform;}
+.section-lab .lab-process__bg{position:absolute;right:0;top:0;width:75%;height:100%;z-index:0;overflow:hidden;pointer-events:none;background:#05060a;}
+.section-lab .lab-process__bg video{width:100%;height:100%;object-fit:cover;object-position:right center;display:block;}
+.section-lab .lab-process__veil{position:absolute;inset:0;background:
+  linear-gradient(to right,#05060a 0%,rgba(5,6,10,.92) 24%,rgba(5,6,10,.4) 56%,rgba(5,6,10,0) 90%),
+  linear-gradient(to bottom,rgba(5,6,10,.55) 0%,transparent 14%,transparent 86%,rgba(5,6,10,.55) 100%);}
+
+/* Two-line title with a per-line mask reveal (driven by .is-in from ScrollFX). */
+.section-lab .lab-process__title{font-size:clamp(34px,4.6vw,62px);line-height:1.05;letter-spacing:-.03em;font-weight:600;color:var(--fg-on-dark);max-width:none;}
+.section-lab .lab-process__title[data-reveal]{opacity:1;transform:none;}
+.section-lab .lab-process__line{display:block;overflow:hidden;padding-bottom:.08em;}
+.section-lab .lab-process__line > span{display:block;transform:translateY(112%);transition:transform .85s var(--ease);}
+.section-lab .lab-process__title.is-in .lab-process__line:nth-child(1) > span{transform:none;transition-delay:.08s;}
+.section-lab .lab-process__title.is-in .lab-process__line:nth-child(2) > span{transform:none;transition-delay:.22s;}
+@media (prefers-reduced-motion:reduce){
+  .section-lab .lab-process__line > span{transform:none;transition:none;}
+  .section-lab .lab-step{opacity:1;transform:none;transition:none;}
+  .section-lab .lab-process--video .lab-process__grid--video,
+  .section-lab .lab-process--video .lab-process__bg{transform:none;}
+}
 
 .section-lab .lab-scrub__split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;}
 .section-lab .lab-scrub__copy{min-width:0;}
@@ -4549,8 +4600,13 @@ section[id]{scroll-margin-top:72px;}
   .section-lab .lab-process__grid,
   .section-lab .lab-scrub__split{grid-template-columns:1fr;}
   .section-lab .lab-process{min-height:0;}
-  .section-lab .lab-process__stage{position:static;min-height:0;}
+  .section-lab .lab-process__stage{position:static;min-height:0;overflow:visible;}
   .section-lab .lab-process__media{order:-1;max-width:none;}
+  .section-lab .lab-process__grid--video{grid-template-columns:1fr;position:static;transform:none;}
+  .section-lab .lab-process__grid--video .lab-process__copy{max-width:none;}
+  .section-lab .lab-process__bg{position:relative;top:auto;width:100%;height:auto;aspect-ratio:16/9;margin-bottom:clamp(20px,5vw,32px);border-radius:var(--radius-stage);overflow:hidden;transform:none;}
+  .section-lab .lab-process__veil{background:linear-gradient(to top,rgba(5,6,10,.6),transparent 58%);}
+  .section-lab .lab-step{opacity:1;}
   .section-lab .lab-step__desc{max-height:none;opacity:1;}
   .section-lab .lab-split__grid,
   .section-lab .lab-legal__grid{grid-template-columns:1fr;}

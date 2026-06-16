@@ -15,6 +15,9 @@ import { useEffect } from "react";
  *   [data-pin][data-pin-steps=N] tall track + sticky [data-pin-stage];
  *     writes --pin 0→1 and lights [data-pin-step] children sequentially
  *     (.is-active cumulative, .is-current = the active one, --pin-step index).
+ *   <video data-scrub-video> inside a [data-pin] section is seeked by that
+ *     section's pin progress (no autoplay). Optional data-frames="N" quantizes
+ *     the scrub into N discrete frames across the clip.
  *
  * Respects prefers-reduced-motion: reveals show immediately, pins settle
  * fully revealed, scrubs pin to a static end state.
@@ -67,17 +70,39 @@ export function ScrollFX() {
     const scrubs = Array.from(document.querySelectorAll("[data-scrub]")) as HTMLElement[];
     const pins = Array.from(document.querySelectorAll("[data-pin]")) as HTMLElement[];
 
+    const seekVideoEnd = (video: HTMLVideoElement) => {
+      if (video.duration && Number.isFinite(video.duration)) {
+        try {
+          video.currentTime = video.duration;
+        } catch {
+          /* not seekable yet */
+        }
+      }
+    };
+
     if (reduce) {
       scrubs.forEach((el) => el.style.setProperty("--scrub", "1"));
+      const metaCleanups: Array<() => void> = [];
       pins.forEach((section) => {
         section.style.setProperty("--pin", "1");
         section.querySelectorAll("[data-pin-step]").forEach((it) => {
           it.classList.add("is-active", "is-current");
         });
+        section
+          .querySelectorAll<HTMLVideoElement>("video[data-scrub-video]")
+          .forEach((video) => {
+            const onMeta = () => seekVideoEnd(video);
+            onMeta();
+            video.addEventListener("loadedmetadata", onMeta);
+            metaCleanups.push(() =>
+              video.removeEventListener("loadedmetadata", onMeta),
+            );
+          });
       });
       return () => {
         io?.disconnect();
         unlock();
+        metaCleanups.forEach((fn) => fn());
       };
     }
 
@@ -113,6 +138,25 @@ export function ScrollFX() {
         });
         section.style.setProperty("--pin-step", String(activeIdx));
       }
+      const video = section.querySelector<HTMLVideoElement>(
+        "video[data-scrub-video]",
+      );
+      if (video && video.duration && Number.isFinite(video.duration)) {
+        // Smooth scrub by overall scroll progress (quantized into data-frames
+        // steps across the clip) so the video turns as you scroll past.
+        const frames = parseInt(video.getAttribute("data-frames") || "0", 10);
+        const t =
+          frames > 1
+            ? (Math.round(p * (frames - 1)) / (frames - 1)) * video.duration
+            : p * video.duration;
+        if (Math.abs(video.currentTime - t) > 0.015) {
+          try {
+            video.currentTime = t;
+          } catch {
+            /* not seekable yet — a later frame will catch up */
+          }
+        }
+      }
     };
 
     let rafPending = false;
@@ -127,6 +171,13 @@ export function ScrollFX() {
       requestAnimationFrame(paint);
     };
 
+    // Re-seek scrub videos once their metadata (and thus duration) is ready, so
+    // the first paint lands on the right frame without waiting for a scroll.
+    const pinVideos = pins
+      .map((s) => s.querySelector<HTMLVideoElement>("video[data-scrub-video]"))
+      .filter((v): v is HTMLVideoElement => v != null);
+    pinVideos.forEach((v) => v.addEventListener("loadedmetadata", schedule));
+
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     schedule();
@@ -134,6 +185,7 @@ export function ScrollFX() {
     return () => {
       io?.disconnect();
       unlock();
+      pinVideos.forEach((v) => v.removeEventListener("loadedmetadata", schedule));
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
