@@ -102,11 +102,11 @@ const TREE: TreeNode = {
     },
     {
       label: "Legal / Technical",
-      status: "soon",
+      status: "ready",
       children: [
-        { label: "Privacy", path: "/privacy", status: "soon" },
-        { label: "Terms", path: "/terms", status: "soon" },
-        { label: "Security", path: "/security", status: "soon" },
+        { label: "Privacy", path: "/privacy", status: "ready" },
+        { label: "Terms", path: "/terms", status: "ready" },
+        { label: "Security", path: "/security", status: "ready" },
       ],
     },
   ],
@@ -137,8 +137,8 @@ function renderRows(
   );
   const route = node.path ? <span className="sm-path">{node.path}</span> : null;
 
-  const content =
-    isReady && href ? (
+  const content = isReady ? (
+    href ? (
       <Link
         className="sm-node sm-node--ready"
         href={href}
@@ -152,12 +152,19 @@ function renderRows(
         </span>
       </Link>
     ) : (
-      <span className="sm-node sm-node--soon" aria-disabled="true">
+      // Ready category header with no route of its own (e.g. "Legal / Technical").
+      <span className="sm-node sm-node--header">
         {label}
         {route}
-        <span className="sm-badge">soon</span>
       </span>
-    );
+    )
+  ) : (
+    <span className="sm-node sm-node--soon" aria-disabled="true">
+      {label}
+      {route}
+      <span className="sm-badge">soon</span>
+    </span>
+  );
 
   const row = (
     <li className="sm-row" key={keyPath}>

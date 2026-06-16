@@ -49,9 +49,9 @@ export function Footer() {
       <div className="legal wrap">
         <span>© 2026 EvalLense. All rights reserved.</span>
         <span style={{ display: "flex", gap: 18 }}>
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Security</a>
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms</Link>
+          <Link href="/security">Security</Link>
         </span>
       </div>
     </footer>
