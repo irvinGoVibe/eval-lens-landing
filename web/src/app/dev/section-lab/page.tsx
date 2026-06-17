@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import { LabEditorialSplit } from "@/components/sections/lab/LabEditorialSplit";
+import { LabGallery } from "@/components/sections/lab/LabGallery";
 import { LabMarkers } from "@/components/sections/lab/LabMarkers";
 import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
 import { LabSplitRing } from "@/components/sections/lab/LabSplitRing";
@@ -417,36 +418,17 @@ export default function SectionLabPage() {
           }}
         />
 
-        <section id="gallery" className="band lab-gallery" data-marker="06 · Horizontal gallery">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                06 · Horizontal gallery
-              </span>
-              <h2 className="title">Compare section archetypes in one lane</h2>
-              <p className="sub">
-                Horizontal lanes keep equal ideas from becoming a tall wall of
-                cards. Use them for roles, report parts, segments and patterns.
-              </p>
-            </div>
-          </div>
-          <ol
-            className="lab-gallery__lane"
-            data-reveal="up"
-            tabIndex={0}
-            aria-label="Section archetypes — horizontally scrollable"
-          >
-            {GALLERY_ITEMS.map((item) => (
-              <li key={item.tag} className="lab-gallery__card">
-                <span className="lab-signal" aria-hidden="true"></span>
-                <span className="mini-tag">{item.tag}</span>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
+        <LabGallery
+          id="gallery"
+          surface="light"
+          marker="06 · Horizontal gallery"
+          ariaLabel="Section archetypes — horizontal gallery"
+          eyebrow="06 · Horizontal gallery"
+          title="Compare section archetypes in one lane"
+          sub="Horizontal lanes keep equal ideas from becoming a tall wall of cards. Use them for roles, report parts, segments and patterns."
+          laneLabel="Section archetypes — horizontally scrollable"
+          items={GALLERY_ITEMS}
+        />
 
         <section id="bento" className="band ink lab-bento" data-marker="07 · Bento overview">
           <div className="wrap">

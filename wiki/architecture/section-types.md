@@ -27,8 +27,8 @@ Design Patterns]] (это *предписывающий* справочник «
 | 2   | [Full-bleed statement](#2-full-bleed-statement)                | `ink` (тёмн.) / `soft` | `reveal up`                    | `eh-problem`, `evr-why`           | разрыв-«вдох»: проблема / тезис                  |
 | 3   | [Pinned multi-screen](#3-pinned-multi-screen)                  | `ink` / `soft`         | `data-pin` + `data-pin-steps`  | `po-path`, `methodology-pipeline` | процессы, конвейеры, timeline, команда           |
 | 4   | [Editorial split](#4-editorial-split)                          | `soft` / `ink`         | `reveal left` / `reveal right` | `po-why`, `ab-problem`, `lab-split` (`LabEditorialSplit` v1/v2/v3) | текст + визуал/тезис; самый частый               |
-| 5   | [Editorial split + scrub-ring](#5-editorial-split--scrub-ring) | `soft` / `ink`         | `reveal` + `data-scrub`        | `po-pipeline`, `evr-score`        | детерминированная математика / confidence        |
-| 6   | [Horizontal gallery](#6-horizontal-gallery)                    | `soft` / `ink`         | `reveal up` (на лейне)         | `po-jury`, `usecases-segments`    | судьи, сегменты, возможности                     |
+| 5   | [Editorial split + scrub-ring](#5-editorial-split--scrub-ring) | `soft` / `ink`         | `reveal` + `data-scrub` (+ `pin` в v3) | `po-pipeline`, `evr-score`, `lab-splitring` (`LabSplitRing` v1/v2/v3) | детерминированная математика / confidence        |
+| 6   | [Horizontal gallery](#6-horizontal-gallery)                    | `soft` / `ink`         | `reveal up` (+ `data-scrub` parallax в v3) | `po-jury`, `usecases-segments`, `lab-gallery` (`LabGallery` v1/v3) | судьи, сегменты, возможности                     |
 | 7   | [Bento overview](#7-bento-overview)                            | `ink` / `soft`         | `reveal up`                    | `po-modules`, `security-access`   | сетка фич, один feature-тайл                     |
 | 8   | [Bento link tiles (hub map)](#8-bento-link-tiles-hub-map)      | `soft`                 | `reveal up`                    | `hub-map`                         | hub-страницы: тайлы-ссылки на дочерние           |
 | 9   | [Stat band / counters](#9-stat-band--counters)                 | `ink`                  | `reveal up`                    | `consistency-benchmark`           | крупные числа + источник                         |
@@ -119,6 +119,7 @@ violet→cyan→aqua) → короткий подзаголовок → один
 
 - **Класс:** `po-jury`, `usecases-segments`, `methodology-judges`, `methodology-report` (тёмный), `evr-anatomy`, `ab-segments`, `hub-gallery`, `pr-caps`
 - **Scroll-FX:** `data-reveal="up"` на лейне; сам скролл — нативный snap
+- **Компонент:** `LabGallery` (`sections/lab/LabGallery.tsx`) — v1 Polish / v3 Expanded Expressive (v2 удалён по запросу), `surface=light|ink`; demo-media (v3 ambient backdrop) — см. [component-library](component-library.md#)
 
 ## 7. Bento overview
 

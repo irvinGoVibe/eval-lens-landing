@@ -1,24 +1,33 @@
 import type { CSSProperties } from "react";
-import { LabEyebrow, MediaPlaceholder } from "./_kit";
+import { LabEyebrow } from "./_kit";
 
 /**
  * Section type 05 — Editorial split + scrub-ring.
  *
- * The right side is *scroll-driven*: a confidence ring whose arc AND numeric
- * readout fill toward `ring.value` as the block crosses the viewport
- * (`data-scrub` → `--scrub`, ScrollFX). Use it where the page should *show* a
- * calculation (score / confidence / completeness) rather than describe it.
+ * The confidence ring is *scroll-driven*: its arc AND numeric readout fill
+ * toward `ring.value` as the block crosses the viewport (`data-scrub` →
+ * `--scrub`, ScrollFX). Use it where the page should *show* a calculation
+ * (score / confidence / completeness) rather than describe it.
  *
- * Two saved versions (switch in the LabMarkers inspector), both
+ * Three saved versions (switch in the LabMarkers inspector), all
  * surface-adaptive (`.band.soft` / `.band.ink`) and carrying the SAME content:
- *   • **v1 — cinematic full-bleed** (Direction C): the evidence scene fills the
+ *   • **v1 — cinematic full-bleed** (Polish): a real evidence scene fills the
  *     band; copy + a glass confidence chip sit over it. Works ink and light.
- *   • **v2 — gauge + weighted inputs** (Direction B): a confidence gauge plus
- *     weighted-input bars that roll up to it, over an evidence panel — the
- *     calculation made visible.
+ *   • **v2 — gauge + weighted inputs** (Modern Recomposition): full-width header
+ *     over a card panel — ring on the left, weighted-input bars on the right,
+ *     a media strip below. The calculation made visible.
+ *   • **v3 — expanded expressive** (pinned): a tall track pins the stage; the
+ *     bars surface one by one and the ring closes last as the payoff, over an
+ *     ambient evidence backdrop. Degrades to a static layout on small screens.
  *
  * Content/slots are the invariant; only layout differs. The `breakdown` inputs
  * are illustrative (clearly captioned as a demo), not product figures.
+ *
+ * Real demo media is the paired light/ink `scoring-matrix` asset, set as a CSS
+ * `background-image` so the surface toggle swaps it by recolour (light webp on
+ * `.soft`, dark png on `.ink`) without touching geometry. The scrim under copy
+ * is surface-adaptive too (light wash on `.soft`, black on `.ink`).
+ *
  * See [section-types#5-editorial-split--scrub-ring](../../../../../wiki/architecture/section-types.md).
  */
 export type LabSplitRingInput = { label: string; value: number };
@@ -45,9 +54,9 @@ export type LabSplitRingProps = {
     /** Mono caption — keeps the number sourced, never a bare decorative stat. */
     caption: string;
   };
-  /** Weighted inputs that roll up to the ring (v2). Illustrative, demo-labelled. */
+  /** Weighted inputs that roll up to the ring (v2/v3). Illustrative, demo-labelled. */
   breakdown: LabSplitRingInput[];
-  /** Mono caption under the v2 gauge, naming the inputs as a demo. */
+  /** Mono caption under the v2 gauge / v3 bars, naming the inputs as a demo. */
   breakdownCaption: string;
   media: { ratio: string; label: string; hint: string; ariaLabel: string };
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
@@ -88,6 +97,36 @@ function Ring({ ring, ariaLabel }: { ring: LabSplitRingProps["ring"]; ariaLabel:
   );
 }
 
+/** Weighted-input bars — fill widths track `--scrub` so they roll up together. */
+function Bars({
+  breakdown,
+  className,
+}: {
+  breakdown: LabSplitRingInput[];
+  className: string;
+}) {
+  return (
+    <ol className={className}>
+      {breakdown.map((input, i) => (
+        <li
+          className="splitring-bar"
+          key={input.label}
+          style={{ "--i": String(i) } as CSSProperties}
+        >
+          <span className="splitring-bar__label">{input.label}</span>
+          <span className="splitring-bar__track">
+            <span
+              className="splitring-bar__fill"
+              style={{ "--w": String(input.value) } as CSSProperties}
+            />
+          </span>
+          <span className="splitring-bar__val">{input.value}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 export function LabSplitRing({
   id = "split-ring",
   surface = "ink",
@@ -106,6 +145,8 @@ export function LabSplitRing({
   const surf = surface === "ink" ? "ink" : "soft";
   const titleParts = { titleLead, titleAccent, titleTrail };
   const ringAria = `${ring.label}: fills to ${ring.value}% as the section scrolls into view`;
+  /** v3 track height grows with the number of weighted inputs (one stage each). */
+  const v3Stages = breakdown.length;
 
   return (
     <section
@@ -114,9 +155,13 @@ export function LabSplitRing({
       data-marker={marker}
       aria-label={ariaLabel}
     >
-      {/* ── v1 — cinematic full-bleed moment (Direction C) ── */}
+      {/* ── v1 — cinematic full-bleed moment (Polish) ── */}
       <div className="splitring-cine" data-version="1">
-        <div className="splitring-cine__scene" role="img" aria-label={media.ariaLabel} />
+        <div
+          className="splitring-cine__scene"
+          role="img"
+          aria-label={media.ariaLabel}
+        />
         <span className="splitring-cine__tag">{media.label}</span>
         <div className="splitring-cine__scrim" aria-hidden="true" />
         <div className="splitring-cine__inner">
@@ -138,7 +183,7 @@ export function LabSplitRing({
         </div>
       </div>
 
-      {/* ── v2 — gauge + weighted inputs (Direction B) ── */}
+      {/* ── v2 — gauge + weighted inputs, recomposed (Modern Recomposition) ── */}
       <div className="splitring-gauge" data-version="2" hidden>
         <div className="wrap">
           <div className="splitring-gauge__head" data-reveal="up">
@@ -151,31 +196,60 @@ export function LabSplitRing({
           <div className="splitring-gauge__panel" data-scrub data-reveal="up">
             <div className="splitring-gauge__readout">
               <Ring ring={ring} ariaLabel={ringAria} />
-              <p className="lab-ring__cap">{breakdownCaption}</p>
+              <p className="lab-ring__cap">{ring.caption}</p>
             </div>
-            <ol className="splitring-gauge__bars">
-              {breakdown.map((input) => (
-                <li className="splitring-bar" key={input.label}>
-                  <span className="splitring-bar__label">{input.label}</span>
-                  <span className="splitring-bar__track">
-                    <span
-                      className="splitring-bar__fill"
-                      style={{ "--w": String(input.value) } as CSSProperties}
-                    />
-                  </span>
-                  <span className="splitring-bar__val">{input.value}</span>
-                </li>
-              ))}
-            </ol>
+            <div className="splitring-gauge__inputs">
+              <span className="splitring-gauge__inputs-head">Weighted inputs (demo)</span>
+              <Bars breakdown={breakdown} className="splitring-gauge__bars" />
+              <p className="lab-ring__cap splitring-gauge__inputs-cap">
+                {breakdownCaption}
+              </p>
+            </div>
           </div>
-          <div className="splitring-gauge__evidence" data-reveal="up">
-            <MediaPlaceholder
-              className="splitring-gauge__media"
-              ratio={media.ratio}
-              label={media.label}
-              hint={media.hint}
-              ariaLabel={media.ariaLabel}
+          {/* Real demo media strip — paired light/ink asset (CSS background). */}
+          <div className="splitring-gauge__strip" data-reveal="up">
+            <div
+              className="splitring-gauge__strip-img"
+              role="img"
+              aria-label={media.ariaLabel}
             />
+            <span className="splitring-gauge__strip-tag">{media.label}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── v3 — expanded expressive, pinned-to-screen (Expressive) ── */}
+      <div
+        className="splitring-expr"
+        data-version="3"
+        data-scrub
+        style={{ "--v3-stages": String(v3Stages) } as CSSProperties}
+        hidden
+      >
+        <div className="splitring-expr__stage">
+          {/* ambient evidence backdrop behind the right column */}
+          <div className="splitring-expr__ambient" aria-hidden="true" />
+          <div className="wrap splitring-expr__inner">
+            <div className="splitring-expr__copy">
+              <LabEyebrow>{eyebrow}</LabEyebrow>
+              <Title {...titleParts} />
+              <p className="sub">{sub}</p>
+            </div>
+            <div className="splitring-expr__panel">
+              <div className="splitring-expr__inputs">
+                <span className="splitring-expr__inputs-head">
+                  Weighted inputs (demo)
+                </span>
+                <Bars breakdown={breakdown} className="splitring-expr__bars" />
+                <p className="lab-ring__cap splitring-expr__inputs-cap">
+                  {breakdownCaption}
+                </p>
+              </div>
+              <div className="splitring-expr__payoff">
+                <Ring ring={ring} ariaLabel={ringAria} />
+                <p className="lab-ring__cap">{ring.caption}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

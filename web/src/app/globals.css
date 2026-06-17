@@ -765,7 +765,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .foot.is-dark .btn-glass::before,
 .horse-ctas .btn-glass::before,
 .cta-band .btn-glass::before,
-.section-lab .lab-hero.ink .cta-row .btn::before{
+.section-lab .lab-hero.ink .cta-row .btn::before,
+.section-lab .lab-gallery.ink .lab-gallery__lane--expr .lab-gallery__card::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
   background:
     linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.14) 22%, transparent 48%),
@@ -775,7 +776,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .foot.is-dark .btn-glass::after,
 .horse-ctas .btn-glass::after,
 .cta-band .btn-glass::after,
-.section-lab .lab-hero.ink .cta-row .btn::after{
+.section-lab .lab-hero.ink .cta-row .btn::after,
+.section-lab .lab-gallery.ink .lab-gallery__lane--expr .lab-gallery__card::after{
   content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
   background:
     radial-gradient(ellipse 95% 75% at 42% -18%, rgba(255,255,255,.55), transparent 52%),
@@ -4686,6 +4688,8 @@ section[id]{scroll-margin-top:72px;}
   filter:drop-shadow(0 0 12px color-mix(in oklab, var(--ring-c) 28%, transparent));
 }
 .section-lab .lab-splitring.ink .lab-ring{--ring-c:var(--green-on-dark);--ring-track:var(--border-on-dark);--ring-center:#0c0b12;}
+/* ink ring sits on a darker scene → a tighter glow reads cleaner than light's */
+.section-lab .lab-splitring.ink .lab-ring{filter:drop-shadow(0 0 8px color-mix(in oklab, var(--ring-c) 28%, transparent));}
 .section-lab .lab-ring__pct{
   position:relative;font-family:var(--font-mono);font-size:clamp(32px,4.2vw,50px);
   line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--fg);
@@ -4700,8 +4704,9 @@ section[id]{scroll-margin-top:72px;}
 .section-lab .lab-ring__cap{
   font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;line-height:1.4;
   text-align:center;max-width:34ch;color:var(--muted);margin:0;
+  padding-top:8px;border-top:1px solid var(--border);
 }
-.section-lab .lab-splitring.ink .lab-ring__cap{color:var(--muted-on-dark);}
+.section-lab .lab-splitring.ink .lab-ring__cap{color:var(--muted-on-dark);border-top-color:var(--border-on-dark);}
 
 /* ── v1 — cinematic full-bleed moment (Direction C) ──────────────────── */
 .section-lab .splitring-cine{
@@ -4710,35 +4715,49 @@ section[id]{scroll-margin-top:72px;}
   display:grid;align-items:end;
   padding:clamp(40px,6vw,96px) var(--gutter) clamp(40px,6vw,80px);
 }
-/* the scene = where the evidence-panel asset drops in (light base / ink) */
+/* the scene = the real evidence-panel asset, over a brand-gradient underlay.
+   Surface toggle swaps ONLY the image (light webp ↔ dark png) by recolour;
+   geometry (cover, crop) is identical. */
 .section-lab .splitring-cine__scene{
   position:absolute;inset:0;z-index:-2;
-  background:
+  /* image layer (cover, cropped ~65%/50%) over a brand-gradient underlay, so
+     any letterboxing stays on-brand. Surface toggle swaps ONLY the image.
+     The image is the FIRST background-image layer (top); gradients sit under. */
+  background-color:var(--bg-soft);
+  background-image:
+    url("/assets/_demo-pool/photo/light-scoring-matrix.webp"),
     radial-gradient(72% 60% at 70% 16%, color-mix(in oklab,var(--violet) 22%,transparent), transparent 60%),
-    radial-gradient(58% 55% at 14% 94%, color-mix(in oklab,var(--cyan) 15%,transparent), transparent 62%),
-    var(--bg-soft);
+    radial-gradient(58% 55% at 14% 94%, color-mix(in oklab,var(--cyan) 15%,transparent), transparent 62%);
+  background-size:cover, auto, auto;
+  background-position:65% 50%, center, center;
+  background-repeat:no-repeat;
 }
 .section-lab .lab-splitring.ink .splitring-cine__scene{
-  background:
+  background-color:#0a0a0d;
+  background-image:
+    url("/assets/_demo-pool/photo/scoring-matrix.png"),
     radial-gradient(80% 70% at 72% 12%, color-mix(in oklab,var(--violet) 42%,transparent), transparent 56%),
     radial-gradient(60% 60% at 14% 96%, color-mix(in oklab,var(--cyan) 22%,transparent), transparent 60%),
     linear-gradient(160deg,#0a0a0d 0%,#16131f 100%);
+  background-size:cover, auto, auto, auto;
+  background-position:65% 50%, center, center, center;
 }
 .section-lab .splitring-cine__scene::after{
   content:"";position:absolute;inset:0;
   background-image:radial-gradient(color-mix(in oklab,var(--fg) 8%,transparent) 1px,transparent 1px);
-  background-size:24px 24px;opacity:.5;
+  background-size:24px 24px;opacity:.35;
   -webkit-mask-image:radial-gradient(ellipse at 60% 30%,#000,transparent 75%);
           mask-image:radial-gradient(ellipse at 60% 30%,#000,transparent 75%);
 }
-.section-lab .lab-splitring.ink .splitring-cine__scene::after{background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);}
-/* scrim under the copy — light fades to soft, ink fades to black */
+.section-lab .lab-splitring.ink .splitring-cine__scene::after{background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);opacity:.65;}
+/* scrim under the copy — light fades to a LIGHT wash, ink fades to black —
+   so the copy stays legible without darkening the light surface. */
 .section-lab .splitring-cine__scrim{
   position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(90deg, color-mix(in oklab,var(--bg-soft) 88%,transparent) 0%, color-mix(in oklab,var(--bg-soft) 40%,transparent) 44%, transparent 72%);
+  background:linear-gradient(90deg, color-mix(in oklab,var(--bg-soft) 92%,transparent) 0%, color-mix(in oklab,var(--bg-soft) 58%,transparent) 38%, transparent 62%);
 }
 .section-lab .lab-splitring.ink .splitring-cine__scrim{
-  background:linear-gradient(90deg, rgba(5,5,8,.78) 0%, rgba(5,5,8,.4) 44%, transparent 72%);
+  background:linear-gradient(90deg, rgba(5,5,8,.82) 0%, rgba(5,5,8,.46) 38%, transparent 62%);
 }
 /* media-slot tag — marks where the real evidence photo/video drops in */
 .section-lab .splitring-cine__tag{
@@ -4755,10 +4774,11 @@ section[id]{scroll-margin-top:72px;}
 }
 .section-lab .splitring-cine__copy{min-width:0;max-width:30ch;}
 .section-lab .splitring-cine__copy .lab-splitring__title{font-size:clamp(40px,5.5vw,72px);letter-spacing:-.03em;line-height:1.03;}
-.section-lab .splitring-cine__copy .sub{max-width:34ch;}
+.section-lab .splitring-cine__copy .sub{max-width:34ch;line-height:1.55;margin-top:.55em;}
 /* glass confidence chip — shared liquid-glass material, light & ink */
 .section-lab .splitring-cine__chip{
-  display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  min-width:clamp(180px,19vw,240px);
   padding:clamp(20px,2.6vw,30px);border-radius:var(--r-lg);
   background:color-mix(in oklab,var(--bg) 72%,transparent);border:1px solid var(--border);
   box-shadow:var(--sh-3);
@@ -4767,37 +4787,184 @@ section[id]{scroll-margin-top:72px;}
 .section-lab .lab-splitring.ink .splitring-cine__chip{background:rgba(18,16,26,.55);border-color:rgba(255,255,255,.16);box-shadow:0 30px 70px -30px rgba(0,0,0,.7);}
 .section-lab .splitring-cine__chip .lab-ring{--ring-size:clamp(150px,16vw,196px);}
 
-/* ── v2 — gauge + weighted inputs (Direction B) ──────────────────────── */
-.section-lab .splitring-gauge{padding:clamp(56px,8vw,120px) var(--gutter);}
-.section-lab .splitring-gauge__head{max-width:760px;}
-.section-lab .splitring-gauge__head .sub{max-width:50ch;}
-.section-lab .splitring-gauge__panel{
-  margin-top:clamp(34px,5vw,56px);
-  display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,5vw,64px);align-items:center;
-  padding:clamp(24px,3.5vw,40px);border-radius:var(--radius-stage);
-  background:#fff;border:1px solid var(--border);box-shadow:var(--sh-2);
-}
-.section-lab .lab-splitring.ink .splitring-gauge__panel{background:rgba(255,255,255,.04);border-color:var(--border-on-dark);box-shadow:var(--sh-3);}
-.section-lab .splitring-gauge__readout{display:flex;flex-direction:column;align-items:center;gap:12px;}
-.section-lab .splitring-gauge__bars{display:flex;flex-direction:column;gap:clamp(14px,2vw,20px);min-width:0;}
+/* ── shared weighted-input bar (v2 + v3) ─────────────────────────────────
+   The fill width tracks --scrub so the bars roll up with the ring. No
+   transition — it resolves frame-by-frame as ScrollFX advances --scrub. */
 .section-lab .splitring-bar{display:grid;grid-template-columns:9ch 1fr 4ch;gap:14px;align-items:center;}
 .section-lab .splitring-bar__label{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
 .section-lab .lab-splitring.ink .splitring-bar__label{color:var(--muted-on-dark);}
-.section-lab .splitring-bar__track{height:8px;border-radius:999px;background:var(--hairline);overflow:hidden;}
+.section-lab .splitring-bar__track{height:10px;border-radius:999px;background:var(--hairline);overflow:hidden;}
 .section-lab .lab-splitring.ink .splitring-bar__track{background:var(--border-on-dark);}
-.section-lab .splitring-bar__fill{height:100%;border-radius:999px;background:var(--lens);width:calc(var(--scrub,0) * var(--w,0) * 1%);}
+.section-lab .splitring-bar__fill{display:block;height:100%;border-radius:999px;background:var(--lens);width:calc(var(--scrub,0) * var(--w,0) * 1%);}
 .section-lab .splitring-bar__val{font-family:var(--font-mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--fg);text-align:right;}
 .section-lab .lab-splitring.ink .splitring-bar__val{color:var(--fg-on-dark);}
-.section-lab .splitring-gauge__evidence{margin-top:clamp(20px,3vw,32px);}
-.section-lab .splitring-gauge__media{width:100%;}
 
+/* ── v2 — gauge + weighted inputs, recomposed (Modern Recomposition) ──────
+   Full-width header, then a card panel split ring(38%)/inputs(62%), then a
+   real demo media strip. Surface toggle swaps card bg + ring tokens; geometry
+   is identical light↔ink. */
+.section-lab .splitring-gauge{padding:clamp(56px,8vw,120px) var(--gutter);}
+.section-lab .splitring-gauge__head{max-width:740px;}
+.section-lab .splitring-gauge__head .lab-splitring__title{font-size:clamp(30px,3.8vw,50px);max-width:18ch;}
+.section-lab .splitring-gauge__head .sub{max-width:54ch;}
+.section-lab .splitring-gauge__panel{
+  margin-top:clamp(34px,5vw,56px);
+  display:grid;grid-template-columns:38% 1fr;gap:clamp(28px,5vw,56px);align-items:center;
+  padding:clamp(26px,3.5vw,44px);border-radius:var(--radius-stage);
+  background:#fff;border:1px solid var(--border);box-shadow:var(--sh-2);
+}
+.section-lab .lab-splitring.ink .splitring-gauge__panel{background:rgba(255,255,255,.04);border-color:var(--border-on-dark);box-shadow:var(--sh-3);}
+/* left 38% — ring centred in its column + label + caption, no chip wrapper */
+.section-lab .splitring-gauge__readout{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;}
+.section-lab .splitring-gauge__readout .lab-ring{--ring-size:clamp(140px,18vw,200px);}
+/* right 62% — weighted-input bars under a mono header, caption below */
+.section-lab .splitring-gauge__inputs{display:flex;flex-direction:column;gap:clamp(13px,1.8vw,18px);min-width:0;}
+.section-lab .splitring-gauge__inputs-head,
+.section-lab .splitring-expr__inputs-head{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.section-lab .lab-splitring.ink .splitring-gauge__inputs-head,
+.section-lab .lab-splitring.ink .splitring-expr__inputs-head{color:var(--muted-on-dark);}
+.section-lab .splitring-gauge__bars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(14px,2vw,20px);min-width:0;}
+.section-lab .splitring-gauge__inputs-cap{max-width:none;text-align:left;border-top:0;padding-top:0;margin-top:2px;}
+/* real demo media strip — paired light/ink asset as a CSS background (recolour
+   swap by surface), full opacity, 16:10, with a mono tag top-left */
+.section-lab .splitring-gauge__strip{position:relative;margin-top:clamp(20px,3vw,32px);border-radius:var(--radius-stage);overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh-2);}
+.section-lab .lab-splitring.ink .splitring-gauge__strip{border-color:var(--border-on-dark);box-shadow:var(--sh-3);}
+.section-lab .splitring-gauge__strip-img{aspect-ratio:16/10;background-image:url("/assets/_demo-pool/photo/light-scoring-matrix.webp");background-size:cover;background-position:center;background-repeat:no-repeat;}
+.section-lab .lab-splitring.ink .splitring-gauge__strip-img{background-image:url("/assets/_demo-pool/photo/scoring-matrix.png");}
+.section-lab .splitring-gauge__strip-tag{position:absolute;top:14px;left:16px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:color-mix(in oklab,var(--bg) 70%,transparent);border:1px solid var(--border-2);border-radius:var(--r-pill);padding:4px 10px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+.section-lab .lab-splitring.ink .splitring-gauge__strip-tag{color:var(--muted-on-dark);background:rgba(0,0,0,.32);border-color:var(--border-on-dark);}
+
+/* ── v3 — expanded expressive, pinned-to-screen (Expressive) ──────────────
+   A tall [data-scrub] track (≈80vh + stages*60vh + 160vh) holds a sticky
+   stage. ScrollFX writes --scrub 0→1 across the whole track crossing, and the
+   right-column bars + the ring payoff are driven from sub-ranges of --scrub.
+   Left column is fixed/centred copy; right column reveals progressively. The
+   ring closes only at the very end (≥~.82) as the payoff. Ambient evidence
+   media sits behind the right column.
+
+   Per-bar reveal: bar i appears across the sub-range [i/(n+1), (i+1)/(n+1)].
+   --bp = local progress of THIS bar's window, 0→1 (clamped). We pass --i and
+   read --v3-stages (n) inline; the ring window is the last slice after the
+   bars (≥ n/(n+1) ≈ .8). */
+.section-lab .splitring-expr{position:relative;min-height:calc(80vh + var(--v3-stages,4) * 60vh + 160vh);}
+.section-lab .splitring-expr__stage{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;align-items:center;}
+/* ambient evidence backdrop behind the right column — surface-swapped, blended */
+.section-lab .splitring-expr__ambient{position:absolute;top:0;right:0;bottom:0;width:60%;z-index:0;pointer-events:none;background-image:url("/assets/_demo-pool/photo/light-scoring-matrix.webp");background-size:cover;background-position:center;background-repeat:no-repeat;mix-blend-mode:multiply;opacity:calc(.12 + var(--scrub,0) * .28);-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%);mask-image:linear-gradient(90deg,transparent,#000 30%);}
+.section-lab .lab-splitring.ink .splitring-expr__ambient{background-image:url("/assets/_demo-pool/photo/scoring-matrix.png");mix-blend-mode:luminosity;opacity:calc(.18 + var(--scrub,0) * .37);}
+.section-lab .splitring-expr__inner{position:relative;z-index:1;display:grid;grid-template-columns:45% 55%;gap:clamp(32px,5vw,72px);align-items:center;}
+.section-lab .splitring-expr__copy{min-width:0;max-width:34ch;}
+.section-lab .splitring-expr__copy .lab-splitring__title{font-size:clamp(38px,5vw,68px);line-height:1.04;}
+.section-lab .splitring-expr__copy .sub{max-width:42ch;line-height:1.55;margin-top:.6em;}
+.section-lab .splitring-expr__panel{display:flex;flex-direction:column;gap:clamp(26px,4vw,44px);min-width:0;}
+.section-lab .splitring-expr__inputs{display:flex;flex-direction:column;gap:clamp(14px,2vw,20px);min-width:0;}
+.section-lab .splitring-expr__bars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(16px,2.4vw,24px);min-width:0;}
+.section-lab .splitring-expr__inputs-cap{max-width:none;text-align:left;border-top:0;padding-top:0;}
+/* each bar fades + slides in across its own --scrub window */
+.section-lab .splitring-expr__bars .splitring-bar{
+  --bp:clamp(0, calc((var(--scrub,0) * (var(--v3-stages,4) + 1)) - var(--i,0)), 1);
+  opacity:var(--bp);transform:translateX(calc((1 - var(--bp)) * 28px));
+}
+/* the ring is the payoff — it only starts closing in the final slice */
+.section-lab .splitring-expr__payoff{display:flex;flex-direction:column;align-items:flex-start;gap:12px;}
+.section-lab .splitring-expr__payoff .lab-ring{
+  --ring-size:clamp(150px,17vw,210px);
+  /* gate the arc/readout to the final window: remap [0.8→1] of --scrub to 0→1 */
+  --ring-local:clamp(0, calc((var(--scrub,0) - .8) / .18), 1);
+  --lab-ring-pct:calc(var(--ring-local) * var(--ring-target,0));
+  background:
+    radial-gradient(circle at center, var(--ring-center) 0 63%, transparent 64%),
+    conic-gradient(from -90deg, var(--ring-c) calc(var(--ring-local) * var(--ring-target,0) * 1%), var(--ring-track) 0);
+  opacity:clamp(.35, calc(.35 + (var(--scrub,0) - .55) * 4), 1);
+}
+.section-lab .splitring-expr__payoff .lab-ring__cap{text-align:left;}
+
+/* ══ 06 · Horizontal gallery ════════════════════════════════════════════════
+   One prop-driven component, three saved versions via [data-version] (inactive
+   ones carry `hidden`). Surface-invariant: within a version, .soft and .ink
+   share identical geometry — only colour tokens flip. The lane is a native
+   CSS scroll-snap <ol> (keyboard reachable, visible focus ring) shared by all
+   three versions; per-version classes only layer look on top. */
 .section-lab .lab-gallery .head{margin-bottom:clamp(32px,5vw,56px);}
+
+/* shared lane + card (the invariant) */
 .section-lab .lab-gallery__lane{list-style:none;margin:0;padding:0 var(--gutter) 12px;display:flex;gap:clamp(16px,2.4vw,28px);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-left:var(--gutter);}
 .section-lab .lab-gallery__lane:focus-visible{outline:2px solid var(--violet);outline-offset:4px;border-radius:var(--radius-card);}
-.section-lab .lab-gallery__card{flex:0 0 clamp(250px,29vw,330px);scroll-snap-align:start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;min-width:0;min-height:240px;}
+.section-lab .lab-gallery__card{position:relative;flex:0 0 clamp(250px,29vw,330px);scroll-snap-align:start;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;min-width:0;min-height:240px;}
 .section-lab .lab-gallery__card h3{font-size:22px;letter-spacing:-.01em;margin-top:6px;color:var(--fg);}
 .section-lab .lab-gallery__card p{font-size:14px;line-height:1.5;color:var(--muted);}
+/* card tag sits inline at the top of the card, not absolute-pinned (the global
+   .mini-tag is position:absolute — override scoped to the gallery card only,
+   mirroring the methodology pattern; do NOT restyle the global rule). */
+.section-lab .lab-gallery__card .mini-tag{position:static;top:auto;right:auto;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
 .section-lab .lab-signal{width:10px;height:10px;border-radius:50%;background:var(--lens);}
+
+/* ── ink surface: recolour-only (no geometry change). No drop shadow on dark;
+   fill mirrors the bento ink tile (rgba white .04) exactly. ── */
+.section-lab .lab-gallery.ink .lab-gallery__card{background:rgba(255,255,255,.04);border-color:var(--border-on-dark);box-shadow:none;}
+.section-lab .lab-gallery.ink .lab-gallery__card h3{color:var(--fg-on-dark);}
+.section-lab .lab-gallery.ink .lab-gallery__card p{color:var(--muted-on-dark);}
+.section-lab .lab-gallery.ink .lab-gallery__card .mini-tag{color:var(--lavender);}
+
+/* ── v3 — Expanded Expressive ──────────────────────────────────────────────
+   A tall band over a parallaxed full-bleed photo backdrop behind a generated
+   scrim (photo never sits raw under text). data-scrub on the section writes
+   --scrub 0→1; the backdrop translates on X only. Larger type + air. */
+.section-lab .lab-gallery__v--expr{position:relative;padding-block:clamp(40px,9vw,120px);min-height:clamp(560px,72vh,820px);overflow:hidden;display:grid;align-content:center;}
+.section-lab .lab-gallery__backdrop{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url("/assets/section-lab/06-horizontal-gallery/gallery-v3-light-desktop.webp");background-size:cover;background-position:center;background-repeat:no-repeat;transform:translateX(calc((var(--scrub,0) - .5) * -40px));will-change:transform;}
+.section-lab .lab-gallery.ink .lab-gallery__backdrop{background-image:url("/assets/section-lab/06-horizontal-gallery/gallery-v3-dark-desktop.webp");}
+/* light scrim — horizontal wash extended to 60% canvas, opacity floor .72 over
+   the text column (high-key edges need the deeper scrim for AA). */
+.section-lab .lab-gallery__scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,color-mix(in oklab,var(--bg) 90%,transparent) 0%,color-mix(in oklab,var(--bg) 72%,transparent) 38%,color-mix(in oklab,var(--bg) 72%,transparent) 60%,transparent 100%);}
+/* ink scrim — base horizontal gradient + a radial darken (center-out, ~35vw,
+   multiply, .25) to suppress ring halos in the text column. */
+.section-lab .lab-gallery.ink .lab-gallery__scrim{background:linear-gradient(90deg,color-mix(in oklab,var(--bg-ink) 88%,transparent) 0%,color-mix(in oklab,var(--bg-ink) 68%,transparent) 40%,color-mix(in oklab,var(--bg-ink) 60%,transparent) 64%,transparent 100%);}
+.section-lab .lab-gallery.ink .lab-gallery__scrim::after{content:"";position:absolute;inset:0;mix-blend-mode:multiply;opacity:.25;background:radial-gradient(35vw 35vw at 28% 50%,#000 0%,transparent 70%);}
+.section-lab .lab-gallery__exprinner{position:relative;z-index:2;}
+.section-lab .lab-gallery__v--expr .title{font-size:clamp(34px,5vw,60px);line-height:1.05;}
+.section-lab .lab-gallery__v--expr .sub{max-width:46ch;}
+.section-lab .lab-gallery__v--expr .head{margin-bottom:clamp(28px,4vw,48px);}
+.section-lab .lab-gallery__lane--expr{padding-top:8px;}
+/* light v3 cards stay opaque with a stronger shadow (they sit over media). */
+.section-lab .lab-gallery__lane--expr .lab-gallery__card{box-shadow:0 6px 18px rgba(20,18,40,.12),0 30px 70px -26px rgba(60,40,160,.3);}
+/* ink v3 cards become liquid glass. They qualify (real full-bleed media scene
+   behind them). The shared liquid-glass group is button-geometry-specific (it
+   bundles button padding / min-height / .btn-txt z-index), so adding the card
+   to its primary rule would bleed button sizing onto the card. Per the brief's
+   documented fallback, the card REUSES the shared group's sheen layers — its
+   ::before/::after selectors are appended to that group above — and declares
+   the surrounding glass material here with the SAME values (backdrop blur +
+   white-wash fill + bright top hairline). No new accent or one-off look. */
+.section-lab .lab-gallery.ink .lab-gallery__lane--expr .lab-gallery__card{
+  isolation:isolate;overflow:hidden;z-index:0;
+  /* Glass material, but with a reliable DARK contrast floor: the white sheen
+     and white-wash fill are composited OVER a dark translucent base derived
+     from --bg-ink. So even where a bright ring halo sits behind the card (or
+     where backdrop-filter is unsupported and the stack collapses to the fills
+     over the raw photo), --fg-on-dark h3 + --muted-on-dark body keep an AA dark
+     ground. Still translucent + blurred — just no longer a thin white wash. */
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.16) 0%,rgba(220,232,248,.07) 40%,rgba(255,255,255,.03) 100%),
+    color-mix(in oklab,var(--bg-ink) 88%,transparent);
+  border:1px solid rgba(255,255,255,.34);
+  -webkit-backdrop-filter:blur(30px) saturate(1.7) brightness(1.04);
+  backdrop-filter:blur(30px) saturate(1.7) brightness(1.04);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.5),
+    inset 0 -1px 0 rgba(255,255,255,.1),
+    0 18px 50px -16px rgba(0,0,0,.5);
+}
+
+/* Mobile: hide the v3 photo, fall back to a flat surface gradient. */
+@media (max-width:767px){
+  .section-lab .lab-gallery__backdrop{background-image:none;background:linear-gradient(160deg,var(--bg-soft),var(--bg));}
+  .section-lab .lab-gallery.ink .lab-gallery__backdrop{background-image:none;background:linear-gradient(160deg,var(--panel-2),var(--bg-ink));}
+}
+
+/* Reduced motion: kill the backdrop parallax (reveals are already handled by
+   the global [data-reveal] reduced-motion rule). */
+@media (prefers-reduced-motion:reduce){
+  .section-lab .lab-gallery__backdrop{transform:none;}
+}
 
 .section-lab .lab-bento .head{margin-bottom:clamp(32px,5vw,56px);}
 .section-lab .lab-bento__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);}
@@ -4934,9 +5101,30 @@ section[id]{scroll-margin-top:72px;}
   .section-lab .splitring-cine__inner,
   .section-lab .splitring-gauge__panel{grid-template-columns:1fr;}
   .section-lab .splitring-cine{align-items:start;}
+  /* v1 — tighter crop on the scene image for portrait viewports */
+  .section-lab .splitring-cine__scene{background-position:60% 45%, center, center;}
+  .section-lab .lab-splitring.ink .splitring-cine__scene{background-position:60% 45%, center, center, center;}
   .section-lab .splitring-cine__chip{justify-self:start;margin-top:clamp(24px,5vw,40px);}
-  .section-lab .splitring-gauge__panel{justify-items:center;}
+  /* v2 — panel stacks: ring, then bars, then media (DOM order already matches) */
+  .section-lab .splitring-gauge__panel{justify-items:stretch;}
+  .section-lab .splitring-gauge__readout{margin-bottom:clamp(20px,4vw,32px);}
   .section-lab .splitring-bar{grid-template-columns:8ch 1fr 4ch;}
+  /* v3 — pinned multi-screen degrades to a normal vertical block: the stage
+     stops sticking, the column splits, bars + ring show fully (no --scrub
+     window to gate them), ambient backdrop hides. */
+  .section-lab .splitring-expr{min-height:0;}
+  .section-lab .splitring-expr__stage{position:static;height:auto;overflow:visible;padding:clamp(56px,9vw,96px) 0;}
+  .section-lab .splitring-expr__inner{grid-template-columns:1fr;}
+  .section-lab .splitring-expr__ambient{display:none;}
+  .section-lab .splitring-expr__bars .splitring-bar{opacity:1;transform:none;}
+  .section-lab .splitring-expr__payoff .lab-ring{
+    --ring-local:var(--scrub,1);
+    --lab-ring-pct:calc(var(--ring-local) * var(--ring-target,0));
+    background:
+      radial-gradient(circle at center, var(--ring-center) 0 63%, transparent 64%),
+      conic-gradient(from -90deg, var(--ring-c) calc(var(--ring-local) * var(--ring-target,0) * 1%), var(--ring-track) 0);
+    opacity:1;
+  }
   /* Pinned multi-screen degrades to a normal vertical block on narrow screens:
      the stage stops sticking, each version stacks copy over its visual, and the
      steps show fully lit (no pin progress to drive them). */
@@ -4983,11 +5171,16 @@ section[id]{scroll-margin-top:72px;}
   .section-lab .lab-versus__grid > div:nth-child(odd){border-right:0;}
   .section-lab .lab-numbered__list li,
   .section-lab .lab-risk__row{grid-template-columns:1fr;gap:12px;}
+  /* v2/v3 — narrower label column so the bar track keeps its travel */
+  .section-lab .splitring-bar{grid-template-columns:7ch 1fr 4ch;gap:10px;}
 }
 @media (prefers-reduced-motion:reduce){
   .section-lab .lab-step__desc{max-height:none;opacity:1;}
   /* ScrollFX pins --scrub to 1 under reduced motion, so the ring arc + the
      numeric readout both settle on their target with no scroll dependency. */
+  /* v3 — no scroll dependency: every staged element shows in its final state. */
+  .section-lab .splitring-expr__bars .splitring-bar{opacity:1;transform:none;}
+  .section-lab .splitring-expr__payoff .lab-ring{opacity:1;}
 }
 
 /* ============================================================
