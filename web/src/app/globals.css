@@ -4439,6 +4439,11 @@ section[id]{scroll-margin-top:72px;}
    "placeholder"). No layout shift — the inactive variant is display:none. */
 .section-lab section.band[data-content="placeholder"] [data-content-variant="real"]{display:none;}
 .section-lab section.band[data-content="real"] [data-content-variant="placeholder"]{display:none;}
+/* Outside the Section Lab inspector there is no toggle: content-axis blocks
+   dropped onto a real page render with a fixed data-content. Resolve it here so
+   the inactive variant is hidden (otherwise BOTH payloads would render). */
+section.band[data-content="placeholder"] [data-content-variant="real"]{display:none;}
+section.band[data-content="real"] [data-content-variant="placeholder"]{display:none;}
 /* Active content tab also carries an inset ring, so it isn't distinguished by
    colour alone (the existing surface/version tabs are left untouched). */
 .section-lab .lab-inspector__content button[aria-pressed="true"]{box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);}
@@ -6315,6 +6320,87 @@ section[id]{scroll-margin-top:72px;}
   .methodology .m-cinema__sub,
   .methodology .m-cinema__cta{opacity:1;transform:none;}
 }
+/* ============================================================
+   .lab-cinema — reusable cinematic-scrim primitive
+   Generalized (un-scoped) from the `.methodology .m-cinema*` scene above:
+   IDENTICAL mechanics + the same mobile/reduced-motion static fallback,
+   just not bound to `.methodology`. Powers LabCinemaScrim.
+   Layer stack (bottom→top): media (video OR still image) → lens fill
+   (fades in at end) → FIXED full-bleed black knockout (only the LETTERS
+   scale, so black always covers the whole viewport) → copy.
+   ONE heading = the masked letters (no second title → no ghosting).
+   Phases by --pin:  A 0→.2 full-screen media · B .22→.6 giant letters
+   descend & zoom ×30→1 · C .6→.7 lens fill covers media so letters become
+   solid brand colour · D .72→.9 eyebrow→sub→CTA.
+   Motion 100% via --pin in CSS (ScrollFX); reduced-motion/mobile = static.
+   ============================================================ */
+section.lab-cinema{padding:0;min-height:320vh;background:#000;}
+/* [data-pin-stage] global gives position:sticky;top:0;min-height:100svh;display:grid;align-content:center */
+.lab-cinema__stage{overflow:hidden;background:#000;justify-items:center;}
+
+/* Phase A — full-screen media. Always full opacity; HIDDEN at the end by the
+   lens fill covering it, not by fading. Video and still-image share geometry. */
+.lab-cinema__vid{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;}
+.lab-cinema__vid--img{background-size:cover;background-position:center;background-repeat:no-repeat;}
+
+/* Phase C — lens fill: above media, below knockout. Transparent during the zoom
+   (media shows through the letters), then fades IN to fully cover the media so
+   the letters resolve to a solid brand gradient (media gone, only letters). */
+.lab-cinema__fill{position:absolute;inset:0;z-index:1;background:var(--lens);
+  opacity:clamp(0, calc((var(--pin,0) - .6) / .1), 1);will-change:opacity;}
+
+/* black knockout — FIXED full-bleed (never scaled) so the black ALWAYS covers
+   the whole viewport (no media leaking at the edges). Hidden in Phase A, then on. */
+.lab-cinema__knockout{position:absolute;inset:0;z-index:2;width:100%;height:100%;
+  opacity:clamp(0, calc((var(--pin,0) - .2) / .04), 1);will-change:opacity;}
+
+/* Only the LETTERS scale + descend from above (Phase B): ×30 huge → 1, settling
+   to centre. transform-box:fill-box → scales about the text's own centre. */
+.lab-cinema__masktext{font-family:var(--font-display);font-weight:600;font-size:60px;letter-spacing:-.02em;fill:#000;
+  transform-box:fill-box;transform-origin:center;will-change:transform;
+  transform:translateY(calc(-320px * (1 - min(max(var(--pin,0) - .22, 0) / .38, 1)))) scale(calc(30 - 29 * min(max(var(--pin,0) - .22, 0) / .38, 1)));}
+
+/* Plain lens-gradient headline — STATIC/MOBILE FALLBACK ONLY. Hidden in the
+   pinned-desktop scene (the SVG knockout is the heading there); shown by the
+   `@media` block below. Kept out of normal flow here so it never affects the
+   pinned layout. */
+.lab-cinema__headline{display:none;}
+
+/* Phase D — supporting copy, BELOW the heading; no second heading element, so
+   nothing ever overlaps the masked letters */
+.lab-cinema__copy{position:absolute;z-index:3;left:0;right:0;top:60%;max-width:min(1100px,92vw);margin-inline:auto;padding:0 var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
+.lab-cinema__eyebrow{opacity:clamp(0, calc((var(--pin,0) - .72) / .06), 1);transform:translateY(calc(14px * (1 - clamp(0, calc((var(--pin,0) - .72) / .06), 1))));}
+.lab-cinema__sub{max-width:60ch;margin-top:16px;opacity:clamp(0, calc((var(--pin,0) - .78) / .06), 1);transform:translateY(calc(14px * (1 - clamp(0, calc((var(--pin,0) - .78) / .06), 1))));}
+.lab-cinema__cta{margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:clamp(0, calc((var(--pin,0) - .83) / .07), 1);transform:translateY(calc(14px * (1 - clamp(0, calc((var(--pin,0) - .83) / .07), 1))));}
+
+/* mobile & reduced-motion: un-pin → static black statement (resting state forced).
+   The SVG knockout (viewBox slice) crops a long headline at the viewport edges,
+   so in this fallback we HIDE it entirely and render a plain, fully-readable
+   lens-gradient <h2> instead. Layout is a clean centered vertical stack:
+   faint video backdrop → headline → eyebrow → sub → CTA. */
+@media (max-width:880px), (prefers-reduced-motion:reduce){
+  section.lab-cinema{min-height:0;}
+  .lab-cinema__stage{position:static;min-height:78svh;padding:clamp(80px,14vw,150px) var(--gutter);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+  .lab-cinema__vid{opacity:.14;}
+  /* lens fill stays transparent so the faint video backdrop remains visible */
+  .lab-cinema__fill{opacity:0;}
+  /* knockout-over-video belongs to the pinned scene only — off here */
+  .lab-cinema__knockout{display:none;}
+  /* plain readable headline with the lens gradient, no horizontal crop */
+  .lab-cinema__headline{display:block;position:relative;z-index:3;
+    max-width:min(20ch,92vw);margin:0 auto;
+    font-family:var(--font-display);font-weight:600;letter-spacing:-.02em;line-height:1.05;
+    font-size:clamp(2rem,9vw,4rem);text-wrap:balance;
+    background:var(--lens);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;}
+  .lab-cinema__copy{position:static;z-index:3;top:auto;left:auto;right:auto;
+    margin-top:clamp(28px,5vw,48px);}
+  .lab-cinema__eyebrow,
+  .lab-cinema__sub,
+  .lab-cinema__cta{opacity:1;transform:none;}
+}
+
 /* ---- visual-layer-forge: backgrounds (batch 1) ---- */
 /* Contained, decorative, static. One treatment per layer; content outranks
    the layer via z-index:1. No --aqua in any atmospheric (cap shimmer at --cyan).

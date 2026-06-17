@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EvalLense · Coverage section + cross-surface transitions</title>
+<style>
+:root{
+  /* EvalLense brand palette (from web/src/app/globals.css) */
+  --bg:#ffffff; --bg-soft:#f5f5f7; --bg-ink:#000000;
+  --fg:#1d1d1f; --muted:#6e6e73; --border:#d2d2d7; --hairline:rgba(20,18,40,.07);
+  --fg-on-dark:#f5f5f7; --muted-on-dark:#a9a9b2;
+  --violet:#6c4cf1; --violet-2:#7b5cf6; --lavender:#a99bff; --cyan:#2ec5e8;
+  --ink-grad:linear-gradient(160deg,#0a0a0d 0%,#1b1b26 100%);
+  --lens-soft:linear-gradient(118deg,color-mix(in oklab,var(--violet) 22%,transparent),color-mix(in oklab,var(--cyan) 18%,transparent) 60%);
+  --r-lg:24px; --r-pill:980px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --maxw:1080px; --gutter:clamp(20px,5vw,64px);
+  --font-text:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --font-mono:"SF Mono",Menlo,ui-monospace,"JetBrains Mono",monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{font-family:var(--font-text);color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased;}
+
+/* ───────── page chrome (fixed legend) ───────── */
+.lab-head{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+  padding:11px clamp(16px,4vw,40px);background:rgba(10,10,14,.86);backdrop-filter:saturate(1.2) blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.1);color:var(--fg-on-dark);font-size:13px;}
+.lab-head b{font-weight:600;}
+.lab-head .grad{background:var(--lens-soft);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.lab-head .note{color:var(--muted-on-dark);font-size:12px;}
+.lab-head .legend{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;font-family:var(--font-mono);font-size:10.5px;color:var(--muted-on-dark);}
+.lab-head .legend span{display:inline-flex;align-items:center;gap:5px;}
+.lab-head .legend i{width:9px;height:9px;border-radius:2px;}
+
+/* ───────── bands (the three surfaces) ───────── */
+.band{position:relative;isolation:isolate;padding:clamp(72px,11vw,150px) var(--gutter);overflow:hidden;}
+.band .wrap{position:relative;z-index:2;max-width:var(--maxw);margin-inline:auto;}
+.band.light{background:var(--bg);color:var(--fg);}
+.band.soft{background:var(--bg-soft);color:var(--fg);}
+.band.ink{background:var(--bg-ink);color:var(--fg-on-dark);}
+
+/* ink atmospheric glow — deep, not flat black (violet/cyan, no aqua/green, ≤.18) */
+.band.ink::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(60% 52% at 78% 16%,color-mix(in oklab,var(--violet) 16%,transparent) 0%,color-mix(in oklab,var(--violet) 7%,transparent) 40%,transparent 72%),
+    radial-gradient(54% 48% at 14% 92%,color-mix(in oklab,var(--cyan) 11%,transparent) 0%,transparent 70%),
+    var(--ink-grad);}
+
+/* subtle geometric texture on light/soft (very low opacity) */
+.band.soft::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(90deg,color-mix(in oklab,var(--violet) 7%,transparent) 1px,transparent 1px),
+    linear-gradient(color-mix(in oklab,var(--cyan) 6%,transparent) 1px,transparent 1px);
+  background-size:46px 46px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 35%,#000 0%,transparent 78%);
+          mask-image:radial-gradient(ellipse 70% 60% at 50% 35%,#000 0%,transparent 78%);}
+
+/* ───────── typography ───────── */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 18px;}
+.ink .eyebrow{color:var(--muted-on-dark);}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--violet);}
+.title{font-size:clamp(30px,4.6vw,58px);line-height:1.04;letter-spacing:-.025em;font-weight:600;margin:0 0 18px;text-wrap:balance;}
+.title .grad{background:var(--lens-soft);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.ink .title .grad{background:linear-gradient(118deg,var(--lavender),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.sub{font-size:clamp(16px,1.6vw,19px);line-height:1.55;color:var(--muted);max-width:56ch;margin:0;}
+.ink .sub{color:var(--muted-on-dark);}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px;}
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;border-radius:var(--r-pill);
+  font-size:15px;font-weight:550;text-decoration:none;border:1px solid transparent;transition:transform .3s var(--ease),box-shadow .3s var(--ease);}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--violet);color:#fff;box-shadow:0 8px 24px -8px color-mix(in oklab,var(--violet) 60%,transparent);}
+.btn-ghost{background:transparent;border-color:var(--border);color:var(--fg);}
+.ink .btn-ghost{border-color:rgba(255,255,255,.24);color:var(--fg-on-dark);}
+
+/* coverage grid (six judges) */
+.cov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;}
+.cov-card{position:relative;padding:24px 22px;border-radius:18px;background:var(--bg);border:1px solid var(--hairline);
+  box-shadow:0 1px 2px rgba(20,18,40,.04);}
+.cov-card .k{font-family:var(--font-mono);font-size:11px;color:var(--violet);letter-spacing:.08em;}
+.cov-card h3{font-size:17px;font-weight:600;margin:10px 0 6px;letter-spacing:-.01em;}
+.cov-card p{font-size:13.5px;line-height:1.5;color:var(--muted);margin:0;}
+/* stat band */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px;}
+.stat .n{font-family:var(--font-mono);font-size:clamp(34px,5vw,56px);font-weight:600;letter-spacing:-.02em;line-height:1;
+  background:linear-gradient(118deg,var(--lavender),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat .l{margin-top:10px;font-size:13.5px;color:var(--muted-on-dark);max-width:26ch;}
+
+/* ───────── SEAMS (cross-surface transitions) ───────── */
+.seam{position:relative;height:clamp(96px,15vh,170px);overflow:hidden;isolation:isolate;
+  /* per-direction colors set inline via data-dir rules below */
+  --from:#fff; --mid:#9a9aa0; --to:#000;}
+.seam[data-dir="ink-light"]{--from:#000;--mid:#6d6f76;--to:#fff;}
+.seam[data-dir="light-ink"]{--from:#fff;--mid:#6a6a6e;--to:#000;}
+.seam[data-dir="soft-ink"] {--from:#f5f5f7;--mid:#6e6e72;--to:#000;}
+.seam[data-dir="ink-soft"] {--from:#000;--mid:#6a6c73;--to:#f5f5f7;}
+.seam[data-dir="light-soft"]{--from:#fff;--mid:#fafafb;--to:#f5f5f7;}
+
+.seam__layer{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .35s var(--ease);}
+.seam[data-variant="a"] .seam__layer--a,
+.seam[data-variant="b"] .seam__layer--b,
+.seam[data-variant="c"] .seam__layer--c{opacity:1;}
+
+/* treatment: refined gradient bridge (asymmetric, faint cool mid — no muddy band) */
+.tl-gradient{background:linear-gradient(to bottom,var(--from) 0%,var(--from) 14%,var(--mid) 52%,var(--to) 86%,var(--to) 100%);}
+/* treatment: pattern dissolve (dot field fading across the seam, over the gradient) */
+.tl-pattern{background:linear-gradient(to bottom,var(--from) 0%,var(--to) 100%);}
+.tl-pattern::after{content:"";position:absolute;inset:0;
+  background-image:radial-gradient(color-mix(in oklab,var(--violet) 42%,transparent) 1.1px,transparent 1.2px);
+  background-size:16px 16px;opacity:.5;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 50%,transparent);
+          mask-image:linear-gradient(to bottom,transparent,#000 50%,transparent);}
+/* treatment: masked angled divider (lens-aperture feel — top surface clipped diagonally over bottom) */
+.tl-mask{background:var(--to);}
+.tl-mask::after{content:"";position:absolute;inset:0;background:var(--from);
+  -webkit-mask-image:linear-gradient(170deg,#000 0%,#000 38%,transparent 60%);
+          mask-image:linear-gradient(170deg,#000 0%,#000 38%,transparent 60%);}
+/* treatment: convex dome divider (lens aperture, centered) */
+.tl-dome{background:var(--to);}
+.tl-dome::after{content:"";position:absolute;inset:0;background:var(--from);
+  -webkit-mask-image:radial-gradient(ellipse 140% 86% at 50% -8%,#000 0%,#000 46%,transparent 62%);
+          mask-image:radial-gradient(ellipse 140% 86% at 50% -8%,#000 0%,#000 46%,transparent 62%);}
+/* treatment: glow crossover (violet/cyan bloom straddling the seam, over the gradient) */
+.tl-glow{background:linear-gradient(to bottom,var(--from) 0%,var(--from) 20%,var(--mid) 50%,var(--to) 80%,var(--to) 100%);}
+.tl-glow::after{content:"";position:absolute;left:50%;top:50%;width:min(820px,120%);height:230%;transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse 50% 50% at 50% 50%,color-mix(in oklab,var(--violet) 30%,transparent) 0%,color-mix(in oklab,var(--cyan) 14%,transparent) 36%,transparent 70%);
+  mix-blend-mode:screen;}
+/* treatment: hard cut (clean intentional, hairline on the dark side) */
+.tl-hardcut{background:linear-gradient(to bottom,var(--from) 0%,var(--from) 50%,var(--to) 50%,var(--to) 100%);}
+.tl-hardcut::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(255,255,255,.10);}
+
+/* per-seam control */
+.seam-ctl{position:absolute;z-index:5;right:clamp(12px,4vw,40px);top:50%;transform:translateY(-50%);
+  display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:var(--r-pill);
+  background:rgba(12,12,18,.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);
+  font-family:var(--font-mono);font-size:10.5px;color:var(--muted-on-dark);}
+.seam-ctl .dir{padding:0 4px;letter-spacing:.06em;}
+.seam-ctl button{appearance:none;border:0;cursor:pointer;font:inherit;color:var(--muted-on-dark);
+  background:rgba(255,255,255,.08);border-radius:var(--r-pill);padding:5px 11px;transition:all .2s var(--ease);}
+.seam-ctl button:hover{color:var(--fg-on-dark);}
+.seam-ctl button[aria-pressed="true"]{background:var(--violet);color:#fff;}
+
+/* ───────── reveal-on-enter (reduced-motion safe) ───────── */
+[data-reveal]{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+[data-reveal].is-in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){
+  [data-reveal]{opacity:1;transform:none;transition:none;}
+}
+
+@media (max-width:760px){
+  .cov-grid,.stats{grid-template-columns:1fr;}
+  .seam-ctl{right:50%;transform:translate(50%,-50%);}
+}
+</style>
+</head>
+<body>
+
+<div class="lab-head">
+  <b>EvalLense</b> · <span class="grad">Coverage section + cross-surface transitions</span>
+  <span class="note">живой поток · переключай вариант шва справа (A/B/C) · violet·blue·cyan · без blur/mist</span>
+  <span class="legend">
+    <span><i style="background:var(--violet)"></i>gradient</span>
+    <span><i style="background:var(--cyan)"></i>pattern</span>
+    <span><i style="background:var(--lavender)"></i>mask/dome</span>
+    <span><i style="background:linear-gradient(90deg,var(--violet),var(--cyan))"></i>glow</span>
+    <span><i style="background:#888"></i>hard-cut</span>
+  </span>
+</div>
+
+<!-- ░░ HERO — ink (deep, atmospheric) ░░ -->
+<section class="band ink" data-screen-label="hero">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal><i></i>AI JURY · ПОКРЫТИЕ</p>
+    <h1 class="title" data-reveal>Каждый питч проходит <span class="grad">полный разбор</span>, а решение остаётся за человеком.</h1>
+    <p class="sub" data-reveal>Шесть независимых AI-судей оценивают дек по разным осям, сводят расхождения в один прозрачный отчёт — а финальный выбор делает инвестком, а не модель.</p>
+    <div class="cta-row" data-reveal>
+      <a class="btn btn-primary" href="#">Посмотреть отчёт</a>
+      <a class="btn btn-ghost" href="#">Как считается покрытие</a>
+    </div>
+  </div>
+</section>
+
+<!-- seam: ink → light -->
+<div class="seam" data-dir="ink-light" data-variant="b">
+  <div class="seam__layer seam__layer--a tl-gradient"></div>
+  <div class="seam__layer seam__layer--b tl-glow"></div>
+  <div class="seam__layer seam__layer--c tl-dome"></div>
+  <div class="seam-ctl"><span class="dir">ink → light</span>
+    <button data-v="a">gradient</button><button data-v="b">glow</button><button data-v="c">dome</button></div>
+</div>
+
+<!-- ░░ COVERAGE INTRO — light ░░ -->
+<section class="band light" data-screen-label="intro">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal><i></i>Что значит «покрытие»</p>
+    <h2 class="title" data-reveal>Ни одна сильная команда не теряется в потоке.</h2>
+    <p class="sub" data-reveal>Покрытие — это доля дека, которую жюри реально разобрало по существу: рынок, продукт, команда, traction, риски и экономика. Каждая ось закреплена за отдельным судьёй, поэтому в обзоре нет «слепых зон».</p>
+  </div>
+</section>
+
+<!-- seam: light → soft (low-contrast, subtle) -->
+<div class="seam" data-dir="light-soft" data-variant="a">
+  <div class="seam__layer seam__layer--a tl-gradient"></div>
+  <div class="seam__layer seam__layer--b tl-hardcut"></div>
+  <div class="seam-ctl"><span class="dir">light → soft</span>
+    <button data-v="a">gradient</button><button data-v="b">hard-cut</button></div>
+</div>
+
+<!-- ░░ SIX JUDGES — soft ░░ -->
+<section class="band soft" data-screen-label="judges">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal><i></i>Шесть осей · J-P1…J-P6</p>
+    <h2 class="title" data-reveal>Полное <span class="grad">покрытие</span> дека шестью судьями.</h2>
+    <div class="cov-grid" data-reveal>
+      <div class="cov-card"><div class="k">J-P1</div><h3>Рынок и тайминг</h3><p>Размер, скорость, почему сейчас — без хайповых допущений.</p></div>
+      <div class="cov-card"><div class="k">J-P2</div><h3>Продукт и инсайт</h3><p>Что именно решает продукт и насколько это неочевидно.</p></div>
+      <div class="cov-card"><div class="k">J-P3</div><h3>Команда</h3><p>Право на победу: опыт, скорость исполнения, доменная глубина.</p></div>
+      <div class="cov-card"><div class="k">J-P4</div><h3>Traction</h3><p>Реальные сигналы спроса против красивых, но пустых графиков.</p></div>
+      <div class="cov-card"><div class="k">J-P5</div><h3>Экономика</h3><p>Юнит-экономика и путь к деньгам, а не только TAM-слайд.</p></div>
+      <div class="cov-card"><div class="k">J-P6</div><h3>Риски</h3><p>Где сделка ломается — честно, до того как это найдёт рынок.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- seam: soft → ink -->
+<div class="seam" data-dir="soft-ink" data-variant="a">
+  <div class="seam__layer seam__layer--a tl-gradient"></div>
+  <div class="seam__layer seam__layer--b tl-pattern"></div>
+  <div class="seam__layer seam__layer--c tl-mask"></div>
+  <div class="seam-ctl"><span class="dir">soft → ink</span>
+    <button data-v="a">gradient</button><button data-v="b">pattern</button><button data-v="c">mask</button></div>
+</div>
+
+<!-- ░░ EVIDENCE / STAT BAND — ink ░░ -->
+<section class="band ink" data-screen-label="evidence">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal><i></i>Доказательная база</p>
+    <h2 class="title" data-reveal>Каждая оценка опирается на <span class="grad">цитату из дека</span>.</h2>
+    <div class="stats" data-reveal>
+      <div class="stat"><div class="n">6/6</div><div class="l">осей покрыты по каждому питчу</div></div>
+      <div class="stat"><div class="n">100%</div><div class="l">решений остаются за человеком</div></div>
+      <div class="stat"><div class="n">1 день</div><div class="l">на ранжирование целой когорты</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- seam: ink → light -->
+<div class="seam" data-dir="ink-light" data-variant="c">
+  <div class="seam__layer seam__layer--a tl-gradient"></div>
+  <div class="seam__layer seam__layer--b tl-glow"></div>
+  <div class="seam__layer seam__layer--c tl-dome"></div>
+  <div class="seam-ctl"><span class="dir">ink → light</span>
+    <button data-v="a">gradient</button><button data-v="b">glow</button><button data-v="c">dome</button></div>
+</div>
+
+<!-- ░░ QUIET CTA — light ░░ -->
+<section class="band light" data-screen-label="cta">
+  <div class="wrap" style="text-align:center;">
+    <p class="eyebrow" data-reveal style="justify-content:center;"><i></i>Готовы посмотреть покрытие?</p>
+    <h2 class="title" data-reveal style="margin-inline:auto;max-width:18ch;">AI готовит анализ — <span class="grad">решаете вы</span>.</h2>
+    <p class="sub" data-reveal style="margin-inline:auto;text-align:center;">Загрузите дек или целую когорту — получите ранжирование с доказательной базой по каждой оси.</p>
+    <div class="cta-row" data-reveal style="justify-content:center;">
+      <a class="btn btn-primary" href="#">Загрузить дек</a>
+      <a class="btn btn-ghost" href="#">Книга демо</a>
+    </div>
+  </div>
+</section>
+
+<script>
+// reveal-on-enter (reduced-motion safe — CSS already shows content if reduce)
+(function(){
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var els = document.querySelectorAll("[data-reveal]");
+  if (reduce){ els.forEach(function(e){ e.classList.add("is-in"); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("is-in"); io.unobserve(e.target); } });
+  }, { threshold:0.18, rootMargin:"0px 0px -8% 0px" });
+  els.forEach(function(e){ io.observe(e); });
+})();
+// per-seam variant toggle
+document.querySelectorAll(".seam").forEach(function(seam){
+  var ctl = seam.querySelector(".seam-ctl");
+  if(!ctl) return;
+  function sync(){ ctl.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.v===seam.dataset.variant)); }); }
+  ctl.querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){ seam.dataset.variant = b.dataset.v; sync(); });
+  });
+  sync();
+});
+</script>
+</body>
+</html>

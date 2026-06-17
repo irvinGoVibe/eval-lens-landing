@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
+import { LabCinemaScrim } from "@/components/sections/lab/LabCinemaScrim";
 
 export const metadata: Metadata = {
   title: "EvalLense — Visual Lab",
@@ -823,6 +824,40 @@ export default function VisualLabPage() {
             <p className="caption">motion-static (no class, no rule)</p>
           </div>
         </section>
+
+        {/* ============ Cinematic media → ink (m-cinema generalized) ============ */}
+        <section className="band soft">
+          <div className="wrap">
+            <span className="eyebrow">
+              <span className="dot" aria-hidden="true"></span>
+              visual-layer-forge · cinematic scrim
+            </span>
+            <h2 className="title">
+              Cinematic media → ink{" "}
+              <span className="grad-word">(m-cinema generalized)</span>
+            </h2>
+            <p className="sub">
+              <code>LabCinemaScrim</code> is the methodology page&apos;s pre-footer{" "}
+              <code>.m-cinema</code> scene lifted into one prop-driven primitive on
+              an un-scoped <code>.lab-cinema</code> class group. Scroll through the
+              section below: the media plays full-bleed, a black scrim drops in, the
+              headline letters descend and zoom from huge → 1 (the video shows{" "}
+              <em>only</em> through the letters), a <code>--lens</code> fill resolves
+              the letters to a solid brand gradient, then the eyebrow, sub and CTA
+              reveal. Motion is 100% driven by <code>--pin</code> via the page&apos;s
+              existing <code>ScrollFX</code> (<code>data-pin</code>); mobile and
+              reduced-motion fall back to a static black statement.
+            </p>
+          </div>
+        </section>
+
+        <LabCinemaScrim
+          eyebrow="Get started"
+          headline="See the methodology on your own decks"
+          sub="Run an AI jury over your own pitch decks and watch the evaluation play out end to end — evidence-linked scores, with the final call yours."
+          cta={{ label: "Book a Demo", href: "/#demo" }}
+          media={{ videoSrc: "/assets/methodology/cinema.mp4" }}
+        />
       </main>
       <ScrollFX />
     </>

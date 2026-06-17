@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EvalLense · Coverage — vivid (v2)</title>
+<style>
+:root{
+  --bg:#ffffff; --bg-light:#f4f5fb; --bg-soft:#eef0f9; --ink:#05060c;
+  --fg:#111320; --muted:rgba(28,31,48,.66);
+  --fg-on-dark:#f5f6fb; --muted-on-dark:rgba(236,234,255,.66);
+  --violet:#6c4cf1; --violet-2:#7b5cf6; --lavender:#a99bff; --cyan:#2ec5e8; --blue:#2761ff;
+  --navy:#130b34;
+  --r:28px; --r-pill:999px; --maxw:1160px; --gutter:clamp(20px,5vw,40px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,"JetBrains Mono",monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{font-family:var(--font);color:var(--fg);background:var(--bg-light);-webkit-font-smoothing:antialiased;}
+
+/* ───── glass header (adapts light/dark per section) ───── */
+.hd{position:fixed;inset:0 0 auto;z-index:1000;height:70px;isolation:isolate;}
+.hd::before{content:"";position:absolute;inset:0;z-index:0;background:rgba(255,255,255,.34);
+  -webkit-backdrop-filter:saturate(200%) blur(28px);backdrop-filter:saturate(200%) blur(28px);
+  border-bottom:1px solid rgba(55,55,80,.16);box-shadow:0 16px 50px rgba(80,70,130,.14);
+  transition:background-color .25s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease);}
+.hd--dark::before{background:rgba(5,6,12,.5);border-bottom-color:rgba(255,255,255,.14);box-shadow:0 16px 50px rgba(0,0,0,.24);}
+.hd__in{position:relative;z-index:1;max-width:var(--maxw);height:100%;margin:0 auto;padding:0 var(--gutter);display:flex;align-items:center;gap:26px;}
+.brand{display:inline-flex;align-items:center;gap:10px;font-weight:700;color:var(--fg);text-decoration:none;transition:color .25s var(--ease);}
+.brand i{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--violet-2),var(--cyan) 60%,#7fe9ff);box-shadow:0 0 20px rgba(124,92,246,.5);}
+.nav{display:flex;gap:22px;margin-left:auto;}
+.nav a,.hd .cta{font:600 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(28,31,48,.7);text-decoration:none;transition:color .25s var(--ease);}
+.hd .cta{display:inline-flex;align-items:center;gap:7px;color:#fff;padding:11px 17px;border-radius:var(--r-pill);background:linear-gradient(135deg,var(--violet-2),var(--blue));box-shadow:0 14px 32px rgba(90,80,230,.28);}
+.hd--dark .brand{color:#fff;} .hd--dark .nav a{color:rgba(236,234,255,.72);}
+
+/* ───── sections ───── */
+.sec{position:relative;overflow:hidden;padding:clamp(96px,13vw,150px) var(--gutter) clamp(72px,10vw,120px);}
+.wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;}
+.kicker{margin:0 0 18px;font:600 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:#7455f4;display:inline-flex;align-items:center;gap:8px;}
+.kicker i{width:6px;height:6px;border-radius:50%;background:var(--violet);}
+.dark .kicker{color:var(--lavender);}
+.h-xl{margin:0;font-size:clamp(46px,8vw,108px);line-height:.96;letter-spacing:-.045em;font-weight:600;text-wrap:balance;}
+.h-lg{margin:0;font-size:clamp(34px,5vw,68px);line-height:1;letter-spacing:-.035em;font-weight:600;text-wrap:balance;}
+.grad{background:linear-gradient(118deg,var(--violet) 0%,var(--lavender) 34%,var(--cyan) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.lead{margin:26px 0 0;max-width:60ch;font-size:clamp(17px,2vw,22px);line-height:1.5;color:var(--muted);}
+.dark{color:var(--fg-on-dark);} .dark .lead{color:var(--muted-on-dark);}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px;}
+.btn{display:inline-flex;align-items:center;gap:8px;height:50px;padding:0 24px;border-radius:var(--r-pill);font-size:15px;font-weight:600;text-decoration:none;transition:transform .3s var(--ease),box-shadow .3s var(--ease);}
+.btn:hover{transform:translateY(-2px);}
+.btn-primary{color:#fff;background:linear-gradient(135deg,var(--violet-2),var(--blue));box-shadow:0 16px 38px rgba(90,80,230,.34);}
+.btn-glass{color:var(--fg);background:rgba(255,255,255,.5);border:1px solid rgba(124,92,246,.28);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
+.dark .btn-glass{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(226,218,255,.34);}
+
+/* vivid backgrounds */
+.sec--ink{color:var(--fg-on-dark);
+  background:radial-gradient(circle at 22% 26%,color-mix(in oklab,var(--violet) 52%,transparent),transparent 36%),
+    radial-gradient(circle at 78% 64%,color-mix(in oklab,var(--cyan) 34%,transparent),transparent 34%),
+    var(--ink);}
+.sec--light{
+  background:radial-gradient(circle at 16% 22%,color-mix(in oklab,var(--violet) 26%,transparent),transparent 38%),
+    radial-gradient(circle at 82% 30%,color-mix(in oklab,var(--cyan) 30%,transparent),transparent 40%),
+    repeating-linear-gradient(45deg,transparent 0 18px,color-mix(in oklab,var(--violet) 12%,transparent) 18px 20px),
+    var(--bg-light);}
+.sec--soft{
+  background:radial-gradient(circle at 84% 18%,color-mix(in oklab,var(--cyan) 22%,transparent),transparent 42%),
+    var(--bg-soft);}
+
+/* ───── ЯРКИЕ БЛОКИ — saturated gradient cards (6 judges) ───── */
+.blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;}
+.blk{position:relative;min-height:230px;border-radius:var(--r);padding:24px;display:flex;flex-direction:column;justify-content:space-between;
+  color:#fff;overflow:hidden;box-shadow:0 36px 70px rgba(28,44,130,.24);isolation:isolate;}
+.blk::after{content:"";position:absolute;inset:0;z-index:0;
+  background:radial-gradient(circle at 24% 20%,rgba(255,255,255,.9),transparent 16%),
+    radial-gradient(circle at 72% 36%,rgba(255,255,255,.28),transparent 26%);mix-blend-mode:screen;opacity:.6;}
+.blk>*{position:relative;z-index:1;}
+.blk .k{font:700 12px/1 var(--mono);letter-spacing:.14em;opacity:.82;}
+.blk .n{font:700 clamp(40px,5vw,64px)/.85 var(--mono);letter-spacing:-.02em;}
+.blk h3{margin:0;font-size:19px;font-weight:600;letter-spacing:-.01em;}
+.blk p{margin:8px 0 0;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.82);max-width:30ch;}
+.blk--v1{background:linear-gradient(135deg,var(--navy),var(--blue) 56%,var(--cyan));}
+.blk--v2{background:linear-gradient(135deg,#1a0f44,var(--violet-2) 58%,#9d7bff);}
+.blk--v3{background:linear-gradient(135deg,#081328,#1f7fd6 52%,#5fe6ff);}
+.blk--v4{background:linear-gradient(135deg,#160a3a,#5b3df0 50%,var(--cyan));}
+.blk--v5{background:linear-gradient(135deg,#0a1030,var(--blue) 60%,#7fe9ff);}
+.blk--v6{background:linear-gradient(135deg,#1d1147,#8b5cff 54%,#36c9ff);}
+
+/* ───── neon line field ───── */
+.neon{margin-top:48px;display:grid;gap:12px;transform:rotate(-8deg);min-height:240px;opacity:.9;}
+.neon span{height:13px;border-radius:var(--r-pill);background:linear-gradient(90deg,transparent,var(--violet-2),var(--cyan),transparent);box-shadow:0 0 26px rgba(46,197,232,.34);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:44px;}
+.stat .n{font:600 clamp(38px,5vw,60px)/1 var(--mono);letter-spacing:-.02em;
+  background:linear-gradient(118deg,var(--lavender),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat .l{margin-top:10px;font-size:14px;color:var(--muted-on-dark);max-width:24ch;}
+
+/* ───── cinematic closing (vivid media → ink) ───── */
+.cinema{position:relative;min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:clamp(80px,12vw,140px) var(--gutter);overflow:hidden;color:#fff;
+  background:radial-gradient(circle at 30% 24%,color-mix(in oklab,var(--violet) 60%,transparent),transparent 40%),
+    radial-gradient(circle at 72% 70%,color-mix(in oklab,var(--cyan) 40%,transparent),transparent 38%),
+    var(--ink);}
+.cinema::before{content:"";position:absolute;inset:0;z-index:0;opacity:.5;
+  background:repeating-linear-gradient(45deg,transparent 0 16px,rgba(124,92,246,.16) 16px 18px);
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,#000,transparent 76%);mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,#000,transparent 76%);}
+.cinema .wrap{z-index:2;max-width:18ch;}
+
+/* ───── reveal ───── */
+[data-reveal]{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+[data-reveal].is-in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none;} .neon{transform:none;}}
+
+@media (max-width:860px){ .blocks{grid-template-columns:1fr;} .stats{grid-template-columns:1fr;} .nav{display:none;} }
+</style>
+</head>
+<body>
+
+<header class="hd" id="hd">
+  <div class="hd__in">
+    <a class="brand" href="#"><i aria-hidden="true"></i>EvalLense</a>
+    <nav class="nav"><a href="#cover">Покрытие</a><a href="#judges">Судьи</a><a href="#evidence">Доказательства</a></nav>
+    <a class="cta" href="#">Загрузить дек →</a>
+  </div>
+</header>
+
+<!-- HERO — ink vivid -->
+<section class="sec sec--ink dark" data-theme="dark">
+  <div class="wrap">
+    <p class="kicker" data-reveal><i></i>AI JURY · ПОКРЫТИЕ</p>
+    <h1 class="h-xl" data-reveal>Каждый питч —<br><span class="grad">полный разбор.</span></h1>
+    <p class="lead" data-reveal>Шесть независимых AI-судей разбирают дек по всем осям и сводят расхождения в один прозрачный отчёт. Финальное решение — за человеком, не за моделью.</p>
+    <div class="cta-row" data-reveal>
+      <a class="btn btn-primary" href="#">Посмотреть отчёт</a>
+      <a class="btn btn-glass" href="#">Как считается покрытие</a>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE — judges as vivid blocks (light) -->
+<section class="sec sec--light" id="judges" data-theme="light">
+  <div class="wrap">
+    <p class="kicker" data-reveal><i></i>Шесть осей · J-P1…J-P6</p>
+    <h2 class="h-lg" data-reveal>Полное <span class="grad">покрытие</span> дека.</h2>
+    <div class="blocks" data-reveal>
+      <div class="blk blk--v1"><div class="k">J-P1</div><div><div class="n">01</div><h3>Рынок и тайминг</h3><p>Размер, скорость, почему сейчас — без хайпа.</p></div></div>
+      <div class="blk blk--v2"><div class="k">J-P2</div><div><div class="n">02</div><h3>Продукт и инсайт</h3><p>Что решает продукт и насколько это неочевидно.</p></div></div>
+      <div class="blk blk--v3"><div class="k">J-P3</div><div><div class="n">03</div><h3>Команда</h3><p>Право на победу: опыт, исполнение, доменная глубина.</p></div></div>
+      <div class="blk blk--v4"><div class="k">J-P4</div><div><div class="n">04</div><h3>Traction</h3><p>Реальные сигналы спроса против пустых графиков.</p></div></div>
+      <div class="blk blk--v5"><div class="k">J-P5</div><div><div class="n">05</div><h3>Экономика</h3><p>Юнит-экономика и путь к деньгам, не только TAM.</p></div></div>
+      <div class="blk blk--v6"><div class="k">J-P6</div><div><div class="n">06</div><h3>Риски</h3><p>Где сделка ломается — честно, до того как найдёт рынок.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE — ink vivid + neon -->
+<section class="sec sec--ink dark" id="evidence" data-theme="dark">
+  <div class="wrap">
+    <p class="kicker" data-reveal><i></i>Доказательная база</p>
+    <h2 class="h-lg" data-reveal>Каждая оценка опирается на <span class="grad">цитату из дека</span>.</h2>
+    <div class="neon" aria-hidden="true" data-reveal>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="stats" data-reveal>
+      <div class="stat"><div class="n">6/6</div><div class="l">осей покрыты по каждому питчу</div></div>
+      <div class="stat"><div class="n">100%</div><div class="l">решений остаются за человеком</div></div>
+      <div class="stat"><div class="n">1 день</div><div class="l">на ранжирование целой когорты</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CINEMATIC CLOSING — vivid → ink (flows into dark footer) -->
+<section class="cinema dark" data-theme="dark" aria-label="Get started">
+  <div class="wrap">
+    <p class="kicker" data-reveal style="justify-content:center;"><i></i>Get started</p>
+    <h2 class="h-xl" data-reveal>AI готовит анализ — <span class="grad">решаете вы.</span></h2>
+    <p class="lead" data-reveal style="margin-inline:auto;text-align:center;">Загрузите дек или целую когорту — получите ранжирование с доказательной базой по каждой оси.</p>
+    <div class="cta-row" data-reveal style="justify-content:center;">
+      <a class="btn btn-primary" href="#">Загрузить дек</a>
+      <a class="btn btn-glass" href="#">Книга демо</a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  // glass header light/dark adapt per section
+  var hd=document.getElementById("hd");
+  function sync(){ var y=hd.getBoundingClientRect().bottom-2;
+    var el=document.elementsFromPoint(Math.round(innerWidth/2),Math.max(1,Math.round(y)))
+      .find(function(e){return e.classList&&e.classList.contains("sec")||e.classList&&e.classList.contains("cinema");});
+    hd.classList.toggle("hd--dark", !!(el&&el.dataset&&el.dataset.theme==="dark")); }
+  sync(); addEventListener("scroll",sync,{passive:true}); addEventListener("resize",sync);
+  // reveal
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var els=document.querySelectorAll("[data-reveal]");
+  if(reduce){els.forEach(function(e){e.classList.add("is-in");});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("is-in");io.unobserve(e.target);}});},{threshold:.16,rootMargin:"0px 0px -8% 0px"});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
+</body>
+</html>

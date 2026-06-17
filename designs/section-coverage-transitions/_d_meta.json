@@ -1,0 +1,35 @@
+{
+  "type": "design",
+  "designSystems": [],
+  "primaryDesignSystem": null,
+  "assets": {
+    "Coverage Section + Transitions": {
+      "versions": [
+        {
+          "path": "Coverage Section + Transitions.html",
+          "createdAt": "2026-06-17T10:40:29.819Z",
+          "status": "needs-review",
+          "subtitle": "Coverage section flow + 5 seam treatments (A/B/C per seam)"
+        },
+        {
+          "path": "Coverage Section + Transitions v2 (vivid).html",
+          "createdAt": "2026-06-17T11:11:03.807Z",
+          "status": "needs-review",
+          "subtitle": "Vivid restyle per /dev/backdrop-filter — saturated blocks, brand-gradient bgs, neon, glass header"
+        }
+      ]
+    },
+    "Transitions Catalog (light-dominant)": {
+      "versions": [
+        {
+          "path": "Transitions Catalog (light-dominant).html",
+          "createdAt": "2026-06-17T11:16:00.073Z",
+          "status": "needs-review",
+          "subtitle": "9 scroll-driven transitions (tint/rise-over/clip/card-ride/sticky-stack/parallax/cinematic/lift-away/wipe) — light-dominant + accent blocks; pick later"
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-06-17T10:40:29.819Z",
+  "updatedAt": "2026-06-17T11:16:00.073Z"
+}

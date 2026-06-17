@@ -94,5 +94,13 @@
       "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
     }
   ],
+  "style_anchors": {
+    "note": "page-composer Ф0.5/Ф6 — три стиль-варианта. Строятся на РЕАЛЬНЫХ токенах/компонентах EvalLense (globals.css + ui/* + _kit + Lab*), не на приближённых хексах. Стиль предлагается вариантом только когда его примитивы `ready`; иначе page-composer помечает вариант blocked-style и маршрутизирует примитивы в visual-layer-forge.",
+    "anchors": [
+      { "id": "style-cinematic-ink", "name": "Cinematic Ink", "intent": "светлая база + 1-2 full-bleed кинематографичных ink-момента (LabCinemaScrim: медиа + knockout + pinned -> ink/футер)", "requires": ["LabCinemaScrim (component)", "bg-ink-ambient-glow"], "consumption_readiness": { "status": "conditional", "reasons": ["LabCinemaScrim реализован, но ещё не зарегистрирован как ready"] } },
+      { "id": "style-vivid-blocks", "name": "Vivid Blocks", "intent": "светлая база + насыщенные brand-gradient акцент-блоки, неон-линии, bold-типографика, glass (язык dev/backdrop-filter)", "requires": ["vivid gradient block primitive", "neon-line field", "bold display type scale"], "consumption_readiness": { "status": "pending", "reasons": ["vivid block/neon примитивы ещё не в библиотеке — в visual-layer-forge"] } },
+      { "id": "style-calm-editorial", "name": "Calm Editorial", "intent": "светло-доминантный, сдержанные акценты, мягкий reveal, минимум декора", "requires": ["bg-neutral surfaces", "tr-gradient-bridge", "motion-pattern-reveal"], "consumption_readiness": { "status": "conditional", "reasons": ["в основном из существующих ready-примитивов; подтвердить на первой сборке"] } }
+    ]
+  },
   "surface_ownership_note": "Page-level recipes that depend on bg-shared-page-grid / tr-grid-continuation are blocked-by-surface-ownership until Lab sections support a transparent/inherit surface (unblock: component-forge -> transparent-or-inherit-surface-api). Such recipes are registered but never handed to Page Orchestrator as `ready`."
 }
