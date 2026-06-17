@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+  :root{--ink:#1d1d1f;--muted:#6e6e73;--line:rgba(0,0,0,.10);
+    --lens:linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2);}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1500px;height:1000px}
+  body{font-family:-apple-system,"SF Pro Display",system-ui,sans-serif;color:var(--ink);background:#fff;
+    display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased}
+  .bg{position:fixed;inset:0;background:
+    radial-gradient(1000px 520px at 78% -12%,rgba(108,76,241,.06),transparent 60%),
+    radial-gradient(900px 480px at 12% 118%,rgba(46,197,232,.06),transparent 60%),#fff}
+  .scene{position:relative;width:1440px}
+  .eyebrow{font:600 15px/1 "SF Mono",ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:10px}
+  .title{font-size:32px;font-weight:680;letter-spacing:-.02em;margin-bottom:6px}
+  .title b{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);font-size:16px;margin-bottom:30px}
+  .grid{display:grid;grid-template-columns:300px repeat(6,1fr);gap:10px;align-items:center}
+  .hcol{font:600 13px/1.25 "SF Mono",ui-monospace,monospace;color:var(--muted);text-align:center;
+    letter-spacing:.02em;padding-bottom:6px}
+  .hcol b{display:block;color:var(--ink);font-size:15px;margin-bottom:3px}
+  .jname{font-size:15.5px;font-weight:560;display:flex;align-items:center;gap:11px}
+  .jcode{flex:none;width:46px;height:28px;border-radius:8px;background:#f1f1f4;color:#3a3a3f;
+    font:650 12.5px/28px "SF Mono",ui-monospace,monospace;text-align:center}
+  .cell{height:58px;border-radius:12px;border:1px solid var(--line);display:flex;align-items:center;
+    justify-content:center;font:650 11px/1 "SF Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase}
+  .p{background:var(--lens);border:none;color:#fff;box-shadow:0 8px 20px rgba(108,76,241,.22)}
+  .s{background:rgba(108,76,241,.20);border-color:rgba(108,76,241,.28);color:#5a40c8}
+  .a{background:rgba(46,197,232,.12);border-color:rgba(46,197,232,.22);color:#1f8aa3}
+  .none{background:#fafafb;color:#c4c4ca}
+  .legend{display:flex;gap:28px;margin-top:30px;align-items:center;flex-wrap:wrap}
+  .lg{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--muted)}
+  .sw{width:26px;height:18px;border-radius:6px;border:1px solid var(--line)}
+  .sw.p{background:var(--lens);border:none} .sw.s{background:rgba(108,76,241,.20)}
+  .sw.a{background:rgba(46,197,232,.12)} .sw.none{background:#fafafb}
+  .lg b{color:var(--ink);font-weight:620}
+</style></head>
+<body>
+<div class="bg"></div>
+<div class="scene">
+  <div class="eyebrow">Judge routing matrix · Pitch mode</div>
+  <div class="title">Every judge has a <b>defined level of influence</b> on every dimension</div>
+  <div class="lead">No more judges reading their role too broadly — less duplication, cleaner aggregation, a score you can defend.</div>
+
+  <div class="grid">
+    <div></div>
+    <div class="hcol"><b>P1</b>Problem</div>
+    <div class="hcol"><b>P2</b>Solution</div>
+    <div class="hcol"><b>P3</b>Market</div>
+    <div class="hcol"><b>P4</b>Model/GTM</div>
+    <div class="hcol"><b>P5</b>Team</div>
+    <div class="hcol"><b>P6</b>Feasibility</div>
+
+    <div class="jname"><span class="jcode">J-P1</span>Problem</div>
+    <div class="cell p">Primary</div><div class="cell s">Sec</div><div class="cell a">Adv</div><div class="cell none">—</div><div class="cell none">—</div><div class="cell a">Adv</div>
+
+    <div class="jname"><span class="jcode">J-P2</span>Solution Logic</div>
+    <div class="cell s">Sec</div><div class="cell p">Primary</div><div class="cell none">—</div><div class="cell a">Adv</div><div class="cell none">—</div><div class="cell s">Sec</div>
+
+    <div class="jname"><span class="jcode">J-P3</span>Business Value / Market</div>
+    <div class="cell a">Adv</div><div class="cell none">—</div><div class="cell p">Primary</div><div class="cell s">Sec</div><div class="cell none">—</div><div class="cell none">—</div>
+
+    <div class="jname"><span class="jcode">J-P4</span>Pitch Quality</div>
+    <div class="cell none">—</div><div class="cell a">Adv</div><div class="cell s">Sec</div><div class="cell p">Primary</div><div class="cell a">Adv</div><div class="cell none">—</div>
+
+    <div class="jname"><span class="jcode">J-P5</span>Team Readiness</div>
+    <div class="cell none">—</div><div class="cell none">—</div><div class="cell a">Adv</div><div class="cell s">Sec</div><div class="cell p">Primary</div><div class="cell s">Sec</div>
+
+    <div class="jname"><span class="jcode">J-P6</span>Feasibility</div>
+    <div class="cell a">Adv</div><div class="cell s">Sec</div><div class="cell none">—</div><div class="cell none">—</div><div class="cell s">Sec</div><div class="cell p">Primary</div>
+  </div>
+
+  <div class="legend">
+    <div class="lg"><span class="sw p"></span><b>Primary</b> — main evaluator</div>
+    <div class="lg"><span class="sw s"></span><b>Secondary</b> — supporting</div>
+    <div class="lg"><span class="sw a"></span><b>Advisory</b> — background signal</div>
+    <div class="lg"><span class="sw none"></span><b>None</b> — no influence</div>
+  </div>
+</div>
+</body></html>

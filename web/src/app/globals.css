@@ -3346,8 +3346,13 @@ section[id]{scroll-margin-top:72px;}
 /* In-article video + gallery (Story 02 directives) */
 .article-video{margin:1.8em 0;}
 .article-video__el{width:100%;border-radius:14px;display:block;background:#000;}
-.article-gallery{margin:1.8em 0;}
-.article-gallery__photo{position:relative;width:100%;aspect-ratio:3/2;border-radius:14px;overflow:hidden;background:#0d0d10;}
+/* Full-bleed: break out of the 720px body column to the full viewport width so
+   in-article visuals read "на полный экран". The 3:2 box matches the generated
+   1500×1000 artwork (no crop); max-height keeps it within the screen on wide
+   monitors. :::gallery is used only by these editorial articles, so this does
+   not disturb other layouts. */
+.article-gallery{margin:clamp(2.2em,4.5vw,3.6em) calc(50% - 50vw);width:100vw;}
+.article-gallery__photo{position:relative;width:100%;aspect-ratio:3/2;max-height:92vh;overflow:hidden;background:#fff;border-block:1px solid var(--border-2);}
 .article-gallery__img{object-fit:cover;}
 .article-gallery__nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;border-radius:50%;background:rgba(20,20,24,.6);color:#fff;font-size:22px;line-height:1;cursor:pointer;}
 .article-gallery__nav--prev{left:12px;}

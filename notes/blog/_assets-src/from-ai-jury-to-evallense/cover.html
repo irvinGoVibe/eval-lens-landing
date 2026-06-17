@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+  :root{--ink:#1d1d1f;--muted:#6e6e73;--line:rgba(0,0,0,.10);
+    --lens:linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2);}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1500px;height:790px}
+  body{font-family:-apple-system,"SF Pro Display",system-ui,sans-serif;color:var(--ink);background:#fff;
+    -webkit-font-smoothing:antialiased;overflow:hidden}
+  .bg{position:fixed;inset:0;background:
+    radial-gradient(900px 600px at 100% 50%,rgba(46,197,232,.10),transparent 60%),
+    radial-gradient(800px 600px at 92% 30%,rgba(108,76,241,.10),transparent 60%),#fff}
+  .wrap{position:relative;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 92px}
+  .left{max-width:720px}
+  .eyebrow{font:600 16px/1 "SF Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:22px}
+  h1{font-size:62px;line-height:1.04;font-weight:700;letter-spacing:-.03em}
+  h1 b{font-weight:700;background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .dek{margin-top:26px;font-size:21px;line-height:1.5;color:var(--muted);max-width:600px}
+  .ph{position:absolute;left:92px;bottom:30px;font:600 12px/1 "SF Mono",ui-monospace,monospace;
+    letter-spacing:.08em;text-transform:uppercase;color:#c4c4ca}
+  /* lens motif */
+  .lens{position:relative;width:430px;height:430px;flex:none;margin-right:20px}
+  .ring{position:absolute;border-radius:50%;inset:0}
+  .r1{background:var(--lens);filter:blur(2px)}
+  .r2{inset:42px;background:#fff}
+  .r3{inset:70px;background:var(--lens);opacity:.92}
+  .r4{inset:128px;background:#fff}
+  .r5{inset:150px;background:var(--lens)}
+  .r6{inset:200px;background:radial-gradient(circle at 42% 38%,#fff,rgba(255,255,255,.35))}
+  .glow{position:absolute;inset:-40px;border-radius:50%;background:var(--lens);filter:blur(60px);opacity:.18}
+</style></head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <div class="left">
+    <div class="eyebrow">EvalLense · Research</div>
+    <h1>From AI&nbsp;Jury to EvalLense: what <b>400+ runs</b> taught us</h1>
+    <div class="dek">We thought the answer was more AI judges. The runs taught us the opposite — the work was the methodology, and the human who keeps the final call.</div>
+  </div>
+  <div class="lens">
+    <div class="glow"></div>
+    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+    <div class="ring r4"></div><div class="ring r5"></div><div class="ring r6"></div>
+  </div>
+</div>
+</body></html>

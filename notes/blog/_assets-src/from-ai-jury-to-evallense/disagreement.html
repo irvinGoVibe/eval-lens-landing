@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+  :root{--ink:#1d1d1f;--muted:#6e6e73;--line:rgba(0,0,0,.10);
+    --lens:linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2);
+    --amber:#e8943a;--green:#1aa37a;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1500px;height:1000px}
+  body{font-family:-apple-system,"SF Pro Display",system-ui,sans-serif;color:var(--ink);background:#fff;
+    display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased}
+  .bg{position:fixed;inset:0;background:
+    radial-gradient(1000px 520px at 20% -12%,rgba(108,76,241,.06),transparent 60%),
+    radial-gradient(900px 480px at 88% 118%,rgba(232,148,58,.07),transparent 60%),#fff}
+  .scene{position:relative;width:1380px}
+  .eyebrow{font:600 15px/1 "SF Mono",ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:10px}
+  .title{font-size:32px;font-weight:680;letter-spacing:-.02em;margin-bottom:6px}
+  .title b{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);font-size:16px;margin-bottom:26px}
+  .panel{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;
+    box-shadow:0 1px 2px rgba(0,0,0,.03),0 22px 54px rgba(108,76,241,.06)}
+  .head,.row{display:grid;grid-template-columns:62px 1fr 168px 250px 210px;align-items:center;gap:18px;padding:16px 26px}
+  .head{font:600 12px/1 "SF Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);background:#fafafb;border-bottom:1px solid var(--line)}
+  .row{border-top:1px solid var(--line)}
+  .rk{font:650 17px/1 "SF Mono",ui-monospace,monospace;color:#3a3a3f}
+  .nm{font-size:17.5px;font-weight:580} .nm small{display:block;color:var(--muted);font-weight:400;font-size:13px;margin-top:3px}
+  .ai{font:650 17px/1 "SF Mono",ui-monospace,monospace}
+  .ai small{font-weight:500;color:var(--muted);font-size:12px}
+  .panelbar{display:flex;align-items:center;gap:11px;font-size:14px;color:var(--muted)}
+  .dots{display:flex;gap:4px}.dot{width:9px;height:9px;border-radius:50%;background:#dcdce1}
+  .dot.on{background:var(--green)} .dot.split{background:var(--amber)}
+  .worry{display:inline-flex;align-items:center;gap:9px;font:600 12.5px/1 "SF Mono",ui-monospace,monospace;
+    letter-spacing:.03em;padding:8px 13px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .worry.low{color:var(--green);background:rgba(26,163,122,.08);border-color:rgba(26,163,122,.2)}
+  .worry.high{color:var(--amber);background:rgba(232,148,58,.10);border-color:rgba(232,148,58,.26)}
+  .row.flag{background:linear-gradient(90deg,rgba(232,148,58,.07),transparent 78%)}
+  .row.flag:before{content:"";position:absolute;left:0;width:4px;height:100%;
+    background:linear-gradient(180deg,#e8943a,#f0b46e)}
+  .row{position:relative}
+  .caption{margin-top:24px;font-size:17px;color:var(--muted)}
+  .caption b{color:var(--ink);font-weight:640}
+</style></head>
+<body>
+<div class="bg"></div>
+<div class="scene">
+  <div class="eyebrow">Disagreement is a signal · post-MVP: Worry Score</div>
+  <div class="title">A high score with a split panel is <b>not the same</b> as a high score with agreement</div>
+  <div class="lead">Averages hide tension. The disagreement signal points your review at the most contested submissions first — it never changes the score.</div>
+
+  <div class="panel">
+    <div class="head"><div>#</div><div>Startup</div><div>AI Total · advisory</div><div>Panel agreement</div><div>Worry Score</div></div>
+
+    <div class="row"><div class="rk">01</div>
+      <div class="nm">AI Startup<small>Pitch deck</small></div>
+      <div class="ai">9.1 <small>/10</small></div>
+      <div class="panelbar"><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i></span>consensus</div>
+      <div><span class="worry low">● Low</span></div></div>
+
+    <div class="row flag"><div class="rk">02</div>
+      <div class="nm">Fintech Solution<small>Pitch deck</small></div>
+      <div class="ai">8.7 <small>/10</small></div>
+      <div class="panelbar"><span class="dots"><i class="dot split"></i><i class="dot on"></i><i class="dot split"></i><i class="dot on"></i><i class="dot split"></i><i class="dot on"></i></span>split: market vs feasibility</div>
+      <div><span class="worry high">▲ High · review first</span></div></div>
+
+    <div class="row"><div class="rk">03</div>
+      <div class="nm">Smart Logistics<small>Pitch deck</small></div>
+      <div class="ai">8.3 <small>/10</small></div>
+      <div class="panelbar"><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot split"></i><i class="dot on"></i><i class="dot on"></i></span>mostly aligned</div>
+      <div><span class="worry low">● Low</span></div></div>
+
+    <div class="row flag"><div class="rk">04</div>
+      <div class="nm">HealthTech<small>Pitch deck</small></div>
+      <div class="ai">7.9 <small>/10</small></div>
+      <div class="panelbar"><span class="dots"><i class="dot split"></i><i class="dot split"></i><i class="dot on"></i><i class="dot on"></i><i class="dot split"></i><i class="dot on"></i></span>split: team vs problem</div>
+      <div><span class="worry high">▲ High · review first</span></div></div>
+  </div>
+
+  <div class="caption"><b>AI Total is advisory.</b> You read the contested cases, then set the Jury Score.</div>
+</div>
+</body></html>

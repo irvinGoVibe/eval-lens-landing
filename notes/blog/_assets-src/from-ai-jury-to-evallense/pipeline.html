@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+  :root{--ink:#1d1d1f;--muted:#6e6e73;--line:rgba(0,0,0,.10);
+    --lens:linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2);}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1500px;height:1000px}
+  body{font-family:-apple-system,"SF Pro Display",system-ui,sans-serif;color:var(--ink);background:#fff;
+    display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased}
+  .bg{position:fixed;inset:0;background:
+    radial-gradient(1100px 560px at 50% -15%,rgba(108,76,241,.06),transparent 60%),
+    radial-gradient(1000px 520px at 50% 120%,rgba(46,197,232,.06),transparent 60%),#fff}
+  .scene{position:relative;width:1420px}
+  .eyebrow{font:600 15px/1 "SF Mono",ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);text-align:center;margin-bottom:12px}
+  .title{font-size:34px;font-weight:680;letter-spacing:-.02em;text-align:center;margin-bottom:48px}
+  .title b{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .flow{display:flex;flex-direction:column;gap:30px;align-items:center}
+  .lane{display:flex;align-items:center;justify-content:center;gap:0}
+  .node{position:relative;min-width:188px;padding:20px 18px;border:1px solid var(--line);border-radius:18px;
+    background:#fff;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.03),0 16px 38px rgba(108,76,241,.05)}
+  .node .k{font:600 12px/1 "SF Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:9px}
+  .node .n{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .arrow{width:46px;height:2px;background:var(--line);position:relative;flex:none}
+  .arrow:after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left-color:#c9c9cf}
+  .turn{font-size:26px;color:#c9c9cf;margin:-6px 0}
+  .human{border:none;background:var(--lens);box-shadow:0 18px 46px rgba(108,76,241,.30)}
+  .human .k{color:rgba(255,255,255,.85)} .human .n{color:#fff;font-weight:680}
+  .math .n small{display:block;font:600 12px/1 "SF Mono",ui-monospace,monospace;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+  .caption{margin-top:46px;text-align:center;font-size:19px;color:var(--muted)}
+  .caption b{color:var(--ink);font-weight:640}
+</style></head>
+<body>
+<div class="bg"></div>
+<div class="scene">
+  <div class="eyebrow">The short version</div>
+  <div class="title">A room of agents became <b>a pipeline with a person at the end</b></div>
+  <div class="flow">
+    <div class="lane">
+      <div class="node"><div class="k">in</div><div class="n">Deck</div></div>
+      <div class="arrow"></div>
+      <div class="node"><div class="k">step 1</div><div class="n">Decode</div></div>
+      <div class="arrow"></div>
+      <div class="node"><div class="k">step 2</div><div class="n">Judge lenses</div></div>
+      <div class="arrow"></div>
+      <div class="node"><div class="k">step 3</div><div class="n">Routing matrix</div></div>
+    </div>
+    <div class="turn">↓</div>
+    <div class="lane">
+      <div class="node math"><div class="k">step 4</div><div class="n">Aggregation<small>deterministic math</small></div></div>
+      <div class="arrow"></div>
+      <div class="node"><div class="k">step 5</div><div class="n">Report</div></div>
+      <div class="arrow"></div>
+      <div class="node human"><div class="k">step 6</div><div class="n">Human review</div></div>
+      <div class="arrow"></div>
+      <div class="node"><div class="k">out</div><div class="n">Leaderboard</div></div>
+    </div>
+  </div>
+  <div class="caption"><b>AI prepares the evaluation.</b> A person makes the final call.</div>
+</div>
+</body></html>
