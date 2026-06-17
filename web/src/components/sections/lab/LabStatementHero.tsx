@@ -27,6 +27,8 @@ export type LabStatementHeroProps = {
   media: { ratio: string; label: string; hint: string; ariaLabel: string };
   /** Show the ambient lens-grid pattern behind v1. */
   pattern?: boolean;
+  /** Which design version to display (1–4). Defaults to 1. */
+  version?: 1 | 2 | 3 | 4;
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
   marker?: string;
 };
@@ -41,6 +43,7 @@ export function LabStatementHero({
   ctas,
   media,
   pattern = true,
+  version = 1,
   marker,
 }: LabStatementHeroProps) {
   const Heading = (
@@ -65,7 +68,7 @@ export function LabStatementHero({
   return (
     <section id={id} className="band soft lab-hero" data-marker={marker}>
       {/* ---- v1 — quiet centered statement (no media) ---- */}
-      <div className="lab-hero__v" data-version="1">
+      <div className="lab-hero__v" data-version="1" hidden={version !== 1}>
         {pattern ? <div className="lab-pattern" aria-hidden="true" /> : null}
         <div className="wrap lab-hero__inner">
           <LabEyebrow reveal="up" delay={0}>
@@ -96,7 +99,7 @@ export function LabStatementHero({
       </div>
 
       {/* ---- v2 — near-full-bleed cinematic gradient stage; content over it ---- */}
-      <div className="lab-hero__v lab-hero__v2" data-version="2" hidden>
+      <div className="lab-hero__v lab-hero__v2" data-version="2" hidden={version !== 2}>
         <div className="lab-hero__stage lab-hero__stage--wide">
           <div className="lab-hero__bg" aria-hidden="true" />
           <div className="lab-hero__overlay">
@@ -109,7 +112,7 @@ export function LabStatementHero({
       </div>
 
       {/* ---- v3 — editorial: text left, lens graphic right ---- */}
-      <div className="lab-hero__v lab-hero__v3" data-version="3" hidden>
+      <div className="lab-hero__v lab-hero__v3" data-version="3" hidden={version !== 3}>
         <div className="wrap lab-hero__editorial">
           <div className="lab-hero__ed-copy">
             <LabEyebrow>{eyebrow}</LabEyebrow>
@@ -124,7 +127,7 @@ export function LabStatementHero({
       </div>
 
       {/* ---- v4 — full-bleed photo/video background; bottom→up scrim ---- */}
-      <div className="lab-hero__v lab-hero__v4" data-version="4" hidden>
+      <div className="lab-hero__v lab-hero__v4" data-version="4" hidden={version !== 4}>
         <div className="lab-hero__cinema" role="img" aria-label={media.ariaLabel}>
           <div className="lab-hero__cinema-bg" aria-hidden="true" />
           <span className="lab-hero__bg-tag">{media.label} · video / photo</span>

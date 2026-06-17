@@ -602,7 +602,7 @@ export default function SectionGalleryPage() {
         }
       `}</style>
 
-      <main className="section-gallery section-lab">
+      <main className="section-gallery">
         <div className="wrap">
           <header className="gallery-intro">
             <h1 className="gallery-intro__title">Section Gallery — все наши секции</h1>

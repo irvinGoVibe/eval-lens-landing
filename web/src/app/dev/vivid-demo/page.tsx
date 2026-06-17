@@ -19,9 +19,9 @@ import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
  *
  * Vivid treatment is page-scoped under `.vivid-demo` in globals.css and is built
  * ONLY on our tokens (`--violet` / `--violet-2` / `--cyan` / `--panel` / `--lens`
- * / `--fg-on-dark`). The two ink sections (S2 StatBand, S5 Bento) carry the vivid
- * gradient peaks; every other section stays clean. Cross-surface seams use the
- * shared `tr-gradient-bridge`.
+ * / `--fg-on-dark`). Every section is light/soft (no ink blocks) with a quiet
+ * violet wash + `.grad-word` lens accents — no dark gradient seams between
+ * sections.
  */
 export const metadata: Metadata = {
   title: "Northwind — Vivid demo (dev)",
@@ -46,6 +46,7 @@ export default function VividDemoPage() {
             { label: "Start free trial", href: "#pricing" },
             { label: "See how it works", href: "#process" },
           ]}
+          version={2}
           media={{
             ratio: "16/9",
             label: "Image · Northwind hero · 16:9",
@@ -54,18 +55,10 @@ export default function VividDemoPage() {
           }}
         />
 
-        {/* seam: soft → ink */}
-        <div
-          className="tr-gradient-bridge"
-          data-from="soft"
-          data-to="ink"
-          aria-hidden="true"
-        />
-
-        {/* ── S2 · Stat band — surface INK, VIVID peak #1 ── */}
+        {/* ── S2 · Stat band — surface light ── */}
         <LabStatBand
           id="stats"
-          surface="ink"
+          surface="light"
           ariaLabel="Northwind customer results"
           eyebrow="Real customer data"
           title="Numbers from the field"
@@ -80,14 +73,6 @@ export default function VividDemoPage() {
             hint: "Aggregate accuracy and time-saved across the beta cohort.",
             ariaLabel: "Northwind results dashboard",
           }}
-        />
-
-        {/* seam: ink → soft */}
-        <div
-          className="tr-gradient-bridge"
-          data-from="ink"
-          data-to="soft"
-          aria-hidden="true"
         />
 
         {/* ── S3 · Pinned steps — surface soft, clean ── */}
@@ -130,18 +115,10 @@ export default function VividDemoPage() {
           }}
         />
 
-        {/* seam: soft → ink */}
-        <div
-          className="tr-gradient-bridge"
-          data-from="soft"
-          data-to="ink"
-          aria-hidden="true"
-        />
-
-        {/* ── S5 · Bento — surface INK, VIVID peak #2 ── */}
+        {/* ── S5 · Bento — surface light ── */}
         <LabBento
           id="platform"
-          surface="ink"
+          surface="light"
           ariaLabel="Northwind platform overview"
           eyebrow="Platform at a glance"
           title="One platform, four guarantees"
@@ -174,14 +151,6 @@ export default function VividDemoPage() {
               body: "We never train models on your call data.",
             },
           ]}
-        />
-
-        {/* seam: ink → soft */}
-        <div
-          className="tr-gradient-bridge"
-          data-from="ink"
-          data-to="soft"
-          aria-hidden="true"
         />
 
         {/* ── S6 · Gallery — surface soft, clean ── */}
