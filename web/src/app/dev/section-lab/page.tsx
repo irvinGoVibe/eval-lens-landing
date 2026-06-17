@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
+import { LabEditorialSplit } from "@/components/sections/lab/LabEditorialSplit";
 import { LabMarkers } from "@/components/sections/lab/LabMarkers";
 import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
 import { LabSplitRing } from "@/components/sections/lab/LabSplitRing";
@@ -370,37 +371,21 @@ export default function SectionLabPage() {
           }}
         />
 
-        <section className="band soft lab-split" data-marker="04 · Editorial split">
-          <div className="wrap lab-split__grid">
-            <div className="lab-split__copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                04 · Editorial split
-              </span>
-              <h2 className="title">The basic content section: copy plus visual proof</h2>
-              <p className="sub">
-                This is the most common inner-page unit. It keeps text compact,
-                gives the idea a visual slot, and alternates direction with the
-                next split section.
-              </p>
-            </div>
-            <figure
-              className="media-ph lab-split__media"
-              style={{ ["--ratio" as string]: "4/3" }}
-              data-reveal="right"
-              role="img"
-              aria-label="Editorial split visual placeholder"
-            >
-              <span className="media-ph__label">
-                Image · editorial proof · 4:3
-              </span>
-              <span className="media-ph__hint">
-                A calm product panel with one lens accent and visible evidence
-                rows.
-              </span>
-            </figure>
-          </div>
-        </section>
+        <LabEditorialSplit
+          surface="light"
+          marker="04 · Editorial split"
+          ariaLabel="Editorial split — copy plus visual proof"
+          eyebrow="04 · Editorial split"
+          titleLead="The basic content section: copy plus"
+          titleAccent="visual proof"
+          sub="This is the most common inner-page unit. It keeps text compact, gives the idea a visual slot, and alternates direction with the next split section."
+          media={{
+            ratio: "4/3",
+            label: "Image · editorial proof · 4:3",
+            hint: "A calm product panel with one lens accent and visible evidence rows.",
+            ariaLabel: "Editorial split visual placeholder",
+          }}
+        />
 
         <LabSplitRing
           id="split-ring"

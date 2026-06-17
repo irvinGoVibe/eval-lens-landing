@@ -23,6 +23,8 @@ updated: 2026-06-15
   - [[design-system|Design System]] — токены, цвет, типографика, компоненты; опора для внутренних страниц
   - [[page-design-patterns|Page Design Patterns]] — как собирать внутренние страницы: архетипы, ритм, scroll-движок, QA
   - [[section-types|Section Types]] — визуальный каталог типов секций со скриншотами (что реально используется)
+  - [[component-forge|Component Forge]] — агент-оркестратор переработки архетипов Section Lab в переиспользуемые блоки (фазы, гейты, агенты, demo-медиа)
+  - [[component-library|Component Library]] — реестр выкованных блоков + слои (атомы/каркасы/секции)
   - [[footer|Footer]] — подвал сайта: варианты light/dark, раскладка, соцсети, свечение
   - [[cta-band|CTA Band]] — переиспользуемый CTA-блок: пропы, кнопки, CSS-анора/видеофон, заход на футер
   - [[blog|Blog (Newsroom)]] — контент-модель блога: `Post`, `Block`, `LoopPost` и репосты In the Loop

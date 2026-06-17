@@ -4513,6 +4513,61 @@ section[id]{scroll-margin-top:72px;}
 .section-lab .lab-split__copy{min-width:0;}
 .section-lab .lab-split__media{min-width:0;}
 
+/* ── 04 · Editorial split — 3 saved versions ─────────────────────────────
+   One band holds three data-version layouts (only one shown). Content (eyebrow,
+   title, sub, one media slot) is identical across all three — only layout
+   changes. Each is surface-adaptive: `.band.soft` (light) base + `.band.ink`
+   overrides COLOR ONLY (geometry stays put — see kb/surface-invariant.md). */
+
+/* v2 — framed (premium): reversed editorial frame, captioned panel + hairline */
+.section-lab .lab-split__framed{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;
+}
+.section-lab .lab-split__frame{margin:0;min-width:0;}
+.section-lab .lab-split__frame-media{margin:0;}
+.section-lab .lab-split__frame-cap{
+  margin-top:12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+.section-lab .lab-split.ink .lab-split__frame-cap{color:var(--muted-on-dark);}
+.section-lab .lab-split__copy--ruled{min-width:0;padding-top:18px;border-top:1px solid var(--border);}
+.section-lab .lab-split.ink .lab-split__copy--ruled{border-top-color:var(--border-on-dark);}
+
+/* v3 — cinematic (bold): the scene fills the band, copy sits over a scrim */
+.section-lab .lab-split__cine{position:relative;isolation:isolate;min-height:64svh;display:grid;align-items:end;
+  padding:clamp(40px,6vw,96px) var(--gutter) clamp(40px,6vw,80px);}
+.section-lab .lab-split__cine-scene{
+  position:absolute;inset:0;z-index:-2;
+  background:
+    radial-gradient(72% 60% at 70% 16%, color-mix(in oklab,var(--violet) 22%,transparent), transparent 60%),
+    radial-gradient(58% 55% at 14% 94%, color-mix(in oklab,var(--cyan) 15%,transparent), transparent 62%),
+    var(--bg-soft);
+}
+.section-lab .lab-split.ink .lab-split__cine-scene{
+  background:
+    radial-gradient(80% 70% at 72% 12%, color-mix(in oklab,var(--violet) 42%,transparent), transparent 56%),
+    radial-gradient(60% 60% at 14% 96%, color-mix(in oklab,var(--cyan) 22%,transparent), transparent 60%),
+    linear-gradient(160deg,#0a0a0d 0%,#16131f 100%);
+}
+.section-lab .lab-split__cine-scrim{
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg, color-mix(in oklab,var(--bg-soft) 88%,transparent) 0%, color-mix(in oklab,var(--bg-soft) 40%,transparent) 44%, transparent 72%);
+}
+.section-lab .lab-split.ink .lab-split__cine-scrim{
+  background:linear-gradient(90deg, rgba(5,5,8,.78) 0%, rgba(5,5,8,.4) 44%, transparent 72%);
+}
+.section-lab .lab-split__cine-tag{
+  position:absolute;top:16px;left:18px;z-index:1;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);background:color-mix(in oklab,var(--bg) 70%,transparent);
+  border:1px solid var(--border-2);border-radius:var(--r-pill);padding:4px 10px;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+}
+.section-lab .lab-split.ink .lab-split__cine-tag{color:var(--muted-on-dark);background:rgba(0,0,0,.32);border-color:var(--border-on-dark);}
+.section-lab .lab-split__cine-inner{position:relative;z-index:1;width:100%;max-width:var(--maxw);margin:0 auto;}
+.section-lab .lab-split__cine-copy{min-width:0;max-width:34ch;}
+.section-lab .lab-split__cine-copy .lab-split__title{font-size:clamp(40px,5.5vw,72px);letter-spacing:-.03em;line-height:1.03;}
+
 /* ── 03 · Pinned multi-screen — 3 saved versions ─────────────────────────
    One sticky stage holds three data-version layouts (only one shown). Step
    lighting is driven from --pin (ScrollFX writes it 0→1) via each step's --i
@@ -4897,6 +4952,7 @@ section[id]{scroll-margin-top:72px;}
   .section-lab .lab-step{opacity:1;}
   .section-lab .lab-window__row{opacity:1;}
   .section-lab .lab-split__grid,
+  .section-lab .lab-split__framed,
   .section-lab .lab-legal__grid{grid-template-columns:1fr;}
   .section-lab .lab-legal__toc{position:static;}
   .section-lab .lab-bento__grid{grid-template-columns:repeat(2,1fr);}
