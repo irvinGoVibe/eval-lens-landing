@@ -20,6 +20,7 @@
 | 04 | Editorial split | `sections/lab/LabEditorialSplit.tsx` | eyebrow, titleLead(+accent/trail), sub, media | v1–v3 | light/ink | `.media-ph` (demo TBD) | forged¹ | 2026-06-17 |
 | 05 | Editorial split + scrub-ring | `sections/lab/LabSplitRing.tsx` | ring, breakdown[], media | v1–v3 | light/ink | scoring-matrix ↔ light-scoring-matrix (из `_demo-pool`, через object-fit)² | forged | 2026-06-17 |
 | 06 | Horizontal gallery | `sections/lab/LabGallery.tsx` | eyebrow, title, sub, laneLabel, items[] | v1, v3 | light/ink | v3 only: `06-horizontal-gallery/gallery-v3-{light,dark}-desktop.webp` (ambient backdrop под generated-CSS scrim; v1 — без медиа; mobile — CSS-градиент)³ | forged | 2026-06-17 |
+| 07 | Bento overview | `sections/lab/LabBento.tsx` | eyebrow, title, sub, items[] (feature + media), surface | v1–v3 | light/ink | `.media-ph` fallback на обе темы (asset-gap; paired light/dark lens-grid generation brief на файле)⁴ | forged | 2026-06-17 |
 
 > ¹ Архетип 04 — «дореформенный» пилот (до полного pipeline Фаз 0–8 / demo-media /
 > двух гейтов); подлежит перековке по обновлённому `component-forge`.
@@ -40,7 +41,20 @@
 > liquid-glass через общую группу (sheen-слои) с тёмным floor 88% (`--bg-ink`)
 > для AA body-текста над нео́н-хало.
 
-> Архетипы 02, 07–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
+> ⁴ Архетип 07 выкован полным pipeline (Gate A/B, 2 fix-итерации). Три версии:
+> **v1 Polish** (3-col, feature span 2×2, без grad-word), **v2 Modern
+> Recomposition** (1.2fr/1fr magazine-split, заголовок внутри feature-тайла,
+> lens-акцент «ingredients»), **v3 Expanded Expressive** (irregular 1.6fr/1fr/1fr
+> в 2 ряда, крупный display-заголовок, lens-акцент «map»). Demo-media —
+> `MediaPlaceholder` fallback на обе темы: в проекте нет structured lens-grid
+> paired-light-dark ассета (media-curator вернул `asset-gap`), generation brief
+> на файле. Типографика заголовка **запинена per-version** (`.lab-bento__v--* .title`
+> задаёт font-size/line-height/letter-spacing), т.к. глобальный `.ink .title`
+> крупнее — иначе Light↔Dark прыгали бы (surface-invariant). `_layout.tsx`/
+> `BentoGrid` намеренно **не создан** — grid инлайн (один потребитель; см. карту
+> Фазы 2).
+
+> Архетипы 02, 08–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
 > ждут прогона через component-forge.
 
 ## Слои библиотеки (единица переиспользования зависит от слоя)

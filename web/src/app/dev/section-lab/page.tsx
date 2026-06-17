@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
+import { LabBento } from "@/components/sections/lab/LabBento";
 import { LabEditorialSplit } from "@/components/sections/lab/LabEditorialSplit";
 import { LabGallery } from "@/components/sections/lab/LabGallery";
 import { LabMarkers } from "@/components/sections/lab/LabMarkers";
@@ -86,6 +87,11 @@ const BENTO_ITEMS = [
     title: "Background pattern language",
     body: "Soft lens grids, hairline structure and ambient media areas give dev pages enough context to judge sections.",
     feature: true,
+    media: {
+      label: "Image · pattern system · 16:9",
+      hint: "Layered lens grid, section masks and media frames on a dark surface.",
+      ariaLabel: "Background pattern system visual slot",
+    },
   },
   {
     tag: "Motion",
@@ -243,29 +249,6 @@ const FAQ_ITEMS = [
     "They are section types in the system too, and they need the same spacing, typography and responsive checks.",
   ],
 ];
-
-const CONTACT_CHANNELS = [
-  ["Demo", "Book a walkthrough for a page or workflow."],
-  ["Sales", "Discuss pricing, volume and rollout."],
-  ["Careers", "Help build a better lens for human judgment."],
-  ["Security", "Send security and privacy questions."],
-  ["Press", "Request product notes and media material."],
-];
-
-const NEWS_ITEMS = [
-  ["Design system", "Section catalog moved into a reusable dev route."],
-  ["Product pages", "Internal pages now share ScrollFX patterns."],
-  ["Media slots", "Visible placeholders mark the exact asset brief."],
-];
-
-const SITEMAP_GROUPS = [
-  ["Product", ["Overview", "Entry Hub", "Evidence Reports", "Review Board"]],
-  ["Trust", ["Methodology", "Consistency", "Prompt Safety", "Security"]],
-  ["Company", ["About", "Newsroom", "Contact", "Pricing"]],
-];
-
-/** Demo "not built yet" markers — drive the `soon` badge in the tree. */
-const SITEMAP_SOON = new Set(["Prompt Safety", "Newsroom"]);
 
 export default function SectionLabPage() {
   return (
@@ -430,54 +413,16 @@ export default function SectionLabPage() {
           items={GALLERY_ITEMS}
         />
 
-        <section id="bento" className="band ink lab-bento" data-marker="07 · Bento overview">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                07 · Bento overview
-              </span>
-              <h2 className="title">A compact map of reusable ingredients</h2>
-              <p className="sub">
-                The bento pattern is for overview, not decoration: one large
-                idea plus supporting tiles that explain how the page system
-                holds together.
-              </p>
-            </div>
-            <ul className="lab-bento__grid" data-reveal="up">
-              {BENTO_ITEMS.map((item) => (
-                <li
-                  key={item.tag}
-                  className={
-                    item.feature
-                      ? "lab-bento__tile lab-bento__tile--feature"
-                      : "lab-bento__tile"
-                  }
-                >
-                  <span className="mini-tag">{item.tag}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.body}</p>
-                  {item.feature ? (
-                    <figure
-                      className="media-ph lab-bento__media"
-                      style={{ ["--ratio" as string]: "16/9" }}
-                      role="img"
-                      aria-label="Background pattern system visual slot"
-                    >
-                      <span className="media-ph__label">
-                        Image · pattern system · 16:9
-                      </span>
-                      <span className="media-ph__hint">
-                        Layered lens grid, section masks and media frames on a
-                        dark surface.
-                      </span>
-                    </figure>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        <LabBento
+          id="bento"
+          surface="ink"
+          marker="07 · Bento overview"
+          ariaLabel="Bento overview — section archetype 07"
+          eyebrow="07 · Bento overview"
+          title="A compact map of reusable ingredients"
+          sub="The bento pattern is for overview, not decoration: one large idea plus supporting tiles that explain how the page system holds together."
+          items={BENTO_ITEMS}
+        />
 
         <section
           className="band soft lab-hubmap"
@@ -805,188 +750,6 @@ export default function SectionLabPage() {
           </div>
         </section>
 
-        <section className="band soft lab-contact" data-marker="17 · Contact channels grid">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                17 · Contact channels grid
-              </span>
-              <h2 className="title">Contact cards are operational tiles</h2>
-            </div>
-            <ul className="lab-contact__grid" data-reveal="up">
-              {CONTACT_CHANNELS.map(([title, body], index) => (
-                <li
-                  key={title}
-                  className={index === 0 ? "lab-contact__card lab-contact__card--feature" : "lab-contact__card"}
-                >
-                  <span className="mini-tag">{title}</span>
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                  <a href="/company/contact">contact@evallense.com</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section className="band soft lab-news" data-marker="18 · News / article grid">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                18 · News / article grid
-              </span>
-              <h2 className="title">Article grids pull newsroom context in</h2>
-            </div>
-            {/* Stand-in for the real `ArticleCard` (variant="grid") used on live
-                pages — mirrors its slot set: cover → category → title → meta. */}
-            <ul className="lab-news__grid" data-reveal="up">
-              {NEWS_ITEMS.map(([tag, title]) => (
-                <li key={title}>
-                  <figure
-                    className="media-ph lab-news__thumb"
-                    style={{ ["--ratio" as string]: "16/9" }}
-                    role="img"
-                    aria-label="Article cover slot"
-                  >
-                    <span className="media-ph__label">Image · cover · 16:9</span>
-                  </figure>
-                  <span className="mini-tag">{tag}</span>
-                  <h3>{title}</h3>
-                  <span className="lab-news__meta">June 4, 2026 · 4 min read</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section className="band soft lab-legal" data-marker="19 · Legal prose / TOC">
-          <div className="wrap lab-legal__grid" data-reveal="up">
-            <aside className="lab-legal__toc" aria-label="Legal table of contents">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                19 · Legal prose / TOC
-              </span>
-              <a href="#legal-scope">01 Scope</a>
-              <a href="#legal-data">02 Data</a>
-              <a href="#legal-contact">03 Contact</a>
-            </aside>
-            <article className="lab-legal__article">
-              <h2 className="title">Document pages need a stable reading system</h2>
-              <p className="lab-legal__meta">Last updated: June 16, 2026</p>
-              <aside className="lab-legal__disclaimer" role="note">
-                <strong>Draft for review.</strong> This is a working draft for
-                transparency — not reviewed by legal counsel and not legal advice.
-                Bracketed placeholders such as <code>[Legal entity name]</code> must
-                be completed before it is relied upon.
-              </aside>
-              <section id="legal-scope">
-                <h3>01 Scope</h3>
-                <p>
-                  Legal and security pages use a prose layout rather than
-                  marketing composition.
-                </p>
-              </section>
-              <section id="legal-data">
-                <h3>02 Data</h3>
-                <p>
-                  The table of contents stays visible on desktop and collapses
-                  naturally above the article on small screens.
-                </p>
-              </section>
-              <section id="legal-contact">
-                <h3>03 Contact</h3>
-                <p>
-                  Each numbered section keeps the text scannable without
-                  decorative cards.
-                </p>
-              </section>
-            </article>
-          </div>
-        </section>
-
-        <section className="band soft lab-sitemap" data-marker="20 · Sitemap index">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                20 · Sitemap index
-              </span>
-              <h2 className="title">The site map is a compact tree</h2>
-            </div>
-            <div className="lab-sitemap__legend" aria-hidden="true">
-              <span className="lab-sitemap__leg">
-                <span className="dot dot--ready"></span>Live page
-              </span>
-              <span className="lab-sitemap__leg">
-                <span className="dot dot--soon"></span>Not built yet
-              </span>
-            </div>
-            <div className="lab-sitemap__tree" data-reveal="up" role="tree" aria-label="Site map">
-              {SITEMAP_GROUPS.flatMap(([group, pages], gi) => {
-                const lastGroup = gi === SITEMAP_GROUPS.length - 1;
-                const list = pages as string[];
-                const rows = [
-                  <div className="lab-sm__row lab-sm__row--header" key={group as string}>
-                    <span className="lab-sm__guide">{lastGroup ? "└─ " : "├─ "}</span>
-                    <span className="lab-sm__node">{group as string}</span>
-                  </div>,
-                ];
-                list.forEach((page, pi) => {
-                  const lastPage = pi === list.length - 1;
-                  const guide = (lastGroup ? "   " : "│  ") + (lastPage ? "└─ " : "├─ ");
-                  rows.push(
-                    <div className="lab-sm__row" key={`${group as string}-${page}`}>
-                      <span className="lab-sm__guide">{guide}</span>
-                      <span className="lab-sm__node">{page}</span>
-                      {SITEMAP_SOON.has(page) ? (
-                        <span className="lab-sitemap__badge">soon</span>
-                      ) : null}
-                    </div>,
-                  );
-                });
-                return rows;
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="band soft lab-cta" data-marker="Outro · Quiet CTA">
-          <div className="wrap head">
-            <span
-              className="eyebrow"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "0ms" }}
-            >
-              <span className="dot" aria-hidden="true"></span>
-              Catalog complete
-            </span>
-            <h2
-              className="title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              Pick one section and we will refine it into production shape
-            </h2>
-            <p
-              className="sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              This lab is intentionally modular: we can replace copy, change the
-              visual slot, generate assets and then move the finished section to
-              the target page.
-            </p>
-            <div
-              className="sect-cta"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="#hero">Back to top</Button>
-            </div>
-          </div>
-        </section>
       </main>
       <Footer />
       <ScrollFX />
