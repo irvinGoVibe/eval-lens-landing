@@ -1,7 +1,7 @@
 ---
 title: Component Forge
 status: generated
-version: 1.1
+version: 1.2
 updated: 2026-06-17
 ---
 
@@ -153,6 +153,51 @@ light-specific / dark-specific / paired-light-dark`. Не генерирует, 
 Не коммитит/push/deploy; не трогает `.env*`, production pages, worktree, Linear;
 не меняет vendor-агентов; не переписывает [[redraw-block]]; не создаёт параллельный
 workflow. Сервер/сборка — только в Фазе 6 (Render QA) и Фазе 8.
+
+## Batch orchestration
+
+**Single `component-forge` остаётся атомарным** — один архетип, фазы 0–8, два
+user-гейта. Поверх него стоит автономный **batch-оркестратор**
+(`.claude/skills/component-forge-batch/SKILL.md`): одна команда пользователя →
+обработка массива архетипов → параллельная аналитика и дизайн → контролируемая
+очередь записи кода → автоматические review/fix-циклы → **один** финальный отчёт.
+Это не новый source of truth — канон правил тот же (`kb/`, этот документ); batch лишь
+**вызывает single-forge как child workflow** и координирует несколько runs.
+
+- **Parallel-safe phases.** Discovery · Contract Lock · Microstructure Map ·
+  Design-System Guard · Art Direction (V1/V2/V3) · UI UX Pro Max review · Designer
+  revision · Media candidate selection · Background strategy · read-only design
+  reviews — идут параллельно (concurrency 4–6), каждый worker получает **только
+  archetype-scoped task packet**, не весь batch-контекст.
+- **Serialized write stages.** Frontend Implementation · shared primitive creation ·
+  global CSS · Section Lab page · registry/docs updates · Render QA (один shared dev
+  server 3005, **reuse-first**: переиспользовать уже поднятый наш сервер, новый
+  только если 3005 свободен, занят чужим → blocked; порт не менять) — **по одному
+  writer'у одновременно** (implementation concurrency = 1).
+- **Shared locks.** Логические локи в `locks.json` на разделяемые ресурсы
+  (`section-lab-page`, `shared-primitives`, `global-css`, `component-registry`,
+  `component-library-docs`, `section-types-docs`, `dev-server-3005`): один lock — один
+  owner; ожидающий run работает read-only; после захвата — перечитать свежий файл;
+  релиз после записи + проверки diff; stale-lock освобождает оркестратор.
+- **Queue (streaming).** `queue.json` — состояние на архетип; как только архетип
+  `ready-for-implementation`, он входит в очередь записи; writer берёт следующий по
+  priority (input order) и readiness — пачка не ждёт завершения всего дизайна.
+- **Resume.** Повторный запуск того же списка автоматически продолжает последний
+  active batch (без дублей runs, без вопросов); пересекающиеся batches —
+  самый новый валиден, старые `superseded`.
+- **Error isolation.** Blocked-архетип фиксирует причину, освобождает locks и **не
+  валит batch**; полная остановка — только при unsafe repo state / смене ветки /
+  неразрешённых конфликтах / порче run-хранилища / блокировке всех write-стадий.
+- **Autonomy & gates.** Batch не задаёт промежуточных вопросов; интерактивные
+  Gate A/Gate B single-forge заменены детерминированными решениями (порядок:
+  repo rules → DS → Contract Lock → review status → lowest-risk reversible → input
+  order). Пользователь получает **только** финальный отчёт.
+- **Persistence (follow-up).** Batch-state и child-run ledger пишутся в
+  `.claude/runs/` (игнорируется git). Single-forge пока на диск не персистит —
+  поэтому child-run dir создаёт и владеет им batch (как ledger со ссылками);
+  собственная персистенция single-forge — отдельная задача.
+
+Запуск: `/component-forge-batch "04,05,06,07"` | `"04-12"` | `"архетипы 04, 07, 11"`.
 
 ## Связанное
 
