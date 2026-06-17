@@ -6836,69 +6836,40 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
 .vivid-demo .band.soft > *{ position:relative; z-index:1; }
 
 /* ============================================================
-   dev/vivid-demo-2 — independent COPY of dev/vivid-demo (FAKE
-   "Northwind" demo page; dev-only). Built ONLY on our tokens
-   (--violet / --violet-2 / --cyan / --panel / --lens / --fg-on-dark
-   / --font-display). The two INK sections (S2 LabStatBand #stats,
-   S5 LabBento #platform) carry the vivid gradient peaks + a neon
-   line; every soft section stays clean (at most a .grad-word + a
-   faint radial). HARD rules honoured: HEX / token / color-mix(in
-   srgb,…) stops only — NO raw oklab() stops (Lightning CSS drops
-   those → flat build); white text sits over the DARK half, the
-   --cyan end is the empty graphic corner; shadows are violet-tinted.
+   dev/vivid-demo-2 — "Transitions Catalog (light-dominant)" treatment
+   (FAKE "Northwind" demo page; dev-only). Ported from
+   designs/section-coverage-transitions/"Transitions Catalog
+   (light-dominant)".
+
+   Surface arc (DOM order): soft · light · INK · light · soft · light ·
+   light · INK — light-DOMINANT with TWO well-separated ink peaks
+   (S3 LabPinnedSteps `.lab-process`, S8 LabCinemaScrim `.lab-cinema`),
+   NO black↔white zebra. Techniques wired:
+     • tint-step — nth-of-type(odd→--bg / even→--bg-soft) rhythm;
+     • refined ink — soft brand radials over --ink-grad (NO saturated
+       diagonal, NO neon glow), flat 1px violet hairline;
+     • rise-over — each band rides up over the previous (overlap +
+       rounded top + upward violet-tinted shadow + hairline lip);
+     • lift-away — the light band right after an ink peak rides up over
+       it (z-index:3, --bg, upward shadow) so light cleanly exits dark;
+     • sticky-stack (S3) — native via LabPinnedSteps `data-pin`;
+     • parallax-media (S6) — native via LabGallery `data-scrub`;
+     • card ride-in (S5/S2) — native `data-reveal` stagger.
+
+   Built ONLY on our tokens (--violet / --violet-2 / --lavender / --cyan
+   / --ink-grad / --panel / --bg / --bg-soft / --fg-on-dark /
+   --font-display). The catalog's --navy/--blue are NOT ours → ink uses
+   --ink-grad + --violet/--violet-2 radials. HARD rules: HEX / token /
+   color-mix(in srgb,…) stops only — NO raw oklab()/oklch() stops
+   (Lightning CSS drops them → flat build). `--lens` is text-clip only.
    ============================================================ */
 
-/* ---- Vivid block — ONLY on the two ink peaks (S2 + S5) ---- */
-.vivid-demo-2 .band.ink{
-  position:relative;
-  isolation:isolate;
-  /* base diagonal: panel → violet → violet-2 → cyan. The dark half
-     (panel/violet, 0→70%) carries all text; the --cyan 100% stop is
-     pushed into the bottom-right empty corner only. */
-  background:
-    radial-gradient(120% 90% at 88% 6%,
-      color-mix(in srgb, var(--cyan) 30%, transparent) 0%,
-      transparent 46%),
-    radial-gradient(90% 80% at 16% 102%,
-      color-mix(in srgb, var(--violet) 52%, transparent) 0%,
-      transparent 58%),
-    linear-gradient(135deg,
-      var(--panel) 0%,
-      var(--violet) 40%,
-      var(--violet-2) 70%,
-      var(--cyan) 100%);
-  color:var(--fg-on-dark);
-}
-/* AA guard: a low, panel-tinted scrim seated UNDER the content keeps
-   headings/body over a dark field even where the gradient lightens
-   toward the cyan corner. Content (.wrap / lab-* layers) sits above. */
-.vivid-demo-2 .band.ink::before{
-  content:"";
-  position:absolute; inset:0; z-index:0;
-  pointer-events:none;
-  background:linear-gradient(120deg,
-    color-mix(in srgb, var(--panel) 72%, transparent) 0%,
-    color-mix(in srgb, var(--panel) 40%, transparent) 48%,
-    transparent 78%);
-}
-.vivid-demo-2 .band.ink > *{ position:relative; z-index:1; }
+/* Page base behind the bands so the rounded-corner gaps read clean. */
+.vivid-demo-2{ background:var(--bg); }
 
-/* ---- Neon line — top accent on the vivid peaks only ---- */
-.vivid-demo-2 .band.ink::after{
-  content:"";
-  position:absolute; left:0; right:0; top:0; height:2px; z-index:2;
-  pointer-events:none;
-  background:linear-gradient(90deg,
-    transparent,
-    var(--violet-2) 35%,
-    var(--cyan) 65%,
-    transparent);
-  box-shadow:0 0 28px color-mix(in srgb, var(--cyan) 36%, transparent);
-}
-
-/* ---- Bold display titles — project font stack (NOT Inter) ----
-   Hero h1 + every section h2 inside the demo. One .grad-word phrase
-   per heading keeps the --lens text-clip (untouched). */
+/* Bold display titles — project font stack (NOT Inter). Hero h1 + every
+   section h2; one .grad-word phrase per heading keeps the --lens
+   text-clip (untouched, text-only). */
 .vivid-demo-2 .lab-hero__title{
   font-family:var(--font-display);
   font-size:clamp(48px,8vw,104px);
@@ -6912,13 +6883,29 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
   letter-spacing:-.045em;
 }
 
-/* Faint, clean radial on the SOFT sections — a quiet violet wash, no
-   second vivid treatment, no text over a bright field. */
-.vivid-demo-2 .band.soft{
-  position:relative;
-  isolation:isolate;
-}
-.vivid-demo-2 .band.soft::before{
+/* ---- TINT-STEP rhythm — opaque alternating surfaces so the overlap
+   corners + shadow read. Scoped specificity beats base .band/.band.soft.
+   nth-of-type counts <section> only: 1 hero / 3 process / 5 platform /
+   7 pricing = odd → --bg; 2 stats / 4 split / 6 gallery / 8 cinema =
+   even → --bg-soft. The two ink peaks (3, 8) re-claim ink BELOW. ---- */
+.vivid-demo-2 section.band{ position:relative; isolation:isolate; }
+.vivid-demo-2 section.band:nth-of-type(odd){ background:var(--bg); }
+.vivid-demo-2 section.band:nth-of-type(even){ background:var(--bg-soft); }
+
+/* Tint fix — the S3 ink peak shifts nth-of-type parity, leaving S4
+   (#intelligence, forced --bg by lift-away) and S5 (#platform, odd→--bg)
+   BOTH white = a flat spot with no seam. Re-assert clean alternation by
+   id across the post-ink light run (id specificity beats nth):
+   intelligence W → platform S → teams W → pricing S. */
+.vivid-demo-2 #platform.band{ background:var(--bg-soft); }
+.vivid-demo-2 #teams.band{ background:var(--bg); }
+.vivid-demo-2 #pricing.band{ background:var(--bg-soft); }
+
+/* Faint, clean violet wash on the SOFT/light sections — a quiet ambient
+   tint UNDER the content; never a bright field behind text. Content
+   (.wrap / lab-* layers) sits above via the section's own z-index:1
+   children or the wash's negative-stacked layer. */
+.vivid-demo-2 section.band.soft::after{
   content:"";
   position:absolute; inset:0; z-index:0;
   pointer-events:none;
@@ -6926,32 +6913,55 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
     color-mix(in srgb, var(--violet) 8%, transparent) 0%,
     transparent 60%);
 }
-.vivid-demo-2 .band.soft > *{ position:relative; z-index:1; }
+.vivid-demo-2 section.band.soft > *{ position:relative; z-index:1; }
 
-/* ============================================================
-   dev/vivid-demo-2 — TRANSITION STYLE (light-dominant "rise-over")
-   Ported from designs/section-coverage-transitions "Transitions
-   Catalog (light-dominant)". NO gradient / dark seams. Instead each
-   band rides UP over the previous one — negative margin + rounded
-   top + soft upward shadow — on an alternating light↔soft tint
-   rhythm. Block reveals are the standard ScrollFX [data-reveal]
-   already on the Lab sections. Uses the sections already on the page;
-   structure untouched (pure CSS, page-scoped).
-   ============================================================ */
+/* ---- REFINED INK — the catalog accent look: soft brand radials over
+   --ink-grad. NO saturated panel→violet→cyan diagonal, NO neon glow.
+   Scoped to BOTH the tint-step nth rules (higher specificity, 0,3,1)
+   AND placed AFTER them so ink ALWAYS wins on S3/S8. The cinema (S8)
+   owns its OWN opaque black stage/knockout, so this background is only
+   visible on the LabPinnedSteps peak (S3) — it is harmless behind the
+   cinema's solid stage. A low panel veil layered between the radials
+   and the base keeps AA where the radials lighten. ---- */
+.vivid-demo-2 section.band.ink{
+  background:
+    radial-gradient(60% 50% at 78% 18%,
+      color-mix(in srgb, var(--violet) 16%, transparent) 0%,
+      color-mix(in srgb, var(--violet) 8%, transparent) 38%,
+      transparent 72%),
+    radial-gradient(55% 48% at 16% 88%,
+      color-mix(in srgb, var(--cyan) 12%, transparent) 0%,
+      transparent 74%),
+    linear-gradient(0deg,
+      color-mix(in srgb, var(--panel) 30%, transparent) 0%,
+      color-mix(in srgb, var(--panel) 30%, transparent) 100%),
+    var(--ink-grad);
+  color:var(--fg-on-dark);
+}
 
-/* Page base behind the bands so the rounded-corner gaps read clean. */
-.vivid-demo-2{ background:var(--bg); }
+/* AA scrim UNDER content on the S3 ink peak — its content lives inside
+   the sticky `.lab-process__stage`, which has no opaque background of
+   its own, so a low panel wash on the stage keeps headings/steps over a
+   dark field as the section's radial background drifts under the pin.
+   z-index:0 + positioned content keeps it behind the copy. */
+.vivid-demo-2 section.band.ink .lab-process__stage{
+  position:sticky; /* re-assert (base) so the scrim tracks the pin */
+}
+.vivid-demo-2 section.band.ink .lab-process__stage::after{
+  content:"";
+  position:absolute; inset:0; z-index:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,
+    color-mix(in srgb, var(--panel) 34%, transparent) 0%,
+    color-mix(in srgb, var(--panel) 18%, transparent) 60%,
+    transparent 100%);
+}
+.vivid-demo-2 section.band.ink .lab-process__stage > *{ position:relative; z-index:1; }
 
-/* Tint-step rhythm — opaque alternating surfaces so the overlap
-   corners + shadow read. Scoped specificity beats base .band/.band.soft. */
-.vivid-demo-2 section.band{ position:relative; }
-.vivid-demo-2 section.band:nth-of-type(odd){ background:var(--bg); }
-.vivid-demo-2 section.band:nth-of-type(even){ background:var(--bg-soft); }
-
-/* Rise-over overlap — every band after the hero rides up over the
+/* ---- RISE-OVER overlap — every band after the hero rides up over the
    previous. Later bands paint above earlier ones (DOM order), so the
-   overlap reads without explicit z-index. Section padding (≥84px)
-   absorbs the pull-up, so content never collides. */
+   overlap reads. Section padding (≥84px) absorbs the pull-up so content
+   never collides. ---- */
 .vivid-demo-2 section.band + section.band{
   margin-top:clamp(-120px,-8vw,-72px);
   border-top-left-radius:clamp(28px,3.4vw,44px);
@@ -6959,11 +6969,17 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
   box-shadow:0 -22px 54px -26px rgba(48,36,128,.22);
 }
 
-/* Hairline kiss on the rounded lip — a faint violet seam that crisps
-   the overlap edge (catalog #02 feel), no glow. */
+/* The ink peaks "arrive" with a heavier upward violet shadow. */
+.vivid-demo-2 section.band.ink + section.band,
+.vivid-demo-2 section.band.ink{
+  box-shadow:0 -30px 72px -28px rgba(48,36,128,.34);
+}
+
+/* Hairline kiss on the rounded lip — a flat 1px violet seam that crisps
+   the overlap edge (catalog #02 feel), NO glow / NO box-shadow. */
 .vivid-demo-2 section.band + section.band::before{
   content:"";
-  position:absolute; left:0; right:0; top:0; z-index:3;
+  position:absolute; left:0; right:0; top:0; z-index:4;
   height:1px; pointer-events:none;
   border-top-left-radius:inherit; border-top-right-radius:inherit;
   background:linear-gradient(90deg,
@@ -6972,11 +6988,34 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
     transparent);
 }
 
+/* ---- LIFT-AWAY — the light band immediately AFTER an ink peak rides up
+   over it on its own --bg fill + upward shadow + lifted z-index, so the
+   page cleanly EXITS the dark (S4 out of S3; the footer handles S8). The
+   --bg here overrides the tint-step nth fill for that one section. ---- */
+.vivid-demo-2 section.band.ink + section.band{
+  z-index:3;
+  background:var(--bg);
+  box-shadow:0 -28px 70px -24px rgba(20,18,60,.20);
+}
+
 /* Mobile: gentler pull-up + smaller radius. */
 @media (max-width:640px){
   .vivid-demo-2 section.band + section.band{
     margin-top:clamp(-72px,-12vw,-48px);
     border-top-left-radius:22px; border-top-right-radius:22px;
+  }
+}
+
+/* Reduced-motion: all scroll motion is native (ScrollFX handles reveals,
+   pins and scrubs). The rise-over / lift-away above are purely static
+   layout (margin/radius/shadow), so they remain intact. Belt-and-
+   suspenders: this treatment authors no transform/clip/transition of its
+   own — nothing here to neutralize — but we keep the ambient washes and
+   AA scrim inert (pointer-events:none, already set) under reduced motion. */
+@media (prefers-reduced-motion:reduce){
+  .vivid-demo-2 section.band.soft::after,
+  .vivid-demo-2 section.band.ink .lab-process__stage::after{
+    transition:none;
   }
 }
 
