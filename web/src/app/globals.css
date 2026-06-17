@@ -4611,6 +4611,9 @@ section.band.ink .mini-tag{color:var(--lavender);}
 /* two-line title — surface-adaptive, per-line mask reveal (.is-in from ScrollFX) */
 .lab-process__title{font-size:clamp(34px,4.6vw,62px);line-height:1.05;letter-spacing:-.03em;font-weight:600;color:var(--fg);max-width:none;}
 .lab-process.ink .lab-process__title{color:var(--fg-on-dark);}
+/* Pin heading type so it's identical on soft & ink (beats `.ink .title`) — v1 (tidy) & v2 (window). */
+.lab-pv--tidy .lab-process__title,
+.lab-pv--window .lab-process__title{font-size:clamp(34px,4.6vw,62px);}
 .lab-process__title[data-reveal]{opacity:1;transform:none;}
 .lab-process__line{display:block;overflow:hidden;padding-bottom:.08em;}
 .lab-process__line > span{display:block;transform:translateY(112%);transition:transform .85s var(--ease);}
