@@ -28,20 +28,8 @@ export default function HomePage() {
         <CtaBand
           theme="dark"
           bleed
-          // TEST: "Book a demo" cycles these background clips so we can pick the
-          // best one. Once chosen, drop `videos`/`cycleOnPrimary` and pass the
-          // winner as `videoSrc="/assets/cta/<file>.mp4"`.
-          videos={[
-            "/assets/cta/cube-1.mp4",
-            "/assets/cta/neo.mp4",
-            "/assets/cta/uniqorn-1.mp4",
-            "/assets/cta/uniqorn-2.mp4",
-          ]}
-          cycleOnPrimary
-          // TEST: "Try live demo" switches to the CSS aurora and cycles its
-          // palettes (logged to the console). Pick one and pass it later as
-          // `auroraVariant="<id>"`.
-          cycleAuroraOnSecondary
+          videoSrc="/assets/cta/cube-1.mp4"
+          auroraVariant="violet"
           title="See your next cohort"
           titleAccent="ranked in a day"
           sub="Batch-review every pitch deck, surface the strongest startups, and hand each team an evidence-based report — with the final call always yours."

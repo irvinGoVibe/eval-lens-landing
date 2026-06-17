@@ -31,6 +31,8 @@ export type LabStatementHeroProps = {
   version?: 1 | 2 | 3 | 4;
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
   marker?: string;
+  /** `.band` surface — `soft` (light) is the default. */
+  surface?: "soft" | "ink";
 };
 
 export function LabStatementHero({
@@ -45,6 +47,7 @@ export function LabStatementHero({
   pattern = true,
   version = 1,
   marker,
+  surface = "soft",
 }: LabStatementHeroProps) {
   const Heading = (
     <>
@@ -54,19 +57,20 @@ export function LabStatementHero({
   );
 
   // Buttons follow the surface rail: filled gradient on light, glass on dark.
-  const ctaSet = (scheme: "filled" | "glass") =>
+  const scheme = surface === "ink" ? "glass" : "filled";
+  const ctaSet = (s: "filled" | "glass" = scheme) =>
     ctas.map((c, i) => (
       <Button
         key={c.label}
         href={c.href}
-        variant={scheme === "glass" ? "glass" : i === 0 ? "gradient" : "ghost"}
+        variant={s === "glass" ? "glass" : i === 0 ? "gradient" : "ghost"}
       >
         {c.label}
       </Button>
     ));
 
   return (
-    <section id={id} className="band soft lab-hero" data-marker={marker}>
+    <section id={id} className={`band ${surface} lab-hero`} data-marker={marker}>
       {/* ---- v1 — quiet centered statement (no media) ---- */}
       <div className="lab-hero__v" data-version="1" hidden={version !== 1}>
         {pattern ? <div className="lab-pattern" aria-hidden="true" /> : null}
@@ -93,7 +97,7 @@ export function LabStatementHero({
             data-reveal="up"
             style={{ "--reveal-delay": "270ms" } as CSSProperties}
           >
-            {ctaSet("filled")}
+            {ctaSet()}
           </div>
         </div>
       </div>
@@ -106,7 +110,7 @@ export function LabStatementHero({
             <LabEyebrow>{eyebrow}</LabEyebrow>
             <h1 className="lab-hero__title lab-hero__title--over">{Heading}</h1>
             <p className="sub lab-hero__sub lab-hero__sub--over">{sub}</p>
-            <div className="cta-row">{ctaSet("filled")}</div>
+            <div className="cta-row">{ctaSet()}</div>
           </div>
         </div>
       </div>
@@ -118,7 +122,7 @@ export function LabStatementHero({
             <LabEyebrow>{eyebrow}</LabEyebrow>
             <h1 className="lab-hero__title lab-hero__title--left">{Heading}</h1>
             <p className="sub lab-hero__sub lab-hero__sub--left">{sub}</p>
-            <div className="cta-row cta-row--left">{ctaSet("filled")}</div>
+            <div className="cta-row cta-row--left">{ctaSet()}</div>
           </div>
           <div className="lab-hero__ed-graphic" aria-hidden="true">
             <div className="lab-hero__orb" />
@@ -136,7 +140,7 @@ export function LabStatementHero({
             <LabEyebrow>{eyebrow}</LabEyebrow>
             <h1 className="lab-hero__title lab-hero__title--over">{Heading}</h1>
             <p className="sub lab-hero__sub lab-hero__sub--over">{sub}</p>
-            <div className="cta-row">{ctaSet("filled")}</div>
+            <div className="cta-row">{ctaSet()}</div>
           </div>
         </div>
       </div>

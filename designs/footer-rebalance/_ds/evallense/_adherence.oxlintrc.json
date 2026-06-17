@@ -1,0 +1,214 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/Button/**",
+              "components/Chip/**",
+              "components/Eyebrow/**",
+              "components/Tile/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|size|arrow|href|children|className|style|key|ref)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: variant, size, arrow, href, children, className, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|ghost|glass|dark|gradient)$/]",
+        "message": "<Button> variant must be one of 'primary' | 'ghost' | 'glass' | 'dark' | 'gradient'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:md|sm)$/]",
+        "message": "<Button> size must be one of 'md' | 'sm'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Chip'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|checked|onDark|style|key|ref|className)$/]",
+        "message": "<Chip> doesn't accept that prop. Declared props: children, checked, onDark, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Eyebrow'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|dot|onDark|style|key|ref|className)$/]",
+        "message": "<Eyebrow> doesn't accept that prop. Declared props: children, dot, onDark, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tile'] > JSXAttribute > JSXIdentifier[name!=/^(?:eyebrow|title|titleAccent|body|surface|children|style|key|ref|className)$/]",
+        "message": "<Tile> doesn't accept that prop. Declared props: eyebrow, title, titleAccent, body, surface, children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tile'] > JSXAttribute[name.name='surface'] > Literal[value!=/^(?:ink|light)$/]",
+        "message": "<Tile> surface must be one of 'ink' | 'light'."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Button": {
+        "replaces": []
+      },
+      "Chip": {
+        "replaces": []
+      },
+      "Eyebrow": {
+        "replaces": []
+      },
+      "Tile": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--amber",
+      "--amber-ink",
+      "--amber-on-dark",
+      "--aqua",
+      "--bg",
+      "--bg-ink",
+      "--bg-soft",
+      "--body-on-dark",
+      "--border",
+      "--border-2",
+      "--border-on-dark",
+      "--border-on-dark-2",
+      "--cyan",
+      "--ease",
+      "--fg",
+      "--fg-on-dark",
+      "--fire",
+      "--font",
+      "--font-display",
+      "--font-mono",
+      "--font-text",
+      "--font-ui",
+      "--grad-cta",
+      "--green",
+      "--green-on-dark",
+      "--gutter",
+      "--hairline",
+      "--ink",
+      "--lavender",
+      "--lens",
+      "--lens-soft",
+      "--maxw",
+      "--muted",
+      "--muted-2",
+      "--muted-on-dark",
+      "--orange-core",
+      "--orange-deep",
+      "--orange-hot",
+      "--orange-mist",
+      "--orange-soft",
+      "--orange-warm",
+      "--panel",
+      "--panel-2",
+      "--r-lg",
+      "--r-md",
+      "--r-pill",
+      "--r-sm",
+      "--r-xs",
+      "--radius-card",
+      "--radius-stage",
+      "--sh-1",
+      "--sh-2",
+      "--sh-3",
+      "--shadow-soft",
+      "--tag-tint",
+      "--violet",
+      "--violet-2"
+    ],
+    "tokenKinds": {
+      "--bg": "color",
+      "--bg-soft": "color",
+      "--bg-ink": "color",
+      "--fg": "color",
+      "--muted": "color",
+      "--border": "color",
+      "--border-2": "color",
+      "--fg-on-dark": "color",
+      "--body-on-dark": "color",
+      "--muted-on-dark": "color",
+      "--muted-2": "color",
+      "--ink": "color",
+      "--panel": "color",
+      "--panel-2": "color",
+      "--border-on-dark": "color",
+      "--border-on-dark-2": "color",
+      "--hairline": "color",
+      "--violet": "color",
+      "--violet-2": "color",
+      "--lavender": "color",
+      "--cyan": "color",
+      "--aqua": "color",
+      "--tag-tint": "color",
+      "--orange-hot": "color",
+      "--orange-core": "color",
+      "--orange-soft": "color",
+      "--orange-mist": "color",
+      "--orange-deep": "color",
+      "--orange-warm": "color",
+      "--green": "color",
+      "--amber": "color",
+      "--amber-ink": "color",
+      "--green-on-dark": "color",
+      "--amber-on-dark": "color",
+      "--font-mono": "font",
+      "--font-display": "font",
+      "--font-ui": "font",
+      "--font-text": "font",
+      "--font": "font",
+      "--maxw": "spacing",
+      "--gutter": "spacing",
+      "--r-xs": "spacing",
+      "--r-sm": "spacing",
+      "--r-md": "spacing",
+      "--r-lg": "spacing",
+      "--r-pill": "spacing",
+      "--radius-card": "spacing",
+      "--radius-stage": "spacing",
+      "--sh-1": "shadow",
+      "--sh-2": "shadow",
+      "--sh-3": "shadow",
+      "--shadow-soft": "shadow",
+      "--ease": "other",
+      "--lens": "other",
+      "--lens-soft": "other",
+      "--fire": "color",
+      "--grad-cta": "color"
+    },
+    "fontFamilies": []
+  }
+}

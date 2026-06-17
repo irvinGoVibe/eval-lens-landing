@@ -1,7 +1,15 @@
 {
   "type": "design",
-  "designSystems": [],
-  "primaryDesignSystem": null,
+  "designSystems": [
+    {
+      "name": "EvalLense Design System",
+      "slug": "evallense",
+      "namespace": "Evallense_c7d744",
+      "dsFolder": "_ds/evallense",
+      "sourcePath": "designs/evallense"
+    }
+  ],
+  "primaryDesignSystem": "evallense",
   "assets": {
     "Footer": {
       "versions": [
@@ -11,8 +19,17 @@
           "status": "needs-review"
         }
       ]
+    },
+    "Mobile Footer Variants": {
+      "versions": [
+        {
+          "path": "Footer Mobile v2.html",
+          "createdAt": "2026-06-17T17:20:59.948Z",
+          "status": "needs-review"
+        }
+      ]
     }
   },
   "createdAt": "2026-06-16T09:14:05.912Z",
-  "updatedAt": "2026-06-16T09:14:05.912Z"
+  "updatedAt": "2026-06-17T17:20:59.948Z"
 }

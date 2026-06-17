@@ -5,7 +5,7 @@ import { LabCinemaScrim } from "@/components/sections/lab/LabCinemaScrim";
 export const metadata: Metadata = {
   title: "EvalLense — Visual Lab",
   description:
-    "Internal catalog for visual-layer primitives: ink ambient glow background, cross-surface gradient bridges, batch 1 background layers (atmospheric, geometric, media scrim), batch 2 section transitions (hard cut, gradient bridge, blur, mist, pattern dissolve, masked divider, glow crossover), and batch 3 ambient motion recipes (slow ambient drift, glow expansion, pattern reveal, crossfade, static).",
+    "Internal catalog for visual-layer primitives: ink ambient glow background, cross-surface gradient bridges, batch 1 background layers (atmospheric, geometric, media scrim), batch 2 section transitions (hard cut, gradient bridge, blur, mist, pattern dissolve, masked divider, glow crossover), batch 3 ambient motion recipes (slow ambient drift, glow expansion, pattern reveal, crossfade, static), and batch 4 dark themes (Ink Refined: floor glow, lens seam, plain glass; Nebula Deep: nebula layers, nebula blob, tinted glass, video scrim, lens-gradient heading, nebula drift).",
 };
 
 export default function VisualLabPage() {
@@ -858,6 +858,236 @@ export default function VisualLabPage() {
           cta={{ label: "Book a Demo", href: "/#demo" }}
           media={{ videoSrc: "/assets/methodology/cinema.mp4" }}
         />
+
+        {/* ============ Dark themes (batch 4) ============ */}
+        <section className="band soft">
+          <div className="wrap">
+            <span className="eyebrow">
+              <span className="dot" aria-hidden="true"></span>
+              visual-layer-forge · dark themes (batch 4)
+            </span>
+            <h2 className="title">Dark-theme primitives</h2>
+            <p className="sub">
+              Two reusable dark surfaces: <strong>Ink Refined</strong> (a bottom
+              floor glow, a lens-gradient hairline seam, and neutral plain glass)
+              and <strong>Nebula Deep</strong> (a layered violet base, a
+              pin-driven nebula blob, tinted glass, and a video scrim). Decorative
+              layers stay <code>aria-hidden</code> +{" "}
+              <code>pointer-events:none</code>, contained, and any motion is
+              reduced-motion gated.
+            </p>
+          </div>
+        </section>
+
+        {/* Ink Refined — bg-ink-floor-glow, with a lens seam into the next ink section */}
+        <section className="band ink bg-ink-floor-glow">
+          <div className="bg-ink-floor-glow__layer" aria-hidden="true"></div>
+          <div className="wrap">
+            <span className="eyebrow">
+              <span className="dot" aria-hidden="true"></span>
+              Ink Refined · bg-ink-floor-glow
+            </span>
+            <h2 className="title">
+              A violet glow rises from the{" "}
+              <span className="grad-word">floor</span>
+            </h2>
+            <p className="sub">
+              Unlike <code>bg-ink-ambient-glow</code> (anchored top-center), this
+              floor glow sits at the bottom edge. Body copy in violet-tinted ink
+              (<code>--fg-secondary-dark</code>) stays comfortably readable across
+              the wash.
+            </p>
+            <p
+              className="sub"
+              style={{ color: "var(--fg-secondary-dark)" }}
+            >
+              Refined ink body text on <code>--fg-secondary-dark</code> — a
+              violet-tinted secondary foreground for the Ink Refined theme.
+            </p>
+            <p className="caption">bg-ink-floor-glow</p>
+          </div>
+        </section>
+
+        {/* tr-lens-seam between two ink sections */}
+        <div className="tr-lens-seam" aria-hidden="true"></div>
+
+        <section className="band ink bg-ink-floor-glow">
+          <div className="bg-ink-floor-glow__layer" aria-hidden="true"></div>
+          <div className="wrap">
+            <span className="eyebrow">
+              <span className="dot" aria-hidden="true"></span>
+              Ink Refined · tr-lens-seam + bg-glass-plain
+            </span>
+            <h2 className="title">A lens-gradient hairline ties sections</h2>
+            <p className="sub">
+              The 1px <code>tr-lens-seam</code> above carries the violet → cyan
+              brand gradient as a crisp seam. Use <code>tr-lens-seam--strong</code>
+              {" "}for higher-contrast joins. Below: a neutral{" "}
+              <code>bg-glass-plain</code> card on the ink surface.
+            </p>
+
+            <div
+              className="bg-glass-plain"
+              style={{
+                marginTop: "28px",
+                maxWidth: "440px",
+                padding: "24px",
+                borderRadius: "var(--radius-card)",
+                color: "var(--fg-on-dark)",
+              }}
+            >
+              <strong style={{ fontSize: "18px", letterSpacing: "-.01em" }}>
+                Plain glass card
+              </strong>
+              <p
+                className="caption"
+                style={{ marginTop: "8px", color: "var(--muted-on-dark)" }}
+              >
+                bg-glass-plain — neutral 6% white surface, no tint
+              </p>
+            </div>
+
+            {/* strong seam sample */}
+            <div
+              className="tr-lens-seam tr-lens-seam--strong"
+              aria-hidden="true"
+              style={{ marginTop: "28px" }}
+            ></div>
+            <p className="caption" style={{ marginTop: "10px" }}>
+              tr-lens-seam--strong
+            </p>
+          </div>
+        </section>
+
+        {/* Nebula Deep — bg-nebula-layers + bg-nebula-blob + heading-lens-gradient + bg-glass-tinted */}
+        <section
+          className="band bg-nebula-layers bg-nebula-blob"
+          data-pin
+        >
+          <div
+            className="bg-nebula-blob__layer motion-nebula-drift"
+            aria-hidden="true"
+          ></div>
+          <div className="wrap">
+            <span
+              className="eyebrow"
+              style={{ color: "var(--nebula-fg-muted)" }}
+            >
+              <span className="dot" aria-hidden="true"></span>
+              Nebula Deep · bg-nebula-layers + bg-nebula-blob
+            </span>
+            <h1 className="title heading-lens-gradient">
+              Nebula Deep statement
+            </h1>
+            <p className="sub">
+              The section sets <code>bg-nebula-layers</code> (dark violet base)
+              and a <code>bg-nebula-blob</code> whose <code>__layer</code> drifts
+              via <code>motion-nebula-drift</code> and swells with{" "}
+              <code>--pin</code> from ScrollFX. The H1 uses{" "}
+              <code>heading-lens-gradient</code> — reserved for hero / statement
+              headlines only.
+            </p>
+
+            <div
+              className="bg-glass-tinted"
+              style={{
+                marginTop: "28px",
+                maxWidth: "440px",
+                padding: "24px",
+                borderRadius: "var(--radius-card)",
+                color: "var(--nebula-fg)",
+              }}
+            >
+              <strong style={{ fontSize: "18px", letterSpacing: "-.01em" }}>
+                Tinted glass card
+              </strong>
+              <p style={{ marginTop: "8px", color: "var(--nebula-fg-2)" }}>
+                bg-glass-tinted — violet-tinted glass for the nebula surface.
+              </p>
+              <p
+                className="caption"
+                style={{ marginTop: "12px", color: "var(--nebula-fg-muted)" }}
+              >
+                bg-glass-tinted (+ --accent for hover/active glow)
+              </p>
+            </div>
+
+            {/* accent variant sample */}
+            <div
+              className="bg-glass-tinted bg-glass-tinted--accent"
+              style={{
+                marginTop: "20px",
+                maxWidth: "440px",
+                padding: "20px",
+                borderRadius: "var(--radius-card)",
+                color: "var(--nebula-fg)",
+              }}
+            >
+              <span className="caption" style={{ color: "var(--nebula-fg-2)" }}>
+                bg-glass-tinted--accent (glowing border)
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* Nebula Deep — bg-nebula-video-scrim over a media placeholder */}
+        <section className="band bg-nebula-layers bg-nebula-layers--raised">
+          <div className="wrap">
+            <span
+              className="eyebrow"
+              style={{ color: "var(--nebula-fg-muted)" }}
+            >
+              <span className="dot" aria-hidden="true"></span>
+              Nebula Deep · bg-nebula-video-scrim
+            </span>
+            <h2 className="title" style={{ color: "var(--nebula-fg)" }}>
+              Twin scrim for media
+            </h2>
+            <p className="sub">
+              <code>bg-nebula-video-scrim</code> stacks a no-blend readability
+              ramp (<code>::before</code>) and a screen-blended violet color-leak
+              wash (<code>::after</code>) over media. Text sits above both at{" "}
+              <code>z-index:2</code>.
+            </p>
+
+            <figure
+              className="bg-nebula-video-scrim"
+              style={{
+                position: "relative",
+                margin: "28px 0 0",
+                aspectRatio: "16 / 9",
+                borderRadius: "var(--radius-card)",
+                overflow: "hidden",
+                background:
+                  "linear-gradient(135deg, var(--violet), var(--cyan))",
+              }}
+            >
+              <figcaption
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  zIndex: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  gap: "6px",
+                  padding: "20px",
+                  color: "var(--nebula-fg)",
+                }}
+              >
+                <strong style={{ fontSize: "20px", letterSpacing: "-.01em" }}>
+                  Readable over media, with a violet color leak
+                </strong>
+                <span
+                  className="caption"
+                  style={{ color: "var(--nebula-fg-muted)" }}
+                >
+                  bg-nebula-video-scrim
+                </span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
       </main>
       <ScrollFX />
     </>

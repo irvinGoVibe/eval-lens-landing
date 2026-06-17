@@ -1,0 +1,35 @@
+/* EvalLense — gradients & surface helpers
+   Source: web/src/app/globals.css. The "lens" gradient is the brand signature
+   (violet→lavender→cyan→aqua). Use it on ONE accent word/element per block.
+   The warm "fire" gradient is the orange bridge surface only. */
+:root {
+  /* Brand lens gradient — the signature accent. */
+  --lens: linear-gradient(118deg, var(--violet) 0%, var(--lavender) 32%, var(--cyan) 68%, var(--aqua) 100%); /* @kind other */
+  /* Lens — soft tint fill (low-glare washes). */
+  --lens-soft: linear-gradient(118deg, color-mix(in oklab, var(--violet) 22%, transparent), color-mix(in oklab, var(--cyan) 18%, transparent) 60%, color-mix(in oklab, var(--aqua) 20%, transparent)); /* @kind other */
+  /* Warm fire gradient — orange bridge statement only. */
+  --fire: linear-gradient(118deg, #ffe066 0%, var(--orange-soft) 32%, var(--orange-hot) 68%, #ff3314 100%);
+  /* Filled CTA gradient (purple-600 → blue-500), reused from the product app. */
+  --grad-cta: linear-gradient(90deg, #9333ea 0%, #3b82f6 100%);
+}
+
+/* ---- Surface helpers ---- */
+/* Light surface (default). */
+.surface-light{ background:var(--bg); color:var(--fg); }
+.surface-soft{  background:var(--bg-soft); color:var(--fg); }
+/* Ink surface — dark statement / cinematic. Text flips to on-dark tokens. */
+.surface-ink{   background:var(--ink); color:var(--fg-on-dark); }
+.surface-panel{ background:var(--panel); color:var(--fg-on-dark); }
+
+/* Lens gradient painted onto text (one accent phrase per block). */
+.lens-text{
+  background:var(--lens);
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent;
+}
+/* Warm fire painted onto text (orange bridge only). */
+.fire-text{
+  background:var(--fire);
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent;
+}

@@ -43,8 +43,8 @@ export function Footer({ variant = "light" }: FooterProps) {
               <span className="mark"></span>EvalLense
             </Link>
             <p>
-              Batch-review pitch decks, rank the strongest startups, and give
-              every team a clear report. Final decisions stay human-controlled.
+              Batch-review pitch decks.<br />
+              Final decisions stay human-controlled.
             </p>
             <div className="ctas">
               <Button variant={isDark ? "gradient" : "primary"} size="sm">
@@ -93,24 +93,24 @@ export function Footer({ variant = "light" }: FooterProps) {
                 <Link href="/company/contact">Contact</Link>
                 <a href="#">careers@evallense.com</a>
               </nav>
-              <span className="foot-social">
-                {SOCIALS.map((s) => (
-                  <a
-                    key={s.name}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={s.name}
-                  >
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d={s.path} />
-                    </svg>
-                  </a>
-                ))}
-              </span>
             </div>
           </div>
         </div>
+        <span className="foot-social">
+          {SOCIALS.map((s) => (
+            <a
+              key={s.name}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.name}
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d={s.path} />
+              </svg>
+            </a>
+          ))}
+        </span>
         <div className="foot-legal">
           <span className="foot-legal__copy">EvalLense © 2026</span>
           <span className="foot-legal__meta">

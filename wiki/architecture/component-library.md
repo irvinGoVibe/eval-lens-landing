@@ -228,14 +228,14 @@ page-level horizontal overflow = 0; переключение версий и Lig
 
 | Компонент | Источник | Что | Surfaces | Медиа | Статус |
 |---|---|---|---|---|---|
-| `CtaBand` | `sections/CtaBand.tsx` | prop-driven CTA-band: фон = зацикленное видео (`videoSrc`/`videoPoster`, mp4) **или** CSS-aurora (`auroraVariant`: violet/ember/ocean/magenta/emerald/gold); `bleed` спиллит фон на футер; кнопки через общий `Button` (glass = общий liquid-glass) | light (`--bg-soft`) / dark (`--bg-ink`) | video ∥ aurora (fallback) | `conditional`¹ |
+| `CtaBand` | `sections/CtaBand.tsx` | prop-driven CTA-band: фон = зацикленное видео (`videoSrc`/`videoPoster`, mp4) **или** CSS-aurora (`auroraVariant`: violet/ember/ocean/magenta/emerald/gold); `bleed` спиллит фон на футер; кнопки через общий `Button` (glass = общий liquid-glass) | light (`--bg-soft`) / dark (`--bg-ink`) | video ∥ aurora (fallback) | `ready`¹ |
 
-> ¹ Browser QA пройден вживую (`/`, dark+video+bleed, overflow 0, console чист), но
-> единственный консьюмер (`/`) сейчас в **TEST-режиме** (`videos[]`+`cycle*` — фон
-> ещё выбирают); production-параметры `videoSrc`/`auroraVariant` не зафиксированы,
-> light-поверхность вживую не проверена, build = dev-compiled. Чтобы стать `ready` —
-> выбрать `videoSrc` (или `auroraVariant`), убрать test-пропсы. Полный контракт
-> (props/media/motion/constraints/readiness) — в `production-patterns.json`.
+> ¹ Browser QA пройден вживую (`/`, dark + видео `cube-1.mp4` + bleed на футер,
+> настоящие CTA-ссылки, HUD убран, overflow 0, console чист). Production-параметры
+> зафиксированы: `videoSrc=/assets/cta/cube-1.mp4`, `auroraVariant=violet`,
+> `theme=dark`, `bleed` (test-циклеры удалены из `page.tsx`). Light-поверхность —
+> по CSS-правилу (surface-invariant); при первом использовании на светлой странице
+> проверить вживую. Полный контракт — в `production-patterns.json`.
 
 **Конфликты docs↔code (источник истины = код, фиксируются в `conflicts.json`):**
 CL-001 `_layout.tsx` documented-missing · CL-002 атомы `_kit` переоценены
