@@ -24,6 +24,7 @@ updated: 2026-06-15
   - [[page-design-patterns|Page Design Patterns]] — как собирать внутренние страницы: архетипы, ритм, scroll-движок, QA
   - [[section-types|Section Types]] — визуальный каталог типов секций со скриншотами (что реально используется)
   - [[component-forge|Component Forge]] — агент-оркестратор переработки архетипов Section Lab в переиспользуемые блоки (фазы, гейты, агенты, demo-медиа)
+  - [[component-forge-batch|Component Forge Batch]] — автономный batch-оркестратор над forge: пачка архетипов одной командой, параллельный дизайн + сериализованная запись, locks, resume, один отчёт
   - [[component-library|Component Library]] — реестр выкованных блоков + слои (атомы/каркасы/секции)
   - [[footer|Footer]] — подвал сайта: варианты light/dark, раскладка, соцсети, свечение
   - [[cta-band|CTA Band]] — переиспользуемый CTA-блок: пропы, кнопки, CSS-анора/видеофон, заход на футер
