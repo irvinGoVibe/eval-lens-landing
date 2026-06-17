@@ -108,7 +108,7 @@
 |---|---|---|
 | Токены | `globals.css :root`, DS `tokens/` | цвет/типо/радиусы/тени/градиенты |
 | **Атомы** | `sections/lab/_kit.tsx` | **фактически только** `LabEyebrow`, `LabTitle`(+grad-word), `MediaPlaceholder` (+ типы `LabContentMode`/`LabContentSet`). Chip/status-чип/ring/score/counter в коде НЕ существуют — конфликт CL-002, источник истины = код |
-| **Каркасы (layout)** | `sections/lab/_layout.tsx` — **файла нет** (`documented-missing`, конфликт CL-001) | Обещанные `Band/Wrap/SplitGrid/BentoGrid/GalleryRail/PinnedStage` **не реализованы**. Сегодня есть только CSS `.wrap`/`.stage` + инлайн-гриды в `Lab*`. До форджа `_layout.tsx` page-composer работает в режиме `whole-sections-only` |
+| **Каркасы (layout)** | `sections/lab/_layout.tsx` — **файла нет** (`documented-missing`, конфликт CL-001) | Обещанные `Band/Wrap/SplitGrid/BentoGrid/GalleryRail/PinnedStage` **не реализованы**. Сегодня есть только CSS `.wrap`/`.stage` + инлайн-гриды в `Lab*`. Слой частей (атомы + `_layout.tsx`) куёт **`primitive-layer-forge`** (извлечение `internal_fragments` под visual parity); до него page-composer работает в режиме `whole-sections-only` |
 | **Секции** | `sections/lab/Lab*.tsx` | тонкие рецепты из атомов+каркасов (таблица выше) |
 | Страницы | `app/**/page.tsx` (`build-pages`) | сборка из секций И/ИЛИ атомов+каркасов напрямую |
 
@@ -134,8 +134,33 @@ Page Orchestrator. Контракты — в `backgrounds.json` (L13) / `transit
 
 | ID | Слой | Что | Поверхности | Статус |
 |---|---|---|---|---|
-| `bg-ink-ambient-glow` | background (L13) | CSS ambient-glow на `.band.ink` (2 low-opacity radial над `--ink-grad`), без WebGL; core уведён в правый-верх, тело текста AA | ink | ready |
-| `tr-gradient-bridge` | transition (L14) | нейтральный кросс-поверхностный мост-band между секциями (oklab `from→to`, in-flow, без `100vw`/negative-margin/orange/lens) | light/soft/ink — soft↔ink, light↔ink | ready |
+| `bg-neutral-light/soft/ink` | background (L13) | регистрация surface-токенов (`.band/.soft/.ink`); ink в паре с glow | light/soft/ink | ready |
+| `bg-ink-ambient-glow` | background (L13) | CSS ambient-glow на `.band.ink`, без WebGL; **рефактор: `--aqua`→`--cyan`** (no green) | ink | ready |
+| `bg-cool-mist` | background (L13) | очень слабые cyan/lavender радиалы над soft (≤0.09) | light/soft | ready |
+| `bg-violet-halo` | background (L13) | один masked violet→lavender core (≤0.12 light / ≤0.16 ink) | both | ready |
+| `bg-dot-grid` | background (L13) | нормализован из lab-decor; 22px точки, ellipse-mask | both | ready |
+| `bg-line-field` | background (L13) | нормализован; dual 42px grid (violet/cyan) | light/soft | ready |
+| `bg-concentric-rings` | background (L13) | repeating-radial violet @6%, pitch 36px | light/soft | ready |
+| `bg-media-scrim` | background (L13) | pointer-safe scrim-overlay под текст над медиа | both | ready |
+| `tr-hard-cut` | transition (L14) | намеренный cut (zero-height modifier, 1px hairline на ink); default для low-contrast | any | ready |
+| `tr-gradient-bridge` | transition (L14) | **per-direction multi-stop** ramps (hex-стопы, `in oklab` interp), все 6 направлений, faint cool midpoint | все направления | ready |
+| `tr-pattern-dissolve` | transition (L14) | gradient + dot/line pattern, растворяется top/bottom (section-boundary) | both | ready |
+| `tr-masked-divider` | transition (L14) | soft-mask boundary: diagonal / convex-dome (lens-aperture), без edge-glow | ink↔light/soft | ready |
+| `tr-glow-crossover` | transition (L14) | section-modifier glow через шов (violet/cyan, contained, не orange) | ink→light/soft | ready |
+| `tr-overlap-bridge` | transition (L14) | карта/медиа пересекает шов | any | **blocked-by-surface-ownership** |
+
+> **visual-layer-forge full library — DONE + registered:** 8 backgrounds (L13) ·
+> 7 transitions (L14, +`tr-overlap-bridge` blocked) · 5 motion recipes (L12:
+> `motion-static` · `slow-ambient-drift` · `glow-expansion` · `pattern-reveal` ·
+> `crossfade`, всё на ScrollFX/`data-*`/CSS) · 5 composition recipes (L15:
+> `recipe-calm-product` · `dense-evidence` · `trust-methodology` · `cinematic-break` ·
+> `quiet-conversion`). Все `ready`. Page-level shared backgrounds / grid-continuation /
+> `tr-overlap-bridge` — `blocked-by-surface-ownership`. Каталог — `/dev/visual-lab`.
+> Потребитель — `page-composer` (Page Orchestrator).
+>
+> ⚠️ Стек-готча (зафиксирована): сырые `oklab()` цветовые стопы рушат сборку CSS в
+> Next 16 / Lightning CSS (молчаливый drop хвоста файла) — цветовые стопы только hex/rgb,
+> интерполяция `in oklab` допустима.
 
 **Browser QA (visual-layer-forge v1, 2026-06-17, :3005 `/dev/visual-lab`):** overflow 0
 @375/768/1280; контраст текста на ink ok; `pointer-events:none` + `aria-hidden` на
@@ -187,7 +212,10 @@ ok, media-контракт известен, contract полон. `page-composer
 `conditional` — лишь с явным fallback; `unavailable` — нельзя.
 
 **Compose-mode: `whole-sections-only`** — пока нет `_layout.tsx`, собирать только
-цельные `Lab*`, не смешанные блоки из выдуманных каркасов.
+цельные `Lab*`, не смешанные блоки из выдуманных каркасов. Переключение на
+`atoms-and-layouts` (сборка из атомов+каркасов) делает **`primitive-layer-forge`**
+после извлечения слоя частей и регистрации; `page-composer` mode-aware — читает
+`compose_mode` из манифеста и включает сборку по частям без переписывания.
 
 **Browser QA (preparer, 2026-06-17, :3005 `/dev/section-lab`):** 1440/1280/768/375 —
 page-level horizontal overflow = 0; переключение версий и Light/Dark подтверждено
@@ -197,7 +225,8 @@ page-level horizontal overflow = 0; переключение версий и Lig
 ещё инлайн-JSX в `page.tsx`, требует форджа в `LabVersus`.
 
 **Конфликты docs↔code (источник истины = код, фиксируются в `conflicts.json`):**
-CL-001 `_layout.tsx` documented-missing · CL-002 атомы `_kit` переоценены ·
+CL-001 `_layout.tsx` documented-missing · CL-002 атомы `_kit` переоценены
+(оба закрывает `primitive-layer-forge` фактическим извлечением, не правкой доков) ·
 CL-003 home-order упоминает выключенный MistBridge · CL-004 3D-примитивы
 (UnicornScene/Stage, BentoHorse) + dead-code (FinalUnicorn/Trust/Results) не
 задокументированы · CL-005 CLAUDE.md «CMS нет» устарел (Supabase default) ·
