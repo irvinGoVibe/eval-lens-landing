@@ -18,13 +18,81 @@
     "avoid_when": "unsuitable_for",
     "note": "visual-layer-forge §8.4 authors {id,name,sequence,best_for,avoid_when,responsive}; preparer normalizes avoid_when->unsuitable_for, derives dependencies/* from sequence, aggregates mobile_fallback/reduced_motion worst-case from member contracts, and adds purpose/source/registration/dependency_status/readiness."
   },
-  "recipes": [],
-  "planned": [
-    { "id": "recipe-calm-product", "status": "not-created", "purpose": "calm product explanation" },
-    { "id": "recipe-dense-evidence", "status": "not-created", "purpose": "dense evidence page" },
-    { "id": "recipe-trust-methodology", "status": "not-created", "purpose": "trust & methodology" },
-    { "id": "recipe-cinematic-break", "status": "not-created", "purpose": "light-to-dark cinematic break" },
-    { "id": "recipe-quiet-conversion", "status": "not-created", "purpose": "quiet conversion ending" }
+  "recipes": [
+    {
+      "id": "recipe-calm-product", "name": "Calm Product Explanation", "purpose": "спокойное объяснение продукта, мягкий ритм, без drama", "source": "visual-layer-forge",
+      "sequence": [
+        { "section_surface": "light", "background": "bg-neutral-light", "transition_after": "tr-gradient-bridge", "motion": "motion-pattern-reveal" },
+        { "section_surface": "soft", "background": "bg-cool-mist", "transition_after": "tr-gradient-bridge", "motion": "motion-static" },
+        { "section_surface": "light", "background": "bg-dot-grid", "transition_after": "tr-hard-cut", "motion": "motion-pattern-reveal" }
+      ],
+      "dependencies": { "backgrounds": ["bg-neutral-light", "bg-cool-mist", "bg-dot-grid"], "transitions": ["tr-gradient-bridge", "tr-hard-cut"], "motion": ["motion-pattern-reveal", "motion-static"] },
+      "best_for": ["overview", "feature explanation"], "unsuitable_for": ["dense data", "high-impact hero"],
+      "responsive": "ok", "mobile_fallback": "transitions collapse via clamp", "reduced_motion": "reveals settle in; drift n/a", "known_constraints": ["one treatment per section"],
+      "dependency_status": { "status": "valid", "missing": [], "conditional": [], "needs_recheck": [] },
+      "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "recipes.json", "target_id": "recipe-calm-product", "checked_at": "2026-06-17" },
+      "readiness": { "contract_complete": true, "dependency_check": "valid (all members ready)", "browser_qa": "members QA'd on /dev/visual-lab", "registration": "completed" },
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "id": "recipe-dense-evidence", "name": "Dense Evidence Page", "purpose": "плотная страница доказательств: сетки/паттерны + ink-акцент", "source": "visual-layer-forge",
+      "sequence": [
+        { "section_surface": "soft", "background": "bg-line-field", "transition_after": "tr-hard-cut", "motion": "motion-pattern-reveal" },
+        { "section_surface": "light", "background": "bg-dot-grid", "transition_after": "tr-gradient-bridge", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "bg-ink-ambient-glow", "transition_after": "tr-gradient-bridge", "motion": "motion-glow-expansion" }
+      ],
+      "dependencies": { "backgrounds": ["bg-line-field", "bg-dot-grid", "bg-ink-ambient-glow"], "transitions": ["tr-hard-cut", "tr-gradient-bridge"], "motion": ["motion-pattern-reveal", "motion-glow-expansion", "motion-static"] },
+      "best_for": ["evidence", "benchmarks", "comparison"], "unsuitable_for": ["quiet narrative"],
+      "responsive": "ok", "mobile_fallback": "patterns simplify <600px", "reduced_motion": "scrub pins to end; reveals settle", "known_constraints": ["keep pattern opacity low for text contrast"],
+      "dependency_status": { "status": "valid", "missing": [], "conditional": [], "needs_recheck": [] },
+      "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "recipes.json", "target_id": "recipe-dense-evidence", "checked_at": "2026-06-17" },
+      "readiness": { "contract_complete": true, "dependency_check": "valid", "browser_qa": "members QA'd", "registration": "completed" },
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "id": "recipe-trust-methodology", "name": "Trust & Methodology", "purpose": "доверие/методология: спокойная глубина, фирменное свечение", "source": "visual-layer-forge",
+      "sequence": [
+        { "section_surface": "light", "background": "bg-neutral-light", "transition_after": "tr-masked-divider", "motion": "motion-pattern-reveal" },
+        { "section_surface": "ink", "background": "bg-violet-halo", "transition_after": "tr-glow-crossover", "motion": "motion-slow-ambient-drift" },
+        { "section_surface": "soft", "background": "bg-concentric-rings", "transition_after": "tr-gradient-bridge", "motion": "motion-static" }
+      ],
+      "dependencies": { "backgrounds": ["bg-neutral-light", "bg-violet-halo", "bg-concentric-rings"], "transitions": ["tr-masked-divider", "tr-glow-crossover", "tr-gradient-bridge"], "motion": ["motion-pattern-reveal", "motion-slow-ambient-drift", "motion-static"] },
+      "best_for": ["methodology", "trust", "process"], "unsuitable_for": ["pricing tables"],
+      "responsive": "ok", "mobile_fallback": "divider/glow scale; drift gated", "reduced_motion": "drift off (static), reveals settle", "known_constraints": ["glow-crossover ink->soft only"],
+      "dependency_status": { "status": "valid", "missing": [], "conditional": [], "needs_recheck": [] },
+      "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "recipes.json", "target_id": "recipe-trust-methodology", "checked_at": "2026-06-17" },
+      "readiness": { "contract_complete": true, "dependency_check": "valid", "browser_qa": "members QA'd", "registration": "completed" },
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "id": "recipe-cinematic-break", "name": "Light-to-Dark Cinematic Break", "purpose": "кинематографичный переход в тёмный statement", "source": "visual-layer-forge",
+      "sequence": [
+        { "section_surface": "light", "background": "bg-neutral-light", "transition_after": "tr-gradient-bridge", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "bg-ink-ambient-glow", "transition_after": "tr-gradient-bridge", "motion": "motion-glow-expansion" },
+        { "section_surface": "light", "background": "bg-neutral-light", "transition_after": "tr-hard-cut", "motion": "motion-static" }
+      ],
+      "dependencies": { "backgrounds": ["bg-neutral-light", "bg-ink-ambient-glow"], "transitions": ["tr-gradient-bridge", "tr-glow-crossover", "tr-hard-cut"], "motion": ["motion-glow-expansion", "motion-static"] },
+      "best_for": ["hero break", "statement", "cinematic"], "unsuitable_for": ["dense lists"],
+      "responsive": "ok", "mobile_fallback": "mist blur reduces; bridge collapses", "reduced_motion": "scrub pins to end", "known_constraints": ["one cinematic break per page"],
+      "dependency_status": { "status": "valid", "missing": [], "conditional": [], "needs_recheck": [] },
+      "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "recipes.json", "target_id": "recipe-cinematic-break", "checked_at": "2026-06-17" },
+      "readiness": { "contract_complete": true, "dependency_check": "valid", "browser_qa": "members QA'd", "registration": "completed" },
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "id": "recipe-quiet-conversion", "name": "Quiet Conversion Ending", "purpose": "тихий финал-конверсия на ink", "source": "visual-layer-forge",
+      "sequence": [
+        { "section_surface": "soft", "background": "bg-cool-mist", "transition_after": "tr-gradient-bridge", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "bg-ink-ambient-glow", "transition_after": "tr-hard-cut", "motion": "motion-glow-expansion" }
+      ],
+      "dependencies": { "backgrounds": ["bg-cool-mist", "bg-ink-ambient-glow"], "transitions": ["tr-gradient-bridge", "tr-hard-cut"], "motion": ["motion-glow-expansion", "motion-static"] },
+      "best_for": ["quiet CTA", "page finisher"], "unsuitable_for": ["mid-page"],
+      "responsive": "ok", "mobile_fallback": "bridge collapses", "reduced_motion": "scrub pins to end", "known_constraints": ["finisher only"],
+      "dependency_status": { "status": "valid", "missing": [], "conditional": [], "needs_recheck": [] },
+      "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "recipes.json", "target_id": "recipe-quiet-conversion", "checked_at": "2026-06-17" },
+      "readiness": { "contract_complete": true, "dependency_check": "valid", "browser_qa": "members QA'd", "registration": "completed" },
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    }
   ],
   "surface_ownership_note": "Page-level recipes that depend on bg-shared-page-grid / tr-grid-continuation are blocked-by-surface-ownership until Lab sections support a transparent/inherit surface (unblock: component-forge -> transparent-or-inherit-surface-api). Such recipes are registered but never handed to Page Orchestrator as `ready`."
 }

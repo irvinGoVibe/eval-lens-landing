@@ -29,10 +29,10 @@
     "L9_newsroom": { "manifest": "newsroom.json", "count": 5 },
     "L10_social": { "manifest": "social.json", "count": 3 },
     "L11_media": { "manifest": "atoms.json#MediaPlaceholder", "count": 1 },
-    "L12_motion": { "manifest": "motion.json", "count": 2 },
-    "L13_backgrounds": { "manifest": "backgrounds.json", "count": 14 },
-    "L14_transitions": { "manifest": "transitions.json", "count": 6 },
-    "L15_recipes": { "manifest": "recipes.json", "count": 0, "status": "scaffold (no recipes yet; authored by visual-layer-forge, normalized + registered here)" }
+    "L12_motion": { "manifest": "motion.json", "count": 2, "recipes": 5, "note": "2 runtimes (ScrollFX, ScrollOrchestrator) + 5 visual-layer-forge motion recipes: static, slow-ambient-drift, glow-expansion, pattern-reveal, crossfade" },
+    "L13_backgrounds": { "manifest": "backgrounds.json", "count": 21, "note": "13 audited + 8 visual-layer-forge backgrounds (batch 1): neutral-trio, ink-ambient-glow(refactored), cool-mist, violet-halo, dot-grid, line-field, concentric-rings, media-scrim" },
+    "L14_transitions": { "manifest": "transitions.json", "count": 11, "note": "5 audited + tr-gradient-bridge(per-direction) + 4 visual-layer-forge transitions: hard-cut, pattern-dissolve, masked-divider, glow-crossover; + tr-overlap-bridge (blocked). BLUR/MIST seams (tr-blur-bridge, tr-mist-bridge) DROPPED by user 2026-06-17." },
+    "L15_recipes": { "manifest": "recipes.json", "count": 5, "status": "5 composition recipes ready: calm-product, dense-evidence, trust-methodology, cinematic-break, quiet-conversion" }
   },
   "summary": {
     "lab_sections_total": 16,
@@ -47,13 +47,36 @@
   "visual_layer_forge": {
     "produced_by": "visual-layer-forge skill (v1, 2026-06-17)",
     "ready": [
-      { "id": "bg-ink-ambient-glow", "layer": "L13", "manifest": "backgrounds.json" },
-      { "id": "tr-gradient-bridge", "layer": "L14", "manifest": "transitions.json" }
+      { "id": "bg-ink-ambient-glow", "layer": "L13", "manifest": "backgrounds.json", "note": "refactored: --aqua dropped" },
+      { "id": "bg-neutral-light/soft/ink", "layer": "L13", "manifest": "backgrounds.json" },
+      { "id": "bg-cool-mist", "layer": "L13", "manifest": "backgrounds.json" },
+      { "id": "bg-violet-halo", "layer": "L13", "manifest": "backgrounds.json" },
+      { "id": "bg-dot-grid", "layer": "L13", "manifest": "backgrounds.json" },
+      { "id": "bg-line-field", "layer": "L13", "manifest": "backgrounds.json" },
+      { "id": "bg-concentric-rings", "layer": "L13", "manifest": "backgrounds.json" },
+      { "id": "bg-media-scrim", "layer": "L13", "manifest": "backgrounds.json" },
+      { "id": "tr-gradient-bridge", "layer": "L14", "manifest": "transitions.json", "note": "per-direction multi-stop (hex)" },
+      { "id": "tr-hard-cut", "layer": "L14", "manifest": "transitions.json" },
+      { "id": "tr-pattern-dissolve", "layer": "L14", "manifest": "transitions.json" },
+      { "id": "tr-masked-divider", "layer": "L14", "manifest": "transitions.json" },
+      { "id": "tr-glow-crossover", "layer": "L14", "manifest": "transitions.json" },
+      { "id": "motion-static", "layer": "L12", "manifest": "motion.json" },
+      { "id": "motion-slow-ambient-drift", "layer": "L12", "manifest": "motion.json" },
+      { "id": "motion-glow-expansion", "layer": "L12", "manifest": "motion.json" },
+      { "id": "motion-pattern-reveal", "layer": "L12", "manifest": "motion.json" },
+      { "id": "motion-crossfade", "layer": "L12", "manifest": "motion.json" },
+      { "id": "recipe-calm-product", "layer": "L15", "manifest": "recipes.json" },
+      { "id": "recipe-dense-evidence", "layer": "L15", "manifest": "recipes.json" },
+      { "id": "recipe-trust-methodology", "layer": "L15", "manifest": "recipes.json" },
+      { "id": "recipe-cinematic-break", "layer": "L15", "manifest": "recipes.json" },
+      { "id": "recipe-quiet-conversion", "layer": "L15", "manifest": "recipes.json" }
     ],
+    "status": { "state": "complete", "summary": "full starter library: 8 backgrounds + 7 transitions(+1 blocked) + 5 motion + 5 recipes — all ready + registered", "scope": "6-8 bg / 6-8 transitions / 4-5 motion / recipes" },
     "browser_qa": { "run": true, "url": "http://localhost:3005/dev/visual-lab", "widths": [375, 768, 1280], "page_level_horizontal_overflow_px": 0, "console_errors": 0 },
     "backlog_blocked": [
       { "id": "bg-shared-page-grid", "layer": "L13", "status": "blocked-by-surface-ownership" },
-      { "id": "tr-grid-continuation", "layer": "L14", "status": "blocked-by-surface-ownership" }
+      { "id": "tr-grid-continuation", "layer": "L14", "status": "blocked-by-surface-ownership" },
+      { "id": "tr-overlap-bridge", "layer": "L14", "status": "blocked-by-surface-ownership", "note": "designed, not implemented; page owns cross-section overlap" }
     ],
     "unblock_condition": "Lab sections support transparent/inherit surface -> component-forge -> visual-layer-forge targeted -> shared page backgrounds enabled",
     "recipes_layer": { "id": "L15_recipes", "manifest": "recipes.json", "status": "created (scaffold; empty recipes[]); composition-recipe layer is now part of the library model" }

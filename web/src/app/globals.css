@@ -6226,7 +6226,7 @@ section[id]{scroll-margin-top:72px;}
       transparent 72%),
     radial-gradient(55% 48% at 16% 88%,
       color-mix(in oklab, var(--cyan) 12%, transparent) 0%,
-      color-mix(in oklab, var(--aqua) 7%, transparent) 40%,
+      color-mix(in oklab, var(--cyan) 7%, transparent) 40%,
       transparent 74%),
     var(--ink-grad);
 }
@@ -6315,3 +6315,330 @@ section[id]{scroll-margin-top:72px;}
   .methodology .m-cinema__sub,
   .methodology .m-cinema__cta{opacity:1;transform:none;}
 }
+/* ---- visual-layer-forge: backgrounds (batch 1) ---- */
+/* Contained, decorative, static. One treatment per layer; content outranks
+   the layer via z-index:1. No --aqua in any atmospheric (cap shimmer at --cyan).
+   Atmospheric peak composited opacity ≤0.18 on ink, lower on light/soft. */
+
+/* (b) bg-cool-mist — soft/light surface atmospheric (faint cyan + lavender) */
+.bg-cool-mist{ position:relative; isolation:isolate; }
+.bg-cool-mist > .bg-cool-mist__layer{
+  position:absolute; inset:0; z-index:0;
+  overflow:hidden; pointer-events:none; border-radius:inherit;
+  background:
+    radial-gradient(55% 50% at 80% 16%,
+      color-mix(in oklab, var(--cyan) 9%, transparent) 0%,
+      color-mix(in oklab, var(--cyan) 4%, transparent) 42%,
+      transparent 74%),
+    radial-gradient(50% 46% at 18% 90%,
+      color-mix(in oklab, var(--lavender) 7%, transparent) 0%,
+      transparent 70%);
+}
+.bg-cool-mist > :not(.bg-cool-mist__layer){ position:relative; z-index:1; }
+@media (max-width:600px){
+  /* cheaper paint on mobile: drop the second radial */
+  .bg-cool-mist > .bg-cool-mist__layer{
+    background:
+      radial-gradient(55% 50% at 80% 16%,
+        color-mix(in oklab, var(--cyan) 9%, transparent) 0%,
+        color-mix(in oklab, var(--cyan) 4%, transparent) 42%,
+        transparent 74%);
+  }
+}
+
+/* (c) bg-violet-halo — atmospheric, light + ink compatible (single core) */
+.bg-violet-halo{ position:relative; isolation:isolate; }
+.bg-violet-halo > .bg-violet-halo__layer{
+  position:absolute; inset:0; z-index:0;
+  overflow:hidden; pointer-events:none; border-radius:inherit;
+  background:
+    radial-gradient(60% 52% at 50% 22%,
+      color-mix(in oklab, var(--violet) 12%, transparent) 0%,
+      color-mix(in oklab, var(--lavender) 7%, transparent) 40%,
+      transparent 74%);
+}
+.bg-violet-halo > :not(.bg-violet-halo__layer){ position:relative; z-index:1; }
+/* ink variant — slightly stronger core so the halo reads on black */
+.band.ink .bg-violet-halo > .bg-violet-halo__layer,
+.bg-violet-halo--ink > .bg-violet-halo__layer{
+  background:
+    radial-gradient(60% 52% at 50% 22%,
+      color-mix(in oklab, var(--violet) 16%, transparent) 0%,
+      color-mix(in oklab, var(--lavender) 7%, transparent) 40%,
+      transparent 74%);
+}
+
+/* (d) bg-dot-grid — geometric dot field (mirrors lab-hero__stage::after) */
+.bg-dot-grid{ position:relative; isolation:isolate; }
+.bg-dot-grid > .bg-dot-grid__layer{
+  position:absolute; inset:0; z-index:0;
+  overflow:hidden; pointer-events:none; border-radius:inherit;
+  background-image:radial-gradient(color-mix(in oklab, var(--fg) 8%, transparent) 1px, transparent 1px);
+  background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 40%, #000 0%, transparent 78%);
+          mask-image:radial-gradient(ellipse 60% 50% at 50% 40%, #000 0%, transparent 78%);
+}
+.bg-dot-grid > :not(.bg-dot-grid__layer){ position:relative; z-index:1; }
+/* ink variant — white dots */
+.band.ink .bg-dot-grid > .bg-dot-grid__layer,
+.bg-dot-grid--ink > .bg-dot-grid__layer{
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+}
+
+/* (e) bg-line-field — geometric grid (mirrors lab-pattern::before) */
+.bg-line-field{ position:relative; isolation:isolate; }
+.bg-line-field > .bg-line-field__layer{
+  position:absolute; inset:0; z-index:0;
+  overflow:hidden; pointer-events:none; border-radius:inherit;
+  background-image:
+    linear-gradient(90deg, color-mix(in oklab, var(--violet) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in oklab, var(--cyan) 8%, transparent) 1px, transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 40%, #000 0%, transparent 76%);
+          mask-image:radial-gradient(ellipse 60% 50% at 50% 40%, #000 0%, transparent 76%);
+}
+.bg-line-field > :not(.bg-line-field__layer){ position:relative; z-index:1; }
+
+/* (f) bg-concentric-rings — geometric rings (pitch 36px to avoid moiré) */
+.bg-concentric-rings{ position:relative; isolation:isolate; }
+.bg-concentric-rings > .bg-concentric-rings__layer{
+  position:absolute; inset:0; z-index:0;
+  overflow:hidden; pointer-events:none; border-radius:inherit;
+  background-image:repeating-radial-gradient(circle at 50% 30%,
+    transparent 0 34px,
+    color-mix(in oklab, var(--violet) 6%, transparent) 34px 36px);
+  -webkit-mask-image:radial-gradient(ellipse 60% 55% at 50% 30%, #000 0%, transparent 78%);
+          mask-image:radial-gradient(ellipse 60% 55% at 50% 30%, #000 0%, transparent 78%);
+}
+.bg-concentric-rings > :not(.bg-concentric-rings__layer){ position:relative; z-index:1; }
+
+/* (g) bg-media-scrim — media-container legibility overlay (NOT full-page) */
+/* Sits between media and text inside a positioned media container.
+   Text in the container must use a higher z-index (e.g. z-index:2). */
+.bg-media-scrim{
+  position:absolute; inset:0; z-index:1;
+  pointer-events:none; border-radius:inherit;
+  /* light variant — wash toward the page surface from the bottom */
+  background:linear-gradient(0deg,
+    color-mix(in oklab, var(--bg) 88%, transparent) 0%,
+    color-mix(in oklab, var(--bg-soft) 42%, transparent) 38%,
+    transparent 70%);
+}
+.bg-media-scrim--ink{
+  background:linear-gradient(0deg,
+    rgba(0,0,0,.72) 0%,
+    rgba(0,0,0,.30) 38%,
+    transparent 70%);
+}
+
+/* ---- visual-layer-forge: transitions (batch 2) ---- */
+/* Self-contained section seams. Each transition is either an in-flow band or a
+   section modifier; the clipping owner is always the element/section itself
+   (overflow:hidden + isolation:isolate). No 100vw, no negative margins, no
+   overflow:visible bleed. Decorative layers are aria-hidden + pointer-events:none.
+   Blur lives only in dedicated decorative layers — real DOM text is never blurred.
+   Violet/lavender/cyan only — no --aqua, no orange/--fire, no --lens full fill. */
+
+/* (1) tr-hard-cut — zero-height section modifier (no element).
+   Default for low-contrast light↔soft seams: nothing visible needed.
+   On ink sections, a 1px hairline makes the cut read as intentional. */
+.band--hard-cut-after{ /* light/soft: no visible line by design */ }
+.band.ink.band--hard-cut-after{
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.07);
+}
+
+/* (2) tr-gradient-bridge — EXTEND: per-direction multi-stop oklab ramps.
+   The base two-stop rule (above, in v1 block) stays as the fallback when no
+   data-attrs are present. These overrides hold the lighter surface longer,
+   pass briefly through a dark phase, and keep a faint cool midpoint to avoid a
+   grey/beige cast (no muddy brown). */
+
+/* near-flat light↔soft (short height) */
+.tr-gradient-bridge[data-from="light"][data-to="soft"],
+.tr-gradient-bridge[data-from="soft"][data-to="light"]{
+  height:clamp(24px,3vh,48px);
+}
+.tr-gradient-bridge[data-from="light"][data-to="soft"]{
+  background:linear-gradient(in oklab to bottom, #ffffff 0%, #fafafb 60%, #f5f5f7 100%);
+}
+.tr-gradient-bridge[data-from="soft"][data-to="light"]{
+  background:linear-gradient(in oklab to bottom, #f5f5f7 0%, #fafafb 40%, #ffffff 100%);
+}
+
+/* soft → ink (asymmetric: hold soft longer, brief dark phase) */
+.tr-gradient-bridge[data-from="soft"][data-to="ink"]{
+  background:linear-gradient(in oklab to bottom, #f5f5f7 0%, #d6d6d9 22%, #6e6e72 52%, #292929 76%, #000000 100%);
+}
+
+/* light → ink */
+.tr-gradient-bridge[data-from="light"][data-to="ink"]{
+  background:linear-gradient(in oklab to bottom, #ffffff 0%, #dededf 20%, #6a6a6e 52%, #1f1f21 78%, #000000 100%);
+}
+
+/* ink → light (faint cool midpoint #6d6f76 avoids beige cast) */
+.tr-gradient-bridge[data-from="ink"][data-to="light"]{
+  background:linear-gradient(in oklab to bottom, #000000 0%, #1a1a1d 22%, #6d6f76 48%, #d6d6d9 76%, #ffffff 100%);
+}
+
+/* ink → soft */
+.tr-gradient-bridge[data-from="ink"][data-to="soft"]{
+  background:linear-gradient(in oklab to bottom, #000000 0%, #1a1a1d 22%, #6a6c73 50%, #d2d2d5 77%, #f5f5f7 100%);
+}
+
+/* (5) tr-pattern-dissolve — surface gradient + low-opacity pattern that fades
+   top/bottom. NOT a page-level pattern continuation. */
+.tr-pattern-dissolve{
+  position:relative; display:block; width:100%;
+  height:clamp(80px,12vh,180px);
+  overflow:hidden; isolation:isolate;
+  --from:var(--bg); --to:var(--bg);
+  --pattern-color:var(--border);
+  background:linear-gradient(in oklab to bottom, var(--from) 0%, var(--to) 100%);
+}
+.tr-pattern-dissolve[data-from="light"]{ --from:var(--bg); }
+.tr-pattern-dissolve[data-from="soft"] { --from:var(--bg-soft); }
+.tr-pattern-dissolve[data-from="ink"]  { --from:var(--bg-ink); }
+.tr-pattern-dissolve[data-to="light"]  { --to:var(--bg); }
+.tr-pattern-dissolve[data-to="soft"]   { --to:var(--bg-soft); }
+.tr-pattern-dissolve[data-to="ink"]    { --to:var(--bg-ink); }
+/* pattern color per direction: light↔soft hairline border; ink→soft white-ish */
+.tr-pattern-dissolve[data-from="ink"]{ --pattern-color:rgba(255,255,255,.10); }
+.tr-pattern-dissolve::before{
+  content:""; position:absolute; inset:0; z-index:1;
+  pointer-events:none; opacity:.6;
+  background-image:radial-gradient(var(--pattern-color) 1px, transparent 1px);
+  background-size:36px 36px;
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+          mask-image:linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+}
+/* line-grid variant (mirrors bg-line-field grammar) */
+.tr-pattern-dissolve--lines::before{
+  background-image:
+    linear-gradient(90deg, var(--pattern-color) 1px, transparent 1px),
+    linear-gradient(180deg, var(--pattern-color) 1px, transparent 1px);
+}
+@media (max-width:600px){
+  .tr-pattern-dissolve::before{ background-size:24px 24px; }
+}
+
+/* (6) tr-masked-divider — from-surface base, to-surface clipped by a mask edge.
+   NO drop-shadow / glow on the edge (anti-template rule). */
+.tr-masked-divider{
+  position:relative; display:block; width:100%;
+  height:clamp(48px,7vh,120px);
+  overflow:hidden; isolation:isolate;
+  --from-surface:var(--bg); --to-surface:var(--bg);
+  background:var(--from-surface);
+}
+.tr-masked-divider[data-from="light"]{ --from-surface:var(--bg); }
+.tr-masked-divider[data-from="soft"] { --from-surface:var(--bg-soft); }
+.tr-masked-divider[data-from="ink"]  { --from-surface:var(--bg-ink); }
+.tr-masked-divider[data-to="light"]  { --to-surface:var(--bg); }
+.tr-masked-divider[data-to="soft"]   { --to-surface:var(--bg-soft); }
+.tr-masked-divider[data-to="ink"]    { --to-surface:var(--bg-ink); }
+.tr-masked-divider::before{
+  content:""; position:absolute; inset:0; z-index:1;
+  pointer-events:none; background:var(--to-surface);
+}
+.tr-masked-divider--diagonal::before{
+  -webkit-mask-image:linear-gradient(to bottom right, transparent 42%, #000 58%);
+          mask-image:linear-gradient(to bottom right, transparent 42%, #000 58%);
+}
+.tr-masked-divider--dome::before{
+  -webkit-mask-image:radial-gradient(ellipse 120% 60% at 50% 110%, #000 0%, #000 40%, transparent 62%);
+          mask-image:radial-gradient(ellipse 120% 60% at 50% 110%, #000 0%, #000 40%, transparent 62%);
+}
+
+/* (7) tr-glow-crossover — section modifiers. Relies on the section's own
+   overflow:hidden (added here) so the bloom is contained. violet/cyan only,
+   no orange, no --lens fill. */
+.band--glow-crossover-bottom,
+.band--glow-crossover-top{
+  overflow:hidden; isolation:isolate;
+}
+.band--glow-crossover-bottom::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; z-index:1;
+  height:clamp(120px,20vh,280px);
+  pointer-events:none;
+  background:radial-gradient(ellipse 80% 100% at 50% 100%,
+    color-mix(in oklab, var(--violet) 22%, transparent) 0%,
+    color-mix(in oklab, var(--lavender) 12%, transparent) 28%,
+    color-mix(in oklab, var(--cyan) 6%, transparent) 56%,
+    transparent 78%);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 72%, transparent 100%);
+          mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 72%, transparent 100%);
+}
+.band--glow-crossover-top::before{
+  content:""; position:absolute; left:0; right:0; top:0; z-index:1;
+  height:clamp(120px,20vh,280px);
+  pointer-events:none;
+  background:radial-gradient(ellipse 80% 100% at 50% 0%,
+    color-mix(in oklab, var(--violet) 8%, transparent) 0%,
+    color-mix(in oklab, var(--lavender) 5%, transparent) 30%,
+    color-mix(in oklab, var(--cyan) 3%, transparent) 56%,
+    transparent 78%);
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 28%, transparent 82%);
+          mask-image:linear-gradient(to bottom, #000 0%, #000 28%, transparent 82%);
+}
+/* keep the section content above the bloom */
+.band--glow-crossover-bottom > .wrap,
+.band--glow-crossover-top > .wrap{ position:relative; z-index:2; }
+
+/* ---- visual-layer-forge: motion (batch 3) ---- */
+/* Reusable ambient-motion recipes wired to the EXISTING ScrollFX runtime — no
+   new animation runtime, no per-section useEffect, no libraries. Only
+   transform/opacity are animated (compositor-safe; never layout-affecting).
+   Ambient loops are gated behind @media (prefers-reduced-motion: no-preference);
+   scrub/reveal recipes settle to their end state automatically because ScrollFX
+   pins --scrub:1 (and reveals add .is-in immediately) under reduced motion.
+   These classes carry no color of their own — apply them ON TOP of an existing
+   decorative layer (bg-*, halo, pattern), which stays aria-hidden +
+   pointer-events:none. No raw oklab()/oklch() color stops anywhere here. */
+
+/* (1) motion-static — static = the absence of motion, and is the DEFAULT.
+   There is no class and no rule: a layer with none of the recipes below simply
+   does not move. Documented here so the catalog can reference it by name. */
+
+/* (2) motion-slow-ambient-drift — generic ambient loop for atmospheric layers
+   (glow / halo / mist). Apply to the decorative layer element. Under reduced
+   motion the animation is omitted entirely → the layer is static. */
+.motion-slow-ambient-drift{ will-change:transform; }
+@media (prefers-reduced-motion: no-preference){
+  .motion-slow-ambient-drift{
+    animation:vl-ambient-drift 24s ease-in-out infinite alternate;
+  }
+}
+@keyframes vl-ambient-drift{
+  from{ transform:translate3d(0,0,0) scale(1); }
+  to  { transform:translate3d(0,-1.5%,0) scale(1.03); }
+}
+
+/* (3) motion-glow-expansion — scrub-driven scale + opacity. The consumer adds
+   `data-scrub` to this element (or an ancestor that propagates --scrub); ScrollFX
+   writes --scrub 0→1 as it crosses the viewport. Default var(--scrub,1) means
+   the layer shows fully when no scroll has happened yet and under reduced motion
+   (ScrollFX pins --scrub:1). */
+.motion-glow-expansion{
+  will-change:transform, opacity;
+  transform:scale(calc(.92 + .12 * var(--scrub,1)));
+  opacity:calc(.45 + .55 * var(--scrub,1));
+}
+
+/* (4) motion-pattern-reveal — reuses the EXISTING [data-reveal] primitive (no
+   new keyframes). The consumer puts `data-reveal="fade"` (or "scale") on the
+   pattern layer; this helper just gives it a small built-in stagger so the
+   pattern settles a beat after surrounding content. ScrollFX adds .is-in on
+   enter (immediately under reduced motion). */
+.motion-pattern-reveal[data-reveal]{ --reveal-delay:80ms; }
+
+/* (5) motion-crossfade — two stacked layers cross-faded by scroll. The parent
+   carries `data-scrub`; ScrollFX writes --scrub 0→1. __from fades out, __to
+   fades in. Under reduced motion ScrollFX pins --scrub:1 → lands on __to. */
+.motion-crossfade{ position:relative; }
+.motion-crossfade__from,
+.motion-crossfade__to{
+  position:absolute; inset:0;
+  will-change:opacity;
+}
+.motion-crossfade__from{ opacity:calc(1 - var(--scrub,0)); }
+.motion-crossfade__to{ opacity:var(--scrub,0); }

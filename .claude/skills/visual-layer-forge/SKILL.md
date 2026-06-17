@@ -151,20 +151,34 @@ packet (id цели, контракт, нужные правила DS досло
 
 ---
 
-## 5. Целевой объём (не плодить декор)
+## 5. Целевой объём (полный стартовый набор)
 
-Система **ограниченная**:
+Первый production-прогон готовит **полный стартовый набор** (узкий v1 из двух
+примитивов отменён):
 
-- **5–8** reusable backgrounds (категории: surface · atmospheric · geometric ·
-  media-assisted · page-level shared layer);
-- **4–6** reusable section transitions, покрывающих **обязательные направления**:
-  `light→light`, `light→soft`, `soft→ink`, `light→ink`, `ink→light`, `ink→soft`;
-- **3–5** ambient motion recipes (Static · Slow Ambient Drift · Scroll Scrub ·
-  Glow Expansion · Grid Reveal · Crossfade · Shared Background Continuation — брать
-  только те, что укладываются в ScrollFX/data-*);
-- несколько проверенных **composition recipes**.
+- **6–8** reusable backgrounds: base surfaces (neutral light/soft/ink — регистрация
+  токенов) · atmospheric (`bg-ink-ambient-glow` · `bg-cool-mist` · `bg-violet-halo`) ·
+  geometric (2–4 различающихся: `bg-dot-grid` · `bg-line-field` ·
+  `bg-concentric-rings`, без дублей) · media-assisted (`bg-media-scrim` с
+  обязательным scrim под текстом);
+- **6–8** reusable section transitions (система, не один linear): `tr-hard-cut` ·
+  `tr-gradient-bridge` (per-direction multi-stop, все обязательные направления
+  `light↔soft · soft↔ink · light↔ink · ink↔light · ink↔soft`) · `tr-blur-bridge` ·
+  `tr-mist-bridge` · `tr-pattern-dissolve` · `tr-masked-divider` ·
+  `tr-glow-crossover` · `tr-overlap-bridge`;
+- **4–5** ambient motion recipes (`motion-static` · `motion-slow-ambient-drift` ·
+  `motion-glow-expansion` · `motion-pattern-reveal` · `motion-crossfade`) — только
+  ScrollFX/`data-*`/CSS;
+- несколько проверенных **composition recipes** (нормализуются в `recipes.json`).
 
-Не создавать десятки вариантов заранее. Сначала переиспользовать существующее.
+**Аудит существующего — обязателен:** не считать переход пригодным только потому,
+что он реализован. Сначала визуальный аудит + дизайн-ревью, затем keep / refactor /
+replace / page-local / dead / blocked. Слабый black↔white hard-cut на high-contrast
+швах — supplement/replace системным переходом, не минимальная полировка. Page-level
+shared backgrounds и grid-continuation — `blocked-by-surface-ownership` (не обходить
+хаками). `--aqua` (teal) — **не** использовать в атмосфере; рампа шиммера — на `--cyan`.
+
+Не плодить десятки вариантов. Сначала переиспользовать/нормализовать существующее.
 
 ---
 
