@@ -1,0 +1,60 @@
+{
+  "generated": "2026-06-17",
+  "default_source_of_truth": "actual exported code (for runtime API); conflicts must remain visible in docs",
+  "conflicts": [
+    {
+      "id": "CL-001", "component": "sections/lab/_layout.tsx",
+      "documentation": "component-library.md:111 lists _layout.tsx with Band/Wrap/SplitGrid/BentoGrid/GalleryRail/PinnedStage",
+      "code": "file does not exist; no such exports anywhere",
+      "impact": "blocks atoms-and-layouts compose mode; page-composer limited to whole-sections-only",
+      "recommended_resolution": "mark _layout.tsx documented-missing in docs; resolve internal contradiction with footnote 4",
+      "source_of_truth": "code"
+    },
+    {
+      "id": "CL-002", "component": "sections/lab/_kit.tsx (atom inventory)",
+      "documentation": "component-library.md:110 lists Eyebrow/Title/MediaPlaceholder/Chip/status-chip/ring/score/counter",
+      "code": "_kit.tsx exports only LabEyebrow, LabTitle, MediaPlaceholder (+ 2 types)",
+      "impact": "overstated atom layer; page-composer must not assume Chip/ring/score/counter atoms",
+      "recommended_resolution": "trim doc atom list to the 3 real exports (note Lab-prefix)",
+      "source_of_truth": "code"
+    },
+    {
+      "id": "CL-003", "component": "home section order",
+      "documentation": "system.md:32 Hero -> Problem -> OrangeGlow -> MistBridge -> ...",
+      "code": "page.tsx: MistBridge JSX commented out (not in live flow)",
+      "impact": "doc overstates live composition",
+      "recommended_resolution": "flag MistBridge as defined-but-disabled (iteration hold)",
+      "source_of_truth": "code"
+    },
+    {
+      "id": "CL-004", "component": "3D scene primitives",
+      "documentation": "no architecture doc/registry lists UnicornScene/UnicornStage/BentoHorse/FinalUnicorn",
+      "code": "all exist; BentoHorse live via EvalLenseBentoSection; FinalUnicorn (+UnicornStage) orphaned",
+      "impact": "undocumented 3D layer; dead code unflagged",
+      "recommended_resolution": "add note for 3D primitives; flag FinalUnicorn/Trust/Results as dead",
+      "source_of_truth": "code"
+    },
+    {
+      "id": "CL-005", "component": "data/CMS",
+      "documentation": "CLAUDE.md 'БД/CMS нет / чистая статика'",
+      "code": "blog.server.ts: Supabase default (cms/queries) + static fallback (BLOG_SOURCE)",
+      "impact": "CLAUDE.md stale; matches memory blog-content-moves-to-cms",
+      "recommended_resolution": "update CLAUDE.md stack note (out of preparer scope; flag only)",
+      "source_of_truth": "code"
+    },
+    {
+      "id": "CL-006", "component": "LabStatementHero surface API",
+      "documentation": "section archetypes assume surface prop (light/ink)",
+      "code": "LabStatementHero hardcodes `band soft`, no surface prop; surface only via LabMarkers",
+      "impact": "page-composer cannot set hero surface via props",
+      "recommended_resolution": "component-api-gap -> component-forge (add surface prop)",
+      "source_of_truth": "code"
+    }
+  ],
+  "needs_recheck": [],
+  "non_conflicts_verified": [
+    "registry 'draft' statuses honest (live QA was not previously run)",
+    "archetype 02 v1-v2 only (Contract Lock) consistent",
+    "glow/mist keyframe class names in design-system.md match globals.css"
+  ]
+}

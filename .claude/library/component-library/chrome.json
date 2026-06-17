@@ -1,0 +1,55 @@
+{
+  "generated": "2026-06-17",
+  "layer": "L7+L8",
+  "chrome": [
+    {
+      "name": "SiteHeader", "source": "web/src/components/SiteHeader.tsx", "props": "none",
+      "used_on": ["/ (home)", "dev/real-header-backdrop"],
+      "theme_behavior": "always-transparent fixed bar; ScrollOrchestrator toggles is-light on #site-header to contrast band beneath",
+      "navigation_behavior": "hardcoded Links: /product/overview, /trust/methodology, /pricing, /company/contact",
+      "cta_behavior": "Button 'Launch App' arrow -> /#demo",
+      "constraints": ["home-only; do not reuse on internal pages (use PageHeader)"],
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["build-pages(home only)"] }
+    },
+    {
+      "name": "PageHeader", "source": "web/src/components/PageHeader.tsx",
+      "props": ["nav?:SectionNav", "theme?:'light'|'dark'(=light, SSR surface only)", "cta?:NavLink(=LAUNCH_CTA)"],
+      "used_on": ["all internal pages (~20 routes): product/*, trust/*, company/*, pricing, blog/layout, sitemap, not-found, dev/section-lab"],
+      "theme_behavior": "blurred glass bar; theme sets SSR surface; renders HeaderThemeSync which flips page-header--dark at runtime",
+      "navigation_behavior": "brand -> /; optional divider + nav.section (link if sectionHref) + <=3 anchor nav.links; per-page HEADER_NAV defined inline",
+      "cta_behavior": "Button gradient sm arrow -> cta; default 'Launch App'; blog layout overrides 'Book a demo' -> /#demo",
+      "constraints": ["standard chrome for every internal page"],
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "name": "HeaderThemeSync", "source": "web/src/components/HeaderThemeSync.tsx", "props": "none (returns null)",
+      "used_on": ["inside PageHeader"],
+      "theme_behavior": "rAF-throttled; elementsFromPoint at header bottom detects .band underneath; toggles page-header--dark when band .ink; hide-on-scroll-down/show-on-up",
+      "constraints": ["must remain mounted inside PageHeader"],
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["build-pages"] }
+    },
+    {
+      "name": "Footer", "source": "web/src/components/Footer.tsx", "props": ["variant?:'light'|'dark'(=light)"],
+      "used_on": ["/ (variant=dark)", "every internal page (default light)"],
+      "theme_behavior": "foot vs foot is-dark",
+      "navigation_behavior": "hardcoded Product/Trust/Company columns + legal row (Privacy/Terms/Security)",
+      "cta_behavior": "two CTAs: 'Book a call' (gradient if dark / primary if light) + 'Try live demo' (GLASS if dark / ghost if light)",
+      "constraints": [
+        "dark footer 'Try live demo' uses variant=glass => MUST render shared liquid-glass material (.foot.is-dark .btn-glass is in the liquid-glass selector group)",
+        "WARN: both footer CTAs currently have NO href in code"
+      ],
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"], "restrictions": ["CTAs need real hrefs (content gap)"] }
+    }
+  ],
+  "nav": {
+    "name": "site-nav", "source": "web/src/lib/site-nav.ts", "kind": "data/types module (no component)",
+    "exports": {
+      "NavLink": "type { label, href }",
+      "SectionNav": "type { section, sectionHref?, links: NavLink[] }",
+      "NEWSROOM_NAV": "const SectionNav preset (Newsroom; /blog#latest|#loop|#more) — used by blog/layout only",
+      "LAUNCH_CTA": "const { label:'Launch App', href:'/#demo' } — PageHeader default cta"
+    },
+    "notes": ["per-page nav decentralized (each page declares local HEADER_NAV)", "LAUNCH_CTA.href '/#demo' is a documented placeholder (TODO real app URL)"],
+    "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+  }
+}

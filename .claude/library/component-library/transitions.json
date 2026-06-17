@@ -1,0 +1,36 @@
+{
+  "generated": "2026-06-17",
+  "layer": "L14",
+  "note": "OrangeGlow + MistBridge are structurally near-identical (negative top-margin, vw blooms, mix-blend:screen, overflow:visible, aria-hidden). A single prop-driven SectionBridge (variant: warm|mist) is the obvious extraction, but both are hard-wired to the home seam. Neither is in any registry. preparer records only; extraction goes to component-forge.",
+  "transitions": [
+    {
+      "name": "OrangeGlow", "source": "web/src/components/sections/OrangeGlow.tsx + globals.css ~1349-1789",
+      "from_surfaces": "dark (Problem .ink)", "to_surfaces": "white (Workflow)",
+      "type": "warm transition + soft gradient bridge + glow bloom", "static_or_motion": "motion (breath/pulse/spark/ember/orb + --glow-* scrub from ScrollOrchestrator)",
+      "overlap_depth": "negative margin-top, vw-sized", "clipping": "relies on body overflow:clip", "z_index": 11,
+      "mobile_fallback": "n/a (decorative)", "reduced_motion": "animation:none, pulse opacity .6",
+      "reusable": "page-local-candidate", "status": "live on home"
+    },
+    {
+      "name": "MistBridge", "source": "web/src/components/sections/MistBridge.tsx + globals.css ~1793-1869",
+      "from_surfaces": "dark", "to_surfaces": "white (neutral)",
+      "type": "mist / soft gradient bridge", "static_or_motion": "motion (mist-drift 18-26s)",
+      "overlap_depth": "negative top-margin, vw-sized", "clipping": "overflow:visible", "z_index": 8,
+      "reduced_motion": "animation:none", "reusable": "page-local-candidate",
+      "status": "DEAD — imported but JSX commented out in page.tsx ('kept for upcoming iteration'); styles live, never rendered"
+    },
+    {
+      "name": ".band.ink <-> .band.soft alternation", "source": "globals.css + page-design-patterns.md",
+      "from_surfaces": "light <-> dark", "to_surfaces": "dark <-> light", "type": "hard cut (surface swap)",
+      "static_or_motion": "static", "reduced_motion": "n/a", "reusable": true, "status": "canonical rhythm"
+    },
+    {
+      "name": "Hero bottom mask fade", "source": "globals.css", "from_surfaces": "hero media", "to_surfaces": "next",
+      "type": "masked divider (mask-image bottom fade)", "static_or_motion": "static", "reusable": true
+    },
+    {
+      "name": "section scrims / bottom-fades", "source": "globals.css (scrub-bottom-fade)", "from_surfaces": "scene", "to_surfaces": "next surface",
+      "type": "scrim / soft gradient bridge", "static_or_motion": "static", "reusable": true
+    }
+  ]
+}

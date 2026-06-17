@@ -1,0 +1,197 @@
+{
+  "generated": "2026-06-17",
+  "source_dir": "web/src/components/sections/lab/",
+  "catalog": "web/src/app/dev/section-lab/page.tsx",
+  "browser_qa": { "run": true, "widths": [1440, 1280, 768, 375], "page_overflow_px": 0, "console_errors": 0 },
+  "readiness_defaults": {
+    "build": "dev-server-compiled-ok (full pnpm build not run)",
+    "rendered_in_section_lab": true,
+    "light_dark": "confirmed",
+    "responsive": "confirmed",
+    "overflow": "confirmed"
+  },
+  "sections": [
+    {
+      "archetype_id": "01", "name": "LabStatementHero", "label": "Statement hero", "source_path": "sections/lab/LabStatementHero.tsx", "export_name": "LabStatementHero",
+      "versions": { "available": ["v1", "v2", "v3", "v4"], "default": "v1", "differences": "v1 type-led; v2/v3 CSS gradient/orb scenes; v4 cinema photo/video bg" },
+      "surfaces": { "available": ["soft", "ink"], "control": "NO surface prop — hardcoded `band soft`; surface toggled only via LabMarkers", "note": "API gap vs all other archetypes (CL gap)" },
+      "props": ["id?", "eyebrow*", "titleLead*", "titleAccent*", "titleTrail?", "sub*", "ctas*:{label,href,variant?}[]", "media*:{ratio,label,hint,ariaLabel}", "pattern?(=true)", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": "lead+accent+trail", "body": "sub", "cta": "array", "media": "v4 cinema tag" },
+      "media": { "supported": true, "modes": ["css-scene", "photo/video bg(v4)"], "primitive": "none (no MediaPlaceholder)" },
+      "motion": { "reveal": "data-reveal up + --reveal-delay", "scrub": false, "pin": false },
+      "semantic_matching": { "primary_roles": ["hook", "convert"], "content_shapes": ["short-heading", "media-led"], "intensity": { "visual": "high", "motion": "medium", "density": "low" }, "rhythm": { "good_before": ["statement", "process"], "avoid_adjacent_to": ["another hero"] } },
+      "known_issues": ["no surface prop (LabMarkers-only)", "v1 button glow ~67px contained artifact"],
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"], "restrictions": ["page-top only"] }
+    },
+    {
+      "archetype_id": "02", "name": "LabStatement", "label": "Statement", "source_path": "sections/lab/LabStatement.tsx", "export_name": "LabStatement",
+      "versions": { "available": ["index 0..n"], "default": "0", "differences": "version count = versions[].length (lab data: 2)" },
+      "surfaces": { "available": ["light", "ink"], "default": "ink", "control": "surface prop" },
+      "props": ["id?", "surface?(=ink)", "ariaLabel?", "versions*:LabContentSet<{eyebrow,text}>[]", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": "text", "body": "text", "content_modes": "placeholder/real (LabContentSet)" },
+      "media": { "supported": false },
+      "motion": { "reveal": "data-reveal up", "scrub": false, "pin": false },
+      "semantic_matching": { "primary_roles": ["explain", "hook"], "content_shapes": ["short-heading", "medium-body"], "intensity": { "visual": "low", "motion": "low", "density": "low" } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "03", "name": "LabPinnedSteps", "label": "Pinned multi-screen", "source_path": "sections/lab/LabPinnedSteps.tsx", "export_name": "LabPinnedSteps",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1", "differences": "v1 MediaPlaceholder; v3 scrubbed video" },
+      "surfaces": { "available": ["ink", "soft"], "default": "ink", "control": "surface prop" },
+      "props": ["id?(=process)", "surface?(=ink)", "ariaLabel*", "eyebrow*", "title*:{line1,line2,line2Accent?}", "sub*", "steps*:{num,label,desc}[]", "media*:{ratio,label,hint,ariaLabel}", "videoScrub?:{src,frames,poster?,ariaLabel}", "cta?:{label,href,variant?}", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "process": "steps[]", "media": true, "cta": true },
+      "media": { "supported": true, "modes": ["MediaPlaceholder", "scrub-video"], "poster": "videoScrub.poster" },
+      "motion": { "reveal": true, "pin": "data-pin + data-pin-steps/--steps", "scrub": "data-scrub-video(v3)", "reduced_motion": "pins to --pin=1" },
+      "semantic_matching": { "primary_roles": ["guide", "explain"], "content_shapes": ["process", "media-led"], "intensity": { "visual": "high", "motion": "high", "density": "medium" }, "rhythm": { "avoid_adjacent_to": ["another pinned/scrub section"] } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"], "restrictions": ["one pin per page recommended"] }
+    },
+    {
+      "archetype_id": "04", "name": "LabEditorialSplit", "label": "Editorial split", "source_path": "sections/lab/LabEditorialSplit.tsx", "export_name": "LabEditorialSplit",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1", "differences": "v1/v2 MediaPlaceholder; v3 CSS scene (role=img)" },
+      "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
+      "props": ["id?", "surface?(=light)", "ariaLabel?", "eyebrow*", "titleLead*", "titleAccent?", "titleTrail?", "sub*", "media*:{ratio,label,hint,ariaLabel}", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": "lead+accent+trail", "body": "sub", "media": true },
+      "media": { "supported": true, "modes": ["MediaPlaceholder", "css-scene(v3)"] },
+      "motion": { "reveal": "data-reveal left/right/up" },
+      "semantic_matching": { "primary_roles": ["explain"], "content_shapes": ["media-led", "medium-body"], "intensity": { "visual": "medium", "motion": "low", "density": "medium" } },
+      "known_issues": ["mobile(375): media-ph ~12px bleed, clipped (no page scrollbar)"],
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "05", "name": "LabSplitRing", "label": "Split ring / scoring", "source_path": "sections/lab/LabSplitRing.tsx", "export_name": "LabSplitRing",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1", "differences": "v3 pinned-style stages track" },
+      "surfaces": { "available": ["light", "ink"], "default": "ink", "control": "surface prop" },
+      "props": ["id?(=split-ring)", "surface?(=ink)", "ariaLabel?", "eyebrow*", "titleLead*", "titleAccent?", "titleTrail?", "sub*", "ring*:{label,value:number,caption}", "breakdown*:{label,value:number}[]", "breakdownCaption*", "media*:{ratio,label,hint,ariaLabel}", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "metrics": "ring + breakdown", "media": "css bg paired light/ink (scoring-matrix)" },
+      "media": { "supported": true, "modes": ["css background-image paired light/dark"] },
+      "motion": { "reveal": true, "scrub": "data-scrub -> --scrub (ring + bars fill)" },
+      "semantic_matching": { "primary_roles": ["prove"], "content_shapes": ["metrics"], "intensity": { "visual": "high", "motion": "high", "density": "medium" } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "06", "name": "LabGallery", "label": "Gallery rail", "source_path": "sections/lab/LabGallery.tsx", "export_name": "LabGallery",
+      "versions": { "available": ["v1", "v3"], "default": "v1", "differences": "NO v2; v3 adds scrub parallax + css backdrop (paired light/dark gallery-v3)" },
+      "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
+      "props": ["id?(=gallery)", "surface?(=light)", "ariaLabel?", "eyebrow*", "title*:string", "sub*", "laneLabel*", "items*:{tag,title,body}[]", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "media": "v3 css backdrop, photo hidden on mobile" },
+      "media": { "supported": true, "modes": ["css background-image paired (v3)"] },
+      "motion": { "reveal": true, "horizontal_scroll": "scroll-snap <ol> lane (intentional)", "scrub": "v3 parallax" },
+      "semantic_matching": { "primary_roles": ["prove", "explain"], "content_shapes": ["media-led", "list"], "intensity": { "visual": "high", "motion": "medium", "density": "high" } },
+      "known_issues": ["intentional horizontal scroll lane (card overflow by design, page-level overflow=0)"],
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"], "restrictions": ["only v1/v3 exist"] }
+    },
+    {
+      "archetype_id": "07", "name": "LabBento", "label": "Bento overview", "source_path": "sections/lab/LabBento.tsx", "export_name": "LabBento",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "ink", "control": "surface prop" },
+      "props": ["id?(=bento)", "surface?(=ink)", "ariaLabel?", "eyebrow*", "title*", "sub*", "items*:{tag,title,body,feature?,media?:{label,hint,ariaLabel}}[]", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "media": "feature tile MediaPlaceholder 16/9" },
+      "media": { "supported": true, "modes": ["MediaPlaceholder (feature tile)"] },
+      "motion": { "reveal": "data-reveal up/right/scale" },
+      "semantic_matching": { "primary_roles": ["explain"], "content_shapes": ["list", "media-led"], "intensity": { "visual": "medium", "motion": "low", "density": "high" } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "08", "name": "LabHubMap", "label": "Hub map / nav", "source_path": "sections/lab/LabHubMap.tsx", "export_name": "LabHubMap",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
+      "props": ["id?", "surface?(=light)", "ariaLabel?", "eyebrow*", "title*", "sub*", "items*:LabContentSet<{tag,title,body,href,feature?}[]>", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "links": "items[].href", "content_modes": "placeholder/real (LabContentSet)" },
+      "media": { "supported": false },
+      "motion": { "reveal": "head only (grids omit by design)" },
+      "semantic_matching": { "primary_roles": ["guide"], "content_shapes": ["list"], "intensity": { "visual": "medium", "motion": "low", "density": "high" } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"], "restrictions": ["needs real hrefs"] }
+    },
+    {
+      "archetype_id": "09", "name": "LabStatBand", "label": "Stat band", "source_path": "sections/lab/LabStatBand.tsx", "export_name": "LabStatBand",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "ink", "control": "surface prop" },
+      "props": ["id?", "surface?(=ink)", "ariaLabel?", "eyebrow*", "title*", "stats*:{value,label,src}[]", "media?:{ratio,label,hint,ariaLabel}", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "metrics": "stats[]", "media": "optional band" },
+      "media": { "supported": true, "modes": ["optional MediaPlaceholder"] },
+      "motion": { "reveal": "data-reveal up" },
+      "semantic_matching": { "primary_roles": ["prove"], "content_shapes": ["metrics"], "intensity": { "visual": "medium", "motion": "low", "density": "medium" } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "10", "name": "LabNumbered", "label": "Numbered list", "source_path": "sections/lab/LabNumbered.tsx", "export_name": "LabNumbered",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
+      "props": ["id?", "surface?(=light)", "ariaLabel?", "eyebrow*", "title*", "sub*", "items*:{num,title,body}[]", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "process": "items[]" },
+      "media": { "supported": false },
+      "motion": { "reveal": "data-reveal up staggered" },
+      "semantic_matching": { "primary_roles": ["explain", "guide"], "content_shapes": ["list", "process"], "intensity": { "visual": "low", "motion": "low", "density": "medium" } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "11", "name": "LabRiskControl", "label": "Risk -> control", "source_path": "sections/lab/LabRiskControl.tsx", "export_name": "LabRiskControl",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
+      "props": ["id?(=risk-control)", "surface?(=light)", "ariaLabel?", "eyebrow*", "title*", "sub*", "pairs*:{risk,control}[]", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "pairs": "risk/control" },
+      "media": { "supported": false },
+      "motion": { "reveal": "data-reveal up" },
+      "semantic_matching": { "primary_roles": ["prove", "compare"], "content_shapes": ["list"], "intensity": { "visual": "low", "motion": "low", "density": "medium" } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "12", "name": "LabQuietCta", "label": "Quiet CTA", "source_path": "sections/lab/LabQuietCta.tsx", "export_name": "LabQuietCta",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "ink", "control": "surface prop" },
+      "props": ["id?", "surface?(=ink)", "ariaLabel?", "eyebrow*", "title*", "sub*", "cta*:{label,href}", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "cta": "single" },
+      "media": { "supported": false },
+      "motion": { "reveal": "data-reveal up staggered" },
+      "semantic_matching": { "primary_roles": ["convert"], "content_shapes": ["short-heading"], "intensity": { "visual": "low", "motion": "low", "density": "low" }, "rhythm": { "good_before": ["footer"] } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "13", "name": "LabPricing", "label": "Pricing tiers", "source_path": "sections/lab/LabPricing.tsx", "export_name": "LabPricing",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
+      "props": ["id?", "surface?(=light)", "ariaLabel?", "eyebrow*", "title*", "sub*", "tiers*:{name,price,body,bullets:string[],recommended?}[]", "note?", "ctaLabel?(=Select)", "ctaHref?(=#pricing)", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "tiers": true, "cta": "per-tier" },
+      "media": { "supported": false },
+      "motion": { "reveal": "data-reveal up" },
+      "semantic_matching": { "primary_roles": ["convert", "compare"], "content_shapes": ["table"], "intensity": { "visual": "medium", "motion": "low", "density": "high" } },
+      "notes": ["prices must come from finmodel v0.4 source of truth, not research doc (see memory pricing-source-of-truth)"],
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "14", "name": "LabCompareTable", "label": "Compare table", "source_path": "sections/lab/LabCompareTable.tsx", "export_name": "LabCompareTable",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
+      "props": ["id?", "surface?(=light)", "ariaLabel?", "eyebrow*", "title*", "sub*", "columns*:string[]", "rows*:string[][]", "recommendedIndex?:number", "recommendedNote?", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "body": true, "table": "columns x rows" },
+      "media": { "supported": false },
+      "motion": { "reveal": true, "horizontal_scroll": ".lab-table__scroll focusable (intentional)" },
+      "semantic_matching": { "primary_roles": ["compare"], "content_shapes": ["table"], "intensity": { "visual": "medium", "motion": "low", "density": "high" } },
+      "known_issues": ["intentional horizontal scroll table on narrow widths (page-level overflow=0)"],
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "archetype_id": "15", "name": "Versus", "label": "Versus table", "source_path": "web/src/app/dev/section-lab/page.tsx (inline JSX <section class=\"band ink lab-versus\">)", "export_name": null,
+      "versions": { "available": [], "default": null },
+      "surfaces": { "available": ["ink"], "control": "hardcoded inline" },
+      "status_detail": "NOT a forged component — still inline JSX in the catalog page. Renders fine but has no prop-driven API.",
+      "classification": "component-api-gap",
+      "route_to": "component-forge",
+      "consumption_readiness": { "status": "unavailable", "reasons": ["inline JSX, no export, no props"], "allowed_consumers": [], "restrictions": ["must be forged into LabVersus before page-composer can use it"] }
+    },
+    {
+      "archetype_id": "16", "name": "LabFaq", "label": "FAQ", "source_path": "sections/lab/LabFaq.tsx", "export_name": "LabFaq",
+      "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
+      "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
+      "props": ["id?(=faq)", "surface?(=light)", "ariaLabel?", "eyebrow*", "title*", "items*:{q,a}[]", "marker?"],
+      "content_capacity": { "eyebrow": true, "heading": true, "faq": "items[]" },
+      "media": { "supported": false },
+      "motion": { "reveal": "data-reveal up" },
+      "semantic_matching": { "primary_roles": ["resolve"], "content_shapes": ["faq"], "intensity": { "visual": "low", "motion": "low", "density": "medium" }, "rhythm": { "good_before": ["quiet-cta", "footer"] } },
+      "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
+    }
+  ],
+  "inspector": {
+    "name": "LabMarkers", "source": "sections/lab/LabMarkers.tsx", "role": "dev-only inspector (returns null, injects per-section Light/Dark + version + Placeholder/Real controls; localStorage-persisted)", "is_archetype": false, "exclude_from_page_composer": true
+  }
+}

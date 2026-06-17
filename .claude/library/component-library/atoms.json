@@ -1,0 +1,71 @@
+{
+  "generated": "2026-06-17",
+  "source": "web/src/components/sections/lab/_kit.tsx, web/src/components/ui/Button.tsx, web/src/app/globals.css",
+  "note": "_kit.tsx exports EXACTLY these 3 components + 2 types. Docs claiming Chip/status/ring/score/counter atoms are wrong (see conflicts.json CL-002).",
+  "types": [
+    { "name": "LabContentMode", "source": "_kit.tsx", "shape": "\"placeholder\" | \"real\"", "role": "per-section content axis; LabMarkers flips data-content" },
+    { "name": "LabContentSet<T>", "source": "_kit.tsx", "shape": "{ placeholder: T; real: T }", "role": "payload existing in both modes; set[mode] picks one", "consumers": ["LabStatement", "LabHubMap"] }
+  ],
+  "atoms": [
+    {
+      "name": "LabEyebrow", "layer": "L3", "source": "_kit.tsx", "export": "LabEyebrow",
+      "props": [
+        { "name": "children", "type": "ReactNode", "required": true },
+        { "name": "reveal", "type": "\"up\"|\"left\"|\"right\"|\"scale\"", "required": false },
+        { "name": "delay", "type": "number(ms)", "required": false, "note": "-> --reveal-delay; only with reveal" }
+      ],
+      "content_role": "mono kicker label", "visual_role": ".eyebrow + lens .dot",
+      "motion": "optional self-reveal (data-reveal)", "theme": "surface-invariant (inherits)",
+      "consumers": "all Lab* heads"
+    },
+    {
+      "name": "LabTitle", "layer": "L3", "source": "_kit.tsx", "export": "LabTitle",
+      "props": [
+        { "name": "title", "type": "string", "required": true },
+        { "name": "accent", "type": "string", "required": false, "note": "wraps FIRST case-insensitive match in .grad-word (<=1 grad-word; markup-only, never a content change)" },
+        { "name": "reveal", "type": "\"up\"|\"left\"|\"right\"|\"scale\"", "required": false },
+        { "name": "delay", "type": "number(ms)", "required": false }
+      ],
+      "content_role": "section heading (h2.title)", "visual_role": "fluid clamp heading + optional lens grad-word",
+      "motion": "optional self-reveal", "theme": "surface-invariant",
+      "consumers": "all Lab* heads"
+    },
+    {
+      "name": "MediaPlaceholder", "layer": "L3/L11", "source": "_kit.tsx", "export": "MediaPlaceholder",
+      "props": [
+        { "name": "ratio", "type": "string(css aspect-ratio)", "required": true, "note": "-> --ratio" },
+        { "name": "label", "type": "string", "required": true },
+        { "name": "hint", "type": "string", "required": true },
+        { "name": "ariaLabel", "type": "string", "required": true },
+        { "name": "className", "type": "string", "required": false },
+        { "name": "reveal", "type": "reveal token", "required": false }
+      ],
+      "content_role": "media slot placeholder (figure role=img)", "visual_role": "dashed .media-ph with diagonal hatch + soft-lens",
+      "motion": "optional self-reveal", "theme": "surface-invariant",
+      "consumers": ["LabPinnedSteps(v1)", "LabEditorialSplit", "LabBento(feature tile)", "LabStatBand"]
+    }
+  ],
+  "global_primitives": [
+    {
+      "name": "Button", "layer": "L2", "source": "web/src/components/ui/Button.tsx", "export": "default",
+      "variants": ["primary", "ghost", "glass", "dark", "gradient"], "default_variant": "primary",
+      "sizes": ["md", "sm"],
+      "props": [
+        { "name": "variant", "type": "variant union", "required": false, "default": "primary", "note": "omit => bare .btn styled by context" },
+        { "name": "size", "type": "\"md\"|\"sm\"", "required": false, "default": "md" },
+        { "name": "arrow", "type": "boolean", "required": false, "note": "trailing animated arrow" },
+        { "name": "href", "type": "string", "required": false, "note": "/-prefixed => next/link; else <a>; absent => <button>" },
+        { "name": "className", "type": "string", "required": false },
+        { "name": "children", "type": "ReactNode", "required": true }
+      ],
+      "themes": "no theme prop; contextual via CSS",
+      "constraints": [
+        "variant=glass MUST render the shared liquid-glass material (one multi-selector group in globals.css ~736-825): .hero .cta-row .btn, .site-header__cta.btn, .foot.is-dark .btn-glass, .horse-ctas .btn-glass, .cta-band .btn-glass, .section-lab .lab-hero.ink .cta-row .btn. The flat base .btn-glass (line 337) is NOT this look. New glass surfaces MUST be added to that group, never restyled locally."
+      ]
+    }
+  ],
+  "css_primitives_reference": [
+    ".wrap (max-width container)", ".eyebrow + .dot", ".title", ".grad-word", ".chip + .tick",
+    ".stage / .stage-pad", ".panel (+ h4, .tag)", ".media-ph (+ __label/__hint)"
+  ]
+}

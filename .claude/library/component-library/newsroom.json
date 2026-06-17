@@ -1,0 +1,43 @@
+{
+  "generated": "2026-06-17",
+  "layer": "L9",
+  "note": "Distinct consumption contracts from LabGallery — do NOT conflate. Data is Supabase-backed by default with static in-repo fallback (BLOG_SOURCE env).",
+  "data_layer": {
+    "facade": "web/src/lib/blog.ts (client-safe: type re-exports + formatDate; value re-exports server getters)",
+    "server": "web/src/lib/blog.server.ts (import 'server-only'; BLOG_SOURCE: supabase(default)->cms/queries | static->blog-static.ts)",
+    "getters": ["getAllPosts", "getPostBySlug", "getRelatedPosts", "getLoopPosts", "getFeaturedPosts"],
+    "types": "web/src/lib/cms/types.ts: Post{slug,category,accent,title,excerpt,date,readMinutes,cover,author,role,body(Markdown)}; LoopPost{id,kind,author,initials,accent,caption,cover,video?,photos?,date,href}; Category=Press Release|Product|Research; Accent=violet|cyan|aqua|orange (Block type @deprecated)"
+  },
+  "components": [
+    {
+      "name": "ArticleCard", "source": "web/src/components/blog/ArticleCard.tsx", "role": "story tile (server component)",
+      "props": ["post:Post", "variant?:'feature'|'grid'|'list'(=grid)", "priority?:bool"],
+      "variants": ["feature(hero+excerpt)", "grid(standard)", "list(compact,no image)"],
+      "media": "next/image fill, sizes differ feature/grid; renders CategoryTag", "interaction": "links /blog/{slug}",
+      "data_source": "Post", "suitable_for": "newsroom grids, related posts, contact recent-posts",
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "name": "CategoryTag", "source": "web/src/components/blog/CategoryTag.tsx", "role": "category pill",
+      "props": ["category:Category", "accent:Accent"], "data_source": "Category",
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "name": "AllNewsGrid", "source": "web/src/components/blog/AllNewsGrid.tsx", "role": "paginated grid (client)",
+      "props": ["posts:Post[]"], "interaction": "PAGE_SIZE 12, 'Show more' +12 (useState)", "data_source": "Post[]",
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "name": "MoreFromNewsroom", "source": "web/src/components/blog/MoreFromNewsroom.tsx", "role": "'More from Newsroom' 3-tile block",
+      "props": "none", "data_source": "hardcoded MORE_LINKS (all -> /blog/all)", "id": "more",
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["build-pages"], "restrictions": ["links hardcoded"] }
+    },
+    {
+      "name": "InTheLoop", "source": "web/src/components/blog/InTheLoop.tsx", "role": "social repost rail + modal (client)",
+      "props": ["posts:LoopPost[]"], "variants": ["VideoCard(dark,hover-play)", "PhotoCard(light,zoom)", "PopupGallery(carousel)"],
+      "interaction": "paged horizontal rail (scroll-snap, dots/arrows); modal via createPortal; deep-link ?loop=<id>; body-scroll lock; Esc/arrows; per-post 'Share' -> post.href",
+      "data_source": "LoopPost[]", "id": "loop",
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    }
+  ]
+}

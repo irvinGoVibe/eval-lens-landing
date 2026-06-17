@@ -107,8 +107,8 @@
 | Слой | Где | Назначение |
 |---|---|---|
 | Токены | `globals.css :root`, DS `tokens/` | цвет/типо/радиусы/тени/градиенты |
-| **Атомы** | `sections/lab/_kit.tsx` | Eyebrow, Title(+grad-word), MediaPlaceholder, Chip, status-чип, ring, score, counter |
-| **Каркасы (layout)** | `sections/lab/_layout.tsx` | `Band(surface)`, `Wrap`, `SplitGrid`, `BentoGrid`, `GalleryRail`, `PinnedStage` |
+| **Атомы** | `sections/lab/_kit.tsx` | **фактически только** `LabEyebrow`, `LabTitle`(+grad-word), `MediaPlaceholder` (+ типы `LabContentMode`/`LabContentSet`). Chip/status-чип/ring/score/counter в коде НЕ существуют — конфликт CL-002, источник истины = код |
+| **Каркасы (layout)** | `sections/lab/_layout.tsx` — **файла нет** (`documented-missing`, конфликт CL-001) | Обещанные `Band/Wrap/SplitGrid/BentoGrid/GalleryRail/PinnedStage` **не реализованы**. Сегодня есть только CSS `.wrap`/`.stage` + инлайн-гриды в `Lab*`. До форджа `_layout.tsx` page-composer работает в режиме `whole-sections-only` |
 | **Секции** | `sections/lab/Lab*.tsx` | тонкие рецепты из атомов+каркасов (таблица выше) |
 | Страницы | `app/**/page.tsx` (`build-pages`) | сборка из секций И/ИЛИ атомов+каркасов напрямую |
 
@@ -123,3 +123,49 @@
   табы v1/v2/v3 + тумблер Light/Dark (выбор в localStorage).
 - **Surface-инвариант:** внутри версии light и ink совпадают по геометрии,
   различие — только цвет (см. `component-forge/kb/surface-invariant.md`).
+
+## Source of truth для page-composer (preparer)
+
+Реестр выше — **forge-процесс** (статусы `forged/draft` = прошёл ли forge-validate).
+**Consumption-готовность** для `page-composer` / `build-pages` живёт в
+нормализованных манифестах, которые ведёт момент
+[component-library-preparer](../../.claude/skills/component-library-preparer/SKILL.md):
+
+```
+.claude/library/component-library/
+  manifest.json · sections.json · atoms.json · layouts.json · chrome.json ·
+  motion.json · newsroom.json · social.json · backgrounds.json ·
+  transitions.json · production-patterns.json · conflicts.json · README.md
+```
+
+**Модель слоёв (14):** tokens · global-primitives · lab-atoms · layouts ·
+lab-sections · production-sections · chrome · nav · newsroom · social · media ·
+motion · backgrounds · transitions. Подробные API-контракты — в манифестах, не
+здесь.
+
+**Readiness-политика:** компонент `ready` только если ОДНОВРЕМЕННО source+export
+есть, отрендерен в Section Lab, пропсы разобраны, версии+поверхности подтверждены,
+**browser QA выполнен**, build ok, light/dark ok, responsive ok, horizontal-overflow
+ok, media-контракт известен, contract полон. `page-composer` берёт **только `ready`**;
+`conditional` — лишь с явным fallback; `unavailable` — нельзя.
+
+**Compose-mode: `whole-sections-only`** — пока нет `_layout.tsx`, собирать только
+цельные `Lab*`, не смешанные блоки из выдуманных каркасов.
+
+**Browser QA (preparer, 2026-06-17, :3005 `/dev/section-lab`):** 1440/1280/768/375 —
+page-level horizontal overflow = 0; переключение версий и Light/Dark подтверждено
+вживую; console без ошибок; build = dev-compiled (полный `pnpm build` не запускался).
+Итог: **15 выкованных Lab-секций → `ready`**; интенциональный horizontal-scroll —
+у Gallery (06) и Compare-table (14). **Архетип 15 (Versus) → `unavailable`**: всё
+ещё инлайн-JSX в `page.tsx`, требует форджа в `LabVersus`.
+
+**Конфликты docs↔code (источник истины = код, фиксируются в `conflicts.json`):**
+CL-001 `_layout.tsx` documented-missing · CL-002 атомы `_kit` переоценены ·
+CL-003 home-order упоминает выключенный MistBridge · CL-004 3D-примитивы
+(UnicornScene/Stage, BentoHorse) + dead-code (FinalUnicorn/Trust/Results) не
+задокументированы · CL-005 CLAUDE.md «CMS нет» устарел (Supabase default) ·
+CL-006 `LabStatementHero` без `surface`-пропа (→ component-forge).
+
+**Обновление:** одно изменилось → `/component-library-preparer "<имя|путь>"`
+(single-target, правит только эту запись). Полный пересбор → `… "full"`.
+`forge-index` дёргает single-target после регистрации нового архетипа.

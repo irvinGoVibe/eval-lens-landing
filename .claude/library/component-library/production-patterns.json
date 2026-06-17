@@ -1,0 +1,29 @@
+{
+  "generated": "2026-06-17",
+  "layer": "L6",
+  "note": "Two parallel section systems: hand-authored cinematic home sections (components/sections/*, orchestrated by ScrollOrchestrator) vs the prop-driven Lab* archetype library. No production page consumes a Lab* component yet. Only 4 routes use production sections: / , /bento, /dev/newsroom, /dev/section-lab. product/trust/company/pricing pages are built from PageHeader+Footer+ScrollFX+Button+inline band markup (the source of section-types 1-20).",
+  "home_order": ["Hero", "Problem", "OrangeGlow", "(MistBridge commented out)", "Workflow", "Decisions", "HomeBlogBlock", "EvalLenseBentoSection", "CtaBand"],
+  "blocks": [
+    { "component": "Hero", "source": "sections/Hero.tsx", "routes": ["/"], "visual_role": "full-bleed video hero + unicorn overlay + CTA row", "closest_lab": "LabStatementHero(01)", "classification": "intentional-page-local", "flag": "3D/video bg" },
+    { "component": "Problem", "source": "sections/Problem.tsx", "routes": ["/"], "visual_role": "scroll-scrub pinned: deck files -> ranked matrix", "closest_lab": "LabPinnedSteps(03)/LabStatement(02)", "classification": "missing-library-pattern" },
+    { "component": "OrangeGlow", "source": "sections/OrangeGlow.tsx", "routes": ["/"], "visual_role": "warm bloom transition layer", "closest_lab": null, "classification": "intentional-page-local", "flag": "L14 transition" },
+    { "component": "MistBridge", "source": "sections/MistBridge.tsx", "routes": ["/(commented out)"], "visual_role": "mist wash transition", "closest_lab": null, "classification": "intentional-page-local", "flag": "L14 transition; DORMANT" },
+    { "component": "Workflow", "source": "sections/Workflow.tsx", "routes": ["/"], "visual_role": "pinned multi-step rail (entry point)", "closest_lab": "LabPinnedSteps(03)", "classification": "supported-variation" },
+    { "component": "Decisions", "source": "sections/Decisions.tsx", "routes": ["/"], "visual_role": "pinned scroll-driven step rail (reports)", "closest_lab": "LabPinnedSteps(03)", "classification": "supported-variation" },
+    { "component": "HomeBlogBlock", "source": "sections/HomeBlogBlock.tsx", "routes": ["/", "/dev/newsroom"], "visual_role": "featured posts -> Newsroom carousel", "closest_lab": "newsroom(18, no Lab*)", "classification": "component-api-gap", "flag": "no Lab newsroom/carousel" },
+    { "component": "NewsroomCarousel", "source": "sections/NewsroomCarousel.tsx", "routes": ["via HomeBlogBlock(+Dark)"], "visual_role": "client horizontal card carousel", "closest_lab": null, "classification": "composed-from-atoms/missing-library-pattern" },
+    { "component": "HomeBlogBlockClassic", "source": "sections/HomeBlogBlockClassic.tsx", "routes": ["/dev/newsroom"], "visual_role": "3-up ArticleCard grid (legacy)", "closest_lab": "newsroom(18)", "classification": "intentional-page-local" },
+    { "component": "HomeBlogBlockDark", "source": "sections/HomeBlogBlockDark.tsx", "routes": ["/dev/newsroom"], "visual_role": "dark carousel variant", "closest_lab": null, "classification": "supported-variation" },
+    { "component": "EvalLenseBentoSection", "source": "sections/EvalLenseBentoSection.tsx", "routes": ["/", "/bento"], "visual_role": "Apple-style dark bento, full-bleed art, live 3D orb tile", "closest_lab": "LabBento(07)", "classification": "composed-from-atoms", "flag": "richer than LabBento; uses BentoEpicTitle + BentoHorse" },
+    { "component": "BentoEpicTitle", "source": "sections/BentoEpicTitle.tsx", "routes": ["via EvalLenseBentoSection"], "visual_role": "scroll-docking typed heading + gradient card title", "closest_lab": null, "classification": "missing-library-pattern", "flag": "own rAF, not in ScrollOrchestrator" },
+    { "component": "BentoHorse", "source": "sections/BentoHorse.tsx", "routes": ["via EvalLenseBentoSection"], "visual_role": "lazy WebGL mount for bento orb", "closest_lab": null, "classification": "intentional-page-local", "flag": "3D" },
+    { "component": "CtaBand", "source": "sections/CtaBand.tsx", "routes": ["/"], "visual_role": "prop-driven CTA band; video-bg/CSS-aurora variants", "closest_lab": "LabQuietCta(12)", "classification": "component-api-gap", "flag": "LabQuietCta has no video/aurora bg; CtaBand in test mode (cycles candidate bg videos)" },
+    { "component": "UnicornScene", "source": "sections/UnicornScene.tsx", "routes": ["via BentoHorse + UnicornStage"], "visual_role": "R3F/three unicorn head + bloom", "closest_lab": null, "classification": "intentional-page-local", "flag": "3D" },
+    { "component": "UnicornStage", "source": "sections/UnicornStage.tsx", "routes": ["via FinalUnicorn(dead)"], "visual_role": "lazy-mount stage for UnicornScene", "closest_lab": null, "classification": "intentional-page-local", "flag": "3D; only consumer is dead" },
+    { "component": "FinalUnicorn", "source": "sections/FinalUnicorn.tsx", "routes": [], "visual_role": "dark finale + UnicornStage + CTA", "closest_lab": "LabStatement(02)+3D", "classification": "intentional-page-local", "flag": "DEAD CODE (orphaned)" },
+    { "component": "Trust", "source": "sections/Trust.tsx", "routes": [], "visual_role": "trust-center grid (methodology/decision/evidence)", "closest_lab": "LabBento(07)/LabRiskControl(11)", "classification": "missing-library-pattern", "flag": "DEAD CODE (orphaned)" },
+    { "component": "Results", "source": "sections/Results.tsx", "routes": [], "visual_role": "'two outcomes' split-output stage", "closest_lab": "LabEditorialSplit(04)", "classification": "supported-variation", "flag": "DEAD CODE (orphaned)" }
+  ],
+  "dead_code": ["FinalUnicorn", "Trust", "Results", "UnicornStage(reachable only via FinalUnicorn)"],
+  "stale_import": "MistBridge imported in page.tsx but JSX commented out"
+}

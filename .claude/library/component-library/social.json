@@ -1,0 +1,32 @@
+{
+  "generated": "2026-06-17",
+  "layer": "L10",
+  "note": "Channel set (X / Instagram / Telegram / Medium, all @evallense) is hard-duplicated in Footer and contact page -> candidate-for-extraction. preparer only records; does NOT extract.",
+  "social": [
+    {
+      "name": "Footer SOCIALS", "source": "web/src/components/Footer.tsx (SOCIALS const, rendered .foot-social)",
+      "purpose": "footer follow icons", "data_shape": "{name, href, svgPath}[]",
+      "external_links": ["x.com/evallense", "instagram.com/evallense/", "t.me/evallense", "medium.com/@evallense"],
+      "accessibility": "<a target=_blank rel=noopener noreferrer aria-label={name}>, <svg aria-hidden>",
+      "media_support": "inline simple-icons SVG", "variants": "icon-only",
+      "classification": "candidate-for-extraction (duplicated with contact)"
+    },
+    {
+      "name": "Contact SOCIALS", "source": "web/src/app/company/contact/page.tsx (SOCIALS const, .ct-social__links)",
+      "purpose": "follow buttons (Button variant=ghost + glyph)", "data_shape": "identical set/handles",
+      "external_links": ["same set as Footer"],
+      "accessibility": "Button target=_blank rel=noopener noreferrer; <svg aria-hidden>; label text beside glyph",
+      "media_support": "inline SVG", "variants": "button+label",
+      "classification": "candidate-for-extraction (duplicate of Footer; differs only in chrome <a> vs Button)",
+      "flag": "in-code comment: confirm handles before launch; no LinkedIn/GitHub anywhere"
+    },
+    {
+      "name": "InTheLoop share link", "source": "web/src/components/blog/InTheLoop.tsx",
+      "purpose": "per-post share link to original social post", "data_shape": "dynamic active.href (LoopPost.href)",
+      "external_links": ["dynamic per post"],
+      "accessibility": "<a target=_blank rel=noopener noreferrer> 'Share ↗'",
+      "classification": "embedded-set (data-driven per item, not a channel list)"
+    }
+  ],
+  "extraction_recommendation": "If extracted later (via component-forge, NOT here): shared SOCIALS data + a SocialLinks component with a render-shape prop (<a> vs Button)."
+}

@@ -1,0 +1,21 @@
+{
+  "generated": "2026-06-17",
+  "layer": "L4",
+  "expected_source": "web/src/components/sections/lab/_layout.tsx",
+  "status": "documented-missing",
+  "severity": "blocker-for-atom-composition",
+  "compose_mode": "whole-sections-only",
+  "documented_exports": ["Band(surface)", "Wrap", "SplitGrid", "BentoGrid", "GalleryRail", "PinnedStage"],
+  "actual_exports": [],
+  "evidence": {
+    "file_exists": false,
+    "docs_claim": "wiki/architecture/component-library.md:111 lists _layout.tsx with all 6 exports",
+    "docs_contradiction": "same doc footnote 4 (lines 62-64) says _layout.tsx / BentoGrid deliberately NOT created"
+  },
+  "realized_equivalents_today": [
+    "CSS .wrap / .stage in globals.css",
+    "per-component inline grids inside each Lab*.tsx"
+  ],
+  "consequence": "page-composer MUST NOT assemble mixed blocks from invented layout shells. Only whole Lab* sections are composable until _layout.tsx is forged and exports are confirmed.",
+  "conflict_ref": "CL-001"
+}

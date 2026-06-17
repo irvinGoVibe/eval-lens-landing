@@ -1,0 +1,51 @@
+{
+  "$schema": "./manifest.schema (informal)",
+  "generated": "2026-06-17",
+  "generator": "component-library-preparer (full)",
+  "product": "EvalLense landing",
+  "purpose": "Normalized source-of-truth inventory of the live UI library. Consumed by page-composer (only `ready`), build-pages, component-forge (gaps), forge-index (incremental refresh).",
+  "compose_mode": "whole-sections-only",
+  "compose_mode_reason": "Layout layer (sections/lab/_layout.tsx) does not exist; atoms-and-layouts composition is blocked until forged. page-composer must use whole Lab* sections.",
+  "browser_qa": {
+    "run": true,
+    "url": "http://localhost:3005/dev/section-lab",
+    "widths": [1440, 1280, 768, 375],
+    "console_errors": 0,
+    "page_level_horizontal_overflow_px": 0,
+    "version_switching": "confirmed (v1->v2 live)",
+    "light_dark_switching": "confirmed (soft->ink live)",
+    "note": "Full `pnpm build` not run (forbidden without explicit user permission); build status = dev-server-compiled-ok."
+  },
+  "readiness_policy": "A component is `ready` only when ALL hold: source+export exist, rendered in Section Lab, props parsed, versions+surfaces confirmed, browser QA run, build ok, light/dark ok, responsive ok, horizontal-overflow ok, media contract known, consumption contract complete. page-composer consumes ONLY `ready`; `conditional` requires an explicit fallback.",
+  "layers": {
+    "L1_tokens": { "manifest": "(inlined in component-library.md + globals.css)", "count": 60, "status": "indexed", "note": "no z-index token group; spacing only --gutter/--maxw" },
+    "L2_global_primitives": { "manifest": "atoms.json#global_primitives", "count": 1, "items": ["Button"] },
+    "L3_atoms": { "manifest": "atoms.json", "count": 3, "items": ["LabEyebrow", "LabTitle", "MediaPlaceholder"] },
+    "L4_layouts": { "manifest": "layouts.json", "count": 0, "status": "documented-missing" },
+    "L5_lab_sections": { "manifest": "sections.json", "count": 16, "forged_components": 15, "inline_gap": 1 },
+    "L6_production_sections": { "manifest": "production-patterns.json", "count": 19, "dead": 3 },
+    "L7_chrome": { "manifest": "chrome.json", "count": 4 },
+    "L8_nav": { "manifest": "chrome.json#nav", "count": 1 },
+    "L9_newsroom": { "manifest": "newsroom.json", "count": 5 },
+    "L10_social": { "manifest": "social.json", "count": 3 },
+    "L11_media": { "manifest": "atoms.json#MediaPlaceholder", "count": 1 },
+    "L12_motion": { "manifest": "motion.json", "count": 2 },
+    "L13_backgrounds": { "manifest": "backgrounds.json", "count": 13 },
+    "L14_transitions": { "manifest": "transitions.json", "count": 5 }
+  },
+  "summary": {
+    "lab_sections_total": 16,
+    "lab_production_ready": 15,
+    "lab_inline_gap": 1,
+    "conditional": 0,
+    "draft": 0,
+    "blocked": 0,
+    "registry_code_conflicts": 6,
+    "dead_code": ["FinalUnicorn", "Trust", "Results"]
+  },
+  "manifests": [
+    "sections.json", "atoms.json", "layouts.json", "chrome.json", "motion.json",
+    "newsroom.json", "social.json", "backgrounds.json", "transitions.json",
+    "production-patterns.json", "conflicts.json"
+  ]
+}
