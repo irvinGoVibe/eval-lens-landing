@@ -25,9 +25,16 @@ metadata:
    demo-content режимы переключаются; media switching (light/dark, desktop/mobile)
    корректно; соседние архетипы не сломаны; нет duplicate primitives; нет случайных
    правок shared-файлов.
+4. **Library refresh** — после записи в реестр пометить/вызвать
+   `component-library-preparer` в incremental-режиме на этот компонент
+   (`/component-library-preparer "<ComponentName>"`): обновить его consumption
+   contract + readiness и затронутые manifests в `.claude/library/component-library/`.
+   Полный анализ библиотеки **не** запускать.
 
 ## Definition of done
 - [ ] Строка архетипа в `component-library.md` (со статусом + demo-media).
 - [ ] Строка типа в `section-types.md` актуальна.
 - [ ] LabMarkers: V1/V2/V3 + Light/Dark + demo-content режимы работают.
 - [ ] Нет дублей примитивов и случайных shared-file изменений. Код не трогали.
+- [ ] `component-library-preparer` incremental-refresh помечен/выполнен для архетипа
+  (consumption contract + readiness + manifests актуальны).
