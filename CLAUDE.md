@@ -34,6 +34,14 @@ When the user does ask:
   fragment animations into per-section `useEffect`s; cross-section scrub /
   parallax / progress need one shared rAF loop.
 - Sections are Server Components under `web/src/components/sections/`.
+- **`Lab*` section styles are scoped under `.section-lab`** — virtually all
+  `.lab-*` layout/typography rules in `globals.css` are written as
+  `.section-lab .lab-*` (~500+ rules). **Any page that renders `Lab*` components
+  (or `.lab-*` markup) MUST put `section-lab` on its container** (e.g.
+  `<main className="<page> section-lab">`), otherwise the section styles don't
+  apply — headings collapse to default (~17px), no centering, no background
+  pattern. This bit `/dev/visual-lab` and `/dev/vivid-demo`; `build-pages` /
+  `page-composer` and any engineer composing `Lab*` into a page must include it.
 - Global styles live in `web/src/app/globals.css` (legacy CSS extracted from
   `index.html`). Tailwind v4 is installed and tokens exposed via `@theme inline`
   for incremental migration — new code can use either Tailwind utilities or
