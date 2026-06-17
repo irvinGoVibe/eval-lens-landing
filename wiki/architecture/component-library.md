@@ -16,6 +16,7 @@
 | # | Архетип | Компонент | Ключевые пропсы | Версии | Поверхности | Demo-media (L/D · dt/mb · poster) | Статус | Обновлён |
 |---|---|---|---|---|---|---|---|---|
 | 01 | Statement hero | `sections/lab/LabStatementHero.tsx` | eyebrow, title, sub, media | v1–v4 | light/ink | — | forged | — |
+| 02 | Full-bleed statement | `sections/lab/LabStatement.tsx` | versions[] (`LabContentSet<{eyebrow,text}>`), surface | v1–v2 | light/ink | — | draft⁶ | 2026-06-17 |
 | 03 | Pinned multi-screen | `sections/lab/LabPinnedSteps.tsx` | steps[], pinSteps | v1–v3 | light/ink | — | forged | — |
 | 04 | Editorial split | `sections/lab/LabEditorialSplit.tsx` | eyebrow, titleLead(+accent/trail), sub, media | v1–v3 | light/ink | `.media-ph` (demo TBD) | forged¹ | 2026-06-17 |
 | 05 | Editorial split + scrub-ring | `sections/lab/LabSplitRing.tsx` | ring, breakdown[], media | v1–v3 | light/ink | scoring-matrix ↔ light-scoring-matrix (из `_demo-pool`, через object-fit)² | forged | 2026-06-17 |
@@ -25,6 +26,10 @@
 | 09 | Stat band / counters | `sections/lab/LabStatBand.tsx` | eyebrow, title, stats[], media, surface | v1–v3 | light/ink | `.media-ph` 21:9 band (demo TBD) | draft⁵ | 2026-06-17 |
 | 10 | Editorial numbered list | `sections/lab/LabNumbered.tsx` | eyebrow, title, sub, items[] | v1–v3 | light/ink | — | draft⁵ | 2026-06-17 |
 | 11 | Risk → control grid | `sections/lab/LabRiskControl.tsx` | eyebrow, title, sub, pairs[] | v1–v3 | light/ink | — | draft⁵ | 2026-06-17 |
+| 12 | Quiet CTA band | `sections/lab/LabQuietCta.tsx` | eyebrow, title, sub, cta, surface | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
+| 13 | Pricing tiers | `sections/lab/LabPricing.tsx` | eyebrow, title, sub, tiers[], note, ctaLabel/Href | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
+| 14 | Comparison table | `sections/lab/LabCompareTable.tsx` | eyebrow, title, sub, columns[], rows[][], recommendedIndex | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
+| 16 | FAQ list | `sections/lab/LabFaq.tsx` | eyebrow, title, items[] (q/a) | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
 
 > ¹ Архетип 04 — «дореформенный» пилот (до полного pipeline Фаз 0–8 / demo-media /
 > двух гейтов); подлежит перековке по обновлённому `component-forge`.
@@ -75,7 +80,23 @@
 > **не валидированы вживую** (особенно стоит проверить 08·v3 — feature-hero на
 > `grid-row:1/4`). После живой проверки user → статус `forged`.
 
-> Архетипы 02, 12–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
+> ⁶ Архетипы 02, 12, 13, 14, 16 выкованы пачкой через **component-forge-batch**
+> (batch `20260617-1348-batch-02-16`), тем же сериализованным writer-моделью.
+> **02 Full-bleed statement** — особый: сохранены **2 версии** (это демо
+> content-оси с РАЗНОЙ копией по версиям; v3 не добавлен — потребовал бы выдумать
+> новое продуктовое утверждение, запрещено Contract Lock); пропсы — массив
+> `versions[]`, каждая с placeholder/real. **12/13/14/16** — полная лестница v1/v2/v3:
+> v1 = точная экстракция, v2 Modern Recomposition, v3 Expanded Expressive; заголовок
+> запинен per-version. `LabTitle` расширен (опциональные `reveal`/`delay`) — нужно
+> для пер-элементного стаггера 12. Кнопки 12/13 — общий `Button` (12 default; 13
+> primary/ghost). Таблица 14 держит overflow-safe scroll-контейнер (`min-width`)
+> во всех версиях. **Render-QA:** в этом прогоне dev-сервер УЖЕ работал на :3005
+> (приложение user'а) — выполнена **read-only HTTP-проверка рендера** (route
+> компилируется и отдаёт 200, без preview-панели/build). Полный визуальный QA
+> (скриншоты, L/D pixel-parity) и `pnpm build` — по-прежнему отложены; статус
+> `draft`. **Advisory:** ghost-кнопка 13 на ink-поверхности визуально не проверена.
+
+> Архетипы 15, 17–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
 > ждут прогона через component-forge.
 
 ## Слои библиотеки (единица переиспользования зависит от слоя)

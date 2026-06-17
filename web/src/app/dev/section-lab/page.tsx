@@ -3,18 +3,22 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import { LabBento } from "@/components/sections/lab/LabBento";
+import { LabCompareTable } from "@/components/sections/lab/LabCompareTable";
 import { LabEditorialSplit } from "@/components/sections/lab/LabEditorialSplit";
+import { LabFaq } from "@/components/sections/lab/LabFaq";
 import { LabGallery } from "@/components/sections/lab/LabGallery";
 import { LabHubMap } from "@/components/sections/lab/LabHubMap";
 import { LabMarkers } from "@/components/sections/lab/LabMarkers";
 import { LabNumbered } from "@/components/sections/lab/LabNumbered";
 import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
+import { LabPricing } from "@/components/sections/lab/LabPricing";
+import { LabQuietCta } from "@/components/sections/lab/LabQuietCta";
 import { LabRiskControl } from "@/components/sections/lab/LabRiskControl";
 import { LabSplitRing } from "@/components/sections/lab/LabSplitRing";
 import { LabStatBand } from "@/components/sections/lab/LabStatBand";
+import { LabStatement } from "@/components/sections/lab/LabStatement";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
 import type { LabContentSet } from "@/components/sections/lab/_kit";
-import { Button } from "@/components/ui/Button";
 import type { SectionNav } from "@/lib/site-nav";
 
 export const metadata: Metadata = {
@@ -258,18 +262,48 @@ const TABLE_ROWS = [
 ];
 
 const FAQ_ITEMS = [
-  [
-    "Is this page production-facing?",
-    "No. It is a dev route for composing, inspecting and moving finished sections into real pages.",
-  ],
-  [
-    "Can a section use real media later?",
-    "Yes. Every placeholder is ratio-locked so a generated or filmed asset can drop in without layout shift.",
-  ],
-  [
-    "Why keep tables and legal prose here?",
-    "They are section types in the system too, and they need the same spacing, typography and responsive checks.",
-  ],
+  {
+    q: "Is this page production-facing?",
+    a: "No. It is a dev route for composing, inspecting and moving finished sections into real pages.",
+  },
+  {
+    q: "Can a section use real media later?",
+    a: "Yes. Every placeholder is ratio-locked so a generated or filmed asset can drop in without layout shift.",
+  },
+  {
+    q: "Why keep tables and legal prose here?",
+    a: "They are section types in the system too, and they need the same spacing, typography and responsive checks.",
+  },
+];
+
+const TABLE_COLUMNS = ["Section type", "Free", "Standard", "Pro", "Enterprise"];
+
+/**
+ * Reference block for the Content axis (02 · Full-bleed statement). The two saved
+ * versions intentionally carry different statements (this is the demo of the
+ * axis), each with a neutral `placeholder` and a `real` EvalLense payload.
+ */
+const STATEMENT_VERSIONS = [
+  {
+    placeholder: {
+      eyebrow: "02 · Full-bleed statement",
+      text: "Internal pages should feel sequenced, not stacked: a visitor moves through scale changes, visual evidence and quiet decisions.",
+    },
+    real: {
+      eyebrow: "Human-controlled evaluation",
+      text: "EvalLense scores every pitch deck and prepares the evidence — the final decision always stays with your team.",
+    },
+  },
+  {
+    placeholder: {
+      eyebrow: "02 · Full-bleed statement",
+      text: "A page is a sequence of decisions — each section earns the next scroll, or it should not be on the page.",
+    },
+    real: {
+      eyebrow: "Consistent by design",
+      text: "Every deck gets the same structured review, so your shortlist reflects the evidence — not the order the decks arrived in.",
+    },
+  },
 ];
 
 export default function SectionLabPage() {
@@ -296,60 +330,12 @@ export default function SectionLabPage() {
           }}
         />
 
-        {/* Reference block for the Content axis (simple text). Each version
-            renders BOTH content modes; the active one is shown by CSS via the
-            root's data-content. (Version stays the design axis; content is the
-            payload axis — they are independent.) */}
-        <section
-          className="band ink lab-statement"
-          data-marker="02 · Full-bleed statement"
-          data-content="placeholder"
-        >
-          <div className="wrap lab-statement__inner" data-version="1" data-reveal="up">
-            <div data-content-variant="placeholder">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                02 · Full-bleed statement
-              </span>
-              <p className="lab-statement__text">
-                Internal pages should feel sequenced, not stacked: a visitor moves
-                through scale changes, visual evidence and quiet decisions.
-              </p>
-            </div>
-            <div data-content-variant="real">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Human-controlled evaluation
-              </span>
-              <p className="lab-statement__text">
-                EvalLense scores every pitch deck and prepares the evidence — the
-                final decision always stays with your team.
-              </p>
-            </div>
-          </div>
-          <div className="wrap lab-statement__inner" data-version="2" data-reveal="up" hidden>
-            <div data-content-variant="placeholder">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                02 · Full-bleed statement
-              </span>
-              <p className="lab-statement__text">
-                A page is a sequence of decisions — each section earns the next
-                scroll, or it should not be on the page.
-              </p>
-            </div>
-            <div data-content-variant="real">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Consistent by design
-              </span>
-              <p className="lab-statement__text">
-                Every deck gets the same structured review, so your shortlist
-                reflects the evidence — not the order the decks arrived in.
-              </p>
-            </div>
-          </div>
-        </section>
+        <LabStatement
+          surface="ink"
+          marker="02 · Full-bleed statement"
+          ariaLabel="Full-bleed statement — content-axis reference"
+          versions={STATEMENT_VERSIONS}
+        />
 
         <LabPinnedSteps
           id="process"
@@ -492,130 +478,41 @@ export default function SectionLabPage() {
           pairs={RISK_CONTROLS}
         />
 
-        <section className="band ink lab-quiet-cta" data-marker="12 · Quiet CTA band">
-          <div className="wrap head">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              12 · Quiet CTA band
-            </span>
-            <h2
-              className="title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              End a page with one calm next step
-            </h2>
-            <p
-              className="sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              No extra cards here. Just the next action and enough context to
-              make it feel deliberate.
-            </p>
-            <div
-              className="sect-cta"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
-            </div>
-          </div>
-        </section>
+        <LabQuietCta
+          surface="ink"
+          marker="12 · Quiet CTA band"
+          ariaLabel="Quiet CTA band — closing call to action"
+          eyebrow="12 · Quiet CTA band"
+          title="End a page with one calm next step"
+          sub="No extra cards here. Just the next action and enough context to make it feel deliberate."
+          cta={{ label: "Book a Demo", href: "/#demo" }}
+        />
 
-        <section className="band soft lab-pricing" data-marker="13 · Pricing tiers">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                13 · Pricing tiers
-              </span>
-              <h2 className="title">Pricing cards need clear hierarchy</h2>
-              <p className="sub">
-                One recommended card can carry the lens surface. The rest stay
-                quiet and comparable.
-              </p>
-            </div>
-            <ul className="lab-pricing__grid" data-reveal="up">
-              {PRICING_TIERS.map((tier) => (
-                <li
-                  key={tier.name}
-                  className={
-                    tier.recommended
-                      ? "lab-pricing__card lab-pricing__card--recommended"
-                      : "lab-pricing__card"
-                  }
-                >
-                  {tier.recommended ? <span className="chip">Recommended</span> : null}
-                  <h3>{tier.name}</h3>
-                  <strong>{tier.price}</strong>
-                  <p>{tier.body}</p>
-                  <ul className="lab-pricing__bullets">
-                    {tier.bullets.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
-                  <Button href="#pricing" variant={tier.recommended ? "primary" : "ghost"}>
-                    Select
-                  </Button>
-                </li>
-              ))}
-            </ul>
-            <p className="lab-pricing__note" data-reveal="up">
-              Smaller one-off and education plans are available on request.
-            </p>
-          </div>
-        </section>
+        <LabPricing
+          surface="light"
+          marker="13 · Pricing tiers"
+          ariaLabel="Pricing tiers — plan cards"
+          eyebrow="13 · Pricing tiers"
+          title="Pricing cards need clear hierarchy"
+          sub="One recommended card can carry the lens surface. The rest stay quiet and comparable."
+          tiers={PRICING_TIERS}
+          note="Smaller one-off and education plans are available on request."
+          ctaLabel="Select"
+          ctaHref="#pricing"
+        />
 
-        <section className="band soft lab-table" data-marker="14 · Comparison table">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                14 · Comparison table
-              </span>
-              <h2 className="title">Dense comparison stays tabular</h2>
-              <p className="sub">
-                Feature matrices should scroll inside their own container on
-                narrow screens.
-              </p>
-            </div>
-            <div className="lab-table__scroll" data-reveal="up" tabIndex={0}>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Section type</th>
-                    <th>Free</th>
-                    <th className="lab-table__reco">
-                      Standard
-                      <span className="lab-table__note">recommended</span>
-                    </th>
-                    <th>Pro</th>
-                    <th>Enterprise</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {TABLE_ROWS.map((row) => (
-                    <tr key={row[0]}>
-                      {row.map((cell, index) =>
-                        index === 0 ? (
-                          <th key={`${row[0]}-${index}`}>{cell}</th>
-                        ) : (
-                          <td
-                            key={`${row[0]}-${index}`}
-                            className={index === 2 ? "lab-table__reco" : undefined}
-                          >
-                            {cell}
-                          </td>
-                        ),
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
+        <LabCompareTable
+          surface="light"
+          marker="14 · Comparison table"
+          ariaLabel="Comparison table — features by plan"
+          eyebrow="14 · Comparison table"
+          title="Dense comparison stays tabular"
+          sub="Feature matrices should scroll inside their own container on narrow screens."
+          columns={TABLE_COLUMNS}
+          rows={TABLE_ROWS}
+          recommendedIndex={2}
+          recommendedNote="recommended"
+        />
 
         <section className="band ink lab-versus" data-marker="15 · Versus table">
           <div className="wrap">
@@ -651,25 +548,15 @@ export default function SectionLabPage() {
           </div>
         </section>
 
-        <section id="faq" className="band soft lab-faq" data-marker="16 · FAQ list">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                16 · FAQ list
-              </span>
-              <h2 className="title">Questions stay calm and scannable</h2>
-            </div>
-            <dl className="lab-faq__grid" data-reveal="up">
-              {FAQ_ITEMS.map(([q, a]) => (
-                <div key={q}>
-                  <dt>{q}</dt>
-                  <dd>{a}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </section>
+        <LabFaq
+          id="faq"
+          surface="light"
+          marker="16 · FAQ list"
+          ariaLabel="FAQ list"
+          eyebrow="16 · FAQ list"
+          title="Questions stay calm and scannable"
+          items={FAQ_ITEMS}
+        />
 
       </main>
       <Footer />

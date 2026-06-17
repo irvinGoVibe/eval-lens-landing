@@ -69,15 +69,33 @@ export function LabEyebrow({
  * pre-existing inline copy in `LabBento` is functionally identical and may adopt
  * this helper in a later pass.
  */
-export function LabTitle({ title, accent }: { title: string; accent?: string }) {
+export function LabTitle({
+  title,
+  accent,
+  reveal,
+  delay,
+}: {
+  title: string;
+  accent?: string;
+  /** Attach `data-reveal` directly to the heading (when it animates on its own). */
+  reveal?: "up" | "left" | "right" | "scale";
+  /** `--reveal-delay` in ms (only meaningful with `reveal`). */
+  delay?: number;
+}) {
+  const style =
+    delay != null ? ({ "--reveal-delay": `${delay}ms` } as CSSProperties) : undefined;
   if (!accent) {
-    return <h2 className="title">{title}</h2>;
+    return (
+      <h2 className="title" data-reveal={reveal} style={style}>
+        {title}
+      </h2>
+    );
   }
   const words = title.split(" ");
   const target = accent.toLowerCase();
   let done = false;
   return (
-    <h2 className="title">
+    <h2 className="title" data-reveal={reveal} style={style}>
       {words.map((word, i) => {
         const space = i > 0 ? " " : "";
         if (!done && word.toLowerCase() === target) {
