@@ -11,8 +11,12 @@ library. Human-readable overview lives in
   fallback; `unavailable` is off-limits.
 - **build-pages** — assembles internal pages from `ready` contracts.
 - **component-forge** — picks up `component-api-gap` / inline items to forge.
-- **forge-index** — calls the preparer in incremental single-target mode after
+- **forge-index** — calls the preparer in targeted incremental mode after
   registering a new archetype (updates one entry, not the whole library).
+- **visual-layer-forge** — authors backgrounds (L13) / transitions (L14) / motion
+  (L12) / composition recipes (L15) and registers each via the preparer in
+  targeted incremental mode (`library_registration_request` task packet). A
+  resource is not `ready` until `registration.status: completed`.
 
 ## Files
 | File | Layer | Contents |
@@ -29,6 +33,7 @@ library. Human-readable overview lives in
 | `transitions.json` | L14 | OrangeGlow (live), MistBridge (dead), band alternation, masks/scrims |
 | `production-patterns.json` | L6 | 19 production blocks classified vs Lab; dead code flagged |
 | `conflicts.json` | — | 6 docs↔code conflicts (code = SoT for runtime API) |
+| `recipes.json` | L15 | composition recipes (proven surface+background+transition+motion combos); scaffold — authored by visual-layer-forge, normalized + registered here |
 
 ## Key facts (2026-06-17)
 - **Compose mode: `whole-sections-only`** — `_layout.tsx` does not exist, so
@@ -43,6 +48,14 @@ library. Human-readable overview lives in
   (selector group in `globals.css`) — see `atoms.json` Button constraint.
 
 ## Updating
-- One thing changed → `/component-library-preparer "<name|path>"` (single-target;
-  rewrites only that entry + touched manifests).
-- Full re-scan → `/component-library-preparer "full"`.
+- One thing changed → `/component-library-preparer "<id|name|path>"` (**targeted
+  incremental**; accepts a background/transition/motion/recipe ID, a layer name,
+  an export/source path, or an unambiguous description; rewrites only that entry +
+  touched manifests). Several comma-separated targets run as independent updates.
+- Only what git changed → `/component-library-preparer "changed"` (reads git diff,
+  updates only affected library resources, handles rename/delete; no full scan).
+- Full re-scan → `/component-library-preparer` (no args) or `… "full"`.
+- A resource reaches `consumption_readiness: ready` only when
+  `registration.status: completed` AND build evidence is honest (`dev-compiled` is
+  not `passed`). Targeted/changed writes are draft-first (narrow audit → confirm),
+  unless the user says "skip draft" / "publish immediately".

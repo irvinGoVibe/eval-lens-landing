@@ -16,7 +16,7 @@
     "light_dark_switching": "confirmed (soft->ink live)",
     "note": "Full `pnpm build` not run (forbidden without explicit user permission); build status = dev-server-compiled-ok."
   },
-  "readiness_policy": "A component is `ready` only when ALL hold: source+export exist, rendered in Section Lab, props parsed, versions+surfaces confirmed, browser QA run, build ok, light/dark ok, responsive ok, horizontal-overflow ok, media contract known, consumption contract complete. page-composer consumes ONLY `ready`; `conditional` requires an explicit fallback.",
+  "readiness_policy": "A component is `ready` only when ALL hold: source+export exist, rendered in Section Lab, props parsed, versions+surfaces confirmed, browser QA run, build ok, light/dark ok, responsive ok, horizontal-overflow ok, media contract known, consumption contract complete. page-composer consumes ONLY `ready`; `conditional` requires an explicit fallback. ALSO: `ready` requires registration.status=completed and honest build evidence (`dev-compiled` != `passed`); a recipe is `ready` only when all member backgrounds/transitions/motion are themselves `ready` + registered.",
   "layers": {
     "L1_tokens": { "manifest": "(inlined in component-library.md + globals.css)", "count": 60, "status": "indexed", "note": "no z-index token group; spacing only --gutter/--maxw" },
     "L2_global_primitives": { "manifest": "atoms.json#global_primitives", "count": 1, "items": ["Button"] },
@@ -31,7 +31,8 @@
     "L11_media": { "manifest": "atoms.json#MediaPlaceholder", "count": 1 },
     "L12_motion": { "manifest": "motion.json", "count": 2 },
     "L13_backgrounds": { "manifest": "backgrounds.json", "count": 14 },
-    "L14_transitions": { "manifest": "transitions.json", "count": 6 }
+    "L14_transitions": { "manifest": "transitions.json", "count": 6 },
+    "L15_recipes": { "manifest": "recipes.json", "count": 0, "status": "scaffold (no recipes yet; authored by visual-layer-forge, normalized + registered here)" }
   },
   "summary": {
     "lab_sections_total": 16,
@@ -55,7 +56,7 @@
       { "id": "tr-grid-continuation", "layer": "L14", "status": "blocked-by-surface-ownership" }
     ],
     "unblock_condition": "Lab sections support transparent/inherit surface -> component-forge -> visual-layer-forge targeted -> shared page backgrounds enabled",
-    "recipes_layer": { "id": "L15_recipes", "manifest": "recipes.json", "status": "deferred (no composition recipes until the first product page); not yet created" }
+    "recipes_layer": { "id": "L15_recipes", "manifest": "recipes.json", "status": "created (scaffold; empty recipes[]); composition-recipe layer is now part of the library model" }
   },
   "manifests": [
     "sections.json", "atoms.json", "layouts.json", "chrome.json", "motion.json",

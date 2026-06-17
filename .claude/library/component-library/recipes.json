@@ -1,0 +1,30 @@
+{
+  "generated": "2026-06-17",
+  "layer": "L15",
+  "kind": "composition-recipes",
+  "note": "Recipe = proven compatible combo of section surface + background (L13) + transition (L14) + motion (L12). NOT a page template, NOT a React component. Authored by visual-layer-forge, normalized into this schema + registered here by component-library-preparer. A recipe is `ready` ONLY when all member backgrounds/transitions/motion are themselves `ready` AND registration.status=completed.",
+  "schema_fields": [
+    "id", "name", "purpose", "source",
+    "sequence[{section_surface, background, transition_after, motion}]",
+    "dependencies{backgrounds[], transitions[], motion[]}",
+    "best_for[]", "unsuitable_for[]", "responsive", "mobile_fallback", "reduced_motion",
+    "known_constraints[]",
+    "dependency_status{status, missing[], conditional[], needs_recheck[]}",
+    "registration{status, registered_by, manifest, target_id, checked_at}",
+    "readiness{contract_complete, dependency_check, browser_qa, registration}",
+    "consumption_readiness{status, reasons[], allowed_consumers[], restrictions[]}"
+  ],
+  "field_mapping_visual_layer_forge": {
+    "avoid_when": "unsuitable_for",
+    "note": "visual-layer-forge §8.4 authors {id,name,sequence,best_for,avoid_when,responsive}; preparer normalizes avoid_when->unsuitable_for, derives dependencies/* from sequence, aggregates mobile_fallback/reduced_motion worst-case from member contracts, and adds purpose/source/registration/dependency_status/readiness."
+  },
+  "recipes": [],
+  "planned": [
+    { "id": "recipe-calm-product", "status": "not-created", "purpose": "calm product explanation" },
+    { "id": "recipe-dense-evidence", "status": "not-created", "purpose": "dense evidence page" },
+    { "id": "recipe-trust-methodology", "status": "not-created", "purpose": "trust & methodology" },
+    { "id": "recipe-cinematic-break", "status": "not-created", "purpose": "light-to-dark cinematic break" },
+    { "id": "recipe-quiet-conversion", "status": "not-created", "purpose": "quiet conversion ending" }
+  ],
+  "surface_ownership_note": "Page-level recipes that depend on bg-shared-page-grid / tr-grid-continuation are blocked-by-surface-ownership until Lab sections support a transparent/inherit surface (unblock: component-forge -> transparent-or-inherit-surface-api). Such recipes are registered but never handed to Page Orchestrator as `ready`."
+}

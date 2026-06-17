@@ -148,8 +148,18 @@ Page Orchestrator. Контракты — в `backgrounds.json` (L13) / `transit
 `Lab sections support transparent/inherit surface → component-forge →
 visual-layer-forge targeted → shared page backgrounds enabled`. Section API не трогается.
 
-**Recipes (L15, отложено):** `recipes.json` появится после первой продуктовой
-страницы — в v1 composition recipes ещё нет.
+**Recipes (L15):** слой composition-recipes добавлен в модель библиотеки;
+`recipes.json` создан как scaffold (пустой `recipes[]` — в v1 рецептов ещё нет).
+Recipe = проверенная комбинация `section surface + background + transition + motion`
+(ссылки на ID из L13/L14/L12), а не page template и не компонент. Авторит
+`visual-layer-forge`, нормализует и регистрирует `component-library-preparer`.
+**Dependency-gate:** recipe не получает `ready`, если любой из его background/
+transition/motion отсутствует, не зарегистрирован или не `ready`; при изменении
+участника зависимые recipes помечаются `needs-recheck`. **Registration-gate:**
+ни один ресурс не `ready`, пока `registration.status != completed`. Page-level
+backlog `bg-shared-page-grid` / `tr-grid-continuation` (`surface_ownership.status:
+blocked-by-surface-ownership`) регистрируется, но Page Orchestrator'у как `ready`
+не отдаётся.
 
 ## Source of truth для page-composer (preparer)
 
@@ -162,13 +172,13 @@ visual-layer-forge targeted → shared page backgrounds enabled`. Section API н
 .claude/library/component-library/
   manifest.json · sections.json · atoms.json · layouts.json · chrome.json ·
   motion.json · newsroom.json · social.json · backgrounds.json ·
-  transitions.json · production-patterns.json · conflicts.json · README.md
+  transitions.json · recipes.json · production-patterns.json · conflicts.json · README.md
 ```
 
-**Модель слоёв (14):** tokens · global-primitives · lab-atoms · layouts ·
+**Модель слоёв (15):** tokens · global-primitives · lab-atoms · layouts ·
 lab-sections · production-sections · chrome · nav · newsroom · social · media ·
-motion · backgrounds · transitions. Подробные API-контракты — в манифестах, не
-здесь.
+motion · backgrounds · transitions · **composition-recipes (L15)**. Подробные
+API-контракты — в манифестах, не здесь.
 
 **Readiness-политика:** компонент `ready` только если ОДНОВРЕМЕННО source+export
 есть, отрендерен в Section Lab, пропсы разобраны, версии+поверхности подтверждены,
@@ -193,6 +203,10 @@ CL-003 home-order упоминает выключенный MistBridge · CL-004
 задокументированы · CL-005 CLAUDE.md «CMS нет» устарел (Supabase default) ·
 CL-006 `LabStatementHero` без `surface`-пропа (→ component-forge).
 
-**Обновление:** одно изменилось → `/component-library-preparer "<имя|путь>"`
-(single-target, правит только эту запись). Полный пересбор → `… "full"`.
-`forge-index` дёргает single-target после регистрации нового архетипа.
+**Обновление:** одно изменилось → `/component-library-preparer "<id|имя|путь>"`
+(**targeted incremental** — принимает ID фона/перехода/motion/recipe, имя слоя,
+путь к source или однозначное описание; правит только эту запись; несколько целей
+через запятую — последовательно). Только изменённое по git → `… "changed"`
+(git diff, rename/delete, без full scan). Полный пересбор → без аргументов или
+`… "full"`. `forge-index` и `visual-layer-forge` дёргают targeted incremental
+после регистрации нового ресурса.
