@@ -356,11 +356,13 @@ export default function ProductOverviewPage() {
         />
 
         {/* §8 — Final CTA. Cinematic closer: CtaBand on the dark (ink) theme with
-            its animated CSS aurora (violet · cyan · lavender) and `bleed` so the
-            background spills onto the footer — the single ink peak of the page. */}
+            a looping background video (`neo`) and `bleed` so it spills onto the
+            footer — the single ink peak of the page. `auroraVariant` stays as the
+            CSS fallback when the video can't play. */}
         <CtaBand
           theme="dark"
           bleed
+          videoSrc="/assets/cta/neo.mp4"
           auroraVariant="violet"
           eyebrow="Get started"
           title="See the whole workflow on"

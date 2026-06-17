@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
+import { DevInspector } from "@/components/DevInspector";
 
 export const metadata: Metadata = {
   title: "EvalLense — Lens Your Next Unicorn",
@@ -64,7 +65,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: safariDetect }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        {process.env.NODE_ENV !== "production" && <DevInspector />}
+      </body>
     </html>
   );
 }
