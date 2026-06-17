@@ -20,6 +20,7 @@ updated: 2026-06-15
   - [[sitemap|Карта сайта]] — структура сайта: conversion page, product, trust, company
 - **Architecture** (`architecture/`) — устройство системы, данные, доменные правила
   - [[system|System]] — поверхности, стек, маршруты, данные, интеграции
+  - [[agents-orchestrators|Agents & Orchestrators]] — карта всех агентов, скиллов-оркестраторов и команд: что делают, как работают, как складываются в пайплайны
   - [[design-system|Design System]] — токены, цвет, типографика, компоненты; опора для внутренних страниц
   - [[page-design-patterns|Page Design Patterns]] — как собирать внутренние страницы: архетипы, ритм, scroll-движок, QA
   - [[section-types|Section Types]] — визуальный каталог типов секций со скриншотами (что реально используется)
@@ -51,7 +52,7 @@ updated: 2026-06-15
 
 ## Агенты
 
-Субагенты Claude Code (определения — `.claude/agents/`, оркестрация — [[agent-workflow|Agent Workflow]]):
+Полная карта агентов + скиллов-оркестраторов + команд — [[agents-orchestrators|Agents & Orchestrators]]. Ниже — проектные субагенты story-flow (определения — `.claude/agents/`, оркестрация — [[agent-workflow|Agent Workflow]]):
 
 - **`repo-reader`** — read-only анализ репозитория
 - **`story-writer`** — черновик story по шаблону
