@@ -21,6 +21,10 @@
 | 05 | Editorial split + scrub-ring | `sections/lab/LabSplitRing.tsx` | ring, breakdown[], media | v1–v3 | light/ink | scoring-matrix ↔ light-scoring-matrix (из `_demo-pool`, через object-fit)² | forged | 2026-06-17 |
 | 06 | Horizontal gallery | `sections/lab/LabGallery.tsx` | eyebrow, title, sub, laneLabel, items[] | v1, v3 | light/ink | v3 only: `06-horizontal-gallery/gallery-v3-{light,dark}-desktop.webp` (ambient backdrop под generated-CSS scrim; v1 — без медиа; mobile — CSS-градиент)³ | forged | 2026-06-17 |
 | 07 | Bento overview | `sections/lab/LabBento.tsx` | eyebrow, title, sub, items[] (feature + media), surface | v1–v3 | light/ink | `.media-ph` fallback на обе темы (asset-gap; paired light/dark lens-grid generation brief на файле)⁴ | forged | 2026-06-17 |
+| 08 | Bento link tiles (hub map) | `sections/lab/LabHubMap.tsx` | eyebrow, title, sub, items (`LabContentSet<LabHubLink[]>`), surface | v1–v3 | light/ink | — (тайлы-ссылки; своего медиа-слота нет) | draft⁵ | 2026-06-17 |
+| 09 | Stat band / counters | `sections/lab/LabStatBand.tsx` | eyebrow, title, stats[], media, surface | v1–v3 | light/ink | `.media-ph` 21:9 band (demo TBD) | draft⁵ | 2026-06-17 |
+| 10 | Editorial numbered list | `sections/lab/LabNumbered.tsx` | eyebrow, title, sub, items[] | v1–v3 | light/ink | — | draft⁵ | 2026-06-17 |
+| 11 | Risk → control grid | `sections/lab/LabRiskControl.tsx` | eyebrow, title, sub, pairs[] | v1–v3 | light/ink | — | draft⁵ | 2026-06-17 |
 
 > ¹ Архетип 04 — «дореформенный» пилот (до полного pipeline Фаз 0–8 / demo-media /
 > двух гейтов); подлежит перековке по обновлённому `component-forge`.
@@ -54,7 +58,24 @@
 > `BentoGrid` намеренно **не создан** — grid инлайн (один потребитель; см. карту
 > Фазы 2).
 
-> Архетипы 02, 08–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
+> ⁵ Архетипы 08–11 выкованы пачкой через **component-forge-batch** (batch
+> `20260617-1326-batch-08-11`) одним сериализованным writer'ом (все четыре правят
+> общие файлы — `page.tsx`, `globals.css`, реестр — поэтому запись инвариантно
+> concurrency-1). Каждый — три версии (**v1 Polish** = точная экстракция инлайна +
+> добавлена surface-инвариантная перекраска противоположной темы; **v2 Modern
+> Recomposition** / **v3 Expanded Expressive** — по лестнице смелости, заголовок
+> запинен per-version, т.к. глобальный `.ink .title` крупнее). Общий атом
+> **`LabTitle`** (title + один lens-accent word) вынесен в `_kit.tsx` (5 потребителей;
+> инлайн-`Title` в `LabBento` функционально идентичен — кандидат на адопцию later).
+> Контент-инвариант: у 08 сохранён content-axis (placeholder/real через
+> `LabContentSet`), у 09 — медиа-band 21:9 (`MediaPlaceholder`), у 10/11 — без медиа.
+> **Статус `draft` (не `forged`):** живой Render-QA (forge-validate) **не выполнен** —
+> старт dev-сервера на :3005 запрещён CLAUDE.md без явной просьбы user, на :3005
+> ничего не слушало. v1 — экстракция гарантированной точности; v2/v3 авторские, но
+> **не валидированы вживую** (особенно стоит проверить 08·v3 — feature-hero на
+> `grid-row:1/4`). После живой проверки user → статус `forged`.
+
+> Архетипы 02, 12–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
 > ждут прогона через component-forge.
 
 ## Слои библиотеки (единица переиспользования зависит от слоя)

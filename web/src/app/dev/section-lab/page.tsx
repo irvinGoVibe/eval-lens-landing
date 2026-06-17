@@ -5,9 +5,13 @@ import { ScrollFX } from "@/components/ScrollFX";
 import { LabBento } from "@/components/sections/lab/LabBento";
 import { LabEditorialSplit } from "@/components/sections/lab/LabEditorialSplit";
 import { LabGallery } from "@/components/sections/lab/LabGallery";
+import { LabHubMap } from "@/components/sections/lab/LabHubMap";
 import { LabMarkers } from "@/components/sections/lab/LabMarkers";
+import { LabNumbered } from "@/components/sections/lab/LabNumbered";
 import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
+import { LabRiskControl } from "@/components/sections/lab/LabRiskControl";
 import { LabSplitRing } from "@/components/sections/lab/LabSplitRing";
+import { LabStatBand } from "@/components/sections/lab/LabStatBand";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
 import type { LabContentSet } from "@/components/sections/lab/_kit";
 import { Button } from "@/components/ui/Button";
@@ -193,11 +197,29 @@ const NUMBERED_ITEMS = [
   },
 ];
 
+const STAT_ITEMS = [
+  { value: "375", label: "mobile width", src: "QA · iPhone SE" },
+  { value: "768", label: "tablet width", src: "QA · iPad portrait" },
+  { value: "1280", label: "desktop width", src: "QA · laptop" },
+];
+
 const RISK_CONTROLS = [
-  ["Flat repetition", "Alternate scale: statement, split, pinned, gallery, table."],
-  ["Invisible asset gaps", "Use visible `.media-ph` placeholders with target ratios."],
-  ["Scroll regressions", "Use shared data attributes and reduced-motion fallbacks."],
-  ["Mobile overflow", "Constrain grid children, labels and media slots with min-width rules."],
+  {
+    risk: "Flat repetition",
+    control: "Alternate scale: statement, split, pinned, gallery, table.",
+  },
+  {
+    risk: "Invisible asset gaps",
+    control: "Use visible `.media-ph` placeholders with target ratios.",
+  },
+  {
+    risk: "Scroll regressions",
+    control: "Use shared data attributes and reduced-motion fallbacks.",
+  },
+  {
+    risk: "Mobile overflow",
+    control: "Constrain grid children, labels and media slots with min-width rules.",
+  },
 ];
 
 const PRICING_TIERS = [
@@ -424,152 +446,51 @@ export default function SectionLabPage() {
           items={BENTO_ITEMS}
         />
 
-        <section
-          className="band soft lab-hubmap"
-          data-marker="08 · Bento link tiles"
-          data-content="placeholder"
-        >
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                08 · Bento link tiles
-              </span>
-              <h2 className="title">A hub map sends readers deeper</h2>
-              <p className="sub">
-                Hub pages use bento tiles as navigation, not decoration. Each
-                tile is a real link into a child page.
-              </p>
-            </div>
-            {/* Reference block for the Content axis (card array). Both grids
-                render; CSS shows the one matching the root's data-content.
-                (No data-reveal on the grids — a display:none variant never
-                fires its IntersectionObserver, so it would stay hidden when
-                switched in; the section head above keeps the reveal.) */}
-            {(["placeholder", "real"] as const).map((mode) => (
-              <div key={mode} className="lab-link-grid" data-content-variant={mode}>
-                {HUB_LINK_CONTENT[mode].map((item) => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className={
-                      item.feature
-                        ? "lab-link-card lab-link-card--feature"
-                        : "lab-link-card"
-                    }
-                  >
-                    <span className="mini-tag">{item.tag}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.body}</p>
-                    <span className="lab-link-card__more">Open route →</span>
-                  </a>
-                ))}
-              </div>
-            ))}
-          </div>
-        </section>
+        <LabHubMap
+          surface="light"
+          marker="08 · Bento link tiles"
+          ariaLabel="Bento link tiles — hub map navigation"
+          eyebrow="08 · Bento link tiles"
+          title="A hub map sends readers deeper"
+          sub="Hub pages use bento tiles as navigation, not decoration. Each tile is a real link into a child page."
+          items={HUB_LINK_CONTENT}
+        />
 
-        <section className="band ink lab-stats" data-marker="09 · Stat band / counters">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                09 · Stat band / counters
-              </span>
-              <h2 className="title">Every candidate section gets checked</h2>
-            </div>
-            <ul className="lab-stats__grid" data-reveal="up">
-              <li>
-                <strong>375</strong>
-                <span>mobile width</span>
-                <span className="lab-stats__src">QA · iPhone SE</span>
-              </li>
-              <li>
-                <strong>768</strong>
-                <span>tablet width</span>
-                <span className="lab-stats__src">QA · iPad portrait</span>
-              </li>
-              <li>
-                <strong>1280</strong>
-                <span>desktop width</span>
-                <span className="lab-stats__src">QA · laptop</span>
-              </li>
-            </ul>
-            <figure
-              className="media-ph lab-stats__band"
-              style={{ ["--ratio" as string]: "21/9" }}
-              data-reveal="up"
-              role="img"
-              aria-label="Benchmark band visual slot"
-            >
-              <span className="media-ph__label">Image · benchmark band · 21:9</span>
-              <span className="media-ph__hint">
-                Wide stat band — repeated runs as stable bars on a dark surface.
-              </span>
-            </figure>
-          </div>
-        </section>
+        <LabStatBand
+          surface="ink"
+          marker="09 · Stat band / counters"
+          ariaLabel="Stat band — QA viewport benchmarks"
+          eyebrow="09 · Stat band / counters"
+          title="Every candidate section gets checked"
+          stats={STAT_ITEMS}
+          media={{
+            ratio: "21/9",
+            label: "Image · benchmark band · 21:9",
+            hint: "Wide stat band — repeated runs as stable bars on a dark surface.",
+            ariaLabel: "Benchmark band visual slot",
+          }}
+        />
 
-        <section className="band soft lab-numbered" data-marker="10 · Editorial numbered list">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                10 · Editorial numbered list
-              </span>
-              <h2 className="title">Principles read better as editorial lines</h2>
-              <p className="sub">
-                Use this when the content is a compact manifesto, method or
-                ordered set of principles.
-              </p>
-            </div>
-            <ol className="lab-numbered__list">
-              {NUMBERED_ITEMS.map((item, index) => (
-                <li
-                  key={item.num}
-                  data-reveal="up"
-                  style={{ ["--reveal-delay" as string]: `${index * 90}ms` }}
-                >
-                  <span>{item.num}</span>
-                  <div>
-                    <h3>{item.title}</h3>
-                    <p>{item.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
+        <LabNumbered
+          surface="light"
+          marker="10 · Editorial numbered list"
+          ariaLabel="Editorial numbered list — page principles"
+          eyebrow="10 · Editorial numbered list"
+          title="Principles read better as editorial lines"
+          sub="Use this when the content is a compact manifesto, method or ordered set of principles."
+          items={NUMBERED_ITEMS}
+        />
 
-        <section id="risk-control" className="band soft lab-risk" data-marker="11 · Risk → control grid">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                11 · Risk → control grid
-              </span>
-              <h2 className="title">Pair the failure mode with the guardrail</h2>
-              <p className="sub">
-                This format works for trust pages: each row names a risk and
-                the specific system control that keeps it bounded.
-              </p>
-            </div>
-            <div className="lab-risk__grid" data-reveal="up">
-              {RISK_CONTROLS.map(([risk, control]) => (
-                <div key={risk} className="lab-risk__row">
-                  <div>
-                    <span className="mini-tag">Risk</span>
-                    <strong>{risk}</strong>
-                  </div>
-                  <div>
-                    <span className="mini-tag">Control</span>
-                    <p>{control}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <LabRiskControl
+          id="risk-control"
+          surface="light"
+          marker="11 · Risk → control grid"
+          ariaLabel="Risk to control grid — failure modes and guardrails"
+          eyebrow="11 · Risk → control grid"
+          title="Pair the failure mode with the guardrail"
+          sub="This format works for trust pages: each row names a risk and the specific system control that keeps it bounded."
+          pairs={RISK_CONTROLS}
+        />
 
         <section className="band ink lab-quiet-cta" data-marker="12 · Quiet CTA band">
           <div className="wrap head">

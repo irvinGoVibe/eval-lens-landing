@@ -56,6 +56,45 @@ export function LabEyebrow({
   );
 }
 
+/**
+ * Section heading with an optional single lens-accented word.
+ *
+ * The title is one plain string prop; per design version a component may accent
+ * one word (`accent`) so the *same* copy reads with a different emphasis across
+ * v1/v2/v3 without changing the content contract. Splits on spaces and wraps the
+ * FIRST case-insensitive match of `accent` in `.grad-word` (≤1 grad-word). The
+ * accent is purely a layout-markup concern — never a content change.
+ *
+ * Shared by the catalog sections that carry a versioned head (08–11, …); the
+ * pre-existing inline copy in `LabBento` is functionally identical and may adopt
+ * this helper in a later pass.
+ */
+export function LabTitle({ title, accent }: { title: string; accent?: string }) {
+  if (!accent) {
+    return <h2 className="title">{title}</h2>;
+  }
+  const words = title.split(" ");
+  const target = accent.toLowerCase();
+  let done = false;
+  return (
+    <h2 className="title">
+      {words.map((word, i) => {
+        const space = i > 0 ? " " : "";
+        if (!done && word.toLowerCase() === target) {
+          done = true;
+          return (
+            <span key={i}>
+              {space}
+              <span className="grad-word">{word}</span>
+            </span>
+          );
+        }
+        return <span key={i}>{`${space}${word}`}</span>;
+      })}
+    </h2>
+  );
+}
+
 /** Visible, ratio-locked placeholder standing in for a not-yet-generated asset. */
 export function MediaPlaceholder({
   ratio,

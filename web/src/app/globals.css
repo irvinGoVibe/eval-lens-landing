@@ -5081,6 +5081,81 @@ section[id]{scroll-margin-top:72px;}
 .section-lab .lab-risk__row > div{min-width:0;}
 .section-lab .lab-risk__row strong{display:block;margin-top:8px;font-size:clamp(19px,2.4vw,28px);line-height:1.16;letter-spacing:-.01em;color:var(--fg);}
 .section-lab .lab-risk__row p{margin-top:8px;font-size:clamp(16px,1.6vw,18px);line-height:1.55;color:var(--muted);}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Component Forge — archetypes 08–11 (LabHubMap / LabStatBand / LabNumbered /
+   LabRiskControl). Each carries v1 Polish / v2 Modern Recomposition / v3
+   Expanded Expressive in [data-version], both surfaces. Within a version light
+   and ink share identical geometry — only colour tokens flip (surface-invariant)
+   — so the title size is PINNED per version (the global `.title` / `.ink .title`
+   differ in scale and would otherwise jump on surface flip).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── 08 · Bento link tiles (LabHubMap) — soft is base; ink override ── */
+.section-lab .lab-hubmap.ink .lab-link-card{background:rgba(255,255,255,.04);border-color:var(--border-on-dark);box-shadow:none;}
+.section-lab .lab-hubmap.ink .lab-link-card:hover{border-color:color-mix(in oklab,var(--violet) 40%,var(--border-on-dark));}
+.section-lab .lab-hubmap.ink .lab-link-card--feature{background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 32%,transparent);}
+.section-lab .lab-hubmap.ink .lab-link-card h3{color:var(--fg-on-dark);}
+.section-lab .lab-hubmap.ink .lab-link-card p{color:var(--muted-on-dark);}
+.section-lab .lab-hubmap.ink .lab-link-card__more{color:var(--lavender);}
+.section-lab .lab-hubmap__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}
+.section-lab .lab-hubmap__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
+.section-lab .lab-hubmap__v--recomp .lab-link-grid{grid-template-columns:repeat(3,1fr);}
+.section-lab .lab-hubmap__v--recomp .lab-link-card--feature{grid-column:1/-1;}
+.section-lab .lab-hubmap__v--expanded .head{margin-bottom:clamp(48px,7vw,80px);}
+.section-lab .lab-hubmap__v--expanded .title{font-size:clamp(38px,6.5vw,80px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.section-lab .lab-hubmap__v--expanded .lab-link-grid{grid-template-columns:1.2fr 1fr;align-items:stretch;}
+/* the archetype's content shape is one feature + three routes; the feature is a
+   tall hero in col 1 spanning the three stacked supporting rows in col 2. */
+.section-lab .lab-hubmap__v--expanded .lab-link-card--feature{grid-column:1/2;grid-row:1/4;}
+
+/* ── 09 · Stat band (LabStatBand) — ink is base; soft override ── */
+.section-lab .lab-stats.soft .lab-stats__grid li{border-color:var(--border);background:var(--bg);box-shadow:var(--shadow-soft);}
+.section-lab .lab-stats.soft .lab-stats__grid span{color:var(--muted);}
+.section-lab .lab-stats.soft .lab-stats__grid .lab-stats__src{color:var(--muted-2);}
+.section-lab .lab-stats__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}
+.section-lab .lab-stats__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
+.section-lab .lab-stats__v--recomp .lab-stats__grid li{text-align:left;}
+.section-lab .lab-stats__v--recomp .lab-stats__grid strong{font-size:clamp(40px,7vw,84px);}
+.section-lab .lab-stats__v--expanded .head{margin-bottom:clamp(40px,6vw,72px);}
+.section-lab .lab-stats__v--expanded .title{font-size:clamp(38px,6.5vw,80px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.section-lab .lab-stats__v--expanded .lab-stats__grid strong{font-size:clamp(48px,9vw,112px);}
+.section-lab .lab-stats__v--expanded .lab-stats__band{margin-top:clamp(32px,5vw,56px);}
+
+/* ── 10 · Editorial numbered list (LabNumbered) — soft is base; ink override ── */
+.section-lab .lab-numbered.ink .lab-numbered__list li{border-top-color:var(--border-on-dark);}
+.section-lab .lab-numbered.ink .lab-numbered__list li:last-child{border-bottom-color:var(--border-on-dark);}
+.section-lab .lab-numbered.ink .lab-numbered__list h3{color:var(--fg-on-dark);}
+.section-lab .lab-numbered.ink .lab-numbered__list p{color:var(--muted-on-dark);}
+.section-lab .lab-numbered__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}
+.section-lab .lab-numbered__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
+.section-lab .lab-numbered__v--recomp .lab-numbered__list li{grid-template-columns:clamp(54px,7vw,92px) 1fr;gap:clamp(14px,3vw,36px);padding:clamp(20px,3vw,34px) 0;}
+.section-lab .lab-numbered__v--recomp .lab-numbered__list h3{font-size:clamp(22px,2.8vw,32px);}
+.section-lab .lab-numbered__v--expanded .head{margin-bottom:clamp(40px,6vw,72px);}
+.section-lab .lab-numbered__v--expanded .title{font-size:clamp(38px,6.5vw,80px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.section-lab .lab-numbered__v--expanded .lab-numbered__list span{font-size:clamp(40px,7vw,96px);}
+.section-lab .lab-numbered__v--expanded .lab-numbered__list h3{font-size:clamp(28px,4vw,48px);}
+.section-lab .lab-numbered__v--expanded .lab-numbered__list li{padding:clamp(32px,5vw,60px) 0;}
+
+/* ── 11 · Risk → control grid (LabRiskControl) — soft is base; ink override ── */
+.section-lab .lab-risk.ink .lab-risk__grid{border-top-color:var(--border-on-dark);}
+.section-lab .lab-risk.ink .lab-risk__row{border-bottom-color:var(--border-on-dark);}
+.section-lab .lab-risk.ink .lab-risk__row strong{color:var(--fg-on-dark);}
+.section-lab .lab-risk.ink .lab-risk__row p{color:var(--muted-on-dark);}
+.section-lab .lab-risk__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}
+.section-lab .lab-risk__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
+/* v2 — each pair becomes a bordered card, two per row, risk stacked over control */
+.section-lab .lab-risk__v--recomp .lab-risk__grid{flex-direction:row;flex-wrap:wrap;gap:clamp(14px,2vw,22px);border-top:0;}
+.section-lab .lab-risk__v--recomp .lab-risk__row{flex:1 1 calc(50% - clamp(14px,2vw,22px));border:1px solid var(--border);border-radius:var(--radius-card);padding:clamp(20px,2.6vw,30px);grid-template-columns:1fr;gap:14px;align-content:start;}
+.section-lab .lab-risk.ink .lab-risk__v--recomp .lab-risk__row{border-color:var(--border-on-dark);background:rgba(255,255,255,.04);}
+.section-lab .lab-risk__v--recomp .lab-risk__row > div + div{border-top:1px dashed var(--border);padding-top:14px;}
+.section-lab .lab-risk.ink .lab-risk__v--recomp .lab-risk__row > div + div{border-top-color:var(--border-on-dark);}
+/* v3 — large head, oversized risk titles, generous row spacing */
+.section-lab .lab-risk__v--expanded .head{margin-bottom:clamp(40px,6vw,72px);}
+.section-lab .lab-risk__v--expanded .title{font-size:clamp(38px,6.5vw,80px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.section-lab .lab-risk__v--expanded .lab-risk__row{grid-template-columns:1fr 1.3fr;gap:clamp(24px,5vw,80px);padding:clamp(30px,4.5vw,56px) 0;}
+.section-lab .lab-risk__v--expanded .lab-risk__row strong{font-size:clamp(24px,3.4vw,42px);}
+
 .section-lab .lab-quiet-cta .sect-cta{margin-top:34px;}
 
 .section-lab .lab-pricing__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,22px);}
@@ -5252,6 +5327,9 @@ section[id]{scroll-margin-top:72px;}
   .section-lab .lab-versus__grid > div:nth-child(odd){border-right:0;}
   .section-lab .lab-numbered__list li,
   .section-lab .lab-risk__row{grid-template-columns:1fr;gap:12px;}
+  /* forge 08/11 — reset the version-specific spans so every block is single-column */
+  .section-lab .lab-hubmap__v--expanded .lab-link-card--feature{grid-row:auto;}
+  .section-lab .lab-risk__v--recomp .lab-risk__row{flex-basis:100%;}
   /* v2/v3 — narrower label column so the bar track keeps its travel */
   .section-lab .splitring-bar{grid-template-columns:7ch 1fr 4ch;gap:10px;}
 }

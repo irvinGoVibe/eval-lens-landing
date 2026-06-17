@@ -30,10 +30,10 @@ Design Patterns]] (это *предписывающий* справочник «
 | 5   | [Editorial split + scrub-ring](#5-editorial-split--scrub-ring) | `soft` / `ink`         | `reveal` + `data-scrub` (+ `pin` в v3) | `po-pipeline`, `evr-score`, `lab-splitring` (`LabSplitRing` v1/v2/v3) | детерминированная математика / confidence        |
 | 6   | [Horizontal gallery](#6-horizontal-gallery)                    | `soft` / `ink`         | `reveal up` (+ `data-scrub` parallax в v3) | `po-jury`, `usecases-segments`, `lab-gallery` (`LabGallery` v1/v3) | судьи, сегменты, возможности                     |
 | 7   | [Bento overview](#7-bento-overview)                            | `ink` / `soft`         | `reveal up` (+ `reveal scale`/`right` в v2/v3) | `po-modules`, `security-access`, `lab-bento` (`LabBento` v1/v2/v3) | сетка фич, один feature-тайл                     |
-| 8   | [Bento link tiles (hub map)](#8-bento-link-tiles-hub-map)      | `soft`                 | `reveal up`                    | `hub-map`                         | hub-страницы: тайлы-ссылки на дочерние           |
-| 9   | [Stat band / counters](#9-stat-band--counters)                 | `ink`                  | `reveal up`                    | `consistency-benchmark`           | крупные числа + источник                         |
-| 10  | [Editorial numbered list](#10-editorial-numbered-list)         | `soft`                 | `reveal up` (стаггер)          | `methodology-principles`          | принципы/манифест нумерованно                    |
-| 11  | [Risk → control grid](#11-risk--control-grid)                  | `soft`                 | `reveal up`                    | `consistency-bias`                | парные строки риск ↔ контрмера                   |
+| 8   | [Bento link tiles (hub map)](#8-bento-link-tiles-hub-map)      | `soft`                 | `reveal up`                    | `hub-map`, `lab-hubmap` (`LabHubMap` v1–v3) | hub-страницы: тайлы-ссылки на дочерние           |
+| 9   | [Stat band / counters](#9-stat-band--counters)                 | `ink`                  | `reveal up`                    | `consistency-benchmark`, `lab-stats` (`LabStatBand` v1–v3) | крупные числа + источник                         |
+| 10  | [Editorial numbered list](#10-editorial-numbered-list)         | `soft`                 | `reveal up` (стаггер)          | `methodology-principles`, `lab-numbered` (`LabNumbered` v1–v3) | принципы/манифест нумерованно                    |
+| 11  | [Risk → control grid](#11-risk--control-grid)                  | `soft`                 | `reveal up`                    | `consistency-bias`, `lab-risk` (`LabRiskControl` v1–v3) | парные строки риск ↔ контрмера                   |
 | 12  | [Quiet CTA band](#12-quiet-cta-band)                           | `ink`                  | `reveal up` (стаггер)          | `*-cta`                           | финальный призыв на каждой странице              |
 | 13  | [Pricing tiers](#13-pricing-tiers)                             | `soft`                 | `reveal up`                    | `pr-plans`                        | карточки тарифов, один Recommended               |
 | 14  | [Comparison table](#14-comparison-table)                       | `soft`                 | `reveal up`                    | `pr-compare`                      | полная матрица фич × тарифы                      |
@@ -140,8 +140,9 @@ violet→cyan→aqua) → короткий подзаголовок → один
 ссылки на дочерние страницы раздела, первый тайл часто featured. Отличается от
 обычного bento тем, что каждый тайл кликабелен и ведёт вглубь.
 
-- **Класс:** `hub-map` (на `/product` и `/trust`)
+- **Класс:** `hub-map` (на `/product` и `/trust`), `lab-hubmap` (`LabHubMap` v1–v3)
 - **Scroll-FX:** `data-reveal="up"`
+- **Компонент:** `LabHubMap` (`sections/lab/LabHubMap.tsx`) — v1 Polish / v2 Modern Recomposition / v3 Expanded Expressive, `surface=light|ink`, content-axis placeholder/real (`LabContentSet`); своего медиа-слота нет (тайлы-ссылки). Статус `draft` (live-QA отложен) — см. [component-library](component-library.md)
 
 ## 9. Stat band / counters
 
@@ -152,8 +153,9 @@ violet→cyan→aqua) → короткий подзаголовок → один
 (`benchmarking-methodology.md`). Ниже — широкий слот 21:9. Показывает бенчмарки/
 цели измеримо.
 
-- **Класс:** `consistency-benchmark` (trust/consistency-reliability)
+- **Класс:** `consistency-benchmark` (trust/consistency-reliability), `lab-stats` (`LabStatBand` v1–v3)
 - **Scroll-FX:** `data-reveal="up"`
+- **Компонент:** `LabStatBand` (`sections/lab/LabStatBand.tsx`) — v1 Polish / v2 Modern Recomposition / v3 Expanded Expressive, `surface=light|ink` (ink default); demo-media — band 21:9 `.media-ph` (asset TBD). Статус `draft` (live-QA отложен) — см. [component-library](component-library.md)
 
 ## 10. Editorial numbered list
 
@@ -162,8 +164,9 @@ violet→cyan→aqua) → короткий подзаголовок → один
 **Нумерованный манифест/принципы.** Крупные `01 / 02 / 03`, рядом заголовок
 принципа и абзац. Не сетка карточек — вертикальный editorial-список со стаггером.
 
-- **Класс:** `methodology-principles` (3 принципа)
+- **Класс:** `methodology-principles` (3 принципа), `lab-numbered` (`LabNumbered` v1–v3)
 - **Scroll-FX:** `data-reveal="up"` (стаггер по элементам)
+- **Компонент:** `LabNumbered` (`sections/lab/LabNumbered.tsx`) — v1 Polish / v2 Modern Recomposition / v3 Expanded Expressive, `surface=light|ink`; без медиа. Статус `draft` (live-QA отложен) — см. [component-library](component-library.md)
 
 ## 11. Risk → control grid
 
@@ -173,8 +176,9 @@ violet→cyan→aqua) → короткий подзаголовок → один
 generic scoring, overweighting…), справа — что в системе это удерживает. Формат
 «проблема → как закрыта», специфичный для trust-нарратива.
 
-- **Класс:** `consistency-bias` (6 пар)
+- **Класс:** `consistency-bias` (6 пар), `lab-risk` (`LabRiskControl` v1–v3)
 - **Scroll-FX:** `data-reveal="up"`
+- **Компонент:** `LabRiskControl` (`sections/lab/LabRiskControl.tsx`) — v1 Polish / v2 Modern Recomposition (парные карточки) / v3 Expanded Expressive, `surface=light|ink`; без медиа. Статус `draft` (live-QA отложен) — см. [component-library](component-library.md)
 
 ## 12. Quiet CTA band
 
