@@ -92,14 +92,56 @@
       "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "recipes.json", "target_id": "recipe-quiet-conversion", "checked_at": "2026-06-17" },
       "readiness": { "contract_complete": true, "dependency_check": "valid", "browser_qa": "members QA'd", "registration": "completed" },
       "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "id": "recipe-dark-refined", "name": "Dark Refined (Ink Refined)", "purpose": "базовая тёмная арка для inner-страниц: layered ink shell, floor glow 2 точки, lens seam между секциями", "source": "visual-layer-forge",
+      "sequence": [
+        { "section_surface": "ink", "background": "bg-ink-floor-glow", "transition_after": "tr-lens-seam", "motion": "motion-glow-expansion" },
+        { "section_surface": "ink", "background": "bg-violet-halo", "transition_after": "tr-lens-seam", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "none", "transition_after": "tr-lens-seam", "motion": "motion-pattern-reveal" },
+        { "section_surface": "ink", "background": "bg-dot-grid", "transition_after": "tr-lens-seam", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "none", "transition_after": "tr-lens-seam", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "bg-violet-halo", "transition_after": "tr-lens-seam", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "bg-ink-floor-glow", "transition_after": "tr-hard-cut", "motion": "motion-glow-expansion" }
+      ],
+      "dependencies": { "backgrounds": ["bg-ink-floor-glow", "bg-violet-halo", "bg-dot-grid", "bg-glass-plain"], "transitions": ["tr-lens-seam", "tr-hard-cut"], "motion": ["motion-glow-expansion", "motion-static", "motion-pattern-reveal"] },
+      "best_for": ["pricing", "about", "methodology", "blog-index", "dense text/data inner pages", "header/footer shell"], "unsuitable_for": ["когда нужен светлый Apple-нейтральный фон"],
+      "responsive": "ok", "mobile_fallback": "floor glow single radial; seams 1px", "reduced_motion": "glow scrub pins to end; reveals settle", "known_constraints": ["section_surface=ink несёт dark shell; глубина из --panel/--panel-2 + bg-glass-plain карточек; floor glow СТРОГО 2 точки (hero+CTA); glow opacity <=0.18 (выше — Nebula)"],
+      "dependency_status": { "status": "valid", "missing": [], "conditional": [], "needs_recheck": [] },
+      "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "recipes.json", "target_id": "recipe-dark-refined", "checked_at": "2026-06-18" },
+      "readiness": { "contract_complete": true, "dependency_check": "valid (all members ready)", "browser_qa": "members QA'd on /dev/visual-lab", "registration": "completed" },
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+    },
+    {
+      "id": "recipe-dark-nebula", "name": "Dark Nebula (Nebula Deep)", "purpose": "акцентная тёмная арка для flagship/immersive: nebula blob по --pin, tinted glass, двойной video-scrim, gradient H1", "source": "visual-layer-forge",
+      "sequence": [
+        { "section_surface": "ink", "background": "bg-nebula-blob", "transition_after": "tr-lens-seam", "motion": "motion-nebula-drift" },
+        { "section_surface": "ink", "background": "bg-nebula-video-scrim", "transition_after": "tr-lens-seam", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "bg-nebula-blob", "transition_after": "tr-lens-seam", "motion": "motion-nebula-drift" },
+        { "section_surface": "ink", "background": "bg-glass-tinted", "transition_after": "tr-lens-seam", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "bg-nebula-blob", "transition_after": "tr-lens-seam", "motion": "motion-nebula-drift" },
+        { "section_surface": "ink", "background": "none", "transition_after": "tr-lens-seam", "motion": "motion-static" },
+        { "section_surface": "ink", "background": "bg-nebula-blob", "transition_after": "tr-hard-cut", "motion": "motion-nebula-drift" }
+      ],
+      "dependencies": { "backgrounds": ["bg-nebula-layers", "bg-nebula-blob", "bg-nebula-video-scrim", "bg-glass-tinted"], "transitions": ["tr-lens-seam", "tr-hard-cut"], "motion": ["motion-nebula-drift", "motion-static"] },
+      "best_for": ["product/overview", "launch/flagship hero", "methodology intro", "cinematic narrative", "video-heavy"], "unsuitable_for": ["dense data-таблицы", "формы", "header/footer shell (слишком иммерсивно)"],
+      "responsive": "ok", "mobile_fallback": "nebula blob single radial <600px; video scrim ramps scale", "reduced_motion": "nebula drift off (static); --pin pins to 1 -> full intensity", "known_constraints": ["section_surface=ink несёт dark; nebula identity из bg-nebula-layers + blob; blob opacity <=0.32; gradient heading только H1; mix-blend screen ТОЛЬКО на video color-leak слое"],
+      "dependency_status": { "status": "valid", "missing": [], "conditional": [], "needs_recheck": [] },
+      "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "recipes.json", "target_id": "recipe-dark-nebula", "checked_at": "2026-06-18" },
+      "readiness": { "contract_complete": true, "dependency_check": "valid (all members ready)", "browser_qa": "members QA'd on /dev/visual-lab", "registration": "completed" },
+      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
     }
   ],
   "style_anchors": {
     "note": "page-composer Ф0.5/Ф6 — три стиль-варианта. Строятся на РЕАЛЬНЫХ токенах/компонентах EvalLense (globals.css + ui/* + _kit + Lab*), не на приближённых хексах. Стиль предлагается вариантом только когда его примитивы `ready`; иначе page-composer помечает вариант blocked-style и маршрутизирует примитивы в visual-layer-forge.",
+    "themes": ["light", "dark"],
+    "theme_note": "page-composer Ф0.5 сначала спрашивает тему (light|dark), пул стиль-якорей зависит от неё. light- и dark-якоря не смешиваются в одном раунде.",
     "anchors": [
-      { "id": "style-cinematic-ink", "name": "Cinematic Ink", "intent": "светлая база + 1-2 full-bleed кинематографичных ink-момента (LabCinemaScrim: медиа + knockout + pinned -> ink/футер)", "requires": ["LabCinemaScrim (component)", "bg-ink-ambient-glow"], "consumption_readiness": { "status": "conditional", "reasons": ["LabCinemaScrim реализован, но ещё не зарегистрирован как ready"] } },
-      { "id": "style-vivid-blocks", "name": "Vivid Blocks", "intent": "светлая база + насыщенные brand-gradient акцент-блоки, неон-линии, bold-типографика, glass (язык dev/backdrop-filter)", "requires": ["vivid gradient block primitive", "neon-line field", "bold display type scale"], "consumption_readiness": { "status": "pending", "reasons": ["vivid block/neon примитивы ещё не в библиотеке — в visual-layer-forge"] } },
-      { "id": "style-calm-editorial", "name": "Calm Editorial", "intent": "светло-доминантный, сдержанные акценты, мягкий reveal, минимум декора", "requires": ["bg-neutral surfaces", "tr-gradient-bridge", "motion-pattern-reveal"], "consumption_readiness": { "status": "conditional", "reasons": ["в основном из существующих ready-примитивов; подтвердить на первой сборке"] } }
+      { "id": "style-cinematic-ink", "name": "Cinematic Ink", "theme": "light", "intent": "светлая база + 1-2 full-bleed кинематографичных ink-момента (LabCinemaScrim: медиа + knockout + pinned -> ink/футер)", "requires": ["LabCinemaScrim (component)", "bg-ink-ambient-glow"], "consumption_readiness": { "status": "conditional", "reasons": ["LabCinemaScrim реализован, но ещё не зарегистрирован как ready"] } },
+      { "id": "style-vivid-blocks", "name": "Vivid Blocks", "theme": "light", "intent": "светлая база + насыщенные brand-gradient акцент-блоки, неон-линии, bold-типографика, glass (язык dev/backdrop-filter)", "requires": ["vivid gradient block primitive", "neon-line field", "bold display type scale"], "consumption_readiness": { "status": "pending", "reasons": ["vivid block/neon примитивы ещё не в библиотеке — в visual-layer-forge"] } },
+      { "id": "style-calm-editorial", "name": "Calm Editorial", "theme": "light", "intent": "светло-доминантный, сдержанные акценты, мягкий reveal, минимум декора", "requires": ["bg-neutral surfaces", "tr-gradient-bridge", "motion-pattern-reveal"], "consumption_readiness": { "status": "conditional", "reasons": ["в основном из существующих ready-примитивов; подтвердить на первой сборке"] } },
+      { "id": "style-dark-refined", "name": "Ink Refined", "theme": "dark", "intent": "рафинированный тёмный shell на existing elevation (#000/--panel/--panel-2), violet floor glow 2 точки, lens hairline seam, glass 6% без tint; для inner-страниц/dense text/B2B", "requires": ["bg-ink-floor-glow", "tr-lens-seam", "bg-glass-plain", "bg-violet-halo", "recipe-dark-refined"], "recipe": "recipe-dark-refined", "source": ".claude/designs/dark-themes/design-council.md", "consumption_readiness": { "status": "ready", "reasons": ["все примитивы + recipe ready + registered (2026-06-18)"], "allowed_consumers": ["page-composer", "build-pages"] } },
+      { "id": "style-dark-nebula", "name": "Nebula Deep", "theme": "dark", "intent": "акцентная тёмная: nebula blob по --pin, tinted glass, двойной video-scrim (screen только на color-leak), gradient H1; для flagship/immersive/video-heavy", "requires": ["bg-nebula-layers", "bg-nebula-blob", "bg-glass-tinted", "bg-nebula-video-scrim", "heading-lens-gradient", "motion-nebula-drift", "recipe-dark-nebula"], "recipe": "recipe-dark-nebula", "source": ".claude/designs/dark-themes/design-council.md", "consumption_readiness": { "status": "ready", "reasons": ["все примитивы + recipe ready + registered (2026-06-18)"], "allowed_consumers": ["page-composer", "build-pages"] } }
     ]
   },
   "surface_ownership_note": "Page-level recipes that depend on bg-shared-page-grid / tr-grid-continuation are blocked-by-surface-ownership until Lab sections support a transparent/inherit surface (unblock: component-forge -> transparent-or-inherit-surface-api). Such recipes are registered but never handed to Page Orchestrator as `ready`."

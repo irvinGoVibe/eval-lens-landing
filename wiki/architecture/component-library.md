@@ -149,12 +149,40 @@ Page Orchestrator. Контракты — в `backgrounds.json` (L13) / `transit
 | `tr-glow-crossover` | transition (L14) | section-modifier glow через шов (violet/cyan, contained, не orange) | ink→light/soft | ready |
 | `tr-overlap-bridge` | transition (L14) | карта/медиа пересекает шов | any | **blocked-by-surface-ownership** |
 
-> **visual-layer-forge full library — DONE + registered:** 8 backgrounds (L13) ·
-> 7 transitions (L14, +`tr-overlap-bridge` blocked) · 5 motion recipes (L12:
+### Тёмные темы (batch 4 — visual-layer-forge, 2026-06-18)
+
+Результат дизайн-совета (источник истины — `.claude/designs/dark-themes/design-council.md`).
+Две тёмные стиль-темы для `page-composer` (Ф0.5 спрашивает тему light/dark → пул стилей).
+
+| Asset | Слой | Назначение | Тема | Статус |
+|---|---|---|---|---|
+| `bg-ink-floor-glow` | background (L13) | violet floor glow снизу (≤0.18, строго 2 точки/стр.) | dark-refined | ready |
+| `bg-nebula-layers` | background (L13) | тёмная nebula-база `#0a0509`/`#0f0b1c`/`#1a1530` (+`--raised`/`--float`) | dark-nebula | ready |
+| `bg-nebula-blob` | background (L13) | dual radial blob, intensity по `--pin` (≤0.32), mobile 1 радиал | dark-nebula | ready |
+| `bg-glass-tinted` | background (L13) | violet glass `blur(16px) saturate(1.4)` (+`--accent` glow) | dark-nebula | ready |
+| `bg-glass-plain` | background (L13) | нейтральное стекло 6% `blur(8px)` | dark-refined | ready |
+| `bg-nebula-video-scrim` | background (L13) | двойной overlay: readability `::before` ⟂ color-leak `::after` (screen только на leak) | dark-nebula | ready |
+| `heading-lens-gradient` | atom/text-clip (L13) | gradient text для H1 hero/statement (не body) | dark-nebula | ready |
+| `tr-lens-seam` | transition (L14) | 1px lens hairline между тёмными секциями (+`--strong`) | dark-refined | ready |
+| `motion-nebula-drift` | motion (L12) | ambient drift nebula-слоя 32s, reduced-motion static | dark-nebula | ready |
+| `recipe-dark-refined` | recipe (L15) | базовая тёмная арка (inner/dense/B2B) | dark-refined | ready |
+| `recipe-dark-nebula` | recipe (L15) | акцентная тёмная арка (flagship/immersive/video) | dark-nebula | ready |
+
+**Новые токены (`globals.css :root`):** `--fg-secondary-dark #d0ccf4`, `--nebula-base #0a0509`,
+`--nebula-layer1 #0f0b1c`, `--nebula-layer2 #1a1530`, `--nebula-fg #f0eeff`,
+`--nebula-fg-2 #c8c4f0`, `--nebula-fg-muted #9896b8`.
+**Style anchors (`recipes.json`):** `style-dark-refined` (Ink Refined) · `style-dark-nebula`
+(Nebula Deep) — оба `ready`, дополняют 3 light-якоря.
+**Lightning CSS gotcha (зафиксировано инлайн):** `backdrop-filter` писать только unprefixed
+и с unitless `saturate()` (`1.4`, не `140%`) — иначе Lightning дропает стандартное свойство
+в multi-function filter (ломает Firefox).
+
+> **visual-layer-forge full library — DONE + registered:** 15 backgrounds (L13) ·
+> 8 transitions (L14, +`tr-overlap-bridge` blocked) · 6 motion recipes (L12:
 > `motion-static` · `slow-ambient-drift` · `glow-expansion` · `pattern-reveal` ·
-> `crossfade`, всё на ScrollFX/`data-*`/CSS) · 5 composition recipes (L15:
+> `crossfade` · `nebula-drift`, всё на ScrollFX/`data-*`/CSS) · 7 composition recipes (L15:
 > `recipe-calm-product` · `dense-evidence` · `trust-methodology` · `cinematic-break` ·
-> `quiet-conversion`). Все `ready`. Page-level shared backgrounds / grid-continuation /
+> `quiet-conversion` · `dark-refined` · `dark-nebula`). Все `ready`. Page-level shared backgrounds / grid-continuation /
 > `tr-overlap-bridge` — `blocked-by-surface-ownership`. Каталог — `/dev/visual-lab`.
 > Потребитель — `page-composer` (Page Orchestrator).
 >
@@ -174,7 +202,9 @@ Page Orchestrator. Контракты — в `backgrounds.json` (L13) / `transit
 visual-layer-forge targeted → shared page backgrounds enabled`. Section API не трогается.
 
 **Recipes (L15):** слой composition-recipes добавлен в модель библиотеки;
-`recipes.json` создан как scaffold (пустой `recipes[]` — в v1 рецептов ещё нет).
+`recipes.json` содержит **7 `ready` рецептов** (5 light: calm-product · dense-evidence ·
+trust-methodology · cinematic-break · quiet-conversion; 2 dark: dark-refined · dark-nebula)
++ блок `style_anchors` (3 light + 2 dark стиль-якоря для page-composer Ф0.5).
 Recipe = проверенная комбинация `section surface + background + transition + motion`
 (ссылки на ID из L13/L14/L12), а не page template и не компонент. Авторит
 `visual-layer-forge`, нормализует и регистрирует `component-library-preparer`.

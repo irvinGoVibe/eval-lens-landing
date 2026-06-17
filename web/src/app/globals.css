@@ -2591,12 +2591,13 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 }
 @media (max-width:480px){
   .foot{padding:36px 20px 24px;}
+  /* mobile footer drops the brand block entirely — no logo, tagline, or CTAs */
+  .foot .col--brand{display:none;}
   .foot .nav-cluster{grid-template-columns:1fr 1fr;gap:24px 20px;}
-  /* Company column spans both cols — careers email & social have room to breathe */
+  /* Company spans both cols; its links split across two sides (see mockup) */
   .foot .nav-cluster .col:last-child{grid-column:1/-1;}
-  /* CTAs side-by-side, equal width — don't let them stack */
-  .foot .ctas{flex-wrap:nowrap;}
-  .foot .ctas .btn{flex:1;justify-content:center;text-align:center;}
+  .foot .nav-cluster .col:last-child nav{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;}
+  .foot .nav-cluster .col:last-child nav a{width:auto;}
   /* social strip between nav and legal: flush left, no negative margin */
   .foot .foot-social{margin-left:0;justify-content:flex-start;}
   /* legal bar: stack copyright above links */
