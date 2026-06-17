@@ -85,59 +85,72 @@ preview сам не стартует; разрешение даёт approve Desi
 
 ---
 
-## 2. Вход и автоматическое определение страницы (resolver)
+## 2. Вход и определение страницы (resolver)
 
-Пользователь не передаёт путь к `page.tsx`. Допустимые вызовы:
+**Модель ввода (нерушимо):** пользователь указывает **целевую страницу** — какую
+`page.tsx` правим. Оркестратор в ответ **сам спрашивает, из какого файла брать
+контент** (источник-бриф) — `AskUserQuestion`, всегда, даже если кандидат один.
+**Бриф по route молча не угадывается.** Аргумент команды = цель, источник = вопрос.
+
+Допустимые вызовы (аргумент = **целевая страница**):
 
 ```text
-/page-composer product/overview      # route
+/page-composer product/overview                 # route → web/src/app/product/overview/page.tsx
 /page-composer trust/methodology
-/page-composer pricing
-/page-composer <путь-к-брифу>.md     # документ
+/page-composer evidence-based-reports           # slug/токен → fuzzy-матч на страницу
+/page-composer web/src/app/pricing/page.tsx     # прямой путь к page.tsx
 /page-composer "resume <route>"
 /page-composer "audit <route>"
-/page-composer                       # пусто → показать список брифов, спросить
+/page-composer                                  # пусто → показать страницы, спросить какую
 ```
 
 ### 2.1 Фактическая конвенция репозитория (не выдумывать)
 
-- **Брифы — плоские:** `wiki/product/<slug>.md`, где `slug` = **последний сегмент
-  route** (`/product/overview` → `overview.md`, `/trust/methodology` →
-  `methodology.md`). Структура — по `wiki/product/_page-template.md`; frontmatter
+- **Целевые страницы:** `web/src/app/<route>/page.tsx`. Маршруты — `wiki/product/sitemap.md`
+  (**мягкая сверка**, не жёсткий фильтр: напр. `pricing` есть как страница, но исключён
+  из P0 sitemap — это норма).
+- **Файлы-источники (брифы) — плоские:** `wiki/product/<slug>.md`, где `slug` =
+  **последний сегмент route** (`/product/overview` → `overview.md`, `/trust/methodology`
+  → `methodology.md`). Структура — по `wiki/product/_page-template.md`; frontmatter
   несёт `route:` / `section:` / `nav_label:` / `in_header_nav` / `in_footer_nav` / `cta`.
 - **Обогащённый вариант** (output `evallense-site`): `wiki/product/<slug>_new.md` —
   суффикс ровно **`_new`** (не `new` / `-new`).
 - **Папочные** `wiki/product/<Section>/<slug>.md` — старые, без frontmatter,
-  **вторичны** (использовать как доп. контекст, не как первичный бриф).
-- **Цель:** `web/src/app/<route>/page.tsx`.
-- **Маршруты** — `wiki/product/sitemap.md` (**мягкая сверка**, не жёсткий фильтр:
-  напр. `pricing` существует как страница, но исключён из P0 sitemap — это норма).
+  **вторичны** (доп. контекст, не первичный источник).
+
+Конвенция нужна resolver'у, чтобы **собрать список кандидатов-источников** для вопроса
+(шаг 2 ниже) — а не чтобы выбрать источник за пользователя.
 
 ### 2.2 Процедура resolve
 
-1. **Если аргумент — путь к `.md`:** прочитать, взять route из frontmatter `route:`
-   (если нет — вывести и спросить, не угадывать).
-2. **Если аргумент — route/slug-токен:** нормализовать (убрать ведущий `/`, убрать
-   суффикс `_new`), `slug` = последний сегмент.
-3. **Найти бриф:** среди `wiki/product/*.md` найти документ, у которого frontmatter
-   `route:` совпадает с запрошенным; при наличии и базового, и `_new` — выбрать
-   **более свежий/высокий по version/status** и **зафиксировать оба как
-   потенциальный конфликт** в audit (не молча выбирать одну сторону).
-4. **Cross-check sitemap:** route присутствует/ожидается? (информативно, не блок).
-5. **Найти страницу:** `web/src/app/<route>/page.tsx` → `existing` | `missing`.
-6. **Остановиться при неоднозначности:** несколько кандидатов брифа / route →
-   показать конфликт и спросить (`AskUserQuestion`). Нет брифа или route → стоп,
-   ничего не выдумывать.
+1. **Определить целевую страницу из аргумента.**
+   - путь к `page.tsx` → взять как есть, `route` вывести из пути;
+   - route/slug-токен → нормализовать (убрать ведущий `/`, убрать суффикс `_new`),
+     сматчить на существующую `web/src/app/**/page.tsx` (точный сегмент, иначе
+     подстрока slug); цель → `web/src/app/<route>/page.tsx`;
+   - пусто → показать список существующих `page.tsx`, спросить какую (`AskUserQuestion`).
+   Несколько кандидатов-страниц / неоднозначно → **спросить**, не угадывать. Страница →
+   `existing` | `missing`.
+2. **⛔ Спросить источник контента (обязательно, `AskUserQuestion`).** Для найденной
+   страницы (по её slug) собрать кандидатов из §2.1: `wiki/product/<slug>.md`,
+   `<slug>_new.md`, папочные варианты — и **спросить, из какого файла брать контент**.
+   Не выбирать молча даже при единственном кандидате (подтвердить). Пользователь может
+   указать **произвольный путь** к иному источнику. Без ответа дальше не идём.
+3. **Прочитать выбранный источник.** Для `.md` с frontmatter взять `route:` и сверить
+   с целевой страницей — расхождение route↔страница **показать**, не игнорировать.
+4. **Cross-check sitemap** (информативно, не блок).
+5. **Стоп при неоднозначности цели или отсутствии источника** — показать и спросить
+   (`AskUserQuestion`), ничего не выдумывать.
 
 Выход:
 
 ```yaml
 page_target:
-  document:        # wiki/product/<slug>.md | <slug>_new.md
+  page_source:     # web/src/app/<route>/page.tsx  — ЦЕЛЬ (указал пользователь)
   route:           # /<section>/<slug>
-  page_source:     # web/src/app/<route>/page.tsx
+  document:        # файл-источник контента, ВЫБРАННЫЙ пользователем (шаг 2)
   status: existing | missing | ambiguous
-  brief_variant_conflict:   # есть ли base+_new расхождение
+  brief_variant_conflict:   # существовали ли альтернативные источники (base/_new/папочный)
 ```
 
 ---

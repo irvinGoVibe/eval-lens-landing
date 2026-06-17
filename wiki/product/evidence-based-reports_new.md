@@ -1,6 +1,6 @@
 ---
 title: Evidence-Based Reports
-status: generated
+status: approved
 version: 1.3
 updated: 2026-06-17
 route: /product/evidence-based-reports

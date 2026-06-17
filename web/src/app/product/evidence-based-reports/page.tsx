@@ -8,90 +8,121 @@ import { Button } from "@/components/ui/Button";
 export const metadata: Metadata = {
   title: "EvalLense — Evidence-Based Reports for Pitch Evaluation",
   description:
-    "Explainable EvalLense reports: P1–P6 scores with reasoning, a judge contribution matrix, links back to the deck slides and deck-completeness signals — not a black box.",
+    "Explainable reports from EvalLense: scores across every dimension with reasoning, a judge matrix, findings grounded in the deck, and deck-completeness signals — not a black box.",
 };
 
 /*
+ * ── VISUAL SYSTEM — NEBULA DEEP (dark) ───────────────────────────────────
+ * The whole page is ONE dark nebula shell — no light↔ink zebra. Every section
+ * sits on `.bg-nebula-layers` (sets --nebula-base bg + --nebula-fg text; .sub/p
+ * auto-get --nebula-fg-2; .eyebrow/.chip already themed). The two cinematic
+ * peaks (Hero + Final CTA) add `.bg-nebula-blob` whose intensity rides --pin.
+ * Cards/panels use `.bg-glass-tinted`. Media slots use `.bg-nebula-video-scrim`.
+ * A 1px brand-gradient `.tr-lens-seam` divider sits between dark sections.
+ * Page-local layout/geometry lives under `.ev-reports` (evr-* classes) in
+ * globals.css — the nebula surfaces/glass/blob/seam/gradient are reused, never
+ * re-implemented.
+ *
  * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
- * The image generator is NOT wired up. Every visual slot below is a VISIBLE,
- * labeled `.media-ph` placeholder (global primitive in globals.css) on
- * canonical tokens — never an empty grey div. Each carries an --ratio so the
- * real asset drops in with zero layout shift. When a generator is available,
- * produce the assets and drop them into web/public/assets/evidence-reports/.
+ * The image generator is NOT wired up. Visual slots are VISIBLE, labeled
+ * `.media-ph` placeholders (global primitive, dark variant via `.ink .media-ph`
+ * — we wrap each slot in `.ink` locally) on canonical tokens. Each carries an
+ * --ratio so the real asset drops in with zero layout shift.
  *
- * 1. hero (section 1) — 16:9
- *    A score with quote-lines tracing back to deck slides.
- *    Prompt: lens-gradient violet→cyan→aqua over an Apple-neutral surface,
- *    soft violet depth, hairline structure, calm; a score and thin lines that
- *    connect it back to slides of a pitch deck.
- *
- * 2. anatomy gallery cards (section 3) — 4:3 each
- *    A horizontal gallery of report-layer cards sharing one visual rhythm:
- *    score + confidence ring, evidence quote, breakdown bars, contribution
- *    matrix, completeness.
- *    Prompt: same tokens, light surface, hairline card frames, one small lens
- *    accent per card; realistic UI cards, no logos, no fabricated metrics.
- *
- * 3. evidence (section 5) — 4:3
- *    A slide quote with a page-ref plus the 10 completeness sections.
- *    Prompt: same tokens, thin connector lines slide↔conclusion, calm.
+ * 1. hero (section 1) — 16:9. A score with quote-lines tracing back to deck
+ *    slides. lens-gradient violet→cyan→aqua, calm.
+ * 2. anatomy sample (section 3) — 4:3. ⭐ REAL SAMPLE NEEDED: a live report
+ *    embed (Project Summary + supports/lowers + slide refs). This is the #1
+ *    trust lever — drop the real founder sample here, not a render.
+ * 3. evidence (section 5) — 4:3. A slide quote with a slide-ref next to the
+ *    supports/lowers it grounds.
  *
  * ── MOTION ───────────────────────────────────────────────────────────────
- * This page opts into the generic ScrollFX engine via data-attributes only
- * (data-reveal / data-scrub). No per-section useEffect, no ScrollOrchestrator
- * edits. reduced-motion is handled by the engine + the primitives' @media
- * block. <ScrollFX/> is mounted once after <Footer/>.
+ * Motion is data-reveal / data-scrub / data-pin only (no useEffect, no
+ * ScrollOrchestrator). reduced-motion is handled by the ScrollFX engine + the
+ * primitives' @media block. <ScrollFX/> is mounted once after <Footer/>.
  *
- * ── CONTENT ──────────────────────────────────────────────────────────────
- * Facts are CONFIRMED in the brief: report layers Project Summary / AI Score
- * Report / Questions; deterministic formula A(d)=R(d)·[1−0.15·(1−C(d))];
- * AI Total Score = Σ w(d)·A(d); confidence weights 0.55 / 0.70 / 0.85; scale
- * 0.0–10.0 (0–100 is UI only); AI Total Score is advisory (rank by human Jury
- * Score); Judge Contribution Matrix roles Primary / Secondary / Advisory;
- * 10 deck-completeness sections with severity info / warning / critical.
- * SourceRefs are framed as "links back to the deck slides" — data is collected
- * but NOT yet surfaced in the UI, so it is presented as a capability, not a
- * shipped feature. Export PDF is post-MVP — reports are "shareable for internal
- * review", never "exportable". No "gap analysis / due diligence" framing;
- * completeness is a signal, NOT a Truth Check verdict.
+ * ── CONTENT CONSTRAINTS (brief) ──────────────────────────────────────────
+ * Product name is always "EvalLense". Human-in-the-loop: "the final call always
+ * yours" — never "AI judges/decides/verdict". Exact formulas and the constant
+ * 0.15 are INTERNAL — NOT rendered here; score formation is described
+ * qualitatively and cross-linked to Methodology. Deck completeness is a SIGNAL
+ * about a missing/thin section, never a fact-check / gap-analysis / due-
+ * diligence verdict. No PDF-export promise. SourceRefs (slide number · title ·
+ * note) are now a REAL, shipped feature — presented as real.
  */
 
-/* 3. Report anatomy — horizontal scroll-snap gallery (brief §3, report.md §4/§8). */
+/* 3. Anatomy — one report, three layers (brief §3). Exactly 3 steps. */
 const ANATOMY = [
   {
+    num: "01",
     tag: "Project Summary",
     title: "The deck at a glance",
-    body: "A consolidated summary with the advisory AI Total Score, a P1–P6 overview, strengths and weaknesses, and what must be confirmed live.",
+    body: "What the project is, how strong it looks, and what to probe: an AI summary, the score overview, strengths and weaknesses, why it can pass, why it can fail, and what to confirm live.",
   },
   {
+    num: "02",
     tag: "AI Score Report",
-    title: "How the score was formed",
-    body: "Methodology, initial criteria, score formation, short judge conclusions and a per-dimension P1–P6 breakdown — the reasoning behind the number.",
+    title: "The full reasoning",
+    body: "The methodology, how the score was formed, a short conclusion from each judge, the judge contribution matrix, and a per-dimension breakdown.",
   },
   {
-    tag: "Questions",
+    num: "03",
+    tag: "Questions for Participants",
     title: "Prompts for live Q&A",
-    body: "Generated questions tied to P1–P6, marked critical / important / optional, so the room knows what to ask each team.",
+    body: "Ready-made questions for live Q&A, grouped critical, important, and optional, each tied to the dimension it tests.",
   },
-  {
-    tag: "Dimension scores",
-    title: "Per-lens P1–P6 detail",
-    body: "Each of the six dimensions carries its own score and confidence, so a strong overall result never hides a weak lens.",
-  },
-  {
-    tag: "Judge assessments",
-    title: "Six independent reads",
-    body: "Short conclusions from the specialized judges sit next to the score, with a contribution matrix showing who weighed in where.",
-  },
-  {
-    tag: "Evidence references",
-    title: "Links back to the deck",
-    body: "Important claims point back to the slides they came from, so a reviewer can check the source instead of taking the score on faith.",
-  },
-];
+] as const;
 
-/* 5. Deck completeness — 10 sections, severity info / warning / critical
-   (report.md §7). A signal about a gap, never a Truth Check verdict. */
+/* 4. Inside the AI Score Report — 3 key cards (most differentiating).
+   No exact formulas / the 0.15 constant — internal only. */
+const REPORT_CARDS = [
+  {
+    tag: "Per-dimension breakdown",
+    title: "Every dimension, in the open",
+    body: "For every dimension: the score, its confidence, what supports it, what lowers it, and what would move it up or down.",
+  },
+  {
+    tag: "Judge contribution matrix",
+    title: "Who weighed in where",
+    body: "Which judge contributed to each dimension, with strong disagreements flagged, not averaged away.",
+  },
+  {
+    tag: "Score formation",
+    title: "How the score adds up",
+    body: "A per-dimension view: each score, its weight, and its contribution to the total — the model itself lives in Methodology.",
+  },
+] as const;
+
+/* "Also in the report" — compact list under the lane, not cards. */
+const REPORT_ALSO = [
+  { name: "Methodology", note: "the rules and scale" },
+  { name: "Initial criteria", note: "your weights, read-only" },
+  { name: "Judge conclusions", note: "a takeaway, a concern, a live question from each judge" },
+] as const;
+
+/* 5. Grounded — three points (left). */
+const GROUNDED = [
+  {
+    tag: "Supports / lowers",
+    title: "What supports, what lowers",
+    body: "Each dimension lists the concrete signals that raised or reduced its score.",
+  },
+  {
+    tag: "Linked to the slide",
+    title: "Linked to the slide",
+    body: "Every finding cites the exact slide — number, title, and note — so you can open it and check the claim against the source.",
+  },
+  {
+    tag: "Live Q&A",
+    title: "Built for live Q&A",
+    body: "See where a deck is thin before the team is in the room.",
+  },
+] as const;
+
+/* 6. Deck completeness — 10 sections, severity info / warning / critical
+   (brief §6, report.md §7). A SIGNAL about a missing/thin section — never a
+   fact-check / verdict. */
 const COMPLETENESS = [
   { name: "Problem", sev: "info" },
   { name: "Solution", sev: "info" },
@@ -105,40 +136,34 @@ const COMPLETENESS = [
   { name: "Other", sev: "info" },
 ] as const;
 
-/* 6. Where the report is used — feature grid (brief §6, report.md §1). */
+/* 7. From shortlist to founder feedback — 5 cards (brief §7). */
 const USES = [
   {
     tag: "Reviewer prep",
     title: "A briefed first read",
-    body: "An internal reviewer walks in already knowing the score, the evidence and the open questions for each deck.",
-    feature: true,
+    body: "Walk in already knowing each deck's strengths, gaps, and what to ask.",
   },
   {
-    tag: "Shortlist",
+    tag: "Shortlist discussion",
     title: "A discussion you can defend",
-    body: "The same report format makes a shortlist conversation comparable across very different decks.",
+    body: "Compare teams on the same structured basis, not gut feel.",
   },
   {
     tag: "Founder feedback",
     title: "Structured, actionable notes",
-    body: "Founders get structural feedback tied to dimensions and evidence, not a one-line verdict.",
+    body: "Give every team a concrete, structured read — not just a yes or a no.",
   },
   {
-    tag: "IC prep",
+    tag: "Committee prep",
     title: "Material for the committee",
-    body: "One readable report format gives an investment committee a shared starting point for each project.",
+    body: "Bring a defensible, evidence-linked basis to the decision.",
   },
   {
-    tag: "Program selection",
-    title: "Consistent across the round",
-    body: "Every applicant is scored against the same criteria, so program selection stays explainable end to end.",
-  },
-  {
-    tag: "Archive",
+    tag: "Batch archive",
     title: "A decision trail per batch",
-    body: "After the event the batch keeps a shareable report per participant for internal review and reference.",
+    body: "Keep a clear record of how every team was evaluated.",
   },
-];
+] as const;
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -147,7 +172,7 @@ const HEADER_NAV: SectionNav = {
   links: [
     { label: "Anatomy", href: "#anatomy" },
     { label: "Score", href: "#score" },
-    { label: "Evidence", href: "#evidence" },
+    { label: "Grounded", href: "#grounded" },
   ],
 };
 
@@ -156,8 +181,12 @@ export default function EvidenceBasedReportsPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="ev-reports">
-        {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
-        <section className="band soft evr-hero">
+        {/* 1. Hero — statement hero. Cinematic peak: nebula blob rides --pin. */}
+        <section className="band bg-nebula-layers bg-nebula-blob evr-hero">
+          <div
+            className="bg-nebula-blob__layer motion-nebula-drift"
+            aria-hidden="true"
+          />
           <div className="wrap evr-hero__inner">
             <span
               className="eyebrow"
@@ -172,17 +201,18 @@ export default function EvidenceBasedReportsPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              Every score, explained — back to the{" "}
-              <span className="grad-word">deck</span>
+              A score you can{" "}
+              <span className="heading-lens-gradient">explain</span>, with the
+              evidence
             </h1>
             <p
               className="sub evr-hero__sub"
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "180ms" }}
             >
-              EvalLense returns a structured report that shows how each startup
-              was scored and what evidence sits behind the result — not a bare
-              number you have to take on trust.
+              Walk into every review with a defensible read on each team — scores
+              across each dimension, the reasoning behind them, and the questions
+              to ask live. The final call always yours.
             </p>
             <div
               className="cta-row"
@@ -190,276 +220,372 @@ export default function EvidenceBasedReportsPage() {
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
               <Button href="/#demo">Book a Demo</Button>
+              <span
+                className="btn btn-ghost is-disabled"
+                aria-disabled="true"
+                title="A sample report is coming soon"
+              >
+                View Sample Report
+              </span>
             </div>
-            {/* hero visual slot — see prompt 1 in file header */}
-            <figure
-              className="media-ph evr-hero__media"
-              style={{ ["--ratio" as string]: "16/9" }}
-              data-reveal="scale"
-              role="img"
-              aria-label="A score with quote-lines tracing back to slides of a pitch deck"
+            {/* outcome stat-row — illustrative, framed as a 20–30 min manual read */}
+            <ul
+              className="evr-stats"
+              data-reveal="up"
+              style={{ ["--reveal-delay" as string]: "360ms" }}
+              aria-label="Illustrative outcomes, based on a 20–30 minute manual read per deck"
             >
-              <span className="media-ph__label">
-                Image · score linked to the deck · 16:9
-              </span>
-              <span className="media-ph__hint">
-                A score with thin lines tracing back to deck slides —
-                lens-gradient violet→cyan→aqua, calm; see prompt 1 in file
-                header
-              </span>
-            </figure>
+              <li className="evr-stat bg-glass-tinted">
+                <span className="evr-stat__v">20–30 min → 0</span>
+                <span className="evr-stat__k">
+                  human reading per deck — you start at the report, not the raw
+                  slides
+                </span>
+              </li>
+              <li className="evr-stat bg-glass-tinted">
+                <span className="evr-stat__v">~40 hours</span>
+                <span className="evr-stat__k">
+                  reclaimed per 100-deck batch — a full review week of reading
+                </span>
+              </li>
+              <li className="evr-stat bg-glass-tinted">
+                <span className="evr-stat__v">The whole batch</span>
+                <span className="evr-stat__k">
+                  evaluated in parallel, unattended — not one deck at a time
+                </span>
+              </li>
+            </ul>
+            <p className="evr-stats__note" data-reveal="up">
+              Illustrative, based on a 20–30 minute manual read per deck.
+            </p>
+            {/* hero visual slot — see prompt 1 in file header */}
+            <div className="ink evr-hero__mediawrap">
+              <figure
+                className="media-ph bg-nebula-video-scrim evr-hero__media"
+                style={{ ["--ratio" as string]: "16/9" }}
+                data-reveal="scale"
+                role="img"
+                aria-label="A score with quote-lines tracing back to slides of a pitch deck"
+              >
+                <span className="media-ph__label">
+                  Image · score linked to the deck · 16:9
+                </span>
+                <span className="media-ph__hint">
+                  A score with thin lines tracing back to deck slides —
+                  lens-gradient violet→cyan→aqua, calm; see prompt 1 in file
+                  header
+                </span>
+              </figure>
+            </div>
           </div>
         </section>
 
-        {/* 2. Why a bare AI score isn't enough — full-bleed statement, DARK. */}
-        <section className="band ink evr-why">
+        <div className="tr-lens-seam tr-lens-seam--strong" aria-hidden="true" />
+
+        {/* 2. Beyond the number — full-bleed dark statement. */}
+        <section className="band bg-nebula-layers evr-why">
           <div className="wrap evr-why__statement">
             <span className="eyebrow" data-reveal="up">
               <span className="dot" aria-hidden="true"></span>
-              Why a bare score isn&apos;t enough
+              Beyond the number
             </span>
             <p className="evr-why__h" data-reveal="up">
-              A score with no reasoning behind it is hard to trust.
+              A score you can&apos;t explain is a score you can&apos;t defend
             </p>
             <p
               className="sub evr-why__note"
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "120ms" }}
             >
-              The team needs to know <em>why</em> a deck landed high or low.
-              Founders need structural feedback. A program owner needs a
-              decision trail. A naked number gives none of that — so every
-              EvalLense report carries its own reasoning.
+              A single number tells you where a deck landed, not why. Your team
+              can&apos;t defend a shortlist with it, founders can&apos;t learn
+              from it, and no one can audit it later. EvalLense hands you the
+              reasoning, not just the result.
             </p>
           </div>
         </section>
 
-        {/* 3. Report anatomy — horizontal scroll-snap gallery, light. */}
-        <section id="anatomy" className="band evr-anatomy">
+        <div className="tr-lens-seam" aria-hidden="true" />
+
+        {/* 3. Anatomy — pinned multi-screen, exactly 3 layers light up. */}
+        <section
+          id="anatomy"
+          className="band bg-nebula-layers bg-nebula-layers--raised evr-anatomy"
+          data-pin
+          data-pin-steps="3"
+          aria-label="Anatomy of the report — three layers from summary to questions"
+        >
+          <div className="evr-anatomy__stage" data-pin-stage>
+            <div className="wrap evr-anatomy__grid">
+              <div className="evr-anatomy__col">
+                <div className="head evr-anatomy__head">
+                  <span className="eyebrow">
+                    <span className="dot" aria-hidden="true"></span>
+                    Anatomy of the report
+                  </span>
+                  <h2 className="title">One report, three layers</h2>
+                  <p className="sub">
+                    Each team&apos;s report runs from a quick read to the full
+                    reasoning to the questions for live Q&amp;A. Each layer opens
+                    as you scroll.
+                  </p>
+                </div>
+                <ol className="evr-anatomy__track">
+                  {ANATOMY.map((a, i) => (
+                    <li
+                      key={a.tag}
+                      className="evr-astep"
+                      data-pin-step
+                      style={{ ["--i" as string]: String(i) }}
+                    >
+                      <span className="evr-astep__num">{a.num}</span>
+                      <span className="evr-astep__label">{a.tag}</span>
+                      <span className="evr-astep__title">{a.title}</span>
+                      <span className="evr-astep__desc">{a.body}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+              {/* ⭐ anatomy sample slot — REAL SAMPLE NEEDED (see prompt 2) */}
+              <div className="ink evr-anatomy__mediawrap">
+                <figure
+                  className="media-ph bg-nebula-video-scrim evr-anatomy__media"
+                  style={{ ["--ratio" as string]: "4/3" }}
+                  role="img"
+                  aria-label="A live sample report — Project Summary with score, supports and lowers, and slide references"
+                >
+                  <span className="media-ph__label">
+                    Sample · real report needed · 4:3
+                  </span>
+                  <span className="media-ph__hint">
+                    A live report embed — Project Summary with score,
+                    supports/lowers, and slide refs. #1 trust lever: drop the
+                    real founder sample here.
+                  </span>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="tr-lens-seam" aria-hidden="true" />
+
+        {/* 4. Inside the AI Score Report — horizontal gallery, 3 cards + list. */}
+        <section
+          id="score"
+          className="band bg-nebula-layers evr-report"
+        >
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
-                Anatomy of a report
+                Inside the AI Score Report
               </span>
-              <h2 className="title">Several layers, one report per participant</h2>
+              <h2 className="title">The reasoning, shown in the open</h2>
               <p className="sub">
-                A participant report is built from layers — a summary, the score
-                report and live-Q&amp;A questions — with dimension scores, judge
-                assessments and evidence references underneath.
+                The reasoning layer shows its work — nothing hidden behind a
+                number.
               </p>
             </div>
           </div>
-          {/* horizontal gallery — scrolls INSIDE its own overflow container,
-              never moving the page; scroll-snap like .usecases .seg-lane */}
+          {/* horizontal gallery — scrolls INSIDE its own overflow container */}
           <ul
             className="evr-lane"
             data-reveal="up"
             tabIndex={0}
-            aria-label="Report layers — scroll horizontally"
+            aria-label="Inside the AI Score Report — scroll horizontally"
           >
-            {ANATOMY.map((a) => (
-              <li key={a.tag} className="evr-card">
-                <span className="evr-card__signal" aria-hidden="true"></span>
-                <span className="mini-tag">{a.tag}</span>
-                <h3 className="evr-card__h">{a.title}</h3>
-                <p className="evr-card__p">{a.body}</p>
+            {REPORT_CARDS.map((c) => (
+              <li key={c.tag} className="evr-card bg-glass-tinted">
+                <span className="mini-tag">{c.tag}</span>
+                <h3 className="evr-card__h">{c.title}</h3>
+                <p className="evr-card__p">{c.body}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="wrap">
+            <div className="evr-also" data-reveal="up">
+              <span className="evr-also__title">Also in the report</span>
+              <ul className="evr-also__list">
+                {REPORT_ALSO.map((a) => (
+                  <li key={a.name} className="evr-also__item">
+                    <span className="evr-also__name">{a.name}</span>
+                    <span className="evr-also__note">{a.note}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="evr-also__cross">
+                The full scoring model lives in{" "}
+                <a className="evr-link" href="/trust/methodology">
+                  Methodology
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="tr-lens-seam" aria-hidden="true" />
+
+        {/* 5. Grounded — editorial split: 3 points + evidence visual. */}
+        <section
+          id="grounded"
+          className="band bg-nebula-layers bg-nebula-layers--raised evr-grounded"
+        >
+          <div className="wrap evr-grounded__split">
+            <div className="evr-grounded__copy" data-reveal="left">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                Grounded, not opaque
+              </span>
+              <h2 className="title">Every finding links back to a slide</h2>
+              <p className="sub">
+                The report is built to be checked. Each score comes with what
+                supports it and what lowers it, and every finding points to the
+                slide it came from — so a claim reads as an observation, not an
+                opinion.
+              </p>
+              <ul className="evr-points" aria-label="How findings stay grounded">
+                {GROUNDED.map((g) => (
+                  <li key={g.tag} className="evr-point">
+                    <span className="evr-point__dot" aria-hidden="true"></span>
+                    <span className="evr-point__h">{g.title}</span>
+                    <span className="evr-point__p">{g.body}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* evidence visual slot — see prompt 3 in file header */}
+            <div className="ink evr-grounded__mediawrap" data-reveal="right">
+              <figure
+                className="media-ph bg-nebula-video-scrim evr-grounded__media"
+                style={{ ["--ratio" as string]: "4/3" }}
+                role="img"
+                aria-label="A slide quote with a slide reference next to the supports and lowers it grounds"
+              >
+                <span className="media-ph__label">
+                  Image · slide ↔ finding · 4:3
+                </span>
+                <span className="media-ph__hint">
+                  A slide quote (number · title) next to the supports/lowers it
+                  grounds, thin connector lines, calm — see prompt 3 in file
+                  header
+                </span>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <div className="tr-lens-seam" aria-hidden="true" />
+
+        {/* 6. Deck completeness — bento. A signal, not a verdict. */}
+        <section className="band bg-nebula-layers evr-completeness">
+          <div className="wrap">
+            <div className="head" data-reveal="up">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                Deck completeness
+              </span>
+              <h2 className="title">See what the deck never covered</h2>
+              <p className="sub">
+                Beyond scoring what&apos;s there, the report flags what&apos;s
+                missing — the key sections a strong deck usually carries, and how
+                serious each gap is. It&apos;s a signal, not a verdict.
+              </p>
+            </div>
+            <div className="evr-bento" data-reveal="up">
+              {/* feature tile — ten key sections */}
+              <article className="evr-bento__tile evr-bento__tile--feature bg-glass-tinted">
+                <span className="mini-tag">Ten key sections</span>
+                <h3 className="evr-bento__h">Each one checked, present or thin</h3>
+                <p className="evr-bento__p">
+                  Problem, Solution, Market, Business model, Traction, Team,
+                  Roadmap, Financials, Ask, and anything else — each checked for
+                  presence and depth.
+                </p>
+                <ul className="evr-secgrid" aria-label="The ten key sections, with a severity signal each">
+                  {COMPLETENESS.map((c) => (
+                    <li key={c.name} className={`evr-sec evr-sec--${c.sev}`}>
+                      <span className="evr-sec__dot" aria-hidden="true"></span>
+                      <span className="evr-sec__name">{c.name}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+              {/* severity tile */}
+              <article className="evr-bento__tile bg-glass-tinted">
+                <span className="mini-tag">Severity, not noise</span>
+                <h3 className="evr-bento__h">A weighted signal, linked to a dimension</h3>
+                <p className="evr-bento__p">
+                  Every gap is marked info, warning, or critical, and linked to
+                  the dimension it affects.
+                </p>
+                <ul className="evr-sevlegend" aria-hidden="true">
+                  <li className="evr-sevlegend__item evr-sec--info">
+                    <span className="evr-sec__dot"></span>info
+                  </li>
+                  <li className="evr-sevlegend__item evr-sec--warning">
+                    <span className="evr-sec__dot"></span>warning
+                  </li>
+                  <li className="evr-sevlegend__item evr-sec--critical">
+                    <span className="evr-sec__dot"></span>critical
+                  </li>
+                </ul>
+              </article>
+              {/* not a fact-check tile */}
+              <article className="evr-bento__tile bg-glass-tinted">
+                <span className="mini-tag">Not a fact-check</span>
+                <h3 className="evr-bento__h">It flags a gap, it doesn&apos;t judge a claim</h3>
+                <p className="evr-bento__p">
+                  Completeness flags a missing or thin section. It doesn&apos;t
+                  validate the claims — that stays a human&apos;s job in the room.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <div className="tr-lens-seam" aria-hidden="true" />
+
+        {/* 7. From shortlist to founder feedback — horizontal gallery, 5 cards. */}
+        <section className="band bg-nebula-layers bg-nebula-layers--raised evr-uses">
+          <div className="wrap">
+            <div className="head" data-reveal="up">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                One report, many uses
+              </span>
+              <h2 className="title">From shortlist to founder feedback</h2>
+              <p className="sub">
+                The same report works across the whole review, not just the score
+                screen.
+              </p>
+            </div>
+          </div>
+          <ul
+            className="evr-lane evr-uses__lane"
+            data-reveal="up"
+            tabIndex={0}
+            aria-label="Where the report is used — scroll horizontally"
+          >
+            {USES.map((u) => (
+              <li key={u.tag} className="evr-card bg-glass-tinted">
+                <span className="mini-tag">{u.tag}</span>
+                <h3 className="evr-card__h">{u.title}</h3>
+                <p className="evr-card__p">{u.body}</p>
               </li>
             ))}
           </ul>
         </section>
 
-        {/* 4. How the score is computed — editorial split + scrubbed ring, DARK. */}
-        <section id="score" className="band ink evr-score">
-          <div className="wrap evr-score__split">
-            <div className="evr-score__copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                How the score is computed
-              </span>
-              <h2 className="title">Deterministic math, advisory result</h2>
-              <p className="sub">
-                Per dimension, R(d) is the weighted mean of the judge scores and
-                C(d) their weighted confidence. The criterion score applies a
-                small confidence penalty, then the total is a weighted sum across
-                P1–P6 on a 0.0–10.0 scale.
-              </p>
-              <div className="evr-formulas">
-                <p className="evr-formula">
-                  <span className="evr-formula__name">AI Criterion Score</span>
-                  <code className="evr-formula__expr">
-                    A(d) = R(d) · [1 − 0.15 · (1 − C(d))]
-                  </code>
-                </p>
-                <p className="evr-formula">
-                  <span className="evr-formula__name">AI Total Score</span>
-                  <code className="evr-formula__expr">
-                    AI Total Score = Σ<sub>d</sub> w(d) · A(d)
-                  </code>
-                </p>
-              </div>
-              <ul className="evr-weights" aria-label="Confidence weights">
-                <li className="evr-weight">
-                  <span className="evr-weight__k">low</span>
-                  <span className="evr-weight__v">0.55</span>
-                </li>
-                <li className="evr-weight">
-                  <span className="evr-weight__k">medium</span>
-                  <span className="evr-weight__v">0.70</span>
-                </li>
-                <li className="evr-weight">
-                  <span className="evr-weight__k">high</span>
-                  <span className="evr-weight__v">0.85</span>
-                </li>
-              </ul>
-              <p className="evr-score__note">
-                The scale is 0.0–10.0 (0–100 is only a UI visualization). The AI
-                Total Score is advisory — the final rank is built on the human
-                Jury Score.
-              </p>
-            </div>
-            <div className="evr-score__visual" data-reveal="right">
-              {/* confidence ring — fills as it scrolls through the viewport via
-                  --scrub; reduced-motion lands it at the full state */}
-              <div
-                className="evr-ring"
-                data-scrub
-                role="img"
-                aria-label="Confidence ring filling as evidence accumulates"
-              >
-                <span className="evr-ring__label">Confidence C(d)</span>
-              </div>
-              <div className="evr-matrix" aria-hidden="false">
-                <span className="evr-matrix__title">
-                  Judge Contribution Matrix
-                </span>
-                <ul className="evr-matrix__roles">
-                  <li className="evr-matrix__role evr-matrix__role--primary">
-                    <span className="evr-matrix__k">Primary</span>
-                    <span className="evr-matrix__v">leads the dimension</span>
-                  </li>
-                  <li className="evr-matrix__role evr-matrix__role--secondary">
-                    <span className="evr-matrix__k">Secondary</span>
-                    <span className="evr-matrix__v">supports the read</span>
-                  </li>
-                  <li className="evr-matrix__role evr-matrix__role--advisory">
-                    <span className="evr-matrix__k">Advisory</span>
-                    <span className="evr-matrix__v">weighs in lightly</span>
-                  </li>
-                </ul>
-                <p className="evr-matrix__note">
-                  The matrix shows each judge&apos;s role across P1–P6 and flags
-                  where they strongly disagree.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <div className="tr-lens-seam tr-lens-seam--strong" aria-hidden="true" />
 
-        {/* 5. Linked to evidence — editorial split, light. */}
-        <section id="evidence" className="band soft evr-evidence">
-          <div className="wrap evr-evidence__split">
-            <div className="evr-evidence__copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Linked to evidence
-              </span>
-              <h2 className="title">Claims you can trace to the slide</h2>
-              <p className="sub">
-                EvalLense links important conclusions back to the deck slides —
-                slide number, slide title and a short note for what supports or
-                reduces the score. It also flags deck-completeness across ten
-                key sections, with a severity from info to critical.
-              </p>
-              <p className="evr-evidence__note">
-                Completeness is a signal about a gap or a thin section — never a
-                verdict on whether a claim is true. SourceRefs are collected
-                today; how they surface in the UI follows a production test.
-              </p>
-              {/* evidence visual slot — see prompt 3 in file header */}
-              <figure
-                className="media-ph evr-evidence__media"
-                style={{ ["--ratio" as string]: "4/3" }}
-                role="img"
-                aria-label="A slide quote with a page-ref next to the ten completeness sections"
-              >
-                <span className="media-ph__label">
-                  Image · slide quote + completeness · 4:3
-                </span>
-                <span className="media-ph__hint">
-                  A slide quote with a page-ref and thin connector lines to a
-                  conclusion — see prompt 3 in file header
-                </span>
-              </figure>
-            </div>
-            <div className="evr-evidence__panel" data-reveal="right">
-              <span className="evr-evidence__panel-title">
-                Deck completeness · 10 sections
-              </span>
-              <ul className="evr-completeness" aria-label="Deck completeness signals">
-                {COMPLETENESS.map((c) => (
-                  <li
-                    key={c.name}
-                    className={`evr-comp evr-comp--${c.sev}`}
-                  >
-                    <span className="evr-comp__name">{c.name}</span>
-                    <span className="evr-comp__sev">{c.sev}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="evr-evidence__legend" aria-hidden="true">
-                <span className="evr-evidence__legend-item evr-evidence__legend-item--info">
-                  info
-                </span>
-                <span className="evr-evidence__legend-item evr-evidence__legend-item--warning">
-                  warning
-                </span>
-                <span className="evr-evidence__legend-item evr-evidence__legend-item--critical">
-                  critical
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Where the report is used — feature grid, light. */}
-        <section className="band evr-uses">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Where the report is used
-              </span>
-              <h2 className="title">One report format across the whole process</h2>
-              <p className="sub">
-                The same report serves reviewer prep, the shortlist discussion,
-                founder feedback, committee prep, program selection and the
-                batch archive — without reformatting for each step.
-              </p>
-            </div>
-            <ul className="evr-uses__grid" data-reveal="up">
-              {USES.map((u) => (
-                <li
-                  key={u.tag}
-                  className={
-                    u.feature ? "evr-use evr-use--feature" : "evr-use"
-                  }
-                >
-                  <span className="mini-tag">{u.tag}</span>
-                  <h3 className="evr-use__h">{u.title}</h3>
-                  <p className="evr-use__p">{u.body}</p>
-                </li>
-              ))}
-            </ul>
-            <p className="evr-uses__note">
-              Reports are shareable for internal review. A downloadable PDF
-              export is on the roadmap, not shipped yet.
-            </p>
-          </div>
-        </section>
-
-        {/* 7. Final CTA — quiet CTA, DARK. */}
-        <section className="band ink evr-cta">
+        {/* 8. Final CTA — quiet CTA, cinematic peak (nebula blob). */}
+        <section className="band bg-nebula-layers bg-nebula-blob evr-cta">
+          <div
+            className="bg-nebula-blob__layer motion-nebula-drift"
+            aria-hidden="true"
+          />
           <div className="wrap head">
             <span className="eyebrow" data-reveal="up">
               <span className="dot" aria-hidden="true"></span>
@@ -477,8 +603,8 @@ export default function EvidenceBasedReportsPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "180ms" }}
             >
-              Book a demo and walk through a structured, evidence-linked report
-              built from your own applications.
+              Book a demo and walk through a full evaluation report — summary,
+              reasoning, and the questions to ask live.
             </p>
             <div
               className="sect-cta"
