@@ -44,7 +44,8 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
 
 Связующее звено — **общая библиотека** (`wiki/architecture/component-library.md`
 + манифесты `.claude/library/component-library/`), которую готовит
-`component-library-preparer` и потребляют `build-pages` / будущий Page Orchestrator.
+`component-library-preparer` и потребляют `build-pages` / `page-composer`
+(Page Orchestrator — **теперь существует как skill**, §3.3).
 
 ---
 
@@ -88,7 +89,7 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
 
 ## 3. Скиллы (`.claude/skills/`)
 
-13 рабочих скиллов (+ пустой stale-каталог `evallense-visual-restyler/` без
+15 рабочих скиллов (+ пустой stale-каталог `evallense-visual-restyler/` без
 `SKILL.md` — кандидат на удаление). Сгруппированы по назначению.
 
 ### 3.1 Component Forge — переработка архетипов в prop-driven блоки
@@ -138,6 +139,20 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
 
 ### 3.3 Pages — сборка внутренних страниц
 
+- **`page-composer`** (`/page-composer <route>` | `/page-builder`) — **Page
+  Orchestrator**: один запуск = **одна** страница, глубокая реконструкция. Резолвит
+  бриф `wiki/product/<slug>.md` + route + существующую `page.tsx`, сохраняет все
+  обязательные секции/порядок/факты, матчит **только `ready`** библиотеку
+  (манифесты), планирует реконструкцию, держит **один Design Review Gate**, после
+  approve реализует через `multi-platform-apps-frontend-developer` + full-page QA
+  (3005, fix loop ≤3) + финальный `ui-ux-pro-max`. **Mode-aware:** читает
+  `compose_mode` — сегодня `whole-sections-only` (целые `Lab*` + page-local на
+  shared tokens), после форджа слоя частей → `atoms-and-layouts` (сборка из
+  атомов+каркасов) **без переписывания**. Недостающее **заказывает** у forge:
+  секции → `component-forge`, атомы/каркасы → `primitive-layer-forge`, фоны/переходы
+  → `visual-layer-forge`. Не коммитит/не пушит. Это потребитель `page-composer` из
+  манифестов (ранее значился «ещё не существует»). Дока: [[component-library#Source of truth для page-composer (preparer)|Source of truth для page-composer]].
+
 - **`build-pages`** (`/build-pages /product/entry-hub …`) — пакетно собирает
   внутренние страницы из продуктовых брифов `wiki/product/<slug>.md`. На каждую
   страницу автономно прогоняет story → код → QA по агентскому flow, **но без
@@ -147,7 +162,14 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
   `ui-reviewer`/`qa-acceptance-reviewer`, монтирует `<ScrollFX/>`, ставит `.media-ph`
   при отсутствии ассетов. Единственный наш скилл, который **коммитит и пушит** (рабочей ветки).
 
-### 3.4 Visual layers — фоны/переходы/motion ДО постраничной сборки
+> `page-composer` vs `build-pages`: первый — **одна** страница, глубокая
+> реконструкция из библиотеки с гейтом и resume; второй — **batch** нескольких
+> страниц, автономно, с коммитом на страницу. Не дублируют друг друга.
+
+### 3.4 Library layers — visual + parts ДО постраничной сборки
+
+Оба строят **слои библиотеки**, которые потом потребляет `page-composer`; сами
+страницы не собирают, регистрируют готовое через `component-library-preparer`.
 
 - **`visual-layer-forge`** (`/visual-layer-forge` | `"<target>"` | gap) —
   оркестратор системной visual-layer библиотеки (backgrounds · section transitions
@@ -155,9 +177,22 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
   фиксирует контракты, назначает design-system-architect/ui-designer/ui-ux-designer/
   инженера/QA + advisory `ui-ux-pro-max`, держит один user-гейт, fix loop ≤3,
   регистрирует через `component-library-preparer` incremental. Не делает фон под одну
-  страницу — строит систему, из которой выбирает Page Orchestrator. Режимы:
+  страницу — строит систему, из которой выбирает `page-composer`. Режимы:
   full / targeted / gap. Живой каталог — `web/src/app/dev/visual-lab/`.
   Дока: [[component-library#Визуальные слои (visual-layer-forge)|Visual layers]].
+
+- **`primitive-layer-forge`** (`/primitive-layer-forge` | `"<target>"` | gap) —
+  оркестратор **слоя частей** (L3 atoms + L4 layout shells). Извлекает
+  повторяющиеся `internal_fragments` из 15 `Lab*` и страниц в импортируемые атомы
+  (`_kit.tsx`) и каркасы (`_layout.tsx`), рефакторит `Lab*` на их потребление **под
+  визуальным паритетом** (рендер не меняется), регистрирует через
+  `component-library-preparer` и **переключает `compose_mode` →
+  `atoms-and-layouts`** — после чего `page-composer` собирает секции **из частей**.
+  Назначает `design-system-architect`/`multi-platform-apps-frontend-developer`/
+  QA-ревьюеров + advisory `ui-ux-pro-max`, один user-гейт, fix loop ≤3. Закрывает
+  конфликты CL-001 (`_layout.tsx`) и CL-002 (атомы) **фактическим извлечением**, не
+  правкой доков. **Не путать с `forge-primitives`** (тот лишь строит карту одного
+  архетипа и не извлекает). Режимы: full / targeted / gap.
 
 ### 3.5 Single-block / контент / bootstrap
 
@@ -223,18 +258,40 @@ Auditor → Language Director → Background/Transition/Motion Designers
   → final review → регистрация (component-library-preparer incremental) → отчёт
 ```
 
+**Primitive Layer Forge (слой частей, разово → потом targeted):**
+```
+primitive-layer-forge: Ф1 Audit → Ф2 DS Guard → Ф3 Extraction Plan
+  → ⛔Design review (ui-ux-pro-max + DS) → ⛔Gate (user)
+  → Ф4 Implementation (extract atoms/_layout + refactor Lab* под visual parity)
+  → Ф5 Visual-parity QA (+fix-loop ≤3) → Ф6 Registration (preparer incremental)
+  → compose_mode: whole-sections-only → atoms-and-layouts
+```
+
+**Page Composer (одна страница, глубокая реконструкция):**
+```
+page-composer: Ф0 Resolve → Ф1 Current page → Ф2 Content map → Ф3 Library match (ready)
+  → Ф4 Reconstruction plan → Ф5 Page composition → Ф6 Visual composition (+ui-ux-pro-max)
+  → Ф7 Gap routing (→ component-forge / primitive-layer-forge / visual-layer-forge)
+  → ⛔Design Review Gate (user) → Ф8 Implementation → Ф9 Full-page QA (+fix-loop ≤3)
+  → Ф10 Final ui-ux-pro-max → отчёт
+```
+
 **Library refresh loop (общая шина):**
 ```
-forge-index / visual-layer-forge → /component-library-preparer "<target>" (incremental)
-  → манифесты + component-library.md → build-pages / Page Orchestrator потребляют (только `ready`)
+forge-index / visual-layer-forge / primitive-layer-forge
+  → /component-library-preparer "<target>" (incremental)
+  → манифесты + component-library.md → build-pages / page-composer потребляют (только `ready`)
 ```
 
 ---
 
 ## 6. Общие рейлы (для всех оркестраторов)
 
-- **Гейты:** `component-forge` и `visual-layer-forge` останавливаются на user-гейтах;
-  `component-forge-batch` и `build-pages` — автономны (гейт только на старте).
+- **Гейты:** `component-forge`, `visual-layer-forge`, `primitive-layer-forge` и
+  `page-composer` останавливаются на user-гейтах; `component-forge-batch` и
+  `build-pages` — автономны (гейт только на старте). Оркестраторы **сами не
+  запускаются и не дёргают друг друга** — каждый запускает user; связь между ними
+  идёт через реестр (манифесты), не через авто-вызов.
 - **Коммиты:** forge-семейство, `component-library-preparer`, `visual-layer-forge`,
   story-агенты — **не коммитят/не пушат**. Исключение — `build-pages` (коммит на
   страницу + push рабочей ветки в конце; без merge/force).
@@ -243,7 +300,8 @@ forge-index / visual-layer-forge → /component-library-preparer "<target>" (inc
 - **Task packets:** агенту передаётся короткий пакет с нужными правилами DS дословно,
   не весь чат. Vendor-агенты `wshobson/` неизменяемы.
 - **Compose-mode:** пока нет `sections/lab/_layout.tsx` — `whole-sections-only`
-  (см. конфликт CL-001 в `component-library.md`).
+  (конфликт CL-001). Переключает на `atoms-and-layouts` `primitive-layer-forge`
+  после форджа слоя частей (см. `component-library.md`).
 - **Движение:** единый `<ScrollFX/>` / `data-*` (внутренние) или
   `ScrollOrchestrator` (только home); без per-section `useEffect`.
 - **`.env*`, production pages, Linear write** — вне автономного scope; Linear только
