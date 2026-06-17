@@ -25,6 +25,12 @@
 | [media-placeholder.md](media-placeholder.md) | `.media-ph` — **fallback** при asset-gap | 4B, 5 |
 | [a11y-baseline.md](a11y-baseline.md) | reduced-motion, контраст, клавиатура, семантика | 4A, 5, 6 |
 | [copy-voice.md](copy-voice.md) | human-in-the-loop, antislop, CTA-канон | 1, 4A, 6 |
+| [ui-ux-pro-max-review.md](ui-ux-pro-max-review.md) | advisory design-review (Skill, scope+формат findings, deny `--design-system`) | 4A.2 |
+| [typography-contract.md](typography-contract.md) | per-version типографика + разная композиция заголовков + стресс-матрица + блокеры | 4A, 4A.2, 6 |
+| [theme-typography-geometry.md](theme-typography-geometry.md) | Light↔Dark одна геометрия типографики (`shared_between_themes: true`) | 1, 4A, 5, 6 |
+| [overflow-discipline.md](overflow-discipline.md) | случайный page-overflow запрещён; намеренные scroll-snap рельсы — ок; не глобальный hidden | 4A, 5, 6 |
+| [motion-correctness.md](motion-correctness.md) | motion-контракт; анимация завершается до ухода из вида; QA состояний | 4A, 5, 6 |
+| [background-strategy.md](background-strategy.md) | фон по функции, не картинка по умолчанию; CSS/SVG-примитивы ок | 4A, 5, 6 |
 | [process-states.md](process-states.md) | состояния процесса + дисциплина гейтов | оркестратор |
 | [task-packets.md](task-packets.md) | что передаём агенту (не весь чат) | оркестратор |
 
@@ -40,3 +46,6 @@
   `.claude/skills/redraw-block/references/{apple-block-grammar,craft-quality-bar,section-componentization}.md`
 - **Эталоны компонентов:** `web/src/components/sections/lab/_kit.tsx`,
   `LabSplitRing.tsx`, `LabStatementHero.tsx`, `LabPinnedSteps.tsx`
+- **Advisory design-reviewer (Фаза 4A.2):** Skill `ui-ux-pro-max` (плагин
+  `ui-ux-pro-max@ui-ux-pro-max-skill`) — вызывает оркестратор, не subagent; правила
+  использования и deny-list — `ui-ux-pro-max-review.md`.

@@ -16,13 +16,39 @@ metadata:
 > — визуал/финиш. Раскладку/ритм **решают они**, оркестратор форму не диктует.
 > Инжект rule-cards: `contract-lock`, `version-protocol`, `surface-invariant`,
 > `surface-to-action`, `token-binding`, `glass-rule`, `motion-wiring`,
-> `a11y-baseline`, `copy-voice`. Контекст: микро-карта (Фаза 2), DS-ограничения
+> `motion-correctness`, `typography-contract`, `theme-typography-geometry`,
+> `overflow-discipline`, `background-strategy`, `a11y-baseline`, `copy-voice`; для
+> шага 4A.2 — `ui-ux-pro-max-review`. Контекст: микро-карта (Фаза 2), DS-ограничения
 > (Фаза 3), `.claude/designs/evallense/` (разобранный DS — токены/guidelines/components).
 
 ## Инвариант
 Контент — неизменяемый (см. `contract-lock`): **тот же semantic payload в V1/V2/V3**.
 Нельзя менять/сокращать тексты, CTA-лейблы, метрики, придумывать новые утверждения,
 терять content slots, превращать архетип в другой тип секции, нарушать DS.
+
+## Pipeline 4A (review-loop)
+
+```
+4A.1 Designer Draft → 4A.2 UI UX Pro Max Review → 4A.3 Designer Revision
+→ 4A.4 Final Art Direction → 4B Demo Media
+```
+
+- **4A.1 Designer Draft.** `ui-ux-designer` + `ui-designer` делают черновые V1/V2/V3:
+  composition · typography · text-column geometry · media placement · local
+  background strategy · responsive transformation · motion contract · Light/Dark.
+- **4A.2 UI UX Pro Max Review (обязателен после первого draft).** Оркестратор **сам**
+  вызывает Skill `ui-ux-pro-max` (НЕ subagent) для advisory-ревью: typography ·
+  composition · responsive · media-placement · background-strategy · anti-patterns ·
+  visual hierarchy. Для типографики — `--domain typography`. **Запрещено** для
+  генерации новой DS/палитры/шрифтов/токенов и `--design-system`/`--persist`/
+  `MASTER.md` — EvalLense DS остаётся source of truth. Формат findings и deny-list —
+  `ui-ux-pro-max-review`. Не установлен → prerequisite, шаг пропускается с пометкой.
+- **4A.3 Designer Revision.** Оркестратор убирает дубли, делит findings на
+  **blocker / major / advisory**, возвращает дизайнеру (по `return_to`). Дизайнер
+  правит **только найденное**, не меняет semantic payload, **не плодит новые версии**.
+- **4A.4 Final Art Direction.** Только после `approved` — финальные брифы + Designer
+  Self-Check. **Максимум 2 цикла** 4A.2↔4A.3; не сошлось → `blocked-design-review`,
+  **Gate A не показывать** (см. `process-states`).
 
 ## Три версии
 
@@ -46,7 +72,19 @@ metadata:
   behavior, mobile simplification, reduced-motion fallback.
 
 Каждая версия — в `data-version` и **в обеих темах light+ink** (геометрия идентична,
-меняется только цвет — `surface-invariant`). V3 не превращается в другой продуктовый блок.
+меняется только цвет — `surface-invariant` + `theme-typography-geometry`: font/size/
+weight/line-height/tracking/max-width/позиция/число строк совпадают L↔D). V3 не
+превращается в другой продуктовый блок.
+
+**Композиция заголовков обязана различаться между V1/V2/V3** (слова те же — подача
+разная: расположение, масштаб, вес, разбивка, роль). Одинаковая компоновка заголовка
+у двух версий — **блокер** (`typography-contract`, `version-protocol`). Типографику
+каждой версии вести по `typography-contract` (профиль V1/V2/V3, блокеры, стресс-матрица
+375/768/1024/1280/1440 × real/+30%/longest × Light/Dark). Фон — по `background-strategy`
+(функция, не картинка по умолчанию; CSS/SVG-примитивы ок). Любое движение — по
+`motion-correctness` (в т.ч. `completes_before_exit`: анимация доходит до конца, пока
+элемент ещё во вьюпорте). Page-level горизонтальный overflow запрещён, намеренные
+рельсы — по `overflow-discipline`.
 
 ## Media-brief (для каждой версии, где нужно медиа)
 Дизайнер формирует brief для `media-curator` (через оркестратор): archetype,
@@ -61,11 +99,16 @@ video-object | video-background.
 Вернуть чек-лист (если не пройден — не передавать):
 same semantic payload V1/V2/V3; same headings/body/CTA/metrics; no lost slots;
 V1=polish не рекомпозиция; V2=реальная рекомпозиция; V3=expanded; V2 ≠ V1; V3 ≠ V2;
-Light/Dark geometry parity; ширины текста стабильны между темами; approved surfaces/
-button variants (surface-to-action); existing tokens, без случайных цветов/радиусов;
-типографика по системе; роль media + desktop/mobile ratio + responsive + motion
-contract + reduced-motion определены; сдержанность внутр. страниц; сходство с
-соседними блоками проверено.
+Light/Dark geometry parity (`theme-typography-geometry`); ширины текста стабильны
+между темами; **композиция заголовков разная V1/V2/V3**; типографика прошла
+стресс-матрицу (`typography-contract`, без блокеров); approved surfaces/button
+variants (surface-to-action); existing tokens, без случайных цветов/радиусов;
+типографика по системе; фон по функции (`background-strategy`); роль media +
+desktop/mobile ratio + responsive + motion contract + reduced-motion +
+**`completes_before_exit`** (`motion-correctness`) определены; нет случайного
+page-overflow, намеренные рельсы functional (`overflow-discipline`); advisory review
+(`ui-ux-pro-max`) = approved (или зафиксирован prerequisite); сдержанность внутр.
+страниц; сходство с соседними блоками проверено.
 
 ## Выход (оркестратору)
 Брифы **V1 / V2 / V3** (интент + раскладка + поверхности + motion-контракт),

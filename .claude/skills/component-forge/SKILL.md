@@ -27,7 +27,10 @@ metadata:
 `design-system-architect`, `ui-designer`, `ui-ux-designer`,
 `multi-platform-apps-frontend-developer`, `ui-visual-validator`,
 `accessibility-expert`, `comprehensive-review-code-reviewer` (vendor wshobson, не
-менять) + проектный `media-curator`. **`ui-reviewer` и story/flow-агенты
+менять) + проектный `media-curator`. Плюс **advisory-ревьюер Фазы 4A.2** — Skill
+`ui-ux-pro-max` (его вызывает **оркестратор сам**, не subagent; не заменяет
+дизайнеров/DS-архитектора, новую DS не создаёт — `kb/ui-ux-pro-max-review.md`).
+**`ui-reviewer` и story/flow-агенты
 (`repo-reader`/`story-writer`/`implementation-planner`/`developer-agent`) в форже
 НЕ используются.** Ростер и шаблон пакета — [workers.md](workers.md).
 
@@ -42,7 +45,9 @@ metadata:
 
 ```
 Фаза 0 Discovery → Фаза 1 Contract Lock → Фаза 2 Microstructure Map
-→ Фаза 3 Design-System Guard → Фаза 4A Art Direction (V1/V2/V3) → Фаза 4B Demo Media
+→ Фаза 3 Design-System Guard
+→ Фаза 4A Art Direction (4A.1 Draft → 4A.2 UI UX Pro Max Review → 4A.3 Revision
+  → 4A.4 Final, V1/V2/V3) → Фаза 4B Demo Media
 → ⛔ Gate A (user) → Фаза 5 Frontend Implementation → Фаза 6 Render QA
 → Fix Loop (≤3) → ⛔ Gate B (user) → Фаза 7 Integration/Index → Фаза 8 Final Verify
 → Final Report
@@ -79,13 +84,22 @@ map`. Состояние → `microstructure-mapped`.
 `kb/surface-to-action.md`) и ограничения; фиксирует docs↔code конфликты. **Выход:**
 `## Design-system constraints` + матрица. Состояние → `ds-constrained`.
 
-### Фаза 4A — Art Direction (V1/V2/V3)
+### Фаза 4A — Art Direction (V1/V2/V3, с review-loop)
 Скилл [forge-craft](../forge-craft/SKILL.md), работники `ui-ux-designer` (ведёт
-ритм/рекомпозицию) + `ui-designer` (визуал). Три **брифа**: V1 Polish, V2 Modern
-Recomposition, V3 Expanded Expressive (+ Designer Self-Check + media-brief).
-Карточки: `contract-lock`, `version-protocol`, `surface-invariant`,
+ритм/рекомпозицию) + `ui-designer` (визуал). Поток внутри фазы:
+**4A.1 Draft → 4A.2 UI UX Pro Max Review → 4A.3 Revision → 4A.4 Final**. На 4A.2
+оркестратор **сам** вызывает Skill `ui-ux-pro-max` (advisory, **НЕ subagent**;
+typography/composition/responsive/media/background/anti-patterns; **запрещено**
+генерить новую DS/`--design-system`/`MASTER.md` — EvalLense DS = source of truth).
+**≤2 цикла** 4A.2↔4A.3; не сошлось → `blocked-design-review`, Gate A не показываем.
+Три **брифа**: V1 Polish, V2 Modern Recomposition, V3 Expanded Expressive (+ Designer
+Self-Check + media-brief). Заголовки скомпонованы **по-разному в V1/V2/V3** (слова те
+же). Карточки: `contract-lock`, `version-protocol`, `surface-invariant`,
 `surface-to-action`, `token-binding`, `glass-rule`, `motion-wiring`,
-`a11y-baseline`, `copy-voice`. Состояние → `designing`. Self-check не пройден → не дальше.
+`motion-correctness`, `typography-contract`, `theme-typography-geometry`,
+`overflow-discipline`, `background-strategy`, `a11y-baseline`, `copy-voice`; на 4A.2 —
+`ui-ux-pro-max-review`. Состояния → `designing` → `design-review-revision`.
+Self-check не пройден → не дальше.
 
 ### Фаза 4B — Demo Media
 Поток: дизайнер → **media-brief** → (оркестратор) → `media-curator` →

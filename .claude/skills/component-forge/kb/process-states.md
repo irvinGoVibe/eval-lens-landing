@@ -12,7 +12,8 @@ discovered          — Фаза 0 done
 contract-locked     — Фаза 1 done
 microstructure-mapped — Фаза 2 done
 ds-constrained      — Фаза 3 done (матрица + ограничения)
-designing           — Фаза 4A в работе
+designing           — Фаза 4A.1 черновики V1/V2/V3
+design-review-revision — Фаза 4A.2↔4A.3 петля advisory-ревью (ui-ux-pro-max), ≤2 цикла
 media-curating      — Фаза 4B в работе
 design-review       — собран Gate A, ждём user
 design-approved     — Gate A: approve (user)   ← ГЕЙТ
@@ -22,8 +23,12 @@ fixing              — Fix loop (≤3)
 final-approved      — Gate B: approve (user)    ← ГЕЙТ
 integrating         — Фаза 7
 completed           — Фаза 8 done + Final Report
-blocked             — design-conflict / asset-gap / blocked-after-three-fix-cycles
+blocked             — design-conflict / asset-gap / blocked-design-review /
+                      blocked-after-three-fix-cycles
 ```
+
+`blocked-design-review` — за 2 цикла advisory-ревью (4A.2↔4A.3) дизайн не сошёлся;
+**Gate A не показывается**, выход — отдельным решением (вернуть в Art Direction).
 
 ## Правила
 
