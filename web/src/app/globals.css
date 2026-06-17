@@ -6258,3 +6258,60 @@ section[id]{scroll-margin-top:72px;}
 .tr-gradient-bridge[data-to="light"]  { --to:var(--bg); }
 .tr-gradient-bridge[data-to="soft"]   { --to:var(--bg-soft); }
 .tr-gradient-bridge[data-to="ink"]    { --to:var(--bg-ink); }
+
+/* ============================================================
+   /trust/methodology §9 — Apple-grade cinematic CTA
+   Layer stack (bottom→top): video → lens fill (fades in at end) →
+   FIXED full-bleed black knockout (only the LETTERS scale, so black
+   always covers the whole viewport — no video at the edges) → copy.
+   ONE heading = the masked letters (no second title → no ghosting).
+   Phases by --pin:  A 0→.2 full-screen video · B .22→.6 giant letters
+   descend from above & zoom ×30→1 · C .6→.7 lens fill covers the video
+   so letters become solid brand colour · D .72→.9 eyebrow→sub→CTA.
+   Motion 100% via --pin in CSS; reduced-motion/mobile = static rest.
+   ============================================================ */
+.methodology section.m-cinema{padding:0;min-height:320vh;background:#000;}
+/* [data-pin-stage] global gives position:sticky;top:0;min-height:100svh;display:grid;align-content:center */
+.methodology .m-cinema__stage{overflow:hidden;background:#000;justify-items:center;}
+
+/* Phase A — full-screen video. Always playing/full opacity; HIDDEN at the end by
+   the lens fill covering it, not by fading. */
+.methodology .m-cinema__vid{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;}
+
+/* Phase C — lens fill: above video, below knockout. Transparent during the zoom
+   (video shows through the letters), then fades IN to fully cover the video so
+   the letters resolve to a solid brand gradient (video gone, only letters). */
+.methodology .m-cinema__fill{position:absolute;inset:0;z-index:1;background:var(--lens);
+  opacity:clamp(0, calc((var(--pin,0) - .6) / .1), 1);will-change:opacity;}
+
+/* black knockout — FIXED full-bleed (never scaled) so the black ALWAYS covers
+   the whole viewport (no video leaking at the edges). Hidden in Phase A, then on. */
+.methodology .m-cinema__knockout{position:absolute;inset:0;z-index:2;width:100%;height:100%;
+  opacity:clamp(0, calc((var(--pin,0) - .2) / .04), 1);will-change:opacity;}
+
+/* Only the LETTERS scale + descend from above (Phase B): ×30 huge → 1, settling
+   to centre. transform-box:fill-box → scales about the text's own centre. */
+.methodology .m-cinema__masktext{font-family:var(--font-display);font-weight:600;font-size:60px;letter-spacing:-.02em;fill:#000;
+  transform-box:fill-box;transform-origin:center;will-change:transform;
+  transform:translateY(calc(-320px * (1 - min(max(var(--pin,0) - .22, 0) / .38, 1)))) scale(calc(30 - 29 * min(max(var(--pin,0) - .22, 0) / .38, 1)));}
+
+/* Phase D — supporting copy, BELOW the heading; no second heading element, so
+   nothing ever overlaps the masked letters */
+.methodology .m-cinema__copy{position:absolute;z-index:3;left:0;right:0;top:60%;max-width:min(1100px,92vw);margin-inline:auto;padding:0 var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
+.methodology .m-cinema__eyebrow{opacity:clamp(0, calc((var(--pin,0) - .72) / .06), 1);transform:translateY(calc(14px * (1 - clamp(0, calc((var(--pin,0) - .72) / .06), 1))));}
+.methodology .m-cinema__sub{max-width:60ch;margin-top:16px;opacity:clamp(0, calc((var(--pin,0) - .78) / .06), 1);transform:translateY(calc(14px * (1 - clamp(0, calc((var(--pin,0) - .78) / .06), 1))));}
+.methodology .m-cinema__cta{margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:clamp(0, calc((var(--pin,0) - .83) / .07), 1);transform:translateY(calc(14px * (1 - clamp(0, calc((var(--pin,0) - .83) / .07), 1))));}
+
+/* mobile & reduced-motion: un-pin → static black statement (resting state forced) */
+@media (max-width:880px), (prefers-reduced-motion:reduce){
+  .methodology section.m-cinema{min-height:0;}
+  .methodology .m-cinema__stage{position:static;min-height:78svh;padding:clamp(80px,14vw,150px) 0;}
+  .methodology .m-cinema__vid{opacity:.14;}
+  .methodology .m-cinema__fill{opacity:1;}
+  .methodology .m-cinema__knockout{opacity:1;}
+  .methodology .m-cinema__masktext{transform:scale(1) translateY(0);}
+  .methodology .m-cinema__copy{position:static;margin-top:clamp(28px,5vw,48px);}
+  .methodology .m-cinema__eyebrow,
+  .methodology .m-cinema__sub,
+  .methodology .m-cinema__cta{opacity:1;transform:none;}
+}

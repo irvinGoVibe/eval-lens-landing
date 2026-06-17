@@ -534,33 +534,76 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        {/* 9. Final CTA — quiet CTA, DARK. */}
-        <section className="band ink methodology-cta">
-          <div className="wrap head">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              Get started
-            </span>
-            <h2
-              className="title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
+        {/* 9. Final CTA — Apple-grade cinematic zoom.
+         * Phase A: full-screen video. Phase B: black knockout shows the video
+         * ONLY through the heading letters — the LETTERS scale from huge → 1
+         * (black rect fixed full-bleed → no video at the edges). Phase C: a lens
+         * fill covers the video so the letters become a solid brand gradient
+         * (only letters remain). Phase D: eyebrow → sub → CTA. Motion is 100%
+         * --pin-driven in CSS via ScrollFX (no per-section useEffect / no
+         * ScrollOrchestrator edit). reduced-motion & mobile = static statement. */}
+        <section
+          className="band ink m-cinema"
+          data-pin
+          data-pin-steps="1"
+          aria-label="See the methodology on your own decks"
+        >
+          <div className="m-cinema__stage" data-pin-stage>
+            <video
+              className="m-cinema__vid"
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
             >
-              See the methodology on your own decks
-            </h2>
-            <p
-              className="sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
+              <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
+            </video>
+            {/* lens fill — fades in at the end, fully covering the video so the
+             * letters resolve to a solid brand gradient (video gone, only letters) */}
+            <div className="m-cinema__fill" aria-hidden="true"></div>
+            {/* full-bleed black knockout; ONLY the masked letters scale (CSS), so
+             * the black always covers the whole viewport — no video at the edges */}
+            <svg
+              className="m-cinema__knockout"
+              viewBox="0 0 1280 900"
+              preserveAspectRatio="xMidYMid slice"
+              aria-hidden="true"
             >
-              Book a demo and watch the evaluation run end to end.
-            </p>
-            <div
-              className="sect-cta"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
+              <defs>
+                <mask id="m-cinema-mask">
+                  <rect width="1280" height="900" fill="#fff" />
+                  <text
+                    x="640"
+                    y="490"
+                    textAnchor="middle"
+                    className="m-cinema__masktext"
+                  >
+                    See the methodology on your own decks
+                  </text>
+                </mask>
+              </defs>
+              <rect
+                width="1280"
+                height="900"
+                fill="var(--bg-ink, #0a0a0d)"
+                mask="url(#m-cinema-mask)"
+              />
+            </svg>
+            {/* supporting copy — appears AFTER the heading, below it; no second
+             * heading element, so nothing overlaps the masked letters */}
+            <div className="m-cinema__copy">
+              <span className="eyebrow m-cinema__eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                Get started
+              </span>
+              <p className="sub m-cinema__sub">
+                Book a demo and watch the evaluation run end to end — on your own
+                pitch decks, with the final call yours.
+              </p>
+              <div className="sect-cta m-cinema__cta">
+                <Button href="/#demo">Book a Demo</Button>
+              </div>
             </div>
           </div>
         </section>
