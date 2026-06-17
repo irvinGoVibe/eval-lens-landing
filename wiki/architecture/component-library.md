@@ -124,6 +124,33 @@
 - **Surface-инвариант:** внутри версии light и ink совпадают по геометрии,
   различие — только цвет (см. `component-forge/kb/surface-invariant.md`).
 
+## Визуальные слои (visual-layer-forge)
+
+Переиспользуемые фоны/переходы под и между секциями, кованые моментом
+[visual-layer-forge](../../.claude/skills/visual-layer-forge/SKILL.md) **до** запуска
+Page Orchestrator. Контракты — в `backgrounds.json` (L13) / `transitions.json` (L14);
+консьюмер берёт только `ready`. Живой каталог — `web/src/app/dev/visual-lab/`
+(не Section Lab — другая ось).
+
+| ID | Слой | Что | Поверхности | Статус |
+|---|---|---|---|---|
+| `bg-ink-ambient-glow` | background (L13) | CSS ambient-glow на `.band.ink` (2 low-opacity radial над `--ink-grad`), без WebGL; core уведён в правый-верх, тело текста AA | ink | ready |
+| `tr-gradient-bridge` | transition (L14) | нейтральный кросс-поверхностный мост-band между секциями (oklab `from→to`, in-flow, без `100vw`/negative-margin/orange/lens) | light/soft/ink — soft↔ink, light↔ink | ready |
+
+**Browser QA (visual-layer-forge v1, 2026-06-17, :3005 `/dev/visual-lab`):** overflow 0
+@375/768/1280; контраст текста на ink ok; `pointer-events:none` + `aria-hidden` на
+декор-слоях; мобильный fallback фона (<600px → 1 радиал); все 4 направления моста
+корректны; console чист. → оба `ready`.
+
+**Backlog (page-level, `blocked-by-surface-ownership`):** `bg-shared-page-grid` +
+`tr-grid-continuation` спроектированы, но требуют, чтобы Lab-секции умели прозрачную/
+наследуемую поверхность (сейчас секции сами красят `.band.*`). Условие разблокировки:
+`Lab sections support transparent/inherit surface → component-forge →
+visual-layer-forge targeted → shared page backgrounds enabled`. Section API не трогается.
+
+**Recipes (L15, отложено):** `recipes.json` появится после первой продуктовой
+страницы — в v1 composition recipes ещё нет.
+
 ## Source of truth для page-composer (preparer)
 
 Реестр выше — **forge-процесс** (статусы `forged/draft` = прошёл ли forge-validate).

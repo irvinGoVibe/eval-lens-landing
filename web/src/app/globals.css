@@ -6211,3 +6211,50 @@ section[id]{scroll-margin-top:72px;}
 /* ---- 7. Final CTA ---- */
 .pricing .pr-cta .head{display:flex;flex-direction:column;align-items:center;text-align:center;}
 .pricing .pr-cta .cta-row{margin-top:34px;}
+
+/* ============ visual-layer-forge v1 (bg-ink-ambient-glow · tr-gradient-bridge) ============ */
+
+/* ---- bg-ink-ambient-glow — ink surface ambient background, pure CSS ---- */
+.bg-ink-ambient-glow{ position:relative; isolation:isolate; }
+.bg-ink-ambient-glow > .bg-ink-ambient-glow__layer{
+  position:absolute; inset:0; z-index:0;
+  overflow:hidden; pointer-events:none; border-radius:inherit;
+  background:
+    radial-gradient(60% 50% at 78% 18%,
+      color-mix(in oklab, var(--violet) 16%, transparent) 0%,
+      color-mix(in oklab, var(--violet) 8%,  transparent) 38%,
+      transparent 72%),
+    radial-gradient(55% 48% at 16% 88%,
+      color-mix(in oklab, var(--cyan) 12%, transparent) 0%,
+      color-mix(in oklab, var(--aqua) 7%, transparent) 40%,
+      transparent 74%),
+    var(--ink-grad);
+}
+/* content must outrank the decorative layer */
+.bg-ink-ambient-glow > :not(.bg-ink-ambient-glow__layer){ position:relative; z-index:1; }
+@media (max-width:600px){
+  /* keep paint cheap on mobile: drop the secondary radial */
+  .bg-ink-ambient-glow > .bg-ink-ambient-glow__layer{
+    background:
+      radial-gradient(60% 50% at 78% 18%,
+        color-mix(in oklab, var(--violet) 16%, transparent) 0%,
+        color-mix(in oklab, var(--violet) 8%,  transparent) 38%,
+        transparent 72%),
+      var(--ink-grad);
+  }
+}
+
+/* ---- tr-gradient-bridge — neutral cross-surface bridge element ---- */
+.tr-gradient-bridge{
+  display:block; width:100%;
+  height:clamp(48px,7vh,112px);
+  overflow:hidden; pointer-events:none;
+  --from:var(--bg); --to:var(--bg);
+  background:linear-gradient(in oklab to bottom, var(--from) 0%, var(--to) 100%);
+}
+.tr-gradient-bridge[data-from="light"]{ --from:var(--bg); }
+.tr-gradient-bridge[data-from="soft"] { --from:var(--bg-soft); }
+.tr-gradient-bridge[data-from="ink"]  { --from:var(--bg-ink); }
+.tr-gradient-bridge[data-to="light"]  { --to:var(--bg); }
+.tr-gradient-bridge[data-to="soft"]   { --to:var(--bg-soft); }
+.tr-gradient-bridge[data-to="ink"]    { --to:var(--bg-ink); }

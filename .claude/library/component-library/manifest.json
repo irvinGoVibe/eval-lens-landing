@@ -30,8 +30,8 @@
     "L10_social": { "manifest": "social.json", "count": 3 },
     "L11_media": { "manifest": "atoms.json#MediaPlaceholder", "count": 1 },
     "L12_motion": { "manifest": "motion.json", "count": 2 },
-    "L13_backgrounds": { "manifest": "backgrounds.json", "count": 13 },
-    "L14_transitions": { "manifest": "transitions.json", "count": 5 }
+    "L13_backgrounds": { "manifest": "backgrounds.json", "count": 14 },
+    "L14_transitions": { "manifest": "transitions.json", "count": 6 }
   },
   "summary": {
     "lab_sections_total": 16,
@@ -42,6 +42,20 @@
     "blocked": 0,
     "registry_code_conflicts": 6,
     "dead_code": ["FinalUnicorn", "Trust", "Results"]
+  },
+  "visual_layer_forge": {
+    "produced_by": "visual-layer-forge skill (v1, 2026-06-17)",
+    "ready": [
+      { "id": "bg-ink-ambient-glow", "layer": "L13", "manifest": "backgrounds.json" },
+      { "id": "tr-gradient-bridge", "layer": "L14", "manifest": "transitions.json" }
+    ],
+    "browser_qa": { "run": true, "url": "http://localhost:3005/dev/visual-lab", "widths": [375, 768, 1280], "page_level_horizontal_overflow_px": 0, "console_errors": 0 },
+    "backlog_blocked": [
+      { "id": "bg-shared-page-grid", "layer": "L13", "status": "blocked-by-surface-ownership" },
+      { "id": "tr-grid-continuation", "layer": "L14", "status": "blocked-by-surface-ownership" }
+    ],
+    "unblock_condition": "Lab sections support transparent/inherit surface -> component-forge -> visual-layer-forge targeted -> shared page backgrounds enabled",
+    "recipes_layer": { "id": "L15_recipes", "manifest": "recipes.json", "status": "deferred (no composition recipes until the first product page); not yet created" }
   },
   "manifests": [
     "sections.json", "atoms.json", "layouts.json", "chrome.json", "motion.json",

@@ -31,6 +31,19 @@
     {
       "name": "section scrims / bottom-fades", "source": "globals.css (scrub-bottom-fade)", "from_surfaces": "scene", "to_surfaces": "next surface",
       "type": "scrim / soft gradient bridge", "static_or_motion": "static", "reusable": true
+    },
+    {
+      "id": "tr-gradient-bridge", "name": "Neutral Gradient Bridge", "source": "globals.css (visual-layer-forge v1)",
+      "from_surfaces": "light|soft|ink", "to_surfaces": "light|soft|ink",
+      "directions_covered": ["soft->ink", "ink->soft", "light->ink", "ink->light"],
+      "type": "neutral cross-surface gradient bridge (in-flow band element)", "static_or_motion": "static",
+      "implementation": "<div class='tr-gradient-bridge' data-from data-to aria-hidden> placed between two sections; linear-gradient(in oklab to bottom, var(--from) 0%, var(--to) 100%); height clamp(48px,7vh,112px); data-from/to map to --bg/--bg-soft/--bg-ink",
+      "overlap_depth": "none (in-flow, own height; neighbours need no negative margin)", "clipping": "self overflow:hidden (no body overflow:clip dependency)", "z_index": "auto (flow)",
+      "mobile_fallback": "height clamp collapses toward ~48-57px; no JS", "reduced_motion": "n/a (static); any future opt-in fade only via ScrollFX data-reveal",
+      "reusable": true, "status": "ready",
+      "consumption_readiness": { "status": "ready", "browser_qa": "run (:3005 /dev/visual-lab; all 4 directions; overflow 0; pointer-events:none)", "allowed_consumers": ["page-composer", "build-pages"] },
+      "produced_by": "visual-layer-forge",
+      "note": "Distinct from the proposed SectionBridge(warm|mist) extraction of OrangeGlow/MistBridge — this is neutral (no orange, no --lens, no motion)."
     }
   ]
 }
