@@ -3,10 +3,15 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
-import { Button } from "@/components/ui/Button";
+import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
+import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
+import { LabNumbered } from "@/components/sections/lab/LabNumbered";
+import { LabBento } from "@/components/sections/lab/LabBento";
+import { LabGallery } from "@/components/sections/lab/LabGallery";
+import { CtaBand } from "@/components/sections/CtaBand";
 
 /** Header nav for this page — anchor links to its own sections (see the
- *  matching `id`s on the bands below). Each page declares its own. */
+ *  matching `id`s on the Lab* sections below). Each page declares its own. */
 const HEADER_NAV: SectionNav = {
   section: "Product",
   sectionHref: "/product/overview",
@@ -24,35 +29,40 @@ export const metadata: Metadata = {
 };
 
 /*
- * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
- * The image generator is NOT wired up. Every visual slot below is a VISIBLE,
- * labeled `.media-ph` placeholder (global primitive in globals.css) on
- * canonical tokens — never an empty grey div. Each carries an --ratio so the
- * real asset drops in with zero layout shift. When a generator is available,
- * produce the assets and drop them into web/public/assets/product/.
+ * ── COMPOSITION ──────────────────────────────────────────────────────────
+ * Sections §1–§5 and §7 are reconstructed from the real library `Lab*`
+ * Server Components (under @/components/sections/lab). §6 stays a
+ * page-local editorial pull-quote on purpose, and §8 is the shared
+ * `CtaBand` (dark theme + aurora + bleed) — the page's single ink peak.
+ * The const data arrays below (PATH_STEPS / PIPELINE / MODULES / JUDGES /
+ * OUTPUTS) hold the confirmed content and are passed straight into the
+ * components.
  *
- * 1. hero (section 1) — 16:9
+ * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
+ * The image generator is NOT wired up. The Lab* components render their own
+ * VISIBLE, labeled `.media-ph` placeholders (ratio-locked, on canonical
+ * tokens) from the `media` props passed below — never an empty grey div.
+ * When a generator is available, produce the assets and drop them into
+ * web/public/assets/product/.
+ *
+ * 1. hero (§1) — 16:9
  *    A flow of decks converges into a lens and exits as a ranked workspace.
  *    Prompt: lens-gradient violet→cyan→aqua over an Apple-neutral surface,
  *    soft violet depth, hairline structure, calm; no security theatre.
  *
- * 2. flow (section 2, beside the pinned 7 steps) — 4:3
+ * 2. flow (§2, beside the pinned 7 steps) — 4:3
  *    A horizontal track of 7 steps whose nodes light up in sequence.
  *    Prompt: same tokens, ink surface, thin node-lines, one lit node.
  *
- * 3. pipeline (section 3, beside the scrubbed stages) — 4:3
- *    Decoder→Judges→Summarizer→Scoring→Report as a lens track, one node lit.
- *    Prompt: same tokens, minimal, a single lens accent on one node.
- *
- * 4. modules (section 4, dark bento feature tile) — 16:9
+ * 4. modules (§4, bento feature tile) — 16:9
  *    A bento of three modules with quiet signal-icons.
- *    Prompt: hairline tiles, one lens accent, ink surface, calm.
+ *    Prompt: hairline tiles, one lens accent, calm.
  *
  * ── MOTION ───────────────────────────────────────────────────────────────
- * This page opts into the generic ScrollFX engine via data-attributes only
- * (data-reveal / data-scrub / data-pin). No per-section useEffect, no
- * ScrollOrchestrator edits. reduced-motion is handled by the engine + the
- * primitives' @media block. <ScrollFX/> is mounted once after <Footer/>.
+ * Motion is the Lab* components' built-in data-reveal / data-pin, driven by
+ * the single <ScrollFX/> mounted once after <Footer/>. No per-section
+ * useEffect, no ScrollOrchestrator edits. reduced-motion is handled by the
+ * engine + the primitives' @media block.
  *
  * ── CONTENT ──────────────────────────────────────────────────────────────
  * Facts are CONFIRMED in the brief (wiki/product/product.md): 7-step organizer
@@ -220,257 +230,94 @@ export default function ProductOverviewPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="product-overview">
-        {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
-        <section className="band soft po-hero">
-          <div className="wrap po-hero__inner">
-            <span
-              className="eyebrow"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "0ms" }}
-            >
-              <span className="dot" aria-hidden="true"></span>
-              Product Overview
-            </span>
-            <h1
-              className="po-hero__title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              The operating layer for structured pitch{" "}
-              <span className="grad-word">evaluation</span>
-            </h1>
-            <p
-              className="sub po-hero__sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              Collect every deck in one place, evaluate it against one rubric,
-              and compare evidence-based reports in a single review. The final
-              call always yours.
-            </p>
-            <div
-              className="cta-row"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
-            </div>
-            {/* hero visual slot — see prompt 1 in file header */}
-            <figure
-              className="media-ph po-hero__media"
-              style={{ ["--ratio" as string]: "16/9" }}
-              data-reveal="scale"
-              role="img"
-              aria-label="A flow of decks converging into a lens and exiting as a ranked workspace"
-            >
-              <span className="media-ph__label">
-                Image · decks into a lens · 16:9
-              </span>
-              <span className="media-ph__hint">
-                Decks converge into a lens and exit as a ranked workspace —
-                lens-gradient violet→cyan→aqua, calm; see prompt 1 in file
-                header
-              </span>
-            </figure>
-          </div>
-        </section>
+        {/* §1. Hero → LabStatementHero (surface soft by design, version 1). */}
+        <LabStatementHero
+          version={1}
+          eyebrow="Product Overview"
+          titleLead="The operating layer for structured pitch "
+          titleAccent="evaluation"
+          sub="Collect every deck in one place, evaluate it against one rubric, and compare evidence-based reports in a single review. The final call always yours."
+          ctas={[{ label: "Book a Demo", href: "/#demo" }]}
+          media={{
+            ratio: "16/9",
+            label: "Image · decks into a lens · 16:9",
+            hint: "Decks converge into a lens and exit as a ranked workspace — lens-gradient violet→cyan→aqua, calm",
+            ariaLabel:
+              "A flow of decks converging into a lens and exiting as a ranked workspace",
+          }}
+        />
 
-        {/* 2. Organizer path — pinned multi-screen, DARK. Seven steps light up. */}
-        <section
+        {/* §2. Organizer path → LabPinnedSteps (soft, 7 pinned steps). */}
+        <LabPinnedSteps
           id="path"
-          className="band ink po-path"
-          data-pin
-          data-pin-steps="7"
-          aria-label="The organizer path — seven steps"
-        >
-          <div className="po-path__stage" data-pin-stage>
-            <div className="wrap po-path__grid">
-              <div className="po-path__col">
-                <div className="head po-path__head">
-                  <span className="eyebrow">
-                    <span className="dot" aria-hidden="true"></span>
-                    How it works
-                  </span>
-                  <h2 className="title">The organizer path, in seven steps</h2>
-                  <p className="sub">
-                    EvalLense walks an organizer from sign-in to a ranked
-                    leaderboard. The path is fixed; each step lights up as you
-                    scroll through it.
-                  </p>
-                </div>
-                <ol className="po-path__track">
-                  {PATH_STEPS.map((s, i) => (
-                    <li
-                      key={s.label}
-                      className="po-step"
-                      data-pin-step
-                      style={{ ["--i" as string]: String(i) }}
-                    >
-                      <span className="po-step__num">{s.num}</span>
-                      <span className="po-step__label">{s.label}</span>
-                      <span className="po-step__desc">{s.desc}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-              {/* flow visual slot — see prompt 2 in file header */}
-              <figure
-                className="media-ph po-path__media"
-                style={{ ["--ratio" as string]: "4/3" }}
-                role="img"
-                aria-label="A horizontal track of seven steps whose nodes light up in sequence"
-              >
-                <span className="media-ph__label">
-                  Image · organizer flow · 4:3
-                </span>
-                <span className="media-ph__hint">
-                  A 7-step track, nodes lighting in sequence on an ink surface —
-                  see prompt 2 in file header
-                </span>
-              </figure>
-            </div>
-          </div>
-        </section>
+          surface="soft"
+          ariaLabel="The organizer path — seven steps"
+          eyebrow="How it works"
+          title={{ line1: "The organizer path,", line2: "in seven steps" }}
+          sub="EvalLense walks you from sign-in to a ranked leaderboard. The path is fixed, and each step lights up as you scroll."
+          steps={PATH_STEPS}
+          media={{
+            ratio: "4/3",
+            label: "Image · organizer flow · 4:3",
+            hint: "A 7-step track, nodes lighting in sequence on an ink surface",
+            ariaLabel:
+              "A horizontal track of seven steps whose nodes light up in sequence",
+          }}
+        />
 
-        {/* 3. Evaluation pipeline — editorial split + scrubbed ring, light. */}
-        <section className="band po-pipeline">
-          <div className="wrap po-pipeline__split">
-            <div className="po-pipeline__copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Evaluation pipeline
-              </span>
-              <h2 className="title">Every deck runs the same five stages</h2>
-              <p className="sub">
-                Each application passes a fixed pipeline. The numeric layer is
-                deterministic — the same findings and weights produce the same
-                AI Total Score, an advisory reference. Ranking is built from your
-                score, not this one.
-              </p>
-              <ol className="po-pipeline__track">
-                {PIPELINE.map((p) => (
-                  <li key={p.name} className="po-pipe">
-                    <span className="po-pipe__num">{p.num}</span>
-                    <span className="po-pipe__name">{p.name}</span>
-                    <span className="po-pipe__body">{p.body}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <div className="po-pipeline__visual" data-reveal="right">
-              {/* pipeline ring — fills as it scrolls through the viewport via
-                  --scrub; reduced-motion lands it at the full state */}
-              <div
-                className="po-ring"
-                data-scrub
-                role="img"
-                aria-label="A ring filling as a deck moves through the pipeline stages"
-              >
-                <span className="po-ring__label">Decoder → Report</span>
-              </div>
-              {/* pipeline visual slot — see prompt 3 in file header */}
-              <figure
-                className="media-ph po-pipeline__media"
-                style={{ ["--ratio" as string]: "4/3" }}
-                role="img"
-                aria-label="Decoder to Report shown as a lens track with one node lit"
-              >
-                <span className="media-ph__label">
-                  Image · pipeline track · 4:3
-                </span>
-                <span className="media-ph__hint">
-                  Decoder→Judges→Summarizer→Scoring→Report, one lens-lit node —
-                  see prompt 3 in file header
-                </span>
-              </figure>
-            </div>
-          </div>
-        </section>
+        {/* §3. Evaluation pipeline → LabNumbered (light). PIPELINE.name → title. */}
+        <LabNumbered
+          surface="light"
+          eyebrow="Evaluation pipeline"
+          title="Every deck runs the same five stages"
+          sub="Each application passes a fixed pipeline. The numeric layer is deterministic — the same findings and weights produce the same AI Total Score, an advisory reference. Ranking is built from your score, not this one."
+          items={PIPELINE.map((p) => ({
+            num: p.num,
+            title: p.name,
+            body: p.body,
+          }))}
+        />
 
-        {/* 4. Three modules — bento, DARK. */}
-        <section id="modules" className="band ink po-modules">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Three modules
-              </span>
-              <h2 className="title">One product, three connected modules</h2>
-              <p className="sub">
-                An Entry Hub for intake, Evidence-Based Reports for the
-                analysis, and a Review Board where a person makes the call.
-              </p>
-            </div>
-            <ul className="po-modules__grid" data-reveal="up">
-              {MODULES.map((m) => (
-                <li
-                  key={m.tag}
-                  className={
-                    m.feature
-                      ? "po-module po-module--feature"
-                      : "po-module"
-                  }
-                >
-                  <span className="mini-tag">{m.tag}</span>
-                  <h3 className="po-module__h">{m.title}</h3>
-                  <p className="po-module__p">{m.body}</p>
-                  {m.feature ? (
-                    /* modules visual slot — see prompt 4 in file header */
-                    <figure
-                      className="media-ph po-module__media"
-                      style={{ ["--ratio" as string]: "16/9" }}
-                      role="img"
-                      aria-label="A bento of three modules with quiet signal icons"
-                    >
-                      <span className="media-ph__label">
-                        Image · modules bento · 16:9
-                      </span>
-                      <span className="media-ph__hint">
-                        Three module tiles with quiet signal icons, one lens
-                        accent — see prompt 4 in file header
-                      </span>
-                    </figure>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {/* §4. Three modules → LabBento (light). Media on the feature tile only.
+            Note: LabBentoMedia has no `ratio` field — the component hardcodes
+            16/9 internally — so the feature media omits `ratio`. */}
+        <LabBento
+          id="modules"
+          surface="light"
+          eyebrow="Three modules"
+          title="One product, three connected modules"
+          sub="An Entry Hub for intake, Evidence-Based Reports for the analysis, and a Review Board where a person makes the call."
+          items={MODULES.map((m) =>
+            m.feature
+              ? {
+                  ...m,
+                  media: {
+                    label: "Image · modules bento · 16:9",
+                    hint: "Three module tiles with quiet signal icons, one lens accent",
+                    ariaLabel:
+                      "A bento of three modules with quiet signal icons",
+                  },
+                }
+              : m,
+          )}
+        />
 
-        {/* 5. AI jury — horizontal scroll-snap gallery, light. Six judges. */}
-        <section id="jury" className="band po-jury">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                AI jury
-              </span>
-              <h2 className="title">Six independent judges, six lenses</h2>
-              <p className="sub">
-                Evaluation runs through a jury of six AI judges, each with its
-                own lens across P1–P6. They work independently and never see one
-                another's scores — and where they disagree, the report shows it.
-              </p>
-            </div>
-          </div>
-          <ol
-            className="po-judges-lane"
-            data-reveal="up"
-            tabIndex={0}
-            aria-label="The six AI judges — horizontally scrollable"
-          >
-            {JUDGES.map((j) => (
-              <li key={j.code} className="po-judge">
-                <span className="po-judge__signal" aria-hidden="true"></span>
-                <span className="mini-tag">{j.code}</span>
-                <h3 className="po-judge__h">{j.title}</h3>
-                <p className="po-judge__p">{j.body}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
+        {/* §5. AI jury → LabGallery (light). JUDGES.code → tag. */}
+        <LabGallery
+          surface="light"
+          eyebrow="AI jury"
+          title="Six independent judges, six lenses"
+          sub="Evaluation runs through a jury of six AI judges, each with its own lens across P1–P6. They work independently and never see one another's scores — and where they disagree, the report shows it."
+          laneLabel="The six AI judges — horizontally scrollable"
+          items={JUDGES.map((j) => ({
+            tag: j.code,
+            title: j.title,
+            body: j.body,
+          }))}
+        />
 
-        {/* 6. Why it matters — editorial split, light. */}
+        {/* §6. Why it matters — KEPT page-local on purpose (editorial pull-quote,
+            not a Lab component). Do not convert this to a Lab* block. */}
         <section className="band soft po-why">
           <div className="wrap po-why__split">
             <div className="po-why__copy" data-reveal="left">
@@ -497,72 +344,32 @@ export default function ProductOverviewPage() {
           </div>
         </section>
 
-        {/* 7. What you get — stat / bento, DARK. */}
-        <section id="outputs" className="band ink po-outputs">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                What you get
-              </span>
-              <h2 className="title">Everything a run leaves behind</h2>
-              <p className="sub">
-                After a batch runs, you're left with a structured set of
-                outputs — not a folder of scattered files and threads.
-              </p>
-            </div>
-            <ul className="po-outputs__grid" data-reveal="up">
-              {OUTPUTS.map((o) => (
-                <li
-                  key={o.tag}
-                  className={
-                    o.feature
-                      ? "po-output po-output--feature"
-                      : "po-output"
-                  }
-                >
-                  <span className="mini-tag">{o.tag}</span>
-                  <h3 className="po-output__h">{o.title}</h3>
-                  <p className="po-output__p">{o.body}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {/* §7. What you get → LabBento (light). No media (brief has no §7 image);
+            the feature tile renders without a media slot. */}
+        <LabBento
+          id="outputs"
+          surface="light"
+          eyebrow="What you get"
+          title="Everything a run leaves behind"
+          sub="After a batch runs, you're left with a structured set of outputs — not a folder of scattered files and threads."
+          items={OUTPUTS}
+        />
 
-        {/* 8. Final CTA — quiet CTA, DARK. */}
-        <section className="band ink po-cta">
-          <div className="wrap head">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              Get started
-            </span>
-            <h2
-              className="title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              See the whole workflow on your own decks
-            </h2>
-            <p
-              className="sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              Book a demo and watch intake, evaluation, and human review play out
-              end to end.
-            </p>
-            <div
-              className="sect-cta"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
-            </div>
-          </div>
-        </section>
+        {/* §8 — Final CTA. Cinematic closer: CtaBand on the dark (ink) theme with
+            its animated CSS aurora (violet · cyan · lavender) and `bleed` so the
+            background spills onto the footer — the single ink peak of the page. */}
+        <CtaBand
+          theme="dark"
+          bleed
+          auroraVariant="violet"
+          eyebrow="Get started"
+          title="See the whole workflow on"
+          titleAccent="your own decks"
+          sub="Book a demo and watch intake, evaluation, and human review play out end to end."
+          primary={{ label: "Book a Demo", href: "/#demo" }}
+        />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );
