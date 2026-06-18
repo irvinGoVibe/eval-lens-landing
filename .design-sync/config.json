@@ -1,0 +1,12 @@
+{
+  "projectId": "daa67aa0-d912-4b21-9cad-25d83508a3a7",
+  "shape": "package",
+  "pkg": "evallense-ds",
+  "globalName": "Evallense",
+  "entry": ".ds-sync/node_modules/evallense-ds/index.jsx",
+  "cssEntry": "styles/components.css",
+  "tokensPkg": "evallense-ds",
+  "tokensGlob": "tokens/*.css",
+  "runtimeFontPrefixes": ["SF Pro", "JetBrains Mono"],
+  "readmeHeader": ".design-sync/conventions.md"
+}

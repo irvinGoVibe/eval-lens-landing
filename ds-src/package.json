@@ -1,0 +1,11 @@
+{
+  "name": "evallense-ds",
+  "version": "1.0.0",
+  "description": "EvalLense design system — brand primitives, tokens, and type.",
+  "module": "index.jsx",
+  "types": "index.d.ts",
+  "private": true,
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}
