@@ -1566,6 +1566,10 @@ function runScript() {
     const save = document.getElementById("sd-save");
     const NOTE = "Strong team — confirm MX licensing before final approval.";
 
+    // mobile-only affordances (hidden on desktop via CSS, but present in DOM)
+    const railCaption = document.getElementById("sd-railCaption");
+    const mCount = document.getElementById("sd-mCount");
+
     const STAGES = 6;
     const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
     let lastStage = 0;
@@ -1670,6 +1674,13 @@ function runScript() {
 
       pillEl.textContent = pillText[stage - 1];
       crumbEl.textContent = crumbText[stage - 1];
+
+      // mobile caption + step counter (no-ops on desktop where they're hidden)
+      if (railCaption) {
+        const d = (steps[stage - 1] as HTMLElement | undefined)?.querySelector(".desc");
+        railCaption.textContent = d?.textContent ?? "";
+      }
+      if (mCount) mCount.textContent = `Step ${stage} of ${STAGES}`;
 
       const bView = stage >= 4;
       layerAEl.classList.toggle("on", !bView);
@@ -1789,17 +1800,29 @@ function runScript() {
     // never by scroll. Each transition tweens the in-stage fraction 0→1
     // so the demo's reveals still play out.
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isPhone = () => window.matchMedia("(max-width: 640px)").matches;
     const navUp = document.getElementById("sd-navUp") as HTMLButtonElement | null;
     const navDown = document.getElementById("sd-navDown") as HTMLButtonElement | null;
+    // mobile prev / next bar (Next becomes "Replay" on the last stage)
+    const mPrev = document.getElementById("sd-mPrev") as HTMLButtonElement | null;
+    const mNext = document.getElementById("sd-mNext") as HTMLButtonElement | null;
 
     let current = 0;
     let animTok = 0;
+    let inited = false; // gate chip auto-scroll so the init call can't jump the page
     const easeInOut = (t: number) =>
       t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     function syncNav() {
       if (navUp) navUp.disabled = current <= 1;
       if (navDown) navDown.disabled = current >= STAGES;
+      if (mPrev) mPrev.disabled = current <= 1;
+      // last stage: keep Next enabled but repurpose it to replay the demo
+      if (mNext) {
+        const atEnd = current >= STAGES;
+        mNext.classList.toggle("replay", atEnd);
+        mNext.setAttribute("aria-label", atEnd ? "Replay from start" : "Next step");
+      }
     }
 
     function goTo(stage: number, animate = true) {
@@ -1807,6 +1830,15 @@ function runScript() {
       const tok = ++animTok; // cancels any in-flight tween
       current = next;
       syncNav();
+      // keep the active rail chip in view on phone (horizontal scroll-snap);
+      // skip during the initial call so it can't yank the page to the section
+      if (inited && isPhone()) {
+        (steps[next - 1] as HTMLElement | undefined)?.scrollIntoView({
+          inline: "center",
+          block: "nearest",
+          behavior: reduceMotion ? "auto" : "smooth",
+        });
+      }
       if (!animate || reduceMotion) {
         setStage(next, 1);
         return;
@@ -1825,11 +1857,90 @@ function runScript() {
 
     navUp?.addEventListener("click", () => goTo(current - 1));
     navDown?.addEventListener("click", () => goTo(current + 1));
+    mPrev?.addEventListener("click", () => goTo(current - 1));
+    mNext?.addEventListener("click", () => goTo(current >= STAGES ? 1 : current + 1));
     steps.forEach((s, i) => {
       (s as HTMLElement).addEventListener("click", () => goTo(i + 1));
     });
+
+    // phone: horizontal swipe on the window steps through stages (the dx>dy
+    // guard leaves vertical scrolling of the report panel/grid untouched)
+    let tsx = 0;
+    let tsy = 0;
+    windowElRef.addEventListener(
+      "touchstart",
+      (e) => {
+        const t = e.changedTouches[0];
+        tsx = t.clientX;
+        tsy = t.clientY;
+      },
+      { passive: true },
+    );
+    windowElRef.addEventListener(
+      "touchend",
+      (e) => {
+        const t = e.changedTouches[0];
+        const dx = t.clientX - tsx;
+        const dy = t.clientY - tsy;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+          goTo(dx < 0 ? current + 1 : current - 1);
+        }
+      },
+      { passive: true },
+    );
+
     window.addEventListener("resize", () => setStage(current, 1));
 
     goTo(1, false);
+    inited = true;
+  })();
+
+  /* ============================================================
+     Section 4 — deck card physical nudge on hover / press
+     ============================================================ */
+  (function initDeckCardPhysics() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const deckfield = document.querySelector("#decisions .deckfield") as HTMLElement | null;
+    if (!deckfield) return;
+    const cards = Array.from(deckfield.querySelectorAll(".deck")) as HTMLElement[];
+
+    cards.forEach((card) => {
+      let pressing = false;
+
+      const reset = () => {
+        card.style.setProperty("--card-tx", "0px");
+        card.style.setProperty("--card-ty", "0px");
+        card.style.setProperty("--card-scale", "1");
+        pressing = false;
+      };
+
+      const track = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const dx = (e.clientX - (rect.left + rect.width * 0.5)) / (rect.width * 0.5);
+        const dy = (e.clientY - (rect.top + rect.height * 0.5)) / (rect.height * 0.5);
+        const amp = pressing ? 6 : 3;
+        card.style.setProperty("--card-tx", (-dx * amp).toFixed(1) + "px");
+        card.style.setProperty("--card-ty", (-dy * amp).toFixed(1) + "px");
+      };
+
+      card.addEventListener("mousemove", track);
+      card.addEventListener("mousedown", (e) => {
+        pressing = true;
+        track(e);
+        card.style.setProperty("--card-scale", "0.966");
+      });
+      card.addEventListener("mouseup", () => {
+        pressing = false;
+        card.style.setProperty("--card-scale", "1");
+      });
+      card.addEventListener("mouseleave", reset);
+    });
+
+    // safety: release scale if mouse-up happens outside the card
+    document.addEventListener("mouseup", () => {
+      cards.forEach((card) => {
+        card.style.setProperty("--card-scale", "1");
+      });
+    });
   })();
 }

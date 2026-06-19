@@ -42,7 +42,6 @@ export default function DarkShowcasePage() {
     <main>
       {/* ========================= INK REFINED ========================= */}
       <section className="band ink bg-ink-floor-glow">
-        <div className="bg-ink-floor-glow__layer" aria-hidden="true" />
         <div className="wrap">
           <span className="eyebrow">
             <Dot />

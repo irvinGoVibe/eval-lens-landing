@@ -214,7 +214,7 @@ export default function VividDemoPage() {
         {/* ── S8 · Quiet CTA — surface soft, clean ── */}
         <LabQuietCta
           id="cta"
-          surface="soft"
+          surface="light"
           ariaLabel="Start with Northwind"
           eyebrow="Get started"
           title="Your next call writes itself."

@@ -139,6 +139,10 @@ export function Decisions() {
             </div>
             </div>
 
+            {/* mobile-only: the active step's description, always visible under
+                the horizontal rail chips (the per-chip .desc is hidden on phone) */}
+            <div className="sd-rail-caption" id="sd-railCaption" aria-hidden="true" />
+
             <div className="sd-window" id="sd-window" data-stage="1">
               <div className="sd-chrome">
                 <div className="dots">
@@ -638,6 +642,46 @@ export function Decisions() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* mobile-only: prev / step-count / next under the window — the
+                vertical up/down arrows are hidden on phone (no vertical rail) */}
+            <div className="sd-mnav" role="group" aria-label="Step navigation">
+              <button
+                type="button"
+                id="sd-mPrev"
+                className="sd-mnav-btn"
+                aria-label="Previous step"
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M15 6l-6 6 6 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              <span className="sd-mcount" id="sd-mCount">
+                Step 1 of 6
+              </span>
+              <button
+                type="button"
+                id="sd-mNext"
+                className="sd-mnav-btn"
+                aria-label="Next step"
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M9 6l6 6-6 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
         </div>

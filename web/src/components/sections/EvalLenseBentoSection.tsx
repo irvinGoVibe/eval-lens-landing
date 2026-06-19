@@ -293,7 +293,7 @@ export function EvalLenseBentoSection() {
               <Link
                 key={c.href}
                 href={c.href}
-                className="chip transition-[border-color,background] duration-200 hover:border-[color-mix(in_oklab,var(--violet)_60%,transparent)]! hover:bg-[color-mix(in_oklab,var(--violet)_12%,transparent)]!"
+                className="chip chip-pulse"
               >
                 {c.label}
               </Link>

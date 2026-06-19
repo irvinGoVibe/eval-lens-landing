@@ -36,6 +36,8 @@ export type LabQuietCtaProps = {
   sub: string;
   cta: { label: string; href: string };
   marker?: string;
+  /** Extra classes applied to the outer `section.band` (e.g. atmosphere layers). */
+  className?: string;
 };
 
 function Inner({
@@ -78,12 +80,13 @@ export function LabQuietCta({
   sub,
   cta,
   marker,
+  className,
 }: LabQuietCtaProps) {
   const surf = surface === "ink" ? "ink" : "soft";
   return (
     <section
       id={id}
-      className={`band ${surf} lab-quiet-cta`}
+      className={`band ${surf} lab-quiet-cta${className ? ` ${className}` : ""}`}
       data-marker={marker}
       aria-label={ariaLabel}
     >

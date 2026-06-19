@@ -121,6 +121,7 @@ export function MediaPlaceholder({
   ariaLabel,
   className,
   reveal,
+  parallaxY,
 }: {
   /** CSS `aspect-ratio` value, e.g. `"16/9"`. */
   ratio: string;
@@ -132,12 +133,22 @@ export function MediaPlaceholder({
   /** Extra section-specific class (e.g. `lab-hero__media`). */
   className?: string;
   reveal?: "up" | "left" | "right" | "scale";
+  /** Opt-in subtle vertical scroll parallax, in px (driven by ScrollFX's --scrub). */
+  parallaxY?: number;
 }) {
+  const parallax = parallaxY != null;
   return (
     <figure
       className={className ? `media-ph ${className}` : "media-ph"}
-      style={{ "--ratio": ratio } as CSSProperties}
+      style={
+        {
+          "--ratio": ratio,
+          ...(parallax ? { "--pamp": `${parallaxY}px` } : {}),
+        } as CSSProperties
+      }
       data-reveal={reveal}
+      data-scrub={parallax ? "" : undefined}
+      data-parallax={parallax ? "" : undefined}
       role="img"
       aria-label={ariaLabel}
     >

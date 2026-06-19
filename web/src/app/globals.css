@@ -400,6 +400,56 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .chip .tick{width:5px;height:5px;border-radius:50%;background:var(--lens);}
 .ink .chip{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.16);color:#e9e9ef;}
 
+/* ── voice-pulse chips: glass pill + spinning border comet + glow ── */
+.chip-pulse{
+  position:relative;overflow:hidden;isolation:isolate;
+  background:rgba(8,18,50,.62)!important;
+  border-color:transparent!important;
+  color:#8ecfff!important;
+  backdrop-filter:blur(10px);
+  animation:chip-glow-pulse 3s ease-in-out infinite;
+}
+.chip-pulse::before{
+  content:'';position:absolute;
+  width:200%;height:200%;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(0deg);
+  background:conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(30,150,255,0) 8%,
+    rgba(60,190,255,.7) 16%,
+    rgba(130,225,255,1) 22%,
+    rgba(40,215,200,.8) 28%,
+    rgba(30,150,255,.15) 36%,
+    transparent 48%
+  );
+  animation:chip-comet-spin 3s linear infinite;
+  z-index:-2;
+}
+.chip-pulse::after{
+  content:'';position:absolute;inset:1.5px;
+  border-radius:980px;
+  background:rgba(6,14,40,.8);
+  z-index:-1;
+}
+@keyframes chip-comet-spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+@keyframes chip-glow-pulse{
+  0%,100%{box-shadow:0 0 6px rgba(40,160,255,.14);}
+  50%    {box-shadow:0 0 16px rgba(40,160,255,.42),0 0 0 4px rgba(40,160,255,.06);}
+}
+/* stagger siblings so they breathe at different moments */
+.chip-pulse:nth-child(2){animation-delay:-.5s;}
+.chip-pulse:nth-child(2)::before{animation-delay:-.5s;}
+.chip-pulse:nth-child(3){animation-delay:-1.1s;}
+.chip-pulse:nth-child(3)::before{animation-delay:-1.1s;}
+.chip-pulse:nth-child(4){animation-delay:-1.7s;}
+.chip-pulse:nth-child(4)::before{animation-delay:-1.7s;}
+.chip-pulse:nth-child(5){animation-delay:-2.3s;}
+.chip-pulse:nth-child(5)::before{animation-delay:-2.3s;}
+.chip-pulse:nth-child(6){animation-delay:-2.9s;}
+.chip-pulse:nth-child(6)::before{animation-delay:-2.9s;}
+
 .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px;}
 .sect-cta{display:flex;justify-content:center;margin-top:38px;}
 
@@ -2295,16 +2345,20 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #decisions .reveal-item,
 #decisions .sd-panel,
 #decisions .table-wrap{transition:none !important;}
-/* decks animate smoothly when Extract signals squares them into a 2×2 grid */
+/* decks animate smoothly when Extract signals squares them into a 2×2 grid;
+   translate/scale are standalone so they compose with transform:rotate() cleanly */
 #decisions .deckfield .deck{transition:left .55s var(--ease),top .55s var(--ease),
-  width .55s var(--ease),height .55s var(--ease),transform .55s var(--ease)!important;}
+  width .55s var(--ease),height .55s var(--ease),transform .55s var(--ease),
+  translate .38s cubic-bezier(.34,1.56,.64,1),scale .18s ease!important;}
 #decisions .deckfield{position:absolute;inset:0;padding:clamp(20px,3vw,40px);}
 #decisions .deckfield .scan-title{position:absolute;top:18px;left:50%;transform:translateX(-50%);
   font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
   opacity:0;}
 #decisions .deckfield .deck{position:absolute;background:#fff;border:1px solid var(--border-2);box-shadow:var(--sd-sh-2);
   border-radius:var(--sd-r-md);padding:16px;display:flex;flex-direction:column;gap:9px;
-  min-width:0;min-height:0;}
+  min-width:0;min-height:0;
+  translate:var(--card-tx,0px) var(--card-ty,0px);scale:var(--card-scale,1);
+  will-change:translate,scale;}
 #decisions .deckfield .deck .dname{font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-.01em;}
 #decisions .deckfield .deck .meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);}
 #decisions .deckfield .deck .bars{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
@@ -2494,14 +2548,134 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #decisions .audit .ok{width:14px;height:14px;border-radius:50%;background:var(--sd-green);color:#fff;display:grid;place-items:center;font-size:8px;flex:none;}
 #decisions .audit b{color:var(--fg);font-weight:600;}
 #decisions svg{display:block;}
+/* mobile-only affordances (rail caption + prev/next bar) — hidden on desktop */
+#decisions .sd-rail-caption{display:none;}
+#decisions .sd-mnav{display:none;}
+
 @media (max-width:880px){
   #decisions .sd-grid{grid-template-columns:1fr;gap:18px;}
   #decisions .sd-rail{flex-direction:row;overflow:auto;gap:8px;}
   #decisions .sd-rail-lead{display:none;}
   #decisions .sd-rail .step{min-width:170px;}
   #decisions .sd-rail .step .desc,#decisions .sd-rail .step .track{display:none;}
-  #decisions .sd-window{height:60vh;}
+  #decisions .sd-window{height:62vh;}
   #decisions .sd-panel{width:78%;}
+  /* up/down arrows navigate vertically — useless on a horizontal rail */
+  #decisions .sd-nav{display:none;}
+  /* halve the sticky travel on tablet */
+  #decisions .sd-scroll{height:130vh;}
+}
+
+/* ── phone (≤640px): static flow, portrait window, stage-switched table/panel.
+   The desktop stepper is tap-driven (never scroll-scrubbed), so dropping the
+   200vh sticky costs nothing — every stage stays reachable via the rail chips
+   or the prev/next bar. ── */
+@media (max-width:640px){
+  /* sticky → static: no more "stuck page" feel on a phone */
+  #decisions .sd-scroll{height:auto;}
+  #decisions .sd-sticky{position:relative;height:auto;padding-bottom:8px;}
+  #decisions .sd-grid{grid-template-columns:1fr;gap:14px;}
+  #decisions .sd-railcol{display:block;}
+
+  /* rail → horizontal scroll-snap chips: idx + name only, active auto-centred */
+  #decisions .sd-rail{flex-direction:row;overflow-x:auto;gap:8px;scroll-snap-type:x mandatory;
+    scroll-padding-left:var(--gutter);scrollbar-width:none;padding:2px var(--gutter);}
+  #decisions .sd-rail::-webkit-scrollbar{display:none;}
+  #decisions .sd-rail .step{flex:0 0 auto;min-width:0;scroll-snap-align:center;
+    display:inline-flex;align-items:center;gap:9px;padding:0 14px;height:42px;
+    border:1px solid var(--border-2);border-radius:var(--sd-r-pill);}
+  #decisions .sd-rail .step.active{border-color:color-mix(in oklab,var(--violet) 30%,transparent);}
+  #decisions .sd-rail .step .body{display:contents;}
+  #decisions .sd-rail .step .name{font-size:13.5px;white-space:nowrap;}
+  #decisions .sd-rail .step .desc,#decisions .sd-rail .step .track{display:none;}
+
+  /* live caption echoing the active step's description */
+  #decisions .sd-rail-caption{display:block;padding:8px var(--gutter) 0;font-size:13px;
+    line-height:1.4;color:var(--muted);min-height:2.6em;}
+
+  /* window: portrait-friendly */
+  #decisions .sd-window{height:min(72vh,560px);min-height:460px;border-radius:16px;}
+  #decisions .sd-chrome{padding:10px 14px;}
+  #decisions .sd-chrome .crumb{display:none;}
+  /* drop the layer's own padding — each inner surface (deckfield / repgrid /
+     table / panel) brings its own, so this avoids a cramped double inset */
+  #decisions .sd-layer{padding:0;}
+
+  /* prev / step-count / next bar under the window */
+  #decisions .sd-mnav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;}
+  #decisions .sd-mnav-btn{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;
+    background:var(--bg);border:1px solid var(--border-2);color:var(--fg);cursor:pointer;
+    transition:background .25s var(--ease),border-color .25s var(--ease),opacity .25s var(--ease);}
+  #decisions .sd-mnav-btn svg{width:20px;height:20px;}
+  #decisions .sd-mnav-btn:disabled{opacity:.35;cursor:default;}
+  #decisions .sd-mnav-btn.replay{background:var(--violet);border-color:transparent;color:#fff;}
+  #decisions .sd-mcount{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;
+    color:var(--muted-2);min-width:84px;text-align:center;}
+
+  /* ── Layer A — retune the scattered decks + tags for portrait ── */
+  #decisions .deckfield .deck.k1{width:46%;height:30%;left:5%;top:10%;transform:rotate(-5deg);}
+  #decisions .deckfield .deck.k2{width:44%;height:28%;left:48%;top:16%;transform:rotate(4deg);}
+  #decisions .deckfield .deck.k3{width:46%;height:30%;left:7%;top:44%;transform:rotate(-3deg);}
+  #decisions .deckfield .deck.k4{width:42%;height:26%;left:48%;top:52%;transform:rotate(6deg);}
+  #decisions .deckfield .deck{padding:12px;}
+  #decisions .deckfield .scan-title{top:10px;font-size:10px;}
+  /* 4 floating tags only, anchored in the gutters between cards */
+  #decisions .tag.t5,#decisions .tag.t6{display:none;}
+  #decisions .tag{font-size:10.5px;padding:4px 9px;}
+  #decisions .tag.t1{left:6%;top:5%;}
+  #decisions .tag.t2{left:58%;top:8%;}
+  #decisions .tag.t3{left:8%;top:39%;}
+  #decisions .tag.t4{left:56%;top:46%;}
+  /* report grid → single column, scrollable */
+  #decisions .repgrid{grid-template-columns:1fr;gap:10px;align-content:start;overflow-y:auto;padding:14px;}
+  #decisions .repcard{padding:13px 14px;}
+  #decisions .repcard .rc-name{font-size:14px;}
+  #decisions .repcard .rc-score{font-size:18px;}
+
+  /* ── Layer B — table & panel switch by STAGE, never overlap ──
+     stage 4 = table only · stage 5–6 = report panel full-width (table hidden) */
+  #decisions .sd-dash{display:block;}
+  #decisions .table-wrap{position:absolute;inset:0;padding:14px;overflow-y:auto;}
+  #decisions .sd-window[data-stage="5"] .table-wrap,
+  #decisions .sd-window[data-stage="6"] .table-wrap{opacity:0;visibility:hidden;}
+  #decisions .table-wrap .th-bar h3{font-size:15px;}
+  /* candidates table → a flat list: avatar + name (+tagline) | score */
+  #decisions .tbl thead{display:none;}
+  #decisions .tbl,#decisions .tbl tbody{display:block;}
+  #decisions .tbl tbody tr{display:flex;align-items:center;gap:10px;padding:12px 10px;
+    border-bottom:1px solid var(--sd-hairline);}
+  #decisions .tbl tbody td{display:block;padding:0;border:none;}
+  #decisions .tbl tbody td.r{margin-left:auto;}
+  #decisions .tbl .cs{display:block;}             /* tagline lives only here now */
+  #decisions .tbl tbody td:nth-child(3),          /* Confidence */
+  #decisions .tbl tbody td:nth-child(4){display:none;}  /* Status */
+
+  /* panel: full-width, no overlay chrome (slides in over the hidden table) */
+  #decisions .sd-panel{width:100%;border-left:none;box-shadow:none;}
+  #decisions .sd-panel .p-head{padding:14px 16px;}
+  #decisions .sd-panel .p-name{font-size:16px;}
+  #decisions .sd-panel .p-score{font-size:26px;}
+  #decisions .sd-panel .p-body{padding:14px 16px;gap:14px;}
+  #decisions .brk .row{grid-template-columns:64px 1fr 28px;}
+
+  /* decision sheet: in-flow at stage 6 (not floating over a scrolling body) */
+  #decisions .decision{position:static;transform:none;opacity:1;pointer-events:auto;box-shadow:none;
+    padding:12px 16px 16px;max-height:0;overflow:hidden;
+    transition:max-height .55s var(--ease),opacity .4s var(--ease);}
+  #decisions .sd-dash.review .decision{max-height:520px;}
+  #decisions .save{min-height:44px;}
+
+  /* bottom takeaway chips */
+  #decisions .labels{gap:8px;}
+  #decisions .labels .chip{font-size:12px;padding:6px 11px;}
+}
+
+/* ── very small phone (≤390px) ── */
+@media (max-width:390px){
+  #decisions .sd-window{height:74vh;min-height:430px;}
+  #decisions .sd-rail .step{padding:0 12px;height:40px;}
+  #decisions .sd-rail .step .name{font-size:12.5px;}
+  #decisions .brk .row{grid-template-columns:56px 1fr 26px;}
 }
 
 /* ============================================================
@@ -3751,6 +3925,14 @@ section[id]{scroll-margin-top:72px;}
 .ink .media-ph{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.22);color:var(--muted-on-dark);}
 .ink .media-ph__label{background:rgba(255,255,255,.08);color:var(--fg-on-dark);border-color:rgba(255,255,255,.18);}
 
+/* opt-in subtle vertical parallax — ScrollFX writes --scrub (0→1) as the
+   element crosses the viewport; we map it to ±--pamp px of drift. GPU
+   translate3d, no CSS transition (smoothness comes from the engine's rAF). */
+.media-ph[data-parallax]{
+  transform:translate3d(0,calc((var(--scrub,.5) - .5) * 2 * var(--pamp,3px)),0);
+  will-change:transform;
+}
+
 /* ============================================================
    /trust/consistency-reliability — Apple-grade scroll page (Story 06)
    Layout-only CSS that consumes the generic scroll engine
@@ -4989,6 +5171,54 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-gallery.ink .lab-gallery__card h3{color:var(--fg-on-dark);}
 .lab-gallery.ink .lab-gallery__card p{color:var(--muted-on-dark);}
 .lab-gallery.ink .lab-gallery__card .mini-tag{color:var(--lavender);}
+
+/* ── hover comet: a blue light that fades in and circles only while the card
+   is hovered, then fades out (v1 Polish gallery cards, ink only). The
+   conic-gradient spins continuously so the fade in/out stays smooth — only its
+   opacity (and the card's glow) is hover-driven. ── */
+.lab-gallery.ink .lab-gallery__v--polish .lab-gallery__card{
+  overflow:hidden;isolation:isolate;
+  background:rgba(8,18,50,.45);
+  border-color:var(--border-on-dark);
+  transition:box-shadow .5s var(--ease),border-color .5s var(--ease);
+}
+.lab-gallery.ink .lab-gallery__v--polish .lab-gallery__card::before{
+  content:'';position:absolute;
+  width:220%;height:220%;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(0deg);
+  background:conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(30,150,255,0) 8%,
+    rgba(60,190,255,.65) 16%,
+    rgba(130,225,255,1) 22%,
+    rgba(40,215,200,.75) 28%,
+    rgba(30,150,255,.12) 36%,
+    transparent 48%
+  );
+  opacity:0;
+  animation:gallery-card-spin 4s linear infinite;
+  transition:opacity .55s var(--ease);
+  z-index:-2;pointer-events:none;
+}
+.lab-gallery.ink .lab-gallery__v--polish .lab-gallery__card::after{
+  content:'';position:absolute;inset:1.5px;
+  border-radius:21px;
+  background:rgba(6,14,40,.82);
+  z-index:-1;pointer-events:none;
+}
+/* hover → light up: comet fades in, glow blooms, the hairline border yields */
+.lab-gallery.ink .lab-gallery__v--polish .lab-gallery__card:hover{
+  border-color:transparent;
+  box-shadow:0 0 26px rgba(40,160,255,.32),0 0 0 5px rgba(40,160,255,.05);
+}
+.lab-gallery.ink .lab-gallery__v--polish .lab-gallery__card:hover::before{opacity:1;}
+@keyframes gallery-card-spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+/* reduced motion: no spin — hover still lights a steady glow + comet */
+@media (prefers-reduced-motion:reduce){
+  .lab-gallery.ink .lab-gallery__v--polish .lab-gallery__card::before{animation:none;}
+}
 
 /* ── v3 — Expanded Expressive ──────────────────────────────────────────────
    A tall band over a parallaxed full-bleed photo backdrop behind a generated
@@ -7256,15 +7486,16 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
 
 /* (1) bg-ink-floor-glow — violet floor glow rising from the BOTTOM (the
    counterpart to bg-ink-ambient-glow, whose anchor is top-center). Peak
-   composited opacity ≤0.18. Cheap single radial — kept as-is on mobile. */
+   composited opacity ≤0.18. Cheap single radial — kept as-is on mobile.
+   ::after is the primary renderer; no child div needed — className alone works. */
 .bg-ink-floor-glow{ position:relative; isolation:isolate; }
-.bg-ink-floor-glow > .bg-ink-floor-glow__layer{
-  position:absolute; inset:0; z-index:0;
-  overflow:hidden; pointer-events:none; border-radius:inherit;
+.bg-ink-floor-glow::after{
+  content:""; position:absolute; inset:0; z-index:0;
+  pointer-events:none; border-radius:inherit;
   background:radial-gradient(ellipse 50% 60% at 50% 110%,
     rgba(108,76,241,.16) 0%, transparent 70%);
 }
-.bg-ink-floor-glow > :not(.bg-ink-floor-glow__layer){ position:relative; z-index:1; }
+.bg-ink-floor-glow > *{ position:relative; z-index:1; }
 
 /* (2) tr-lens-seam — in-flow 1px hairline carrying the brand gradient, used as a
    crisp seam between sections. A 1px background-line (border-image on a 1px box

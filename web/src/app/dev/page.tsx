@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { readdirSync, existsSync } from "fs";
+import { join } from "path";
 import { PageHeader } from "@/components/PageHeader";
 import { Footer } from "@/components/Footer";
 
@@ -11,50 +13,41 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-/*
- * ── DEV MAP ──────────────────────────────────────────────────────────────
- * Same monospace box-drawing tree as /sitemap, but scoped to the technical
- * /dev/* routes only — labs, demos and inspection surfaces that never ship to
- * the public site map.
- *
- * Source of truth is what actually exists under web/src/app/dev. When a new
- * dev surface lands, add a node here. `status`:
- *   ready → a real route exists and renders a page → clickable link
- *   soon  → planned but not built yet              → inactive, muted
- */
-
 type Status = "ready" | "soon";
 
 type TreeNode = {
   label: string;
-  path?: string; // route shown next to the label
-  href?: string; // where the link points (defaults to path)
+  path?: string;
+  href?: string;
   status: Status;
   children?: TreeNode[];
 };
 
-const TREE: TreeNode = {
-  label: "Dev",
-  path: "/dev",
-  status: "ready",
-  children: [
-    {
-      label: "Backdrop Filter",
-      path: "/dev/backdrop-filter",
-      status: "ready",
-    },
-    { label: "Gallery", path: "/dev/gallery", status: "ready" },
-    { label: "Newsroom", path: "/dev/newsroom", status: "ready" },
-    {
-      label: "Real Header Backdrop",
-      path: "/dev/real-header-backdrop",
-      status: "ready",
-    },
-    { label: "Section Lab", path: "/dev/section-lab", status: "ready" },
-    { label: "Visual Lab", path: "/dev/visual-lab", status: "ready" },
-    { label: "Vivid Demo", path: "/dev/vivid-demo", status: "ready" },
-  ],
-};
+function toLabel(slug: string): string {
+  return slug
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+function buildDevTree(): TreeNode {
+  const devDir = join(process.cwd(), "src/app/dev");
+  let children: TreeNode[] = [];
+
+  if (existsSync(devDir)) {
+    children = readdirSync(devDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .filter((d) => existsSync(join(devDir, d.name, "page.tsx")))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((d) => ({
+        label: toLabel(d.name),
+        path: `/dev/${d.name}`,
+        status: "ready" as Status,
+      }));
+  }
+
+  return { label: "Dev", path: "/dev", status: "ready", children };
+}
 
 /* Build the box-drawing prefix for a node from its ancestors' last-child flags. */
 function prefixFor(ancestorsLast: boolean[], isLast: boolean): string {
@@ -130,7 +123,7 @@ function renderRows(
 }
 
 export default function DevMapPage() {
-  const rows = renderRows(TREE, [], "root");
+  const rows = renderRows(buildDevTree(), [], "root");
 
   return (
     <>

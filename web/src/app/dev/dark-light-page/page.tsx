@@ -13,10 +13,11 @@ export const metadata: Metadata = {
     "A full landing composed from the real Lab* library sections (Hero, Bento, Numbered, StatBand, CompareTable, QuietCta), arranged in a calm-build arc with directional transitions at every light↔dark surface change.",
 };
 
-/* Composed entirely from existing library components — no ad-hoc cards.
-   Surfaces (soft = light base, ink = dark) carry the arc; standalone
-   tr-* transition elements sit at every surface change. section-lab on
-   <main> scopes the Lab styles; ScrollFX drives the data-reveal motion. */
+/* Path A: Lab* sections are the single element layer — geometry is surface-invariant.
+   Dark atmosphere (bg-ink-floor-glow) is background-only, injected via the className
+   prop. Elements look identical on light and dark; only colour tokens + bg atmosphere
+   distinguish the surfaces. The ::after pseudo-element on bg-ink-floor-glow renders
+   the violet floor glow — no child div needed. */
 
 export default function DarkLightPage() {
   return (
@@ -45,9 +46,11 @@ export default function DarkLightPage() {
         {/* soft → ink : diagonal build-up */}
         <div className="tr-masked-divider tr-masked-divider--diagonal" data-from="soft" data-to="ink" aria-hidden="true" />
 
-        {/* 2 — FEATURES (ink — cinematic dark peak) */}
+        {/* 2 — FEATURES: ink surface + Ink Refined floor glow as pure atmosphere.
+            Same LabBento geometry as on light — only tokens + bg ::after change. */}
         <LabBento
           surface="ink"
+          className="bg-ink-floor-glow"
           eyebrow="What you get"
           title="Every dimension, scored and ranked"
           sub="One run scores consistency, coherence, safety and latency — then ranks findings by severity, not by gut."
@@ -73,6 +76,7 @@ export default function DarkLightPage() {
           surface="light"
           eyebrow="How EvalLense works"
           title="From prompt to production-grade insight in three steps"
+          sub="One adapter, one suite, one ranked list of findings."
           items={[
             { num: "01", title: "Connect your model", body: "Any provider or your own endpoint — one adapter, no plumbing." },
             { num: "02", title: "Run your eval suite", body: "Structured panels score every dimension, reproducibly, in parallel." },
@@ -112,9 +116,10 @@ export default function DarkLightPage() {
         {/* soft → ink : dome curtain into the close */}
         <div className="tr-masked-divider tr-masked-divider--dome" data-from="soft" data-to="ink" aria-hidden="true" />
 
-        {/* 6 — FINAL CTA (ink) */}
+        {/* 6 — FINAL CTA: ink surface + ink floor glow atmosphere. Same Lab geometry. */}
         <LabQuietCta
           surface="ink"
+          className="bg-ink-floor-glow"
           eyebrow="Get started free"
           title="Your evals. Your standard."
           sub="No model lock-in. No black boxes. Just answers."

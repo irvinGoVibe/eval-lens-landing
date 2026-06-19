@@ -53,6 +53,8 @@ export type LabBentoProps = {
   items: LabBentoItem[];
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
   marker?: string;
+  /** Extra classes applied to the outer `section.band` (e.g. atmosphere layers). */
+  className?: string;
 };
 
 /**
@@ -131,6 +133,7 @@ export function LabBento({
   sub,
   items,
   marker,
+  className,
 }: LabBentoProps) {
   const surf = surface === "ink" ? "ink" : "soft";
   const feature = items.find((it) => it.feature);
@@ -139,7 +142,7 @@ export function LabBento({
   return (
     <section
       id={id}
-      className={`band ${surf} lab-bento`}
+      className={`band ${surf} lab-bento${className ? ` ${className}` : ""}`}
       data-marker={marker}
       aria-label={ariaLabel}
     >

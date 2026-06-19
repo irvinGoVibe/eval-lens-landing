@@ -46,7 +46,14 @@ export type LabPinnedStepsProps = {
   sub: string;
   steps: LabPinnedStep[];
   /** Static placeholder slot (v1). */
-  media: { ratio: string; label: string; hint: string; ariaLabel: string };
+  media: {
+    ratio: string;
+    label: string;
+    hint: string;
+    ariaLabel: string;
+    /** Opt-in subtle vertical scroll parallax for the placeholder, in px. */
+    parallaxY?: number;
+  };
   /** Scroll-scrubbed video backdrop (v3). Seeked by the section's pin progress. */
   videoScrub?: {
     src: string;
@@ -145,6 +152,7 @@ export function LabPinnedSteps({
               label={media.label}
               hint={media.hint}
               ariaLabel={media.ariaLabel}
+              parallaxY={media.parallaxY}
             />
           </div>
         </div>

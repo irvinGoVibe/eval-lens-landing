@@ -608,7 +608,7 @@ export default function MethodologyPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );
