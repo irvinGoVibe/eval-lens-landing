@@ -128,6 +128,8 @@ export default function DsSectionsPage() {
       <LabPinnedSteps
         id="pinned"
         surface="ink"
+        snap
+        snapStepVh={70}
         marker="03 · Pinned multi-screen"
         ariaLabel="Pinned multi-screen — the five-step path"
         eyebrow="Pinned multi-screen"
