@@ -4889,11 +4889,13 @@ section.band.ink .mini-tag{color:var(--lavender);}
    `.ds-sections .lab-process` in ds.css — so production pacing is unchanged. */
 .lab-pv--reveal{padding:0;min-height:100svh;display:grid;align-items:center;}
 .lab-rv__grid{display:grid;grid-template-columns:1fr clamp(380px,46vw,760px);gap:clamp(32px,5vw,80px);align-items:center;width:100%;}
-.lab-rv__copy{min-width:0;}
+.lab-rv__copy{min-width:0;display:grid;grid-template-columns:1fr;}
 .lab-rv__media{display:grid;place-items:center;min-width:0;}
 /* head (eyebrow+title+sub) flies UP and fades over the first ~60% of the pin —
    "exit upward = back" (ui-ux §7 hierarchy-motion); transform/opacity only. */
-.lab-rv__head{will-change:transform,opacity;transform:translateY(calc(-120px * clamp(0, var(--pin,0), 1)));opacity:clamp(0, calc(1.05 - var(--pin,0) * 1.7), 1);}
+.lab-rv__head{grid-area:1/1;align-self:start;z-index:2;will-change:transform,opacity;pointer-events:none;
+  transform:translateY(calc(-80px * clamp(0, calc(var(--pin,0) / .2), 1) * clamp(0, calc(var(--pin,0) / .2), 1)));
+  opacity:calc(1 - clamp(0, calc(var(--pin,0) / .2), 1) * clamp(0, calc(var(--pin,0) / .2), 1));}
 /* the square stays put (centered in the pinned stage); its content slides */
 .lab-rv__square{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--radius-stage,20px);overflow:hidden;box-shadow:var(--sh-3);background:#05060a;display:grid;place-items:center;}
 .lab-process.soft .lab-rv__square{background:var(--bg-soft);box-shadow:none;border:1px solid var(--border);}
@@ -4903,18 +4905,17 @@ section.band.ink .mini-tag{color:var(--lavender);}
 /* the sliding layer — taller than the square; drifts up under the fixed frame as
    --pin advances (subtle parallax, ui-ux §7 parallax-subtle). Holds the scrubbed
    video or the placeholder gradient. */
-.lab-rv__slide{position:absolute;left:0;right:0;top:0;width:100%;height:120%;object-fit:cover;display:block;will-change:transform;transform:translateY(calc(-16% * clamp(0, var(--pin,0), 1)));}
+.lab-rv__slide{position:absolute;left:0;right:0;top:-10%;width:100%;height:120%;object-fit:cover;display:block;will-change:transform;transform:translateY(calc(-16% * clamp(0, var(--pin,0), 1)));}
 .lab-rv__slide--ph{background:linear-gradient(180deg, #1a1640 0%, #0c0c14 46%, #171132 74%, #0a0a0d 100%);}
 .lab-process.soft .lab-rv__slide--ph{background:linear-gradient(180deg, #eef0f7 0%, #f6f6f8 50%, #e8ebf4 100%);}
 .lab-rv__phlabel{position:relative;z-index:1;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);}
 .lab-process.soft .lab-rv__phlabel{color:var(--muted);}
 /* steps reveal sequentially AND the whole list glides up into the space the head
    vacated, settling near the heading's old level (transform-only). */
-.lab-process__steps--reveal{margin-top:clamp(26px,4vw,42px);will-change:transform;transform:translateY(calc(-400px * clamp(0, var(--pin,0), 1)));}
-.lab-process__steps--reveal .lab-step{
-  opacity:.2;transform:translateY(8px);
-  transition:opacity .26s ease-out, transform .26s ease-out, color .26s ease-out;
-}
+.lab-process__steps--reveal{grid-area:1/1;align-self:start;margin-top:0;will-change:transform,opacity;
+  opacity:clamp(0, calc((var(--pin,0) - .2) / .15), 1);
+  transform:translateY(calc(80px - 80px * clamp(0, calc((var(--pin,0) - .2) / .2), 1)));}
+.lab-process__steps--reveal .lab-step{opacity:.18;transform:translateY(10px);transition:opacity .2s ease-out, transform .22s ease-out, color .18s ease-out;}
 /* reached steps light fully; the current one gets a clear lens accent so each
    switch reads instantly as you cross its threshold */
 .lab-process__steps--reveal .lab-step.is-active{opacity:1;transform:none;}
@@ -4925,14 +4926,16 @@ section.band.ink .mini-tag{color:var(--lavender);}
 @media (max-width:880px){
   .lab-rv__grid{grid-template-columns:1fr;gap:clamp(24px,6vw,40px);}
   .lab-rv__square{max-width:560px;margin-inline:auto;}
+  .lab-rv__copy{display:block;}
   .lab-rv__head{transform:none;opacity:1;}
   .lab-rv__slide{transform:none;height:100%;}
-  .lab-process__steps--reveal{transform:none;}
+  .lab-process__steps--reveal{transform:none;opacity:1;margin-top:clamp(26px,4vw,42px);}
 }
 
 @media (prefers-reduced-motion:reduce){
   .lab-process__line > span{transform:none;transition:none;}
-  .lab-process__steps--reveal{transform:none;}
+  .lab-rv__copy{display:block;}
+  .lab-process__steps--reveal{transform:none;opacity:1;}
   .lab-process__steps--reveal .lab-step{opacity:1;transform:none;transition:none;}
   .lab-rv__head{transform:none;opacity:1;}
   .lab-rv__slide{transform:none;height:100%;}
