@@ -88,12 +88,23 @@ function Title({ title }: { title: LabPinnedStepsProps["title"] }) {
   );
 }
 
-/** Numbered track — each step lights from `--pin` via its `--i` index. */
+/**
+ * Numbered track — each step lights from `--pin` via its `--i` index (v1/tidy:
+ * continuous). The `reveal` variant (v3) instead carries `data-pin-step` so
+ * ScrollFX toggles `.is-active` / `.is-current` at each 1/steps threshold —
+ * crisp, discrete switching between items (CSS transitions the change).
+ */
 function Steps({ steps, variant }: { steps: LabPinnedStep[]; variant: string }) {
+  const pinned = variant === "reveal";
   return (
     <ol className={`lab-process__steps lab-process__steps--${variant}`}>
       {steps.map((step, i) => (
-        <li key={step.label} className="lab-step" style={{ "--i": i } as CSSProperties}>
+        <li
+          key={step.label}
+          className="lab-step"
+          style={{ "--i": i } as CSSProperties}
+          {...(pinned ? { "data-pin-step": "" } : {})}
+        >
           <span className="lab-step__num">{step.num}</span>
           <span className="lab-step__label">{step.label}</span>
           <span className="lab-step__desc">{step.desc}</span>
