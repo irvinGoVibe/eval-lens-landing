@@ -193,38 +193,46 @@ export function LabPinnedSteps({
           </div>
         </div>
 
-        {/* ── v3 — Cinematic: full-bleed scrubbed video + overlay ── */}
-        <div className="lab-pv lab-pv--cine" data-version="3" hidden>
-          {videoScrub ? (
-            <div className="lab-cine__bg" aria-hidden="true">
-              {/* No autoPlay: ScrollFX seeks currentTime from the pin position. */}
-              <video
-                data-scrub-video
-                data-frames={videoScrub.frames}
-                muted
-                playsInline
-                preload="auto"
-                disablePictureInPicture
-                poster={videoScrub.poster}
-                aria-label={videoScrub.ariaLabel}
-              >
-                <source src={videoScrub.src} type="video/mp4" />
-              </video>
-            </div>
-          ) : (
-            <div className="lab-cine__bg lab-cine__bg--ph" aria-hidden="true">
-              <span className="lab-cine__phlabel">{media.label}</span>
-            </div>
-          )}
-          <div className="lab-cine__scrim" aria-hidden="true" />
-          <div className="wrap lab-cine__inner">
-            <div className="lab-process__copy">
+        {/* ── v3 — Reveal: a centered square media stays pinned in the viewport
+            while the numbered steps reveal one-by-one on scroll. Base layout =
+            v1 (copy + steps), driven by --pin. The square holds the scroll-
+            scrubbed video when `videoScrub` is set; placeholder otherwise. ── */}
+        <div className="lab-pv lab-pv--reveal" data-version="3" hidden>
+          <div className="wrap lab-rv__grid">
+            <div className="lab-process__copy lab-rv__copy">
               <LabEyebrow>{eyebrow}</LabEyebrow>
               <Title title={title} />
               <p className="sub">{sub}</p>
+              <Steps steps={steps} variant="reveal" />
+              {ctaRow}
             </div>
-            <Steps steps={steps} variant="cine" />
-            {ctaRow}
+            <div className="lab-rv__media">
+              {videoScrub ? (
+                <div className="lab-rv__square">
+                  {/* No autoPlay: ScrollFX seeks currentTime from the pin. */}
+                  <video
+                    data-scrub-video
+                    data-frames={videoScrub.frames}
+                    muted
+                    playsInline
+                    preload="auto"
+                    disablePictureInPicture
+                    poster={videoScrub.poster}
+                    aria-label={videoScrub.ariaLabel}
+                  >
+                    <source src={videoScrub.src} type="video/mp4" />
+                  </video>
+                </div>
+              ) : (
+                <div
+                  className="lab-rv__square lab-rv__square--ph"
+                  role="img"
+                  aria-label={media.ariaLabel}
+                >
+                  <span className="lab-rv__phlabel">{media.label}</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

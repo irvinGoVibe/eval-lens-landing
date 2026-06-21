@@ -4881,52 +4881,39 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-window__stext::after{content:"ready";font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);}
 .lab-process.ink .lab-window__stext::after{color:var(--green-on-dark);}
 
-/* ── v3 — Cinematic: scroll-scrubbed video in a ~3/4-viewport panel, dark scrim,
-   copy + steps over it. Motion is driven entirely by --pin (written by ScrollFX
-   on the [data-pin] section) so it works even when v3 is un-hidden without a
-   fresh scroll (the old .is-in reveal silently failed for the hidden version).
-   The video itself is seeked by --pin (data-scrub-video). light/dark = pure
-   recolour of the scrim; geometry identical. */
-.lab-pv--cine{padding:0;--cine-inset-y:clamp(36px,10vh,116px);--cine-inset-x:clamp(14px,4vw,64px);}
-/* video panel — framed by the page surface (~3/4 of the viewport), rounded, lifted */
-.lab-cine__bg,
-.lab-cine__scrim{position:absolute;top:var(--cine-inset-y);bottom:var(--cine-inset-y);left:var(--cine-inset-x);right:var(--cine-inset-x);border-radius:var(--radius-stage);}
-.lab-cine__bg{z-index:0;overflow:hidden;background:#05060a;box-shadow:var(--sh-3);}
-/* slow cinematic push-in as the pin advances (transform/opacity only) */
-.lab-cine__bg video{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transform:scale(calc(1 + var(--pin,0) * 0.07));transform-origin:50% 42%;}
-.lab-cine__bg--ph{display:grid;place-items:center;background:var(--ink-grad);}
-.lab-cine__phlabel{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);}
-/* scrim — heaviest at the bottom where the copy lives; recolours per surface */
-.lab-cine__scrim{z-index:1;background:linear-gradient(180deg, rgba(5,5,8,.12) 0%, rgba(5,5,8,.34) 40%, rgba(5,5,8,.72) 76%, rgba(5,5,8,.92) 100%);}
-.lab-process.soft .lab-cine__scrim{background:linear-gradient(180deg, color-mix(in oklab,var(--bg-soft) 30%,transparent) 0%, color-mix(in oklab,var(--bg-soft) 62%,transparent) 44%, color-mix(in oklab,var(--bg-soft) 88%,transparent) 78%, color-mix(in oklab,var(--bg-soft) 97%,transparent) 100%);}
-/* content sits inside the panel, anchored to its lower third; drifts gently down
-   with the pin (parallax) while the headline flies in above it */
-.lab-cine__inner{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;min-height:100svh;padding:clamp(40px,6vh,80px) clamp(34px,5.5vw,90px) calc(var(--cine-inset-y) + clamp(40px,8vh,104px));display:flex;flex-direction:column;justify-content:flex-end;transform:translateY(calc(var(--pin,0) * 30px));}
-/* cinematic headline — bigger than v1/v2, identical on light & ink (beats `.ink .title`) */
-.lab-pv--cine .lab-process__title{font-size:clamp(40px,6vw,86px);line-height:1.02;max-width:16ch;}
-.lab-process.ink .lab-pv--cine .lab-process__title,
-.lab-pv--cine .lab-process__title{color:var(--fg-on-dark);}
-.lab-process.soft .lab-pv--cine .lab-process__title{color:var(--fg);}
-/* per-line fly-in + slight rotate, progress = first ~40% of the pin (line 2 lags).
-   At --pin≈1 (and under reduced-motion, where ScrollFX pins --pin=1) the lines
-   resolve to translate:0 / rotate:0 / opacity:1 — fully readable. */
-.lab-pv--cine .lab-process__line{overflow:visible;}
-.lab-pv--cine .lab-process__line:nth-child(1) > span{transform:translateY(calc((1 - clamp(0, calc(var(--pin,1) * 2.4), 1)) * -52px)) rotate(calc((1 - clamp(0, calc(var(--pin,1) * 2.4), 1)) * 4deg));opacity:clamp(0, calc(var(--pin,1) * 2.4), 1);transition:none;}
-.lab-pv--cine .lab-process__line:nth-child(2) > span{transform:translateY(calc((1 - clamp(0, calc(var(--pin,1) * 2.4 - 0.5), 1)) * -52px)) rotate(calc((1 - clamp(0, calc(var(--pin,1) * 2.4 - 0.5), 1)) * 4deg));opacity:clamp(0, calc(var(--pin,1) * 2.4 - 0.5), 1);transition:none;}
-/* sub — legible over the video; surface-adaptive colour only */
-.lab-pv--cine .sub{max-width:46ch;color:var(--body-on-dark);}
-.lab-process.soft .lab-pv--cine .sub{color:var(--fg);}
-/* numbered steps over the scrim */
-.lab-process__steps--cine{flex-direction:row;flex-wrap:wrap;max-width:none;gap:clamp(20px,3vw,44px);row-gap:clamp(16px,2vw,24px);margin-top:clamp(26px,4vw,44px);border-top:0;}
-.lab-process__steps--cine .lab-step{display:block;border-top:0;border-left:2px solid var(--border-on-dark);padding:2px 0 2px clamp(12px,1.6vw,18px);margin-right:0;}
-.lab-process.soft .lab-process__steps--cine .lab-step{border-left-color:var(--border);}
-.lab-process__steps--cine .lab-step__num{display:block;margin-bottom:4px;}
-.lab-pv--cine .lab-process__cta{margin-top:clamp(26px,3.6vw,40px);}
+/* ── v3 — Reveal: a centered SQUARE media stays pinned in the viewport (the
+   sticky stage holds it in place) while the numbered steps reveal one-by-one as
+   --pin advances. Base layout = v1 (copy + steps on the left, media right). The
+   square holds the scroll-scrubbed video when `videoScrub` is set. The taller
+   scroll track (→ slower, more gradual reveal) is catalog-only — see
+   `.ds-sections .lab-process` in ds.css — so production pacing is unchanged. */
+.lab-pv--reveal{padding:0;min-height:100svh;display:grid;align-items:center;}
+.lab-rv__grid{display:grid;grid-template-columns:1fr clamp(280px,36vw,500px);gap:clamp(32px,6vw,96px);align-items:center;width:100%;}
+.lab-rv__copy{min-width:0;}
+.lab-rv__media{display:grid;place-items:center;min-width:0;}
+/* the square stays put (centered in the pinned stage); video added later */
+.lab-rv__square{position:relative;width:100%;aspect-ratio:1/1;border-radius:var(--radius-stage,20px);overflow:hidden;box-shadow:var(--sh-3);background:#05060a;}
+.lab-rv__square video{width:100%;height:100%;object-fit:cover;display:block;}
+.lab-rv__square--ph{display:grid;place-items:center;background:var(--ink-grad);}
+.lab-process.soft .lab-rv__square--ph{background:var(--bg-soft);box-shadow:none;border:1px solid var(--border);}
+.lab-rv__phlabel{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);}
+.lab-process.soft .lab-rv__phlabel{color:var(--muted);}
+/* steps reveal sequentially: step i appears (rise + fade) as --pin passes it */
+.lab-process__steps--reveal{margin-top:clamp(26px,4vw,42px);}
+.lab-process__steps--reveal .lab-step{
+  opacity:clamp(0, calc(var(--pin,0) * var(--steps,4) - var(--i,0)), 1);
+  transform:translateY(calc((1 - clamp(0, calc(var(--pin,0) * var(--steps,4) - var(--i,0)), 1)) * 18px));
+  transition:none;
+}
+.lab-pv--reveal .lab-process__cta{margin-top:clamp(26px,3.6vw,40px);}
+@media (max-width:880px){
+  .lab-rv__grid{grid-template-columns:1fr;gap:clamp(24px,6vw,40px);}
+  .lab-rv__square{max-width:420px;margin-inline:auto;}
+}
 
 @media (prefers-reduced-motion:reduce){
   .lab-process__line > span{transform:none;transition:none;}
-  .lab-cine__inner{transform:none;}
-  .lab-cine__bg video{transform:none;}
+  .lab-process__steps--reveal .lab-step{opacity:1;transform:none;}
 }
 
 /* ── 05 · Editorial split + scrub-ring ──────────────────────────────────
@@ -5681,10 +5668,12 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .lab-pv__grid{grid-template-columns:1fr;}
   .lab-process__media{order:-1;max-width:none;}
   .lab-window{max-width:none;}
-  .lab-cine__inner{min-height:0;padding-top:clamp(64px,16vw,120px);padding-bottom:clamp(40px,10vw,72px);}
-  .lab-process__steps--cine{flex-direction:column;}
-  .lab-process__steps--cine .lab-step{margin-right:0;}
+  .lab-pv--reveal{min-height:0;display:block;}
   .lab-step{opacity:1;}
+  /* reveal steps are driven from 0 by --pin; on the un-pinned narrow layout
+     there's no pin progress, so force them fully visible (beats the
+     `.lab-process__steps--reveal .lab-step` opacity rule). */
+  .lab-process__steps--reveal .lab-step{opacity:1;transform:none;}
   .lab-window__row{opacity:1;}
   .lab-split__grid,
   .lab-split__framed,
