@@ -92,6 +92,11 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
   .ds-cinema__copy{top:58%;}
 }
 
+/* Footer-as-section: pin the Light/Dark toggle to the frame's top-right
+   (reuses the .dssx-panel material; the global dev FAB hides it). */
+.ds-foot-frame{position:relative;}
+.ds-foot-frame .ds-foot-panel{position:absolute;top:10px;right:14px;left:auto;bottom:auto;transform:none;}
+
 /* ============================================================
    SectionFrame — floating inspector (Light/Dark + v1/v2/v3)
    ============================================================ */

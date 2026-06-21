@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+import { CtaBand } from "@/components/sections/CtaBand";
+import { FooterFrame } from "@/components/ds/FooterFrame";
 import { LabBento } from "@/components/sections/lab/LabBento";
 import { LabFullStatement } from "@/components/sections/lab/LabFullStatement";
 import { LabGallery } from "@/components/sections/lab/LabGallery";
@@ -201,6 +203,22 @@ export default function DsSectionsPage() {
           </div>
         </div>
       </section>
+
+      {/* CTA band — looping background video (production component) */}
+      <CtaBand
+        theme="dark"
+        videoSrc="/assets/cta/cube-1.mp4"
+        auroraVariant="violet"
+        eyebrow="Call to action"
+        title="See your next cohort"
+        titleAccent="ranked in a day"
+        sub="Batch-review every pitch deck, surface the strongest startups, and hand each team an evidence-based report — with the final call always yours."
+        primary={{ label: "Book a demo", href: "#" }}
+        secondary={{ label: "Try live demo", href: "#" }}
+      />
+
+      {/* Footer as a section — Light/Dark (black/white) toggle */}
+      <FooterFrame />
 
       <ScrollFX />
     </main>
