@@ -123,7 +123,12 @@ export function ScrollFX() {
 
     const paintPin = (section: HTMLElement) => {
       const declared = parseInt(section.getAttribute("data-pin-steps") || "0", 10);
-      const items = Array.from(section.querySelectorAll("[data-pin-step]"));
+      // Only the VISIBLE version's steps count — a section can carry several
+      // saved versions ([data-version]) each with their own [data-pin-step]; the
+      // hidden ones (display:none → offsetParent null) must not shift the index.
+      const items = Array.from(
+        section.querySelectorAll<HTMLElement>("[data-pin-step]"),
+      ).filter((el) => el.offsetParent !== null);
       const r = section.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const scrollable = section.offsetHeight - vh;

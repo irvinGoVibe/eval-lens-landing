@@ -4907,6 +4907,14 @@ section.band.ink .mini-tag{color:var(--lavender);}
    video or the placeholder gradient. */
 .lab-rv__slide{position:absolute;left:0;right:0;top:-10%;width:100%;height:120%;object-fit:cover;display:block;will-change:transform;transform:translateY(calc(-16% * clamp(0, var(--pin,0), 1)));}
 .lab-rv__slide--ph{background:linear-gradient(180deg, #1a1640 0%, #0c0c14 46%, #171132 74%, #0a0a0d 100%);}
+/* v1 photo mode — cross-fading stack inside .lab-rv__square (same frame as the
+   v3 video). The active photo is the one whose --i equals --pin-step (ScrollFX);
+   the squared-difference makes exactly one photo opaque, transition cross-fades.
+   All unitless → Lightning-safe. */
+.lab-rv__square--photos{background:#05060a;}
+.lab-rv__photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  opacity:max(0, calc(1 - 999 * (var(--i,0) - var(--pin-step,0)) * (var(--i,0) - var(--pin-step,0))));
+  transition:opacity .5s ease-out;will-change:opacity;}
 .lab-process.soft .lab-rv__slide--ph{background:linear-gradient(180deg, #eef0f7 0%, #f6f6f8 50%, #e8ebf4 100%);}
 .lab-rv__phlabel{position:relative;z-index:1;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);}
 .lab-process.soft .lab-rv__phlabel{color:var(--muted);}

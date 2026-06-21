@@ -61,6 +61,11 @@ export type LabPinnedStepsProps = {
     poster?: string;
     ariaLabel: string;
   };
+  /** v1 photo mode: one image per step. When set, v1 switches from the static
+   * "tidy" layout to the SAME reveal animation as v3 (head fly-up + steps), but
+   * the media is a cross-fading photo stack (active photo follows `--pin-step`)
+   * instead of a scrubbed video. Production (no `photos`) keeps the tidy v1. */
+  photos?: string[];
   /** Optional CTA under the steps. */
   cta?: { label: string; href: string; variant?: "primary" | "ghost" | "glass" };
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
@@ -124,6 +129,7 @@ export function LabPinnedSteps({
   steps,
   media,
   videoScrub,
+  photos,
   cta,
   marker,
 }: LabPinnedStepsProps) {
@@ -146,27 +152,64 @@ export function LabPinnedSteps({
       style={{ "--steps": steps.length } as CSSProperties}
     >
       <div className="lab-process__stage" data-pin-stage>
-        {/* ── v1 — Tidy: copy + steps left, media right ── */}
-        <div className="lab-pv lab-pv--tidy" data-version="1">
-          <div className="lab-pattern" aria-hidden="true" />
-          <div className="wrap lab-pv__grid">
-            <div className="lab-process__copy">
-              <LabEyebrow>{eyebrow}</LabEyebrow>
-              <Title title={title} />
-              <p className="sub">{sub}</p>
-              <Steps steps={steps} variant="tidy" />
-              {ctaRow}
+        {/* ── v1 — with `photos`: the reveal animation (head fly-up + steps) but
+            the media is a cross-fading PHOTO stack (active photo follows
+            --pin-step). Without `photos`: the original static "tidy" layout. ── */}
+        {photos && photos.length ? (
+          <div className="lab-pv lab-pv--reveal" data-version="1">
+            <div className="wrap lab-rv__grid">
+              <div className="lab-process__copy lab-rv__copy">
+                <div className="lab-rv__head">
+                  <LabEyebrow>{eyebrow}</LabEyebrow>
+                  <Title title={title} />
+                  <p className="sub">{sub}</p>
+                </div>
+                <Steps steps={steps} variant="reveal" />
+                {ctaRow}
+              </div>
+              <div className="lab-rv__media">
+                <div
+                  className="lab-rv__square lab-rv__square--photos"
+                  role="img"
+                  aria-label={media.ariaLabel}
+                >
+                  {photos.map((src, i) => (
+                    <img
+                      key={src}
+                      className="lab-rv__photo"
+                      src={src}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      style={{ "--i": i } as CSSProperties}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-            <MediaPlaceholder
-              className="lab-process__media"
-              ratio={media.ratio}
-              label={media.label}
-              hint={media.hint}
-              ariaLabel={media.ariaLabel}
-              parallaxY={media.parallaxY}
-            />
           </div>
-        </div>
+        ) : (
+          <div className="lab-pv lab-pv--tidy" data-version="1">
+            <div className="lab-pattern" aria-hidden="true" />
+            <div className="wrap lab-pv__grid">
+              <div className="lab-process__copy">
+                <LabEyebrow>{eyebrow}</LabEyebrow>
+                <Title title={title} />
+                <p className="sub">{sub}</p>
+                <Steps steps={steps} variant="tidy" />
+                {ctaRow}
+              </div>
+              <MediaPlaceholder
+                className="lab-process__media"
+                ratio={media.ratio}
+                label={media.label}
+                hint={media.hint}
+                ariaLabel={media.ariaLabel}
+                parallaxY={media.parallaxY}
+              />
+            </div>
+          </div>
+        )}
 
         {/* ── v2 — Guideline window: pipeline in a product window ── */}
         <div className="lab-pv lab-pv--window" data-version="2" hidden>

@@ -145,6 +145,13 @@ export default function DsSectionsPage() {
           frames: 0,
           ariaLabel: "Methodology transition — scrubbed by scroll through the stages",
         }}
+        photos={[
+          "/assets/_demo-pool/photo/deck-vault.png",
+          "/assets/_demo-pool/photo/deck-scan.png",
+          "/assets/_demo-pool/photo/scoring-matrix.png",
+          "/assets/_demo-pool/photo/dark-unicorn-head-front.jpeg",
+          "/assets/_demo-pool/photo/jury-decision.png",
+        ]}
       />
 
       {/* cinematic transition — last section. Self-contained .ds-cinema: full-screen
