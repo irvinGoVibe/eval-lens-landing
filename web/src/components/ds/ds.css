@@ -38,3 +38,38 @@
 .dssx-seg__btn:hover:not(.is-active){color:var(--fg-on-dark);}
 /* follow the global «dev: show/hide» FAB (DevInspector toggles .dev-inspector-hidden on <html>) */
 .dev-inspector-hidden .dssx-panel{display:none;}
+
+/* ============================================================
+   Full-bleed statement (archetype 02 — heading + sub, 3 versions)
+   weight hierarchy: eyebrow=label · heading=display 600 · sub=400 muted
+   ============================================================ */
+.lab-fullstmt{min-height:100svh;display:grid;align-items:center;}
+.lab-fullstmt__v{width:100%;min-width:0;}
+.lab-fullstmt .eyebrow{margin-bottom:20px;}
+.lab-fullstmt__h{font-family:var(--font-display);font-weight:600;font-size:clamp(40px,6.5vw,84px);
+  line-height:1.04;letter-spacing:-.03em;text-wrap:balance;margin:0;}
+.lab-fullstmt .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.lab-fullstmt__sub{font-family:var(--font-ui);font-weight:400;font-size:clamp(18px,2vw,22px);line-height:1.5;
+  color:var(--muted);margin-top:clamp(16px,2vw,22px);text-wrap:pretty;}
+.lab-fullstmt.ink .lab-fullstmt__sub{color:var(--muted-on-dark);}
+
+/* v1 — centered breath */
+.lab-fullstmt__v--1{display:flex;flex-direction:column;align-items:center;text-align:center;}
+.lab-fullstmt__v--1 .lab-fullstmt__h{max-width:16ch;}
+.lab-fullstmt__v--1 .lab-fullstmt__sub{max-width:58ch;}
+
+/* v2 — centered, compact: same display weight (600), but smaller kegl + wider
+   measure → a centered statement that reads more linear (longer lines), not a
+   giant display like v1 */
+.lab-fullstmt__v--2{display:flex;flex-direction:column;align-items:center;text-align:center;}
+.lab-fullstmt__v--2 .lab-fullstmt__h{font-size:clamp(28px,3.8vw,52px);
+  line-height:1.16;letter-spacing:-.02em;max-width:34ch;}
+.lab-fullstmt__v--2 .lab-fullstmt__sub{max-width:58ch;}
+
+/* v3 — split: heading left, sub in a side column */
+.lab-fullstmt__v--3{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(28px,5vw,72px);align-items:center;text-align:left;}
+.lab-fullstmt__v--3 .lab-fullstmt__sub{margin-top:0;}
+@media (max-width:760px){
+  .lab-fullstmt__v--3{grid-template-columns:1fr;}
+  .lab-fullstmt__v--3 .lab-fullstmt__sub{margin-top:clamp(16px,2vw,22px);}
+}

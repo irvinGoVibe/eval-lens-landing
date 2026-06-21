@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
 import { LabBento } from "@/components/sections/lab/LabBento";
+import { LabFullStatement } from "@/components/sections/lab/LabFullStatement";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
 
 export const metadata: Metadata = { title: "DS Sections" };
@@ -78,6 +79,17 @@ export default function DsSectionsPage() {
         title="A compact map of reusable ingredients"
         sub="The bento pattern is for overview, not decoration: one large idea plus supporting tiles that explain how the system holds together."
         items={BENTO_ITEMS}
+      />
+
+      <LabFullStatement
+        marker="02 · Full-bleed statement"
+        surface="ink"
+        ariaLabel="Full-bleed statement"
+        eyebrow="The thesis"
+        titleLead="AI does the reading; the"
+        titleAccent="decision"
+        titleTrail="stays human"
+        sub="One clear sentence between dense sections — a deliberate pause that says what the product stands for before the next block of detail."
       />
 
       <ScrollFX />
