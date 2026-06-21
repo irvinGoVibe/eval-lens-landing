@@ -95,6 +95,10 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
   .ds-cinema__copy{top:58%;}
 }
 
+/* kill the sub-pixel seam between the cinema (a composited sticky layer) and the
+   CTA band below: overlap them by 1px so no hairline shows at the join. */
+.ds-sections .cta-band{margin-top:-1px;}
+
 /* Footer-as-section: pin the Light/Dark toggle to the frame's top-right
    (reuses the .dssx-panel material; the global dev FAB hides it). */
 .ds-foot-frame{position:relative;}
