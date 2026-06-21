@@ -48,6 +48,10 @@
 .ds-sections .lab-gallery__lane:not(.lab-gallery__lane--expr){
   margin-inline:calc(50% - 50vw);
   padding-inline:max(var(--gutter), calc((100vw - var(--maxw)) / 2));
+  /* vertical breathing room so the hover glow/shadow isn't clipped by the lane's
+     overflow (overflow-x:auto forces overflow-y to auto → vertical clip).
+     Matches the ~110px hover halo so it never cuts top/bottom. */
+  padding-block:clamp(56px,7.5vw,116px);
 }
 /* v3 (--expr): весь блок full-bleed на всю ширину экрана → backdrop (inset:0)
    тянется на весь вьюпорт, а лента карточек уходит за правый край. Заголовок
