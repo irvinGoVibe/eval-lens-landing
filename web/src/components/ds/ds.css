@@ -44,8 +44,11 @@ section.ds-cinema{padding:0;min-height:300vh;background:#000;}
    viewport (no video at the edges). Fades in after the opening video beat. */
 .ds-cinema__knockout{position:absolute;inset:0;z-index:3;width:100%;height:100%;
   opacity:clamp(0, calc((var(--pin,0) - .12) / .08), 1);will-change:opacity;}
+/* Safari-safe scaling: explicit transform-origin in viewBox user units (the text
+   anchor 640,420) instead of transform-box:fill-box + center — Safari scales SVG
+   <text> about the user-space origin with fill-box, so the letters fly off-side. */
 .ds-cinema__masktext{font-family:var(--font-display);font-weight:600;font-size:64px;letter-spacing:-.02em;fill:#000;
-  transform-box:fill-box;transform-origin:center;will-change:transform;
+  transform-origin:640px 420px;will-change:transform;
   transform:translateY(calc(-150px * (1 - min(max(var(--pin,0) - .16, 0) / .46, 1)))) scale(calc(7 - 6 * min(max(var(--pin,0) - .16, 0) / .46, 1)));}
 .ds-cinema__copy{position:absolute;z-index:4;left:0;right:0;top:54%;max-width:min(1100px,92vw);margin-inline:auto;padding:0 var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
 .ds-cinema__sub{max-width:54ch;opacity:clamp(0, calc((var(--pin,0) - .80) / .07), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .80) / .07), 1))));}
@@ -63,6 +66,15 @@ section.ds-cinema{padding:0;min-height:300vh;background:#000;}
   .ds-cinema__copy{position:static;margin-top:clamp(24px,5vw,44px);}
   .ds-cinema__eyebrow,.ds-cinema__sub,.ds-cinema__cta{opacity:1;transform:none;}
 }
+
+/* light variant — the scene "whitens out" instead of going black: the darken
+   veil and the full-bleed scrim resolve to white, video shows through the
+   knockout letters, lens fill restores them. Copy reads dark (light `band`
+   already gives a dark `.sub`); the lens-gradient mobile headline works on white. */
+.ds-cinema.ds-cinema--light,
+.ds-cinema--light .ds-cinema__stage{background:#fff;}
+.ds-cinema--light .ds-cinema__darken{background:#fff;}
+.ds-cinema--light .ds-cinema__scrimrect{fill:#fff;}
 
 /* ============================================================
    SectionFrame — floating inspector (Light/Dark + v1/v2/v3)
