@@ -51,8 +51,11 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
    default, ink in the dark theme. */
 .ds-cinema__knockout{position:absolute;inset:0;z-index:3;width:100%;height:100%;
   opacity:clamp(0, calc((var(--pin,0) - .12) / .08), 1);will-change:opacity;}
+/* scrim colour = the section's own surface (brand `--bg-ink` #000 in dark, white
+   in light) — NOT --panel (#0a0a0d, the card tint) which made the transition
+   resolve to a slightly blue-black that mismatched the #000 section bg. */
 .ds-cinema__scrimrect{fill:#fff;}
-.ds-cinema.ink .ds-cinema__scrimrect{fill:#0a0a0d;}
+.ds-cinema.ink .ds-cinema__scrimrect{fill:var(--bg-ink);}
 /* Safari-safe scaling: explicit transform-origin in viewBox user units (the text
    anchor 640,420) instead of transform-box:fill-box + center — Safari scales SVG
    <text> about the user-space origin with fill-box, so the letters fly off-side. */
