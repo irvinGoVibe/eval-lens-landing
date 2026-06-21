@@ -6,6 +6,7 @@ import { FooterFrame } from "@/components/ds/FooterFrame";
 import { LabBento } from "@/components/sections/lab/LabBento";
 import { LabFullStatement } from "@/components/sections/lab/LabFullStatement";
 import { LabGallery } from "@/components/sections/lab/LabGallery";
+import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
 
 export const metadata: Metadata = { title: "DS Sections" };
@@ -16,6 +17,14 @@ const GALLERY_ITEMS = [
   { tag: "Growth", title: "Scaling proof", body: "Compare efficiency and defensibility as the numbers mature." },
   { tag: "Diligence", title: "Evidence trail", body: "Every score links to the deck page and the source behind it." },
   { tag: "Committee", title: "Shared view", body: "One comparable report the whole table can read the same way." },
+];
+
+const PINNED_STEPS = [
+  { num: "01", label: "Intake", desc: "Drop in a batch of decks; each is parsed and queued for review." },
+  { num: "02", label: "Read", desc: "The model reads every slide, pulling claims and the evidence behind them." },
+  { num: "03", label: "Score", desc: "A fixed rubric turns findings into comparable, traceable signals." },
+  { num: "04", label: "Rank", desc: "Scores roll up into one leaderboard you can defend line by line." },
+  { num: "05", label: "Decide", desc: "A person signs off — the final call always stays human." },
 ];
 
 const BENTO_ITEMS = [
@@ -114,6 +123,23 @@ export default function DsSectionsPage() {
         sub="A horizontal lane keeps a set of equal ideas from becoming a tall wall of cards — for stages, report parts, segments and use cases."
         laneLabel="Investment stages — horizontally scrollable"
         items={GALLERY_ITEMS}
+      />
+
+      <LabPinnedSteps
+        id="pinned"
+        surface="ink"
+        marker="03 · Pinned multi-screen"
+        ariaLabel="Pinned multi-screen — the five-step path"
+        eyebrow="Pinned multi-screen"
+        title={{ line1: "One fixed path,", line2: "five steps", line2Accent: "in sequence" }}
+        sub="A tall pinned stage holds while the numbered steps light up one by one as you scroll — for any fixed, ordered process."
+        steps={PINNED_STEPS}
+        media={{
+          ratio: "4/3",
+          label: "Image · pinned flow · 4:3",
+          hint: "A five-step track whose nodes light up in sequence on an ink surface",
+          ariaLabel: "A track of five steps whose nodes light up in sequence",
+        }}
       />
 
       {/* cinematic transition — last section. Self-contained .ds-cinema: full-screen
