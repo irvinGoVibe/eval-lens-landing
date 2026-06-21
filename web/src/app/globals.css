@@ -4941,6 +4941,44 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .lab-rv__slide{transform:none;height:100%;}
 }
 
+/* ── v3 reveal — MOBILE: steps list on top, scrubbing video pinned to the BOTTOM
+   of the viewport. Keep the section pinned (v3 ONLY, via :has) so --pin scrubs the
+   clip + switches steps while the video sits fixed at the bottom of the sticky
+   stage. v1/v2 keep their static mobile fallback (their version wrapper is hidden,
+   so :has fails). Comes after the 880px block → wins the cascade at ≤760. */
+@media (max-width:760px){
+  .lab-process:has(.lab-pv--reveal:not([hidden])){min-height:calc(100svh + var(--steps,4)*70svh);}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__stage{position:sticky;top:0;min-height:100svh;overflow:hidden;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-pv--reveal{min-height:100svh;display:block;padding:0;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__grid{display:block;position:relative;min-height:100svh;}
+  /* copy = head + steps stacked in ONE grid cell pinned to the TOP. As --pin
+     advances the head flies UP & fades out, and the steps rise into its place so
+     the active (first) step ends up at the very top and stays there. */
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__copy{display:grid;grid-template-columns:1fr;position:relative;z-index:2;padding:clamp(34px,6svh,60px) clamp(20px,6vw,30px) 0;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__head{grid-area:1/1;align-self:start;z-index:2;pointer-events:none;transform:translateY(calc(-80px * clamp(0, calc(var(--pin,0) / .2), 1) * clamp(0, calc(var(--pin,0) / .2), 1)));opacity:calc(1 - clamp(0, calc(var(--pin,0) / .2), 1) * clamp(0, calc(var(--pin,0) / .2), 1));}
+  /* compact the heading on mobile */
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__head .lab-process__title{font-size:clamp(28px,7.5vw,42px);line-height:1.06;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__head .sub{font-size:clamp(14px,3.6vw,16px);margin-top:14px;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal{grid-area:1/1;align-self:start;margin-top:0;opacity:clamp(0, calc((var(--pin,0) - .2) / .15), 1);transform:translateY(calc(80px - 80px * clamp(0, calc((var(--pin,0) - .2) / .2), 1)));}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step{opacity:.3;transform:none;transition:opacity .22s ease-out, color .18s ease-out;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step.is-active{opacity:1;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step.is-current .lab-step__num{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  /* video FIXED to the bottom of the pinned stage; scrubs by --pin */
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__media{position:absolute;left:0;right:0;bottom:0;width:100%;height:34svh;z-index:1;margin:0;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__square{position:relative;width:100%;height:100%;aspect-ratio:unset;border-radius:0;box-shadow:none;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__slide{position:absolute;inset:0;top:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:none;will-change:auto;}
+  /* top fade so the video blends into the dark section above it */
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__square::after{background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 100%);}
+}
+/* v3 mobile reduced-motion: un-pin, static contained video band, all steps shown */
+@media (max-width:760px) and (prefers-reduced-motion:reduce){
+  .lab-process:has(.lab-pv--reveal:not([hidden])){min-height:0;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__stage{position:static;min-height:0;overflow:visible;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__grid{min-height:0;}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__media{margin-top:clamp(20px,4svh,32px);}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step{opacity:1;}
+}
+
 /* ── 05 · Editorial split + scrub-ring ──────────────────────────────────
    Two saved versions, both surface-adaptive (Light/Dark inspector toggle):
    • v1 (cine)  — ink/light full-bleed cinematic moment: the evidence scene
