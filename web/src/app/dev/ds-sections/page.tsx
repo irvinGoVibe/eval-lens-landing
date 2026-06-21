@@ -114,66 +114,66 @@ export default function DsSectionsPage() {
         items={GALLERY_ITEMS}
       />
 
-      {/* cinematic transition — exact methodology m-cinema mechanics, wrapped in
-          its `.methodology` scope so the proven --pin choreography applies:
-          full-screen video → black knockout (video through the letters, letters
-          zoom ×30→1) → lens fill → eyebrow/sub/CTA. Driven by <ScrollFX/>. */}
-      <div className="methodology">
-        <section
-          className="band ink m-cinema"
-          data-pin
-          data-pin-steps="1"
-          aria-label="AI prepares. You decide."
-        >
-          <div className="m-cinema__stage" data-pin-stage>
-            <video
-              className="m-cinema__vid"
-              autoPlay
-              muted
-              loop
-              playsInline
-              aria-hidden="true"
-            >
-              <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
-            </video>
-            <div className="m-cinema__fill" aria-hidden="true" />
-            <svg
-              className="m-cinema__knockout"
-              viewBox="0 0 1280 900"
-              preserveAspectRatio="xMidYMid slice"
-              aria-hidden="true"
-            >
-              <defs>
-                <mask id="ds-cinema-mask">
-                  <rect width="1280" height="900" fill="#fff" />
-                  <text x="640" y="490" textAnchor="middle" className="m-cinema__masktext">
-                    AI prepares. You decide.
-                  </text>
-                </mask>
-              </defs>
-              <rect
-                width="1280"
-                height="900"
-                fill="var(--bg-ink, #0a0a0d)"
-                mask="url(#ds-cinema-mask)"
-              />
-            </svg>
-            <div className="m-cinema__copy">
-              <span className="eyebrow m-cinema__eyebrow">
-                <span className="dot" aria-hidden="true" />
-                The handoff
-              </span>
-              <p className="sub m-cinema__sub">
-                A cinematic close — the video runs full-screen, then resolves into one
-                statement on black.
-              </p>
-              <div className="sect-cta m-cinema__cta">
-                <Button href="#">Book a demo</Button>
-              </div>
+      {/* cinematic transition — self-contained .ds-cinema (smooth). Full-screen
+          video → gentle darken → knockout heading descends & zooms ×7→1 (video
+          through the letters) → lens fill restores letters to solid → copy.
+          100% --pin-driven by <ScrollFX/>; mobile/reduced-motion = static. */}
+      <section
+        className="band ink ds-cinema"
+        data-pin
+        data-pin-steps="1"
+        aria-label="AI prepares. You decide."
+      >
+        <div className="ds-cinema__stage" data-pin-stage>
+          <video
+            className="ds-cinema__vid"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          >
+            <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
+          </video>
+          <div className="ds-cinema__darken" aria-hidden="true" />
+          <div className="ds-cinema__fill" aria-hidden="true" />
+          <svg
+            className="ds-cinema__knockout"
+            viewBox="0 0 1280 900"
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden="true"
+          >
+            <defs>
+              <mask id="ds-cinema-mask">
+                <rect width="1280" height="900" fill="#fff" />
+                <text x="640" y="490" textAnchor="middle" className="ds-cinema__masktext">
+                  AI prepares. You decide.
+                </text>
+              </mask>
+            </defs>
+            <rect
+              width="1280"
+              height="900"
+              fill="var(--bg-ink, #0a0a0d)"
+              mask="url(#ds-cinema-mask)"
+            />
+          </svg>
+          <div className="ds-cinema__copy">
+            <h2 className="ds-cinema__headline">AI prepares. You decide.</h2>
+            <span className="eyebrow ds-cinema__eyebrow">
+              <span className="dot" aria-hidden="true" />
+              The handoff
+            </span>
+            <p className="sub ds-cinema__sub">
+              A cinematic close — the video runs full-screen, then resolves into one
+              statement on black.
+            </p>
+            <div className="sect-cta ds-cinema__cta">
+              <Button href="#">Book a demo</Button>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       <ScrollFX />
     </main>

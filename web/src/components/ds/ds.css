@@ -24,6 +24,48 @@
 .ds-hero[data-version="3"] .ds-hero__sub{width:min(100%,46ch);}
 
 /* ============================================================
+   Cinema — pinned cinematic transition (self-contained, smooth).
+   Phases by --pin (ScrollFX): A 0→.16 full-screen video · darken .08→.24 ·
+   B .16→.62 knockout letters descend & zoom ×7→1 (video through letters) ·
+   C .60→.78 lens fill restores letters to solid brand colour · D .80→.96 copy.
+   Moderate scale + wide overlapping ranges → smooth, no jank.
+   ============================================================ */
+section.ds-cinema{padding:0;min-height:300vh;background:#000;}
+/* [data-pin-stage] global already gives position:sticky;top:0;min-height:100svh */
+.ds-cinema__stage{overflow:hidden;background:#000;display:grid;place-items:center;}
+.ds-cinema__vid{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;}
+/* gentle darken veil over the video before the knockout takes over */
+.ds-cinema__darken{position:absolute;inset:0;z-index:1;background:#000;
+  opacity:clamp(0, calc((var(--pin,0) - .08) / .16), .55);will-change:opacity;}
+/* lens fill — restores the letters to a solid brand gradient at the end */
+.ds-cinema__fill{position:absolute;inset:0;z-index:2;background:var(--lens);
+  opacity:clamp(0, calc((var(--pin,0) - .60) / .16), 1);will-change:opacity;}
+/* full-bleed black knockout — only the LETTERS move; black always covers the
+   viewport (no video at the edges). Fades in after the opening video beat. */
+.ds-cinema__knockout{position:absolute;inset:0;z-index:3;width:100%;height:100%;
+  opacity:clamp(0, calc((var(--pin,0) - .12) / .08), 1);will-change:opacity;}
+.ds-cinema__masktext{font-family:var(--font-display);font-weight:600;font-size:64px;letter-spacing:-.02em;fill:#000;
+  transform-box:fill-box;transform-origin:center;will-change:transform;
+  transform:translateY(calc(-150px * (1 - min(max(var(--pin,0) - .16, 0) / .46, 1)))) scale(calc(7 - 6 * min(max(var(--pin,0) - .16, 0) / .46, 1)));}
+.ds-cinema__copy{position:absolute;z-index:4;left:0;right:0;top:62%;max-width:min(1100px,92vw);margin-inline:auto;padding:0 var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
+.ds-cinema__eyebrow{opacity:clamp(0, calc((var(--pin,0) - .80) / .06), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .80) / .06), 1))));}
+.ds-cinema__sub{max-width:60ch;margin-top:16px;opacity:clamp(0, calc((var(--pin,0) - .85) / .06), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .85) / .06), 1))));}
+.ds-cinema__cta{margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:clamp(0, calc((var(--pin,0) - .90) / .06), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .90) / .06), 1))));}
+.ds-cinema__headline{display:none;}
+/* mobile & reduced-motion: un-pin → static black statement */
+@media (max-width:880px), (prefers-reduced-motion:reduce){
+  section.ds-cinema{min-height:0;}
+  .ds-cinema__stage{position:static;min-height:78svh;padding:clamp(80px,14vw,150px) var(--gutter);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+  .ds-cinema__vid{opacity:.16;}
+  .ds-cinema__darken{opacity:.4;}
+  .ds-cinema__knockout{display:none;}
+  .ds-cinema__fill{display:none;}
+  .ds-cinema__headline{display:block;font-family:var(--font-display);font-weight:600;font-size:clamp(34px,8vw,60px);line-height:1.05;letter-spacing:-.02em;position:relative;z-index:4;background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .ds-cinema__copy{position:static;margin-top:clamp(24px,5vw,44px);}
+  .ds-cinema__eyebrow,.ds-cinema__sub,.ds-cinema__cta{opacity:1;transform:none;}
+}
+
+/* ============================================================
    SectionFrame — floating inspector (Light/Dark + v1/v2/v3)
    ============================================================ */
 .dssx-frame{position:relative;}
