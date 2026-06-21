@@ -211,9 +211,11 @@ export function DevInspector() {
           : section.classList.contains("soft")
             ? 'surface="soft"'
             : 'surface="light"';
+        const visibleVer =
+          versions.find((el) => !el.hidden)?.dataset.version ?? versionIds[0];
         const curVer =
           versionIds.length > 1
-            ? ` version={${(safeGet(keyVersion) ?? versionIds[0]).replace(/\D/g, "")}}`
+            ? ` version={${visibleVer.replace(/\D/g, "")}}`
             : "";
         copyText(`<${meta.component} ${curSurf}${curVer} />`);
         name.classList.add("is-copied");
@@ -248,12 +250,22 @@ export function DevInspector() {
       reposition();
       repositions.push(reposition);
 
-      // restore persisted state
-      const initSurf = (safeGet(keySurface) as Surface | null) ??
-        (section.classList.contains("ink") ? "ink" : section.classList.contains("soft") ? "soft" : "light");
-      applySurface(initSurf);
-      const storedVer = safeGet(keyVersion);
-      applyVersion(storedVer && versionIds.includes(storedVer) ? storedVer : versionIds[0]);
+      // Initialise control state FROM the SSR DOM — do NOT mutate the section on
+      // load. Restoring a persisted surface/version that differs from the server
+      // HTML mutates the React-owned node before React 19's (concurrent)
+      // hydration settles, which trips a className / `hidden` hydration mismatch.
+      // Persisted choices therefore apply only on an explicit click.
+      const curSurf: Surface = section.classList.contains("ink")
+        ? "ink"
+        : section.classList.contains("soft")
+          ? "soft"
+          : "light";
+      (Object.keys(surfBtns) as Surface[]).forEach((s) =>
+        surfBtns[s].classList.toggle("is-active", s === curSurf),
+      );
+      const curVer = versions.find((el) => !el.hidden)?.dataset.version ?? versionIds[0];
+      for (const [v, b] of Object.entries(verBtns))
+        b.classList.toggle("is-active", v === curVer);
 
       cleanups.push(() => {
         window.clearTimeout(resetTimer);
