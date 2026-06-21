@@ -153,13 +153,6 @@ export function LabPinnedSteps({
       aria-label={ariaLabel}
       style={{ "--steps": steps.length } as CSSProperties}
     >
-      {snap ? (
-        <div className="lab-process__snap" aria-hidden="true">
-          {Array.from({ length: steps.length + 1 }).map((_, i) => (
-            <span key={i} style={{ top: `calc(${i} * ${snapStepVh}svh)` }} />
-          ))}
-        </div>
-      ) : null}
       <div className="lab-process__stage" data-pin-stage>
         {/* ── v1 — Tidy: copy + steps left, media right ── */}
         <div className="lab-pv lab-pv--tidy" data-version="1">
@@ -269,6 +262,11 @@ export function LabPinnedSteps({
           </div>
         </div>
       </div>
+      {snap
+        ? steps.map((_, i) => (
+            <div key={i} className="lab-rv__snap-stop" aria-hidden="true" />
+          ))
+        : null}
     </section>
   );
 }

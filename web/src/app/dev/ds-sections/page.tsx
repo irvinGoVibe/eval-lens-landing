@@ -144,7 +144,7 @@ export default function DsSectionsPage() {
         }}
         videoScrub={{
           src: "/assets/methodology/methodology-transition.mp4",
-          frames: 0,
+          frames: 5,
           ariaLabel: "Methodology transition — scrubbed by scroll through the stages",
         }}
       />

@@ -105,12 +105,15 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
    matches them). */
 .ds-sections .lab-process{min-height:calc(100svh + var(--steps,4) * 70svh);}
 
-/* sectional (snap) scroll — catalog only. proximity = snaps when you settle near
-   a stop, never traps free scroll (other sections have no stops → unaffected).
-   Stops live in `.lab-process__snap span`, one per step threshold + start. */
-html:has(.ds-sections){scroll-snap-type:y proximity;}
-.lab-process__snap{position:absolute;inset:0;pointer-events:none;}
-.lab-process__snap span{position:absolute;left:0;width:1px;height:1px;scroll-snap-align:start;}
+/* sectional snap — catalog only. mandatory + real in-flow stops + snap-stop:always
+   = scroll clicks step-to-step and cannot rest between. Other catalog sections
+   (cinema, gallery) have NO snap targets, so mandatory leaves them free-scrolling.
+   Production has no .lab-rv__snap-stop elements → inert there. */
+html:has(.ds-sections){scroll-snap-type:y mandatory;}
+.ds-sections .lab-rv__snap-stop{height:70svh;scroll-snap-align:start;scroll-snap-stop:always;pointer-events:none;}
+@media (prefers-reduced-motion:reduce){
+  html:has(.ds-sections){scroll-snap-type:none;}
+}
 
 /* Footer-as-section: pin the Light/Dark toggle to the frame's top-right
    (reuses the .dssx-panel material; the global dev FAB hides it). */
