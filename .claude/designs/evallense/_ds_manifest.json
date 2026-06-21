@@ -492,6 +492,48 @@
       "definedIn": "tokens/colors.css"
     },
     {
+      "name": "--fg-secondary-dark",
+      "value": "#d0ccf4",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--nebula-base",
+      "value": "#0a0509",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--nebula-layer1",
+      "value": "#0f0b1c",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--nebula-layer2",
+      "value": "#1a1530",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--nebula-fg",
+      "value": "#f0eeff",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--nebula-fg-2",
+      "value": "#c8c4f0",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--nebula-fg-muted",
+      "value": "#9896b8",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
       "name": "--font-mono",
       "value": "Menlo, \"SF Mono\", ui-monospace, \"JetBrains Mono\", monospace",
       "kind": "font",
@@ -636,6 +678,20 @@
       "value": "linear-gradient(90deg, #9333ea 0%, #3b82f6 100%)",
       "kind": "color",
       "definedIn": "tokens/gradients-surfaces.css"
+    },
+    {
+      "name": "--lens-deep",
+      "value": "linear-gradient(135deg, #3a1d8f, #1d8f7e)",
+      "kind": "other",
+      "definedIn": "tokens/gradients-surfaces.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--ink-grad",
+      "value": "linear-gradient(160deg, #0a0a0d, #1b1b26)",
+      "kind": "other",
+      "definedIn": "tokens/gradients-surfaces.css",
+      "annotation": "other"
     }
   ],
   "themes": [],

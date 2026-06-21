@@ -48,4 +48,13 @@
   --amber-ink: #8a5414;  /* readable text pair for amber fills */
   --green-on-dark: #5fe0bf;
   --amber-on-dark: #f0a95a;
+
+  /* ---- Dark-theme tokens (Ink Refined · Nebula Deep) — visual-layer-forge batch 4 ---- */
+  --fg-secondary-dark: #d0ccf4;   /* Ink Refined: violet-tinted body on dark */
+  --nebula-base:     #0a0509;
+  --nebula-layer1:   #0f0b1c;
+  --nebula-layer2:   #1a1530;
+  --nebula-fg:       #f0eeff;
+  --nebula-fg-2:     #c8c4f0;
+  --nebula-fg-muted: #9896b8;
 }
