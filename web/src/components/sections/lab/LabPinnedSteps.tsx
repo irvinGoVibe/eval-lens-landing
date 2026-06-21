@@ -166,13 +166,17 @@ export function LabPinnedSteps({
             steps carry data-pin-step so scrolling drives the photo switch.
             Without `photos`: the plain static "tidy" layout. ── */}
         {photos && photos.length ? (
-          <div className="lab-pv lab-pv--tidy" data-version="1">
+          <div className="lab-pv lab-pv--tidy lab-pv--photos" data-version="1">
             <div className="lab-pattern" aria-hidden="true" />
             <div className="wrap lab-pv__grid">
               <div className="lab-process__copy">
-                <LabEyebrow>{eyebrow}</LabEyebrow>
-                <Title title={title} />
-                <p className="sub">{sub}</p>
+                {/* head wrapper is display:contents on desktop (tidy layout
+                    unchanged); on mobile it becomes the flying-up heading. */}
+                <div className="lab-pt__head">
+                  <LabEyebrow>{eyebrow}</LabEyebrow>
+                  <Title title={title} />
+                  <p className="sub">{sub}</p>
+                </div>
                 <Steps steps={steps} variant="tidy" pinSteps />
                 {ctaRow}
               </div>

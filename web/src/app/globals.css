@@ -4860,6 +4860,9 @@ section.band.ink .mini-tag{color:var(--lavender);}
    cross-fading photo stack (.lab-rv__photo opacity follows --pin-step). */
 .lab-process__media--photos{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:var(--radius-stage,20px);background:#05060a;box-shadow:var(--sh-3);}
 .lab-process.soft .lab-process__media--photos{box-shadow:none;border:1px solid var(--border);}
+/* head wrapper for v1 photo mode — transparent to layout on desktop (tidy stays
+   as is); the mobile block turns it into the flying-up heading. */
+.lab-pt__head{display:contents;}
 
 /* v2 — Guideline window: the pipeline shown inside a product window */
 .lab-window{width:100%;max-width:560px;justify-self:center;border-radius:var(--r-lg);border:1px solid var(--border);background:#fff;box-shadow:var(--sh-3);overflow:hidden;}
@@ -4991,6 +4994,39 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__grid{min-height:0;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__media{margin-top:clamp(20px,4svh,32px);transform:none;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step{opacity:1;}
+}
+
+/* ── v1 PHOTO mode — MOBILE: same behaviour as v3 mobile but with the photo
+   stack. Desktop v1 stays tidy (untouched); only ≤760 + v1-photos visible.
+   Heading flies up, steps switch, the 4:3 photo starts under the heading and
+   slides down to a pinned bottom band (photos cross-fade by --pin-step). */
+@media (max-width:760px){
+  .lab-process:has(.lab-pv--photos:not([hidden])){min-height:calc(100svh + var(--steps,4)*70svh);}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__stage{position:sticky;top:0;min-height:100svh;overflow:hidden;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-pv--photos{min-height:100svh;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-pattern{display:none;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-pv__grid{display:block;position:relative;min-height:100svh;grid-template-columns:1fr;}
+  /* copy = head + steps stacked in one cell at the top */
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__copy{display:grid;grid-template-columns:1fr;position:relative;z-index:2;padding:clamp(34px,6svh,60px) clamp(20px,6vw,30px) 0;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-pt__head{display:block;grid-area:1/1;align-self:start;z-index:2;pointer-events:none;transform:translateY(calc(-80px * clamp(0, calc(var(--pin,0) / .1), 1) * clamp(0, calc(var(--pin,0) / .1), 1)));opacity:calc(1 - clamp(0, calc(var(--pin,0) / .1), 1) * clamp(0, calc(var(--pin,0) / .1), 1));}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-pt__head .lab-process__title{font-size:clamp(28px,7.5vw,42px);line-height:1.06;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-pt__head .sub{font-size:clamp(14px,3.6vw,16px);margin-top:14px;}
+  /* steps rise into the head's place + crisp switch (data-pin-step) */
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy{grid-area:1/1;align-self:start;margin-top:0;opacity:clamp(0, calc((var(--pin,0) - .05) / .05), 1);transform:translateY(calc(80px - 80px * clamp(0, calc((var(--pin,0) - .05) / .07), 1)));}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy .lab-step{opacity:.3;transform:none;border-top-color:var(--border-on-dark);transition:opacity .22s ease-out, color .18s ease-out;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy .lab-step.is-active{opacity:1;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy .lab-step.is-current .lab-step__num{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  /* photo frame: full-bleed band, starts raised under the heading then slides to bottom */
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__media--photos{position:absolute;left:0;right:0;bottom:0;width:100%;max-width:none;height:34svh;aspect-ratio:unset;border-radius:0;box-shadow:none;border:0;z-index:1;margin:0;will-change:transform;transform:translateY(calc(-32svh * (1 - clamp(0, calc(var(--pin,0) / .12), 1))));}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__media--photos::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 100%);}
+}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){
+  .lab-process:has(.lab-pv--photos:not([hidden])){min-height:0;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__stage{position:static;min-height:0;overflow:visible;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-pt__head{transform:none;opacity:1;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy{transform:none;opacity:1;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy .lab-step{opacity:1;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__media--photos{position:relative;transform:none;height:auto;aspect-ratio:4/3;margin-top:clamp(20px,4svh,32px);}
 }
 
 /* ── 05 · Editorial split + scrub-ring ──────────────────────────────────
