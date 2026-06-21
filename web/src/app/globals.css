@@ -4963,8 +4963,10 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step{opacity:.3;transform:none;transition:opacity .22s ease-out, color .18s ease-out;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step.is-active{opacity:1;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step.is-current .lab-step__num{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
-  /* video FIXED to the bottom of the pinned stage; scrubs by --pin */
-  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__media{position:absolute;left:0;right:0;bottom:0;width:100%;height:34svh;z-index:1;margin:0;}
+  /* video band: starts just UNDER the heading (raised) and slides DOWN to the
+     bottom of the pinned stage as you scroll (so there's no big initial gap).
+     Lightning-safe: length * (1 - clamp(...)). */
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__media{position:absolute;left:0;right:0;bottom:0;width:100%;height:34svh;z-index:1;margin:0;will-change:transform;transform:translateY(calc(-32svh * (1 - clamp(0, calc(var(--pin,0) / .28), 1))));}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__square{position:relative;width:100%;height:100%;aspect-ratio:unset;border-radius:0;box-shadow:none;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__slide{position:absolute;inset:0;top:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:none;will-change:auto;}
   /* top fade so the video blends into the dark section above it */
@@ -4975,7 +4977,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .lab-process:has(.lab-pv--reveal:not([hidden])){min-height:0;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__stage{position:static;min-height:0;overflow:visible;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__grid{min-height:0;}
-  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__media{margin-top:clamp(20px,4svh,32px);}
+  .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__media{margin-top:clamp(20px,4svh,32px);transform:none;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step{opacity:1;}
 }
 
