@@ -99,8 +99,16 @@ function Title({ title }: { title: LabPinnedStepsProps["title"] }) {
  * ScrollFX toggles `.is-active` / `.is-current` at each 1/steps threshold —
  * crisp, discrete switching between items (CSS transitions the change).
  */
-function Steps({ steps, variant }: { steps: LabPinnedStep[]; variant: string }) {
-  const pinned = variant === "reveal";
+function Steps({
+  steps,
+  variant,
+  pinSteps,
+}: {
+  steps: LabPinnedStep[];
+  variant: string;
+  pinSteps?: boolean;
+}) {
+  const pinned = pinSteps ?? variant === "reveal";
   return (
     <ol className={`lab-process__steps lab-process__steps--${variant}`}>
       {steps.map((step, i) => (
@@ -152,39 +160,38 @@ export function LabPinnedSteps({
       style={{ "--steps": steps.length } as CSSProperties}
     >
       <div className="lab-process__stage" data-pin-stage>
-        {/* ── v1 — with `photos`: the reveal animation (head fly-up + steps) but
-            the media is a cross-fading PHOTO stack (active photo follows
-            --pin-step). Without `photos`: the original static "tidy" layout. ── */}
+        {/* ── v1 — with `photos`: the ORIGINAL tidy layout (static heading +
+            hairline-grid texture, copy left / media right), but the media slot is
+            a cross-fading PHOTO stack (active photo follows --pin-step) and the
+            steps carry data-pin-step so scrolling drives the photo switch.
+            Without `photos`: the plain static "tidy" layout. ── */}
         {photos && photos.length ? (
-          <div className="lab-pv lab-pv--reveal" data-version="1">
-            <div className="wrap lab-rv__grid">
-              <div className="lab-process__copy lab-rv__copy">
-                <div className="lab-rv__head">
-                  <LabEyebrow>{eyebrow}</LabEyebrow>
-                  <Title title={title} />
-                  <p className="sub">{sub}</p>
-                </div>
-                <Steps steps={steps} variant="reveal" />
+          <div className="lab-pv lab-pv--tidy" data-version="1">
+            <div className="lab-pattern" aria-hidden="true" />
+            <div className="wrap lab-pv__grid">
+              <div className="lab-process__copy">
+                <LabEyebrow>{eyebrow}</LabEyebrow>
+                <Title title={title} />
+                <p className="sub">{sub}</p>
+                <Steps steps={steps} variant="tidy" pinSteps />
                 {ctaRow}
               </div>
-              <div className="lab-rv__media">
-                <div
-                  className="lab-rv__square lab-rv__square--photos"
-                  role="img"
-                  aria-label={media.ariaLabel}
-                >
-                  {photos.map((src, i) => (
-                    <img
-                      key={src}
-                      className="lab-rv__photo"
-                      src={src}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      style={{ "--i": i } as CSSProperties}
-                    />
-                  ))}
-                </div>
+              <div
+                className="lab-process__media lab-process__media--photos"
+                role="img"
+                aria-label={media.ariaLabel}
+              >
+                {photos.map((src, i) => (
+                  <img
+                    key={src}
+                    className="lab-rv__photo"
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    style={{ "--i": i } as CSSProperties}
+                  />
+                ))}
               </div>
             </div>
           </div>

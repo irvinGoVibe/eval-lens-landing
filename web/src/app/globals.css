@@ -4856,6 +4856,10 @@ section.band.ink .mini-tag{color:var(--lavender);}
 
 /* v1 — Tidy: copy + steps left, media right, calm hairline-grid backdrop */
 .lab-process__media{width:100%;max-width:520px;justify-self:center;}
+/* v1 photo mode — the tidy media slot becomes a ratio-locked frame holding the
+   cross-fading photo stack (.lab-rv__photo opacity follows --pin-step). */
+.lab-process__media--photos{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:var(--radius-stage,20px);background:#05060a;box-shadow:var(--sh-3);}
+.lab-process.soft .lab-process__media--photos{box-shadow:none;border:1px solid var(--border);}
 
 /* v2 — Guideline window: the pipeline shown inside a product window */
 .lab-window{width:100%;max-width:560px;justify-self:center;border-radius:var(--r-lg);border:1px solid var(--border);background:#fff;box-shadow:var(--sh-3);overflow:hidden;}
