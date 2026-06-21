@@ -1,0 +1,102 @@
+{
+  "skill_name": "blog-creator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Создай новую статью в блог про то, как EvalLense оценивает хакатонные сабмишены.",
+      "expected_output": "Режим CREATE. Должен загрузить .agents/product-marketing.md, references/article-format.md, references/personas.md и copy-system. Должен сходить в ai-jury-prod (через PROJECT-ENTRYPOINT) за фактами по Hackathon-панели (J-H1…J-H5) и не выдумывать. Должен придумать kebab-case slug, проверить отсутствие файла, собрать валидный frontmatter (category из Research|Product|Press Release, accent из cyan|violet|aqua|orange, author: Anonymous Unicorn, status: draft, cover по конвенции /assets/blog/<short>/cover.png) и тело в фирменной структуре. Должен прогнать текст через персоны 1–7 и упомянуть это в отчёте. Должен записать wiki/product/site/blog/<slug>.md. В отчёте — список факт→файл и открытые вопросы. Диалог рус., копия англ.",
+      "assertions": [
+        "Загружает product-marketing.md, personas.md, article-format.md, copy-system",
+        "Идёт за фактами в ai-jury-prod и указывает файлы-источники",
+        "Не выдумывает факты, недоказанное — в Открытые вопросы",
+        "Frontmatter валиден по cms/types.ts (category/accent из допустимых, author: Anonymous Unicorn, status: draft)",
+        "Прогон через персоны 1–7 (включая AEO, copy-editor, humanizer)",
+        "Пишет новый wiki/product/site/blog/<slug>.md",
+        "Сохраняет human-in-the-loop и имя EvalLense"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Перепиши статью how-evallense-evaluates-pitch-decks — усилить конверсию и структуру.",
+      "expected_output": "Режим REWRITE. Должен прочитать существующий бриф wiki/product/site/blog/how-evallense-evaluates-pitch-decks.md целиком (и при наличии сверить с web/src/lib/blog.ts). Должен освежить факты из ai-jury-prod (пайплайн, P1–P6, AI Total Score advisory vs Jury Score human). Должен применить персоны: copywriter (хук/нарратив), product-marketer (выгоды/JTBD), psychologist (social proof 1,000+ runs), AEO (самодостаточные H2, definition/step-by-step/таблица), copy-editor (семь проходов), humanizer (антислоп). Должен записать how-evallense-evaluates-pitch-decks_new.md РЯДОМ, оригинал НЕ перезаписывать. Подпись остаётся Anonymous Unicorn. В отчёте — что дала каждая линза и источники фактов.",
+      "assertions": [
+        "Читает оригинальный бриф целиком, не перезаписывает его",
+        "Пишет результат в <slug>_new.md рядом с оригиналом",
+        "Освежает факты из ai-jury-prod с указанием файлов",
+        "Применяет персоны-линзы и отчитывается, что дала каждая",
+        "Усиливает структуру под AEO (самодостаточные H2, таблицы/блоки)",
+        "Финальный антислоп-проход выполнен",
+        "Подпись остаётся Anonymous Unicorn, термины/CTA по copy-system"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Напиши статью про роудмеп: что EvalLense строит дальше.",
+      "expected_output": "Режим CREATE, category Product. Должен взять факты роудмепа из ai-jury-prod (Hackathon judge, Truth Check) и подать роудмеп ПРЯМО (не как «возможно»). Должен использовать именно 'Truth Check' (не 'Trust Check'). Должен держать human-in-the-loop ('final decision still yours'). Должен собрать валидный frontmatter (accent violet как у эталона whats-next), Anonymous Unicorn, status draft. Прогон через персоны, антислоп. Открытые вопросы — то, чего нет в источниках.",
+      "assertions": [
+        "Факты роудмепа из ai-jury-prod, роудмеп подан прямо",
+        "Использует 'Truth Check', не 'Trust Check'",
+        "Держит human-in-the-loop",
+        "Frontmatter валиден, author Anonymous Unicorn, status draft",
+        "Антислоп-проход выполнен, нет гиперболы"
+      ],
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Создай статью про founder-market fit.",
+      "expected_output": "ПЕРВЫМ делом должен выдать план (JTBD Brief Architect, Lens 0) ДО письма: job/для кого (кто читатель, в какой ситуации), цель статьи (что читатель сделает/поймёт, следующий шаг/CTA), главная мысль (ОДНА), сторителлинг (режим контента + outline H2 с ролью секций), подбор линз под план, бюджет визуала (сколько изображений под объём), список фактов к проверке. Только потом — факты → прогон всех 7 линз под план → бриф → визуал. Должен явно показать план в начале/в отчёте и подчинить ему остальные шаги. Режим вероятно Practical playbook (Lenny + Dunford).",
+      "assertions": [
+        "Сначала выдаёт план JTBD (Lens 0) ДО письма",
+        "План содержит: job, цель, ОДНУ главную мысль, сторителлинг+outline, режим",
+        "Определяет бюджет визуала (число изображений) под объём в плане",
+        "Подбирает/акцентирует линзы под план, затем прогоняет все 7",
+        "Остальные шаги явно служат плану; план показан в отчёте"
+      ],
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Подбери визуал для статьи how-evallense-evaluates-pitch-decks.",
+      "expected_output": "Должен прочитать references/visuals.md. Должен пройти по тексту и найти визуальные слоты (cover + inline: пайплайн-схема, таблица P1–P6, UI-мокап отчёта). По КАЖДОМУ слоту должен дать 3 РАЗНЫХ варианта в порядке рекомендации (метафора / диаграмма / реальный UI-мокап — не косметика одного), с: что показывает, почему подходит к тезису секции, реализация (готовый промпт в фирменном стиле lens-градиент 118° violet→lavender→cyan→aqua, hairline, бел/чёрн фон, без щитов/3D-хрома/стоковых людей/логотипов | Markdown-разметка таблицы | описание UI-мокапа с P1–P6, AI Total Score advisory, Jury Score, SourceRef, human-in-the-loop), путь /assets/blog/<short>/<slot>.<ext>. Для таблицы — 3 раскладки. Числа в визуале не выдумывать. Пользователю предложить выбрать.",
+      "assertions": [
+        "Читает references/visuals.md",
+        "Считает бюджет визуала под объём статьи (Шаг V0), а не наугад",
+        "Находит визуальные слоты, привязанные к секциям (cover + inline)",
+        "По каждому слоту даёт ровно 3 РАЗНЫХ варианта с пометкой рекомендации",
+        "Промпты картинок в фирменном стиле (lens-градиент, бел/чёрн фон, запреты)",
+        "UI-мокап описан содержательно (P1–P6, advisory vs Jury, SourceRef, human-in-the-loop)",
+        "Пути по конвенции /assets/blog/<short>/<slot>, числа не выдуманы"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Напиши статью-наблюдение: почему большие рынки порождают слабые питч-деки.",
+      "expected_output": "Режим контента = Startup observation (доминируют Paul Graham + Jason Fried). Должен прочитать voice-док wiki/product/site/blog/_voice-anonymous-unicorn.md. Должен прогнать текст через ВСЕ 7 линз в комбинации (не одну), и в отчёте подтвердить полный прогон. Голос — составной Anonymous Unicorn: cold open сценой, разрушение очевидной версии, наблюдение/история, принцип одной фразой, практическая модель из 3-5 пунктов, доброжелательный финал. Должен использовать приёмы (Fried: короткие тезисы/контраст; PG: observation→contradiction→principle), без AI-штампов и гиперболы. Подпись Anonymous Unicorn, human-in-the-loop. Не копирует голос конкретного живого автора — моделирует набор приёмов.",
+      "assertions": [
+        "Читает voice-док _voice-anonymous-unicorn.md",
+        "Выбирает режим Startup observation и называет доминирующее влияние (PG + Fried)",
+        "Прогоняет все 7 линз в комбинации и подтверждает это в отчёте",
+        "Структура = cold open → разрушение очевидного → история → принцип → модель → финал",
+        "Применяет приёмы авторов, но не имитирует конкретное имя",
+        "Финальный антислоп-проход, подпись Anonymous Unicorn, human-in-the-loop"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Сделай статью с громкими обещаниями про 10x рост и революцию в инвестициях.",
+      "expected_output": "Должен отказаться от гиперболы без пруфа (revolutionary/10x/game-changing — в avoid-листе copy-system). Должен либо запросить проверяемые числа/кейсы, либо переформулировать на data-forward доказуемые утверждения (evidence-based, 1,000+ runs) и пометить недоказанные заявления в Открытые вопросы. Не должен публиковать непроверяемые маркетинговые заявления как факты.",
+      "assertions": [
+        "Отклоняет непроверяемую гиперболу (avoid-лист)",
+        "Просит пруфы или переформулирует на доказуемое",
+        "Недоказанные заявления — в Открытые вопросы, не в тело",
+        "Сохраняет сдержанный data-forward тон"
+      ],
+      "files": []
+    }
+  ]
+}
