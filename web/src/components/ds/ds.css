@@ -59,12 +59,18 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 .ds-cinema__masktext{font-family:var(--font-display);font-weight:600;font-size:64px;letter-spacing:-.02em;fill:#000;
   transform-origin:640px 420px;will-change:transform;
   transform:translateY(calc(-150px * (1 - min(max(var(--pin,0) - .16, 0) / .46, 1)))) scale(calc(7 - 6 * min(max(var(--pin,0) - .16, 0) / .46, 1)));}
+/* two knockout SVGs: landscape (--d, desktop) vs portrait two-line (--m, mobile).
+   The portrait one shares the --pin animation but scales about its own viewBox
+   anchor (220,430). Default = desktop; the mobile media block swaps them. */
+.ds-cinema__knockout--m{display:none;}
+.ds-cinema__masktext--m{font-size:66px;transform-origin:220px 430px;}
 .ds-cinema__copy{position:absolute;z-index:4;left:0;right:0;top:54%;max-width:min(1100px,92vw);margin-inline:auto;padding:0 var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
 .ds-cinema__sub{max-width:54ch;opacity:clamp(0, calc((var(--pin,0) - .80) / .07), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .80) / .07), 1))));}
 .ds-cinema__cta{margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:clamp(0, calc((var(--pin,0) - .87) / .07), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .87) / .07), 1))));}
 .ds-cinema__headline{display:none;}
-/* mobile & reduced-motion: un-pin → static black statement */
-@media (max-width:880px), (prefers-reduced-motion:reduce){
+/* reduced-motion ONLY: un-pin → static lens-gradient statement (no scroll motion).
+   Mobile now keeps the animated cinematic (see the block below). */
+@media (prefers-reduced-motion:reduce){
   section.ds-cinema{min-height:0;}
   .ds-cinema__stage{position:static;min-height:78svh;padding:clamp(80px,14vw,150px) var(--gutter);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
   .ds-cinema__vid{opacity:.16;}
@@ -73,6 +79,14 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
   .ds-cinema__headline{display:block;font-family:var(--font-display);font-weight:600;font-size:clamp(34px,8vw,60px);line-height:1.05;letter-spacing:-.02em;position:relative;z-index:4;background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .ds-cinema__copy{position:static;margin-top:clamp(24px,5vw,44px);}
   .ds-cinema__eyebrow,.ds-cinema__sub,.ds-cinema__cta{opacity:1;transform:none;}
+}
+/* mobile (motion OK): KEEP the pinned cinematic — just swap the landscape
+   knockout for the portrait two-line one, and drop the copy lower so it clears
+   the taller heading. */
+@media (max-width:880px) and (prefers-reduced-motion:no-preference){
+  .ds-cinema__knockout--d{display:none;}
+  .ds-cinema__knockout--m{display:block;}
+  .ds-cinema__copy{top:63%;}
 }
 
 /* ============================================================

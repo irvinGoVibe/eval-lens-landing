@@ -138,8 +138,9 @@ export default function DsSectionsPage() {
             <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
           </video>
           <div className="ds-cinema__fill" aria-hidden="true" />
+          {/* desktop knockout — landscape viewBox, single line */}
           <svg
-            className="ds-cinema__knockout"
+            className="ds-cinema__knockout ds-cinema__knockout--d"
             viewBox="0 0 1280 900"
             preserveAspectRatio="xMidYMid slice"
             aria-hidden="true"
@@ -157,6 +158,35 @@ export default function DsSectionsPage() {
               width="1280"
               height="900"
               mask="url(#ds-cinema-mask)"
+            />
+          </svg>
+          {/* mobile knockout — portrait viewBox, headline wrapped to two lines so
+              the slice doesn't crop it; same --pin animation, portrait origin */}
+          <svg
+            className="ds-cinema__knockout ds-cinema__knockout--m"
+            viewBox="0 0 440 900"
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden="true"
+          >
+            <defs>
+              <mask id="ds-cinema-mask-m">
+                <rect width="440" height="900" fill="#fff" />
+                <text
+                  x="220"
+                  y="404"
+                  textAnchor="middle"
+                  className="ds-cinema__masktext ds-cinema__masktext--m"
+                >
+                  <tspan x="220">AI prepares.</tspan>
+                  <tspan x="220" dy="84">You decide.</tspan>
+                </text>
+              </mask>
+            </defs>
+            <rect
+              className="ds-cinema__scrimrect"
+              width="440"
+              height="900"
+              mask="url(#ds-cinema-mask-m)"
             />
           </svg>
           <div className="ds-cinema__copy">
