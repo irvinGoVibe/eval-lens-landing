@@ -146,7 +146,7 @@ export default function DsSectionsPage() {
             <defs>
               <mask id="ds-cinema-mask">
                 <rect width="1280" height="900" fill="#fff" />
-                <text x="640" y="490" textAnchor="middle" className="ds-cinema__masktext">
+                <text x="640" y="420" textAnchor="middle" className="ds-cinema__masktext">
                   AI prepares. You decide.
                 </text>
               </mask>
@@ -160,16 +160,12 @@ export default function DsSectionsPage() {
           </svg>
           <div className="ds-cinema__copy">
             <h2 className="ds-cinema__headline">AI prepares. You decide.</h2>
-            <span className="eyebrow ds-cinema__eyebrow">
-              <span className="dot" aria-hidden="true" />
-              The handoff
-            </span>
             <p className="sub ds-cinema__sub">
-              A cinematic close — the video runs full-screen, then resolves into one
-              statement on black.
+              Evidence-first scoring, then a human signs off — see the full run on your
+              own decks.
             </p>
             <div className="sect-cta ds-cinema__cta">
-              <Button href="#">Book a demo</Button>
+              <Button href="#" variant="gradient">Book a demo</Button>
             </div>
           </div>
         </div>
