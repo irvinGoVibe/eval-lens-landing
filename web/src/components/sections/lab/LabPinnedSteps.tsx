@@ -200,17 +200,27 @@ export function LabPinnedSteps({
         <div className="lab-pv lab-pv--reveal" data-version="3" hidden>
           <div className="wrap lab-rv__grid">
             <div className="lab-process__copy lab-rv__copy">
-              <LabEyebrow>{eyebrow}</LabEyebrow>
-              <Title title={title} />
-              <p className="sub">{sub}</p>
+              {/* head flies UP and fades as --pin advances (exit-upward = "back") */}
+              <div className="lab-rv__head">
+                <LabEyebrow>{eyebrow}</LabEyebrow>
+                <Title title={title} />
+                <p className="sub">{sub}</p>
+              </div>
               <Steps steps={steps} variant="reveal" />
               {ctaRow}
             </div>
             <div className="lab-rv__media">
-              {videoScrub ? (
-                <div className="lab-rv__square">
-                  {/* No autoPlay: ScrollFX seeks currentTime from the pin. */}
+              {/* square stays pinned & centered; its content (.lab-rv__slide)
+                  slides vertically under the frame (subtle parallax) */}
+              <div
+                className="lab-rv__square"
+                role="img"
+                aria-label={videoScrub ? videoScrub.ariaLabel : media.ariaLabel}
+              >
+                {videoScrub ? (
+                  /* No autoPlay: ScrollFX seeks currentTime from the pin. */
                   <video
+                    className="lab-rv__slide"
                     data-scrub-video
                     data-frames={videoScrub.frames}
                     muted
@@ -222,16 +232,13 @@ export function LabPinnedSteps({
                   >
                     <source src={videoScrub.src} type="video/mp4" />
                   </video>
-                </div>
-              ) : (
-                <div
-                  className="lab-rv__square lab-rv__square--ph"
-                  role="img"
-                  aria-label={media.ariaLabel}
-                >
-                  <span className="lab-rv__phlabel">{media.label}</span>
-                </div>
-              )}
+                ) : (
+                  <>
+                    <div className="lab-rv__slide lab-rv__slide--ph" aria-hidden="true" />
+                    <span className="lab-rv__phlabel">{media.label}</span>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
