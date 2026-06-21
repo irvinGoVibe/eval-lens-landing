@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
 import { LabBento } from "@/components/sections/lab/LabBento";
+import { LabCinemaScrim } from "@/components/sections/lab/LabCinemaScrim";
 import { LabFullStatement } from "@/components/sections/lab/LabFullStatement";
 import { LabGallery } from "@/components/sections/lab/LabGallery";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
@@ -111,6 +112,16 @@ export default function DsSectionsPage() {
         sub="A horizontal lane keeps a set of equal ideas from becoming a tall wall of cards — for stages, report parts, segments and use cases."
         laneLabel="Investment stages — horizontally scrollable"
         items={GALLERY_ITEMS}
+      />
+
+      <LabCinemaScrim
+        id="cinema"
+        surface="ink"
+        eyebrow="The handoff"
+        headline="AI prepares. You decide."
+        sub="A cinematic close — the video runs full-screen, then resolves into one statement on black."
+        cta={{ label: "Book a demo", href: "#" }}
+        media={{ videoSrc: "/assets/methodology/cinema.mp4" }}
       />
 
       <ScrollFX />
