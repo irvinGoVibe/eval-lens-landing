@@ -65,12 +65,6 @@ export type LabPinnedStepsProps = {
   cta?: { label: string; href: string; variant?: "primary" | "ghost" | "glass" };
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
   marker?: string;
-  /** Sectional scroll: emit one scroll-snap stop per step threshold (+ start),
-   * so scrolling clicks step-by-step. Stops sit at `i / steps` of the pin track.
-   * `snapStepVh` MUST equal the section's per-step scroll height (catalog 70svh).
-   * Inert unless an ancestor sets `scroll-snap-type` (catalog only). */
-  snap?: boolean;
-  snapStepVh?: number;
 };
 
 function Title({ title }: { title: LabPinnedStepsProps["title"] }) {
@@ -132,8 +126,6 @@ export function LabPinnedSteps({
   videoScrub,
   cta,
   marker,
-  snap = false,
-  snapStepVh = 70,
 }: LabPinnedStepsProps) {
   const ctaRow = cta ? (
     <div className="cta-row lab-process__cta">
@@ -262,11 +254,6 @@ export function LabPinnedSteps({
           </div>
         </div>
       </div>
-      {snap
-        ? steps.map((_, i) => (
-            <div key={i} className="lab-rv__snap-stop" aria-hidden="true" />
-          ))
-        : null}
     </section>
   );
 }
