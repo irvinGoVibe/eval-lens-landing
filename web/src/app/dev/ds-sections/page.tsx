@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
+import { Button } from "@/components/ui/Button";
 import { LabBento } from "@/components/sections/lab/LabBento";
-import { LabCinemaScrim } from "@/components/sections/lab/LabCinemaScrim";
 import { LabFullStatement } from "@/components/sections/lab/LabFullStatement";
 import { LabGallery } from "@/components/sections/lab/LabGallery";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
@@ -114,15 +114,66 @@ export default function DsSectionsPage() {
         items={GALLERY_ITEMS}
       />
 
-      <LabCinemaScrim
-        id="cinema"
-        surface="ink"
-        eyebrow="The handoff"
-        headline="AI prepares. You decide."
-        sub="A cinematic close — the video runs full-screen, then resolves into one statement on black."
-        cta={{ label: "Book a demo", href: "#" }}
-        media={{ videoSrc: "/assets/methodology/cinema.mp4" }}
-      />
+      {/* cinematic transition — exact methodology m-cinema mechanics, wrapped in
+          its `.methodology` scope so the proven --pin choreography applies:
+          full-screen video → black knockout (video through the letters, letters
+          zoom ×30→1) → lens fill → eyebrow/sub/CTA. Driven by <ScrollFX/>. */}
+      <div className="methodology">
+        <section
+          className="band ink m-cinema"
+          data-pin
+          data-pin-steps="1"
+          aria-label="AI prepares. You decide."
+        >
+          <div className="m-cinema__stage" data-pin-stage>
+            <video
+              className="m-cinema__vid"
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
+            >
+              <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
+            </video>
+            <div className="m-cinema__fill" aria-hidden="true" />
+            <svg
+              className="m-cinema__knockout"
+              viewBox="0 0 1280 900"
+              preserveAspectRatio="xMidYMid slice"
+              aria-hidden="true"
+            >
+              <defs>
+                <mask id="ds-cinema-mask">
+                  <rect width="1280" height="900" fill="#fff" />
+                  <text x="640" y="490" textAnchor="middle" className="m-cinema__masktext">
+                    AI prepares. You decide.
+                  </text>
+                </mask>
+              </defs>
+              <rect
+                width="1280"
+                height="900"
+                fill="var(--bg-ink, #0a0a0d)"
+                mask="url(#ds-cinema-mask)"
+              />
+            </svg>
+            <div className="m-cinema__copy">
+              <span className="eyebrow m-cinema__eyebrow">
+                <span className="dot" aria-hidden="true" />
+                The handoff
+              </span>
+              <p className="sub m-cinema__sub">
+                A cinematic close — the video runs full-screen, then resolves into one
+                statement on black.
+              </p>
+              <div className="sect-cta m-cinema__cta">
+                <Button href="#">Book a demo</Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
       <ScrollFX />
     </main>
