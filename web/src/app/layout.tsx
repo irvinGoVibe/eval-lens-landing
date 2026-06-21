@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
+import "@/components/ds/ds.css";
 import { DevInspector } from "@/components/DevInspector";
 
 export const metadata: Metadata = {

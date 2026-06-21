@@ -1,0 +1,40 @@
+/* EvalLense DS — section + atom styles (components/ds).
+   Loaded AFTER globals.css (see app/layout.tsx), so it can extend the global
+   tokens and the surface-aware base classes (.band / .wrap / .eyebrow / .title
+   / .sub). Theme-agnostic: colours come only from tokens, surfaces flip via
+   the existing `.band.ink` rules. Clean DS namespace (no `Lab` prefix). */
+
+/* ============================================================
+   Hero — Statement hero (eyebrow + big title + sub + CTAs)
+   ============================================================ */
+.ds-hero{padding-top:clamp(120px,16vw,190px);text-align:center;}
+.ds-hero__inner{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
+.ds-hero .eyebrow{margin-bottom:22px;}
+/* size pinned across surfaces (beats the global `.ink .title` scale) */
+.ds-hero .ds-hero__title{font-size:clamp(44px,7vw,96px);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:15ch;}
+.ds-hero .ds-hero__sub{width:min(100%,60ch);margin-top:24px;}
+.ds-hero__cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:34px;}
+/* lens-accent word (.grad-word is otherwise scoped per consumer in globals.css) */
+.ds-hero .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* version variants — same content, different layout (surface-invariant) */
+.ds-hero[data-version="2"] .ds-hero__inner{align-items:flex-start;text-align:left;}
+.ds-hero[data-version="2"] .ds-hero__cta{justify-content:flex-start;}
+.ds-hero[data-version="3"] .ds-hero__title{font-size:clamp(56px,9.5vw,132px);max-width:14ch;}
+.ds-hero[data-version="3"] .ds-hero__sub{width:min(100%,46ch);}
+
+/* ============================================================
+   SectionFrame — floating inspector (Light/Dark + v1/v2/v3)
+   ============================================================ */
+.dssx-frame{position:relative;}
+.dssx-panel{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:120;display:flex;align-items:center;gap:10px;
+  background:var(--panel-2);color:var(--fg-on-dark);border:1px solid var(--border-on-dark);
+  border-radius:var(--r-pill);padding:7px 9px;box-shadow:var(--sh-3);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
+.dssx-panel__name{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);padding-left:6px;}
+.dssx-seg{display:flex;gap:2px;background:rgba(255,255,255,.06);border-radius:var(--r-pill);padding:3px;}
+.dssx-seg__btn{font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--muted-on-dark);background:transparent;border:0;cursor:pointer;border-radius:var(--r-pill);padding:5px 11px;line-height:1;transition:background .2s var(--ease),color .2s;}
+.dssx-seg__btn.is-active{background:var(--violet);color:#fff;}
+.dssx-seg__btn:hover:not(.is-active){color:var(--fg-on-dark);}
+/* follow the global «dev: show/hide» FAB (DevInspector toggles .dev-inspector-hidden on <html>) */
+.dev-inspector-hidden .dssx-panel{display:none;}
