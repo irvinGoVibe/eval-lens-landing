@@ -5029,6 +5029,22 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__media--photos{position:relative;transform:none;height:auto;aspect-ratio:4/3;margin-top:clamp(20px,4svh,32px);}
 }
 
+/* ── v2 GUIDELINE WINDOW — MOBILE: re-pin so the window rows light up as you
+   scroll (the mobile degrade otherwise un-pins and forces all rows lit).
+   Desktop v2 unchanged; scoped to v2 visible only. ── */
+@media (max-width:760px){
+  .lab-process:has(.lab-pv--window:not([hidden])){min-height:calc(100svh + var(--steps,4)*70svh);}
+  .lab-process:has(.lab-pv--window:not([hidden])) .lab-process__stage{position:sticky;top:0;min-height:100svh;overflow:hidden;}
+  .lab-process:has(.lab-pv--window:not([hidden])) .lab-pv--window{min-height:100svh;display:grid;align-items:center;}
+  .lab-process:has(.lab-pv--window:not([hidden])) .lab-window__row{opacity:clamp(.4, calc(.4 + (var(--pin,0) * var(--steps,4) - var(--i,0) + .6)), 1);}
+}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){
+  .lab-process:has(.lab-pv--window:not([hidden])){min-height:0;}
+  .lab-process:has(.lab-pv--window:not([hidden])) .lab-process__stage{position:static;min-height:0;overflow:visible;}
+  .lab-process:has(.lab-pv--window:not([hidden])) .lab-pv--window{min-height:0;}
+  .lab-process:has(.lab-pv--window:not([hidden])) .lab-window__row{opacity:1;}
+}
+
 /* ── 05 · Editorial split + scrub-ring ──────────────────────────────────
    Two saved versions, both surface-adaptive (Light/Dark inspector toggle):
    • v1 (cine)  — ink/light full-bleed cinematic moment: the evidence scene
