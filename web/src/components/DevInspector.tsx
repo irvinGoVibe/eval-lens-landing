@@ -41,6 +41,7 @@ const ARCHETYPE: Record<string, { label: string; component: string }> = {
   "lab-compare": { label: "Compare table", component: "LabCompareTable" },
   "lab-faq": { label: "FAQ", component: "LabFaq" },
   "lab-cinema": { label: "Cinema scrim", component: "LabCinemaScrim" },
+  "lab-cine": { label: "Cinema", component: "DsCinema" },
 };
 
 const STYLE_ID = "dev-inspector-style";

@@ -114,12 +114,14 @@ export default function DsSectionsPage() {
         items={GALLERY_ITEMS}
       />
 
-      {/* cinematic transition — self-contained .ds-cinema (smooth). Full-screen
-          video → gentle darken → knockout heading descends & zooms ×7→1 (video
-          through the letters) → lens fill restores letters to solid → copy.
+      {/* cinematic transition — last section. Self-contained .ds-cinema: full-screen
+          video → knockout heading descends & zooms ×7→1 (video crisp through the
+          letters, no dimming) → lens fill restores letters to solid → copy.
+          Theme is a single Light/Dark toggle via DevInspector (lab-cine hook):
+          default = Dark (.ink), toggle removes .ink → Light (white scrim).
           100% --pin-driven by <ScrollFX/>; mobile/reduced-motion = static. */}
       <section
-        className="band ink ds-cinema"
+        className="band ink ds-cinema lab-cine"
         data-pin
         data-pin-steps="1"
         aria-label="AI prepares. You decide."
@@ -135,7 +137,6 @@ export default function DsSectionsPage() {
           >
             <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
           </video>
-          <div className="ds-cinema__darken" aria-hidden="true" />
           <div className="ds-cinema__fill" aria-hidden="true" />
           <svg
             className="ds-cinema__knockout"
@@ -155,65 +156,7 @@ export default function DsSectionsPage() {
               className="ds-cinema__scrimrect"
               width="1280"
               height="900"
-              fill="var(--bg-ink, #0a0a0d)"
               mask="url(#ds-cinema-mask)"
-            />
-          </svg>
-          <div className="ds-cinema__copy">
-            <h2 className="ds-cinema__headline">AI prepares. You decide.</h2>
-            <p className="sub ds-cinema__sub">
-              Evidence-first scoring, then a human signs off — see the full run on your
-              own decks.
-            </p>
-            <div className="sect-cta ds-cinema__cta">
-              <Button href="#" variant="gradient">Book a demo</Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* light variant — the same cinematic, but the scene "whitens out" instead
-          of going black: video → white scrim with the heading knocked out →
-          lens fill → dark copy. Toggle = `ds-cinema--light` + light `band`. */}
-      <section
-        className="band ds-cinema ds-cinema--light"
-        data-pin
-        data-pin-steps="1"
-        aria-label="AI prepares. You decide. (light)"
-      >
-        <div className="ds-cinema__stage" data-pin-stage>
-          <video
-            className="ds-cinema__vid"
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          >
-            <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
-          </video>
-          <div className="ds-cinema__darken" aria-hidden="true" />
-          <div className="ds-cinema__fill" aria-hidden="true" />
-          <svg
-            className="ds-cinema__knockout"
-            viewBox="0 0 1280 900"
-            preserveAspectRatio="xMidYMid slice"
-            aria-hidden="true"
-          >
-            <defs>
-              <mask id="ds-cinema-mask-light">
-                <rect width="1280" height="900" fill="#fff" />
-                <text x="640" y="420" textAnchor="middle" className="ds-cinema__masktext">
-                  AI prepares. You decide.
-                </text>
-              </mask>
-            </defs>
-            <rect
-              className="ds-cinema__scrimrect"
-              width="1280"
-              height="900"
-              fill="#ffffff"
-              mask="url(#ds-cinema-mask-light)"
             />
           </svg>
           <div className="ds-cinema__copy">
