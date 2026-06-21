@@ -40,6 +40,24 @@
 .dev-inspector-hidden .dssx-panel{display:none;}
 
 /* ============================================================
+   Gallery lane — full-bleed: лента уходит за правый край экрана, первая
+   карточка остаётся выровненной по контентной колонке (heading в .wrap).
+   Разрываем из-под gutter секции (.band) на всю ширину вьюпорта.
+   Только v1-лента: у v3 (--expr) своя раскладка (overflow:hidden + backdrop),
+   её трогать нельзя — иначе карточки режутся фоновой картинкой. */
+.ds-sections .lab-gallery__lane:not(.lab-gallery__lane--expr){
+  margin-inline:calc(50% - 50vw);
+  padding-inline:max(var(--gutter), calc((100vw - var(--maxw)) / 2));
+}
+/* v3 (--expr): весь блок full-bleed на всю ширину экрана → backdrop (inset:0)
+   тянется на весь вьюпорт, а лента карточек уходит за правый край. Заголовок
+   остаётся в .wrap (центр). */
+.ds-sections .lab-gallery__v--expr{
+  margin-inline:calc(50% - 50vw);
+  width:100vw;
+}
+
+/* ============================================================
    Full-bleed statement (archetype 02 — heading + sub, 3 versions)
    weight hierarchy: eyebrow=label · heading=display 600 · sub=400 muted
    ============================================================ */

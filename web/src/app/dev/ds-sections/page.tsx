@@ -2,9 +2,18 @@ import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
 import { LabBento } from "@/components/sections/lab/LabBento";
 import { LabFullStatement } from "@/components/sections/lab/LabFullStatement";
+import { LabGallery } from "@/components/sections/lab/LabGallery";
 import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
 
 export const metadata: Metadata = { title: "DS Sections" };
+
+const GALLERY_ITEMS = [
+  { tag: "Seed", title: "Pre-product bets", body: "Judge teams and markets when there is more vision than traction." },
+  { tag: "Series A", title: "Early traction", body: "Weigh growth, retention and unit economics against the category." },
+  { tag: "Growth", title: "Scaling proof", body: "Compare efficiency and defensibility as the numbers mature." },
+  { tag: "Diligence", title: "Evidence trail", body: "Every score links to the deck page and the source behind it." },
+  { tag: "Committee", title: "Shared view", body: "One comparable report the whole table can read the same way." },
+];
 
 const BENTO_ITEMS = [
   {
@@ -90,6 +99,18 @@ export default function DsSectionsPage() {
         titleAccent="decision"
         titleTrail="stays human"
         sub="One clear sentence between dense sections — a deliberate pause that says what the product stands for before the next block of detail."
+      />
+
+      <LabGallery
+        id="gallery"
+        surface="light"
+        marker="06 · Horizontal gallery"
+        ariaLabel="Horizontal gallery"
+        eyebrow="Horizontal gallery"
+        title="Equal ideas in one scrollable lane"
+        sub="A horizontal lane keeps a set of equal ideas from becoming a tall wall of cards — for stages, report parts, segments and use cases."
+        laneLabel="Investment stages — horizontally scrollable"
+        items={GALLERY_ITEMS}
       />
 
       <ScrollFX />
