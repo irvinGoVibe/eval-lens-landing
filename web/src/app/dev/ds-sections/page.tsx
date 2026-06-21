@@ -140,6 +140,11 @@ export default function DsSectionsPage() {
           hint: "A five-step track whose nodes light up in sequence on an ink surface",
           ariaLabel: "A track of five steps whose nodes light up in sequence",
         }}
+        videoScrub={{
+          src: "/assets/methodology/methodology-transition.mp4",
+          frames: 0,
+          ariaLabel: "Methodology transition — scrubbed by scroll through the stages",
+        }}
       />
 
       {/* cinematic transition — last section. Self-contained .ds-cinema: full-screen

@@ -99,10 +99,11 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
    CTA band below: overlap them by 1px so no hairline shows at the join. */
 .ds-sections .cta-band{margin-top:-1px;}
 
-/* pinned multi-screen: in the catalog only, double the per-step scroll track
-   (25svh → 50svh) so the v3 "reveal" version opens its steps slowly. Production
-   pages keep the default pacing (this scope never matches them). */
-.ds-sections .lab-process{min-height:calc(100svh + var(--steps,4) * 50svh);}
+/* pinned multi-screen: in the catalog only, lengthen the per-step scroll track
+   (25svh → 70svh) so the v3 "reveal" version dwells longer on each step before
+   it switches. Production pages keep the default pacing (this scope never
+   matches them). */
+.ds-sections .lab-process{min-height:calc(100svh + var(--steps,4) * 70svh);}
 
 /* Footer-as-section: pin the Light/Dark toggle to the frame's top-right
    (reuses the .dssx-panel material; the global dev FAB hides it). */
