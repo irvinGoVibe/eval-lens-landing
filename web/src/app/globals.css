@@ -343,6 +343,10 @@ body.hero-ready .site-header.is-hidden{
 .btn-dark:hover{background:#000;}
 .btn-ghost{background:transparent;color:var(--violet);border:1px solid color-mix(in oklab,var(--violet) 35%, var(--border));}
 .btn-ghost:hover{background:color-mix(in oklab,var(--violet) 8%, transparent);}
+/* ghost on dark surfaces — hairline outline + on-dark label (design-system §Buttons:
+   «ghost = hairline-контур»). Без этого на .ink остаётся violet-текст + светлый бордер. */
+.ink .btn-ghost{color:var(--fg-on-dark);border-color:var(--border-on-dark);}
+.ink .btn-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.3);}
 .btn-glass{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);}
 .btn-glass:hover{background:rgba(255,255,255,.18);}
 /* gradient — filled "Publish Now" CTA reused from the ai-jury app
@@ -796,6 +800,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .hero .cta-row{gap:18px;}
 .hero .cta-row .btn,
 .site-header__cta.btn,
+.ds-atoms .dsx-cell.ink .btn-glass,
 .foot.is-dark .btn-glass,
 .horse-ctas .btn-glass,
 .cta-band .btn-glass,
@@ -823,6 +828,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero .cta-row .btn::before,
 .site-header__cta.btn::before,
+.ds-atoms .dsx-cell.ink .btn-glass::before,
 .foot.is-dark .btn-glass::before,
 .horse-ctas .btn-glass::before,
 .cta-band .btn-glass::before,
@@ -836,6 +842,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
     linear-gradient(25deg, transparent 55%, rgba(210,228,248,.12) 100%);}
 .hero .cta-row .btn::after,
 .site-header__cta.btn::after,
+.ds-atoms .dsx-cell.ink .btn-glass::after,
 .foot.is-dark .btn-glass::after,
 .horse-ctas .btn-glass::after,
 .cta-band .btn-glass::after,
@@ -852,6 +859,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   transition:opacity .45s var(--ease), transform .65s var(--ease);}
 .hero .cta-row .btn:hover,
 .site-header__cta.btn:hover,
+.ds-atoms .dsx-cell.ink .btn-glass:hover,
 .foot.is-dark .btn-glass:hover,
 .horse-ctas .btn-glass:hover,
 .cta-band .btn-glass:hover,
@@ -869,6 +877,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero .cta-row .btn:hover::after,
 .site-header__cta.btn:hover::after,
+.ds-atoms .dsx-cell.ink .btn-glass:hover::after,
 .foot.is-dark .btn-glass:hover::after,
 .horse-ctas .btn-glass:hover::after,
 .cta-band .btn-glass:hover::after,
@@ -877,6 +886,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .lab-hero.ink .cta-row .btn:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
 .hero .cta-row .btn-primary,
 .site-header__cta.btn-primary,
+.ds-atoms .dsx-cell.ink .btn-glass,
 .foot.is-dark .btn-glass,
 .horse-ctas .btn-glass,
 .cta-band .btn-glass,
@@ -892,6 +902,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 }
 .hero .cta-row .btn-primary:hover,
 .site-header__cta.btn-primary:hover,
+.ds-atoms .dsx-cell.ink .btn-glass:hover,
 .foot.is-dark .btn-glass:hover,
 .horse-ctas .btn-glass:hover,
 .cta-band .btn-glass:hover,
