@@ -64,7 +64,9 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
    anchor (220,430). Default = desktop; the mobile media block swaps them. */
 .ds-cinema__knockout--m{display:none;}
 .ds-cinema__masktext--m{font-size:66px;transform-origin:220px 430px;}
-.ds-cinema__copy{position:absolute;z-index:4;left:0;right:0;top:54%;max-width:min(1100px,92vw);margin-inline:auto;padding:0 var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
+/* copy sits just under the heading's resting baseline (~46% vh). top:48% keeps
+   the heading→sub gap on one rhythm tier (~32px), not the loose ~88px it was. */
+.ds-cinema__copy{position:absolute;z-index:4;left:0;right:0;top:48%;max-width:min(1100px,92vw);margin-inline:auto;padding:0 var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
 .ds-cinema__sub{max-width:54ch;opacity:clamp(0, calc((var(--pin,0) - .80) / .07), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .80) / .07), 1))));}
 .ds-cinema__cta{margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:clamp(0, calc((var(--pin,0) - .87) / .07), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .87) / .07), 1))));}
 .ds-cinema__headline{display:none;}
@@ -86,7 +88,8 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 @media (max-width:880px) and (prefers-reduced-motion:no-preference){
   .ds-cinema__knockout--d{display:none;}
   .ds-cinema__knockout--m{display:block;}
-  .ds-cinema__copy{top:63%;}
+  /* two-line heading ends ~55% vh; keep the sub on one rhythm tier below it */
+  .ds-cinema__copy{top:58%;}
 }
 
 /* ============================================================
