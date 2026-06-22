@@ -3,16 +3,10 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
-import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
-import { LabStatement } from "@/components/sections/lab/LabStatement";
-import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
-import { LabEditorialSplit } from "@/components/sections/lab/LabEditorialSplit";
-import { LabBento } from "@/components/sections/lab/LabBento";
-import { LabGallery } from "@/components/sections/lab/LabGallery";
-import { LabQuietCta } from "@/components/sections/lab/LabQuietCta";
+import { StatementHero, FullStatement, PinnedSteps, EditorialSplit, Bento, Gallery, QuietCta } from "@/components/ds";
 
 /** Header nav for this page — anchor links to its own sections (see the
- *  matching `id`s on the Lab* sections below). Each page declares its own. */
+ *  matching `id`s on the DS sections below). Each page declares its own. */
 const HEADER_NAV: SectionNav = {
   section: "Product",
   sectionHref: "/product/entry-hub",
@@ -31,24 +25,25 @@ export const metadata: Metadata = {
 
 /*
  * ── COMPOSITION ──────────────────────────────────────────────────────────
- * All eight sections are reconstructed from the real library `Lab*` Server
- * Components (under @/components/sections/lab). The const data arrays below
- * (HOW_STEPS / COLLECTED / CONTROLS) hold the confirmed content and are passed
- * straight into the components. Surface arc (anti-stripe):
- *   soft · ink · soft · light · light · light · light · ink.
+ * All eight sections are composed from the clean design-system barrel
+ * (@/components/ds). The const data arrays below (HOW_STEPS / COLLECTED /
+ * CONTROLS) hold the confirmed content and are passed straight in. §2 is now
+ * FullStatement. Approved "Calm Editorial" surface arc — light-dominant, only
+ * the two cinematic peaks (§2, §8) are ink:
+ *   soft · ink · soft · light · light · light · soft · ink.
  *
  * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
- * The image generator is NOT wired up. The Lab* components render their own
- * VISIBLE, labeled `.media-ph` placeholders (ratio-locked, on canonical
- * tokens) from the `media` props passed below — never an empty grey div. When
- * a generator is available, produce the assets and drop them into
+ * The image generator is NOT wired up. The DS sections render their own
+ * VISIBLE, labeled placeholders (ratio-locked, on canonical tokens) from the
+ * `media` props passed below — never an empty grey div. When a generator is
+ * available, produce the assets and drop them into
  * web/public/assets/entry-hub/.
  *
  * ── MOTION ───────────────────────────────────────────────────────────────
- * Motion is the Lab* components' built-in data-reveal / data-pin, driven by
- * the single <ScrollFX/> mounted once after <Footer/>. No per-section
- * useEffect, no ScrollOrchestrator edits. reduced-motion is handled by the
- * engine + the primitives' @media block.
+ * Motion is the components' built-in data-reveal / data-pin, driven by the
+ * single <ScrollFX/> mounted once after <Footer/>. No per-section useEffect,
+ * no ScrollOrchestrator edits. reduced-motion is handled by the engine + the
+ * primitives' @media block.
  */
 
 /* 3. How it works — six steps revealed through the pin engine. */
@@ -148,9 +143,9 @@ export default function EntryHubPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} />
-      <main className="entry-hub section-lab">
-        {/* §1. Hero → LabStatementHero (ships soft; no surface prop). */}
-        <LabStatementHero
+      <main className="entry-hub section-lab ds">
+        {/* §1. Hero → StatementHero (ships soft; no surface prop). */}
+        <StatementHero
           id="top"
           eyebrow="Entry Hub"
           titleLead="One"
@@ -167,28 +162,19 @@ export default function EntryHubPage() {
           }}
         />
 
-        {/* §2. The intake problem → LabStatement (ink) — cinematic peak #1.
-            Single version; placeholder and real carry the same content. */}
-        <LabStatement
+        {/* §2. The intake problem → FullStatement (ink) — cinematic peak #1. */}
+        <FullStatement
           id="problem"
           surface="ink"
           ariaLabel="The intake problem"
-          versions={[
-            {
-              placeholder: {
-                eyebrow: "The intake problem",
-                text: "Decks arrive from everywhere. Email, Google Forms, Airtable, Notion, Telegram, shared drives. Files go missing, duplicates pile up, and the details you need sit in five different places. The work starts long before evaluation does — and it's the wrong work.",
-              },
-              real: {
-                eyebrow: "The intake problem",
-                text: "Decks arrive from everywhere. Email, Google Forms, Airtable, Notion, Telegram, shared drives. Files go missing, duplicates pile up, and the details you need sit in five different places. The work starts long before evaluation does — and it's the wrong work.",
-              },
-            },
-          ]}
+          eyebrow="The intake problem"
+          titleLead="Decks arrive from"
+          titleAccent="everywhere"
+          sub="Email, Google Forms, Airtable, Notion, Telegram, shared drives. Files go missing, duplicates pile up, and the details you need sit in five different places. The work starts long before evaluation does — and it's the wrong work."
         />
 
-        {/* §3. How it works → LabPinnedSteps (soft), 6 pinned steps. */}
-        <LabPinnedSteps
+        {/* §3. How it works → PinnedSteps (soft), 6 pinned steps. */}
+        <PinnedSteps
           id="how"
           surface="soft"
           ariaLabel="How Entry Hub works — six steps"
@@ -209,15 +195,25 @@ export default function EntryHubPage() {
           }}
         />
 
-        {/* §4. Two ways to collect → LabEditorialSplit (light). Modes folded
-            into `sub` — the component has no list/items prop. */}
-        <LabEditorialSplit
+        {/* §4. Two ways to collect → EditorialSplit (light). The two modes
+            are grounded as `points` rows beside the visual. */}
+        <EditorialSplit
           id="collect-modes"
           surface="light"
           eyebrow="Two ways to collect"
           titleLead="Add teams yourself,"
           titleAccent="or let them submit"
-          sub="Pick the method that fits your event — both land entries in the same workspace. Manual: add each team yourself on the project page — name, project, pitch deck, and an optional note for the jury. Self-upload: share one public link; teams sign in with Google and upload their own deck — no files in your inbox, no accounts to manage on your side."
+          sub="Pick the method that fits your event — both land entries in the same workspace."
+          points={[
+            {
+              title: "Manual",
+              body: "Add each team yourself on the project page — name, project, pitch deck, and an optional note for the jury.",
+            },
+            {
+              title: "Self-upload",
+              body: "Share one public link. Teams sign in with Google and upload their own deck — no files in your inbox, no accounts to manage on your side.",
+            },
+          ]}
           media={{
             ratio: "16/9",
             label: "Image · public upload page · 16:9",
@@ -227,8 +223,8 @@ export default function EntryHubPage() {
           }}
         />
 
-        {/* §5. What gets collected → LabBento (light). Media on the feature tile. */}
-        <LabBento
+        {/* §5. What gets collected → Bento (light). Media on the feature tile. */}
+        <Bento
           id="collect"
           surface="light"
           eyebrow="What gets collected"
@@ -249,8 +245,8 @@ export default function EntryHubPage() {
           )}
         />
 
-        {/* §6. Built-in controls → LabGallery (light — supports light/ink only). */}
-        <LabGallery
+        {/* §6. Built-in controls → Gallery (light — supports light/ink only). */}
+        <Gallery
           id="controls"
           surface="light"
           eyebrow="Built-in controls"
@@ -260,9 +256,9 @@ export default function EntryHubPage() {
           items={CONTROLS}
         />
 
-        {/* §7. Why it matters → LabEditorialSplit (light). Pull-quote folded
+        {/* §7. Why it matters → EditorialSplit (light). Pull-quote folded
             into the closing line of `sub`; media slot holds the value visual. */}
-        <LabEditorialSplit
+        <EditorialSplit
           id="value"
           surface="light"
           eyebrow="Why it matters"
@@ -278,8 +274,8 @@ export default function EntryHubPage() {
           }}
         />
 
-        {/* §8. Final CTA → LabQuietCta (ink) — cinematic peak #2. */}
-        <LabQuietCta
+        {/* §8. Final CTA → QuietCta (ink) — cinematic peak #2. */}
+        <QuietCta
           id="cta"
           surface="ink"
           eyebrow="Get started"
