@@ -8899,6 +8899,22 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
     0 32px 70px -28px rgba(108,76,241,.6);
 }
 
+/* dark (ink) Gallery cards → cool transparent glass like the liquid-glass
+   RichBento tiles. The original v1 bubbles + sheen AND the original gallery
+   hover are kept (the rich "ingredient" surfaces on hover, as before) — only
+   the pane tint becomes the cooler/more-transparent liquid-glass material.
+   v3 (expr, photo backdrop) keeps its own liquid glass. */
+.lab-gallery.ink .lab-gallery__card,
+.lab-gallery.ink .lab-gallery__v--polish .lab-gallery__card{
+  background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.03) 50%, rgba(220,236,255,.014) 100%);
+  border:1px solid rgba(188,212,250,.15);
+  backdrop-filter:blur(18px) saturate(1.12);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(220,236,255,.2),
+    inset 0 -1px 0 rgba(255,255,255,.04);
+}
+
 /* (d) light-section media = branded deep frame (--lens-deep), like ds-theme #value. */
 .ds .band:not(.ink) .media-ph{
   background:var(--lens-deep);
