@@ -30,7 +30,7 @@
   },
   "sections": [
     {
-      "archetype_id": "01", "name": "LabStatementHero", "label": "Statement hero", "source_path": "sections/lab/LabStatementHero.tsx", "export_name": "LabStatementHero",
+      "archetype_id": "01", "name": "LabStatementHero", "label": "Statement hero", "source_path": "sections/lab/LabStatementHero.tsx", "export_name": "LabStatementHero", "barrel_export": "StatementHero",
       "versions": { "available": ["v1", "v2", "v3", "v4"], "default": "v1", "differences": "v1 type-led; v2/v3 CSS gradient/orb scenes; v4 cinema photo/video bg" },
       "surfaces": { "available": ["soft", "ink"], "control": "NO surface prop — hardcoded `band soft`; surface toggled only via LabMarkers", "note": "API gap vs all other archetypes (CL gap)" },
       "props": ["id?", "eyebrow*", "titleLead*", "titleAccent*", "titleTrail?", "sub*", "ctas*:{label,href,variant?}[]", "media*:{ratio,label,hint,ariaLabel}", "pattern?(=true)", "marker?"],
@@ -53,7 +53,7 @@
       "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
     },
     {
-      "archetype_id": "03", "name": "LabPinnedSteps", "label": "Pinned multi-screen", "source_path": "sections/lab/LabPinnedSteps.tsx", "export_name": "LabPinnedSteps",
+      "archetype_id": "03", "name": "LabPinnedSteps", "label": "Pinned multi-screen", "source_path": "sections/lab/LabPinnedSteps.tsx", "export_name": "LabPinnedSteps", "barrel_export": "PinnedSteps",
       "versions": { "available": ["v1", "v2", "v3"], "default": "v1", "differences": "v1 MediaPlaceholder; v3 scrubbed video" },
       "surfaces": { "available": ["ink", "soft"], "default": "ink", "control": "surface prop" },
       "props": ["id?(=process)", "surface?(=ink)", "ariaLabel*", "eyebrow*", "title*:{line1,line2,line2Accent?}", "sub*", "steps*:{num,label,desc}[]", "media*:{ratio,label,hint,ariaLabel}", "videoScrub?:{src,frames,poster?,ariaLabel}", "cta?:{label,href,variant?}", "marker?"],
@@ -87,7 +87,7 @@
       "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"] }
     },
     {
-      "archetype_id": "06", "name": "LabGallery", "label": "Gallery rail", "source_path": "sections/lab/LabGallery.tsx", "export_name": "LabGallery",
+      "archetype_id": "06", "name": "LabGallery", "label": "Gallery rail", "source_path": "sections/lab/LabGallery.tsx", "export_name": "LabGallery", "barrel_export": "Gallery",
       "versions": { "available": ["v1", "v3"], "default": "v1", "differences": "NO v2; v3 adds scrub parallax + css backdrop (paired light/dark gallery-v3)" },
       "surfaces": { "available": ["light", "ink"], "default": "light", "control": "surface prop" },
       "props": ["id?(=gallery)", "surface?(=light)", "ariaLabel?", "eyebrow*", "title*:string", "sub*", "laneLabel*", "items*:{tag,title,body}[]", "marker?"],
@@ -99,7 +99,7 @@
       "consumption_readiness": { "status": "ready", "browser_qa": "run", "allowed_consumers": ["page-composer", "build-pages"], "restrictions": ["only v1/v3 exist"] }
     },
     {
-      "archetype_id": "07", "name": "LabBento", "label": "Bento overview", "source_path": "sections/lab/LabBento.tsx", "export_name": "LabBento",
+      "archetype_id": "07", "name": "LabBento", "label": "Bento overview", "source_path": "sections/lab/LabBento.tsx", "export_name": "LabBento", "barrel_export": "Bento",
       "versions": { "available": ["v1", "v2", "v3"], "default": "v1" },
       "surfaces": { "available": ["light", "ink"], "default": "ink", "control": "surface prop" },
       "props": ["id?(=bento)", "surface?(=ink)", "ariaLabel?", "eyebrow*", "title*", "sub*", "items*:{tag,title,body,feature?,media?:{label,hint,ariaLabel}}[]", "marker?"],
