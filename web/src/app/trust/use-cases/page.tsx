@@ -3,123 +3,198 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
-import { Button } from "@/components/ui/Button";
+import {
+  StatementHero,
+  FullStatement,
+  Gallery,
+  PinnedSteps,
+  EditorialSplit,
+  Bento,
+  StatBand,
+  ChipGrid,
+  QuietCta,
+  Button,
+} from "@/components/ds";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
   section: "Trust",
   sectionHref: "/trust",
   links: [
-    { label: "Pattern", href: "#pattern" },
-    { label: "Building Blocks", href: "#common" },
+    { label: "Find your program", href: "#segments" },
+    { label: "Pitch competitions", href: "#flagship" },
+    { label: "What it's worth", href: "#outcome" },
   ],
 };
 
 export const metadata: Metadata = {
   title:
-    "EvalLense Use Cases — Batch Pitch Evaluation for VC, Accelerators & More",
+    "EvalLense Use Cases — Batch Pitch Evaluation for Competitions, Accelerators & VC",
   description:
-    "Where EvalLense fits: VC funds, accelerators, angels, corporate innovation, competitions, grants and universities — one batch review, unified criteria, evidence reports and a human in the loop.",
+    "Where EvalLense is used: pitch competitions, accelerators, VC, angels, corporate innovation, grants, and universities — one rubric, evidence reports, a leaderboard, and the human deciding.",
 };
 
-/*
- * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
- * The image generator is NOT wired up. Every visual slot below is a VISIBLE,
- * labeled `.media-ph` placeholder (global primitive in globals.css) on
- * canonical tokens — never an empty grey div. Each carries an --ratio so the
- * real asset drops in with zero layout shift. When a generator is available,
- * produce the assets and drop them into web/public/assets/use-cases/.
- *
- * 1. hero (section 1) — 16:9
- *    A stream of different decks converging into one lens, then fanning out
- *    into a ranked shortlist.
- *    Prompt: lens-gradient violet→cyan→aqua over an Apple-neutral surface,
- *    soft violet depth, hairline structure, calm; no security theatre — many
- *    inputs narrow into one lens and spread into an ordered shortlist.
- *
- * 2. segments gallery cards (section 3) — 4:3 each
- *    A horizontal gallery of segment cards sharing one visual rhythm.
- *    Prompt: same tokens, light surface, hairline card frames, a single small
- *    lens accent per card; calm, consistent, no logos or fabricated metrics.
- *
- * ── MOTION ───────────────────────────────────────────────────────────────
- * This page opts into the generic ScrollFX engine via data-attributes only
- * (data-reveal / data-scrub / data-pin). No per-section useEffect, no
- * ScrollOrchestrator edits. reduced-motion is handled by the engine + the
- * primitives' @media block. <ScrollFX/> is mounted once after <Footer/>.
- *
- * ── CONTENT ──────────────────────────────────────────────────────────────
- * Facts are CONFIRMED in the brief: 8 application segments (VC, accelerators,
- * angels, corporate, competitions, grants, hackathons, universities); the
- * current mode is Pitch Competition (P1–P6); a panel of 6 independent judges
- * J-P1…J-P6 over 6 dimensions P1–P6; ranking is by the human Final Score;
- * 400+ internal runs in the product history. NO fabricated customer cases,
- * logos or adoption metrics — there are none in the docs. Hackathons /
- * competitions run through the Pitch methodology today (Hackathon/Custom mode
- * is post-MVP); they are presented honestly, with no H1–H6 / code-review claims.
- */
+/* ── Content (verbatim from the page-composer contract). No invented
+ * numbers/claims; copy is reproduced exactly. ── */
 
-/* 3. Segments — horizontal scroll-snap gallery (brief §3, sitemap segments). */
 const SEGMENTS = [
   {
-    tag: "VC Funds",
-    title: "Inbound dealflow",
-    body: "Screen inbound dealflow faster and surface stronger signals before a deeper review.",
+    tag: "Pitch Competitions",
+    title:
+      "Score dozens of pitches against one rubric and rank finalists in a day, not a month. (in depth below)",
+    body: "",
   },
   {
-    tag: "Accelerators",
-    title: "Cohort selection",
-    body: "Evaluate applications consistently and compare founders side by side.",
+    tag: "Accelerators & Incubators",
+    title:
+      "Select a cohort consistently — compare founders side by side on the same basis. (in depth below)",
+    body: "",
+  },
+  {
+    tag: "VC Funds",
+    title:
+      "Filter early dealflow fast, and walk into the first call with a structured read. (in depth below)",
+    body: "",
   },
   {
     tag: "Angel Investors",
-    title: "First-pass screening",
-    body: "A structured first pass before calls and diligence, not a gut-feel filter.",
+    title:
+      "Get a structured first pass before you spend an evening on diligence. e.g. 15 decks from a syndicate share.",
+    body: "",
   },
   {
     tag: "Corporate Innovation",
-    title: "Fit & readiness",
-    body: "Compare startups on fit, readiness and evidence against the same lenses.",
+    title:
+      "Compare startups on fit, readiness, and evidence — not on who pitched loudest. e.g. 80 entries to an open-innovation call.",
+    body: "",
   },
   {
-    tag: "Competitions & Hackathons",
-    title: "Many teams, fast",
-    body: "Review many teams quickly with a leaderboard that supports the jury's decision.",
+    tag: "Grant Programs",
+    title:
+      "Review applications against fixed criteria, with a record you can defend. e.g. 120 grant applications.",
+    body: "",
   },
   {
-    tag: "Grants & Universities",
-    title: "Unified criteria",
-    body: "Unified criteria and clearer feedback for every applicant in the round.",
+    tag: "Universities",
+    title:
+      "Run student and research selection on one transparent standard. e.g. a 50-team demo day.",
+    body: "",
+  },
+  {
+    tag: "Hackathons",
+    title:
+      "Evaluate many teams quickly, with a leaderboard and questions for the live round. e.g. a 100-team weekend hack. (Today via the pitch rubric; hackathon-specific mode on the roadmap.)",
+    body: "",
   },
 ];
 
-/* 5. What every segment gets — bento tiles (brief §5; scope.md). */
-const COMMON = [
+const FLAGSHIP_STEPS = [
   {
-    tag: "Entry hub",
-    title: "One place to collect a batch",
-    body: "A single entry point with self-upload by link — every deck lands in one structured batch instead of scattered inboxes.",
+    num: "01",
+    label: "Open submissions",
+    desc: "Share one link; teams upload their own decks into your Entry Hub.",
+  },
+  {
+    num: "02",
+    label: "Run the whole field",
+    desc: "Six judges score every deck against P1–P6, in parallel — overnight if you like, no one watching.",
+  },
+  {
+    num: "03",
+    label: "Read before you meet",
+    desc: "Each contender comes with an evidence-linked report and the questions to ask on stage.",
+  },
+  {
+    num: "04",
+    label: "Rank the board",
+    desc: "A leaderboard sorted by your Final Score, ready to defend to sponsors and co-judges.",
+  },
+  {
+    num: "05",
+    label: "Pick the winners",
+    desc: "You decide, with the evidence in front of you.",
+  },
+];
+
+const ACCEL_POINTS = [
+  {
+    title: "Select a cohort you can defend",
+    body: "Score every application against the same bar, compare founders side by side, and back a cohort decision with evidence instead of a reviewer's gut. Reusable for every intake round. Example: a 200-application cohort scored against the same bar — reading that would run 80+ hours, done before the committee meets.",
+  },
+  {
+    title: "Filter dealflow, then go deep",
+    body: "Every inbound deck gets a structured first pass, so partners spend their hours on the few worth a call — and walk in already knowing where to press. Example: an inbound week of 40 decks, each given a structured first pass overnight; partners spend their hours on the 5 worth a call.",
+  },
+];
+
+const ENGINE_TILES = [
+  {
+    tag: "Entry Hub",
+    title: "Entry Hub",
+    body: "One intake point, by hand or self-upload link.",
     feature: true,
   },
   {
-    tag: "6-judge eval",
-    title: "Independent judges J-P1…J-P6",
-    body: "Six specialized AI judges read each deck against the P1–P6 dimensions, instead of one all-seeing verdict.",
+    tag: "Six independent judges",
+    title: "Six independent judges",
+    body: "P1–P6, each score with a confidence signal.",
   },
   {
-    tag: "Evidence reports",
-    title: "Scores tied to the deck",
-    body: "Each score is linked to evidence from the deck, with risks and gaps called out — not an opaque number.",
+    tag: "Evidence-based reports",
+    title: "Evidence-based reports",
+    body: "Scores tied to the deck, with gaps and risks.",
   },
   {
     tag: "Leaderboard",
-    title: "Ranked by human Final Score",
-    body: "A leaderboard orders the batch by the human Final Score, so the strongest projects rise to the top.",
+    title: "Leaderboard",
+    body: "Ranked by your human Final Score.",
   },
   {
-    tag: "Live Q&A",
-    title: "Questions for the room",
-    body: "Generated questions give the jury a focused starting point for a live discussion with each team.",
+    tag: "Questions for live Q&A",
+    title: "Questions for live Q&A",
+    body: "Ready-made, per dimension.",
+  },
+];
+
+const OUTCOME_STATS = [
+  {
+    value: "20–30 min → 0",
+    label:
+      "human reading per deck — you start at the report, not the raw slides",
+    src: "illustrative",
+  },
+  {
+    value: "~40 hours",
+    label: "reclaimed per 100-deck batch — a full review week",
+    src: "illustrative",
+  },
+  {
+    value: "One rubric",
+    label: "every entry scored the same way, so comparisons are fair",
+    src: "",
+  },
+  {
+    value: "The final call, always yours",
+    label: "AI prepares the analysis; a person decides",
+    src: "",
+  },
+];
+
+/* Fairness items for the ChipGrid. ChipGrid carries a single label per chip
+ * (`name`) — the contract's title + body are joined into one line. Tone is
+ * kept neutral/consistent (`info`) across all three per the contract note. */
+const FAIRNESS = [
+  {
+    name: "One standard — every applicant measured against the same criteria, not the reviewer's mood.",
+    sev: "info" as const,
+  },
+  {
+    name: "Feedback teams can use — a structured read, not just a yes or a no.",
+    sev: "info" as const,
+  },
+  {
+    name: "A record you can defend — an evidence-linked trail behind every ranking.",
+    sev: "info" as const,
   },
 ];
 
@@ -127,250 +202,185 @@ export default function UseCasesPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} />
-      <main className="usecases">
-        {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
-        <section className="band soft usecases-hero">
-          <div className="wrap usecases-hero__inner">
-            <span
-              className="eyebrow"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "0ms" }}
-            >
-              <span className="dot" aria-hidden="true"></span>
-              Use Cases
-            </span>
-            <h1
-              className="usecases-hero__title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              One batch review system, many evaluation{" "}
-              <span className="grad-word">workflows</span>
-            </h1>
-            <p
-              className="sub usecases-hero__sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              Use EvalLense wherever you need to evaluate many startups, compare
-              them against the same criteria and decide faster — with evidence
-              and a person in the loop.
-            </p>
-            <div
-              className="cta-row"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
-            </div>
-            {/* hero visual slot — see prompt 1 in file header */}
-            <figure
-              className="media-ph usecases-hero__media"
-              style={{ ["--ratio" as string]: "16/9" }}
-              data-reveal="scale"
-              role="img"
-              aria-label="A stream of different decks converging into one lens and fanning out into a ranked shortlist"
-            >
-              <span className="media-ph__label">
-                Image · decks into a ranked shortlist · 16:9
-              </span>
-              <span className="media-ph__hint">
-                Many different decks converge into one lens and fan out into a
-                ranked shortlist — lens-gradient violet→cyan→aqua, calm; see
-                prompt 1 in file header
-              </span>
-            </figure>
-          </div>
-        </section>
+      <main className="usecases section-lab ds">
+        {/* 1. Hero — StatementHero, soft. */}
+        <StatementHero
+          id="usecases-hero"
+          surface="soft"
+          eyebrow="Use Cases"
+          titleLead=""
+          titleAccent="One review system"
+          titleTrail=", many workflows"
+          sub="Use EvalLense anywhere a stack of pitch decks has to become a ranked shortlist — scored against one rubric, with the evidence in view and the final call yours."
+          ctas={[{ label: "Book a Demo", href: "/company/contact" }]}
+          media={{
+            ratio: "16/9",
+            label: "Image · decks into a ranked shortlist · 16:9",
+            hint: "A stream of varied decks converging into a lens, exiting as a ranked shortlist",
+            ariaLabel:
+              "A stream of varied decks converging into a lens, exiting as a ranked shortlist",
+          }}
+        />
 
-        {/* 2. The common pattern — full-bleed statement, DARK. */}
-        <section id="pattern" className="band ink usecases-pattern">
-          <div className="wrap usecases-pattern__inner">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              The common pattern
-            </span>
-            <p className="usecases-pattern__lead" data-reveal="up">
-              Many applications. Little reviewer time. In the flow it is easy to
-              miss a strong project.
-            </p>
-            <p
-              className="usecases-pattern__body"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "120ms" }}
-            >
-              EvalLense processes the whole batch, brings different decks to one
-              report format and lifts the strongest to the top — while it leaves
-              the final decision to a person.
-            </p>
-          </div>
-        </section>
+        {/* soft → ink : masked divider into the squeeze peak. */}
+        <div
+          className="tr-masked-divider"
+          data-from="soft"
+          data-to="ink"
+          aria-hidden="true"
+        />
 
-        {/* 3. Segments — horizontal scroll-snap gallery, light. */}
-        <section className="band usecases-segments">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Segments
-              </span>
-              <h2 className="title">Find your evaluation workflow</h2>
-              <p className="sub">
-                The same batch review serves very different teams. Each one runs
-                the same Pitch methodology — only the context around it changes.
-              </p>
-            </div>
-          </div>
-          {/* horizontal gallery — scrolls INSIDE its own overflow container,
-              never moving the page; scroll-snap like .methodology .judge-lane */}
-          <ul
-            className="seg-lane"
-            data-reveal="up"
-            tabIndex={0}
-            aria-label="Application segments — scroll horizontally"
-          >
-            {SEGMENTS.map((s) => (
-              <li key={s.tag} className="seg-card">
-                <span className="seg-card__signal" aria-hidden="true"></span>
-                <span className="mini-tag">{s.tag}</span>
-                <h3 className="seg-h">{s.title}</h3>
-                <p className="seg-p">{s.body}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {/* 2. Squeeze — FullStatement, ink. */}
+        <FullStatement
+          surface="ink"
+          ariaLabel="Every program is squeezed between time and fairness"
+          eyebrow="The shared problem"
+          titleLead="Every program is squeezed between time and fairness"
+          sub="A careful read of one deck takes 20–30 minutes. Across dozens or hundreds, the process stretches into weeks — or gets cut to a skim. And even with time, two honest reviewers can land three points apart on the same deck. On a big batch, speed and fairness suffer at once. EvalLense is built for exactly that batch."
+        />
 
-        {/* 4. VC + Accelerators — editorial split, light. */}
-        <section className="band soft usecases-anchors">
-          <div className="wrap anchors-split">
-            <div className="anchors-copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Two anchor segments
-              </span>
-              <h2 className="title">Built for dealflow and cohort selection</h2>
-              <p className="sub">
-                VC funds and accelerators share the same problem from two angles:
-                too many decks, too little time, and a need to choose
-                transparently. EvalLense fits both without changing the process.
-              </p>
-            </div>
-            <div className="anchors-cards" data-reveal="right">
-              <div className="anchor-card">
-                <span className="mini-tag">VC Funds</span>
-                <h3 className="anchor-h">Screen more decks, faster</h3>
-                <p className="anchor-p">
-                  Screen more inbound decks faster, surface the stronger signals
-                  and prepare structured notes for a deeper review — instead of
-                  triaging from a gut feeling.
-                </p>
-              </div>
-              <div className="anchor-card anchor-card--accel">
-                <span className="mini-tag">Accelerators</span>
-                <h3 className="anchor-h">Compare founders side by side</h3>
-                <p className="anchor-p">
-                  Evaluate applications consistently, compare founders next to
-                  each other and back cohort decisions with evidence-based
-                  reports the whole committee can read.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* ink → light : gradient bridge settling out of the squeeze peak. */}
+        <div
+          className="tr-gradient-bridge"
+          data-from="ink"
+          data-to="light"
+          aria-hidden="true"
+        />
 
-        {/* 5. What every segment gets — bento, DARK. */}
-        <section id="common" className="band ink usecases-common">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                What every segment gets
-              </span>
-              <h2 className="title">One set of building blocks for all of them</h2>
-              <p className="sub">
-                Whatever the segment, the product gives the same core: a place to
-                collect the batch, a six-judge evaluation, evidence-linked
-                reports, a leaderboard and questions for a live discussion.
-              </p>
-            </div>
-            <ul className="common-grid" data-reveal="up">
-              {COMMON.map((c) => (
-                <li
-                  key={c.tag}
-                  className={
-                    c.feature ? "common-tile common-tile--feature" : "common-tile"
-                  }
-                >
-                  <span className="mini-tag">{c.tag}</span>
-                  <h3 className="common-h">{c.title}</h3>
-                  <p className="common-p">{c.body}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {/* 3. Segments — Gallery, light (id `segments`). Gallery has no
+            caption/footnote slot, so the bridge line + illustrative disclaimer
+            are folded into `sub` per the contract fallback. */}
+        <Gallery
+          id="segments"
+          surface="light"
+          eyebrow="Find your program"
+          title="One system, your workflow"
+          sub="Different programs, the same job — turn a batch into a defensible shortlist. Find yours below. We go deep on three of the most common below — every other program runs the same way. All example scenarios on this page are illustrative — hypothetical programs, not customers."
+          laneLabel="Programs that run on EvalLense"
+          items={SEGMENTS}
+        />
 
-        {/* 6. Transparency & feedback — editorial split, light. */}
-        <section className="band usecases-transparency">
-          <div className="wrap transparency-split">
-            <div className="transparency-copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Transparency &amp; feedback
-              </span>
-              <h2 className="title">Decisions you can explain and compare</h2>
-              <p className="sub">
-                For grant programs and universities the value is transparency:
-                everyone is scored against the same criteria, and one report
-                format makes decisions explainable and comparable across the
-                round.
-              </p>
-            </div>
-            <div className="transparency-claim" data-reveal="right">
-              <p className="transparency-claim__text">
-                The same criteria for every applicant, and clearer feedback they
-                can actually act on.
-              </p>
-              <span className="transparency-claim__tag">
-                Unified criteria · participant feedback
-              </span>
-            </div>
-          </div>
-        </section>
+        {/* 4. Flagship — PinnedSteps, light (id `flagship`). The competition
+            CTA uses the component's own `cta` prop. PinnedSteps has no
+            example/caption slot, so the example scenario is a page-local
+            <p className="sub"> after the section (existing utility class). */}
+        <PinnedSteps
+          id="flagship"
+          surface="soft"
+          ariaLabel="A hundred pitches in, a ranked shortlist out"
+          eyebrow="Pitch competitions · the flagship case"
+          title={{
+            line1: "A hundred pitches in,",
+            line2: "a ranked shortlist out",
+          }}
+          sub="The case EvalLense was built for first. Collect the whole field, evaluate it against one rubric, and reach the finals with a ranked, defensible board — each step lights up as you scroll."
+          steps={FLAGSHIP_STEPS}
+          media={{
+            ratio: "4/3",
+            label: "Image · field to ranked board · 4:3",
+            hint: "One link collects the field; decks score overnight; a ranked board with questions per finalist",
+            ariaLabel:
+              "A field collected from one link, scored overnight into a ranked board with questions",
+          }}
+          cta={{
+            label: "Book a demo for your competition",
+            href: "/company/contact",
+          }}
+        />
+        <p className="wrap sub">
+          A 60-deck regional competition. One link collects every entry; the
+          field is scored overnight; the jury reaches finals day with a ranked
+          board and questions per finalist — instead of ~25 hours of
+          pre-reading.
+        </p>
 
-        {/* 7. Final CTA — quiet CTA, DARK. */}
-        <section className="band ink usecases-cta">
-          <div className="wrap head">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              Get started
-            </span>
-            <h2
-              className="title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              Let&apos;s talk through your evaluation workflow
-            </h2>
-            <p
-              className="sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              Book a demo to walk through your scenario and run a pilot batch on
-              your own applications.
-            </p>
-            <div
-              className="sect-cta"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
-            </div>
-          </div>
-        </section>
+        {/* 5. Accel/VC — EditorialSplit, soft. No `cta` prop on EditorialSplit,
+            so the segment CTA is a page-local Button in a cta-row after it. */}
+        <EditorialSplit
+          surface="light"
+          eyebrow="Accelerators & investors"
+          titleLead="Cohort selection and dealflow, "
+          titleAccent="on one basis"
+          sub="The same engine, two adjacent jobs — both about reading more, faster, without losing the thread."
+          points={ACCEL_POINTS}
+          media={{
+            ratio: "4/3",
+            label: "Image · cohort side-by-side · dealflow funnel · 4:3",
+            hint: "Split visual: cohort compared side by side on the left, dealflow funnel on the right",
+            ariaLabel:
+              "Split visual: cohort compared side by side on the left, dealflow funnel on the right",
+          }}
+        />
+        <div className="wrap cta-row">
+          <Button href="/company/contact">
+            Talk to us about your cohort or dealflow
+          </Button>
+        </div>
+
+        {/* 6. Foundation — Bento, soft. First tile is the feature tile. */}
+        <Bento
+          surface="light"
+          ariaLabel="Different programs, the same engine"
+          eyebrow="Under every workflow"
+          title="Different programs, the same engine"
+          sub="Whatever your segment, a run leaves you the same toolkit — that's why one system covers them all."
+          items={ENGINE_TILES}
+        />
+
+        {/* soft → light : masked divider into the outcome peak. */}
+        <div
+          className="tr-masked-divider"
+          data-from="soft"
+          data-to="light"
+          aria-hidden="true"
+        />
+
+        {/* 7. Outcome — StatBand, light (id `outcome`) + ChipGrid (fairness,
+            light) rendered tight underneath in the same region. */}
+        <StatBand
+          id="outcome"
+          surface="light"
+          eyebrow="What it's worth"
+          title="Reclaim the reading, defend the decision"
+          stats={OUTCOME_STATS}
+          media={{
+            ratio: "21/9",
+            label: "Image · reclaimed-time band · 21:9",
+            hint: "A wide band illustrating reclaimed reviewer time across a batch",
+            ariaLabel:
+              "A wide band illustrating reclaimed reviewer time across a batch",
+          }}
+        />
+        <ChipGrid
+          surface="light"
+          ariaLabel="Why a run holds up: one standard, usable feedback, a defensible record"
+          columns={3}
+          tight
+          items={FAIRNESS}
+        />
+        <p className="wrap sub">
+          Time figures are illustrative, based on a 20–30 minute manual read per
+          deck.
+        </p>
+
+        {/* light → ink : masked divider into the closing CTA peak. */}
+        <div
+          className="tr-masked-divider"
+          data-from="light"
+          data-to="ink"
+          aria-hidden="true"
+        />
+
+        {/* 8. Final CTA — QuietCta, ink. */}
+        <QuietCta
+          surface="ink"
+          eyebrow="Get started"
+          title="Bring your next batch to EvalLense"
+          sub="Book a demo and we'll walk your exact workflow — and a pilot batch of your own decks."
+          cta={{ label: "Book a Demo", href: "/company/contact" }}
+        />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );
