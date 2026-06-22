@@ -107,7 +107,7 @@
 | Слой | Где | Назначение |
 |---|---|---|
 | Токены | `globals.css :root`, DS `tokens/` | цвет/типо/радиусы/тени/градиенты |
-| **Атомы** | `sections/lab/_kit.tsx` | **фактически только** `LabEyebrow`, `LabTitle`(+grad-word), `MediaPlaceholder` (+ типы `LabContentMode`/`LabContentSet`). Chip/status-чип/ring/score/counter в коде НЕ существуют — конфликт CL-002, источник истины = код |
+| **Атомы** | `sections/lab/_kit.tsx` (+ баррель `components/ds`) | **фактически только** `LabEyebrow`, `LabTitle`(+grad-word), `MediaPlaceholder` (+ типы `LabContentMode`/`LabContentSet`); экспортируются чисто как `Eyebrow`/`Title`/`Media` через `@/components/ds`. Chip/status-чип/ring/score/counter в коде НЕ существуют (markup-only в `/dev/ds-atoms`) — конфликт CL-002, источник истины = код |
 | **Каркасы (layout)** | `sections/lab/_layout.tsx` — **файла нет** (`documented-missing`, конфликт CL-001) | Обещанные `Band/Wrap/SplitGrid/BentoGrid/GalleryRail/PinnedStage` **не реализованы**. Сегодня есть только CSS `.wrap`/`.stage` + инлайн-гриды в `Lab*`. Слой частей (атомы + `_layout.tsx`) куёт **`primitive-layer-forge`** (извлечение `internal_fragments` под visual parity); до него page-composer работает в режиме `whole-sections-only` |
 | **Секции** | `sections/lab/Lab*.tsx` | тонкие рецепты из атомов+каркасов (таблица выше) |
 | Страницы | `app/**/page.tsx` (`build-pages`) | сборка из секций И/ИЛИ атомов+каркасов напрямую |
@@ -117,8 +117,17 @@
 
 ## Как пользоваться
 
-- **Переиспользование на странице:** импортировать `Lab<Archetype>`, передать
-  контент пропсами, выбрать `surface`. Движение — единый `<ScrollFX/>` внизу страницы.
+- **Чистый API дизайн-системы (предпочтительно):** импортировать из барреля
+  [`@/components/ds`](../../web/src/components/ds/index.ts) — prefix-free имена
+  `StatementHero · Bento · FullStatement · Gallery · PinnedSteps · Eyebrow ·
+  Title · Media · Button` (re-export алиасы над `Lab*`/`_kit`; рендер идентичен).
+  Контейнер страницы — `<main className="section-lab ds">` (`.section-lab` для
+  базовых `.lab-*`, `.ds` — светлый язык дизайн-системы; см. design-system.md
+  §«Reusable components»). **Основные страницы:** `/dev/ds-sections` (референс),
+  `/dev/ds-atoms`, `/dev/ds-theme`.
+- **Низкоуровнево:** можно импортировать `Lab<Archetype>` напрямую — это тот же
+  компонент. Передать контент пропсами, выбрать `surface`. Движение — единый
+  `<ScrollFX/>` внизу страницы.
 - **Сравнение версий:** на стенде `dev/section-lab` инспектор `LabMarkers` даёт
   табы v1/v2/v3 + тумблер Light/Dark (выбор в localStorage).
 - **Surface-инвариант:** внутри версии light и ink совпадают по геометрии,

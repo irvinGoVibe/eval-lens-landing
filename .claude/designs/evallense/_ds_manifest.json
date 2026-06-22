@@ -692,6 +692,46 @@
       "kind": "other",
       "definedIn": "tokens/gradients-surfaces.css",
       "annotation": "other"
+    },
+    {
+      "name": "--dsc-card",
+      "value": "linear-gradient(162deg, #ffffff 0%, color-mix(in oklab, var(--violet) 8%, #ffffff) 100%)",
+      "kind": "other",
+      "definedIn": "tokens/gradients-surfaces.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--dsc-card-feature",
+      "value": "linear-gradient(135deg, color-mix(in oklab, var(--violet) 24%, #ffffff) 0%, color-mix(in oklab, var(--cyan) 16%, #ffffff) 50%, color-mix(in oklab, var(--violet) 22%, #ffffff) 100%)",
+      "kind": "other",
+      "definedIn": "tokens/gradients-surfaces.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--dsc-border",
+      "value": "color-mix(in oklab, var(--violet) 20%, transparent)",
+      "kind": "other",
+      "definedIn": "tokens/colors.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--dsc-border-strong",
+      "value": "color-mix(in oklab, var(--violet) 34%, transparent)",
+      "kind": "other",
+      "definedIn": "tokens/colors.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--dsc-radius",
+      "value": "var(--r-lg)",
+      "kind": "spacing",
+      "definedIn": "tokens/radii-elevation.css"
+    },
+    {
+      "name": "--dsc-shadow",
+      "value": "0 1px 0 #ffffff inset, 0 2px 8px -4px color-mix(in oklab, var(--violet) 20%, transparent), 0 26px 60px -30px color-mix(in oklab, var(--violet) 40%, transparent)",
+      "kind": "shadow",
+      "definedIn": "tokens/radii-elevation.css"
     }
   ],
   "themes": [],

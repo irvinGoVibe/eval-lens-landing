@@ -15,6 +15,13 @@
   --lens-deep: linear-gradient(135deg, #3a1d8f, #1d8f7e);
   /* Ink gradient — subtle dark-panel fill. */
   --ink-grad: linear-gradient(160deg, #0a0a0d, #1b1b26);
+
+  /* ---- Light-card system (`.ds` design-system scope) ----
+     lens-soft gradient cards for light/soft surfaces. The feature gradient
+     resolves violet→cyan→violet (deliberately NOT into aqua/green). Pairs with
+     --dsc-border / --dsc-shadow / --dsc-radius (colors / radii-elevation). */
+  --dsc-card: linear-gradient(162deg, #ffffff 0%, color-mix(in oklab, var(--violet) 8%, #ffffff) 100%); /* @kind other */
+  --dsc-card-feature: linear-gradient(135deg, color-mix(in oklab, var(--violet) 24%, #ffffff) 0%, color-mix(in oklab, var(--cyan) 16%, #ffffff) 50%, color-mix(in oklab, var(--violet) 22%, #ffffff) 100%); /* @kind other */
 }
 
 /* ---- Surface helpers ---- */
@@ -24,6 +31,19 @@
 /* Ink surface — dark statement / cinematic. Text flips to on-dark tokens. */
 .surface-ink{   background:var(--ink); color:var(--fg-on-dark); }
 .surface-panel{ background:var(--panel); color:var(--fg-on-dark); }
+
+/* Light-card surface (`.ds` design-system) — lens-soft gradient, violet
+   hairline + glow. `--feature` swaps in the violet→cyan→violet wash. */
+.ds-card{
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+}
+.ds-card--feature{
+  background:var(--dsc-card-feature);
+  border-color:var(--dsc-border-strong);
+}
 
 /* Lens gradient painted onto text (one accent phrase per block). */
 .lens-text{

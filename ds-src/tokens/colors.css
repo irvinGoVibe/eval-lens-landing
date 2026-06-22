@@ -49,6 +49,11 @@
   --green-on-dark: #5fe0bf;
   --amber-on-dark: #f0a95a;
 
+  /* ---- Light-card borders (`.ds` design-system scope) ----
+     violet hairline for lens-soft cards; -strong for feature/hover. */
+  --dsc-border:        color-mix(in oklab, var(--violet) 20%, transparent); /* @kind other */
+  --dsc-border-strong: color-mix(in oklab, var(--violet) 34%, transparent); /* @kind other */
+
   /* ---- Dark-theme tokens (Ink Refined · Nebula Deep) — visual-layer-forge batch 4 ---- */
   --fg-secondary-dark: #d0ccf4;   /* Ink Refined: violet-tinted body on dark */
   --nebula-base:     #0a0509;

@@ -19,6 +19,10 @@
   --sh-3: 0 4px 14px rgba(20,18,40,.06), 0 30px 70px -30px rgba(60,40,160,.32);
   --shadow-soft: 0 2px 8px rgba(20,18,40,.05), 0 24px 60px -28px rgba(60,40,160,.22);
 
+  /* ---- Light-card system (`.ds` design-system scope) ---- */
+  --dsc-radius: var(--r-lg);
+  --dsc-shadow: 0 1px 0 #ffffff inset, 0 2px 8px -4px color-mix(in oklab, var(--violet) 20%, transparent), 0 26px 60px -30px color-mix(in oklab, var(--violet) 40%, transparent);
+
   /* ---- Motion ---- */
   --ease: cubic-bezier(.22,.61,.36,1); /* @kind other */
 }
