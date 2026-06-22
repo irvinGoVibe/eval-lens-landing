@@ -50,6 +50,12 @@ export type {
 export { Numbered } from "./Numbered";
 export type { NumberedProps, NumberedItem } from "./Numbered";
 
+export { EditorialSplit } from "./EditorialSplit";
+export type { EditorialSplitProps } from "./EditorialSplit";
+
+export { QuietCta } from "./QuietCta";
+export type { QuietCtaProps } from "./QuietCta";
+
 /* ── Atoms ──────────────────────────────────────────────── */
 export {
   LabEyebrow as Eyebrow,

@@ -9,6 +9,8 @@ import {
   Gallery,
   PinnedSteps,
   Numbered,
+  EditorialSplit,
+  QuietCta,
   Button,
 } from "@/components/ds";
 
@@ -172,6 +174,39 @@ export default function DsSectionsPage() {
         title="Three principles the editorial layer holds"
         sub="A vertical numbered list for a manifesto or set of principles — large numerals beside a heading and paragraph, not a card grid."
         items={NUMBERED_ITEMS}
+      />
+
+      <EditorialSplit
+        id="editorial"
+        surface="light"
+        marker="04 · Editorial split"
+        ariaLabel="Editorial split"
+        eyebrow="Grounded, not opaque"
+        titleLead="Every finding links back to a"
+        titleAccent="slide"
+        sub="The report is built to be checked — each score comes with what supports it and what lowers it."
+        points={[
+          { title: "What supports, what lowers", body: "Each dimension lists the concrete signals that raised or reduced its score." },
+          { title: "Linked to the slide", body: "Every finding cites the exact slide — number, title, and note." },
+          { title: "Built for live Q&A", body: "See where a deck is thin before the team is in the room." },
+        ]}
+        media={{
+          ratio: "4/3",
+          label: "Image · slide ↔ finding · 4:3",
+          hint: "A slide quote beside the supports/lowers it grounds",
+          ariaLabel: "A slide quote next to the finding it grounds",
+        }}
+      />
+
+      <QuietCta
+        id="quietcta"
+        surface="ink"
+        marker="12 · Quiet CTA band"
+        ariaLabel="Quiet CTA"
+        eyebrow="Get started"
+        title="See a real report on your own deck"
+        sub="Book a demo and walk through a full evaluation report — summary, reasoning, and the questions to ask live."
+        cta={{ label: "Book a Demo", href: "#" }}
       />
 
       {/* cinematic transition — last section. Self-contained .ds-cinema: full-screen

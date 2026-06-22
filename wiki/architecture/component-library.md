@@ -27,7 +27,7 @@
 | 01 | Statement hero | `sections/lab/LabStatementHero.tsx` | eyebrow, title, sub, media | v1–v4 | light/ink | — | forged | — |
 | 02 | Full-bleed statement | `sections/lab/LabStatement.tsx` | versions[] (`LabContentSet<{eyebrow,text}>`), surface | v1–v2 | light/ink | — | draft⁶ | 2026-06-17 |
 | 03 | Pinned multi-screen | `sections/lab/LabPinnedSteps.tsx` | steps[], pinSteps | v1–v3 | light/ink | — | forged | — |
-| 04 | Editorial split | `sections/lab/LabEditorialSplit.tsx` | eyebrow, titleLead(+accent/trail), sub, media | v1–v3 | light/ink | `.media-ph` (demo TBD) | forged¹ | 2026-06-17 |
+| 04 | Editorial split | `ds/EditorialSplit.tsx` → `@/components/ds` (`EditorialSplit`) | eyebrow, titleLead(+accent/trail), sub, media, points? | v1–v3 | light/ink | `.media-ph` | forged · clean-DS⁸ | 2026-06-22 |
 | 05 | Editorial split + scrub-ring | `sections/lab/LabSplitRing.tsx` | ring, breakdown[], media | v1–v3 | light/ink | scoring-matrix ↔ light-scoring-matrix (из `_demo-pool`, через object-fit)² | forged | 2026-06-17 |
 | 06 | Horizontal gallery | `sections/lab/LabGallery.tsx` | eyebrow, title, sub, laneLabel, items[] | v1, v3 | light/ink | v3 only: `06-horizontal-gallery/gallery-v3-{light,dark}-desktop.webp` (ambient backdrop под generated-CSS scrim; v1 — без медиа; mobile — CSS-градиент)³ | forged | 2026-06-17 |
 | 07 | Bento overview | `sections/lab/LabBento.tsx` | eyebrow, title, sub, items[] (feature + media), surface | v1–v3 | light/ink | `.media-ph` fallback на обе темы (asset-gap; paired light/dark lens-grid generation brief на файле)⁴ | forged | 2026-06-17 |
@@ -35,7 +35,7 @@
 | 09 | Stat band / counters | `sections/lab/LabStatBand.tsx` | eyebrow, title, stats[], media, surface | v1–v3 | light/ink | `.media-ph` 21:9 band (demo TBD) | draft⁵ | 2026-06-17 |
 | 10 | Editorial numbered list | `ds/Numbered.tsx` → `@/components/ds` (`Numbered`) | eyebrow, title, sub, items[], surface | v1–v3 | light/ink | — | forged · clean-DS⁷ | 2026-06-22 |
 | 11 | Risk → control grid | `sections/lab/LabRiskControl.tsx` | eyebrow, title, sub, pairs[] | v1–v3 | light/ink | — | draft⁵ | 2026-06-17 |
-| 12 | Quiet CTA band | `sections/lab/LabQuietCta.tsx` | eyebrow, title, sub, cta, surface | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
+| 12 | Quiet CTA band | `ds/QuietCta.tsx` → `@/components/ds` (`QuietCta`) | eyebrow, title, sub, cta, surface | v1–v3 | light/ink | — | forged · clean-DS⁹ | 2026-06-22 |
 | 13 | Pricing tiers | `sections/lab/LabPricing.tsx` | eyebrow, title, sub, tiers[], note, ctaLabel/Href | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
 | 14 | Comparison table | `sections/lab/LabCompareTable.tsx` | eyebrow, title, sub, columns[], rows[][], recommendedIndex | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
 | 16 | FAQ list | `sections/lab/LabFaq.tsx` | eyebrow, title, items[] (q/a) | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
@@ -116,6 +116,29 @@
 > потребители (`product/overview`, `overview-2`) не переедут на `Numbered`.
 > Render-QA: live inspect/eval на `/dev/ds-sections` (light+ink токены, v1–v3,
 > desktop 2-col / mobile collapse, 0 console-ошибок); `pnpm build` — Фаза 8.
+
+> ⁸ Архетип 04 **перекован в чистый DS** через component-forge (Фазы 0–8,
+> Gate A/B, 2026-06-22) — закрывает дореформенный пилот (бывш. footnote ¹).
+> Отдельный `web/src/components/ds/EditorialSplit.tsx` + CSS `.ds-split*` в
+> `ds.css` (порт из `globals.css`, **без** `.lab-*`/`.section-lab`), барель
+> `EditorialSplit`/`EditorialSplitProps`. **Расширен** опциональным `points?:
+> {title,body}[]` (список точек в copy-колонке; backward-compatible — без `points`
+> рендер идентичен `LabEditorialSplit`, потребитель `entry-hub` не затронут). Атомы
+> `Eyebrow`/`Media` из барреля + own inline Title (lead/accent/trail). `LabEditorialSplit`
+> остаётся deprecated-источником, пока `entry-hub`/dev не переедут. Render-QA: live
+> inspect/eval на `/dev/ds-sections` (v1/v2/v3, points light+ink токены, 2-col/collapse,
+> 0 console-ошибок); `pnpm build` — Фаза 8.
+
+> ⁹ Архетип 12 **извлечён в чистый DS** через component-forge (Фазы 0–8,
+> Gate A/B, 2026-06-22) — чистая экстракция (без расширения контракта). Отдельный
+> `web/src/components/ds/QuietCta.tsx` + CSS `.ds-quiet-cta*` в `ds.css` (только
+> per-version title-sizes + `.sect-cta` margin + local `.grad-word`; центрирование/
+> кнопка наследуются от bare `.head`/`.sect-cta`/`.btn` — **без** `.lab-*`/
+> `.section-lab`). Барель `QuietCta`/`QuietCtaProps`. Атомы `Eyebrow`/`Title`(accent)/
+> `Button` из барреля (default-variant кнопка, не glass). `LabQuietCta` остаётся
+> deprecated-источником, пока `entry-hub`/dev не переедут. Render-QA: live inspect/eval
+> на `/dev/ds-sections` (v1/v2/v3, ink-токены, centered lockup, grad-word, 0 console);
+> `pnpm build` — Фаза 8.
 
 > Архетипы 15, 17–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
 > ждут прогона через component-forge.

@@ -223,3 +223,214 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
   .ds-numbered__list li{grid-template-columns:1fr;gap:clamp(6px,1vw,10px);}
   .ds-numbered__list span{display:block;}
 }
+
+/* ============================================================
+   EditorialSplit — archetype 04 (clean DS extraction + points)
+   Faithful 1:1 token port of LabEditorialSplit's `.lab-split*` block:
+   v1 split / v2 framed / v3 cinematic, both surfaces (soft is base; ink
+   overrides COLOR ONLY — geometry stays put). Adds a token-driven, surface-
+   aware `points` list. The v3 scene/scrim keep their literal dark gradients
+   (#0a0a0d/#16131f/rgba(5,5,8,…)) — that is the existing cinematic scene,
+   ported verbatim. No points => identical structure to LabEditorialSplit.
+   ============================================================ */
+.ds-split__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,80px);align-items:center;}
+.ds-split__copy{min-width:0;}
+.ds-split__media{min-width:0;}
+
+/* lens-accent word (local declaration, per .ds-numbered / .ds-hero precedent) */
+.ds-split .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* v2 — framed (premium): reversed editorial frame, captioned panel + hairline */
+.ds-split__framed{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;
+}
+.ds-split__frame{margin:0;min-width:0;}
+.ds-split__frame-media{margin:0;}
+.ds-split__frame-cap{
+  margin-top:12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+.ds-split.ink .ds-split__frame-cap{color:var(--muted-on-dark);}
+.ds-split__copy--ruled{min-width:0;padding-top:18px;border-top:1px solid var(--border);}
+.ds-split.ink .ds-split__copy--ruled{border-top-color:var(--border-on-dark);}
+
+/* v3 — cinematic (bold): the scene fills the band, copy sits over a scrim */
+.ds-split__cine{position:relative;isolation:isolate;min-height:64svh;display:grid;align-items:end;
+  padding:clamp(40px,6vw,96px) var(--gutter) clamp(40px,6vw,80px);}
+.ds-split__cine-scene{
+  position:absolute;inset:0;z-index:-2;
+  background:
+    radial-gradient(72% 60% at 70% 16%, color-mix(in oklab,var(--violet) 22%,transparent), transparent 60%),
+    radial-gradient(58% 55% at 14% 94%, color-mix(in oklab,var(--cyan) 15%,transparent), transparent 62%),
+    var(--bg-soft);
+}
+.ds-split.ink .ds-split__cine-scene{
+  background:
+    radial-gradient(80% 70% at 72% 12%, color-mix(in oklab,var(--violet) 42%,transparent), transparent 56%),
+    radial-gradient(60% 60% at 14% 96%, color-mix(in oklab,var(--cyan) 22%,transparent), transparent 60%),
+    linear-gradient(160deg,#0a0a0d 0%,#16131f 100%);
+}
+.ds-split__cine-scrim{
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg, color-mix(in oklab,var(--bg-soft) 88%,transparent) 0%, color-mix(in oklab,var(--bg-soft) 40%,transparent) 44%, transparent 72%);
+}
+.ds-split.ink .ds-split__cine-scrim{
+  background:linear-gradient(90deg, rgba(5,5,8,.78) 0%, rgba(5,5,8,.4) 44%, transparent 72%);
+}
+.ds-split__cine-tag{
+  position:absolute;top:16px;left:18px;z-index:1;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);background:color-mix(in oklab,var(--bg) 70%,transparent);
+  border:1px solid var(--border-2);border-radius:var(--r-pill);padding:4px 10px;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+}
+.ds-split.ink .ds-split__cine-tag{color:var(--muted-on-dark);background:rgba(0,0,0,.32);border-color:var(--border-on-dark);}
+.ds-split__cine-inner{position:relative;z-index:1;width:100%;max-width:var(--maxw);margin:0 auto;}
+.ds-split__cine-copy{min-width:0;max-width:34ch;}
+.ds-split__cine-copy .ds-split__title{font-size:clamp(40px,5.5vw,72px);letter-spacing:-.03em;line-height:1.03;}
+
+/* points — token-driven, surface-aware grounded-detail rows under the sub */
+.ds-split__points{list-style:none;margin:clamp(26px,3.4vw,38px) 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(18px,2.4vw,26px);}
+.ds-split__point{display:grid;grid-template-columns:9px 1fr;column-gap:12px;row-gap:4px;}
+.ds-split__point-dot{grid-row:1/3;width:9px;height:9px;margin-top:.45em;border-radius:50%;background:var(--violet-2);}
+.ds-split__point-h{grid-column:2;font-size:clamp(16px,1.9vw,19px);font-weight:600;letter-spacing:-.01em;color:var(--fg);}
+.ds-split__point-p{grid-column:2;font-size:14px;line-height:1.55;color:var(--muted);}
+.ds-split.ink .ds-split__point-h{color:var(--fg-on-dark);}
+.ds-split.ink .ds-split__point-p{color:var(--muted-on-dark);}
+
+/* responsive collapse (mirrors globals @media max-width:900px — 2-col → 1-col) */
+@media (max-width:900px){
+  .ds-split__grid,
+  .ds-split__framed{grid-template-columns:1fr;}
+}
+
+/* QuietCta — archetype 12 (clean DS extraction) */
+.ds-quiet-cta .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.ds-quiet-cta__v--polish .title{font-size:clamp(34px,5.2vw,60px);line-height:1.06;letter-spacing:-.02em;}
+.ds-quiet-cta__v--recomp .title{font-size:clamp(36px,5.6vw,66px);line-height:1.05;letter-spacing:-.025em;}
+.ds-quiet-cta__v--expanded .title{font-size:clamp(44px,7vw,88px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.ds-quiet-cta__v--expanded .sub{margin-top:22px;}
+.ds-quiet-cta .sect-cta{margin-top:34px;}
+
+/* ============================================================
+   evidence-based-reports page-local (light cinematic-ink)
+   Scoped under `.evidence-reports`. Token-driven only — light cards via
+   --dsc-* on `.soft`, ink-aware via `.band.ink`. No `.lab-*`, no hardcoded hex.
+   Bands that wrap page-local markup (stat-row, also-list, severity grid, the
+   disabled-CTA row) tuck up under the barrel section above by zeroing the top
+   pad, so they read as one unit with that section.
+   ============================================================ */
+
+/* shared: bands carrying only page-local markup sit tight under their section */
+.evidence-reports .evr-statband,
+.evidence-reports .evr-alsoband,
+.evidence-reports .evr-sevband{padding-top:0;}
+
+/* pull the hero stat-row up closer to the hero (hero carries a tall bottom pad) */
+.evidence-reports .evr-statband{margin-top:clamp(-120px,-9vw,-56px);}
+
+/* 1. hero stat-row — three illustrative outcome cards on light DS cards */
+.evidence-reports .evr-stats{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,22px);
+}
+.evidence-reports .evr-stat{
+  display:flex;flex-direction:column;gap:8px;
+  padding:clamp(20px,2.2vw,30px);
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+}
+.evidence-reports .evr-stat__v{
+  font-size:clamp(22px,2.6vw,32px);line-height:1.04;letter-spacing:-.02em;
+  font-weight:600;color:var(--fg);
+}
+.evidence-reports .evr-stat__k{font-size:14px;line-height:1.45;color:var(--muted);}
+.evidence-reports .evr-stats__note{
+  margin:18px 0 0;font-size:13px;color:var(--muted-2);
+}
+/* ink fallback (page is light, but keep surface-honest if a peak ever wraps it) */
+.evidence-reports .band.ink .evr-stat{
+  background:color-mix(in oklab,var(--violet) 8%, transparent);
+  border-color:var(--border-on-dark);box-shadow:none;
+}
+.evidence-reports .band.ink .evr-stat__v{color:var(--fg-on-dark);}
+.evidence-reports .band.ink .evr-stat__k{color:var(--muted-on-dark);}
+
+/* 4. "Also in the report" — compact list under the score gallery */
+.evidence-reports .evr-also{
+  border-top:1px solid var(--border);
+  padding-top:clamp(22px,2.4vw,30px);
+}
+.evidence-reports .evr-also__title{
+  display:block;font-size:13px;font-weight:600;letter-spacing:.02em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:16px;
+}
+.evidence-reports .evr-also__list{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,22px);
+}
+.evidence-reports .evr-also__item{
+  display:flex;flex-direction:column;gap:4px;
+  padding-left:16px;border-left:2px solid var(--dsc-border-strong);
+}
+.evidence-reports .evr-also__name{font-size:16px;font-weight:600;color:var(--fg);}
+.evidence-reports .evr-also__note{font-size:14px;line-height:1.4;color:var(--muted);}
+.evidence-reports .evr-also__cross{
+  margin:clamp(18px,2vw,24px) 0 0;font-size:14px;color:var(--muted);
+}
+.evidence-reports .evr-link{
+  color:var(--violet-2);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-color:var(--dsc-border-strong);
+  transition:text-decoration-color .2s var(--ease);
+}
+.evidence-reports .evr-link:hover{text-decoration-color:var(--violet-2);}
+
+/* 6. severity grid + legend — the ten key sections, info/warning/critical */
+.evidence-reports .evr-severity{
+  display:flex;flex-direction:column;gap:clamp(16px,1.8vw,22px);
+}
+.evidence-reports .evr-secgrid{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+}
+.evidence-reports .evr-sec{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 14px;
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--r-sm);
+}
+.evidence-reports .evr-sec__dot{
+  width:8px;height:8px;border-radius:50%;flex:none;
+  background:var(--sev,var(--muted));
+}
+.evidence-reports .evr-sec__name{font-size:14px;color:var(--fg);}
+/* severity tokens — built from existing brand/muted tokens (no new hex) */
+.evidence-reports .evr-sec--info{--sev:var(--cyan);}
+.evidence-reports .evr-sec--warning{--sev:var(--violet-2);}
+.evidence-reports .evr-sec--critical{
+  --sev:color-mix(in oklab,var(--violet) 70%, var(--aqua));
+}
+.evidence-reports .evr-sec--critical{border-color:var(--dsc-border-strong);}
+.evidence-reports .evr-sevlegend{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-wrap:wrap;gap:18px;
+}
+.evidence-reports .evr-sevlegend__item{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:13px;color:var(--muted);
+}
+.evidence-reports .evr-sevlegend__item .evr-sec__dot{width:8px;height:8px;}
+
+/* 8. disabled "View Sample Report" — open item under the ink final CTA */
+.evidence-reports .evr-ctaextra{padding-top:0;}
+.evidence-reports .evr-ctaextra__row{display:flex;justify-content:center;}
+
+/* responsive collapse — match the global 900px breakpoint */
+@media (max-width:900px){
+  .evidence-reports .evr-stats,
+  .evidence-reports .evr-also__list{grid-template-columns:1fr;}
+  .evidence-reports .evr-secgrid{grid-template-columns:repeat(2,1fr);}
+}

@@ -28,11 +28,12 @@ Design Patterns]] (это *предписывающий* справочник «
 > **06 → `Gallery`**, **07 → `Bento`** (re-export над `Lab*`, рендер идентичен) +
 > атомы `Eyebrow`/`Title`/`Media` и `Button`. Отдельно баррель экспортирует
 > **`FullStatement` = `LabFullStatement`** — это **другой** компонент-вариант
-> архетипа 02 (heading+sub), НЕ каталожный `LabStatement` (§2). **10 → `Numbered`**
-> — **первый настоящий чистый DS** (не алиас): отдельный `ds/Numbered.tsx` +
-> собственный `.ds-numbered*` CSS, без зависимости от `.lab-*`/`.section-lab`
-> (component-forge, 2026-06-22). Остальные архетипы импортируются как `Lab*`
-> напрямую, пока не promoted. Референс-страница
+> архетипа 02 (heading+sub), НЕ каталожный `LabStatement` (§2). **Настоящие чистые
+> DS** (не алиасы, собственный `.ds-*` CSS, без `.lab-*`/`.section-lab`): **10 →
+> `Numbered`** (`ds/Numbered.tsx`), **04 → `EditorialSplit`** (`ds/EditorialSplit.tsx`,
+> расширен опциональным `points?[]`) и **12 → `QuietCta`** (`ds/QuietCta.tsx`) — все
+> через component-forge, 2026-06-22.
+> Остальные архетипы импортируются как `Lab*` напрямую, пока не promoted. Референс-страница
 > из барреля — `/dev/ds-sections`. Полный справочник — [[design-system|Design
 > System]] §Reusable components (v1.4). Горизонтальный скролл секций гасит
 > компонентный guard `.band{overflow-x:clip}`.
@@ -113,8 +114,9 @@ violet→cyan→aqua) → короткий подзаголовок → один
 (`.po-why__claim`). Сторону чередуют между секциями. На скриншоте — `po-why`:
 текст слева, выделенный claim справа.
 
-- **Класс:** `po-why`, `ab-problem`, `eh-modes`, `eh-value`, `rb-compare`, `methodology-hitl`, `consistency-boundary`, `injection-fair`, `security-reports`, `usecases-anchors`, `ct-docs` и др.
-- **Scroll-FX:** `data-reveal="left"` / `data-reveal="right"`
+- **Класс:** `ds-split` (`.ds-split__grid`/`__framed`/`__cine`, `__points`); прежние page-local `po-why`, `ab-problem`, `eh-modes` и др. — на странице.
+- **Scroll-FX:** `data-reveal="left"` / `data-reveal="right"` (v3 cine — `up` + стаггер)
+- **Публичное имя:** `EditorialSplit` (`@/components/ds`) — чистый DS-компонент, извлечён из `LabEditorialSplit` (component-forge 2026-06-22), **не алиас**: собственный `ds/EditorialSplit.tsx` + `.ds-split*` CSS. **Расширен** опциональным `points?:{title,body}[]` (список точек в copy-колонке; без `points` рендер идентичен — `entry-hub` не затронут). v1 split / v2 framed / v3 cinematic.
 
 ## 5. Editorial split + scrub-ring
 
@@ -215,9 +217,9 @@ generic scoring, overweighting…), справа — что в системе э
 (`.band.ink`), по центру: eyebrow → заголовок → подзаголовок → pill-кнопка(и)
 (`Book a Demo`, иногда + `Contact`). Сюда же — соц-вариант `ct-social`.
 
-- **Класс:** `po-cta`, `*-cta` на всех страницах; `ct-social` (соцсети), `lab-quiet-cta` (`LabQuietCta` v1–v3)
-- **Scroll-FX:** `data-reveal="up"` (стаггер)
-- **Публичное имя:** — (gap → `component-forge`: извлечь чистый DS в `@/components/ds`).
+- **Класс:** `ds-quiet-cta` (`.ds-quiet-cta__v--polish/recomp/expanded`); прежние `po-cta`/`*-cta`/`ct-social` — page-local.
+- **Scroll-FX:** `data-reveal="up"` (стаггер eyebrow/title/sub/cta — 0/90/180/270ms)
+- **Публичное имя:** `QuietCta` (`@/components/ds`) — чистый DS-компонент, извлечён из `LabQuietCta` (component-forge 2026-06-22), **не алиас**: `ds/QuietCta.tsx` + `.ds-quiet-cta*` CSS. Атомы `Eyebrow`/`Title`(accent)/`Button` из барреля; default-variant кнопка. v1 polish / v2 recomp (accent "calm") / v3 expanded (accent "next"). Default surface `ink`.
 - **Источник (deprecated субстрат):** `LabQuietCta` (`sections/lab/LabQuietCta.tsx`) — eyebrow, title, sub, cta; `surface=light|ink` (ink default); общий `Button` (из `@/components/ds`). Статус `draft` (см. [component-library](component-library.md))
 
 ## 13. Pricing tiers

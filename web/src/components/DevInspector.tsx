@@ -16,6 +16,12 @@ import { useEffect } from "react";
  * Clicking the name copies the component name (to bake the chosen props back into
  * the page). Each choice persists per route + section in localStorage.
  *
+ * A second floating button — **⚙ dev: save** — snapshots the CURRENT surface +
+ * visible version of EVERY section on the page (read from the live DOM) and copies
+ * one paste-ready block (also `console.table` + localStorage). The browser can't
+ * write source on a static site, so you bake the snapshot's values into the page
+ * props by hand.
+ *
  * Imperative, ScrollFX-style: enhances the existing DOM and renders nothing.
  *
  * GATING: this file is only mounted by the root layout under
@@ -64,6 +70,8 @@ const CSS = `
 .dev-inspector-fab{all:unset;position:fixed;bottom:14px;right:14px;z-index:2147483000;cursor:pointer;
   padding:6px 12px;border-radius:999px;font:600 11px/1 ui-monospace,monospace;color:#e9e9ee;
   background:rgba(17,17,21,.85);border:1px solid rgba(255,255,255,.14);box-shadow:0 4px 14px rgba(0,0,0,.4);}
+.dev-inspector-fab--save{bottom:50px;}
+.dev-inspector-fab--save.is-saved{color:#7ee0a6;border-color:rgba(126,224,166,.4);}
 .dev-inspector-hidden .dev-inspector{display:none;}
 `;
 
@@ -306,6 +314,37 @@ export function DevInspector() {
     syncFab();
     cleanups.push(() => fab.remove());
 
+    // Save: snapshot every section's CURRENT surface + visible version (read from
+    // the live DOM, so it reflects exactly what you toggled) → copy a paste-ready
+    // block + console.table, and stash it in localStorage. The browser can't write
+    // source on a static site, so you bake the values into the page props by hand.
+    const saveFab = document.createElement("button");
+    saveFab.type = "button";
+    saveFab.className = "dev-inspector-fab dev-inspector-fab--save";
+    saveFab.textContent = "⚙ dev: save";
+    let saveTimer: number | undefined;
+    saveFab.addEventListener("click", () => {
+      const snap = buildSnapshot(path);
+      copyText(snap.text);
+      safeSet(`dev:${path}:snapshot`, snap.text);
+      // eslint-disable-next-line no-console
+      console.log(`%c[dev-inspector] snapshot copied (${snap.rows.length} sections)`, "color:#7ee0a6", `\n\n${snap.text}\n`);
+      // eslint-disable-next-line no-console
+      console.table?.(snap.rows);
+      saveFab.classList.add("is-saved");
+      saveFab.textContent = `✓ saved ${snap.rows.length}`;
+      window.clearTimeout(saveTimer);
+      saveTimer = window.setTimeout(() => {
+        saveFab.classList.remove("is-saved");
+        saveFab.textContent = "⚙ dev: save";
+      }, 1500);
+    });
+    document.body.appendChild(saveFab);
+    cleanups.push(() => {
+      window.clearTimeout(saveTimer);
+      saveFab.remove();
+    });
+
     // initial scan (after paint) + keep watching for new/replaced sections
     const raf = requestAnimationFrame(scan);
     let debounce: number | undefined;
@@ -350,6 +389,57 @@ function safeSet(key: string, value: string) {
   } catch {
     /* private mode — non-fatal */
   }
+}
+
+type SnapshotRow = {
+  i: number;
+  component: string;
+  surface: Surface;
+  version: string | null;
+};
+
+/**
+ * Read the CURRENT state of every `Lab*` section on the page straight from the
+ * live DOM (surface = the `.band` class you toggled; version = the visible
+ * `[data-version]` payload) and format a paste-ready snapshot. Used by the Save
+ * FAB so the chosen versions/surfaces can be baked into the page props by hand.
+ */
+function buildSnapshot(path: string): { text: string; rows: SnapshotRow[] } {
+  const rows: SnapshotRow[] = [];
+  Array.from(document.querySelectorAll<HTMLElement>('section[class*="lab-"]')).forEach(
+    (section, i) => {
+      const labClass = Array.from(section.classList).find(
+        (c) => c.startsWith("lab-") && c !== "lab-inspector",
+      );
+      if (!labClass) return;
+      const meta = ARCHETYPE[labClass] ?? { label: labClass, component: labClass };
+      const surface: Surface = section.classList.contains("ink")
+        ? "ink"
+        : section.classList.contains("soft")
+          ? "soft"
+          : "light";
+      const versions = Array.from(
+        section.querySelectorAll<HTMLElement>("[data-version]"),
+      ).filter((el) => el.closest('section[class*="lab-"]') === section);
+      const distinct = new Set(versions.map((el) => el.dataset.version ?? "1"));
+      const visibleVer = versions.find((el) => !el.hidden)?.dataset.version ?? null;
+      const version = distinct.size > 1 ? visibleVer ?? "1" : null;
+      rows.push({ i: rows.length + 1, component: meta.component, surface, version });
+    },
+  );
+
+  const lines = rows.map((r) => {
+    const num = String(r.i).padStart(2, "0");
+    const ver = r.version ? `  version={${r.version}}` : "";
+    return `${num}  ${r.component.padEnd(18)} surface="${r.surface}"${ver}`;
+  });
+  const text = [
+    `/* dev-inspector snapshot · ${path} · ${rows.length} section(s)`,
+    `   surface = rendered .band class; for components typed "light"|"ink" pass`,
+    `   "light" where this says "soft" (same render). Bake into the page props. */`,
+    ...lines,
+  ].join("\n");
+  return { text, rows };
 }
 
 /** Clipboard write with a legacy fallback for non-secure contexts. */

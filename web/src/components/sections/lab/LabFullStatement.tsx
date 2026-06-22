@@ -19,6 +19,8 @@ export type LabFullStatementProps = {
   id?: string;
   /** `.band` surface — `ink` (dark) is the default for this archetype. */
   surface?: "light" | "ink";
+  /** Which saved layout version renders (1 centered · 2 left · 3 split). Default 1. */
+  version?: 1 | 2 | 3;
   ariaLabel?: string;
   eyebrow: string;
   titleLead: string;
@@ -34,6 +36,7 @@ const VERSIONS = [1, 2, 3] as const;
 export function LabFullStatement({
   id,
   surface = "ink",
+  version = 1,
   ariaLabel,
   eyebrow,
   titleLead,
@@ -69,7 +72,7 @@ export function LabFullStatement({
           className={`wrap lab-fullstmt__v lab-fullstmt__v--${v}`}
           data-version={v}
           data-reveal="up"
-          hidden={v !== 1}
+          hidden={v !== version}
         >
           <div className="lab-fullstmt__lead">
             <LabEyebrow>{eyebrow}</LabEyebrow>

@@ -38,6 +38,8 @@ export type LabPinnedStepsProps = {
   id?: string;
   /** `.band` surface — dark (`ink`) is the default for this archetype. */
   surface?: "ink" | "soft";
+  /** Which saved version renders (1 tidy · 2 window · 3 reveal). Default 1. */
+  version?: 1 | 2 | 3;
   /** Accessible name for the whole section. */
   ariaLabel: string;
   eyebrow: string;
@@ -130,6 +132,7 @@ function Steps({
 export function LabPinnedSteps({
   id = "process",
   surface = "ink",
+  version = 1,
   ariaLabel,
   eyebrow,
   title,
@@ -166,7 +169,7 @@ export function LabPinnedSteps({
             steps carry data-pin-step so scrolling drives the photo switch.
             Without `photos`: the plain static "tidy" layout. ── */}
         {photos && photos.length ? (
-          <div className="lab-pv lab-pv--tidy lab-pv--photos" data-version="1">
+          <div className="lab-pv lab-pv--tidy lab-pv--photos" data-version="1" hidden={version !== 1}>
             <div className="lab-pattern" aria-hidden="true" />
             <div className="wrap lab-pv__grid">
               <div className="lab-process__copy">
@@ -200,7 +203,7 @@ export function LabPinnedSteps({
             </div>
           </div>
         ) : (
-          <div className="lab-pv lab-pv--tidy" data-version="1">
+          <div className="lab-pv lab-pv--tidy" data-version="1" hidden={version !== 1}>
             <div className="lab-pattern" aria-hidden="true" />
             <div className="wrap lab-pv__grid">
               <div className="lab-process__copy">
@@ -223,7 +226,7 @@ export function LabPinnedSteps({
         )}
 
         {/* ── v2 — Guideline window: pipeline in a product window ── */}
-        <div className="lab-pv lab-pv--window" data-version="2" hidden>
+        <div className="lab-pv lab-pv--window" data-version="2" hidden={version !== 2}>
           <div className="wrap lab-pv__grid">
             <div className="lab-process__copy">
               <LabEyebrow>{eyebrow}</LabEyebrow>
@@ -262,7 +265,7 @@ export function LabPinnedSteps({
             while the numbered steps reveal one-by-one on scroll. Base layout =
             v1 (copy + steps), driven by --pin. The square holds the scroll-
             scrubbed video when `videoScrub` is set; placeholder otherwise. ── */}
-        <div className="lab-pv lab-pv--reveal" data-version="3" hidden>
+        <div className="lab-pv lab-pv--reveal" data-version="3" hidden={version !== 3}>
           <div className="wrap lab-rv__grid">
             <div className="lab-process__copy lab-rv__copy">
               {/* head flies UP and fades as --pin advances (exit-upward = "back") */}
