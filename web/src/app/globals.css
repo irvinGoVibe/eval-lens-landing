@@ -811,8 +811,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   font-weight:500;letter-spacing:-.02em;
   font-size:17px;line-height:1.1;
   padding:17px 34px;min-height:56px;
-  backdrop-filter:blur(44px) saturate(1.9) brightness(1.06);
   -webkit-backdrop-filter:blur(44px) saturate(1.9) brightness(1.06);
+  backdrop-filter:blur(44px) saturate(1.9) brightness(1.06);
   border:1px solid rgba(255,255,255,.38);
   background:rgba(255,255,255,.08);
   color:#f8fafc;
@@ -867,8 +867,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cinematic-demo .lab-cinema__cta .btn:hover,
 .lab-hero.ink .cta-row .btn:hover{
   border-color:rgba(255,255,255,.52);
-  backdrop-filter:blur(48px) saturate(2) brightness(1.1);
   -webkit-backdrop-filter:blur(48px) saturate(2) brightness(1.1);
+  backdrop-filter:blur(48px) saturate(2) brightness(1.1);
   box-shadow:
     inset 0 2px 0 rgba(255,255,255,.82),
     inset 0 -1px 0 rgba(255,255,255,.2),
@@ -4909,10 +4909,10 @@ section.band.ink .mini-tag{color:var(--lavender);}
 /* side darkening — fade the video's left & right edges into the surface */
 .lab-rv__square::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(90deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,0) 17%, rgba(0,0,0,0) 83%, rgba(0,0,0,.62) 100%);}
-/* the sliding layer — taller than the square; drifts up under the fixed frame as
-   --pin advances (subtle parallax, ui-ux §7 parallax-subtle). Holds the scrubbed
-   video or the placeholder gradient. */
-.lab-rv__slide{position:absolute;left:0;right:0;top:-10%;width:100%;height:120%;object-fit:cover;display:block;will-change:transform;transform:translateY(calc(-16% * clamp(0, var(--pin,0), 1)));}
+/* the slide layer fills the square exactly; the scrubbed video is shown WHOLE
+   (object-fit:contain) — the clip is ~16:9 like the frame, so it reads full-bleed
+   with no edge crop. The placeholder gradient still fills the box. */
+.lab-rv__slide{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;}
 .lab-rv__slide--ph{background:linear-gradient(180deg, #1a1640 0%, #0c0c14 46%, #171132 74%, #0a0a0d 100%);}
 /* v1 photo mode — cross-fading stack inside .lab-rv__square (same frame as the
    v3 video). The active photo is the one whose --i equals --pin-step (ScrollFX);
@@ -7769,5 +7769,920 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
 @keyframes vl-nebula-drift{
   from{ transform:translate3d(0,0,0) scale(1); }
   to  { transform:translate3d(-1.2%,-1%,0) scale(1.04); }
+}
+
+/* ============================================================
+   /dev/ds-theme — page-scoped showcase styles (all under .ds-theme).
+   The page assembles existing Lab* sections; nothing here restyles a
+   Lab* component — these rules only (a) paint atmosphere layers on the
+   bg-* sections (the Lab* components don't render the `__layer` child the
+   bg-* utilities expect, so the atmosphere is drawn via ::before here),
+   (b) keep the nebula apex section transparent so its blob shows,
+   (c) size the transition zones, (d) lay out the RiseOver chapter overlap,
+   and (A/B) the page-scoped lens-panel card system + dark media frames.
+   ============================================================ */
+
+/* (A0) card tokens — LIGHT, contrasty, gradient-based cards built from the
+   existing brand palette. The card stays light (≥92% white) with DARK text, but
+   carries a visible brand tint, a violet border and a violet shadow so the
+   lens-soft family reads as ONE gradient language flowing into the dark chapter.
+   color-mix(in oklab,…) is used as a FUNCTION only (no raw oklab/oklch STOPS),
+   so Lightning-CSS keeps every rule. Dark text on these tints keeps AA. */
+.ds-theme{
+  --dsc-card: linear-gradient(162deg,#ffffff 0%, color-mix(in oklab, var(--violet) 8%, #ffffff) 100%);
+  --dsc-card-feature: linear-gradient(135deg, color-mix(in oklab,var(--violet) 14%, #ffffff) 0%, color-mix(in oklab,var(--cyan) 10%, #ffffff) 55%, color-mix(in oklab,var(--aqua) 11%, #ffffff) 100%);
+  --dsc-border: color-mix(in oklab, var(--violet) 20%, transparent);
+  --dsc-border-strong: color-mix(in oklab, var(--violet) 34%, transparent);
+  --dsc-shadow: 0 1px 0 #ffffff inset, 0 2px 8px -4px color-mix(in oklab,var(--violet) 20%, transparent), 0 26px 60px -30px color-mix(in oklab,var(--violet) 40%, transparent);
+  --dsc-radius:var(--r-lg);
+}
+
+/* (a) atmosphere top-ups — the bg-* utilities normally paint a `> .__layer`
+   child; the Lab* sections that carry these classes don't render one, so we
+   draw the same wash with a scoped ::before. One Lens-adjacent accent per
+   section; never a full content background. */
+.ds-theme .lab-hero.bg-cool-mist::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(60% 54% at 80% 14%,
+      color-mix(in oklab, var(--cyan) 18%, transparent) 0%,
+      color-mix(in oklab, var(--cyan) 8%, transparent) 44%,
+      transparent 76%),
+    radial-gradient(54% 48% at 16% 92%,
+      color-mix(in oklab, var(--lavender) 13%, transparent) 0%,
+      transparent 72%);
+}
+.ds-theme .lab-bento.bg-line-field::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  pointer-events:none;
+  background-image:
+    linear-gradient(90deg, color-mix(in oklab, var(--violet) 16%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in oklab, var(--cyan) 14%, transparent) 1px, transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+          mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+}
+.ds-theme .lab-quiet-cta.bg-violet-halo::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(62% 54% at 50% 20%,
+      color-mix(in oklab, var(--violet) 20%, transparent) 0%,
+      color-mix(in oklab, var(--lavender) 12%, transparent) 42%,
+      transparent 76%);
+}
+/* keep the section's own content above the wash */
+.ds-theme .lab-hero.bg-cool-mist,
+.ds-theme .lab-bento.bg-line-field,
+.ds-theme .lab-quiet-cta.bg-violet-halo{ position:relative; isolation:isolate; }
+.ds-theme .lab-hero.bg-cool-mist > *,
+.ds-theme .lab-bento.bg-line-field > *,
+.ds-theme .lab-quiet-cta.bg-violet-halo > *{ position:relative; z-index:1; }
+@media (max-width:600px){
+  /* cheaper paint on mobile: drop the second radial on the hero wash */
+  .ds-theme .lab-hero.bg-cool-mist::before{
+    background:
+      radial-gradient(60% 54% at 80% 14%,
+        color-mix(in oklab, var(--cyan) 18%, transparent) 0%,
+        color-mix(in oklab, var(--cyan) 8%, transparent) 44%,
+        transparent 76%);
+  }
+}
+
+/* (b) decision apex — now a real <LabFullStatement surface="ink"> instance (no
+   inline nebula blob markup). Give the apex a rich DEEP nebula-leaning gradient
+   (hex stops, no raw oklab) so it reads cohesive with the dark chapter and is
+   NOT a flat black band. `.ink` already supplies light text, so no manual colour
+   flips are needed. The archetype sets `min-height:100svh` + grid-centers, which
+   on a tall viewport leaves a void above the heading — demote it to a premium
+   statement: drop the oversized min-height, give symmetric padding, flex-center
+   the content. */
+.ds-theme #decision.band.ink{
+  background:linear-gradient(160deg,#160f2e 0%, #0c0a1c 60%, #0a0509 100%);
+  min-height:auto;
+  padding-block:clamp(72px,11vw,132px);
+}
+.ds-theme #decision .wrap{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+/* (c) transition zones — tall calm zones on desktop, shorter on mobile so a
+   bridge never eats a whole 390px screen. The seam hairlines stay 1px.
+   The two-attribute `[data-from][data-to]` selectors carry the page-scope
+   class so they out-specify the shared `tr-gradient-bridge[data-from][data-to]`
+   ramps (e.g. the near-flat light↔soft rule that otherwise collapses the
+   risk→soft bridge to ~25px); every `.ds-theme` bridge gets the same height. */
+.ds-theme .tr-gradient-bridge,
+.ds-theme .tr-gradient-bridge[data-from][data-to],
+.ds-theme .tr-masked-divider{
+  height:clamp(220px,30vw,420px);
+}
+@media (max-width:600px){
+  .ds-theme .tr-gradient-bridge,
+  .ds-theme .tr-gradient-bridge[data-from][data-to],
+  .ds-theme .tr-masked-divider{
+    height:clamp(120px,32vw,200px);
+  }
+}
+
+/* (e) dark-pipeline ambient — LabPinnedSteps (#process, surface ink) takes no
+   className, so it would render on flat #000. DS rule: never flat #000 on dark.
+   Paint a page-scoped ambient glow (same values as .bg-ink-ambient-glow, in
+   hex/rgb so Lightning-CSS keeps it): top-violet + bottom-cyan wash behind the
+   pipeline. This is the first rung of the atmosphere ladder
+   process(ambient) → confidence(scene) → decision(nebula blob). */
+.ds-theme #process.band.ink{ position:relative; isolation:isolate; }
+.ds-theme #process.band.ink::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 78% 18%,
+      rgba(108,76,241,.16) 0%, rgba(108,76,241,.08) 40%, transparent 72%),
+    radial-gradient(55% 48% at 16% 88%,
+      rgba(46,197,232,.12) 0%, transparent 70%);
+}
+/* keep the pipeline content above the glow (band children aren't z-indexed
+   by default) */
+.ds-theme #process.band.ink > *{ position:relative; z-index:1; }
+
+/* (f) CTA anchor — clip the cta-band's full-bleed aurora/video layers so they
+   can't push the document past the viewport on narrow screens. */
+.ds-theme .ds-cta-anchor{ overflow-x:clip; }
+
+/* (f2) Mirror the .ds-sections-scoped sizing so the reused section components
+   render identically on /dev/ds-theme as on /dev/ds-sections (pin track travel,
+   the full-bleed gallery lane, and the CTA seam). Source: components/ds/ds.css
+   (lines ~100/106/135/146). */
+.ds-theme .lab-process{ min-height:calc(100svh + var(--steps,4) * 70svh); }
+
+.ds-theme .lab-gallery__lane:not(.lab-gallery__lane--expr){
+  margin-inline:calc(50% - 50vw);
+  padding-inline:max(var(--gutter), calc((100vw - var(--maxw)) / 2));
+  padding-block:clamp(56px,7.5vw,116px);
+}
+.ds-theme .lab-gallery__v--expr{
+  margin-inline:calc(50% - 50vw);
+  width:100vw;
+}
+
+.ds-theme .cta-band{ margin-top:-1px; }
+
+/* (d) Chapter transitions — surface changes use the project's canonical
+   sibling-divider primitives (`tr-masked-divider`, `tr-lens-seam`,
+   `tr-gradient-bridge`) placed directly in the page between sections. They are
+   plain full-width elements with NO transform/overflow wrapper, so they never
+   break `position:sticky` on the pinned #process / .ds-cinema stages. */
+
+/* ============================================================
+   (A) CARD COLOR SYSTEM — light sections get LIGHT, contrasty, gradient cards
+   (lens-soft family): a brand-tinted near-white fill, a violet border and a
+   violet shadow, with DARK text kept intact. The two light sections on the page
+   (#value bento, #uses gallery) share the SAME card material. Selectors verified
+   against the live Lab* markup:
+     • #value → .lab-bento__tile  (+ --feature),  inner .mini-tag / h3 / p
+     • #uses  → .lab-gallery__card,  inner .mini-tag / h3 / p
+   ============================================================ */
+
+/* — shared light card surface — */
+.ds-theme #value .lab-bento__tile,
+.ds-theme #uses .lab-gallery__card{
+  position:relative;
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+}
+
+/* ── #value — bento tiles ── */
+.ds-theme #value .lab-bento__tile{
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.ds-theme #value .lab-bento__tile--feature{
+  background:var(--dsc-card-feature);
+  border-color:var(--dsc-border-strong);
+}
+.ds-theme #value .lab-bento__tile:hover{
+  transform:translateY(-3px);
+  border-color:var(--dsc-border-strong);
+}
+
+/* ── #uses — gallery cards share the bento card material; keep the dark text the
+   archetype already applies on the soft surface and lift on hover ── */
+.ds-theme #uses .lab-gallery__card{
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.ds-theme #uses .lab-gallery__card:hover{
+  transform:translateY(-3px);
+  border-color:var(--dsc-border-strong);
+}
+
+/* ============================================================
+   (C) LIGHT-SECTION MEDIA = branded, contrasty deep frames (--lens-deep), NOT
+   black. Overrides `.media-ph` ONLY in #value (the bento media slot — the v1
+   hero has no media, the gallery has no media slot). lens-deep is a dark
+   violet→teal gradient, so label/hint text goes light. The sheen is a NON-blur
+   gradient overlay (no backdrop-filter). Real img/video gets a normal `filter`
+   (allowed — it is NOT backdrop-filter).
+   ============================================================ */
+.ds-theme #value .media-ph{
+  background:var(--lens-deep);
+  border:1px solid var(--dsc-border-strong);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  overflow:hidden;
+}
+/* the archetype's dashed/striped fill on .media-ph::before would fight the deep
+   frame — replace it with a calm non-blur diagonal sheen */
+.ds-theme #value .media-ph::before{
+  background:none;
+}
+.ds-theme #value .media-ph::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(135deg,#a99bff33,#a99bff00 32%),
+    linear-gradient(315deg,#36e0c229,#36e0c200 30%);
+}
+.ds-theme #value .media-ph > *{ position:relative; z-index:1; }
+.ds-theme #value .media-ph__label{
+  color:#eef;
+  background:#ffffff1f;
+  border:1px solid #ffffff33;
+}
+.ds-theme #value .media-ph__hint{ color:#cfcce8; }
+/* real media (when a src lands) — normal filter, not backdrop-filter */
+.ds-theme #value .media-ph img,
+.ds-theme #value .media-ph video{
+  filter:contrast(1.06) saturate(1.08);
+}
+
+/* ============================================================
+   /dev/ds-theme-2 — page-scoped showcase styles (all under .ds-theme-2).
+   Built from the SAME lens palette as .ds-theme so light and dark read as one
+   visual system (anti-zebra). The light chapters carry brand-tinted near-white
+   cards + faint lens washes; the single dark chapter is a continuous nebula
+   tone-ramp (process → confidence → decision), never flat #000. The transition
+   layer (LensBridge / GlassWipe / RiseOver in _motion.tsx) reuses the shared
+   `.bg-glass-tinted` liquid-glass material and is welded with the same
+   violet→cyan→aqua seams. No rule here restyles a Lab* component's internals.
+   ============================================================ */
+
+/* (A0) card tokens — identical lens-soft family to .ds-theme so both pages
+   speak ONE gradient language. color-mix used as a FUNCTION only (no raw
+   oklab/oklch STOPS) so Lightning-CSS keeps every rule. */
+.ds-theme-2{
+  --dsc-card: linear-gradient(162deg,#ffffff 0%, color-mix(in oklab, var(--violet) 8%, #ffffff) 100%);
+  --dsc-card-feature: linear-gradient(135deg, color-mix(in oklab,var(--violet) 14%, #ffffff) 0%, color-mix(in oklab,var(--cyan) 10%, #ffffff) 55%, color-mix(in oklab,var(--aqua) 11%, #ffffff) 100%);
+  --dsc-border: color-mix(in oklab, var(--violet) 20%, transparent);
+  --dsc-border-strong: color-mix(in oklab, var(--violet) 34%, transparent);
+  --dsc-shadow: 0 1px 0 #ffffff inset, 0 2px 8px -4px color-mix(in oklab,var(--violet) 20%, transparent), 0 26px 60px -30px color-mix(in oklab,var(--violet) 40%, transparent);
+  --dsc-radius:var(--r-lg);
+  /* the page's dark-chapter base — a nebula, never #000 */
+  --ds2-nebula:#0a0509;
+}
+
+/* (a) atmosphere top-ups — same ::before technique as .ds-theme (Lab* sections
+   don't render the `.__layer` the bg-* utilities paint into). One Lens-adjacent
+   accent per section, never a full content background. */
+.ds-theme-2 .lab-hero.bg-cool-mist::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 54% at 80% 14%,
+      color-mix(in oklab, var(--cyan) 18%, transparent) 0%,
+      color-mix(in oklab, var(--cyan) 8%, transparent) 44%, transparent 76%),
+    radial-gradient(54% 48% at 16% 92%,
+      color-mix(in oklab, var(--lavender) 13%, transparent) 0%, transparent 72%);
+}
+.ds-theme-2 .lab-bento.bg-line-field::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(90deg, color-mix(in oklab, var(--violet) 16%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in oklab, var(--cyan) 14%, transparent) 1px, transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+          mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+}
+.ds-theme-2 .lab-quiet-cta.bg-violet-halo::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(62% 54% at 50% 20%,
+      color-mix(in oklab, var(--violet) 20%, transparent) 0%,
+      color-mix(in oklab, var(--lavender) 12%, transparent) 42%, transparent 76%);
+}
+.ds-theme-2 .lab-hero.bg-cool-mist,
+.ds-theme-2 .lab-bento.bg-line-field,
+.ds-theme-2 .lab-quiet-cta.bg-violet-halo{ position:relative; isolation:isolate; }
+.ds-theme-2 .lab-hero.bg-cool-mist > *,
+.ds-theme-2 .lab-bento.bg-line-field > *,
+.ds-theme-2 .lab-quiet-cta.bg-violet-halo > *{ position:relative; z-index:1; }
+@media (max-width:600px){
+  .ds-theme-2 .lab-hero.bg-cool-mist::before{
+    background:
+      radial-gradient(60% 54% at 80% 14%,
+        color-mix(in oklab, var(--cyan) 18%, transparent) 0%,
+        color-mix(in oklab, var(--cyan) 8%, transparent) 44%, transparent 76%);
+  }
+}
+
+/* (b) dark chapter — ONE continuous nebula tone-ramp so the three ink sections
+   never read as three separate black blocks. Tones deepen toward the apex:
+   process (raised) → confidence (mid) → decision (deep). Each carries a soft
+   violet+cyan radial so it is atmospheric, not flat. */
+.ds-theme-2 #process.band.ink,
+.ds-theme-2 #confidence.band.ink,
+.ds-theme-2 #decision.band.ink{ position:relative; isolation:isolate; }
+.ds-theme-2 #process.band.ink{
+  background:linear-gradient(180deg,#0d0a1f 0%, #0a0712 100%);
+}
+.ds-theme-2 #confidence.band.ink{
+  background:linear-gradient(176deg,#0a0712 0%, #0b0816 55%, #0a060f 100%);
+}
+.ds-theme-2 #decision.band.ink{
+  background:linear-gradient(160deg,#160f2e 0%, #0c0a1c 60%, #0a0509 100%);
+  min-height:auto;
+  padding-block:clamp(72px,11vw,132px);
+}
+.ds-theme-2 #process.band.ink::before,
+.ds-theme-2 #confidence.band.ink::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 78% 18%,
+      rgba(108,76,241,.16) 0%, rgba(108,76,241,.08) 40%, transparent 72%),
+    radial-gradient(55% 48% at 16% 88%,
+      rgba(46,197,232,.12) 0%, transparent 70%);
+}
+.ds-theme-2 #process.band.ink > *,
+.ds-theme-2 #confidence.band.ink > *{ position:relative; z-index:1; }
+.ds-theme-2 #decision .wrap{
+  display:flex; flex-direction:column; justify-content:center;
+}
+
+/* (c) transition zones — tall calm bridges on desktop, shorter on mobile. */
+.ds-theme-2 .tr-gradient-bridge,
+.ds-theme-2 .tr-gradient-bridge[data-from][data-to]{
+  height:clamp(200px,26vw,360px);
+}
+@media (max-width:600px){
+  .ds-theme-2 .tr-gradient-bridge,
+  .ds-theme-2 .tr-gradient-bridge[data-from][data-to]{
+    height:clamp(120px,32vw,180px);
+  }
+}
+
+/* (d) CTA anchor — clip the cta-band full-bleed aurora/video so it can't push
+   the document past the viewport on narrow screens. */
+.ds-theme-2 .ds2-cta-anchor{ overflow-x:clip; }
+
+/* (e) RiseOver — the light methodology chapter lifts UP and settles over the
+   dark cinema (dark → light return). Opaque light background + 1px lens seam;
+   overflow:hidden + the negative margin only on the block axis → no horizontal
+   overflow. Transform driven by motion/react; reduced-motion neutralises it. */
+.ds-theme-2 .ds2-riseover{
+  position:relative; z-index:3;
+  margin-top:clamp(-120px,-9vw,-64px);
+  overflow:hidden;
+  background:var(--ds2-nebula);
+  will-change:transform; transform-origin:center top;
+  box-shadow:0 -24px 60px -30px #00000099;
+}
+.ds-theme-2 .ds2-riseover::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:1px; z-index:4;
+  background:linear-gradient(90deg,#6c4cf100,#6c4cf1 18%,#2ec5e8 50%,#36e0c2 82%,#36e0c200);
+  opacity:.6;
+}
+.ds-theme-2 .ds2-riseover--light{
+  background:#ffffff;
+  box-shadow:0 -24px 60px -30px #2a1a8a40;
+}
+.ds-theme-2 .ds2-riseover--light::before{ opacity:.45; }
+@media (max-width:600px){
+  .ds-theme-2 .ds2-riseover{ margin-top:clamp(-72px,-12vw,-40px); }
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-theme-2 .ds2-riseover,
+  .ds-theme-2 .ds2-riseover--light{
+    margin-top:0; border-radius:0; transform:none; box-shadow:none;
+  }
+}
+
+/* (f) LENS BRIDGE — a glass "product window" straddling the light editorial and
+   the darkening glass-wipe; one shared anchor tying the two surfaces. Capped
+   width (no horizontal overflow); negative block margins overlap the neighbours.
+   Glass material reused via `.bg-glass-tinted`. */
+.ds-theme-2 .ds2-lens-bridge{
+  position:relative; z-index:5;
+  display:flex; justify-content:center;
+  padding-inline:var(--gutter);
+  margin-top:clamp(-128px,-12vw,-72px);
+  margin-bottom:clamp(-128px,-12vw,-72px);
+  pointer-events:none;
+  /* the band sits on the soft surface so the editorial → wipe seam stays
+     continuous (no white page-background showing through the bridge's height);
+     the soft top of the GlassWipe below picks the colour up unbroken. */
+  background:#f5f5f7;
+}
+.ds-theme-2 .ds2-lens-bridge__window{
+  position:relative; overflow:hidden;
+  width:min(720px,100%);
+  aspect-ratio:16/9;
+  border-radius:var(--r-lg);
+  /* deepen the inner so the window reads as a real product surface, not glass
+     over nothing; the .bg-glass-tinted border/blur sit on top */
+  background:
+    var(--lens-deep, linear-gradient(150deg,#160f2e,#0a1620));
+  box-shadow:
+    0 1px 0 #ffffff22 inset,
+    0 40px 90px -44px rgba(20,10,60,.55);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  gap:6px; padding:18px 20px;
+}
+.ds-theme-2 .ds2-lens-bridge__sheen{
+  position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(135deg,#a99bff38,#a99bff00 34%),
+    linear-gradient(315deg,#36e0c22e,#36e0c200 32%);
+}
+.ds-theme-2 .ds2-lens-bridge__label,
+.ds-theme-2 .ds2-lens-bridge__hint{ position:relative; z-index:1; }
+.ds-theme-2 .ds2-lens-bridge__label{
+  align-self:flex-start;
+  font:600 11px/1 var(--font-mono,ui-monospace,monospace);
+  letter-spacing:.12em; text-transform:uppercase;
+  color:#eef; padding:6px 10px; border-radius:999px;
+  background:#ffffff1f; border:1px solid #ffffff33;
+}
+.ds-theme-2 .ds2-lens-bridge__hint{ color:#cfcce8; font-size:13px; }
+@media (max-width:600px){
+  .ds-theme-2 .ds2-lens-bridge{
+    margin-top:clamp(-84px,-16vw,-48px);
+    margin-bottom:clamp(-84px,-16vw,-48px);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-theme-2 .ds2-lens-bridge__window{ transform:none; }
+}
+
+/* (g) FROSTED GLASS WIPE — Apple Vision Pro flavour. A sticky frosted slab
+   travels the viewport while the band behind it ramps soft → nebula; the
+   surface visibly changes "behind the glass". Self-contained band: it carries
+   only the dark chapter's opening line, so it can never cover real content. */
+.ds-theme-2 .ds2-wipe{
+  position:relative;
+  height:clamp(620px,150vh,1180px);
+  overflow:clip;
+  /* the band itself performs the surface change top→bottom */
+  background:linear-gradient(180deg,
+    #f5f5f7 0%, #efeefa 26%, #2a2148 62%, #120e2a 84%, var(--ds2-nebula) 100%);
+}
+.ds-theme-2 .ds2-wipe__sticky{
+  position:sticky; top:0;
+  height:100vh; min-height:520px;
+  overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+/* faint lens grid the frosted slab blurs over */
+.ds-theme-2 .ds2-wipe__field{
+  position:absolute; inset:-10%; z-index:0; pointer-events:none;
+  background-image:
+    radial-gradient(46% 40% at 30% 30%, rgba(108,76,241,.28) 0%, transparent 60%),
+    radial-gradient(42% 38% at 74% 70%, rgba(46,197,232,.22) 0%, transparent 58%),
+    linear-gradient(90deg, rgba(169,155,255,.10) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(54,224,194,.08) 1px, transparent 1px);
+  background-size:auto,auto,52px 52px,52px 52px;
+}
+.ds-theme-2 .ds2-wipe__slab{
+  position:relative; z-index:1;
+  width:min(760px,90%);
+  padding:clamp(28px,5vw,52px) clamp(26px,5vw,48px);
+  border-radius:var(--r-lg);
+  text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  box-shadow:0 50px 120px -56px rgba(10,5,30,.7);
+  will-change:transform;
+}
+.ds-theme-2 .ds2-wipe__eyebrow{
+  font:600 11px/1 var(--font-mono,ui-monospace,monospace);
+  letter-spacing:.16em; text-transform:uppercase;
+  color:#d9d4ff;
+}
+.ds-theme-2 .ds2-wipe__line{
+  margin:0; max-width:34ch;
+  font-size:clamp(19px,2.4vw,28px); line-height:1.32;
+  color:#f3f1ff; font-weight:500;
+}
+@media (max-width:600px){
+  .ds-theme-2 .ds2-wipe{ height:clamp(560px,128vh,900px); }
+  .ds-theme-2 .ds2-wipe__field{
+    background-image:
+      radial-gradient(46% 40% at 30% 30%, rgba(108,76,241,.28) 0%, transparent 60%),
+      radial-gradient(42% 38% at 74% 70%, rgba(46,197,232,.22) 0%, transparent 58%);
+  }
+}
+/* reduced motion → static centered glass bridge, no travel, no sticky scrub */
+@media (prefers-reduced-motion:reduce){
+  .ds-theme-2 .ds2-wipe{ height:auto; }
+  .ds-theme-2 .ds2-wipe__sticky{
+    position:static; height:auto; min-height:0;
+    padding-block:clamp(64px,12vw,120px);
+  }
+  .ds-theme-2 .ds2-wipe__slab{ transform:none; }
+}
+
+/* (A) light-section card system — same lens-soft cards as .ds-theme so the two
+   light chapters match; verified against live Lab* markup:
+     #value → .lab-bento__tile (+ --feature) · #methodology → .lab-numbered__list>li
+     stat band → .lab-stats__grid>li · #evidence → .lab-split__frame */
+.ds-theme-2 #value .lab-bento__tile,
+.ds-theme-2 #methodology .lab-numbered__list > li,
+.ds-theme-2 .lab-stats .lab-stats__grid > li{
+  position:relative;
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+}
+.ds-theme-2 #value .lab-bento__tile{
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.ds-theme-2 #value .lab-bento__tile--feature{
+  background:var(--dsc-card-feature);
+  border-color:var(--dsc-border-strong);
+}
+.ds-theme-2 #value .lab-bento__tile:hover{
+  transform:translateY(-3px); border-color:var(--dsc-border-strong);
+}
+.ds-theme-2 #methodology .lab-numbered__list{ list-style:none; }
+.ds-theme-2 #methodology .lab-numbered__list > li{
+  border-radius:var(--r-md); padding:22px 24px; margin-block:10px;
+  border-top:1px solid var(--dsc-border);
+}
+.ds-theme-2 .lab-stats .lab-stats__grid > li{ padding:26px 26px 24px; }
+.ds-theme-2 .lab-stats .lab-stats__grid > li strong{
+  background:var(--lens);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+}
+.ds-theme-2 #evidence .lab-split__frame{
+  background:var(--dsc-card-feature);
+  border:1px solid var(--dsc-border-strong);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+}
+
+/* (B) light-section media frames — branded deep frames (--lens-deep), not black,
+   matching .ds-theme. Applies only where a light section renders a .media-ph. */
+.ds-theme-2 #value .media-ph,
+.ds-theme-2 #evidence .media-ph{
+  background:var(--lens-deep);
+  border:1px solid var(--dsc-border-strong);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  overflow:hidden;
+}
+.ds-theme-2 #value .media-ph::before,
+.ds-theme-2 #evidence .media-ph::before{ background:none; }
+.ds-theme-2 #value .media-ph::after,
+.ds-theme-2 #evidence .media-ph::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(135deg,#a99bff33,#a99bff00 32%),
+    linear-gradient(315deg,#36e0c229,#36e0c200 30%);
+}
+.ds-theme-2 #value .media-ph > *,
+.ds-theme-2 #evidence .media-ph > *{ position:relative; z-index:1; }
+.ds-theme-2 #value .media-ph__label,
+.ds-theme-2 #evidence .media-ph__label{
+  color:#eef; background:#ffffff1f; border:1px solid #ffffff33;
+}
+.ds-theme-2 #value .media-ph__hint,
+.ds-theme-2 #evidence .media-ph__hint{ color:#cfcce8; }
+.ds-theme-2 #value .media-ph img,
+.ds-theme-2 #value .media-ph video,
+.ds-theme-2 #evidence .media-ph img,
+.ds-theme-2 #evidence .media-ph video{
+  filter:contrast(1.06) saturate(1.08);
+}
+
+/* ============================================================
+   /dev/ds-theme-3 — "Silver Nebula", page-scoped showcase styles (all under
+   .ds-theme-3). Same TECHNIQUE as .ds-theme-2 but a cooler/electric re-theme:
+   a silver-white light card system + faint cooler lens washes, and a single
+   continuous navy-violet nebula tone-ramp (process → confidence → decision),
+   never flat #000. The transition layer (LightToDarkRise / DarkToLightLift /
+   GradientDissolve in _motion.tsx) is all scroll-linked slabs/gradients — NO
+   backdrop-blur / frosted glass. No rule here restyles a Lab* component's
+   internals. color-mix used as a FUNCTION only (no raw oklab/oklch STOPS) so
+   Lightning-CSS keeps every rule.
+   ============================================================ */
+
+/* (A0) token overrides — cooler silver-white light surface + electric lens hues
+   shifted cooler. Overriding --bg-soft/--violet/--cyan/--aqua re-themes every
+   Lab* surface and every tr-* seam/bridge automatically. */
+.ds-theme-3{
+  /* cooler silver-white light surface (vs ds-theme-2's #f5f5f7) */
+  --bg-soft:#f4f6fb;
+  /* lens hues shifted cooler/electric — keep violet→lavender→cyan→aqua lineage */
+  --violet:#6e5cf2;
+  --lavender:#8b7bff;   /* electric lavender = primary accent */
+  --cyan:#57b3ea;       /* ice-blue */
+  --aqua:#36e0c2;       /* keep, used sparingly */
+  /* navy-violet deep frame for branded media (replaces #3a1d8f→#1d8f7e) */
+  --lens-deep:linear-gradient(135deg,#2a1f7a 0%, #16407a 100%);
+  /* derived light card system — inherits the new --violet/--cyan/--aqua */
+  --dsc-card:linear-gradient(162deg,#ffffff 0%, color-mix(in oklab, var(--violet) 7%, #ffffff) 100%);
+  --dsc-card-feature:linear-gradient(135deg, color-mix(in oklab,var(--violet) 13%, #ffffff) 0%, color-mix(in oklab,var(--cyan) 10%, #ffffff) 55%, color-mix(in oklab,var(--aqua) 11%, #ffffff) 100%);
+  --dsc-border:color-mix(in oklab, var(--violet) 20%, transparent);
+  --dsc-border-strong:color-mix(in oklab, var(--violet) 32%, transparent);
+  --dsc-shadow:0 1px 0 #ffffff inset, 0 2px 8px -4px color-mix(in oklab,var(--violet) 18%, transparent), 0 26px 60px -30px color-mix(in oklab,var(--violet) 38%, transparent);
+  --dsc-radius:var(--r-lg);
+  /* the page's dark-chapter base — a navy-black nebula, never #000 */
+  --ds3-nebula:#070a16;
+}
+
+/* (a) atmosphere top-ups — same ::before technique as .ds-theme-2, cooler hues
+   via color-mix so they auto-pick up Silver Nebula. One Lens-adjacent accent per
+   section, never a full content background. isolation:isolate + z-index wrappers
+   keep section content above the wash. */
+.ds-theme-3 .lab-hero.bg-cool-mist::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 54% at 80% 14%,
+      color-mix(in oklab, var(--cyan) 20%, transparent) 0%,
+      color-mix(in oklab, var(--cyan) 9%, transparent) 44%, transparent 76%),
+    radial-gradient(54% 48% at 16% 92%,
+      color-mix(in oklab, var(--lavender) 15%, transparent) 0%, transparent 72%);
+}
+.ds-theme-3 .lab-bento.bg-line-field::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(90deg, color-mix(in oklab, var(--violet) 16%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in oklab, var(--cyan) 14%, transparent) 1px, transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+          mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+}
+.ds-theme-3 .lab-quiet-cta.bg-violet-halo::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(62% 54% at 50% 20%,
+      color-mix(in oklab, var(--lavender) 22%, transparent) 0%,
+      color-mix(in oklab, var(--cyan) 12%, transparent) 42%, transparent 76%);
+}
+.ds-theme-3 .lab-hero.bg-cool-mist,
+.ds-theme-3 .lab-bento.bg-line-field,
+.ds-theme-3 .lab-quiet-cta.bg-violet-halo{ position:relative; isolation:isolate; }
+.ds-theme-3 .lab-hero.bg-cool-mist > *,
+.ds-theme-3 .lab-bento.bg-line-field > *,
+.ds-theme-3 .lab-quiet-cta.bg-violet-halo > *{ position:relative; z-index:1; }
+@media (max-width:600px){
+  .ds-theme-3 .lab-hero.bg-cool-mist::before{
+    background:
+      radial-gradient(60% 54% at 80% 14%,
+        color-mix(in oklab, var(--cyan) 20%, transparent) 0%,
+        color-mix(in oklab, var(--cyan) 9%, transparent) 44%, transparent 76%);
+  }
+}
+
+/* (b) dark chapter — ONE continuous navy-violet nebula tone-ramp so the three
+   ink sections never read as three separate black blocks: navy-violet raised →
+   navy mid → violet-black apex. Each carries a soft electric-lavender + ice-blue
+   radial so it is atmospheric, not flat. */
+.ds-theme-3 #process.band.ink,
+.ds-theme-3 #confidence.band.ink,
+.ds-theme-3 #decision.band.ink{ position:relative; isolation:isolate; }
+.ds-theme-3 #process.band.ink{
+  background:linear-gradient(180deg,#0e1228 0%, #0a0e1f 100%);
+}
+.ds-theme-3 #confidence.band.ink{
+  background:linear-gradient(176deg,#0a0e1f 0%, #0b1024 55%, #080b18 100%);
+}
+.ds-theme-3 #decision.band.ink{
+  background:linear-gradient(160deg,#181430 0%, #0c1024 60%, #070a16 100%);
+  min-height:auto;
+  padding-block:clamp(72px,11vw,132px);
+}
+.ds-theme-3 #process.band.ink::before,
+.ds-theme-3 #confidence.band.ink::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 78% 18%,
+      rgba(139,123,255,.16) 0%, rgba(139,123,255,.08) 40%, transparent 72%),
+    radial-gradient(55% 48% at 16% 88%,
+      rgba(87,179,234,.12) 0%, transparent 70%);
+}
+.ds-theme-3 #process.band.ink > *,
+.ds-theme-3 #confidence.band.ink > *{ position:relative; z-index:1; }
+.ds-theme-3 #decision .wrap{
+  display:flex; flex-direction:column; justify-content:center;
+}
+
+/* CTA finale — LabQuietCta surface="ink" renders as #cta.band.ink. Theme it as
+   the same deep navy-violet nebula as #decision (NOT flat black), with a soft
+   electric-lavender + ice-blue accent radial so the dissolve lands on tone. */
+.ds-theme-3 #cta.band.ink{
+  position:relative; isolation:isolate;
+  background:linear-gradient(160deg,#181430 0%, #0c1024 60%, #070a16 100%);
+}
+.ds-theme-3 #cta.band.ink::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 50% 16%, rgba(139,123,255,.16) 0%, rgba(139,123,255,.08) 40%, transparent 72%),
+    radial-gradient(55% 48% at 16% 90%, rgba(87,179,234,.12) 0%, transparent 70%);
+}
+.ds-theme-3 #cta.band.ink > *{ position:relative; z-index:1; }
+
+/* (c) gradient-bridge transition zones — tall calm bridges on desktop, shorter
+   on mobile (none placed on this page directly, kept for parity with the
+   tr-gradient-bridge primitive if reused). */
+.ds-theme-3 .tr-gradient-bridge,
+.ds-theme-3 .tr-gradient-bridge[data-from][data-to]{
+  height:clamp(200px,26vw,360px);
+}
+@media (max-width:600px){
+  .ds-theme-3 .tr-gradient-bridge,
+  .ds-theme-3 .tr-gradient-bridge[data-from][data-to]{
+    height:clamp(120px,32vw,180px);
+  }
+}
+
+/* (e) LightToDarkRise — a self-contained LIGHT→DARK bridge BAND. A dark rounded
+   slab rises over the preceding light bento and bleeds opaquely into the dark
+   pipeline chapter (no white gap). overflow:hidden + negative bottom margin only
+   on the block axis → no horizontal overflow. Transform driven by motion/react;
+   reduced-motion neutralises it. */
+.ds-theme-3 .ds3-riseover{
+  position:relative; z-index:3;
+  overflow:hidden;
+  padding-block:clamp(96px,16vw,200px) 0;
+  margin-bottom:clamp(-64px,-7vw,-32px);
+  /* opaque nebula bg so the slab's settle + the bleed into #process is seamless */
+  background:var(--ds3-nebula);
+}
+.ds-theme-3 .ds3-riseover__slab{
+  position:relative;
+  margin-inline:auto;
+  width:min(1100px,100%);
+  padding:clamp(40px,7vw,88px) clamp(26px,5vw,56px) clamp(64px,9vw,120px);
+  background:var(--ds3-nebula);
+  box-shadow:0 -24px 60px -30px #00000099;
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  text-align:center;
+  will-change:transform; transform-origin:center top;
+}
+.ds-theme-3 .ds3-riseover__slab::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:1px; z-index:1;
+  background:linear-gradient(90deg,#6e5cf200,#6e5cf2 18%,#57b3ea 50%,#36e0c2 82%,#36e0c200);
+  opacity:.6;
+}
+.ds-theme-3 .ds3-riseover__eyebrow{
+  font:600 11px/1 var(--font-mono,ui-monospace,monospace);
+  letter-spacing:.16em; text-transform:uppercase;
+  color:#cfd4ff;
+}
+.ds-theme-3 .ds3-riseover__line{
+  margin:0; max-width:36ch;
+  font-size:clamp(19px,2.4vw,28px); line-height:1.32;
+  color:#f1f3ff; font-weight:500;
+}
+@media (max-width:600px){
+  .ds-theme-3 .ds3-riseover{
+    padding-block:clamp(64px,18vw,120px) 0;
+    margin-bottom:clamp(-44px,-10vw,-24px);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-theme-3 .ds3-riseover{ margin-bottom:0; }
+  .ds-theme-3 .ds3-riseover__slab{
+    transform:none; border-radius:0; box-shadow:none;
+  }
+}
+
+/* (f) DarkToLightLift — the light methodology chapter lifts UP and settles over
+   the dark cinema (dark → light return). Opaque light bg + 1px lens seam;
+   overflow:hidden + negative top margin only on the block axis → no horizontal
+   overflow. Transform driven by motion/react; reduced-motion neutralises it. */
+.ds-theme-3 .ds3-lift{
+  position:relative; z-index:3;
+  margin-top:clamp(-120px,-9vw,-64px);
+  overflow:hidden;
+  background:#ffffff;
+  will-change:transform; transform-origin:center top;
+  box-shadow:0 -24px 60px -30px #1a2a8a40;
+}
+.ds-theme-3 .ds3-lift::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:1px; z-index:4;
+  background:linear-gradient(90deg,#6e5cf200,#6e5cf2 18%,#57b3ea 50%,#36e0c2 82%,#36e0c200);
+  opacity:.45;
+}
+@media (max-width:600px){
+  .ds-theme-3 .ds3-lift{ margin-top:clamp(-72px,-12vw,-40px); }
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-theme-3 .ds3-lift{
+    margin-top:0; border-radius:0; transform:none; box-shadow:none;
+  }
+}
+
+/* (g) GradientDissolve — a self-contained CSS-gradient transition band (no real
+   content) between the light QuietCta and the dark CTA band: a 5-stop ramp
+   light → soft-tint → violet-gray → raised → nebula. A very-subtle scrub
+   parallax rides an inner accent layer. */
+.ds-theme-3 .ds3-dissolve{
+  position:relative;
+  overflow:clip;
+  height:clamp(220px,28vw,380px);
+  background:linear-gradient(180deg,
+    #f4f6fb 0%, #eef0f8 24%, #2a2c4e 60%, #11132c 84%, var(--ds3-nebula) 100%);
+}
+.ds-theme-3 .ds3-dissolve__accent{
+  position:absolute; inset:-12% 0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(46% 40% at 30% 64%, rgba(139,123,255,.20) 0%, transparent 60%),
+    radial-gradient(42% 38% at 74% 78%, rgba(87,179,234,.14) 0%, transparent 58%);
+  will-change:transform;
+}
+@media (max-width:600px){
+  .ds-theme-3 .ds3-dissolve{ height:clamp(140px,34vw,220px); }
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-theme-3 .ds3-dissolve__accent{ transform:none; }
+}
+
+/* (A) light-section card system — silver-white lens-soft cards so the light
+   chapters match; targets THIS page's section IDs (verified against live Lab*
+   markup):
+     #value → .lab-bento__tile (+ --feature) · #methodology → .lab-numbered__list>li
+     stat band → .lab-stats__grid>li · #evidence → .lab-split__frame */
+.ds-theme-3 #value .lab-bento__tile,
+.ds-theme-3 #methodology .lab-numbered__list > li,
+.ds-theme-3 .lab-stats .lab-stats__grid > li{
+  position:relative;
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+}
+.ds-theme-3 #value .lab-bento__tile{
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.ds-theme-3 #value .lab-bento__tile--feature{
+  background:var(--dsc-card-feature);
+  border-color:var(--dsc-border-strong);
+}
+.ds-theme-3 #value .lab-bento__tile:hover{
+  transform:translateY(-3px); border-color:var(--dsc-border-strong);
+}
+.ds-theme-3 #methodology .lab-numbered__list{ list-style:none; }
+.ds-theme-3 #methodology .lab-numbered__list > li{
+  border-radius:var(--r-md); padding:22px 24px; margin-block:10px;
+  border-top:1px solid var(--dsc-border);
+}
+.ds-theme-3 .lab-stats .lab-stats__grid > li{ padding:26px 26px 24px; }
+.ds-theme-3 .lab-stats .lab-stats__grid > li strong{
+  background:var(--lens);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+}
+.ds-theme-3 #evidence .lab-split__frame{
+  background:var(--dsc-card-feature);
+  border:1px solid var(--dsc-border-strong);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+}
+
+/* (B) light-section media frames — branded navy-violet deep frames (--lens-deep),
+   not black. Applies only where a light section renders a .media-ph. */
+.ds-theme-3 #value .media-ph,
+.ds-theme-3 #evidence .media-ph{
+  background:var(--lens-deep);
+  border:1px solid var(--dsc-border-strong);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  overflow:hidden;
+}
+.ds-theme-3 #value .media-ph::before,
+.ds-theme-3 #evidence .media-ph::before{ background:none; }
+.ds-theme-3 #value .media-ph::after,
+.ds-theme-3 #evidence .media-ph::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(135deg,#9b8bff33,#9b8bff00 32%),
+    linear-gradient(315deg,#57b3ea29,#57b3ea00 30%);
+}
+.ds-theme-3 #value .media-ph > *,
+.ds-theme-3 #evidence .media-ph > *{ position:relative; z-index:1; }
+.ds-theme-3 #value .media-ph__label,
+.ds-theme-3 #evidence .media-ph__label{
+  color:#eef; background:#ffffff1f; border:1px solid #ffffff33;
+}
+.ds-theme-3 #value .media-ph__hint,
+.ds-theme-3 #evidence .media-ph__hint{ color:#cfcce8; }
+.ds-theme-3 #value .media-ph img,
+.ds-theme-3 #value .media-ph video,
+.ds-theme-3 #evidence .media-ph img,
+.ds-theme-3 #evidence .media-ph video{
+  filter:contrast(1.06) saturate(1.08);
 }
 
