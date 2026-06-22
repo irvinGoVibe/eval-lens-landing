@@ -1,0 +1,420 @@
+/* =============================================================================
+   /dev/liquid-glass — Liquid Glass showcase
+   A COMPOSITION of existing DS-sections (@/components/ds). This file only adds
+   external atmosphere + scoped visual overrides; it NEVER changes a section's
+   DOM, layout, order, spacing or text. Everything is scoped under
+   `.liquid-glass-page`, so no other route is affected.
+
+   Allowed overrides only: background / gradient / text colour (contrast) /
+   border / surface opacity / glass / backdrop-blur / shadow / inner highlight /
+   glow / grain / hover / entrance + scroll animation / section transitions.
+
+   Lightning-CSS safety: gradient stops are hex/rgba; backdrop-filter unprefixed
+   + unitless saturate.
+   ============================================================================= */
+
+.liquid-glass-page {
+  --lgx-ink: #06060a;
+  --lgx-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  background: var(--lgx-ink);
+  overflow-x: clip;
+}
+
+/* ---- external wrapper around each DS-section -------------------------------- */
+.liquid-glass-page .lgx-pointer { display: block; }
+.liquid-glass-page .lgx-wrap {
+  position: relative;
+  isolation: isolate; /* contain the z-index:-1 gradient layer in this wrapper */
+}
+.liquid-glass-page .lgx-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* sits behind the (transparent) section, never over content */
+  pointer-events: none;
+}
+/* let the gradient layer show through the section's own surface.
+   `section.band` keeps ALL its own padding/grid/typography — only the paint
+   colour of the band background is replaced. */
+.liquid-glass-page .lgx-wrap section.band {
+  background: transparent;
+}
+
+/* =============================================================================
+   GRADIENT PRESETS (1 palette · 6 compositions) — hex/rgba stops only
+   ============================================================================= */
+
+/* hero-dynamic — slow aurora drift + pointer parallax (--lgx-mx/--lgx-my) */
+.lgx-bg--hero-dynamic {
+  inset: -10% -5%;
+  background:
+    radial-gradient(58% 54% at calc(28% + var(--lgx-mx, 0px)) calc(24% + var(--lgx-my, 0px)),
+      rgba(124, 92, 246, 0.5), transparent 60%),
+    radial-gradient(50% 50% at calc(82% - var(--lgx-mx, 0px)) calc(30% + var(--lgx-my, 0px)),
+      rgba(46, 197, 232, 0.32), transparent 62%),
+    radial-gradient(56% 60% at calc(62% + var(--lgx-mx, 0px)) calc(88% - var(--lgx-my, 0px)),
+      rgba(54, 224, 194, 0.24), transparent 60%),
+    radial-gradient(80% 70% at 50% 6%, rgba(18, 14, 32, 0.92), transparent 72%),
+    #07070b;
+  filter: blur(6px);
+  animation: lgx-aurora 26s var(--lgx-ease) infinite alternate;
+  will-change: transform;
+}
+.lgx-bg--hero-dynamic::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(112% 92% at 50% 38%, transparent 36%, rgba(6, 6, 10, 0.78) 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 3px);
+}
+@keyframes lgx-aurora {
+  0% { transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+  50% { transform: translate3d(1.5%, 1%, 0) scale(1.06); }
+  100% { transform: translate3d(-0.5%, 1.5%, 0) scale(1.03); }
+}
+
+/* light-atmospheric — soft brand glow so it reads through transparent cards */
+.lgx-bg--light-atmospheric {
+  background:
+    radial-gradient(46% 72% at 10% 26%, rgba(108, 76, 241, 0.24), transparent 64%),
+    radial-gradient(46% 68% at 92% 80%, rgba(46, 197, 232, 0.22), transparent 64%),
+    radial-gradient(40% 52% at 58% 52%, rgba(54, 224, 194, 0.16), transparent 62%),
+    linear-gradient(180deg, #fbfaff 0%, #f3f1fb 100%);
+}
+
+/* light-mesh — soft mesh of brand blobs over white */
+.lgx-bg--light-mesh {
+  background:
+    radial-gradient(30% 40% at 18% 24%, rgba(124, 92, 246, 0.14), transparent 60%),
+    radial-gradient(28% 36% at 82% 30%, rgba(46, 197, 232, 0.12), transparent 60%),
+    radial-gradient(34% 44% at 60% 86%, rgba(54, 224, 194, 0.12), transparent 60%),
+    linear-gradient(180deg, #f7f6fb 0%, #ffffff 55%, #f5f4fa 100%);
+}
+
+/* dark-cinematic — layered radial fields + subtle conic reflection */
+.lgx-bg--dark-cinematic {
+  background:
+    radial-gradient(48% 52% at 16% 22%, rgba(124, 92, 246, 0.28), transparent 60%),
+    radial-gradient(42% 48% at 88% 80%, rgba(46, 197, 232, 0.2), transparent 62%),
+    conic-gradient(from 210deg at 72% 38%, rgba(54, 224, 194, 0.1), transparent 40%, transparent 80%, rgba(124, 92, 246, 0.1)),
+    linear-gradient(160deg, #0b0816 0%, #060509 100%);
+}
+
+/* dark-edge-glow — deep black, restrained glow at the top & bottom edges */
+.lgx-bg--dark-edge-glow {
+  background:
+    radial-gradient(60% 30% at 50% 0%, rgba(124, 92, 246, 0.26), transparent 70%),
+    radial-gradient(60% 34% at 50% 100%, rgba(46, 197, 232, 0.16), transparent 72%),
+    linear-gradient(180deg, #08070e 0%, #060509 50%, #08070e 100%);
+}
+
+/* dark-cyan — cyan-forward dark field (cyan + blue + faint violet, no aqua/green) */
+.lgx-bg--dark-cyan {
+  background:
+    radial-gradient(54% 58% at 22% 22%, rgba(46, 197, 232, 0.34), transparent 60%),
+    radial-gradient(46% 50% at 86% 80%, rgba(59, 130, 246, 0.22), transparent 62%),
+    radial-gradient(40% 46% at 60% 52%, rgba(124, 92, 246, 0.14), transparent 60%),
+    linear-gradient(160deg, #05111a 0%, #060a12 55%, #04101a 100%);
+}
+
+/* dark-ink — essentially black (a faint tonal lift up top so the glass keeps depth) */
+.lgx-bg--dark-ink {
+  background:
+    radial-gradient(90% 70% at 50% -10%, rgba(22, 20, 30, 0.5), transparent 70%),
+    #050507;
+}
+
+/* cta-focus — focused central glow on deep base */
+.lgx-bg--cta-focus {
+  background:
+    radial-gradient(50% 56% at 50% 42%, rgba(124, 92, 246, 0.3), transparent 62%),
+    radial-gradient(40% 40% at 78% 84%, rgba(54, 224, 194, 0.16), transparent 60%),
+    #060509;
+}
+
+/* =============================================================================
+   SCOPED GLASS TREATMENT on the cards INSIDE DS-sections (visual only —
+   background / border / backdrop-filter / shadow / hover; no layout, no DOM)
+   ============================================================================= */
+
+/* dark sections — smoked glass tiles & cards */
+.liquid-glass-page .lgx-wrap--dark .lab-bento__tile,
+.liquid-glass-page .lgx-wrap--dark .lab-gallery__card {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 24px 60px -30px rgba(0, 0, 0, 0.65);
+  transition: transform 0.5s var(--lgx-ease), box-shadow 0.5s var(--lgx-ease), border-color 0.4s;
+}
+.liquid-glass-page .lgx-wrap--dark .lab-bento__tile:hover,
+.liquid-glass-page .lgx-wrap--dark .lab-gallery__card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(124, 92, 246, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 30px 70px -28px rgba(108, 76, 241, 0.4);
+}
+
+/* light sections — TRANSPARENT glass cards: the background glow reads through,
+   a faint white veil + bright rim keep the card present and the text legible. */
+.liquid-glass-page .lgx-wrap--light .lab-gallery__card {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px) saturate(1.7) brightness(1.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 0 0 1px rgba(108, 76, 241, 0.06),
+    0 26px 60px -30px rgba(108, 76, 241, 0.5);
+  transition: transform 0.5s var(--lgx-ease), box-shadow 0.5s var(--lgx-ease), background 0.4s;
+}
+.liquid-glass-page .lgx-wrap--light .lab-gallery__card:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.16) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 32px 70px -28px rgba(108, 76, 241, 0.6);
+}
+
+/* =============================================================================
+   TRANSITIONS (external — between/over sections, never inside them)
+   ============================================================================= */
+
+/* ApertureReveal wrapper — clip-path is paint-only, no layout change */
+.liquid-glass-page .lgx-aperture { position: relative; }
+.liquid-glass-page .lgx-aperture__inner { will-change: clip-path; }
+
+/* seams */
+.liquid-glass-page .lgx-seam { position: relative; }
+.liquid-glass-page .lgx-seam--static { height: clamp(40px, 6vh, 84px); }
+.liquid-glass-page .lgx-seam--occ {
+  height: clamp(280px, 52vh, 600px);
+  overflow: hidden;
+}
+/* the white→black dark glass panel that expands then dissolves */
+.liquid-glass-page .lgx-occ {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 50% 30%, rgba(124, 92, 246, 0.22), transparent 64%),
+    linear-gradient(180deg, rgba(8, 6, 16, 0.86) 0%, rgba(10, 8, 20, 0.62) 100%);
+  backdrop-filter: blur(30px) saturate(1.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* =============================================================================
+   PAGE-LOCAL RICH BENTO — Aurora "rich · wash + sheen (scroll-bound)" tiles.
+   Tiles render the shared `.ds-glass` material (ds.css); these rules only lay
+   out the grid + heading + inner text.
+   ============================================================================= */
+.liquid-glass-page .lgx-rb { padding: clamp(72px, 12vh, 150px) 0; }
+.liquid-glass-page .lgx-rb__head {
+  width: min(1100px, 100% - 2 * clamp(20px, 5vw, 64px));
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: clamp(34px, 5vw, 56px);
+  max-width: 34ch;
+}
+.liquid-glass-page .lgx-rb__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lavender);
+}
+.liquid-glass-page .lgx-rb__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lens, linear-gradient(118deg, #6c4cf1, #2ec5e8, #36e0c2));
+  box-shadow: 0 0 12px 1px rgba(124, 92, 246, 0.7);
+}
+.liquid-glass-page .lgx-rb__title {
+  margin: 0;
+  font-family: var(--font-display, var(--font-ui));
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.04;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  color: #f4f3fb;
+}
+.liquid-glass-page .lgx-rb__grad {
+  background: var(--lens, linear-gradient(118deg, #6c4cf1, #2ec5e8, #36e0c2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.liquid-glass-page .lgx-rb__sub {
+  margin: 0;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
+  color: rgba(232, 230, 246, 0.72);
+  max-width: 52ch;
+}
+
+.liquid-glass-page .lgx-rb__grid {
+  width: min(1100px, 100% - 2 * clamp(20px, 5vw, 64px));
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: stretch;
+}
+.liquid-glass-page .lgx-rb__col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: clamp(280px, 32vw, 360px);
+}
+/* cells ARE the .ds-glass roots — let the inner content fill the tile height */
+.liquid-glass-page .lgx-rb__cell { display: flex; flex-direction: column; }
+.liquid-glass-page .lgx-rb__cell .ds-glass__content { flex: 1; display: flex; flex-direction: column; width: 100%; }
+.liquid-glass-page .lgx-rb__cell--feature { width: clamp(320px, 46vw, 560px); min-height: 360px; }
+.liquid-glass-page .lgx-rb__cell--feature .ds-glass__content { justify-content: flex-end; padding: 28px; }
+.liquid-glass-page .lgx-rb__cell--mr { width: 100%; flex: 1; min-height: 150px; }
+.liquid-glass-page .lgx-rb__cell--b { width: 100%; min-height: 150px; }
+
+/* cooler + more transparent than the shared .ds-glass (scoped to bento tiles):
+   blue/cyan washes instead of lavender/aqua, lower-alpha pane. */
+.liquid-glass-page .lgx-rb__cell.ds-glass {
+  background:
+    linear-gradient(145deg, rgba(198, 220, 255, 0.06) 0%, rgba(176, 204, 240, 0.03) 50%, rgba(220, 236, 255, 0.014) 100%);
+  border-color: rgba(188, 212, 250, 0.15);
+  backdrop-filter: blur(18px) saturate(1.12);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(220, 236, 255, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s,
+    border-color 0.4s;
+}
+.liquid-glass-page .lgx-rb__cell .ds-glass__glare { transition: opacity 0.4s ease; }
+.liquid-glass-page .lgx-rb__cell .ds-glass__wash {
+  opacity: 0.2;
+  background:
+    radial-gradient(ellipse at 28% 32%, rgba(224, 238, 255, 0.2) 0%, rgba(176, 208, 255, 0.06) 18%, transparent 43%),
+    radial-gradient(ellipse at 70% 58%, rgba(112, 168, 255, 0.14) 0%, rgba(46, 197, 232, 0.08) 28%, transparent 54%),
+    radial-gradient(ellipse at 45% 80%, rgba(64, 158, 226, 0.06) 0%, transparent 42%);
+}
+.liquid-glass-page .lgx-rb__cell .ds-glass__orbit {
+  background: radial-gradient(circle, rgba(208, 230, 255, 0.24) 0%, rgba(112, 168, 255, 0.12) 42%, transparent 70%);
+  opacity: 0.42;
+}
+.liquid-glass-page .lgx-rb__cell .ds-glass__glare {
+  background: linear-gradient(125deg, rgba(224, 238, 255, 0.13) 0%, rgba(198, 220, 255, 0.03) 26%, transparent 46%);
+}
+
+/* big (feature) tile — blue sheen + a light streak that runs across it, plus a
+   soft hover gradient (like the gallery card, but weaker). */
+.liquid-glass-page .lgx-rb__cell--feature.ds-glass {
+  background:
+    linear-gradient(150deg, rgba(96, 150, 255, 0.12) 0%, rgba(46, 150, 232, 0.06) 50%, rgba(140, 190, 255, 0.03) 100%);
+  border-color: rgba(120, 165, 255, 0.26);
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.45s,
+    border-color 0.4s;
+}
+/* running "ingredient" — soft blue/cyan blobs drifting behind the glass, the
+   same idea as the DS dark gallery's gallery-bubbles: blurred + edge-masked +
+   screen-blended, each radial wandering on its own background-position path. */
+.liquid-glass-page .lgx-rb__cell--feature::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(42% 52% at 30% 40%, rgba(70, 140, 255, 0.55), transparent 68%),
+    radial-gradient(40% 50% at 72% 62%, rgba(46, 197, 232, 0.5), transparent 68%),
+    radial-gradient(36% 46% at 52% 82%, rgba(120, 170, 255, 0.42), transparent 70%);
+  background-size: 165% 165%, 155% 155%, 175% 175%;
+  background-repeat: no-repeat;
+  filter: blur(26px);
+  -webkit-mask: radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
+          mask: radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  animation: lgx-rb-drift 12s ease-in-out infinite;
+}
+@keyframes lgx-rb-drift {
+  0%   { background-position: 0% 0%, 100% 100%, 50% 0%; }
+  33%  { background-position: 62% 38%, 28% 72%, 82% 58%; }
+  66%  { background-position: 22% 82%, 82% 18%, 12% 42%; }
+  100% { background-position: 0% 0%, 100% 100%, 50% 0%; }
+}
+/* hover — like the gallery card but weaker: lift, drift surfaces, soft glow */
+.liquid-glass-page .lgx-rb__cell--feature:hover {
+  transform: translateY(-3px);
+  border-color: rgba(140, 180, 255, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(220, 236, 255, 0.22),
+    0 0 70px 4px rgba(70, 140, 255, 0.14),
+    0 0 50px rgba(46, 197, 232, 0.1);
+}
+.liquid-glass-page .lgx-rb__cell--feature:hover::before { opacity: 0.78; }
+@media (prefers-reduced-motion: reduce) {
+  .liquid-glass-page .lgx-rb__cell--feature::before { animation: none; }
+}
+
+/* other tiles — on hover they just glow whitish (no blue drift): a soft white
+   halo + brighter top hairline + the white optical sheen lifts. */
+.liquid-glass-page .lgx-rb__cell--mr:hover,
+.liquid-glass-page .lgx-rb__cell--b:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.34);
+  box-shadow:
+    0 26px 64px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    0 0 58px 2px rgba(224, 234, 255, 0.13);
+}
+.liquid-glass-page .lgx-rb__cell--mr:hover .ds-glass__glare,
+.liquid-glass-page .lgx-rb__cell--b:hover .ds-glass__glare { opacity: 0.92; }
+
+.liquid-glass-page .lgx-rb__tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c9bcff;
+}
+.liquid-glass-page .lgx-rb__ctitle {
+  margin: 12px 0 0;
+  font-family: var(--font-display, var(--font-ui));
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+.liquid-glass-page .lgx-rb__ctitle--big { font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
+.liquid-glass-page .lgx-rb__body {
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+@media (max-width: 760px) {
+  .liquid-glass-page .lgx-rb__grid { flex-direction: column; }
+  .liquid-glass-page .lgx-rb__cell--feature,
+  .liquid-glass-page .lgx-rb__col { width: 100%; }
+}
+
+/* =============================================================================
+   REDUCED MOTION
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .lgx-bg--hero-dynamic { animation: none !important; transform: none; }
+}
