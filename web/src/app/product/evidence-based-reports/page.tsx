@@ -10,6 +10,7 @@ import {
   Gallery,
   EditorialSplit,
   Bento,
+  ChipGrid,
   Button,
 } from "@/components/ds";
 
@@ -86,8 +87,9 @@ const ANATOMY = [
   },
 ] as const;
 
-/* 4. Inside the AI Score Report — 3 key cards (most differentiating).
-   No exact formulas / the 0.15 constant — internal only. */
+/* 4. Inside the AI Score Report — one carousel of cards (key blocks + what else
+   is in the report). No exact formulas / the 0.15 constant — internal only;
+   the full model is cross-linked from the Methodology card's tag. */
 const REPORT_CARDS = [
   {
     tag: "Per-dimension breakdown",
@@ -102,15 +104,24 @@ const REPORT_CARDS = [
   {
     tag: "Score formation",
     title: "How the score adds up",
-    body: "A per-dimension view: each score, its weight, and its contribution to the total — the model itself lives in Methodology.",
+    body: "A per-dimension view: each score, its weight, and its contribution to the total.",
   },
-] as const;
-
-/* "Also in the report" — compact list under the lane, not cards. */
-const REPORT_ALSO = [
-  { name: "Methodology", note: "the rules and scale" },
-  { name: "Initial criteria", note: "your weights, read-only" },
-  { name: "Judge conclusions", note: "a takeaway, a concern, a live question from each judge" },
+  {
+    tag: "Methodology",
+    title: "How the score is built",
+    body: "The rules and the scale behind every dimension — how findings turn into a comparable score, and why the same deck always lands the same way. Read the full model on the Methodology page.",
+    href: "/trust/methodology",
+  },
+  {
+    tag: "Initial criteria",
+    title: "The weights you set",
+    body: "Your dimension weights, applied read-only across the whole batch — so every team is scored on the same basis you defined up front, not re-tuned deck by deck.",
+  },
+  {
+    tag: "Judge conclusions",
+    title: "Where each judge landed",
+    body: "A short takeaway, the main concern, and one live question from each judge — their reasoning kept in brief and on the record, never averaged into the number.",
+  },
 ] as const;
 
 /* 5. Grounded — three points (left). */
@@ -217,8 +228,8 @@ export default function EvidenceBasedReportsPage() {
           version={2}
           eyebrow="Evidence-Based Reports"
           titleLead="A score you can"
-          titleAccent="explain"
-          titleTrail=", with the evidence"
+          titleAccent="explain,"
+          titleTrail="with the evidence"
           sub="Walk into every review with a defensible read on each team — scores across each dimension, the reasoning behind them, and the questions to ask live. The final call always yours."
           ctas={[
             { label: "Book a Demo", href: "/#demo" },
@@ -296,30 +307,9 @@ export default function EvidenceBasedReportsPage() {
             tag: c.tag,
             title: c.title,
             body: c.body,
+            href: "href" in c ? c.href : undefined,
           }))}
         />
-        <section className="band soft evr-alsoband" aria-label="Also in the report">
-          <div className="wrap">
-            <div className="evr-also" data-reveal="up">
-              <span className="evr-also__title">Also in the report</span>
-              <ul className="evr-also__list">
-                {REPORT_ALSO.map((a) => (
-                  <li key={a.name} className="evr-also__item">
-                    <span className="evr-also__name">{a.name}</span>
-                    <span className="evr-also__note">{a.note}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="evr-also__cross">
-                The full scoring model lives in{" "}
-                <a className="evr-link" href="/trust/methodology">
-                  Methodology
-                </a>
-                .
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* 5. Grounded — editorial split: 3 points + evidence visual. */}
         <EditorialSplit
@@ -353,39 +343,23 @@ export default function EvidenceBasedReportsPage() {
             title: t.title,
             body: t.body,
             feature: "feature" in t ? t.feature : undefined,
+            // the ten key sections live INSIDE the "Ten key sections" feature card
+            slot:
+              "feature" in t && t.feature ? (
+                <ChipGrid
+                  bare
+                  columns={2}
+                  ariaLabel="The ten key sections, with a severity signal each"
+                  items={COMPLETENESS.map((c) => ({ name: c.name, sev: c.sev }))}
+                  legend={[
+                    { sev: "info", label: "info" },
+                    { sev: "warning", label: "warning" },
+                    { sev: "critical", label: "critical" },
+                  ]}
+                />
+              ) : undefined,
           }))}
         />
-        <section
-          className="band soft evr-sevband"
-          aria-label="The ten key sections, with a severity signal each"
-        >
-          <div className="wrap">
-            <div className="evr-severity" data-reveal="up">
-              <ul
-                className="evr-secgrid"
-                aria-label="The ten key sections, with a severity signal each"
-              >
-                {COMPLETENESS.map((c) => (
-                  <li key={c.name} className={`evr-sec evr-sec--${c.sev}`}>
-                    <span className="evr-sec__dot" aria-hidden="true"></span>
-                    <span className="evr-sec__name">{c.name}</span>
-                  </li>
-                ))}
-              </ul>
-              <ul className="evr-sevlegend" aria-label="Severity legend">
-                <li className="evr-sevlegend__item evr-sec--info">
-                  <span className="evr-sec__dot"></span>info
-                </li>
-                <li className="evr-sevlegend__item evr-sec--warning">
-                  <span className="evr-sec__dot"></span>warning
-                </li>
-                <li className="evr-sevlegend__item evr-sec--critical">
-                  <span className="evr-sec__dot"></span>critical
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
 
         {/* 7. From shortlist to founder feedback — second gallery (ink, per inspector). */}
         <Gallery
