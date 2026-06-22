@@ -258,9 +258,6 @@ export default function EvidenceBasedReportsPage() {
                 </li>
               ))}
             </ul>
-            <p className="evr-stats__note" data-reveal="up">
-              Illustrative, based on a 20–30 minute manual read per deck.
-            </p>
           </div>
         </section>
 
