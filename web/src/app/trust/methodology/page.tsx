@@ -3,7 +3,16 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
-import { Button } from "@/components/ui/Button";
+import {
+  StatementHero,
+  Numbered,
+  PinnedSteps,
+  Gallery,
+  StatBand,
+  EditorialSplit,
+  ChipGrid,
+  QuietCta,
+} from "@/components/ds";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -11,132 +20,171 @@ const HEADER_NAV: SectionNav = {
   sectionHref: "/trust",
   links: [
     { label: "Pipeline", href: "#pipeline" },
-    { label: "Report", href: "#report" },
+    { label: "Judges", href: "#judges" },
     { label: "Rubric", href: "#rubric" },
   ],
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense Methodology — How AI Jury Evaluates Pitch Decks",
+  title: "EvalLense Methodology — How the AI Jury Scores Pitch Decks",
   description:
-    "Transparent EvalLense methodology: criteria-based evaluation by an AI jury, evidence-linked scores, and a human in the decision loop.",
+    "The EvalLense methodology: six independent AI judges score each deck against a fixed rubric, tie every score to evidence, and the human sets the final call. Transparent and reproducible.",
 };
 
-/*
- * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
- * The image generator is NOT wired up. Every visual slot below is a VISIBLE,
- * labeled `.media-ph` placeholder (global primitive in globals.css) on
- * canonical tokens — never an empty grey div. Each carries an --ratio so the
- * real asset drops in with zero layout shift. When a generator is available,
- * produce the assets and drop them into web/public/assets/methodology/.
- *
- * 1. hero (section 1) — 16:9
- *    Abstract "lens" focusing noise into one clear signal.
- *    Prompt: lens-gradient violet→cyan→aqua over an Apple-neutral surface,
- *    soft violet depth, hairline structure, calm; no shield icons / security
- *    theatre.
- *
- * 2. pipeline diagram (section 3, beside the pinned conveyor) — 21:9
- *    Horizontal track of nodes Decode → Judges → Summarize → Score → Report.
- *    Prompt: same tokens, nodes lit along a lens track, thin connecting lines,
- *    minimal, on the dark ink surface.
- *
- * 3. report gallery (section 5 "Anatomy of a report") — five 4:3 cards:
- *    a) score + confidence ring (mono gradient number, conic ring)
- *    b) evidence quote pulled from a deck page with a page reference
- *    c) per-criterion breakdown bars (lens-filled horizontal bars)
- *    d) "missing evidence" amber flag chip
- *    e) side-by-side deck comparison rows with gradient scores
- *    Prompt per card: Apple-neutral panel, hairline borders, one lens accent,
- *    calm, product-UI fidelity.
- *
- * ── MOTION ───────────────────────────────────────────────────────────────
- * This page opts into the generic ScrollFX engine via data-attributes only
- * (data-reveal / data-scrub / data-pin). No per-section useEffect, no
- * ScrollOrchestrator edits. reduced-motion is handled by the engine + the
- * primitives' @media block. <ScrollFX/> is mounted once after <Footer/>.
- *
- * ── DRAFT CONTENT ────────────────────────────────────────────────────────
- * Unconfirmed copy (P1–P6 roles, scoring/confidence formula, rubric levels,
- * pipeline step descriptions, hero tagline, public numbers) is kept as the
- * brief's draft wording — no invented numbers (see story 04 open questions).
- */
+/* ── Content (verbatim from wiki/product/methodology_new.md §"Контент по
+ * секциям"). No invented numbers/claims; internal constants/formulas omitted
+ * per the brief (public-facing: qualitative labels + "reproducible"). ── */
+
+const PRINCIPLES = [
+  {
+    num: "01",
+    title: "AI supports the decision — it doesn't own it.",
+    body: "Every AI score is advisory. You set the final score, and the ranking is built from yours.",
+  },
+  {
+    num: "02",
+    title: "Every score is explainable.",
+    body: "Each number traces back to evidence in the deck and the rubric band it lands in — not a black-box verdict.",
+  },
+  {
+    num: "03",
+    title: "Disagreement is useful.",
+    body: "When judges diverge on a dimension, the report shows the spread instead of burying it in an average.",
+  },
+  {
+    num: "04",
+    title: "Methodology matters more than the model.",
+    body: "Reliability comes from fixed criteria, defined judge roles, and a deterministic scoring step — not from any single model.",
+  },
+];
 
 const PIPELINE_STEPS = [
   {
-    name: "Decode",
-    desc: "The deck is parsed into structured signal — slides, claims and figures become addressable evidence.",
+    num: "01",
+    label: "Decoder",
+    desc: "Any format — PDF, PPTX, or Google Slides — becomes one structured, slide-level view the judges can read.",
   },
   {
-    name: "Judges",
-    desc: "An AI jury of independent judges reads the deck, each against its own set of criteria.",
+    num: "02",
+    label: "AI Judges",
+    desc: "Six independent judges score the deck across P1–P6, in parallel, without seeing one another's scores.",
   },
   {
-    name: "Summarize",
-    desc: "Each judge's findings are condensed into evidence-backed notes with source references.",
+    num: "03",
+    label: "Summarizer",
+    desc: "A deterministic math step aggregates the scores; a second step writes the narrative and the questions to ask each team.",
   },
   {
-    name: "Score",
-    desc: "Per-criterion scores are aggregated; missing evidence is flagged, never guessed.",
+    num: "04",
+    label: "Scoring",
+    desc: "Your criterion weights apply to the human Jury Score to form the Final Score.",
   },
   {
-    name: "Report",
-    desc: "A comparable, explainable report is assembled — score, breakdown, evidence and confidence.",
+    num: "05",
+    label: "Report",
+    desc: "An explainable report is assembled for every participant.",
   },
 ];
 
-/* Draft — public descriptions of the criteria are pending (open question). */
-const JUDGE_ROLES = [
-  { id: "P1", title: "Criterion P1" },
-  { id: "P2", title: "Criterion P2" },
-  { id: "P3", title: "Criterion P3" },
-  { id: "P4", title: "Criterion P4" },
-  { id: "P5", title: "Criterion P5" },
-  { id: "P6", title: "Criterion P6" },
+const JUDGES = [
+  {
+    tag: "Problem · J-P1",
+    title: "Problem",
+    body: "Who actually suffers from this pain, how often, and what do they do about it today? Looks for: a named user, pain that's frequent and costly, an honest read of today's alternatives.",
+  },
+  {
+    tag: "Solution Logic · J-P2",
+    title: "Solution Logic",
+    body: 'Does this approach actually solve the problem, and why is it better than the alternatives? Looks for: a clear mechanism, a defensible "why us", a sharp wedge over a do-everything platform.',
+  },
+  {
+    tag: "Business Value / Market · J-P3",
+    title: "Business Value / Market",
+    body: "Is the market real and reachable, with a credible way to make money and defend the position? Looks for: a beachhead segment, monetization that fits the buyer, real defensibility.",
+  },
+  {
+    tag: "Pitch Quality · J-P4",
+    title: "Pitch Quality",
+    body: "Can a reviewer follow what this is and why it matters, without guessing? Looks for: narrative structure and clear language. (Grades the communication, not the idea.)",
+  },
+  {
+    tag: "Team Readiness · J-P5",
+    title: "Team Readiness",
+    body: "Do these people have the experience and founder-market fit to execute? Looks for: evidence of shipping over titles, a complete team, gaps owned rather than hidden.",
+  },
+  {
+    tag: "Feasibility · J-P6",
+    title: "Feasibility",
+    body: "Given the resources, timeline, and risks, can the team actually deliver? Looks for: a sequenced roadmap, resources matched to ambition, a sober view of risk.",
+  },
 ];
 
-/* "Anatomy of a report" gallery — each card describes one report artefact and
-   carries a visible .media-ph for the visual that ships there. */
-const REPORT_CARDS = [
+const COVERAGE_STATS = [
+  { value: "5", label: "Problem significance", src: "reads" },
+  { value: "5", label: "Solution differentiation", src: "reads" },
+  { value: "6", label: "Market attractiveness", src: "reads" },
+  { value: "5", label: "Business model / GTM", src: "reads" },
+  { value: "3", label: "Team / founder fit", src: "reads" },
+  { value: "6", label: "Feasibility / readiness", src: "reads" },
+];
+
+const RUBRIC_PROCEDURE = [
   {
-    tag: "Score",
-    title: "Score + confidence ring",
-    body: "A single comparable score, paired with a confidence ring that shows how strong the evidence behind it is.",
-    label: "Image · score + confidence ring · 4:3",
-    hint: "Mono gradient score with a conic confidence ring — see prompt 3a in file header",
-    aria: "Score with a confidence ring",
+    title: "Cite the evidence",
+    body: "Slide-grounded facts only, each tied to a specific slide. No claim without a reference.",
   },
   {
-    tag: "Evidence",
-    title: "Evidence quote",
-    body: "Every claim links back to the slide it came from — a source quote with a deck-page reference.",
-    label: "Image · evidence quote + page ref · 4:3",
-    hint: "Quote card pulled from a deck page with a page reference — see prompt 3b",
-    aria: "Evidence quote with a deck-page reference",
+    title: "Weigh it both ways",
+    body: "What raises the score, what lowers it, and what the deck never establishes.",
   },
   {
-    tag: "Breakdown",
-    title: "Per-criterion breakdown",
-    body: "How the score is built: a breakdown across criteria, shown as bars rather than a single opaque number.",
-    label: "Image · breakdown bars · 4:3",
-    hint: "Lens-filled horizontal breakdown bars per criterion — see prompt 3c",
-    aria: "Per-criterion breakdown bars",
+    title: "Name the band",
+    body: "The judge states, in words, which rubric band the evidence lands in.",
   },
   {
-    tag: "Flags",
-    title: "Missing-evidence flags",
-    body: "Where the deck is silent, we say so. Gaps are flagged in amber — never guessed or filled in.",
-    label: "Image · missing-evidence flag · 4:3",
-    hint: "Amber 'missing evidence' flag chip on a neutral panel — see prompt 3d",
-    aria: "Missing-evidence amber flag",
+    title: "Then the score",
+    body: "The number must sit inside that band. On the edge, an incomplete deck rounds down, not up.",
+  },
+];
+
+const RUBRIC_BANDS: { name: string; sev: "critical" | "warning" | "info" }[] = [
+  { name: "0–3 · absent or unsubstantiated", sev: "critical" },
+  { name: "4–6 · plausible but thin", sev: "warning" },
+  { name: "7–8 · specific and credible", sev: "info" },
+  { name: "9–10 · demonstrated, not asserted", sev: "info" },
+];
+
+const SCORING_POINTS = [
+  {
+    title: "Per dimension",
+    body: "Judge scores are combined by their routing weight and adjusted for confidence to form an AI Criterion Score.",
   },
   {
-    tag: "Compare",
-    title: "Side-by-side comparison",
-    body: "Because every deck runs the same rubric, reports line up side by side for a like-for-like read.",
-    label: "Image · comparison rows · 4:3",
-    hint: "Side-by-side deck comparison rows with gradient scores — see prompt 3e",
-    aria: "Side-by-side deck comparison",
+    title: "Across dimensions",
+    body: "Your criterion weights roll those up into the AI Total Score, on a 0–10 scale.",
+  },
+  {
+    title: "Confidence",
+    body: "Every score carries a low, medium, or high confidence signal, and lower confidence pulls the result toward caution.",
+  },
+  {
+    title: "Spread",
+    body: "Where judges disagree on a dimension, the report flags it — consensus, split, or conflict — instead of averaging it away.",
+  },
+  {
+    title: "Reproducible",
+    body: "No model runs in this step. The same judge outputs and weights give the same score, every time.",
+  },
+];
+
+const HITL_POINTS = [
+  {
+    title: "The AI prepares",
+    body: "Every AI score is advisory. You read the evidence, set your Jury Score on each dimension, and the leaderboard is built from your Final Score — never from the AI's.",
+  },
+  {
+    title: "Six AI lenses do the reading. The final call is always yours.",
+    body: "Pitch Competition · P1–P6",
   },
 ];
 
@@ -144,469 +192,145 @@ export default function MethodologyPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} />
-      <main className="methodology">
-        {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
-        <section className="band soft methodology-hero">
-          <div className="wrap methodology-hero__inner">
-            <span
-              className="eyebrow"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "0ms" }}
-            >
-              <span className="dot" aria-hidden="true"></span>
-              Methodology
-            </span>
-            {/* draft hero tagline from brief §1 Hero */}
-            <h1
-              className="methodology-hero__title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              A scientific methodology for evaluating{" "}
-              <span className="grad-word">pitch decks</span>
-            </h1>
-            <p
-              className="sub methodology-hero__sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              EvalLense evaluates decks against explicit criteria through an AI
-              jury — with transparent reasoning and a human in the loop for the
-              final decision.
-            </p>
-            <div
-              className="cta-row"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
-            </div>
-            {/* hero visual slot — see prompt 1 in file header */}
-            <figure
-              className="media-ph methodology-hero__media"
-              style={{ ["--ratio" as string]: "16/9" }}
-              data-reveal="scale"
-              role="img"
-              aria-label="Abstract lens focusing noise into one clear signal"
-            >
-              <span className="media-ph__label">Image · hero lens · 16:9</span>
-              <span className="media-ph__hint">
-                Lens-gradient violet→cyan→aqua over an Apple-neutral surface,
-                soft depth, calm — see prompt 1 in file header
-              </span>
-            </figure>
-          </div>
-        </section>
+      <main className="section-lab ds">
+        {/* 1. Hero — StatementHero, soft. */}
+        <StatementHero
+          id="hero"
+          surface="soft"
+          eyebrow="Methodology"
+          titleLead="The methodology behind every score"
+          titleAccent=""
+          sub="Six independent AI judges read each deck against a fixed rubric, tie every score to evidence in the slides, and hand you a result you can defend. The final call always yours."
+          ctas={[{ label: "Book a Demo", href: "/company/contact" }]}
+          media={{
+            ratio: "16/9",
+            label: "Image · hero lens · 16:9",
+            hint: "A lens focusing a noisy deck into one clear, evidence-linked score",
+            ariaLabel:
+              "A lens focusing a noisy deck into one clear, evidence-linked score",
+          }}
+        />
 
-        {/* 2. Principles — editorial numbered lines, light. */}
-        <section className="band methodology-principles">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Principles
-              </span>
-              <h2 className="title">Principles of evaluation</h2>
-            </div>
-            <ol className="prin-list">
-              <li
-                className="prin-item"
-                data-reveal="up"
-                style={{ ["--reveal-delay" as string]: "0ms" }}
-              >
-                <span className="prin-num" aria-hidden="true">
-                  01
-                </span>
-                <div className="prin-body">
-                  <h3 className="prin-h">Criteria-based evaluation</h3>
-                  <p className="prin-p">
-                    Decks are scored against pre-defined criteria, not a general
-                    impression.
-                  </p>
-                </div>
-              </li>
-              <li
-                className="prin-item"
-                data-reveal="up"
-                style={{ ["--reveal-delay" as string]: "120ms" }}
-              >
-                <span className="prin-num" aria-hidden="true">
-                  02
-                </span>
-                <div className="prin-body">
-                  <h3 className="prin-h">Evidence over opinion</h3>
-                  <p className="prin-p">
-                    We show what we found, where it came from, and what is
-                    missing — no bare score without justification.
-                  </p>
-                </div>
-              </li>
-              <li
-                className="prin-item"
-                data-reveal="up"
-                style={{ ["--reveal-delay" as string]: "240ms" }}
-              >
-                <span className="prin-num" aria-hidden="true">
-                  03
-                </span>
-                <div className="prin-body">
-                  <h3 className="prin-h">AI prepares, humans decide</h3>
-                  <p className="prin-p">
-                    The AI output is advisory; the final decision is always made
-                    by a person.
-                  </p>
-                </div>
-              </li>
-            </ol>
-          </div>
-        </section>
+        {/* 2. Principles — Numbered, light. */}
+        <Numbered
+          surface="light"
+          eyebrow="What we hold to"
+          title="Four principles behind the method"
+          sub="The reliability of an EvalLense score comes from the method, not from any single model."
+          items={PRINCIPLES}
+        />
 
-        {/* 3. The evaluation pipeline — pinned multi-screen, DARK. Tall track +
-            sticky stage; 5 steps light up sequentially via the pin engine.
-            A pipeline-diagram .media-ph sits beside the steps. */}
-        <section
+        {/* light → ink : masked divider into pipeline peak. */}
+        <div className="tr-masked-divider" data-from="light" data-to="ink" aria-hidden="true" />
+
+        {/* 3. Pipeline — PinnedSteps, ink (ink peak #1). */}
+        <PinnedSteps
           id="pipeline"
-          className="band ink methodology-pipeline"
-          data-pin
-          data-pin-steps="5"
-          aria-label="The evaluation pipeline"
-        >
-          <div className="pipe-stage" data-pin-stage>
-            <div className="wrap pipe-grid">
-              <div className="pipe-col">
-                <div className="head pipe-head">
-                  <span className="eyebrow">
-                    <span className="dot" aria-hidden="true"></span>
-                    Pipeline
-                  </span>
-                  <h2 className="title">The evaluation pipeline</h2>
-                  {/* draft from brief §3 Конвейер оценки */}
-                  <p className="sub">
-                    Every deck runs through a fixed pipeline. Each step is
-                    deterministic and reproducible — the same deck takes the
-                    same path.
-                  </p>
-                </div>
-                <ol className="pipe-track">
-                  {PIPELINE_STEPS.map((step, i) => (
-                    <li
-                      key={step.name}
-                      className="pipe-step"
-                      data-pin-step
-                      style={{ ["--i" as string]: String(i) }}
-                    >
-                      <span className="pipe-node" aria-hidden="true">
-                        <span className="pipe-dot"></span>
-                      </span>
-                      <span className="pipe-name">{step.name}</span>
-                      <span className="pipe-desc">{step.desc}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-              {/* pipeline diagram visual slot — see prompt 2 in file header */}
-              <figure
-                className="media-ph pipe-diagram"
-                style={{ ["--ratio" as string]: "4/3" }}
-                role="img"
-                aria-label="Horizontal track of pipeline nodes Decode to Report"
-              >
-                <span className="media-ph__label">Diagram · pipeline · 4:3</span>
-                <span className="media-ph__hint">
-                  Nodes Decode → Judges → Summarize → Score → Report lit along a
-                  lens track, thin lines — see prompt 2 in file header
-                </span>
-              </figure>
-            </div>
-          </div>
-        </section>
+          surface="ink"
+          ariaLabel="Every deck runs the same five stages"
+          eyebrow="The pipeline"
+          title={{ line1: "Every deck runs", line2: "the same five stages" }}
+          sub="The path is fixed, so no two decks are read differently. Each stage lights up as you scroll."
+          steps={PIPELINE_STEPS}
+          media={{
+            ratio: "4/3",
+            label: "Diagram · pipeline · 4:3",
+            hint: "Decoder → AI Judges → Summarizer → Scoring → Report, nodes lit along a track",
+            ariaLabel:
+              "Horizontal track of the five pipeline stages, Decoder to Report",
+          }}
+        />
 
-        {/* 4. Judge roles — horizontal scroll-snap gallery, light. Each card
-            carries a signal-dot + criterion. P1–P6 are draft. */}
-        <section className="band methodology-judges">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Judges
-              </span>
-              <h2 className="title">Judge roles</h2>
-              {/* draft from brief §4 Роли судей */}
-              <p className="sub">
-                An AI jury of several judges evaluates the deck, each
-                responsible for its own set of criteria (P1–P6). Several
-                independent judges reduce dependence on a single viewpoint.
-              </p>
-            </div>
-          </div>
-          <ul
-            className="judge-lane"
-            data-reveal="up"
-            aria-label="Judge roles P1 through P6"
-            tabIndex={0}
-          >
-            {JUDGE_ROLES.map((role) => (
-              <li key={role.id} className="judge-card">
-                <span className="judge-icon" aria-hidden="true">
-                  <span className="judge-signal"></span>
-                </span>
-                <span className="mini-tag">{role.id}</span>
-                <h3 className="judge-h">{role.title}</h3>
-                <p className="judge-p">
-                  Draft — public description pending (see open questions).
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {/* ink → soft : gradient bridge settling out of the pipeline peak. */}
+        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
-        {/* 5. Anatomy of a report — horizontal gallery, DARK. Five report
-            artefacts, each with a visible .media-ph for its visual. */}
-        <section id="report" className="band ink methodology-report">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Anatomy of a report
-              </span>
-              <h2 className="title">What you get</h2>
-              <p className="sub">
-                A report is never a bare number. Each one carries the score, the
-                evidence behind it, the breakdown, the gaps and a like-for-like
-                comparison.
-              </p>
-            </div>
-          </div>
-          <ul
-            className="report-lane"
-            data-reveal="up"
-            aria-label="Anatomy of a report — score, evidence, breakdown, flags, comparison"
-            tabIndex={0}
-          >
-            {REPORT_CARDS.map((card) => (
-              <li key={card.tag} className="report-card">
-                <figure
-                  className="media-ph report-card__media"
-                  style={{ ["--ratio" as string]: "4/3" }}
-                  role="img"
-                  aria-label={card.aria}
-                >
-                  <span className="media-ph__label">{card.label}</span>
-                  <span className="media-ph__hint">{card.hint}</span>
-                </figure>
-                <div className="report-card__body">
-                  <span className="mini-tag">{card.tag}</span>
-                  <h3 className="report-card__h">{card.title}</h3>
-                  <p className="report-card__p">{card.body}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {/* 4. Judges — Gallery, light. */}
+        <Gallery
+          id="judges"
+          surface="light"
+          eyebrow="The AI jury"
+          title="Six judges, six lenses"
+          sub="Each judge owns one lens and answers a single question. They run in parallel and never compare notes — six independent reads, not one blurred opinion."
+          laneLabel="The six AI judges, J-P1 through J-P6"
+          items={JUDGES}
+        />
 
-        {/* 6. Scoring model — editorial split + scrubbed ring + breakdown bars,
-            light. Ring fills with scroll via --scrub. */}
-        <section className="band soft methodology-scoring">
-          <div className="wrap score-split">
-            <div className="score-copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Scoring
-              </span>
-              <h2 className="title">Scoring model</h2>
-              {/* draft from brief §5 Scoring model */}
-              <p className="sub">
-                Every score is linked to evidence: a per-criterion breakdown, a
-                source quote referencing the deck page, and explicit
-                &ldquo;missing evidence&rdquo; flags. The score is accompanied
-                by a confidence ring.
-              </p>
-              {/* visual breakdown bars — canonical tokens, decorative.
-                  Draft levels — no public values are shown. */}
-              <ul className="score-bars" aria-hidden="true">
-                <li className="score-bar" style={{ ["--w" as string]: "82%" }}>
-                  <span className="score-bar__name">Criterion</span>
-                  <span className="score-bar__track">
-                    <span className="score-bar__fill"></span>
-                  </span>
-                </li>
-                <li className="score-bar" style={{ ["--w" as string]: "64%" }}>
-                  <span className="score-bar__name">Criterion</span>
-                  <span className="score-bar__track">
-                    <span className="score-bar__fill"></span>
-                  </span>
-                </li>
-                <li className="score-bar" style={{ ["--w" as string]: "47%" }}>
-                  <span className="score-bar__name">Criterion</span>
-                  <span className="score-bar__track">
-                    <span className="score-bar__fill"></span>
-                  </span>
-                </li>
-              </ul>
-              <p className="score-note">
-                Draft — illustrative breakdown; aggregation formula and public
-                values are pending (see open questions).
-              </p>
-            </div>
-            <div className="score-visual" data-reveal="right">
-              {/* confidence ring — fills as it scrolls through the viewport via
-                  --scrub; reduced-motion lands it at the full state */}
-              <div
-                className="conf-ring"
-                data-scrub
-                role="img"
-                aria-label="Confidence ring filling as evidence accumulates"
-              >
-                <span className="conf-ring__label">Confidence</span>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* 5. Coverage — StatBand, light. */}
+        <StatBand
+          surface="light"
+          eyebrow="The AI jury"
+          title="No score rests on one opinion"
+          stats={COVERAGE_STATS}
+        />
 
-        {/* 7. Rubric system — full-bleed statement, DARK. */}
-        <section id="rubric" className="band ink methodology-rubric">
-          <div className="wrap rubric-statement">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              Rubric
-            </span>
-            {/* draft from brief §6 Rubric system */}
-            <h2
-              className="rubric-h"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              One <span className="grad-word">rubric</span> — shared criteria and
-              defined levels — is what makes scores comparable across decks.
-            </h2>
-            <p
-              className="sub rubric-note"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              Draft — every deck is measured against the same criteria, each with
-              defined levels (specific descriptors not yet fixed).
-            </p>
-          </div>
-        </section>
+        {/* 6. Rubric — EditorialSplit (light) for the evidence-before-score
+            procedure, then a ChipGrid for the four bands. */}
+        <EditorialSplit
+          id="rubric"
+          surface="light"
+          eyebrow="The rubric"
+          titleLead="One scale, four bands, evidence first"
+          sub="Every dimension is scored on the same 0–10 scale, split into four bands. A judge has to assemble the evidence before it can name a score — never the other way around."
+          points={RUBRIC_PROCEDURE}
+          media={{
+            ratio: "4/3",
+            label: "Diagram · rubric scale · 4:3",
+            hint: "A 0–10 scale split into four bands, with the evidence → band → score procedure",
+            ariaLabel:
+              "A 0 to 10 rubric scale split into four bands",
+          }}
+        />
+        <ChipGrid
+          surface="light"
+          ariaLabel="The four rubric bands on the 0–10 scale"
+          columns={4}
+          tight
+          items={RUBRIC_BANDS}
+        />
 
-        {/* 8. Human-in-the-loop — editorial split, light. AI-green only as the
-            human-approval accent. */}
-        <section className="band methodology-hitl">
-          <div className="wrap hitl-split">
-            <div className="hitl-copy" data-reveal="left">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Human-in-the-loop
-              </span>
-              <h2 className="title">Human in the loop</h2>
-              {/* draft from brief §7 Human-in-the-loop */}
-              <p className="sub">
-                The AI produces an advisory output that is handed to a named
-                person; that person makes the final decision, and an audit line
-                records who and when.
-              </p>
-            </div>
-            <div className="hitl-flow" data-reveal="right">
-              <div className="hitl-node hitl-node--ai">
-                <span className="mini-tag">AI</span>
-                <h3 className="hitl-h">Advisory output</h3>
-                <p className="hitl-p">
-                  The AI jury prepares an evidence-backed recommendation — it
-                  does not decide.
-                </p>
-              </div>
-              <span className="hitl-arrow" aria-hidden="true">
-                →
-              </span>
-              <div className="hitl-node hitl-node--human">
-                <span className="mini-tag">Human</span>
-                <h3 className="hitl-h">Final decision</h3>
-                <p className="hitl-p">
-                  A person with a named role reviews the advisory output and
-                  makes the call.
-                </p>
-              </div>
-              <p className="hitl-audit">
-                Audit — every final decision records who decided and when.
-              </p>
-            </div>
-          </div>
-        </section>
+        {/* 7. Scoring — EditorialSplit, light. */}
+        <EditorialSplit
+          surface="light"
+          eyebrow="The scoring model"
+          titleLead="From six reads to one advisory score"
+          sub="A deterministic math step turns the judges' scores into one number — the same inputs always produce the same result. It's an advisory reference, not the ranking."
+          points={SCORING_POINTS}
+          media={{
+            ratio: "4/3",
+            label: "Diagram · confidence ring · 4:3",
+            hint: "A confidence ring with the per-dimension contribution from each judge",
+            ariaLabel:
+              "A confidence ring showing the per-dimension judge contributions",
+          }}
+        />
 
-        {/* 9. Final CTA — Apple-grade cinematic zoom.
-         * Phase A: full-screen video. Phase B: black knockout shows the video
-         * ONLY through the heading letters — the LETTERS scale from huge → 1
-         * (black rect fixed full-bleed → no video at the edges). Phase C: a lens
-         * fill covers the video so the letters become a solid brand gradient
-         * (only letters remain). Phase D: eyebrow → sub → CTA. Motion is 100%
-         * --pin-driven in CSS via ScrollFX (no per-section useEffect / no
-         * ScrollOrchestrator edit). reduced-motion & mobile = static statement. */}
-        <section
-          className="band ink m-cinema"
-          data-pin
-          data-pin-steps="1"
-          aria-label="See the methodology on your own decks"
-        >
-          <div className="m-cinema__stage" data-pin-stage>
-            <video
-              className="m-cinema__vid"
-              autoPlay
-              muted
-              loop
-              playsInline
-              aria-hidden="true"
-            >
-              <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
-            </video>
-            {/* lens fill — fades in at the end, fully covering the video so the
-             * letters resolve to a solid brand gradient (video gone, only letters) */}
-            <div className="m-cinema__fill" aria-hidden="true"></div>
-            {/* full-bleed black knockout; ONLY the masked letters scale (CSS), so
-             * the black always covers the whole viewport — no video at the edges */}
-            <svg
-              className="m-cinema__knockout"
-              viewBox="0 0 1280 900"
-              preserveAspectRatio="xMidYMid slice"
-              aria-hidden="true"
-            >
-              <defs>
-                <mask id="m-cinema-mask">
-                  <rect width="1280" height="900" fill="#fff" />
-                  <text
-                    x="640"
-                    y="490"
-                    textAnchor="middle"
-                    className="m-cinema__masktext"
-                  >
-                    See the methodology on your own decks
-                  </text>
-                </mask>
-              </defs>
-              <rect
-                width="1280"
-                height="900"
-                fill="var(--bg-ink, #0a0a0d)"
-                mask="url(#m-cinema-mask)"
-              />
-            </svg>
-            {/* supporting copy — appears AFTER the heading, below it; no second
-             * heading element, so nothing overlaps the masked letters */}
-            <div className="m-cinema__copy">
-              <span className="eyebrow m-cinema__eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Get started
-              </span>
-              <p className="sub m-cinema__sub">
-                Book a demo and watch the evaluation run end to end — on your own
-                pitch decks, with the final call yours.
-              </p>
-              <div className="sect-cta m-cinema__cta">
-                <Button href="/#demo">Book a Demo</Button>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* 8. Human-in-the-loop — EditorialSplit, light. */}
+        <EditorialSplit
+          surface="light"
+          eyebrow="Where the human decides"
+          titleLead="The AI prepares. You decide."
+          sub="Every AI score is advisory. You read the evidence, set your Jury Score on each dimension, and the leaderboard is built from your Final Score — never from the AI's."
+          points={HITL_POINTS}
+          media={{
+            ratio: "4/3",
+            label: "Quote · the final call is yours · 4:3",
+            hint: "Six AI lenses do the reading. The final call is always yours. — Pitch Competition · P1–P6",
+            ariaLabel:
+              "Six AI lenses do the reading. The final call is always yours.",
+          }}
+        />
+
+        {/* soft → ink : masked divider into the closing CTA peak. */}
+        <div className="tr-masked-divider" data-from="soft" data-to="ink" aria-hidden="true" />
+
+        {/* 9. Final CTA — QuietCta, ink (ink peak #2). */}
+        <QuietCta
+          surface="ink"
+          eyebrow="Get started"
+          title="See the methodology run on your own decks"
+          sub="Book a demo and watch one deck go from slides to an evidence-linked, explainable score."
+          cta={{ label: "Book a Demo", href: "/company/contact" }}
+        />
       </main>
       <Footer variant="dark" />
       <ScrollFX />
