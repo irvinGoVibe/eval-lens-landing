@@ -77,7 +77,10 @@ export function ChipGrid({
 
   if (bare) {
     return (
-      <div className="ds-chipgrid ds-chipgrid--bare" aria-label={ariaLabel}>
+      <div
+        className={`ds-chipgrid ds-chipgrid--bare${surface === "ink" ? " ink" : ""}`}
+        aria-label={ariaLabel}
+      >
         {inner}
       </div>
     );

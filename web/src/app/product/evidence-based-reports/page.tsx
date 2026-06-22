@@ -348,6 +348,7 @@ export default function EvidenceBasedReportsPage() {
               "feature" in t && t.feature ? (
                 <ChipGrid
                   bare
+                  surface="ink"
                   columns={2}
                   ariaLabel="The ten key sections, with a severity signal each"
                   items={COMPLETENESS.map((c) => ({ name: c.name, sev: c.sev }))}
