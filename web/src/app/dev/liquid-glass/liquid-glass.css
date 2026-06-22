@@ -109,13 +109,9 @@
     linear-gradient(180deg, #08070e 0%, #060509 50%, #08070e 100%);
 }
 
-/* dark-cyan — cyan-forward dark field (cyan + blue + faint violet, no aqua/green) */
+/* dark-cyan — clean smooth blue-cyan gradient (no radial spots), darker. */
 .lgx-bg--dark-cyan {
-  background:
-    radial-gradient(54% 58% at 22% 22%, rgba(46, 197, 232, 0.34), transparent 60%),
-    radial-gradient(46% 50% at 86% 80%, rgba(59, 130, 246, 0.22), transparent 62%),
-    radial-gradient(40% 46% at 60% 52%, rgba(124, 92, 246, 0.14), transparent 60%),
-    linear-gradient(160deg, #05111a 0%, #060a12 55%, #04101a 100%);
+  background: linear-gradient(155deg, #0c2231 0%, #081420 45%, #060d16 72%, #04080f 100%);
 }
 
 /* dark-ink — essentially black (a faint tonal lift up top so the glass keeps depth) */
@@ -318,7 +314,9 @@
 /* big (feature) tile — blue sheen + a light streak that runs across it, plus a
    soft hover gradient (like the gallery card, but weaker). */
 .liquid-glass-page .lgx-rb__cell--feature.ds-glass {
+  /* faint thin-line texture (very, very subtle) under the blue sheen */
   background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 7px),
     linear-gradient(150deg, rgba(96, 150, 255, 0.12) 0%, rgba(46, 150, 232, 0.06) 50%, rgba(140, 190, 255, 0.03) 100%);
   border-color: rgba(120, 165, 255, 0.26);
   transition:

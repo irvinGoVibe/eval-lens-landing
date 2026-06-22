@@ -5486,6 +5486,73 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-bento.soft .lab-bento__tile p{color:var(--muted);}
 .lab-bento.soft .lab-bento__tile .mini-tag{color:var(--violet);}
 
+/* ── hover (INK surface only) — ported from the liquid-glass RichBento cards:
+   a gentle lift + a soft whitish glow + a brighter top hairline. The light
+   (soft) surface is intentionally left without a hover. ── */
+.lab-bento.ink .lab-bento__tile{
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), border-color .4s var(--ease);
+}
+.lab-bento.ink .lab-bento__tile:hover{
+  transform:translateY(-3px);
+  border-color:rgba(206,222,252,.2);
+  box-shadow:
+    0 26px 64px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(214,230,255,.18),
+    0 0 56px 2px rgba(220,232,255,.1);
+}
+
+/* ── RichBento look on the ink DS Bento (ported from /dev/liquid-glass):
+   cool transparent glass tiles + a blue feature tile with a faint diagonal
+   texture and a soft running blue drift (reuses the gallery-bubbles keyframe).
+   Ink only — the light (soft) surface keeps its own look. ── */
+.lab-bento.ink .lab-bento__tile{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.03) 50%, rgba(220,236,255,.014) 100%);
+  border:1px solid rgba(188,212,250,.15);
+  backdrop-filter:blur(18px) saturate(1.12);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(220,236,255,.2),
+    inset 0 -1px 0 rgba(255,255,255,.04);
+}
+.lab-bento.ink .lab-bento__tile > *{position:relative;z-index:1;}
+
+/* feature tile — blue sheen + faint diagonal texture under the glass */
+.lab-bento.ink .lab-bento__tile--feature{
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.018) 0 1px, transparent 1px 7px),
+    linear-gradient(150deg, rgba(96,150,255,.12) 0%, rgba(46,150,232,.06) 50%, rgba(140,190,255,.03) 100%);
+  border-color:rgba(120,165,255,.26);
+}
+/* running blue "ingredient" — soft blobs drifting behind the glass */
+.lab-bento.ink .lab-bento__tile--feature::before{
+  content:'';position:absolute;z-index:0;inset:0;pointer-events:none;border-radius:inherit;
+  background:
+    radial-gradient(42% 52% at 30% 40%, rgba(70,140,255,.55), transparent 68%),
+    radial-gradient(40% 50% at 72% 62%, rgba(46,197,232,.5), transparent 68%),
+    radial-gradient(36% 46% at 52% 82%, rgba(120,170,255,.42), transparent 70%);
+  background-size:165% 165%,155% 155%,175% 175%;
+  background-repeat:no-repeat;
+  filter:blur(26px);
+  -webkit-mask:radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
+          mask:radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
+  mix-blend-mode:screen;opacity:.5;
+  animation:gallery-bubbles 12s ease-in-out infinite;
+}
+@media (prefers-reduced-motion:reduce){
+  .lab-bento.ink .lab-bento__tile--feature::before{animation:none;}
+}
+/* feature hover — blue glow (overrides the whitish hover for this tile) */
+.lab-bento.ink .lab-bento__tile--feature:hover{
+  transform:translateY(-3px);
+  border-color:rgba(140,180,255,.4);
+  box-shadow:
+    inset 0 1px 0 rgba(220,236,255,.22),
+    0 0 70px 4px rgba(70,140,255,.14),
+    0 0 50px rgba(46,197,232,.1);
+}
+.lab-bento.ink .lab-bento__tile--feature:hover::before{opacity:.78;}
+
 /* ── v1 — Polish: band head + 3-col grid, feature spans 2×2 ──────────────────
    Three supporting tiles stack in the right column; the feature tile is the
    large 2×2 cell carrying the media placeholder (pinned bottom via margin). */
@@ -8807,6 +8874,29 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
 }
 .ds .lab-bento:not(.ink) .lab-bento__tile--feature:hover{
   border-color:color-mix(in oklab, var(--violet) 60%, transparent);
+}
+
+/* light Gallery cards → milky liquid glass (ported from /dev/liquid-glass).
+   Gallery only — the light bento above keeps its --dsc-card look. Frosts
+   whatever's behind; over the page's white it reads as a soft translucent card
+   defined by the violet-tinted drop shadow. backdrop-filter UNPREFIXED. */
+.ds .lab-gallery:not(.ink) .lab-gallery__card{
+  background:linear-gradient(150deg, rgba(255,255,255,.32) 0%, rgba(255,255,255,.1) 100%);
+  border:1px solid rgba(255,255,255,.6);
+  backdrop-filter:blur(14px) saturate(1.7) brightness(1.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    inset 0 0 0 1px rgba(108,76,241,.06),
+    0 26px 60px -30px rgba(108,76,241,.5);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease), background .4s, border-color .4s;
+}
+.ds .lab-gallery:not(.ink) .lab-gallery__card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(255,255,255,.72);
+  background:linear-gradient(150deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.16) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    0 32px 70px -28px rgba(108,76,241,.6);
 }
 
 /* (d) light-section media = branded deep frame (--lens-deep), like ds-theme #value. */
