@@ -584,3 +584,59 @@ reveal через `clip-path:inset(0 100% 0 0)→inset(0)`. В Workflow-заго
 - `globals.css` ↔ DS-бандл сверены вручную (v1.3). Автоматической проверки
   drift'а нет — после правок токенов в `globals.css` нужно прогонять
   `.ds-sync/resync.mjs`, иначе бандл и дока снова разъедутся.
+
+## Reusable components — `@/components/ds` (prefix-free API)
+
+> Добавлено 2026-06-22. Цель: чистые переиспользуемые компоненты для сборки
+> страниц сайта, без `Lab`-префикса. `.lab-*` CSS остаётся внутренней
+> реализацией; публичные имена — чистые.
+
+Точка входа — **барель `web/src/components/ds/index.ts`**. Импортировать только
+оттуда (отдельные seed-файлы `ds/Eyebrow.tsx` · `Heading.tsx` · `Hero.tsx` ·
+`SectionFrame.tsx` устарели и заменены барелем):
+
+```tsx
+import { StatementHero, Bento, FullStatement, Gallery, PinnedSteps,
+         Eyebrow, Title, Media, Button } from "@/components/ds";
+```
+
+### Светлый визуальный язык — scope `.ds`
+
+Светлый DS-облик (lens-soft градиентные карточки, violet-волоски, violet-свечение,
+cool-mist атмосфера, брендовая deep-рамка медиа) живёт **одним каноном** в
+`globals.css` под классом **`.ds`** (токены `--dsc-*` + правила). Раньше это было
+скопировано в три dev-страницы (`.ds-theme` / `/dev/ds-atoms` / `/dev/ds-sections`)
+— теперь источник один.
+
+Контейнер страницы несёт `ds` **рядом с** `section-lab` (базовые `.lab-*` правила
+по-прежнему требуют предка `.section-lab`):
+
+```tsx
+<main className="section-lab ds"> … </main>
+```
+
+Все правила `.ds` гейтятся на `:not(.ink)`, поэтому секция с `surface="ink"`
+сохраняет родной тёмный вид. Секции surface-adaptive: `surface="light" | "soft"`
+→ светлый DS-облик, `surface="ink"` → тёмная.
+
+Правило палитры (подтверждено user): **фича-градиент карточки не уходит в
+зелёный (aqua/teal)** — резолвится обратно в violet (violet→cyan→violet). То же
+для слоёв sheen у медиа-рамки. См. [[ds-theme-design-prefs]] (память).
+
+### Состав (полированный набор, 1-й проход)
+
+| Чистое имя | Источник | Тип секции |
+|---|---|---|
+| `StatementHero` | `LabStatementHero` | Hero / заявление |
+| `Bento` | `LabBento` | Bento-обзор (tile + feature) |
+| `FullStatement` | `LabFullStatement` | Full-bleed тезис |
+| `Gallery` | `LabGallery` | Горизонтальная галерея карточек |
+| `PinnedSteps` | `LabPinnedSteps` | Pinned multi-screen процесс |
+| `Eyebrow` | `_kit LabEyebrow` | Атом — надзаголовок |
+| `Title` | `_kit LabTitle` | Атом — заголовок (grad-accent) |
+| `Media` | `_kit MediaPlaceholder` | Атом — медиа-слот (ratio-locked) |
+| `Button` | `ui/Button` | Примитив — кнопка (все варианты) |
+
+**Ещё не вынесено в компоненты (markup-only в `/dev/ds-atoms`):** Card · Chip ·
+Stat · Ring · Bars · ListItem. Это L3-атомы-кандидаты — нужна реальная экстракция
+в `_kit` отдельным проходом. Остальные ~13 `Lab*` секций — следующими проходами.

@@ -383,6 +383,16 @@ body.hero-ready .site-header.is-hidden{
 
 /* ---------- section scaffolding ---------- */
 section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
+/* No horizontal scroll from any section. Several archetypes use full-bleed
+   children (`width:100vw`, `margin-left:50%; translateX(-50%)`, `calc(50% - 50vw)`,
+   150vw glow scenes); `100vw`/`50vw` include the scrollbar width and leak a few
+   px past the document, and on mobile wide grids/media can spill. Clip every
+   band on the X axis: full-bleed children align to the viewport so nothing
+   visible is lost, inner scroll-lanes keep their own `overflow-x:auto`, and
+   `clip` (not `hidden`) creates NO scroll container, so `position:sticky`
+   pinned stages (.lab-process, .ds-cinema) are unaffected. overflow-y stays
+   visible. */
+.band{overflow-x:clip;}
 .band.soft{background:var(--bg-soft);}
 .band.ink{background:var(--bg-ink);color:var(--fg-on-dark);}
 .wrap{max-width:var(--maxw);margin:0 auto;}
@@ -1444,7 +1454,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
     rgba(0,0,0,.24) 86%,
     rgba(0,0,0,.06) 95%,
     transparent 100%);
-  overflow:visible;pointer-events:none;
+  overflow:visible;overflow-x:clip;pointer-events:none;
   --glow-p:1;
   --glow-zarya:0;}
 /* wide soft white wash that dissolves the orange halo into the white section
@@ -1885,7 +1895,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
     #2a2724 50%,
     #c8c2bc 80%,
     #fff 100%);
-  overflow:visible;pointer-events:none;}
+  overflow:visible;overflow-x:clip;pointer-events:none;}
 .section-mist-bridge__stage{
   position:absolute;inset:0;z-index:1;
   overflow:visible;}
@@ -5276,7 +5286,9 @@ section.band.ink .mini-tag{color:var(--lavender);}
    ones carry `hidden`). Surface-invariant: within a version, .soft and .ink
    share identical geometry — only colour tokens flip. The lane is a native
    CSS scroll-snap <ol> (keyboard reachable, visible focus ring) shared by all
-   three versions; per-version classes only layer look on top. */
+   three versions; per-version classes only layer look on top. The full-bleed
+   v3/expr lane can't leak a page scroll — `.band{overflow-x:clip}` (section
+   scaffolding) clips it at the viewport. */
 .lab-gallery .head{margin:0 auto clamp(32px,5vw,56px);}
 
 /* shared lane + card (the invariant) */
@@ -8686,3 +8698,99 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
   filter:contrast(1.06) saturate(1.08);
 }
 
+
+/* ============================================================
+   EvalLense DESIGN SYSTEM — `.ds` scope (promoted from /dev showcases).
+   The single source of truth for the LIGHT visual language used across the
+   reusable design-system components (components/ds). Put `ds` on the page
+   container ALONGSIDE `section-lab` (the base .lab-* rules still require the
+   .section-lab ancestor):  <main className="section-lab ds">.
+
+   Everything is gated on `:not(.ink)` so a section set to the ink surface keeps
+   its native dark look. Values are the canonical --dsc-* light card tokens
+   (lens-soft gradient cards, violet hairlines, violet glow, cool-mist
+   atmosphere, branded deep media frame). color-mix() is used as a FUNCTION
+   only (no raw oklab/oklch stops) so Lightning-CSS keeps every rule.
+   ============================================================ */
+.ds{
+  --dsc-card: linear-gradient(162deg,#ffffff 0%, color-mix(in oklab, var(--violet) 8%, #ffffff) 100%);
+  --dsc-card-feature: linear-gradient(135deg, color-mix(in oklab,var(--violet) 24%, #ffffff) 0%, color-mix(in oklab,var(--cyan) 16%, #ffffff) 50%, color-mix(in oklab,var(--violet) 22%, #ffffff) 100%);
+  --dsc-border: color-mix(in oklab, var(--violet) 20%, transparent);
+  --dsc-border-strong: color-mix(in oklab, var(--violet) 34%, transparent);
+  --dsc-shadow: 0 1px 0 #ffffff inset, 0 2px 8px -4px color-mix(in oklab,var(--violet) 20%, transparent), 0 26px 60px -30px color-mix(in oklab,var(--violet) 40%, transparent);
+  --dsc-radius: var(--r-lg);
+}
+
+/* (a) page wash — soft cool-mist atmosphere behind everything. */
+.ds::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 82% 8%, color-mix(in oklab,var(--cyan) 8%, transparent) 0%, color-mix(in oklab,var(--cyan) 3%, transparent) 44%, transparent 74%),
+    radial-gradient(52% 48% at 12% 96%, color-mix(in oklab,var(--lavender) 7%, transparent) 0%, transparent 72%);
+}
+
+/* (b) per-section atmosphere on light surfaces — connective gradient tissue. */
+.ds .lab-hero:not(.ink),
+.ds .lab-bento:not(.ink){ position:relative; isolation:isolate; }
+.ds .lab-hero:not(.ink) > *,
+.ds .lab-bento:not(.ink) > *{ position:relative; z-index:1; }
+.ds .lab-hero:not(.ink)::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 54% at 80% 14%, color-mix(in oklab,var(--cyan) 18%, transparent) 0%, color-mix(in oklab,var(--cyan) 8%, transparent) 44%, transparent 76%),
+    radial-gradient(54% 48% at 16% 92%, color-mix(in oklab,var(--lavender) 13%, transparent) 0%, transparent 72%);
+}
+.ds .lab-bento:not(.ink)::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(90deg, color-mix(in oklab,var(--violet) 16%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in oklab,var(--cyan) 14%, transparent) 1px, transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+          mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+}
+
+/* (c) light cards — lens-soft gradient material, violet border + glow, hover lift. */
+.ds .lab-bento:not(.ink) .lab-bento__tile,
+.ds .lab-gallery:not(.ink) .lab-gallery__card{
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.ds .lab-bento:not(.ink) .lab-bento__tile:hover,
+.ds .lab-gallery:not(.ink) .lab-gallery__card:hover{
+  transform:translateY(-3px);
+  border-color:var(--dsc-border-strong);
+}
+.ds .lab-bento:not(.ink) .lab-bento__tile--feature{
+  background:var(--dsc-card-feature);
+  border-color:color-mix(in oklab, var(--violet) 48%, transparent);
+  box-shadow:
+    0 1px 0 #ffffff inset,
+    0 2px 10px -4px color-mix(in oklab,var(--violet) 30%, transparent),
+    0 30px 64px -28px color-mix(in oklab,var(--violet) 55%, transparent);
+}
+.ds .lab-bento:not(.ink) .lab-bento__tile--feature:hover{
+  border-color:color-mix(in oklab, var(--violet) 60%, transparent);
+}
+
+/* (d) light-section media = branded deep frame (--lens-deep), like ds-theme #value. */
+.ds .band:not(.ink) .media-ph{
+  background:var(--lens-deep);
+  border:1px solid var(--dsc-border-strong);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  overflow:hidden;
+}
+.ds .band:not(.ink) .media-ph::before{ background:none; }
+.ds .band:not(.ink) .media-ph::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(135deg,#a99bff33,#a99bff00 32%),
+    linear-gradient(315deg,#7c6cff29,#7c6cff00 30%);
+}
+.ds .band:not(.ink) .media-ph > *{ position:relative; z-index:1; }
+.ds .band:not(.ink) .media-ph__label{ color:#eef; background:#ffffff1f; border:1px solid #ffffff33; }
+.ds .band:not(.ink) .media-ph__hint{ color:#cfcce8; }

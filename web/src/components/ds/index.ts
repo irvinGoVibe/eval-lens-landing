@@ -1,0 +1,63 @@
+/**
+ * EvalLense Design System — public barrel.
+ *
+ * The reusable, prefix-free component API for composing site pages. These are
+ * the canonical names to import across the project:
+ *
+ *     import { StatementHero, Bento, Gallery, Eyebrow, Button } from "@/components/ds";
+ *
+ * Under the hood they reuse the proven section markup/CSS (the `.lab-*` classes
+ * kept as an internal implementation detail). The LIGHT visual language is
+ * supplied by the `.ds` scope in globals.css — put `ds` on the page container
+ * alongside `section-lab`:
+ *
+ *     <main className="section-lab ds"> … </main>
+ *
+ * Sections are surface-adaptive: pass `surface="light" | "soft"` for the
+ * lens-soft design-system look, or `surface="ink"` to keep a section dark.
+ *
+ * NOTE: the standalone seed files in this folder (Eyebrow.tsx, Heading.tsx,
+ * Hero.tsx, SectionFrame.tsx) predate this barrel and are superseded by it —
+ * import from "@/components/ds", not the individual seed files.
+ */
+
+/* ── Sections ───────────────────────────────────────────── */
+export { LabStatementHero as StatementHero } from "@/components/sections/lab/LabStatementHero";
+export type { LabStatementHeroProps as StatementHeroProps } from "@/components/sections/lab/LabStatementHero";
+
+export { LabBento as Bento } from "@/components/sections/lab/LabBento";
+export type {
+  LabBentoProps as BentoProps,
+  LabBentoItem as BentoItem,
+  LabBentoMedia as BentoMedia,
+} from "@/components/sections/lab/LabBento";
+
+export { LabFullStatement as FullStatement } from "@/components/sections/lab/LabFullStatement";
+export type { LabFullStatementProps as FullStatementProps } from "@/components/sections/lab/LabFullStatement";
+
+export { LabGallery as Gallery } from "@/components/sections/lab/LabGallery";
+export type {
+  LabGalleryProps as GalleryProps,
+  LabGalleryItem as GalleryItem,
+} from "@/components/sections/lab/LabGallery";
+
+export { LabPinnedSteps as PinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
+export type {
+  LabPinnedStepsProps as PinnedStepsProps,
+  LabPinnedStep as PinnedStep,
+} from "@/components/sections/lab/LabPinnedSteps";
+
+/* ── Atoms ──────────────────────────────────────────────── */
+export {
+  LabEyebrow as Eyebrow,
+  LabTitle as Title,
+  MediaPlaceholder as Media,
+} from "@/components/sections/lab/_kit";
+export type {
+  LabContentMode as ContentMode,
+  LabContentSet as ContentSet,
+} from "@/components/sections/lab/_kit";
+
+/* ── Primitives ─────────────────────────────────────────── */
+export { Button } from "@/components/ui/Button";
+export type { ButtonProps } from "@/components/ui/Button";
