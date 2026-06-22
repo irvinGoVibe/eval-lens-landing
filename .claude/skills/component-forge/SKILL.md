@@ -18,10 +18,21 @@ metadata:
 Запуск: **`/component-forge "архетип 04"`**. **Один архетип за раз** — без
 параллельной переработки нескольких.
 
+> **Канон выхода (нерушимо).** Выход FORGE — **чистый DS-компонент** в
+> `web/src/components/ds`, экспортируемый из барреля `@/components/ds` (prefix-free
+> имя: `StatementHero` · `Bento` · `FullStatement` · `Gallery` · `PinnedSteps` ·
+> `Eyebrow` · `Title` · `Media` · `Button` + по мере расковки), стили в `ds.css` под
+> scope `.ds`. FORGE закрывает gap **извлечением чистого DS**, **НЕ** оборачивая `Lab*`
+> и **НЕ** копируя `Lab*` в страницу. `Lab*` (`sections/lab/Lab*.tsx`) · `_kit.tsx` ·
+> CSS `.lab-*` · scope `.section-lab` — DEPRECATED внутренний субстрат (north-star:
+> убрать целиком); инлайн-архетип в `section-lab/page.tsx` — лишь **источник**
+> извлечения. Канон — `wiki/architecture/design-system.md` §«Дизайн-система —
+> @/components/ds» + `component-library.md`.
+
 > Место в экосистеме: `redraw-block` — один блок руками; `build-pages` — сборка
 > страниц из готовых блоков; **component-forge** — управляемая переработка
-> архетипа в переиспользуемый блок. Это доработка существующей системы, не новый
-> параллельный workflow.
+> архетипа в переиспользуемый **чистый DS-компонент**. Это доработка существующей
+> системы, не новый параллельный workflow.
 
 ## Работники (только подтверждённые `name:`)
 `design-system-architect`, `ui-designer`, `ui-ux-designer`,
@@ -56,11 +67,13 @@ metadata:
 автоматически**.
 
 ### Фаза 0 — Discovery (оркестратор, ничего не менять)
-Найти архетип по идентификатору; источник (inline в `web/src/app/dev/section-lab/page.tsx`
-или вынесен в `web/src/components/sections/lab/Lab*`); связанные файлы; CSS,
-primitives, fragments, motion hooks; существующие V1/V2/V3; light/dark; content
-modes; связанные media; registry; shared deps; какие файлы задевают другие
-архетипы; риски/блокеры. **Выход:** `## Archetype discovery` (archetype, source,
+Найти архетип по идентификатору; **источник извлечения** (inline в
+`web/src/app/dev/section-lab/page.tsx` или вынесен в deprecated
+`web/src/components/sections/lab/Lab*`); связанные файлы; CSS, DS-атомы, fragments,
+motion hooks; существующие V1/V2/V3; light/dark; content modes; связанные media;
+registry; shared deps; какие файлы задевают другие архетипы; риски/блокеры. Цель
+извлечения — всегда **чистый DS** (`@/components/ds`), даже если источник — `Lab*`.
+**Выход:** `## Archetype discovery` (archetype, source,
 related files, existing versions/themes/content-modes/media/motion, shared deps,
 registry, risks, blockers). Состояние → `discovered`.
 
@@ -72,15 +85,17 @@ registry, risks, blockers). Состояние → `discovered`.
 
 ### Фаза 2 — Microstructure Map
 Скилл [forge-primitives](../forge-primitives/SKILL.md), работник
-`multi-platform-apps-frontend-developer`. **Карта** микрочастей (tokens→primitives→
-fragments→recipe), **без авто-componentization**. Карточки: `composition-layers`,
+`multi-platform-apps-frontend-developer`. **Карта** микрочастей (tokens→DS-атомы→
+fragments→recipe; primitives/atoms = DS-атомы `@/components/ds`), **без
+авто-componentization**. Карточки: `composition-layers`,
 `prop-component`, `surface-invariant`, `token-binding`. **Выход:** `## Microstructure
 map`. Состояние → `microstructure-mapped`.
 
 ### Фаза 3 — Design-System Guard
 Работник `design-system-architect`. Читает `wiki/architecture/design-system.md`,
 `page-design-patterns.md`, `section-types.md`, `.claude/designs/`, `globals.css`,
-`web/src/components/ui/`, `_kit.tsx`. Выводит **Surface-to-action matrix** (см.
+`ds.css`, `web/src/components/ds/` (публичный API), `web/src/components/ui/`, а также
+deprecated `_kit.tsx` (как факт субстрата). Выводит **Surface-to-action matrix** (см.
 `kb/surface-to-action.md`) и ограничения; фиксирует docs↔code конфликты. **Выход:**
 `## Design-system constraints` + матрица. Состояние → `ds-constrained`.
 
@@ -118,7 +133,9 @@ Designer Self-Check, Media Package, Media Designer Approval, Design-System Revie
 ### Фаза 5 — Frontend Implementation
 Скилл [forge-extract](../forge-extract/SKILL.md), **один** writer
 `multi-platform-apps-frontend-developer`. Реализует **только approved** брифы +
-approved media в боевой TSX; componentize по карте; контент/CTA/функц.контракт не
+approved media в боевой TSX **как чистый DS-компонент** (`web/src/components/ds` +
+экспорт из `@/components/ds`, стили в `ds.css`/`.ds`) — извлекая по карте, **не**
+оборачивая `Lab*` и **не** копируя `Lab*` в страницу; контент/CTA/функц.контракт не
 трогает. Невозможно без нарушения контракта → `design-conflict`, стоп. Состояние →
 `implementing`.
 
@@ -137,9 +154,10 @@ remaining, media-сводка, число fix-итераций, `ready-for-integ
 **остановиться**. Состояние `validating` → (user) `final-approved`.
 
 ### Фаза 7 — Integration / Index
-Скилл [forge-index](../forge-index/SKILL.md). Зарегистрировать в существующем
-реестре `wiki/architecture/component-library.md` + `section-types.md`; проверить
-V1/V2/V3 controls, light/dark, demo-content режимы, media switching,
+Скилл [forge-index](../forge-index/SKILL.md). Зарегистрировать **чистое DS-имя**
+(`@/components/ds`) в существующем реестре `wiki/architecture/component-library.md` +
+`section-types.md`; манифесты — только через `component-library-preparer` incremental;
+проверить V1/V2/V3 controls, light/dark, demo-content режимы, media switching,
 mobile/desktop, соседние архетипы, отсутствие дублей примитивов. Состояние → `integrating`.
 
 ### Фаза 8 — Final Verification
@@ -152,6 +170,9 @@ app-code, `.env*` не тронуты, `git status`. Состояние → `com
 
 ## Рейлы оркестратора (нерушимо)
 - Один архетип за раз; не запускать параллельную переработку нескольких.
+- **Выход — чистый DS** (`@/components/ds` + `ds.css`/`.ds`), prefix-free; FORGE
+  извлекает чистый DS, не оборачивает и не копирует `Lab*`; новый CSS — в `ds.css`,
+  не в `.lab-*`. Регистрация в манифесты — только через `component-library-preparer`.
 - Vendor-агенты `.claude/agents/wshobson/` не менять; `redraw-block` не переписывать.
 - Не передавать агенту весь чат — только task packet (`kb/task-packets.md`).
 - Контент/CTA/функц.контракт — инвариант (`contract-lock`); нарушение → `design-conflict`.

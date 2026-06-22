@@ -20,6 +20,13 @@ metadata:
 > child. Новый параллельный source of truth не создаём — канон правил тот же
 > (`component-forge/kb/`, `wiki/architecture/component-forge.md`).
 
+> **Канон выхода (нерушимо).** Каждый child-forge выдаёт **чистый DS-компонент**
+> (`web/src/components/ds` + баррель `@/components/ds`, prefix-free, стили в
+> `ds.css`/`.ds`), извлекая из источника, **не** оборачивая и **не** копируя `Lab*`.
+> `Lab*` / `_kit.tsx` / `.lab-*` / scope `.section-lab` — deprecated субстрат и лишь
+> источник извлечения. Канон — `wiki/architecture/design-system.md` §«Дизайн-система —
+> @/components/ds».
+
 Сам **design/application работу не делаешь**: распределяешь archetype-scoped task
 packets работникам через `component-forge`, агрегируешь статусы, ведёшь ledger.
 
@@ -176,8 +183,9 @@ Media candidate selection · Background strategy · Read-only design reviews
 
 **Строго по одному writer'у одновременно** (write слой):
 ```
-Frontend Implementation · shared primitive creation · registry updates ·
-global CSS changes · Section Lab page changes · integration docs updates
+Frontend Implementation (чистый DS-компонент в @/components/ds) · shared DS-atom creation ·
+registry updates · global CSS changes (ds.css/globals.css) · Section Lab source-page edits ·
+integration docs updates
 ```
 **Render QA по умолчанию тоже последовательно** — проект использует общий dev server
 на порту 3005 (порт не менять — CLAUDE.md).
@@ -201,8 +209,9 @@ global CSS changes · Section Lab page changes · integration docs updates
 
 Логические локи (не файловые мьютексы ОС — записи в `locks.json`):
 ```
-section-lab-page · shared-primitives · global-css · component-registry ·
-component-library-docs · section-types-docs · dev-server-3005
+section-lab-page (источник извлечения) · shared-primitives (общие DS-атомы) ·
+global-css (ds.css/globals.css) · component-registry · component-library-docs ·
+section-types-docs · dev-server-3005
 ```
 
 Правила:
@@ -216,16 +225,18 @@ component-library-docs · section-types-docs · dev-server-3005
 
 ## Shared primitive conflict policy
 
-Перед созданием primitive child run **обязан**:
-1. проверить существующие primitives (`_kit.tsx`/`_layout.tsx`, `component-library.md`);
+Новый shared-кусок создаётся как **чистый DS-атом** (`@/components/ds` + `ds.css`),
+**не** в `_kit.tsx`/`.lab-*`. Перед созданием child run **обязан**:
+1. проверить существующие DS-атомы (`web/src/components/ds`/`@/components/ds`,
+   `component-library.md`; deprecated `_kit.tsx`/`_layout.tsx` — только как факт);
 2. проверить предложения других active child runs (`queue.json`/`events.jsonl`);
 3. проверить batch events/queue;
 4. **не создавать duplicate**.
 
-Если два runs хотят похожий primitive:
+Если два runs хотят похожий DS-атом:
 - первый достигший `ready-for-implementation` становится **owner**;
 - второй **ждёт результат**;
-- после реализации второй **перечитывает** primitive;
+- после реализации второй **перечитывает** DS-атом;
 - **переиспользует или расширяет** его — не создаёт параллельную копию.
 
 ## Изоляция ошибок (один run не валит batch)

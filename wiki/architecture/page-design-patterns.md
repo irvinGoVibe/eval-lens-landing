@@ -1,8 +1,8 @@
 ---
 title: Page Design Patterns (Apple-grade)
 status: generated
-version: 1.0
-updated: 2026-06-15
+version: 1.1
+updated: 2026-06-22
 source: homepage patterns (web/) + design-system.md + ScrollOrchestrator generic FX
 ---
 
@@ -83,6 +83,18 @@ primitives»), reduced-motion обработан там же и в движке.
 
 > Визуальный каталог **уже использованных** типов секций со скриншотами —
 > [[section-types|Section Types]]. Здесь — архетипы как справочник «как собирать».
+
+> **Канон сборки (2026-06-22).** Страницы собираются **только** из чистой
+> дизайн-системы — баррель [`@/components/ds`](../../web/src/components/ds/index.ts)
+> (компоненты + атомы) + scope `.ds` + `ds.css`. Это **единственный публичный API**:
+> никаких `Lab`-имён и прямых импортов `sections/lab/Lab*`/`_kit` в коде страниц.
+> Контейнер страницы — `<main className="section-lab ds">`: `.ds` — публичный класс
+> дизайн-системы (светлый язык `--dsc-*`, гейт `:not(.ink)`), `section-lab` —
+> **временный технический долг** (несущие `.lab-*` правила пока требуют этого
+> предка; уходит по мере переезда `.lab-*` → `ds.css`/`.ds`). Чего нет в барреле —
+> это **gap**: его закрывает forge **извлечением чистого DS** (`component-forge` для
+> секций, `primitive-layer-forge` для атомов/каркасов), а не оборачиванием/копированием
+> `Lab*`. Полный канон — [[design-system#Дизайн-система — `@/components/ds` (канон, единственный публичный API)|Design System]].
 
 Собирай страницу из РАЗНЫХ архетипов, не повторяя один. Минимум 5–6 разных на
 страницу из 8 секций.

@@ -126,10 +126,12 @@ safety-рейлы + коммит на страницу + финальное ре
   пишется без отдельного подтверждения** (его заменил гейт Phase 0).
 
 ### 3. План (агент `implementation-planner`)
-Маппинг acceptance → файлы: где `page.tsx`, какие секции-компоненты под
-`web/src/components/sections/` (Server Components), нужны ли стили в `globals.css`,
-какие nav-правки. Анимаций по-секционно **не плодить** — если нужен scroll/
-параллакс, он идёт в `ScrollOrchestrator.tsx` (правило CLAUDE.md). Если план
+Маппинг acceptance → файлы: где `page.tsx`, какие DS-секции берутся из
+`@/components/ds` (публичный API), что собирается page-local на shared DS-токенах/
+`.ds`, нужны ли стили в `ds.css`/`globals.css`, какие nav-правки. Недостающую
+DS-секцию/атом фиксировать как **gap для `component-forge`** (извлечь чистый DS),
+а не как локальный `Lab*`/`_kit`. Анимаций по-секционно **не плодить** — если нужен
+scroll/параллакс, он идёт в `ScrollOrchestrator.tsx` (правило CLAUDE.md). Если план
 требует новых пакетов / миграций / правки `locked` — **страница `blocked`**,
 переход к следующей, причина в сводку.
 
@@ -165,7 +167,23 @@ safety-рейлы + коммит на страницу + финальное ре
 движок движения). Цель — страница уровня Apple product page, **не** сетка
 одинаковых `.tcard`.
 
-- маршрут `web/src/app/<path>/page.tsx`, секции инлайн или в `components/sections/`;
+> **Канон импорта (нерушимо).** Единственный публичный API сборки страниц —
+> баррель `@/components/ds` (`StatementHero` · `Bento` · `FullStatement` ·
+> `Gallery` · `PinnedSteps` · `Eyebrow` · `Title` · `Media` · `Button`, + по мере
+> расковки) + scope `.ds` + `ds.css`. Страница импортирует и называет **только**
+> это. `Lab*` (`sections/lab/Lab*.tsx`) · `_kit.tsx` · CSS `.lab-*` · scope
+> `.section-lab` — **deprecated внутренний субстрат** (north-star: убрать целиком);
+> прямой импорт `Lab*`/`_kit` в коде страниц **запрещён**. Контейнер страницы —
+> `<main className="<page> section-lab ds">`: `.ds` — публичный язык, `.section-lab`
+> — **временный technical-debt** класс (уходит по мере переезда `.lab-*` →
+> `ds.css`/`.ds`). Нужного DS-компонента нет в барреле → это **gap** →
+> `component-forge` извлекает **чистый DS** (в `@/components/ds` + `ds.css`), его и
+> импортировать; **не** лепить локальную обёртку/копию `Lab*`/`_kit`.
+
+- маршрут `web/src/app/<path>/page.tsx`, контейнер `<main className="<page>
+  section-lab ds">` (см. канон выше); секции — импортом из `@/components/ds` либо
+  page-local инлайн на shared DS-токенах/`.ds`; недостающий DS-компонент → gap в
+  `component-forge`, не локальный `Lab*`/`_kit`;
 - **разные архетипы** из page-design-patterns.md: ≥5–6 разных на 8 секций
   (statement hero · full-bleed statement · pinned multi-screen · editorial split ·
   horizontal gallery · stat band · scrubbed visual · bento · quiet CTA);
@@ -190,7 +208,8 @@ safety-рейлы + коммит на страницу + финальное ре
   дети с `min-width:0` (иначе текст ломает раскладку); медиа `max-width:100%`;
   без `100vw`/фикс-ширин, дающих горизонтальный скролл; анимировать только
   `transform`/`opacity`; слотам задавать `aspect-ratio` (нет layout-shift);
-- кастомные стили страницы — под обёрткой страницы (напр. `.<slug> …`), в конец
+- кастомные стили страницы — под обёрткой страницы (напр. `.<slug> …`); новый CSS
+  дизайн-системы — в `ds.css`/`.ds` (не в deprecated `.lab-*`), page-local — в конец
   `globals.css`, аккуратно (дерево бывает грязным);
 - `prefers-reduced-motion` обязан быть тих (примитивы это уважают; кастом —
   оборачивать в `@media`);

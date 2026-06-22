@@ -7,7 +7,16 @@
     "barrel": "web/src/components/ds/index.ts",
     "import": "import { Eyebrow, Title, Media, Button } from \"@/components/ds\";",
     "alias_map": { "Eyebrow": "LabEyebrow", "Title": "LabTitle", "Media": "MediaPlaceholder", "Button": "ui/Button" },
-    "note": "Prefix-free names are the canonical public API (re-export aliases over _kit/ui — identical components). Lab*/MediaPlaceholder names still work. Card/Chip/Stat/Ring/Bars/ListItem are STILL markup-only in /dev/ds-atoms — not extracted, no alias (CL-002)."
+    "alias_map_note": "RHS = deprecated internal _kit/ui source; LHS = public DS name (the only thing pages/skills name).",
+    "canon_updated": "2026-06-22 (DS reframe)",
+    "note": "Prefix-free names are the ONLY public API. _kit (LabEyebrow/LabTitle/MediaPlaceholder) is a DEPRECATED internal substrate the barrel wraps; direct _kit import in page/skill code is FORBIDDEN. North-star: remove _kit. Card/Chip/Stat/Ring/Bars/ListItem are STILL markup-only in /dev/ds-atoms — component-api-gap -> primitive-layer-forge extracts them into clean DS atoms (NOT into _kit) (CL-002)."
+  },
+  "gap_atoms": {
+    "items": ["Card", "Chip", "Stat", "Ring", "Bars", "ListItem"],
+    "status": "component-api-gap",
+    "source": "markup-only in /dev/ds-atoms (no React export)",
+    "route_to": "primitive-layer-forge",
+    "note": "Extract into clean DS atoms in @/components/ds + ds.css, not into _kit.tsx (CL-002)."
   },
   "types": [
     { "name": "LabContentMode", "source": "_kit.tsx", "shape": "\"placeholder\" | \"real\"", "role": "per-section content axis; LabMarkers flips data-content" },
@@ -15,7 +24,7 @@
   ],
   "atoms": [
     {
-      "name": "LabEyebrow", "layer": "L3", "source": "_kit.tsx", "export": "LabEyebrow",
+      "name": "LabEyebrow", "public_name": "Eyebrow", "source_status": "deprecated-substrate", "layer": "L3", "source": "_kit.tsx", "export": "LabEyebrow",
       "props": [
         { "name": "children", "type": "ReactNode", "required": true },
         { "name": "reveal", "type": "\"up\"|\"left\"|\"right\"|\"scale\"", "required": false },
@@ -26,7 +35,7 @@
       "consumers": "all Lab* heads"
     },
     {
-      "name": "LabTitle", "layer": "L3", "source": "_kit.tsx", "export": "LabTitle",
+      "name": "LabTitle", "public_name": "Title", "source_status": "deprecated-substrate", "layer": "L3", "source": "_kit.tsx", "export": "LabTitle",
       "props": [
         { "name": "title", "type": "string", "required": true },
         { "name": "accent", "type": "string", "required": false, "note": "wraps FIRST case-insensitive match in .grad-word (<=1 grad-word; markup-only, never a content change)" },
@@ -38,7 +47,7 @@
       "consumers": "all Lab* heads"
     },
     {
-      "name": "MediaPlaceholder", "layer": "L3/L11", "source": "_kit.tsx", "export": "MediaPlaceholder",
+      "name": "MediaPlaceholder", "public_name": "Media", "source_status": "deprecated-substrate", "layer": "L3/L11", "source": "_kit.tsx", "export": "MediaPlaceholder",
       "props": [
         { "name": "ratio", "type": "string(css aspect-ratio)", "required": true, "note": "-> --ratio" },
         { "name": "label", "type": "string", "required": true },

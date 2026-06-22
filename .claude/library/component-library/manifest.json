@@ -2,25 +2,27 @@
   "$schema": "./manifest.schema (informal)",
   "generated": "2026-06-17",
   "last_updated": "2026-06-22",
-  "generator": "component-library-preparer (full re-scan 2026-06-22 — added prefix-free DS consumption layer)",
+  "generator": "component-library-preparer (full re-scan 2026-06-22 — DS canon reframe: @/components/ds is the only public API; Lab*/_kit deprecated substrate; 11 non-barrel archetypes downgraded to component-api-gap)",
   "product": "EvalLense landing",
   "purpose": "Normalized source-of-truth inventory of the live UI library. Consumed by page-composer (only `ready`), build-pages, component-forge (gaps), forge-index (incremental refresh).",
   "compose_mode": "whole-sections-only",
-  "compose_mode_reason": "Layout layer (sections/lab/_layout.tsx) does not exist; atoms-and-layouts composition is blocked until forged. page-composer must use whole Lab* sections.",
+  "compose_mode_reason": "No DS layout shells in @/components/ds yet (deprecated source sections/lab/_layout.tsx also absent, CL-001); atoms-and-layouts composition is blocked until DS shells are extracted by primitive-layer-forge. page-composer composes whole DS sections from @/components/ds (never raw Lab*).",
   "consumption_api": {
     "added": "2026-06-22",
-    "summary": "Prefix-free design-system barrel is the CANONICAL import surface. Lab*/_kit are the internal implementation — the barrel re-exports them (identical render). Import clean names from the barrel; reach for raw Lab* only for archetypes not yet aliased.",
+    "canon_updated": "2026-06-22 (DS reframe)",
+    "summary": "Prefix-free design-system barrel `@/components/ds` is the ONLY public import surface for pages and skills. Lab*/_kit/.lab-*/.section-lab are a DEPRECATED internal substrate the barrel wraps; direct import of Lab*/_kit in page/skill code is FORBIDDEN. North-star: remove the substrate entirely (see wiki/architecture/design-system.md §'Дизайн-система — @/components/ds').",
     "barrel": "web/src/components/ds/index.ts",
     "import": "import { StatementHero, Bento, FullStatement, Gallery, PinnedSteps, Eyebrow, Title, Media, Button } from \"@/components/ds\";",
     "page_container": "<main className=\"section-lab ds\">",
-    "page_container_reason": "section-lab = base .lab-* rules (required); ds = light design-system language (tokens + lens-soft cards + atmosphere), gated on :not(.ink).",
+    "page_container_reason": "ds = public light design-system language (tokens + lens-soft cards + atmosphere), gated on :not(.ink). section-lab = TEMPORARY technical-debt class, present only while .lab-* rules are still load-bearing; it goes away as .lab-* migrates into ds.css/.ds.",
     "name_map": {
       "StatementHero": "LabStatementHero", "Bento": "LabBento", "FullStatement": "LabFullStatement",
       "Gallery": "LabGallery", "PinnedSteps": "LabPinnedSteps",
       "Eyebrow": "LabEyebrow", "Title": "LabTitle", "Media": "MediaPlaceholder", "Button": "ui/Button"
     },
+    "name_map_note": "RHS = deprecated internal source the barrel currently wraps; LHS = the public DS name (the only thing pages/skills name).",
     "reference_pages": { "sections": "/dev/ds-sections (barrel-composed reference page)", "atoms": "/dev/ds-atoms", "full_page": "/dev/ds-theme" },
-    "not_yet_aliased": "The other ~11 Lab archetypes (Editorial split, SplitRing, HubMap, StatBand, Numbered, RiskControl, QuietCta, Pricing, CompareTable, Faq, Statement) have NO clean alias yet — import them as Lab* directly until promoted into the barrel."
+    "gap_policy": "Components NOT yet in the barrel are GAPS, not a license to import Lab* directly. A missing DS section -> component-forge extracts a clean DS component; a missing DS atom/shell -> primitive-layer-forge. The ~11 archetypes not yet in the barrel (LabStatement(02), LabEditorialSplit(04), LabSplitRing(05), LabHubMap(08), LabStatBand(09), LabNumbered(10), LabRiskControl(11), LabQuietCta(12), LabPricing(13), LabCompareTable(14), LabFaq(16)) are component-api-gap for page-composer (consumption_readiness=unavailable) until promoted into clean DS — even though they are forged at the forge level."
   },
   "design_system_light": {
     "scope": ".ds (globals.css, end of file); all rules gated on :not(.ink) so surface=ink keeps the native dark look",
@@ -44,9 +46,9 @@
   "layers": {
     "L1_tokens": { "manifest": "(inlined in component-library.md + globals.css)", "count": 60, "status": "indexed", "note": "no z-index token group; spacing only --gutter/--maxw" },
     "L2_global_primitives": { "manifest": "atoms.json#global_primitives", "count": 1, "items": ["Button"] },
-    "L3_atoms": { "manifest": "atoms.json", "count": 3, "items": ["LabEyebrow", "LabTitle", "MediaPlaceholder"] },
-    "L4_layouts": { "manifest": "layouts.json", "count": 0, "status": "documented-missing" },
-    "L5_lab_sections": { "manifest": "sections.json", "count": 16, "forged_components": 15, "inline_gap": 1 },
+    "L3_atoms": { "manifest": "atoms.json", "count": 3, "public_items": ["Eyebrow", "Title", "Media"], "deprecated_source": ["LabEyebrow", "LabTitle", "MediaPlaceholder (_kit.tsx)"], "gap_atoms": ["Card", "Chip", "Stat", "Ring", "Bars", "ListItem (markup-only /dev/ds-atoms -> primitive-layer-forge)"] },
+    "L4_layouts": { "manifest": "layouts.json", "count": 0, "status": "documented-missing", "note": "no DS shells in @/components/ds; CL-001" },
+    "L5_ds_sections": { "manifest": "sections.json", "count": 16, "forged_components": 15, "inline_gap": 1, "consumable_via_barrel": 5, "component_api_gap_not_in_barrel": 11, "note": "public DS names; Lab* = deprecated source. Only barrel-exported sections are page-composer-ready; the other 11 are component-api-gap -> component-forge." },
     "L6_production_sections": { "manifest": "production-patterns.json", "count": 19, "dead": 3 },
     "L7_chrome": { "manifest": "chrome.json", "count": 4 },
     "L8_nav": { "manifest": "chrome.json#nav", "count": 1 },
@@ -59,13 +61,16 @@
     "L15_recipes": { "manifest": "recipes.json", "count": 7, "status": "7 composition recipes ready: calm-product, dense-evidence, trust-methodology, cinematic-break, quiet-conversion, dark-refined(batch4), dark-nebula(batch4). style_anchors: 3 light + 2 dark (style-dark-refined/style-dark-nebula ready)." }
   },
   "summary": {
-    "lab_sections_total": 16,
-    "lab_production_ready": 15,
-    "lab_inline_gap": 1,
+    "ds_sections_total": 16,
+    "forged_at_forge_level": 15,
+    "inline_gap": 1,
+    "page_composer_ready_via_barrel": 5,
+    "component_api_gap_not_in_barrel": 11,
     "conditional": 0,
     "draft": 0,
     "blocked": 0,
-    "registry_code_conflicts": 6,
+    "registry_code_conflicts": 7,
+    "ds_reframe_note": "2026-06-22: page-composer consumes only @/components/ds. 5 sections are barrel-ready (StatementHero, Bento, FullStatement, Gallery, PinnedSteps); 11 forged Lab* are component-api-gap until extracted into clean DS by component-forge. This is the chosen 'reference DS as-is + gaps to forge' model, not a code regression.",
     "additional_sections": "3 non-archetype sections recorded in sections.json#additional_sections (ds-cinema [self-contained inline cinematic], LabCinemaScrim [prop-driven cinematic sibling], LabFullStatement [archetype-02 heading+sub variant, barrel FullStatement]) — all valid/intentional",
     "dead_code": ["FinalUnicorn", "Trust", "Results"]
   },

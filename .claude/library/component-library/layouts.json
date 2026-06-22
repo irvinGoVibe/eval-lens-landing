@@ -1,10 +1,12 @@
 {
   "generated": "2026-06-17",
   "layer": "L4",
-  "expected_source": "web/src/components/sections/lab/_layout.tsx",
+  "public_target": "DS layout shells in @/components/ds (none yet)",
+  "expected_source": "web/src/components/sections/lab/_layout.tsx (deprecated candidate source, also absent)",
   "status": "documented-missing",
   "severity": "blocker-for-atom-composition",
   "compose_mode": "whole-sections-only",
+  "route_to": "primitive-layer-forge (extract clean DS shells into @/components/ds + ds.css, NOT _layout.tsx)",
   "documented_exports": ["Band(surface)", "Wrap", "SplitGrid", "BentoGrid", "GalleryRail", "PinnedStage"],
   "actual_exports": [],
   "evidence": {
@@ -16,6 +18,6 @@
     "CSS .wrap / .stage in globals.css",
     "per-component inline grids inside each Lab*.tsx"
   ],
-  "consequence": "page-composer MUST NOT assemble mixed blocks from invented layout shells. Only whole Lab* sections are composable until _layout.tsx is forged and exports are confirmed.",
+  "consequence": "page-composer MUST NOT assemble mixed blocks from invented layout shells. Only whole DS sections (@/components/ds) are composable until clean DS layout shells are extracted by primitive-layer-forge and exports are confirmed.",
   "conflict_ref": "CL-001"
 }

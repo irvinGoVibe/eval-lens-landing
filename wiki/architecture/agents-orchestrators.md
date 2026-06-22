@@ -1,8 +1,8 @@
 ---
 title: Agents & Orchestrators
 status: generated
-version: 1.0
-updated: 2026-06-17
+version: 1.1
+updated: 2026-06-22
 ---
 
 # Agents & Orchestrators — карта системы автоматизации
@@ -97,8 +97,10 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
 **Оркестратор:**
 
 - **`component-forge`** (`/component-forge "архетип 04"`) — дирижёр переработки
-  **одного** Section Lab архетипа в переиспользуемый блок продуктового качества
-  (V1 Polish / V2 Modern Recomposition / V3 Expanded Expressive; light+dark;
+  **одного** Section Lab архетипа в переиспользуемый **чистый DS-компонент**
+  (`@/components/ds`, prefix-free имя, scope `.ds`, стили в `ds.css` — **не** обёртка
+  над `Lab*`) продуктового качества (V1 Polish / V2 Modern Recomposition /
+  V3 Expanded Expressive; light+dark;
   demo-media). Фазы 0–8, **два user-гейта** (Gate A — дизайн+медиа, Gate B —
   финальный блок), fix loop ≤3. Назначает vendor-дизайнеров/инженера/ревьюеров +
   `media-curator`; на 4A.2 сам зовёт advisory-скилл `ui-ux-pro-max`. Базы знаний —
@@ -109,11 +111,11 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
 
 | Скилл | Фаза | Что делает | Работник |
 |---|---|---|---|
-| `forge-primitives` | 2 | Microstructure map (tokens→primitives→fragments→recipe), **без** авто-componentization | multi-platform-apps-frontend-developer |
+| `forge-primitives` | 2 | Microstructure map (tokens→DS-атомы→fragments→recipe; primitives = DS-атомы `@/components/ds`), **без** авто-componentization | multi-platform-apps-frontend-developer |
 | `forge-craft` | 4A | Art Direction: три брифа V1/V2/V3 + Designer Self-Check + media-brief | ui-designer + ui-ux-designer |
-| `forge-extract` | 5 | Реализация approved-брифов в боевой TSX `Lab*` | multi-platform-apps-frontend-developer |
+| `forge-extract` | 5 | Реализация approved-брифов: извлечь архетип в **чистый DS-компонент** в `web/src/components/ds` (баррель `@/components/ds`, prefix-free имя, scope `.ds`, стили в `ds.css`) — **не** оборачивая/копируя `Lab*` | multi-platform-apps-frontend-developer |
 | `forge-validate` | 6 | Render QA вживую (:3005) + fix loop ≤3 + вход в Gate B | ui-visual-validator · design-system-architect · accessibility-expert · comprehensive-review-code-reviewer |
-| `forge-index` | 7 | Регистрация в `component-library.md` + `section-types.md`; дёргает `component-library-preparer` incremental | — (оркестрация) |
+| `forge-index` | 7 | Регистрация **чистого DS-имени** (`@/components/ds`) в `component-library.md` + `section-types.md`; дёргает `component-library-preparer` incremental | — (оркестрация) |
 
 **Batch-надстройка:**
 
@@ -146,9 +148,10 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
   (манифесты), планирует реконструкцию, держит **один Design Review Gate**, после
   approve реализует через `multi-platform-apps-frontend-developer` + full-page QA
   (3005, fix loop ≤3) + финальный `ui-ux-pro-max`. **Mode-aware:** читает
-  `compose_mode` — сегодня `whole-sections-only` (целые `Lab*` + page-local на
-  shared tokens), после форджа слоя частей → `atoms-and-layouts` (сборка из
-  атомов+каркасов) **без переписывания**. Недостающее **заказывает** у forge:
+  `compose_mode` — сегодня `whole-sections-only` (целые DS-секции из
+  `@/components/ds` + page-local на shared tokens), после форджа слоя частей →
+  `atoms-and-layouts` (сборка из DS-атомов+каркасов) **без переписывания**.
+  Потребляет только `@/components/ds`, не `Lab*` напрямую. Недостающее **заказывает** у forge:
   секции → `component-forge`, атомы/каркасы → `primitive-layer-forge`, фоны/переходы
   → `visual-layer-forge`. Не коммитит/не пушит. Это потребитель `page-composer` из
   манифестов (ранее значился «ещё не существует»). Дока: [[component-library#Source of truth для page-composer (preparer)|Source of truth для page-composer]].
@@ -183,8 +186,10 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
 
 - **`primitive-layer-forge`** (`/primitive-layer-forge` | `"<target>"` | gap) —
   оркестратор **слоя частей** (L3 atoms + L4 layout shells). Извлекает
-  повторяющиеся `internal_fragments` из 15 `Lab*` и страниц в импортируемые атомы
-  (`_kit.tsx`) и каркасы (`_layout.tsx`), рефакторит `Lab*` на их потребление **под
+  повторяющиеся под-части из 15 (deprecated) `Lab*` и DS-секций/страниц в
+  импортируемые **чистые DS-атомы и DS-каркасы** в `web/src/components/ds`
+  (баррель `@/components/ds`, стили в `ds.css`/`.ds` — **не** в `_kit.tsx`/
+  `_layout.tsx`), рефакторит потребителей на `@/components/ds` **под
   визуальным паритетом** (рендер не меняется), регистрирует через
   `component-library-preparer` и **переключает `compose_mode` →
   `atoms-and-layouts`** — после чего `page-composer` собирает секции **из частей**.
@@ -198,7 +203,7 @@ A. STORY-DEV FLOW (команды + проектные агенты)         B. 
 
 | Скилл | Триггер | Что делает |
 |---|---|---|
-| `redraw-block` | «доведи блок…», `redraw <Component>` | Один структурный блок → продуктовое качество (Apple-style). Режим A: редизайн существующего компонента; режим B: извлечь инлайн-секцию в prop-driven Server Component (`Lab*`). Версии light+dark, инспектор LabMarkers. Контент-инвариант, раскладку можно менять (`structure=слабо/средне/сильно`). |
+| `redraw-block` | «доведи блок…», `redraw <Component>` | Один структурный блок → продуктовое качество (Apple-style). Режим A: редизайн существующего компонента; режим B: извлечь инлайн-секцию в prop-driven Server Component **чистого DS** (`web/src/components/ds`, баррель `@/components/ds`, scope `.ds`, стили в `ds.css`) — **не** оборачивая/копируя `Lab*`/`_kit`. Версии light+dark, инспектор версий. Контент-инвариант, раскладку можно менять (`structure=слабо/средне/сильно`). |
 | `evallense-site` | «перепиши бриф страницы», `evallense doc <slug>` | Редактура **продуктовой документации** (`wiki/product/*.md`), не кода. Ходит за фактами в источник правды, сверяет раскладку с page-design-patterns/section-types, пишет `wiki/product/<slug>_new.md`. |
 | `init-docs` | `/init-docs` | Интервью о продукте/архитектуре → стартовая документация в `wiki/product/`, `wiki/architecture/`, стек-секции CLAUDE.md. |
 
@@ -262,7 +267,7 @@ Auditor → Language Director → Background/Transition/Motion Designers
 ```
 primitive-layer-forge: Ф1 Audit → Ф2 DS Guard → Ф3 Extraction Plan
   → ⛔Design review (ui-ux-pro-max + DS) → ⛔Gate (user)
-  → Ф4 Implementation (extract atoms/_layout + refactor Lab* под visual parity)
+  → Ф4 Implementation (extract DS-атомы/DS-каркасы в @/components/ds + refactor потребителей под visual parity)
   → Ф5 Visual-parity QA (+fix-loop ≤3) → Ф6 Registration (preparer incremental)
   → compose_mode: whole-sections-only → atoms-and-layouts
 ```
@@ -299,9 +304,10 @@ forge-index / visual-layer-forge / primitive-layer-forge
   правилу CLAUDE.md сам не поднимается без явной просьбы (preview через `launch.json`).
 - **Task packets:** агенту передаётся короткий пакет с нужными правилами DS дословно,
   не весь чат. Vendor-агенты `wshobson/` неизменяемы.
-- **Compose-mode:** пока нет `sections/lab/_layout.tsx` — `whole-sections-only`
-  (конфликт CL-001). Переключает на `atoms-and-layouts` `primitive-layer-forge`
-  после форджа слоя частей (см. `component-library.md`).
+- **Compose-mode:** пока нет публичных DS-каркасов в `@/components/ds` —
+  `whole-sections-only` (конфликт CL-001; сегодня `_layout.tsx` не существует).
+  Переключает на `atoms-and-layouts` `primitive-layer-forge` после форджа слоя
+  частей **в чистый DS** (см. `component-library.md`).
 - **Движение:** единый `<ScrollFX/>` / `data-*` (внутренние) или
   `ScrollOrchestrator` (только home); без per-section `useEffect`.
 - **`.env*`, production pages, Linear write** — вне автономного scope; Linear только

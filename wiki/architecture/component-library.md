@@ -1,10 +1,19 @@
-# Component Library — манифест выкованных секций
+# Component Library — манифест дизайн-системы
 
-Реестр **переиспользуемых prop-driven секций** (`web/src/components/sections/lab/Lab*`),
-выкованных из стенда `dev/section-lab`. Источник истины «что готово к
-переиспользованию на внутренних страницах». Заполняется моментом
+Реестр **переиспользуемых prop-driven секций дизайн-системы** — публичный API
+[`@/components/ds`](../../web/src/components/ds/index.ts). Источник истины «что
+готово к переиспользованию на внутренних страницах». Заполняется моментом
 [forge-index](../../.claude/skills/forge-index/SKILL.md) пакета
-**component-forge**; потребитель — `build-pages`.
+**component-forge**; потребители — `page-composer` / `build-pages`.
+
+> **Канон (см. [[design-system]] §«Дизайн-система — `@/components/ds`»).** Страницы
+> и скиллы называют и импортируют **только** чистые DS-имена
+> (`StatementHero`/`Bento`/…). Колонка «Компонент» в таблице ниже временно
+> показывает внутренний путь `sections/lab/Lab*.tsx` — это **deprecated
+> субстрат**, который барель оборачивает; north-star — расковать каждую секцию в
+> самостоятельный чистый DS-компонент и убрать `Lab`-имя. Чего нет в барреле —
+> это **gap**: forge извлекает чистый DS-компонент, страница в обход `Lab*` не
+> импортирует.
 
 **Статусы:** `forged` — прошёл гейт forge-validate; `draft` — в работе;
 `blocked` — провалил гейт (см. примечание); `inline` — ещё не извлечён из стенда.
@@ -104,32 +113,36 @@
 Страницы — смешанные блоки, поэтому режем не только на секции (см.
 `component-forge/kb/composition-layers.md`):
 
-| Слой | Где | Назначение |
+| Слой | Публичный API (что называют скиллы/страницы) | Источник (deprecated внутренний субстрат) |
 |---|---|---|
-| Токены | `globals.css :root`, DS `tokens/` | цвет/типо/радиусы/тени/градиенты |
-| **Атомы** | `sections/lab/_kit.tsx` (+ баррель `components/ds`) | **фактически только** `LabEyebrow`, `LabTitle`(+grad-word), `MediaPlaceholder` (+ типы `LabContentMode`/`LabContentSet`); экспортируются чисто как `Eyebrow`/`Title`/`Media` через `@/components/ds`. Chip/status-чип/ring/score/counter в коде НЕ существуют (markup-only в `/dev/ds-atoms`) — конфликт CL-002, источник истины = код |
-| **Каркасы (layout)** | `sections/lab/_layout.tsx` — **файла нет** (`documented-missing`, конфликт CL-001) | Обещанные `Band/Wrap/SplitGrid/BentoGrid/GalleryRail/PinnedStage` **не реализованы**. Сегодня есть только CSS `.wrap`/`.stage` + инлайн-гриды в `Lab*`. Слой частей (атомы + `_layout.tsx`) куёт **`primitive-layer-forge`** (извлечение `internal_fragments` под visual parity); до него page-composer работает в режиме `whole-sections-only` |
-| **Секции** | `sections/lab/Lab*.tsx` | тонкие рецепты из атомов+каркасов (таблица выше) |
-| Страницы | `app/**/page.tsx` (`build-pages`) | сборка из секций И/ИЛИ атомов+каркасов напрямую |
+| Токены | `globals.css :root` + scope `.ds` (`--dsc-*`), DS `tokens/` | — |
+| **Атомы** | `@/components/ds`: `Eyebrow` · `Title` · `Media` | `sections/lab/_kit.tsx` (`LabEyebrow`/`LabTitle`/`MediaPlaceholder` + типы `LabContentMode`/`LabContentSet`). Chip/status-чип/ring/score/counter в коде НЕ существуют (markup-only в `/dev/ds-atoms`) — CL-002, **gap → `primitive-layer-forge`** извлекает в DS-атомы |
+| **Каркасы (layout)** | (пока нет публичных каркасов) | `sections/lab/_layout.tsx` **не существует** (`documented-missing`, CL-001). Обещанные `Band/Wrap/SplitGrid/BentoGrid/GalleryRail/PinnedStage` не реализованы; сегодня — CSS `.wrap`/`.stage` + инлайн-гриды. Слой частей куёт **`primitive-layer-forge`** (под visual parity, в чистый DS); до него page-composer в режиме `whole-sections-only` |
+| **Секции** | `@/components/ds`: `StatementHero` · `Bento` · `FullStatement` · `Gallery` · `PinnedSteps` · … (по мере расковки) | `sections/lab/Lab*.tsx` — оборачиваются барелем; цель — расковать в чистые DS-секции |
+| Страницы | `app/**/page.tsx` — импорт **только** из `@/components/ds` | (`page-composer` / `build-pages`) |
 
-Смешанный блок страницы собирается из **атомов + каркасов напрямую**, не форкая
-секцию. Общий кусок всегда живёт на слое ниже (не дублируется).
+Смешанный блок страницы собирается из **DS-атомов + каркасов напрямую**, не форкая
+секцию и не импортируя `Lab*`/`_kit`. Общий кусок всегда живёт на слое ниже
+(не дублируется). Чего нет в `@/components/ds` — **gap → forge** (извлечь чистый
+DS), а не локальная копия `Lab*`.
 
 ## Как пользоваться
 
-- **Чистый API дизайн-системы (предпочтительно):** импортировать из барреля
+- **Чистый API дизайн-системы (единственно допустимый в коде страниц):**
+  импортировать из барреля
   [`@/components/ds`](../../web/src/components/ds/index.ts) — prefix-free имена
   `StatementHero · Bento · FullStatement · Gallery · PinnedSteps · Eyebrow ·
-  Title · Media · Button` (re-export алиасы над `Lab*`/`_kit`; рендер идентичен).
-  Контейнер страницы — `<main className="section-lab ds">` (`.section-lab` для
-  базовых `.lab-*`, `.ds` — светлый язык дизайн-системы; см. design-system.md
-  §«Reusable components»). **Основные страницы:** `/dev/ds-sections` (референс),
-  `/dev/ds-atoms`, `/dev/ds-theme`.
-- **Низкоуровнево:** можно импортировать `Lab<Archetype>` напрямую — это тот же
-  компонент. Передать контент пропсами, выбрать `surface`. Движение — единый
-  `<ScrollFX/>` внизу страницы.
-- **Сравнение версий:** на стенде `dev/section-lab` инспектор `LabMarkers` даёт
-  табы v1/v2/v3 + тумблер Light/Dark (выбор в localStorage).
+  Title · Media · Button`. Контент — пропсами, поверхность — `surface`. Движение
+  — единый `<ScrollFX/>` внизу страницы. Контейнер страницы —
+  `<main className="section-lab ds">` (`.ds` — публичный светлый язык;
+  `.section-lab` — временный technical-debt класс, нужен пока `.lab-*` ещё несущие;
+  см. [[design-system]] §«Дизайн-система — `@/components/ds`»). **Основные
+  страницы:** `/dev/ds-sections` (референс), `/dev/ds-atoms`, `/dev/ds-theme`.
+- **Прямой импорт `Lab*`/`_kit` — запрещён в коде страниц/скиллов** (это
+  deprecated субстрат). Нужного компонента нет в барреле → это **gap**, его
+  извлекает forge в чистый DS, а не страница локально.
+- **Сравнение версий:** на стенде `dev/section-lab` / `/dev/ds-sections`
+  инспектор даёт табы v1/v2/v3 + тумблер Light/Dark (выбор в localStorage).
 - **Surface-инвариант:** внутри версии light и ink совпадают по геометрии,
   различие — только цвет (см. `component-forge/kb/surface-invariant.md`).
 
@@ -251,17 +264,21 @@ ok, media-контракт известен, contract полон. `page-composer
 `conditional` — лишь с явным fallback; `unavailable` — нельзя.
 
 **Compose-mode: `whole-sections-only`** — пока нет `_layout.tsx`, собирать только
-цельные `Lab*`, не смешанные блоки из выдуманных каркасов. Переключение на
-`atoms-and-layouts` (сборка из атомов+каркасов) делает **`primitive-layer-forge`**
-после извлечения слоя частей и регистрации; `page-composer` mode-aware — читает
-`compose_mode` из манифеста и включает сборку по частям без переписывания.
+цельные DS-секции (публичные `@/components/ds`), не смешанные блоки из выдуманных
+каркасов. Переключение на `atoms-and-layouts` (сборка из DS-атомов + каркасов)
+делает **`primitive-layer-forge`** после извлечения слоя частей в чистый DS и
+регистрации; `page-composer` mode-aware — читает `compose_mode` из манифеста и
+включает сборку по частям без переписывания. В обоих режимах публичный API —
+`@/components/ds`; `Lab*`/`_kit` напрямую не импортируются.
 
 **Browser QA (preparer, 2026-06-17, :3005 `/dev/section-lab`):** 1440/1280/768/375 —
 page-level horizontal overflow = 0; переключение версий и Light/Dark подтверждено
 вживую; console без ошибок; build = dev-compiled (полный `pnpm build` не запускался).
-Итог: **15 выкованных Lab-секций → `ready`**; интенциональный horizontal-scroll —
-у Gallery (06) и Compare-table (14). **Архетип 15 (Versus) → `unavailable`**: всё
-ещё инлайн-JSX в `page.tsx`, требует форджа в `LabVersus`.
+Итог: **15 выкованных секций → `ready`** (источник — deprecated `Lab*` субстрат,
+обёрнутый барелем; north-star — расковать в чистый DS); интенциональный
+horizontal-scroll — у Gallery (06) и Compare-table (14). **Архетип 15 (Versus) →
+`unavailable`**: всё ещё инлайн-JSX в `page.tsx`, требует форджа в чистую
+DS-секцию `Versus` (`@/components/ds`).
 
 **Production reusable sections (L6, контракт — `production-patterns.json`):**
 

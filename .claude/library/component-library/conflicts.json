@@ -52,6 +52,24 @@
       "recommended_resolution": "closed; no component-forge gap remains",
       "status": "resolved",
       "source_of_truth": "code"
+    },
+    {
+      "id": "CL-007", "component": "manifest.json#consumption_api (model framing)",
+      "documentation": "Old consumption_api block (added 2026-06-22) said: 'reach for raw Lab* only for archetypes not yet aliased' / 'import them as Lab* directly until promoted'.",
+      "code": "DS canon forbids direct Lab*/_kit import in page/skill code; @/components/ds is the only public API; missing components are component-api-gap -> forge extracts clean DS.",
+      "impact": "Old framing contradicted the canon and would let pages import deprecated substrate directly.",
+      "recommended_resolution": "RESOLVED 2026-06-22: consumption_api/gap_policy rewritten to canon; 11 non-barrel forged archetypes downgraded to component-api-gap (consumption_readiness=unavailable) in sections.json.",
+      "status": "resolved",
+      "source_of_truth": "canon/code"
+    }
+  ],
+  "model_debt": [
+    {
+      "id": "MD-001", "area": "DS barrel coverage",
+      "fact": "11 forged Lab* archetypes (02,04,05,08,09,10,11,12,13,14,16) + Versus(15) + CinemaScrim render fine but are NOT exported via @/components/ds, so they are component-api-gap for page-composer until extracted into clean DS.",
+      "route_to": "component-forge",
+      "atom_gap": "Card/Chip/Stat/Ring/Bars/ListItem markup-only -> primitive-layer-forge",
+      "north_star": "remove Lab*/_kit/.lab-*/.section-lab entirely"
     }
   ],
   "needs_recheck": [],
