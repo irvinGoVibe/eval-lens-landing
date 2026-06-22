@@ -33,7 +33,13 @@ import { LabEyebrow } from "./_kit";
  *
  * See [section-types#6-horizontal-gallery](../../../../../wiki/architecture/section-types.md).
  */
-export type LabGalleryItem = { tag: string; title: string; body: string };
+export type LabGalleryItem = {
+  tag: string;
+  title: string;
+  body: string;
+  /** When set, the `tag` label renders as a link (only the tag word, not the card). */
+  href?: string;
+};
 
 export type LabGalleryProps = {
   id?: string;
@@ -80,7 +86,11 @@ function Card({ item, index }: { item: LabGalleryItem; index: number }) {
       style={{ "--reveal-delay": `${index * 70}ms` } as CSSProperties}
     >
       <span className="lab-signal" aria-hidden="true" />
-      <span className="mini-tag">{item.tag}</span>
+      {item.href ? (
+        <a className="mini-tag mini-tag--link" href={item.href}>{item.tag}</a>
+      ) : (
+        <span className="mini-tag">{item.tag}</span>
+      )}
       <h3>{item.title}</h3>
       <p>{item.body}</p>
     </li>
@@ -155,7 +165,11 @@ export function LabGallery({
             {items.map((item) => (
               <li className="lab-gallery__card" key={item.tag}>
                 <span className="lab-signal" aria-hidden="true" />
-                <span className="mini-tag">{item.tag}</span>
+                {item.href ? (
+        <a className="mini-tag mini-tag--link" href={item.href}>{item.tag}</a>
+      ) : (
+        <span className="mini-tag">{item.tag}</span>
+      )}
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
               </li>

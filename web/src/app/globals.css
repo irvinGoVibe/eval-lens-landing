@@ -2743,6 +2743,11 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 .tcard.big .lens{width:80px;height:80px}
 .tcard.big .lens .core{width:36%;height:36%}
 .mini-tag{position:absolute;top:12px;right:12px;font-family:var(--font-text);font-weight:400;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+/* mini-tag as a link (only the tag word is clickable, e.g. gallery card → page) */
+a.mini-tag{color:var(--violet);text-decoration:underline;text-underline-offset:2px;text-decoration-color:color-mix(in oklab,var(--violet) 45%,transparent);transition:text-decoration-color .2s var(--ease),color .2s;}
+a.mini-tag:hover{text-decoration-color:var(--violet);}
+.lab-gallery.ink a.mini-tag{color:var(--lavender);text-decoration-color:color-mix(in oklab,var(--lavender) 45%,transparent);}
+.lab-gallery.ink a.mini-tag:hover{text-decoration-color:var(--lavender);}
 @media (max-width:900px){.trust-grid{grid-template-columns:repeat(2,1fr)}.tcard.big{grid-column:span 2;grid-row:auto;min-height:220px}}
 @media (max-width:560px){.trust-grid{grid-template-columns:1fr}.tcard.big{grid-column:auto}}
 
