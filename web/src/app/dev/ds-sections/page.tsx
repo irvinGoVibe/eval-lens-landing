@@ -71,6 +71,8 @@ const BENTO_ITEMS = [
 export default function DsSectionsPage() {
   return (
     <main className="ds-sections section-lab">
+      <style>{DS_SECTIONS_CSS}</style>
+
       <LabStatementHero
         marker="01 · Statement hero"
         surface="soft"
@@ -262,3 +264,97 @@ export default function DsSectionsPage() {
     </main>
   );
 }
+
+/* ============================================================
+   ds-theme / ds-atoms LIGHT language applied to the LIGHT surfaces of this
+   workspace. Everything is gated on `:not(.ink)` so the DevInspector "Dark"
+   toggle keeps each section's native ink look untouched. Values copied verbatim
+   from the .ds-theme block (globals.css) and /dev/ds-atoms — the lens-soft
+   gradient card system, violet hairlines, cool-mist atmosphere and the
+   branded deep media frame. color-mix() is used as a FUNCTION only (no raw
+   oklab/oklch stops) so Lightning-CSS keeps every rule.
+   ============================================================ */
+const DS_SECTIONS_CSS = `
+.ds-sections{
+  --dsc-card: linear-gradient(162deg,#ffffff 0%, color-mix(in oklab, var(--violet) 8%, #ffffff) 100%);
+  --dsc-card-feature: linear-gradient(135deg, color-mix(in oklab,var(--violet) 24%, #ffffff) 0%, color-mix(in oklab,var(--cyan) 16%, #ffffff) 50%, color-mix(in oklab,var(--violet) 22%, #ffffff) 100%);
+  --dsc-border: color-mix(in oklab, var(--violet) 20%, transparent);
+  --dsc-border-strong: color-mix(in oklab, var(--violet) 34%, transparent);
+  --dsc-shadow: 0 1px 0 #ffffff inset, 0 2px 8px -4px color-mix(in oklab,var(--violet) 20%, transparent), 0 26px 60px -30px color-mix(in oklab,var(--violet) 40%, transparent);
+  --dsc-radius: var(--r-lg);
+}
+
+/* (a) page wash — soft cool-mist atmosphere behind everything. */
+.ds-sections::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 82% 8%, color-mix(in oklab,var(--cyan) 8%, transparent) 0%, color-mix(in oklab,var(--cyan) 3%, transparent) 44%, transparent 74%),
+    radial-gradient(52% 48% at 12% 96%, color-mix(in oklab,var(--lavender) 7%, transparent) 0%, transparent 72%);
+}
+
+/* (b) per-section atmosphere on light surfaces — connective gradient tissue. */
+.ds-sections .lab-hero:not(.ink),
+.ds-sections .lab-bento:not(.ink){ position:relative; isolation:isolate; }
+.ds-sections .lab-hero:not(.ink) > *,
+.ds-sections .lab-bento:not(.ink) > *{ position:relative; z-index:1; }
+.ds-sections .lab-hero:not(.ink)::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 54% at 80% 14%, color-mix(in oklab,var(--cyan) 18%, transparent) 0%, color-mix(in oklab,var(--cyan) 8%, transparent) 44%, transparent 76%),
+    radial-gradient(54% 48% at 16% 92%, color-mix(in oklab,var(--lavender) 13%, transparent) 0%, transparent 72%);
+}
+.ds-sections .lab-bento:not(.ink)::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(90deg, color-mix(in oklab,var(--violet) 16%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in oklab,var(--cyan) 14%, transparent) 1px, transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+          mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
+}
+
+/* (c) light cards — lens-soft gradient material, violet border + glow, hover lift. */
+.ds-sections .lab-bento:not(.ink) .lab-bento__tile,
+.ds-sections .lab-gallery:not(.ink) .lab-gallery__card{
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.ds-sections .lab-bento:not(.ink) .lab-bento__tile:hover,
+.ds-sections .lab-gallery:not(.ink) .lab-gallery__card:hover{
+  transform:translateY(-3px);
+  border-color:var(--dsc-border-strong);
+}
+.ds-sections .lab-bento:not(.ink) .lab-bento__tile--feature{
+  background:var(--dsc-card-feature);
+  border-color:color-mix(in oklab, var(--violet) 48%, transparent);
+  box-shadow:
+    0 1px 0 #ffffff inset,
+    0 2px 10px -4px color-mix(in oklab,var(--violet) 30%, transparent),
+    0 30px 64px -28px color-mix(in oklab,var(--violet) 55%, transparent);
+}
+.ds-sections .lab-bento:not(.ink) .lab-bento__tile--feature:hover{
+  border-color:color-mix(in oklab, var(--violet) 60%, transparent);
+}
+
+/* (d) light-section media = branded deep frame (--lens-deep), like ds-theme #value. */
+.ds-sections .band:not(.ink) .media-ph{
+  background:var(--lens-deep);
+  border:1px solid var(--dsc-border-strong);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  overflow:hidden;
+}
+.ds-sections .band:not(.ink) .media-ph::before{ background:none; }
+.ds-sections .band:not(.ink) .media-ph::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(135deg,#a99bff33,#a99bff00 32%),
+    linear-gradient(315deg,#7c6cff29,#7c6cff00 30%);
+}
+.ds-sections .band:not(.ink) .media-ph > *{ position:relative; z-index:1; }
+.ds-sections .band:not(.ink) .media-ph__label{ color:#eef; background:#ffffff1f; border:1px solid #ffffff33; }
+.ds-sections .band:not(.ink) .media-ph__hint{ color:#cfcce8; }
+`;

@@ -420,4 +420,113 @@ const DSX_CSS = `
 
 .dsx-foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--border-2);}
 .dsx-foot p{font-family:var(--font-mono);font-size:12px;color:var(--muted-2);line-height:1.7;}
+
+/* ============================================================
+   ds-theme STYLE applied to the LIGHT surfaces only.
+   Mirrors /dev/ds-theme's light language verbatim: lens-soft gradient
+   cards (--dsc-* tokens copied from the .ds-theme block in globals.css),
+   violet hairline borders, violet glow shadow, hover lift, and a
+   cool-mist atmosphere as the connective tissue between cells. Dark text
+   is kept intact (AA). The ink cells (.dsx-cell.ink) are NOT touched.
+   color-mix() is used as a FUNCTION only (no raw oklab/oklch stops) so
+   Lightning-CSS keeps every rule.
+   ============================================================ */
+.ds-atoms{
+  --dsc-card: linear-gradient(162deg,#ffffff 0%, color-mix(in oklab, var(--violet) 8%, #ffffff) 100%);
+  --dsc-card-feature: linear-gradient(135deg, color-mix(in oklab,var(--violet) 24%, #ffffff) 0%, color-mix(in oklab,var(--cyan) 16%, #ffffff) 50%, color-mix(in oklab,var(--violet) 22%, #ffffff) 100%);
+  --dsc-border: color-mix(in oklab, var(--violet) 20%, transparent);
+  --dsc-border-strong: color-mix(in oklab, var(--violet) 34%, transparent);
+  --dsc-shadow: 0 1px 0 #ffffff inset, 0 2px 8px -4px color-mix(in oklab,var(--violet) 20%, transparent), 0 26px 60px -30px color-mix(in oklab,var(--violet) 40%, transparent);
+  --dsc-radius: var(--r-lg);
+}
+
+/* (a) page wash — soft cool-mist atmosphere behind everything, like the
+   ds-theme soft chapter; viewport-wide, sits under the content. */
+.ds-atoms::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 82% 8%,
+      color-mix(in oklab, var(--cyan) 8%, transparent) 0%,
+      color-mix(in oklab, var(--cyan) 3%, transparent) 44%,
+      transparent 74%),
+    radial-gradient(52% 48% at 12% 96%,
+      color-mix(in oklab, var(--lavender) 7%, transparent) 0%,
+      transparent 72%);
+}
+
+/* (b) light cell = a soft ds-theme surface: faint cool-mist wash + violet
+   hairline (the cross-block gradient language), instead of flat white. */
+.ds-atoms .dsx-cell:not(.ink){
+  background:
+    radial-gradient(62% 60% at 86% 10%, color-mix(in oklab,var(--cyan) 7%, transparent), transparent 70%),
+    radial-gradient(56% 56% at 10% 96%, color-mix(in oklab,var(--lavender) 6%, transparent), transparent 72%),
+    var(--bg);
+  border-color:var(--dsc-border);
+}
+
+/* (c) light cards = lens-soft gradient material (the headline ds-theme move):
+   brand-tinted near-white, violet border, violet glow, hover lift. */
+.ds-atoms .dsx-cell:not(.ink) .dsx-card{
+  background:var(--dsc-card);
+  border:1px solid var(--dsc-border);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.ds-atoms .dsx-cell:not(.ink) .dsx-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--dsc-border-strong);
+}
+.ds-atoms .dsx-cell:not(.ink) .dsx-card--feature{
+  background:var(--dsc-card-feature);
+  border-color:color-mix(in oklab, var(--violet) 48%, transparent);
+  box-shadow:
+    0 1px 0 #ffffff inset,
+    0 2px 10px -4px color-mix(in oklab,var(--violet) 30%, transparent),
+    0 30px 64px -28px color-mix(in oklab,var(--violet) 55%, transparent);
+}
+.ds-atoms .dsx-cell:not(.ink) .dsx-card--feature:hover{
+  border-color:color-mix(in oklab, var(--violet) 60%, transparent);
+}
+
+/* dark feature plaque — richer nebula-style gradient over ink (not a flat
+   violet wash): corner glow + violet→cyan→aqua diagonal, lavender edge and a
+   soft inner highlight, so it reads as the same gradient language on dark. */
+.ds-atoms .dsx-cell.ink .dsx-card--feature{
+  background:
+    radial-gradient(130% 150% at 0% 0%, color-mix(in oklab,var(--violet) 46%, transparent) 0%, transparent 56%),
+    linear-gradient(135deg, color-mix(in oklab,var(--violet) 28%, transparent) 0%, color-mix(in oklab,var(--cyan) 16%, transparent) 54%, color-mix(in oklab,var(--violet) 22%, transparent) 100%),
+    var(--ink);
+  border-color:color-mix(in oklab, var(--lavender) 44%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in oklab,var(--lavender) 32%, transparent) inset,
+    0 26px 60px -30px color-mix(in oklab,var(--violet) 75%, transparent);
+}
+.ds-atoms .dsx-cell.ink .dsx-card--feature:hover{
+  border-color:color-mix(in oklab, var(--lavender) 60%, transparent);
+}
+
+/* (d) media placeholder on light = branded deep frame (--lens-deep), exactly
+   like ds-theme's #value media slot; label/hint flip to light on the dark frame. */
+.ds-atoms .dsx-cell:not(.ink) .media-ph{
+  background:var(--lens-deep);
+  border:1px solid var(--dsc-border-strong);
+  border-radius:var(--dsc-radius);
+  box-shadow:var(--dsc-shadow);
+  overflow:hidden;
+}
+.ds-atoms .dsx-cell:not(.ink) .media-ph::before{ background:none; }
+.ds-atoms .dsx-cell:not(.ink) .media-ph::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(135deg,#a99bff33,#a99bff00 32%),
+    linear-gradient(315deg,#36e0c229,#36e0c200 30%);
+}
+.ds-atoms .dsx-cell:not(.ink) .media-ph > *{ position:relative; z-index:1; }
+.ds-atoms .dsx-cell:not(.ink) .media-ph__label{ color:#eef; background:#ffffff1f; border:1px solid #ffffff33; }
+.ds-atoms .dsx-cell:not(.ink) .media-ph__hint{ color:#cfcce8; }
+
+/* (e) bar tracks on the tinted light cell — keep a clean white channel so the
+   lens fill still reads, matching the methodology score-bars look. */
+.ds-atoms .dsx-cell:not(.ink) .dsx-bar__track{ background:#ffffff; border-color:var(--dsc-border); }
 `;
