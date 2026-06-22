@@ -1,7 +1,9 @@
 {
   "generated": "2026-06-17",
+  "last_updated": "2026-06-22",
   "layer": "L15",
   "kind": "composition-recipes",
+  "consumption_note": "Pages built from these recipes import sections via the prefix-free barrel @/components/ds and wrap content in <main className=\"section-lab ds\"> (the .ds scope applies the --dsc-* light card system on light/soft surfaces). See manifest.json#consumption_api. Recipe surface/background/transition/motion semantics are unchanged.",
   "note": "Recipe = proven compatible combo of section surface + background (L13) + transition (L14) + motion (L12). NOT a page template, NOT a React component. Authored by visual-layer-forge, normalized into this schema + registered here by component-library-preparer. A recipe is `ready` ONLY when all member backgrounds/transitions/motion are themselves `ready` AND registration.status=completed.",
   "schema_fields": [
     "id", "name", "purpose", "source",

@@ -1,6 +1,8 @@
 {
   "generated": "2026-06-17",
+  "last_updated": "2026-06-22",
   "layer": "L6",
+  "consumption_note": "When production pages start consuming library sections, import via the prefix-free barrel @/components/ds (clean names over Lab*) and wrap in <main className=\"section-lab ds\">. /dev/ds-sections is the barrel-composed reference. See manifest.json#consumption_api. (Still true: no production route consumes a Lab*/barrel section yet.)",
   "note": "Two parallel section systems: hand-authored cinematic home sections (components/sections/*, orchestrated by ScrollOrchestrator) vs the prop-driven Lab* archetype library. No production page consumes a Lab* component yet. Only 4 routes use production sections: / , /bento, /dev/newsroom, /dev/section-lab. product/trust/company/pricing pages are built from PageHeader+Footer+ScrollFX+Button+inline band markup (the source of section-types 1-20).",
   "home_order": ["Hero", "Problem", "OrangeGlow", "(MistBridge commented out)", "Workflow", "Decisions", "HomeBlogBlock", "EvalLenseBentoSection", "CtaBand"],
   "blocks": [

@@ -1,6 +1,17 @@
 {
   "generated": "2026-06-17",
+  "last_updated": "2026-06-22",
   "layer": "L13",
+  "ds_light_card_system": {
+    "added": "2026-06-22",
+    "scope": ".ds (globals.css) on light/soft surfaces (:not(.ink))",
+    "surfaces": {
+      "card": "--dsc-card (lens-soft near-white + violet tint) / --dsc-card-feature (violet->cyan->violet, NOT aqua/green) + --dsc-border / --dsc-shadow",
+      "atmosphere": ".ds page wash (cool-mist) + per-section cool-mist (lab-hero) / line-field (lab-bento) — reuses bg-cool-mist / bg-line-field grammar",
+      "media": "--lens-deep branded frame on light-section .media-ph"
+    },
+    "note": "Applied by the .ds scope, not standalone bg primitives. Pairs with the prefix-free section barrel (manifest.json#consumption_api)."
+  },
   "text_contrast_rule": "design-system.md: accent lens gradient (--lens, full-saturation linear) is NOT allowed as a full background behind content. Allowed behind UI: low-opacity radial / --lens-soft / halo. Lens text use = grad-word text-clip only. Also memory no-photo-bg-behind-text: photos never directly under text; full-bleed scenes = generated CSS; photos only in container slots or scrim-darkened.",
   "backgrounds": [
     { "name": ".band / .band.soft / .band.ink", "source": "globals.css", "implementation": "CSS class", "tokens": ["--bg-soft", "--bg-ink", "--fg-on-dark"], "light_dark": "both", "reusable": true, "level": "section", "may_overlap": false, "overflow_risk": "none", "text_contrast_rules": "surface tokens carry AA fg pairs", "reduced_motion": "n/a" },

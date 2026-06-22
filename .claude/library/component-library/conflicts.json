@@ -1,5 +1,6 @@
 {
   "generated": "2026-06-17",
+  "last_updated": "2026-06-22",
   "default_source_of_truth": "actual exported code (for runtime API); conflicts must remain visible in docs",
   "conflicts": [
     {
@@ -16,7 +17,8 @@
       "code": "_kit.tsx exports only LabEyebrow, LabTitle, MediaPlaceholder (+ 2 types)",
       "impact": "overstated atom layer; page-composer must not assume Chip/ring/score/counter atoms",
       "recommended_resolution": "trim doc atom list to the 3 real exports (note Lab-prefix)",
-      "source_of_truth": "code"
+      "source_of_truth": "code",
+      "update_2026_06_22": "Still valid — Card/Chip/Stat/Ring/Bars/ListItem remain markup-only in /dev/ds-atoms (not extracted). The 3 REAL atoms now also have prefix-free barrel aliases: LabEyebrow->Eyebrow, LabTitle->Title, MediaPlaceholder->Media (@/components/ds). See atoms.json#consumption."
     },
     {
       "id": "CL-003", "component": "home section order",
@@ -45,9 +47,10 @@
     {
       "id": "CL-006", "component": "LabStatementHero surface API",
       "documentation": "section archetypes assume surface prop (light/ink)",
-      "code": "LabStatementHero hardcodes `band soft`, no surface prop; surface only via LabMarkers",
-      "impact": "page-composer cannot set hero surface via props",
-      "recommended_resolution": "component-api-gap -> component-forge (add surface prop)",
+      "code": "RESOLVED 2026-06-22: LabStatementHero now exports `surface?: \"soft\" | \"ink\"` and renders `band ${surface} lab-hero` (LabStatementHero.tsx:35,76). Hero surface IS settable via props.",
+      "impact": "none (resolved) — page-composer can set hero surface via the surface prop",
+      "recommended_resolution": "closed; no component-forge gap remains",
+      "status": "resolved",
       "source_of_truth": "code"
     }
   ],

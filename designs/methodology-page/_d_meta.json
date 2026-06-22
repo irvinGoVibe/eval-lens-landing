@@ -1,0 +1,32 @@
+{
+  "type": "design",
+  "designSystems": [
+    {
+      "name": "EvalLense Design System",
+      "slug": "evallense",
+      "namespace": "Evallense_c7d744",
+      "dsFolder": "_ds/evallense",
+      "sourcePath": "designs/evallense"
+    }
+  ],
+  "primaryDesignSystem": "evallense",
+  "createdAt": "2026-06-22T09:49:59.459Z",
+  "updatedAt": "2026-06-22T09:55:46.262Z",
+  "assets": {
+    "Methodology": {
+      "versions": [
+        {
+          "path": "Methodology.html",
+          "createdAt": "2026-06-22T09:55:46.262Z",
+          "status": "needs-review",
+          "subtitle": "Trust · /trust/methodology — 8 sections, EvalLense DS",
+          "viewport": {
+            "width": 1320,
+            "height": 900
+          },
+          "section": "Trust"
+        }
+      ]
+    }
+  }
+}

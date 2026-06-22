@@ -1,8 +1,24 @@
 {
   "generated": "2026-06-17",
+  "last_updated": "2026-06-22",
   "source_dir": "web/src/components/sections/lab/",
   "catalog": "web/src/app/dev/section-lab/page.tsx",
-  "browser_qa": { "run": true, "widths": [1440, 1280, 768, 375], "page_overflow_px": 0, "console_errors": 0 },
+  "consumption": {
+    "added": "2026-06-22",
+    "barrel": "web/src/components/ds/index.ts",
+    "page_container": "<main className=\"section-lab ds\">",
+    "import_example": "import { StatementHero, Bento, FullStatement, Gallery, PinnedSteps } from \"@/components/ds\";",
+    "barrel_alias": {
+      "01 Statement hero": "StatementHero",
+      "02 Full-bleed statement": "FullStatement",
+      "03 Pinned multi-screen": "PinnedSteps",
+      "06 Horizontal gallery": "Gallery",
+      "07 Bento overview": "Bento"
+    },
+    "note": "These 5 polished archetypes have prefix-free aliases (re-export over Lab*, identical render). The remaining archetypes are imported as Lab* directly until promoted. Reference page composed from the barrel: /dev/ds-sections. The .ds container supplies the light card system (--dsc-*) on light/soft surfaces.",
+    "reference_page": "/dev/ds-sections"
+  },
+  "browser_qa": { "run": true, "widths": [1440, 1280, 768, 375], "page_overflow_px": 0, "console_errors": 0, "note": "2026-06-17 evidence; section geometry/API unchanged 2026-06-22. Overflow now also guarded by .band{overflow-x:clip} (design_system_light.overflow_guard)." },
   "readiness_defaults": {
     "build": "dev-server-compiled-ok (full pnpm build not run)",
     "rendered_in_section_lab": true,

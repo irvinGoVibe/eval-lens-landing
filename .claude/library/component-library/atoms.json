@@ -2,6 +2,13 @@
   "generated": "2026-06-17",
   "source": "web/src/components/sections/lab/_kit.tsx, web/src/components/ui/Button.tsx, web/src/app/globals.css",
   "note": "_kit.tsx exports EXACTLY these 3 components + 2 types. Docs claiming Chip/status/ring/score/counter atoms are wrong (see conflicts.json CL-002).",
+  "consumption": {
+    "added": "2026-06-22",
+    "barrel": "web/src/components/ds/index.ts",
+    "import": "import { Eyebrow, Title, Media, Button } from \"@/components/ds\";",
+    "alias_map": { "Eyebrow": "LabEyebrow", "Title": "LabTitle", "Media": "MediaPlaceholder", "Button": "ui/Button" },
+    "note": "Prefix-free names are the canonical public API (re-export aliases over _kit/ui — identical components). Lab*/MediaPlaceholder names still work. Card/Chip/Stat/Ring/Bars/ListItem are STILL markup-only in /dev/ds-atoms — not extracted, no alias (CL-002)."
+  },
   "types": [
     { "name": "LabContentMode", "source": "_kit.tsx", "shape": "\"placeholder\" | \"real\"", "role": "per-section content axis; LabMarkers flips data-content" },
     { "name": "LabContentSet<T>", "source": "_kit.tsx", "shape": "{ placeholder: T; real: T }", "role": "payload existing in both modes; set[mode] picks one", "consumers": ["LabStatement", "LabHubMap"] }

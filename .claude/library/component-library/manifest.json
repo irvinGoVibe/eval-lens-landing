@@ -1,11 +1,35 @@
 {
   "$schema": "./manifest.schema (informal)",
   "generated": "2026-06-17",
-  "generator": "component-library-preparer (full)",
+  "last_updated": "2026-06-22",
+  "generator": "component-library-preparer (full re-scan 2026-06-22 — added prefix-free DS consumption layer)",
   "product": "EvalLense landing",
   "purpose": "Normalized source-of-truth inventory of the live UI library. Consumed by page-composer (only `ready`), build-pages, component-forge (gaps), forge-index (incremental refresh).",
   "compose_mode": "whole-sections-only",
   "compose_mode_reason": "Layout layer (sections/lab/_layout.tsx) does not exist; atoms-and-layouts composition is blocked until forged. page-composer must use whole Lab* sections.",
+  "consumption_api": {
+    "added": "2026-06-22",
+    "summary": "Prefix-free design-system barrel is the CANONICAL import surface. Lab*/_kit are the internal implementation — the barrel re-exports them (identical render). Import clean names from the barrel; reach for raw Lab* only for archetypes not yet aliased.",
+    "barrel": "web/src/components/ds/index.ts",
+    "import": "import { StatementHero, Bento, FullStatement, Gallery, PinnedSteps, Eyebrow, Title, Media, Button } from \"@/components/ds\";",
+    "page_container": "<main className=\"section-lab ds\">",
+    "page_container_reason": "section-lab = base .lab-* rules (required); ds = light design-system language (tokens + lens-soft cards + atmosphere), gated on :not(.ink).",
+    "name_map": {
+      "StatementHero": "LabStatementHero", "Bento": "LabBento", "FullStatement": "LabFullStatement",
+      "Gallery": "LabGallery", "PinnedSteps": "LabPinnedSteps",
+      "Eyebrow": "LabEyebrow", "Title": "LabTitle", "Media": "MediaPlaceholder", "Button": "ui/Button"
+    },
+    "reference_pages": { "sections": "/dev/ds-sections (barrel-composed reference page)", "atoms": "/dev/ds-atoms", "full_page": "/dev/ds-theme" },
+    "not_yet_aliased": "The other ~11 Lab archetypes (Editorial split, SplitRing, HubMap, StatBand, Numbered, RiskControl, QuietCta, Pricing, CompareTable, Faq, Statement) have NO clean alias yet — import them as Lab* directly until promoted into the barrel."
+  },
+  "design_system_light": {
+    "scope": ".ds (globals.css, end of file); all rules gated on :not(.ink) so surface=ink keeps the native dark look",
+    "tokens": ["--dsc-card", "--dsc-card-feature (violet->cyan->violet — deliberately NOT aqua/green)", "--dsc-border", "--dsc-border-strong", "--dsc-shadow", "--dsc-radius"],
+    "surfaces": ["lens-soft gradient light cards", "cool-mist page wash + per-section atmosphere", "branded --lens-deep media frame on light sections"],
+    "overflow_guard": ".band{overflow-x:clip} (+ .section-mist-bridge / .section-orange-glow) — removes page-level horizontal scroll from full-bleed children; clip (NOT hidden) so position:sticky pinned stages (.lab-process, .ds-cinema) keep working",
+    "docs": "wiki/architecture/design-system.md §Reusable components (v1.4); cloud DS bundle .claude/designs/evallense + claude.ai/design project synced 2026-06-22",
+    "qa_2026_06_22": { "method": "read-only HTTP render-check on running :3005 (preview tool blocked — user dev server owns the port)", "routes": { "/dev/ds-sections": 200, "/dev/ds-atoms": 200, "/dev/ds-theme": 200 }, "ds_scope_live": true, "build_evidence": "dev-compiled", "note": "Lab section geometry/API unchanged this scan → browser_qa from 2026-06-17 carries forward; overflow guard + --dsc-* verified in served source." }
+  },
   "browser_qa": {
     "run": true,
     "url": "http://localhost:3005/dev/section-lab",

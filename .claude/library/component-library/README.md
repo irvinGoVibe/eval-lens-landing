@@ -47,6 +47,31 @@ library. Human-readable overview lives in
 - **`variant="glass"`** must always render the shared liquid-glass material
   (selector group in `globals.css`) — see `atoms.json` Button constraint.
 
+## Consumption API (added 2026-06-22)
+
+The canonical import surface is the **prefix-free barrel** `web/src/components/ds/index.ts`.
+`Lab*` / `_kit` are the **internal implementation** — the barrel re-exports them as
+clean names (identical render). See `manifest.json#consumption_api`.
+
+```tsx
+import { StatementHero, Bento, FullStatement, Gallery, PinnedSteps,
+         Eyebrow, Title, Media, Button } from "@/components/ds";
+```
+
+- **Page container:** `<main className="section-lab ds">` — `section-lab` for the
+  base `.lab-*` rules (required), `ds` for the light design-system language
+  (`--dsc-*` lens-soft cards, cool-mist atmosphere, deep media frame), all gated
+  on `:not(.ink)` so `surface="ink"` keeps the native dark look.
+- **Aliased so far (5 polished archetypes):** StatementHero · Bento ·
+  FullStatement · Gallery · PinnedSteps. The other ~11 Lab archetypes have **no
+  alias yet** — import as `Lab*` directly until promoted.
+- **Reference page:** `/dev/ds-sections` (composed entirely from the barrel);
+  also `/dev/ds-atoms`, `/dev/ds-theme`.
+- **No horizontal scroll:** enforced by `.band{overflow-x:clip}` (component-level
+  guard) — `clip`, not `hidden`, so pinned `position:sticky` stages keep working.
+- Full reference: `wiki/architecture/design-system.md` §Reusable components (v1.4).
+  Cloud DS bundle (`.claude/designs/evallense` + claude.ai/design) synced 2026-06-22.
+
 ## Updating
 - One thing changed → `/component-library-preparer "<id|name|path>"` (**targeted
   incremental**; accepts a background/transition/motion/recipe ID, a layer name,
