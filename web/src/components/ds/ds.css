@@ -468,3 +468,362 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 .ds-statband__v--expanded .ds-statband__grid strong{font-size:clamp(48px,9vw,112px);}
 .ds-statband__v--expanded .ds-statband__band{margin-top:clamp(32px,5vw,56px);}
 @media (max-width:620px){.ds-statband__grid{grid-template-columns:1fr;}}
+
+/* ============================================================
+   AuroraBackground — premium dark gradient backdrop (@/components/ds)
+   Deep near-black base + large blurred light pools ("defocused light through
+   frosted glass"). Reuses the brand lens tokens (--violet/--lavender/--cyan/
+   --aqua). violet + lavender dominate; cyan/aqua are used sparingly. Light is
+   concentrated in the top third; the bottom ~38% stays near-black so white text
+   reads cleanly. Blur is static; only `transform` animates (18–30s, ≤4%, ping-
+   pong = seamless), and all motion stops under prefers-reduced-motion.
+   ============================================================ */
+.ds-aurora{
+  /* deep vertical base: top lift -> near-black floor (per-variant override) */
+  --a-base:linear-gradient(180deg, #171a32 0%, #0d1124 46%, #080a14 100%);
+  background:var(--a-base);
+  isolation:isolate;            /* contain the blooms' screen blending */
+  /* palette tokens (overridden per variant); defaults = dark-violet */
+  --a-lavender:rgba(169,155,255,.55);
+  --a-violet:  rgba(108,76,241,.50);
+  --a-cool:    rgba(59,108,246,.30);
+  --a-accent:  rgba(123,92,246,.42);
+  --a-i:1;                      /* intensity multiplier (data-intensity) */
+}
+.ds-aurora[data-intensity="subtle"]{--a-i:.62;}
+.ds-aurora[data-intensity="vivid"]{--a-i:1.4;}
+
+/* colour stories — violet/lavender lead; cyan/aqua sparing; pink/blue added.
+   Some run a darker base so the field sinks further into black. ----------- */
+.ds-aurora[data-variant="dark-violet-deep"]{
+  --a-base:linear-gradient(180deg, #10111f 0%, #0a0a14 52%, #050507 100%);
+  --a-lavender:rgba(169,155,255,.46);
+  --a-violet:  rgba(108,76,241,.46);
+  --a-cool:    rgba(79,70,229,.24);
+  --a-accent:  rgba(123,92,246,.36);
+}
+.ds-aurora[data-variant="dark-cyan"]{
+  --a-lavender:rgba(169,155,255,.42);
+  --a-violet:  rgba(108,76,241,.55);
+  --a-cool:    rgba(46,197,232,.40);   /* cyan brought forward */
+  --a-accent:  rgba(59,108,246,.40);
+}
+.ds-aurora[data-variant="dark-blue"]{
+  --a-base:linear-gradient(180deg, #0e1430 0%, #0a0f22 48%, #070910 100%);
+  --a-lavender:rgba(120,150,255,.46);  /* periwinkle */
+  --a-violet:  rgba(79,108,246,.52);   /* royal blue */
+  --a-cool:    rgba(46,197,232,.30);   /* cyan touch */
+  --a-accent:  rgba(108,76,241,.38);   /* violet anchor */
+}
+.ds-aurora[data-variant="dark-indigo"]{
+  --a-base:linear-gradient(180deg, #0d0e22 0%, #08081a 52%, #050509 100%);
+  --a-lavender:rgba(129,140,248,.42);
+  --a-violet:  rgba(79,70,229,.50);
+  --a-cool:    rgba(59,108,246,.26);
+  --a-accent:  rgba(99,80,220,.36);
+}
+.ds-aurora[data-variant="dark-pink"]{
+  --a-lavender:rgba(255,111,174,.46);  /* rose, top-right */
+  --a-violet:  rgba(108,76,241,.50);
+  --a-cool:    rgba(123,92,246,.28);   /* violet, not blue */
+  --a-accent:  rgba(255,95,162,.40);   /* pink accent */
+}
+.ds-aurora[data-variant="dark-magenta"]{
+  --a-lavender:rgba(199,120,255,.46);  /* orchid */
+  --a-violet:  rgba(140,76,241,.50);
+  --a-cool:    rgba(108,76,241,.28);
+  --a-accent:  rgba(255,95,162,.40);   /* pink */
+}
+.ds-aurora[data-variant="dark-mixed"]{
+  --a-lavender:rgba(169,155,255,.50);
+  --a-violet:  rgba(108,76,241,.50);
+  --a-cool:    rgba(46,197,232,.34);
+  --a-accent:  rgba(54,224,194,.26);   /* small aqua touch */
+}
+.ds-aurora[data-variant="dark-nebula"]{
+  --a-base:linear-gradient(180deg, #13112a 0%, #0c0a1c 50%, #070611 100%);
+  --a-lavender:rgba(169,155,255,.50);
+  --a-violet:  rgba(108,76,241,.50);
+  --a-cool:    rgba(59,108,246,.34);
+  --a-accent:  rgba(255,95,162,.30);   /* pink edge */
+}
+.ds-aurora[data-variant="dark-midnight"]{
+  --a-base:linear-gradient(180deg, #0a0b16 0%, #070810 54%, #040406 100%);
+  --a-lavender:rgba(140,150,235,.30);
+  --a-violet:  rgba(108,76,241,.40);
+  --a-cool:    rgba(59,108,246,.18);
+  --a-accent:  rgba(90,70,180,.26);
+}
+
+/* light pools --------------------------------------------------------------- */
+.ds-aurora__bloom{
+  position:absolute;border-radius:50%;
+  filter:blur(clamp(46px,8vw,92px));
+  mix-blend-mode:screen;will-change:transform;
+}
+/* lavender — dominant, top-right */
+.ds-aurora__bloom--lavender{
+  top:-14%;right:-8%;width:62%;height:58%;
+  opacity:calc(var(--a-i) * .9);
+  background:radial-gradient(circle, var(--a-lavender) 0%, transparent 68%);
+}
+/* violet — muted, top-centre */
+.ds-aurora__bloom--violet{
+  top:-20%;left:20%;width:58%;height:54%;
+  opacity:calc(var(--a-i) * .82);
+  background:radial-gradient(circle, var(--a-violet) 0%, transparent 68%);
+}
+/* cool blue/cyan — mid-left (sparing) */
+.ds-aurora__bloom--cool{
+  top:28%;left:-16%;width:48%;height:50%;
+  opacity:calc(var(--a-i) * .7);
+  background:radial-gradient(circle, var(--a-cool) 0%, transparent 70%);
+}
+/* deep-violet / aqua accent — mid-right */
+.ds-aurora__bloom--accent{
+  top:24%;right:-12%;width:44%;height:48%;
+  opacity:calc(var(--a-i) * .75);
+  background:radial-gradient(circle, var(--a-accent) 0%, transparent 70%);
+}
+
+/* near-black floor — bottom ~38% so white text stays legible */
+.ds-aurora__floor{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    transparent 0%, transparent 50%,
+    rgba(8,10,20,.72) 80%, #080a14 100%);
+}
+
+/* ≤2% grain to dither away any banding (inline SVG turbulence, no raster) */
+.ds-aurora__noise{
+  position:absolute;inset:0;opacity:.02;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:140px 140px;
+}
+
+/* slow seamless drift (ping-pong = start === end). transform only. */
+.ds-aurora[data-animated="on"] .ds-aurora__bloom--lavender{animation:ds-aurora-d1 24s ease-in-out infinite alternate;}
+.ds-aurora[data-animated="on"] .ds-aurora__bloom--violet  {animation:ds-aurora-d2 30s ease-in-out infinite alternate;}
+.ds-aurora[data-animated="on"] .ds-aurora__bloom--cool    {animation:ds-aurora-d3 26s ease-in-out infinite alternate;}
+.ds-aurora[data-animated="on"] .ds-aurora__bloom--accent  {animation:ds-aurora-d4 22s ease-in-out infinite alternate;}
+@keyframes ds-aurora-d1{from{transform:translate3d(0,0,0) scale(1);}to{transform:translate3d(-3%,2.5%,0) scale(1.04);}}
+@keyframes ds-aurora-d2{from{transform:translate3d(0,0,0) scale(1);}to{transform:translate3d(3%,2%,0) scale(1.05);}}
+@keyframes ds-aurora-d3{from{transform:translate3d(0,0,0) scale(1);}to{transform:translate3d(3.5%,-2%,0) scale(1.04);}}
+@keyframes ds-aurora-d4{from{transform:translate3d(0,0,0) scale(1);}to{transform:translate3d(-2.5%,-3%,0) scale(1.05);}}
+@media (prefers-reduced-motion: reduce){
+  .ds-aurora .ds-aurora__bloom{animation:none !important;}
+}
+
+/* ============================================================
+   Glass card — premium frosted glass for dark aurora surfaces.
+   CSS, not liquid-glass-react: that library renders opaque black slabs over a
+   dark gradient (it needs a bright/photographic backdrop). This frosts the
+   aurora behind, keeps text crisp, and is the brief's specified fallback.
+   backdrop-filter is intentionally UNPREFIXED + unitless saturate so Next 16's
+   Lightning CSS keeps the standard property (project rule).
+   ============================================================ */
+.ds-glass-card{
+  position:relative;
+  border-radius:20px;
+  background:rgba(255,255,255,.055);
+  backdrop-filter:blur(16px) saturate(1.2);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),     /* top hairline highlight */
+    0 18px 50px -26px rgba(0,0,0,.65);        /* soft lift */
+}
+/* thin light top sheen — reads as a glass edge catching light */
+.ds-glass-card::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 28%);
+}
+.ds-glass-card>*{position:relative;}
+
+/* ============================================================
+   Glass — clear frosted glass (GlassCard).
+   1) translucent pane: background gradient + backdrop-filter (transparent, lets
+      the field read through — real glass, not a milky-white card)
+   2) blur + saturate of the backdrop
+   3) [rich only] static optical sheen + slow pearlescent washes tied to scroll
+      (--scroll-progress, set by JS). The plain variant ships neither.
+   backdrop-filter is UNPREFIXED + unitless saturate so Lightning CSS keeps the
+   standard property (project rule; the -webkit-/% form gets dropped → breaks FF).
+   Only `transform` animates (the washes); blur is static → no scroll FPS hit.
+   ============================================================ */
+.ds-glass{
+  --scroll-progress:0;
+  position:relative; isolation:isolate; overflow:hidden;
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(145deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.05) 50%, rgba(255,255,255,.03) 100%);
+  backdrop-filter:blur(22px) saturate(1.3);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.28),
+    inset 0 -1px 0 rgba(255,255,255,.06);
+  transform:translateZ(0);
+}
+/* pearlescent washes — only rendered on the rich variant */
+.ds-glass__wash{
+  position:absolute; z-index:0; inset:-45%; pointer-events:none;
+  background:
+    radial-gradient(ellipse at 28% 32%, rgba(255,255,255,.28) 0%, rgba(255,255,255,.07) 18%, transparent 43%),
+    radial-gradient(ellipse at 70% 58%, rgba(169,155,255,.14) 0%, rgba(46,197,232,.07) 28%, transparent 54%),
+    radial-gradient(ellipse at 45% 80%, rgba(54,224,194,.07) 0%, transparent 42%);
+  filter:blur(28px); opacity:.3; mix-blend-mode:screen;
+  transform:
+    translate3d(calc((var(--scroll-progress) - .5) * 50px), calc((var(--scroll-progress) - .5) * -90px), 0)
+    rotate(calc(var(--scroll-progress) * 8deg)) scale(1.05);
+  transition:transform 80ms linear;
+}
+/* static optical sheen — only on the rich variant */
+.ds-glass__glare{
+  position:absolute; z-index:1; inset:0; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(125deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.04) 26%, transparent 46%);
+  opacity:.6; mix-blend-mode:screen;
+}
+.ds-glass::after{
+  content:""; position:absolute; z-index:2; inset:0; pointer-events:none; border-radius:inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.12),
+    inset 0 12px 24px rgba(255,255,255,.08),
+    inset 0 -14px 30px rgba(20,25,40,.08);
+}
+.ds-glass__content{position:relative; z-index:3; padding:20px 22px; color:rgba(255,255,255,.92);}
+@media (prefers-reduced-motion: reduce){
+  .ds-glass__wash{transition:none;}
+}
+
+/* orbiting glint — a small, heavily-blurred highlight that drifts in a tiny
+   circle so the rich glass feels alive. transform-only, slow, reduced-motion off.
+   Rendered only on the rich variant. */
+.ds-glass__orbit{
+  position:absolute; z-index:0; pointer-events:none;
+  top:12%; left:50%; width:44%; height:44%; margin-left:-22%;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.30) 0%, rgba(169,155,255,.12) 42%, transparent 70%);
+  filter:blur(26px); opacity:.5; mix-blend-mode:screen; will-change:transform;
+  animation:ds-glass-orbit 16s ease-in-out infinite;
+}
+@keyframes ds-glass-orbit{
+  0%   {transform:translate3d(0,-9px,0);}
+  25%  {transform:translate3d(9px,0,0);}
+  50%  {transform:translate3d(0,9px,0);}
+  75%  {transform:translate3d(-9px,0,0);}
+  100% {transform:translate3d(0,-9px,0);}
+}
+@media (prefers-reduced-motion: reduce){ .ds-glass__orbit{animation:none;} }
+
+/* ============================================================
+   Glass — LIGHT tone (.ds-glass--light): cool tinted glass for light surfaces.
+   Same structure as the dark glass, but: light pane, violet hairline, dark
+   optical edge, colored inner glow via MULTIPLY (screen would vanish on white),
+   white glare via SCREEN, dark text. Brand gradient lives INSIDE the glass.
+   backdrop-filter UNPREFIXED + unitless (Lightning CSS keeps it).
+   ============================================================ */
+.ds-glass--light{
+  border:1px solid rgba(108,76,241,.2);
+  background:linear-gradient(145deg, rgba(255,255,255,.88) 0%, rgba(244,242,255,.74) 42%, rgba(232,247,255,.68) 100%);
+  backdrop-filter:blur(24px) saturate(1.45) contrast(1.05);
+  box-shadow:
+    0 28px 70px rgba(43,33,101,.14),
+    0 10px 28px rgba(46,197,232,.08),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(108,76,241,.1);
+}
+.ds-glass--light .ds-glass__content{color:#17151f;}
+/* colored inner glow — MULTIPLY (violet + cyan), drifts with scroll */
+.ds-glass--light .ds-glass__wash{
+  mix-blend-mode:multiply; opacity:.8;
+  background:
+    radial-gradient(ellipse at 18% 12%, rgba(108,76,241,.28) 0%, rgba(169,155,255,.12) 24%, transparent 50%),
+    radial-gradient(ellipse at 85% 72%, rgba(46,197,232,.22) 0%, rgba(54,224,194,.08) 28%, transparent 54%);
+  filter:blur(24px);
+}
+/* white optical glare — SCREEN, static (no flashlight) */
+.ds-glass--light .ds-glass__glare{
+  background:
+    radial-gradient(circle at 28% 15%, rgba(255,255,255,.92) 0%, rgba(255,255,255,.30) 13%, transparent 36%),
+    linear-gradient(125deg, rgba(255,255,255,.70) 0%, rgba(169,155,255,.12) 28%, transparent 52%);
+  mix-blend-mode:screen; opacity:.75;
+}
+/* dark optical edge */
+.ds-glass--light::after{
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.72),
+    inset 1px 1px 0 rgba(255,255,255,.9),
+    inset -1px -1px 0 rgba(75,56,170,.14),
+    inset 0 18px 35px rgba(255,255,255,.16),
+    inset 0 -20px 38px rgba(46,197,232,.06);
+}
+
+/* light demo field — faint colour so backdrop-filter has something to refract */
+.ds-light-field{background:#f7f7fa;}
+.ds-light-field::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(108,76,241,.14), transparent 34%),
+    radial-gradient(circle at 78% 68%, rgba(46,197,232,.12), transparent 38%);
+}
+
+/* ============================================================
+   Glass — BRAND tone (.ds-glass--brand): saturated translucent gradient glass,
+   keyed to the CTA button gradient (purple #9333ea → violet → blue #3b82f6).
+   Transparent + heavily blurred so the field reads through the colour. White
+   text + white screen glints. backdrop-filter UNPREFIXED + unitless.
+   ============================================================ */
+.ds-glass--brand{
+  border:1px solid rgba(255,255,255,.28);
+  background:linear-gradient(135deg, rgba(147,51,234,.50) 0%, rgba(108,76,241,.46) 46%, rgba(59,130,246,.50) 100%);
+  backdrop-filter:blur(28px) saturate(1.5);
+  box-shadow:
+    0 26px 64px rgba(60,40,160,.42),
+    inset 0 1px 0 rgba(255,255,255,.45),
+    inset 0 -1px 0 rgba(255,255,255,.08);
+}
+.ds-glass--brand .ds-glass__content{color:#f5f5f7;}
+
+/* ── Aurora: extra bold variants (deeper into black, pink/rose, high-contrast)
+   Each only overrides the base --a-* tokens; structure/animation are shared. */
+.ds-aurora[data-variant="dark-rose"]{
+  --a-base:linear-gradient(180deg, #1a0c16 0%, #0c060c 55%, #050306 100%);
+  --a-lavender:rgba(255,111,174,.40);  /* rose top-right */
+  --a-violet:  rgba(108,76,241,.40);
+  --a-cool:    rgba(199,120,255,.26);   /* orchid */
+  --a-accent:  rgba(255,95,162,.48);    /* strong pink, rising */
+}
+.ds-aurora[data-variant="dark-fuchsia"]{
+  --a-base:linear-gradient(165deg, #1c0f24 0%, #0d0712 56%, #060409 100%);
+  --a-lavender:rgba(214,93,177,.42);
+  --a-violet:  rgba(140,76,241,.50);
+  --a-cool:    rgba(108,76,241,.28);
+  --a-accent:  rgba(255,95,162,.42);
+}
+.ds-aurora[data-variant="dark-void"]{
+  --a-base:radial-gradient(120% 110% at 50% 0%, #100a18 0%, #060409 45%, #020203 100%);
+  --a-lavender:rgba(169,155,255,.22);
+  --a-violet:  rgba(123,92,246,.58);    /* one intense point on near-black */
+  --a-cool:    rgba(59,108,246,.14);
+  --a-accent:  rgba(255,95,162,.20);
+}
+.ds-aurora[data-variant="dark-plum"]{
+  --a-base:linear-gradient(160deg, #1b1020 0%, #0c0710 58%, #050308 100%);
+  --a-lavender:rgba(169,155,255,.30);
+  --a-violet:  rgba(124,58,200,.48);    /* deep plum */
+  --a-cool:    rgba(108,76,241,.24);
+  --a-accent:  rgba(214,93,177,.30);
+}
+.ds-aurora[data-variant="dark-twilight"]{
+  --a-base:linear-gradient(170deg, #0e1024 0%, #0a0814 54%, #050409 100%);
+  --a-lavender:rgba(255,111,174,.32);   /* pink */
+  --a-violet:  rgba(108,76,241,.46);
+  --a-cool:    rgba(59,130,246,.36);    /* blue */
+  --a-accent:  rgba(169,155,255,.30);
+}
+.ds-aurora[data-variant="dark-ember-rose"]{
+  --a-base:radial-gradient(120% 100% at 80% 12%, #1e0c18 0%, #0a050a 50%, #030203 100%);
+  --a-lavender:rgba(255,95,162,.48);    /* strong pink corner */
+  --a-violet:  rgba(108,76,241,.32);
+  --a-cool:    rgba(199,120,255,.20);
+  --a-accent:  rgba(140,76,241,.30);
+}

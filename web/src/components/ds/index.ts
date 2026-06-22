@@ -62,6 +62,14 @@ export type { ChipGridProps, ChipGridItem, ChipTone } from "./ChipGrid";
 export { StatBand } from "./StatBand";
 export type { StatBandProps, Stat, StatBandMedia } from "./StatBand";
 
+/* ── Backgrounds ────────────────────────────────────────── */
+export { AuroraBackground } from "./AuroraBackground";
+export type {
+  AuroraBackgroundProps,
+  AuroraVariant,
+  AuroraIntensity,
+} from "./AuroraBackground";
+
 /* ── Atoms ──────────────────────────────────────────────── */
 export {
   LabEyebrow as Eyebrow,
