@@ -32,7 +32,7 @@
 | 06 | Horizontal gallery | `sections/lab/LabGallery.tsx` | eyebrow, title, sub, laneLabel, items[] | v1, v3 | light/ink | v3 only: `06-horizontal-gallery/gallery-v3-{light,dark}-desktop.webp` (ambient backdrop под generated-CSS scrim; v1 — без медиа; mobile — CSS-градиент)³ | forged | 2026-06-17 |
 | 07 | Bento overview | `sections/lab/LabBento.tsx` | eyebrow, title, sub, items[] (feature + media), surface | v1–v3 | light/ink | `.media-ph` fallback на обе темы (asset-gap; paired light/dark lens-grid generation brief на файле)⁴ | forged | 2026-06-17 |
 | 08 | Bento link tiles (hub map) | `sections/lab/LabHubMap.tsx` | eyebrow, title, sub, items (`LabContentSet<LabHubLink[]>`), surface | v1–v3 | light/ink | — (тайлы-ссылки; своего медиа-слота нет) | draft⁵ | 2026-06-17 |
-| 09 | Stat band / counters | `sections/lab/LabStatBand.tsx` | eyebrow, title, stats[], media, surface | v1–v3 | light/ink | `.media-ph` 21:9 band (demo TBD) | draft⁵ | 2026-06-17 |
+| 09 | Stat band / counters | `ds/StatBand.tsx` → `@/components/ds` (`StatBand`) | eyebrow, title, stats[], media?, surface | v1–v3 | light/ink | `.media-ph` 21:9 band (optional) | forged · clean-DS¹⁰ | 2026-06-22 |
 | 10 | Editorial numbered list | `ds/Numbered.tsx` → `@/components/ds` (`Numbered`) | eyebrow, title, sub, items[], surface | v1–v3 | light/ink | — | forged · clean-DS⁷ | 2026-06-22 |
 | 11 | Risk → control grid | `sections/lab/LabRiskControl.tsx` | eyebrow, title, sub, pairs[] | v1–v3 | light/ink | — | draft⁵ | 2026-06-17 |
 | 12 | Quiet CTA band | `ds/QuietCta.tsx` → `@/components/ds` (`QuietCta`) | eyebrow, title, sub, cta, surface | v1–v3 | light/ink | — | forged · clean-DS⁹ | 2026-06-22 |
@@ -139,6 +139,17 @@
 > deprecated-источником, пока `entry-hub`/dev не переедут. Render-QA: live inspect/eval
 > на `/dev/ds-sections` (v1/v2/v3, ink-токены, centered lockup, grad-word, 0 console);
 > `pnpm build` — Фаза 8.
+
+> ¹⁰ Архетип 09 **извлечён в чистый DS** через component-forge (2026-06-22) —
+> чистая экстракция (без изменения контракта). Отдельный
+> `web/src/components/ds/StatBand.tsx` + CSS `.ds-statband*` в `ds.css` (порт из
+> `globals.css`, включая `@media max-width:620px` single-column collapse; **без**
+> `.lab-*`/`.section-lab`). Барель `StatBand`/`StatBandProps`/`Stat`/`StatBandMedia`.
+> Атомы `Eyebrow`/`Title`/`Media` из барреля; `surface=light|ink` (ink default).
+> `LabStatBand` остаётся deprecated-источником (dev-стенды + DevInspector), **не**
+> оборачивается/копируется. Render-QA: page-verified live на `/product/review-board`
+> (SSR + build green; mobile collapse подтверждён); полный 4-width прогон в
+> `/dev/section-lab` не запускался. `pnpm build` — passed (Next 16.2.7, 74/74 static).
 
 > Архетипы 15, 17–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
 > ждут прогона через component-forge.

@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { LabEyebrow, MediaPlaceholder } from "./_kit";
 
 /**
@@ -39,6 +39,9 @@ export type LabBentoItem = {
   body: string;
   feature?: boolean;
   media?: LabBentoMedia;
+  /** Optional content rendered INSIDE this tile, below the body (e.g. a bare
+   *  ChipGrid in the feature card). Default: nothing. */
+  slot?: ReactNode;
 };
 export type LabBentoProps = {
   id?: string;
@@ -120,6 +123,7 @@ function Tile({ item, delay }: { item: LabBentoItem; delay?: number }) {
           ariaLabel={item.media.ariaLabel}
         />
       ) : null}
+      {item.slot ? <div className="lab-bento__tileslot">{item.slot}</div> : null}
     </li>
   );
 }
@@ -162,8 +166,7 @@ export function LabBento({
             {items.map((item) => (
               <Tile item={item} key={item.tag} />
             ))}
-          </ul>
-        </div>
+          </ul>        </div>
       </div>
 
       {/* ── v2 — Modern Recomposition: 1.2fr/1fr split, in-tile head ── */}
@@ -194,6 +197,9 @@ export function LabBento({
                       ariaLabel={feature.media.ariaLabel}
                     />
                   ) : null}
+                  {feature.slot ? (
+                    <div className="lab-bento__tileslot">{feature.slot}</div>
+                  ) : null}
                 </li>
               </ul>
             ) : null}
@@ -202,8 +208,7 @@ export function LabBento({
                 <Tile item={item} delay={80 + i * 80} key={item.tag} />
               ))}
             </ul>
-          </div>
-        </div>
+          </div>        </div>
       </div>
 
       {/* ── v3 — Expanded Expressive: large display head + irregular grid ── */}
@@ -246,10 +251,12 @@ export function LabBento({
                     ariaLabel={item.media.ariaLabel}
                   />
                 ) : null}
+                {item.slot ? (
+                  <div className="lab-bento__tileslot">{item.slot}</div>
+                ) : null}
               </li>
             ))}
-          </ul>
-        </div>
+          </ul>        </div>
       </div>
     </section>
   );

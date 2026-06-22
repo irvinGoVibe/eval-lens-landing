@@ -732,10 +732,10 @@
     },
     {
       "archetype_id": "09",
-      "name": "LabStatBand",
+      "name": "StatBand",
       "label": "Stat band",
-      "source_path": "sections/lab/LabStatBand.tsx",
-      "export_name": "LabStatBand",
+      "source_path": "web/src/components/ds/StatBand.tsx",
+      "export_name": "StatBand",
       "versions": {
         "available": [
           "v1",
@@ -771,7 +771,7 @@
       "media": {
         "supported": true,
         "modes": [
-          "optional MediaPlaceholder"
+          "optional MediaPlaceholder (Media atom)"
         ]
       },
       "motion": {
@@ -790,23 +790,43 @@
           "density": "medium"
         }
       },
+      "known_issues": [
+        "4 stats render 3+1 in the repeat(3,1fr) grid; balanced rows use 3 or 6 stats",
+        "no sub prop (heading + stats only)"
+      ],
       "consumption_readiness": {
-        "status": "unavailable",
-        "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+        "status": "ready",
+        "browser_qa": "page-verified (rendered live on /product/review-board via SSR; build green; mobile single-column collapse confirmed). Full 4-width /dev/section-lab sweep not run.",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
         ],
-        "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
-        ],
-        "forge_level": "forged"
+          "surface prop is \"light\"|\"ink\" (default ink; light -> .band.soft)",
+          "no sub prop — only eyebrow + title + stats[] (+ optional media band)",
+          "4 stats render 3+1 in the fixed repeat(3,1fr) grid; use 3 or 6 stats for balanced rows"
+        ]
       },
       "public_name": "StatBand",
-      "barrel_export": null,
-      "source_status": "deprecated-substrate",
+      "barrel_export": "StatBand",
+      "clean_ds_source": "web/src/components/ds/StatBand.tsx (own .ds-statband* CSS in ds.css incl. @media max-width:620px single-column collapse; NO .lab-*/.section-lab dependency; faithful 1:1 token port)",
+      "deprecated_source": "sections/lab/LabStatBand.tsx (still used by dev stands cinematic-demo/dark-light-page/ds-theme-2/ds-theme-3/gallery/vivid-demo/vivid-demo-2/element-parity/section-lab + DevInspector; NOT wrapped/copied)",
+      "source_status": "clean-ds (extracted from LabStatBand via component-forge 2026-06-22; faithful, no contract change)",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "barrel-section",
+      "route_to": null,
+      "build": {
+        "status": "passed",
+        "evidence_source": "component-forge extraction + page-composer Ф8/Ф9 — cd web && pnpm build (Next.js 16.2.7, compiled + 74/74 static, TypeScript passed, exit 0); mobile-collapse fix applied",
+        "checked_at": "2026-06-22"
+      },
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "sections.json",
+        "target_id": "09",
+        "checked_at": "2026-06-22"
+      }
     },
     {
       "archetype_id": "10",

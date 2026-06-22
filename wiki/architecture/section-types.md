@@ -50,7 +50,7 @@ Design Patterns]] (это *предписывающий* справочник «
 | 6   | [Horizontal gallery](#6-horizontal-gallery)                    | `soft` / `ink`         | `reveal up` (+ `data-scrub` parallax в v3)     | `po-jury`, `usecases-segments`, `lab-gallery` (`LabGallery` v1/v3)    | судьи, сегменты, возможности                     |
 | 7   | [Bento overview](#7-bento-overview)                            | `ink` / `soft`         | `reveal up` (+ `reveal scale`/`right` в v2/v3) | `po-modules`, `security-access`, `lab-bento` (`LabBento` v1/v2/v3)    | сетка фич, один feature-тайл                     |
 | 8   | [Bento link tiles (hub map)](#8-bento-link-tiles-hub-map)      | `soft`                 | `reveal up`                                    | `hub-map`, `lab-hubmap` (`LabHubMap` v1–v3)                           | hub-страницы: тайлы-ссылки на дочерние           |
-| 9   | [Stat band / counters](#9-stat-band--counters)                 | `ink`                  | `reveal up`                                    | `consistency-benchmark`, `lab-stats` (`LabStatBand` v1–v3)            | крупные числа + источник                         |
+| 9   | [Stat band / counters](#9-stat-band--counters)                 | `ink`                  | `reveal up`                                    | `consistency-benchmark`, `StatBand` (`@/components/ds`, v1–v3)        | крупные числа + источник                         |
 | 10  | [Editorial numbered list](#10-editorial-numbered-list)         | `soft`                 | `reveal up` (стаггер)                          | `methodology-principles`, `lab-numbered` (`LabNumbered` v1–v3)        | принципы/манифест нумерованно                    |
 | 11  | [Risk → control grid](#11-risk--control-grid)                  | `soft`                 | `reveal up`                                    | `consistency-bias`, `lab-risk` (`LabRiskControl` v1–v3)               | парные строки риск ↔ контрмера                   |
 | 12  | [Quiet CTA band](#12-quiet-cta-band)                           | `ink`                  | `reveal up` (стаггер)                          | `*-cta`, `lab-quiet-cta` (`LabQuietCta` v1–v3)                        | финальный призыв на каждой странице              |
@@ -179,10 +179,10 @@ violet→cyan→aqua) → короткий подзаголовок → один
 (`benchmarking-methodology.md`). Ниже — широкий слот 21:9. Показывает бенчмарки/
 цели измеримо.
 
-- **Класс:** `consistency-benchmark` (trust/consistency-reliability), `lab-stats` (`LabStatBand` v1–v3)
+- **Класс:** `consistency-benchmark` (trust/consistency-reliability), `ds-statband` (`StatBand`, `@/components/ds`, v1–v3)
 - **Scroll-FX:** `data-reveal="up"`
-- **Публичное имя:** — (gap → `component-forge`: извлечь чистый DS в `@/components/ds`).
-- **Источник (deprecated субстрат):** `LabStatBand` (`sections/lab/LabStatBand.tsx`) — v1 Polish / v2 Modern Recomposition / v3 Expanded Expressive, `surface=light|ink` (ink default); demo-media — band 21:9 `.media-ph` (asset TBD). Статус `draft` (live-QA отложен) — см. [component-library](component-library.md)
+- **Публичное имя:** `StatBand` (`@/components/ds`) — извлечён из `LabStatBand` через component-forge (2026-06-22).
+- **Источник:** `web/src/components/ds/StatBand.tsx` (CSS `.ds-statband*` в `ds.css`, **без** `.lab-*`/`.section-lab`) — v1 Polish / v2 Modern Recomposition / v3 Expanded Expressive, `surface=light|ink` (ink default); demo-media — опциональный band 21:9 `.media-ph` (asset TBD). Faithful 1:1 port из `LabStatBand` (`sections/lab/LabStatBand.tsx`, остаётся deprecated-источником для dev-стендов). Статус `forged · clean-DS` (page-verified live на `/product/review-board`) — см. [component-library](component-library.md)
 
 ## 10. Editorial numbered list
 

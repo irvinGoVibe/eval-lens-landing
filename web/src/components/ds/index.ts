@@ -56,6 +56,12 @@ export type { EditorialSplitProps } from "./EditorialSplit";
 export { QuietCta } from "./QuietCta";
 export type { QuietCtaProps } from "./QuietCta";
 
+export { ChipGrid } from "./ChipGrid";
+export type { ChipGridProps, ChipGridItem, ChipTone } from "./ChipGrid";
+
+export { StatBand } from "./StatBand";
+export type { StatBandProps, Stat, StatBandMedia } from "./StatBand";
+
 /* ── Atoms ──────────────────────────────────────────────── */
 export {
   LabEyebrow as Eyebrow,
