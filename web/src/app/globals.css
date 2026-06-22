@@ -4709,8 +4709,11 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-pattern::before{content:"";position:absolute;inset:clamp(80px,12vw,150px) max(18px,calc((100vw - var(--maxw)) / 2));border-radius:var(--radius-stage);background:linear-gradient(90deg,color-mix(in oklab,var(--violet) 9%, transparent) 1px,transparent 1px),linear-gradient(180deg,color-mix(in oklab,var(--cyan) 8%, transparent) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at 50% 30%, #000 0%, transparent 72%);opacity:.75;}
 .lab-pattern::after{content:"";position:absolute;left:50%;top:16%;width:min(72vw,880px);aspect-ratio:1;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle,color-mix(in oklab,var(--violet) 20%, transparent),transparent 62%);filter:blur(44px);opacity:.65;}
 
-.lab-hero{padding-top:clamp(132px,18vw,200px);overflow:hidden;}
-.lab-hero__inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;width:100%;}
+/* overflow-x:clip (NOT overflow:hidden) — contains the wide v2 stage / full-bleed
+   v4 cinema sideways while leaving overflow-y visible, so the card's bottom shadow
+   (box-shadow var(--sh-3) on __stage / __media / __ed-graphic) is never clipped. */
+.lab-hero{padding-top:clamp(132px,18vw,200px);overflow-x:clip;}
+.lab-hero__inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;width:100%;padding-bottom:clamp(28px,5vw,64px);}
 .lab-hero .eyebrow{margin-bottom:22px;}
 .lab-hero__title{font-size:clamp(44px,7vw,96px);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:15ch;}
 .lab-hero__sub{width:min(100%,68ch);margin-top:26px;}
@@ -4732,7 +4735,13 @@ section.band.ink .mini-tag{color:var(--lavender);}
 
 /* ---- v2 — near-full-bleed cinematic gradient stage ---- */
 .lab-hero__stage{position:relative;isolation:isolate;overflow:hidden;border-radius:var(--radius-stage);min-height:clamp(520px,72vh,760px);display:grid;place-items:center;padding:clamp(44px,7vw,96px) clamp(24px,6vw,72px);box-shadow:var(--sh-3);}
-.lab-hero__stage--wide{width:min(100vw - 24px, 1640px);margin-left:50%;transform:translateX(-50%);}
+/* side inset large enough to clear the plaque's drop shadow before the band's
+   overflow-x:clip edge — otherwise the left/right shadow gets sliced flat */
+.lab-hero__stage--wide{width:min(100vw - clamp(48px,9vw,128px), 1640px);margin-left:50%;transform:translateX(-50%);}
+/* v2 — same plaque height, but content sits high (top-aligned with a small top offset) */
+.lab-hero__stage{align-items:start;padding-top:clamp(40px,5vw,72px);}
+/* v2 — pull the plaque up so the gap above it (section top padding) is smaller */
+.lab-hero__v2{margin-top:clamp(-72px,-5vw,-44px);}
 /* v2 — directional brand gradient, surface-adaptive: light wash on .soft, dark on .ink */
 .lab-hero__bg{position:absolute;inset:0;z-index:-2;background:linear-gradient(132deg, color-mix(in oklab,var(--violet) 18%, var(--bg-soft)) 0%, var(--bg-soft) 48%, color-mix(in oklab,var(--cyan) 14%, var(--bg-soft)) 100%);}
 .lab-hero.ink .lab-hero__bg{background:linear-gradient(132deg, color-mix(in oklab,var(--violet) 42%, var(--ink)) 0%, var(--ink) 50%, color-mix(in oklab,var(--cyan) 26%, var(--ink)) 100%);}
