@@ -8,6 +8,7 @@ import {
   FullStatement,
   Gallery,
   PinnedSteps,
+  Numbered,
   Button,
 } from "@/components/ds";
 
@@ -56,6 +57,12 @@ const BENTO_ITEMS = [
     title: "Reusable checks",
     body: "Each section can be inspected at mobile, tablet and desktop widths.",
   },
+];
+
+const NUMBERED_ITEMS = [
+  { num: "01", title: "Evidence before opinion", body: "Every signal links back to the slide and source it came from — no unbacked claims." },
+  { num: "02", title: "One deterministic rubric", body: "The same findings and weights always produce the same score, so reviews stay comparable." },
+  { num: "03", title: "A human makes the call", body: "The numeric layer is advisory; the final decision always stays with a person." },
 ];
 
 /**
@@ -154,6 +161,17 @@ export default function DsSectionsPage() {
           "/assets/_demo-pool/photo/dark-unicorn-head-front.jpeg",
           "/assets/_demo-pool/photo/jury-decision.png",
         ]}
+      />
+
+      <Numbered
+        id="numbered"
+        surface="light"
+        marker="10 · Editorial numbered list"
+        ariaLabel="Editorial numbered list — operating principles"
+        eyebrow="Operating principles"
+        title="Three principles the editorial layer holds"
+        sub="A vertical numbered list for a manifesto or set of principles — large numerals beside a heading and paragraph, not a card grid."
+        items={NUMBERED_ITEMS}
       />
 
       {/* cinematic transition — last section. Self-contained .ds-cinema: full-screen

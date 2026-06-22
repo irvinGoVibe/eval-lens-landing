@@ -33,7 +33,7 @@
 | 07 | Bento overview | `sections/lab/LabBento.tsx` | eyebrow, title, sub, items[] (feature + media), surface | v1–v3 | light/ink | `.media-ph` fallback на обе темы (asset-gap; paired light/dark lens-grid generation brief на файле)⁴ | forged | 2026-06-17 |
 | 08 | Bento link tiles (hub map) | `sections/lab/LabHubMap.tsx` | eyebrow, title, sub, items (`LabContentSet<LabHubLink[]>`), surface | v1–v3 | light/ink | — (тайлы-ссылки; своего медиа-слота нет) | draft⁵ | 2026-06-17 |
 | 09 | Stat band / counters | `sections/lab/LabStatBand.tsx` | eyebrow, title, stats[], media, surface | v1–v3 | light/ink | `.media-ph` 21:9 band (demo TBD) | draft⁵ | 2026-06-17 |
-| 10 | Editorial numbered list | `sections/lab/LabNumbered.tsx` | eyebrow, title, sub, items[] | v1–v3 | light/ink | — | draft⁵ | 2026-06-17 |
+| 10 | Editorial numbered list | `ds/Numbered.tsx` → `@/components/ds` (`Numbered`) | eyebrow, title, sub, items[], surface | v1–v3 | light/ink | — | forged · clean-DS⁷ | 2026-06-22 |
 | 11 | Risk → control grid | `sections/lab/LabRiskControl.tsx` | eyebrow, title, sub, pairs[] | v1–v3 | light/ink | — | draft⁵ | 2026-06-17 |
 | 12 | Quiet CTA band | `sections/lab/LabQuietCta.tsx` | eyebrow, title, sub, cta, surface | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
 | 13 | Pricing tiers | `sections/lab/LabPricing.tsx` | eyebrow, title, sub, tiers[], note, ctaLabel/Href | v1–v3 | light/ink | — | draft⁶ | 2026-06-17 |
@@ -104,6 +104,18 @@
 > компилируется и отдаёт 200, без preview-панели/build). Полный визуальный QA
 > (скриншоты, L/D pixel-parity) и `pnpm build` — по-прежнему отложены; статус
 > `draft`. **Advisory:** ghost-кнопка 13 на ink-поверхности визуально не проверена.
+
+> ⁷ Архетип 10 **извлечён в настоящий чистый DS** через component-forge
+> (Фазы 0–8, Gate A/B, 2026-06-22) — это **первый non-alias** барельный компонент:
+> отдельный `web/src/components/ds/Numbered.tsx` (Server Component) + собственный
+> CSS `.ds-numbered*` в `ds.css` (порт из `globals.css`, **без** `.lab-*`/
+> `.section-lab`-зависимости), барельный экспорт `Numbered`/`NumberedProps`/
+> `NumberedItem`. Атомы — `Eyebrow`/`Title` из `@/components/ds`. В отличие от
+> 01/03/06/07 (re-export `Lab*`, рендер идентичен) — здесь Lab **не оборачивается
+> и не копируется**; `LabNumbered` остаётся deprecated-источником, пока его
+> потребители (`product/overview`, `overview-2`) не переедут на `Numbered`.
+> Render-QA: live inspect/eval на `/dev/ds-sections` (light+ink токены, v1–v3,
+> desktop 2-col / mobile collapse, 0 console-ошибок); `pnpm build` — Фаза 8.
 
 > Архетипы 15, 17–20 — пока `inline` в `web/src/app/dev/section-lab/page.tsx`,
 > ждут прогона через component-forge.

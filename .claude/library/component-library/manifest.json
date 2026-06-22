@@ -12,17 +12,18 @@
     "canon_updated": "2026-06-22 (DS reframe)",
     "summary": "Prefix-free design-system barrel `@/components/ds` is the ONLY public import surface for pages and skills. Lab*/_kit/.lab-*/.section-lab are a DEPRECATED internal substrate the barrel wraps; direct import of Lab*/_kit in page/skill code is FORBIDDEN. North-star: remove the substrate entirely (see wiki/architecture/design-system.md §'Дизайн-система — @/components/ds').",
     "barrel": "web/src/components/ds/index.ts",
-    "import": "import { StatementHero, Bento, FullStatement, Gallery, PinnedSteps, Eyebrow, Title, Media, Button } from \"@/components/ds\";",
+    "import": "import { StatementHero, Bento, FullStatement, Gallery, PinnedSteps, Numbered, Eyebrow, Title, Media, Button } from \"@/components/ds\";",
     "page_container": "<main className=\"section-lab ds\">",
     "page_container_reason": "ds = public light design-system language (tokens + lens-soft cards + atmosphere), gated on :not(.ink). section-lab = TEMPORARY technical-debt class, present only while .lab-* rules are still load-bearing; it goes away as .lab-* migrates into ds.css/.ds.",
     "name_map": {
       "StatementHero": "LabStatementHero", "Bento": "LabBento", "FullStatement": "LabFullStatement",
       "Gallery": "LabGallery", "PinnedSteps": "LabPinnedSteps",
+      "Numbered": "(clean DS — web/src/components/ds/Numbered.tsx; NOT a Lab alias)",
       "Eyebrow": "LabEyebrow", "Title": "LabTitle", "Media": "MediaPlaceholder", "Button": "ui/Button"
     },
-    "name_map_note": "RHS = deprecated internal source the barrel currently wraps; LHS = the public DS name (the only thing pages/skills name).",
+    "name_map_note": "RHS = deprecated internal source the barrel currently wraps; LHS = the public DS name (the only thing pages/skills name). EXCEPTION: Numbered is the first genuine clean-DS extraction (own ds/Numbered.tsx + .ds-numbered CSS), not a Lab re-export.",
     "reference_pages": { "sections": "/dev/ds-sections (barrel-composed reference page)", "atoms": "/dev/ds-atoms", "full_page": "/dev/ds-theme" },
-    "gap_policy": "Components NOT yet in the barrel are GAPS, not a license to import Lab* directly. A missing DS section -> component-forge extracts a clean DS component; a missing DS atom/shell -> primitive-layer-forge. The ~11 archetypes not yet in the barrel (LabStatement(02), LabEditorialSplit(04), LabSplitRing(05), LabHubMap(08), LabStatBand(09), LabNumbered(10), LabRiskControl(11), LabQuietCta(12), LabPricing(13), LabCompareTable(14), LabFaq(16)) are component-api-gap for page-composer (consumption_readiness=unavailable) until promoted into clean DS — even though they are forged at the forge level."
+    "gap_policy": "Components NOT yet in the barrel are GAPS, not a license to import Lab* directly. A missing DS section -> component-forge extracts a clean DS component; a missing DS atom/shell -> primitive-layer-forge. The ~10 archetypes not yet in the barrel (LabStatement(02), LabEditorialSplit(04), LabSplitRing(05), LabHubMap(08), LabStatBand(09), LabRiskControl(11), LabQuietCta(12), LabPricing(13), LabCompareTable(14), LabFaq(16)) are component-api-gap for page-composer (consumption_readiness=unavailable) until promoted into clean DS — even though they are forged at the forge level. Archetype 10 (Numbered) was promoted 2026-06-22 (first non-alias clean-DS extraction); it is barrel-exported and ready (build passed)."
   },
   "design_system_light": {
     "scope": ".ds (globals.css, end of file); all rules gated on :not(.ink) so surface=ink keeps the native dark look",
@@ -48,7 +49,7 @@
     "L2_global_primitives": { "manifest": "atoms.json#global_primitives", "count": 1, "items": ["Button"] },
     "L3_atoms": { "manifest": "atoms.json", "count": 3, "public_items": ["Eyebrow", "Title", "Media"], "deprecated_source": ["LabEyebrow", "LabTitle", "MediaPlaceholder (_kit.tsx)"], "gap_atoms": ["Card", "Chip", "Stat", "Ring", "Bars", "ListItem (markup-only /dev/ds-atoms -> primitive-layer-forge)"] },
     "L4_layouts": { "manifest": "layouts.json", "count": 0, "status": "documented-missing", "note": "no DS shells in @/components/ds; CL-001" },
-    "L5_ds_sections": { "manifest": "sections.json", "count": 16, "forged_components": 15, "inline_gap": 1, "consumable_via_barrel": 5, "component_api_gap_not_in_barrel": 11, "note": "public DS names; Lab* = deprecated source. Only barrel-exported sections are page-composer-ready; the other 11 are component-api-gap -> component-forge." },
+    "L5_ds_sections": { "manifest": "sections.json", "count": 16, "forged_components": 15, "inline_gap": 1, "barrel_exported": 6, "ready_via_barrel": 6, "conditional_via_barrel": 0, "component_api_gap_not_in_barrel": 10, "note": "public DS names; Lab* = deprecated source. 6 barrel-exported and ready (5 aliases over Lab* + Numbered, the first non-alias clean-DS extraction, build passed 2026-06-22); the other 10 are component-api-gap -> component-forge." },
     "L6_production_sections": { "manifest": "production-patterns.json", "count": 19, "dead": 3 },
     "L7_chrome": { "manifest": "chrome.json", "count": 4 },
     "L8_nav": { "manifest": "chrome.json#nav", "count": 1 },
@@ -64,13 +65,14 @@
     "ds_sections_total": 16,
     "forged_at_forge_level": 15,
     "inline_gap": 1,
-    "page_composer_ready_via_barrel": 5,
-    "component_api_gap_not_in_barrel": 11,
+    "barrel_exported": 6,
+    "page_composer_ready_via_barrel": 6,
+    "component_api_gap_not_in_barrel": 10,
     "conditional": 0,
     "draft": 0,
     "blocked": 0,
     "registry_code_conflicts": 7,
-    "ds_reframe_note": "2026-06-22: page-composer consumes only @/components/ds. 5 sections are barrel-ready (StatementHero, Bento, FullStatement, Gallery, PinnedSteps); 11 forged Lab* are component-api-gap until extracted into clean DS by component-forge. This is the chosen 'reference DS as-is + gaps to forge' model, not a code regression.",
+    "ds_reframe_note": "2026-06-22: page-composer consumes only @/components/ds. Barrel exports 6 ready sections — 5 aliases (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + Numbered (archetype 10), the FIRST genuine clean-DS extraction (own ds/Numbered.tsx + .ds-numbered CSS, no Lab wrap), build passed 2026-06-22. 10 forged Lab* remain component-api-gap until extracted into clean DS by component-forge.",
     "additional_sections": "3 non-archetype sections recorded in sections.json#additional_sections (ds-cinema [self-contained inline cinematic], LabCinemaScrim [prop-driven cinematic sibling], LabFullStatement [archetype-02 heading+sub variant, barrel FullStatement]) — all valid/intentional",
     "dead_code": ["FinalUnicorn", "Trust", "Results"]
   },

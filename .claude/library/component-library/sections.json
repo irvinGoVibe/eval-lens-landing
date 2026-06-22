@@ -17,7 +17,7 @@
     "barrel_extra": {
       "FullStatement": "= LabFullStatement.tsx — a SEPARATE heading+sub variant of archetype 02, NOT the library's cataloged archetype-02 component (which is LabStatement, versions[]). Used by /dev/ds-sections + /dev/ds-theme. No library archetype row; not in section-lab catalog. Duplication flagged."
     },
-    "note": "Public API for pages/skills is ONLY @/components/ds. The barrel currently exports 5 sections (StatementHero, Bento, FullStatement, Gallery, PinnedSteps). Lab*/_kit are a DEPRECATED internal substrate the barrel wraps; direct Lab* import is FORBIDDEN. Sections not in the barrel are component-api-gap (consumption_readiness = unavailable) -> component-forge extracts a clean DS component. The .ds container supplies the light card system (--dsc-*).",
+    "note": "Public API for pages/skills is ONLY @/components/ds. The barrel exports 6 sections: 5 aliases over Lab* (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + Numbered (archetype 10), the first genuine clean-DS extraction (own ds/Numbered.tsx + .ds-numbered CSS, NOT a Lab wrap; consumption_readiness=conditional pending passed build). Lab*/_kit are a DEPRECATED internal substrate the 5 aliases wrap; direct Lab* import is FORBIDDEN. Sections not in the barrel are component-api-gap (consumption_readiness = unavailable) -> component-forge extracts a clean DS component. The .ds container supplies the light card system (--dsc-*).",
     "reference_page": "/dev/ds-sections",
     "public_api_only": true,
     "canon_updated": "2026-06-22 (DS reframe)",
@@ -794,10 +794,10 @@
     },
     {
       "archetype_id": "10",
-      "name": "LabNumbered",
-      "label": "Numbered list",
-      "source_path": "sections/lab/LabNumbered.tsx",
-      "export_name": "LabNumbered",
+      "name": "Numbered",
+      "label": "Editorial numbered list",
+      "source_path": "web/src/components/ds/Numbered.tsx",
+      "export_name": "Numbered",
       "versions": {
         "available": [
           "v1",
@@ -852,22 +852,36 @@
         }
       },
       "consumption_readiness": {
-        "status": "unavailable",
-        "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+        "status": "ready",
+        "browser_qa": "run",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
         ],
-        "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
-        ],
-        "forge_level": "forged"
+          "surface prop is \"light\"|\"ink\" (NOT \"soft\" — light maps to .band.soft internally); default light"
+        ]
       },
       "public_name": "Numbered",
-      "barrel_export": null,
-      "source_status": "deprecated-substrate",
+      "barrel_export": "Numbered",
+      "clean_ds_source": "web/src/components/ds/Numbered.tsx (own .ds-numbered* CSS in ds.css; NO .lab-*/.section-lab dependency)",
+      "deprecated_source": "sections/lab/LabNumbered.tsx (still imported by product/overview + overview-2 until migrated; component itself NOT wrapped/copied)",
+      "source_status": "clean-ds (first non-alias barrel section; extracted from LabNumbered via component-forge 2026-06-22)",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "barrel-section",
+      "route_to": null,
+      "build": {
+        "status": "passed",
+        "evidence_source": "component-forge Phase 8 — cd web && pnpm build (Next.js 16.2.7 Turbopack, TypeScript check passed, exit 0)",
+        "checked_at": "2026-06-22"
+      },
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "sections.json",
+        "target_id": "10",
+        "checked_at": "2026-06-22"
+      }
     },
     {
       "archetype_id": "11",

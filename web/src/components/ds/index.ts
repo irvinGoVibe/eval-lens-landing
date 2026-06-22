@@ -47,6 +47,9 @@ export type {
   LabPinnedStep as PinnedStep,
 } from "@/components/sections/lab/LabPinnedSteps";
 
+export { Numbered } from "./Numbered";
+export type { NumberedProps, NumberedItem } from "./Numbered";
+
 /* ── Atoms ──────────────────────────────────────────────── */
 export {
   LabEyebrow as Eyebrow,

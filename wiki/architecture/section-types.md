@@ -28,8 +28,11 @@ Design Patterns]] (это *предписывающий* справочник «
 > **06 → `Gallery`**, **07 → `Bento`** (re-export над `Lab*`, рендер идентичен) +
 > атомы `Eyebrow`/`Title`/`Media` и `Button`. Отдельно баррель экспортирует
 > **`FullStatement` = `LabFullStatement`** — это **другой** компонент-вариант
-> архетипа 02 (heading+sub), НЕ каталожный `LabStatement` (§2). Остальные
-> архетипы импортируются как `Lab*` напрямую, пока не promoted. Референс-страница
+> архетипа 02 (heading+sub), НЕ каталожный `LabStatement` (§2). **10 → `Numbered`**
+> — **первый настоящий чистый DS** (не алиас): отдельный `ds/Numbered.tsx` +
+> собственный `.ds-numbered*` CSS, без зависимости от `.lab-*`/`.section-lab`
+> (component-forge, 2026-06-22). Остальные архетипы импортируются как `Lab*`
+> напрямую, пока не promoted. Референс-страница
 > из барреля — `/dev/ds-sections`. Полный справочник — [[design-system|Design
 > System]] §Reusable components (v1.4). Горизонтальный скролл секций гасит
 > компонентный guard `.band{overflow-x:clip}`.
@@ -186,10 +189,10 @@ violet→cyan→aqua) → короткий подзаголовок → один
 **Нумерованный манифест/принципы.** Крупные `01 / 02 / 03`, рядом заголовок
 принципа и абзац. Не сетка карточек — вертикальный editorial-список со стаггером.
 
-- **Класс:** `methodology-principles` (3 принципа), `lab-numbered` (`LabNumbered` v1–v3)
+- **Класс:** `ds-numbered` (`.ds-numbered__list`/`__head`/`__v--polish|recomp|expanded`), 3 принципа
 - **Scroll-FX:** `data-reveal="up"` (стаггер по элементам)
-- **Публичное имя:** — (gap → `component-forge`: извлечь чистый DS в `@/components/ds`).
-- **Источник (deprecated субстрат):** `LabNumbered` (`sections/lab/LabNumbered.tsx`) — v1 Polish / v2 Modern Recomposition / v3 Expanded Expressive, `surface=light|ink`; без медиа. Статус `draft` (live-QA отложен) — см. [component-library](component-library.md)
+- **Публичное имя:** `Numbered` (`@/components/ds`) — чистый DS-компонент, извлечён из `LabNumbered` (component-forge 2026-06-22). **Первый non-alias** в барреле: собственный `ds/Numbered.tsx` + `.ds-numbered*` CSS, без `.lab-*`/`.section-lab`.
+- **Источник (deprecated субстрат):** `LabNumbered` (`sections/lab/LabNumbered.tsx`) — остаётся как deprecated-источник, пока потребители (`product/overview`, `overview-2`) не переедут на `Numbered`. Статус `forged · clean-DS` — см. [component-library](component-library.md)
 
 ## 11. Risk → control grid
 

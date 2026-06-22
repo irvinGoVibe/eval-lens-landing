@@ -182,3 +182,44 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
   .lab-fullstmt__v--3{grid-template-columns:1fr;}
   .lab-fullstmt__v--3 .lab-fullstmt__sub{margin-top:clamp(16px,2vw,22px);}
 }
+
+/* ============================================================
+   Numbered — archetype 10 (clean DS extraction)
+   Faithful 1:1 token port of LabNumbered: editorial numbered list,
+   v1 Polish / v2 Modern Recomposition / v3 Expanded Expressive, both
+   surfaces (soft is base; ink override). Per version light + ink share
+   geometry — title + numeral sizes pinned per version (surface-invariant).
+   ============================================================ */
+/* reproduces the shared `.head` margin group (globals .lab-numbered .head) */
+.ds-numbered__head{margin-bottom:clamp(32px,5vw,56px);}
+
+.ds-numbered__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
+.ds-numbered__list li{display:grid;grid-template-columns:clamp(70px,10vw,140px) 1fr;gap:clamp(18px,4vw,54px);align-items:baseline;border-top:1px solid var(--border);padding:clamp(26px,4vw,46px) 0;min-width:0;}
+.ds-numbered__list li:last-child{border-bottom:1px solid var(--border);}
+.ds-numbered__list span{font-family:var(--font-mono);font-size:clamp(28px,4vw,48px);line-height:1;background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.ds-numbered__list h3{font-size:clamp(24px,3.4vw,40px);letter-spacing:-.02em;line-height:1.08;color:var(--fg);}
+.ds-numbered__list p{font-size:clamp(16px,1.6vw,19px);line-height:1.55;color:var(--muted);margin-top:12px;max-width:58ch;}
+.ds-numbered .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* ink override (mirrors globals 5599-5602) */
+.ds-numbered.ink .ds-numbered__list li{border-top-color:var(--border-on-dark);}
+.ds-numbered.ink .ds-numbered__list li:last-child{border-bottom-color:var(--border-on-dark);}
+.ds-numbered.ink .ds-numbered__list h3{color:var(--fg-on-dark);}
+.ds-numbered.ink .ds-numbered__list p{color:var(--muted-on-dark);}
+
+/* per-version — `.title` targets the Title atom (mirrors globals 5603-5611) */
+.ds-numbered__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}
+.ds-numbered__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
+.ds-numbered__v--recomp .ds-numbered__list li{grid-template-columns:clamp(54px,7vw,92px) 1fr;gap:clamp(14px,3vw,36px);padding:clamp(20px,3vw,34px) 0;}
+.ds-numbered__v--recomp .ds-numbered__list h3{font-size:clamp(22px,2.8vw,32px);}
+.ds-numbered__v--expanded .ds-numbered__head{margin-bottom:clamp(40px,6vw,72px);}
+.ds-numbered__v--expanded .title{font-size:clamp(38px,6.5vw,80px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.ds-numbered__v--expanded .ds-numbered__list span{font-size:clamp(40px,7vw,96px);}
+.ds-numbered__v--expanded .ds-numbered__list h3{font-size:clamp(28px,4vw,48px);}
+.ds-numbered__v--expanded .ds-numbered__list li{padding:clamp(32px,5vw,60px) 0;}
+
+/* mobile collapse (mirrors globals :620 behavior: single column, numeral stacks) */
+@media (max-width:620px){
+  .ds-numbered__list li{grid-template-columns:1fr;gap:clamp(6px,1vw,10px);}
+  .ds-numbered__list span{display:block;}
+}
