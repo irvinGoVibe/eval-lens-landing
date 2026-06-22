@@ -12,9 +12,9 @@ import { Eyebrow, Media } from "@/components/ds";
  * (eyebrow, title, sub, one media slot) is the invariant — only layout differs
  * across versions, each surface-adaptive (`soft` light is this archetype's
  * default; `ink` flips colour only, geometry stays put):
- *   • v1 — split (base): two columns, copy + a ratio-locked media placeholder.
- *   • v2 — framed (premium): reversed editorial frame — the visual sits in a
- *     captioned panel, copy gets a hairline rule and a lens-accented title.
+ *   • v1 — split (base): two columns, copy left + a ratio-locked media slot right.
+ *   • v2 — mirror: a clean left/right swap of v1 — media on the left, copy on
+ *     the right; same plain layout, no frame, caption or rule.
  *   • v3 — cinematic (bold): the scene fills the band; copy + a mono tag sit
  *     over a scrim.
  *
@@ -120,19 +120,17 @@ export function EditorialSplit({
         />
       </div>
 
-      {/* ── v2 — framed (premium): reversed, captioned panel + hairline rule ── */}
-      <div className="wrap ds-split__framed" data-version="2" hidden>
-        <figure className="ds-split__frame" data-reveal="left">
-          <Media
-            className="ds-split__frame-media"
-            ratio={media.ratio}
-            label={media.label}
-            hint={media.hint}
-            ariaLabel={media.ariaLabel}
-          />
-          <figcaption className="ds-split__frame-cap">{media.label}</figcaption>
-        </figure>
-        <div className="ds-split__copy ds-split__copy--ruled" data-reveal="right">
+      {/* ── v2 — mirror: clean swap of v1 — media left, copy right ── */}
+      <div className="wrap ds-split__grid ds-split__grid--mirror" data-version="2" hidden>
+        <Media
+          className="ds-split__media"
+          ratio={media.ratio}
+          label={media.label}
+          hint={media.hint}
+          ariaLabel={media.ariaLabel}
+          reveal="left"
+        />
+        <div className="ds-split__copy" data-reveal="right">
           <Eyebrow>{eyebrow}</Eyebrow>
           <Title {...titleParts} />
           <p className="sub">{sub}</p>
@@ -159,8 +157,16 @@ export function EditorialSplit({
             >
               {sub}
             </p>
-            <Points points={points} />
           </div>
+          {points?.length ? (
+            <div
+              className="ds-split__cine-aside"
+              data-reveal="up"
+              style={{ "--reveal-delay": "160ms" } as CSSProperties}
+            >
+              <Points points={points} />
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

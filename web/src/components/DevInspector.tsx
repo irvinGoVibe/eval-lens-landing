@@ -48,7 +48,22 @@ const ARCHETYPE: Record<string, { label: string; component: string }> = {
   "lab-faq": { label: "FAQ", component: "LabFaq" },
   "lab-cinema": { label: "Cinema scrim", component: "LabCinemaScrim" },
   "lab-cine": { label: "Cinema", component: "DsCinema" },
+  // clean DS extractions (prefix-free @/components/ds; render `.ds-*`, no `.lab-*`)
+  "ds-split": { label: "Editorial split", component: "EditorialSplit" },
+  "ds-numbered": { label: "Numbered", component: "Numbered" },
+  "ds-quiet-cta": { label: "Quiet CTA", component: "QuietCta" },
+  "ds-statband": { label: "Stat band", component: "StatBand" },
+  "ds-chipgrid": { label: "Chip grid", component: "ChipGrid" },
 };
+
+/* Inspector recognises both the legacy `.lab-*` substrate and the clean `.ds-*`
+ * design-system sections. The selector substring-matches (cheap over-match is a
+ * no-op: `archetypeToken` re-checks with a strict prefix and bails otherwise). */
+const SECTION_SELECTOR = 'section[class*="lab-"], section[class*="ds-"]';
+const archetypeToken = (section: HTMLElement) =>
+  Array.from(section.classList).find(
+    (c) => (c.startsWith("lab-") || c.startsWith("ds-")) && c !== "lab-inspector",
+  );
 
 const STYLE_ID = "dev-inspector-style";
 const CSS = `
@@ -107,10 +122,8 @@ export function DevInspector() {
     // Idempotently enhance one section (no-op if already done). Returns a cleanup.
     function enhance(section: HTMLElement) {
       if (enhancedSections.has(section)) return;
-      // identify the archetype lab-* token (skip helper classes like lab-inspector)
-      const labClass = Array.from(section.classList).find(
-        (c) => c.startsWith("lab-") && c !== "lab-inspector",
-      );
+      // identify the archetype token (`lab-*` substrate or clean `ds-*`)
+      const labClass = archetypeToken(section);
       if (!labClass) return;
       enhancedSections.add(section);
 
@@ -126,7 +139,7 @@ export function DevInspector() {
       // discover this section's own version payloads (not nested ones)
       const versions = Array.from(
         section.querySelectorAll<HTMLElement>("[data-version]"),
-      ).filter((el) => el.closest('section[class*="lab-"]') === section);
+      ).filter((el) => el.closest(SECTION_SELECTOR) === section);
       const versionIds =
         versions.length > 0
           ? [...new Set(versions.map((el) => el.dataset.version ?? "1"))].sort()
@@ -289,9 +302,7 @@ export function DevInspector() {
     // so it's safe to call on mount AND whenever the DOM mutates (route change,
     // StrictMode remount, HMR) — panels appear once the sections exist.
     const scan = () => {
-      document
-        .querySelectorAll<HTMLElement>('section[class*="lab-"]')
-        .forEach(enhance);
+      document.querySelectorAll<HTMLElement>(SECTION_SELECTOR).forEach(enhance);
       // sections may have shifted (new panels, late layout) — re-place existing ones
       repositionAll();
     };
@@ -406,11 +417,9 @@ type SnapshotRow = {
  */
 function buildSnapshot(path: string): { text: string; rows: SnapshotRow[] } {
   const rows: SnapshotRow[] = [];
-  Array.from(document.querySelectorAll<HTMLElement>('section[class*="lab-"]')).forEach(
+  Array.from(document.querySelectorAll<HTMLElement>(SECTION_SELECTOR)).forEach(
     (section, i) => {
-      const labClass = Array.from(section.classList).find(
-        (c) => c.startsWith("lab-") && c !== "lab-inspector",
-      );
+      const labClass = archetypeToken(section);
       if (!labClass) return;
       const meta = ARCHETYPE[labClass] ?? { label: labClass, component: labClass };
       const surface: Surface = section.classList.contains("ink")
@@ -420,7 +429,7 @@ function buildSnapshot(path: string): { text: string; rows: SnapshotRow[] } {
           : "light";
       const versions = Array.from(
         section.querySelectorAll<HTMLElement>("[data-version]"),
-      ).filter((el) => el.closest('section[class*="lab-"]') === section);
+      ).filter((el) => el.closest(SECTION_SELECTOR) === section);
       const distinct = new Set(versions.map((el) => el.dataset.version ?? "1"));
       const visibleVer = versions.find((el) => !el.hidden)?.dataset.version ?? null;
       const version = distinct.size > 1 ? visibleVer ?? "1" : null;
