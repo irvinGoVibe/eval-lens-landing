@@ -217,6 +217,19 @@ Page Orchestrator. Контракты — в `backgrounds.json` (L13) / `transit
 | `tr-glow-crossover` | transition (L14) | section-modifier glow через шов (violet/cyan, contained, не orange) | ink→light/soft | ready |
 | `tr-overlap-bridge` | transition (L14) | карта/медиа пересекает шов | any | **blocked-by-surface-ownership** |
 
+### Approved draft — сквозной градиент-флип (2026-06-23, user-approved)
+
+Одобренный фон-переход (сохранён в каталог; **не `ready`** — это POC-спайк
+`web/src/app/dev/parallax-spike/`, productionization через `component-forge` =
+follow-up). Блокер тот же, что у `tr-overlap-bridge`: сквозной фон требует
+**прозрачных секций** (`blocked-by-surface-ownership`).
+
+| Asset | Слой | Назначение | Surfaces | Статус |
+|---|---|---|---|---|
+| `bg-through-gradient-flip` | background (L13) | сквозной фон из 2 fixed-слоёв: light = hero `.lab-hero__bg` дословно ↔ dark = его ink-версия реверснутая (132→312°); flip по скроллу | через light→dark | **draft / blocked-by-surface-ownership** |
+| `motion-pin-flip` | motion (L12) | `[data-pin]`-driver первым элементом → `--pin`=0 на верху (чистый старт), флип за ~1 экран, держит; dark-слой `opacity:var(--pin)`. НЕ `[data-scrub]` (≈0.476 на верху → грязный старт) | — | draft |
+| `recipe-bg-gradient-flip` | recipe (L15) | прозрачные секции над `bg-through-gradient-flip` + `motion-pin-flip` (без межсекционных швов) | — | **draft / unavailable** |
+
 ### Тёмные темы (batch 4 — visual-layer-forge, 2026-06-18)
 
 Результат дизайн-совета (источник истины — `.claude/designs/dark-themes/design-council.md`).

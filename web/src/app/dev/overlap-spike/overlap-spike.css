@@ -1,0 +1,218 @@
+/* =========================================================================
+   dev/overlap-spike — ISOLATED proof-of-concept (throwaway).
+   Everything is namespaced under `.overlap-spike` so nothing leaks into
+   real pages. Drives a scroll-linked OVERLAP between stacked full-width
+   sections using ScrollFX `--scrub` (written 0→1 on [data-scrub] elements).
+
+   Only existing design tokens are used (--bg, --bg-soft, --bg-ink, --violet,
+   --cyan, --fg, --fg-on-dark, --lavender, --ink-grad, --border).
+   Gradient stops are hex/rgb only (Lightning CSS drops raw oklab/oklch).
+   ========================================================================= */
+
+.overlap-spike {
+  /* page-local tunables */
+  --ovl-lift: 30vh;        /* how far B rises over A during the overlap */
+  --ovl-feather: 26vh;     /* height of the feathered top edge on B and C */
+  background: var(--bg);
+  color: var(--fg);
+  /* full-bleed sections live here; clip any horizontal leak (sticky-safe) */
+  overflow-x: clip;
+}
+
+/* ---- generic full-width section shell ------------------------------------ */
+.overlap-spike .ovl-sec {
+  position: relative;
+  width: 100%;
+  min-height: 92vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(64px, 12vh, 160px) 24px;
+  box-sizing: border-box;
+}
+
+.overlap-spike .ovl-inner {
+  width: min(820px, 100%);
+  text-align: center;
+}
+
+.overlap-spike .ovl-eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin-bottom: 18px;
+}
+
+.overlap-spike .ovl-sec h2 {
+  font-size: clamp(34px, 5.4vw, 60px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  font-weight: 600;
+}
+
+.overlap-spike .ovl-sec p {
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 56ch;
+  opacity: 0.86;
+}
+
+/* ---- LIGHT sections (A, C) ----------------------------------------------- */
+.overlap-spike .ovl-light {
+  background: var(--bg);
+  color: var(--fg);
+}
+.overlap-spike .ovl-light--soft {
+  background: var(--bg-soft);
+}
+
+/* ===========================================================================
+   THE OVERLAP — DARK section B rises over LIGHT section A.
+
+   Mechanics:
+   - `.ovl-overlap` is a [data-scrub] wrapper. ScrollFX writes --scrub 0→1 as
+     it crosses the viewport. We ease it ourselves into --p (a smoothstep) so
+     the glide feels Apple-grade instead of linear.
+   - B is pulled UP by a negative margin so it physically overlaps the tail of
+     A, and z-index layers it ON TOP. As you scroll, B additionally translates
+     upward by (1 - p) * lift, so it *glides* over A rather than being parked.
+   - B's top edge is feathered with a mask-image (transparent → opaque) so A
+     bleeds through softly — no hard rectangle landing on A.
+   - A soft violet glow sits at the seam, its strength tied to p, fading as the
+     overlap completes.
+   =========================================================================== */
+
+.overlap-spike .ovl-overlap {
+  position: relative;
+  /* eased progress derived from ScrollFX --scrub (fallback 0) */
+  --scrub: 0;
+  /* smoothstep-ish easing of --scrub via a clamp; CSS can't do real
+     smoothstep, so we bias with a gentle curve using calc on the squared term
+     approximated through min/max. Kept simple + monotonic. */
+  --p: var(--scrub);
+  z-index: 2;
+}
+
+/* The dark panel itself */
+.overlap-spike .ovl-ink {
+  position: relative;
+  z-index: 2;
+  background: var(--bg-ink);
+  background-image: var(--ink-grad);
+  color: var(--fg-on-dark);
+  /* pull B up over the tail of A */
+  margin-top: calc(-1 * var(--ovl-feather));
+  /* additional scroll-driven glide: starts lifted, settles into place */
+  transform: translate3d(0, calc((1 - var(--p)) * var(--ovl-lift)), 0);
+  will-change: transform;
+  /* feather the TOP edge so A bleeds through — transparent → opaque */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.35) calc(var(--ovl-feather) * 0.4),
+    rgba(0, 0, 0, 1) var(--ovl-feather)
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.35) calc(var(--ovl-feather) * 0.4),
+    rgba(0, 0, 0, 1) var(--ovl-feather)
+  );
+}
+
+.overlap-spike .ovl-ink .ovl-eyebrow {
+  color: var(--lavender);
+}
+.overlap-spike .ovl-ink h2,
+.overlap-spike .ovl-ink p {
+  color: var(--fg-on-dark);
+}
+
+/* Soft violet seam glow — lives at the top of the dark panel, strength tied
+   to p so it blooms during the cross and eases off once B has landed. */
+.overlap-spike .ovl-seam {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -40%);
+  width: min(1100px, 120%);
+  height: var(--ovl-feather);
+  pointer-events: none;
+  z-index: 3;
+  background: radial-gradient(
+    60% 100% at 50% 50%,
+    rgba(108, 76, 241, 0.55) 0,
+    rgba(46, 197, 232, 0.18) 45%,
+    rgba(108, 76, 241, 0) 72%
+  );
+  opacity: calc(0.25 + (1 - var(--p)) * 0.6);
+  filter: blur(2px);
+}
+
+/* ===========================================================================
+   INK → LIGHT EXIT — section C rises over the bottom of B, same idea but the
+   feathered panel is the LIGHT one coming up over the dark.
+   =========================================================================== */
+
+.overlap-spike .ovl-overlap--exit {
+  z-index: 4; /* above the ink panel */
+}
+
+.overlap-spike .ovl-rise {
+  position: relative;
+  z-index: 4;
+  background: var(--bg);
+  margin-top: calc(-1 * var(--ovl-feather));
+  transform: translate3d(0, calc((1 - var(--p)) * var(--ovl-lift)), 0);
+  will-change: transform;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.35) calc(var(--ovl-feather) * 0.4),
+    rgba(0, 0, 0, 1) var(--ovl-feather)
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.35) calc(var(--ovl-feather) * 0.4),
+    rgba(0, 0, 0, 1) var(--ovl-feather)
+  );
+}
+
+.overlap-spike .ovl-seam--exit {
+  background: radial-gradient(
+    60% 100% at 50% 50%,
+    rgba(46, 197, 232, 0.40) 0,
+    rgba(108, 76, 241, 0.16) 48%,
+    rgba(46, 197, 232, 0) 74%
+  );
+}
+
+/* A little breathing room at the very bottom so C can scroll fully into view */
+.overlap-spike .ovl-tail {
+  height: 40vh;
+  background: var(--bg);
+}
+
+/* ===========================================================================
+   REDUCED MOTION — disable the overlap glide + seam bloom. Sections stack
+   normally (no negative margin pull, no transform, no mask feather) so all
+   content is fully visible and legible. ScrollFX itself pins --scrub to 1 in
+   reduced-motion, but we also hard-reset here for safety.
+   =========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .overlap-spike .ovl-ink,
+  .overlap-spike .ovl-rise {
+    margin-top: 0;
+    transform: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .overlap-spike .ovl-seam {
+    display: none;
+  }
+}

@@ -4,7 +4,8 @@
   "invariant": "CLAUDE.md: all scroll/animation orchestration lives in a single shared runtime per surface; no per-section useEffect. Lab* components emit data-* attributes only; the page-level runtime consumes them.",
   "runtimes": [
     {
-      "name": "ScrollFX", "source": "web/src/components/ScrollFX.tsx",
+      "name": "ScrollFX",
+      "source": "web/src/components/ScrollFX.tsx",
       "runtime": "single shared rAF loop + IntersectionObserver",
       "scope": "every internal page + section-lab + LegalDoc + all sections/lab/Lab*",
       "data_attributes": {
@@ -13,30 +14,290 @@
         "data-pin": "+ data-pin-steps/data-pin-stage/data-pin-step; writes --pin, --pin-step; toggles is-active/is-current",
         "video[data-scrub-video]": "+ data-frames; seeks video by scroll"
       },
-      "css_outputs": ["--scrub", "--pin", "--pin-step", "is-in", "is-active", "is-current"],
+      "css_outputs": [
+        "--scrub",
+        "--pin",
+        "--pin-step",
+        "is-in",
+        "is-active",
+        "is-current"
+      ],
       "reduced_motion": "reveals -> is-in immediately; pins -> --pin:1 + steps active; scrubs -> --scrub:1; scrub-videos seek to end",
       "page_level_or_section_level": "page-level (one instance per page); also lifts body hero-ready lock",
       "intended_use": "the generic, prop-driven motion contract Lab* sections rely on",
-      "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }
+      "consumption_readiness": {
+        "status": "ready",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
+        ]
+      }
     },
     {
-      "name": "ScrollOrchestrator", "source": "web/src/components/ScrollOrchestrator.tsx",
+      "name": "ScrollOrchestrator",
+      "source": "web/src/components/ScrollOrchestrator.tsx",
       "runtime": "bespoke class/selector + dataset driven; many independent rAF loops/tweens",
       "scope": "home page only (/)",
-      "data_attributes": { "note": "NOT a generic data-* contract; targets specific home selectors (.hero-splash, .scrub-stage, .wf-rail .step, .sd-rail .step, .deckfield, data-d=...)" },
-      "css_outputs": ["header is-light flip", "--glow-* scrub vars for OrangeGlow", "bespoke per-section"],
+      "data_attributes": {
+        "note": "NOT a generic data-* contract; targets specific home selectors (.hero-splash, .scrub-stage, .wf-rail .step, .sd-rail .step, .deckfield, data-d=...)"
+      },
+      "css_outputs": [
+        "header is-light flip",
+        "--glow-* scrub vars for OrangeGlow",
+        "bespoke per-section"
+      ],
       "reduced_motion": "honored per-effect (multiple prefers-reduced-motion branches)",
       "page_level_or_section_level": "page-level (home)",
       "intended_use": "the cinematic home composition only",
-      "consumption_readiness": { "status": "ready", "allowed_consumers": ["build-pages(home only)"], "restrictions": ["do not reuse for internal pages; use ScrollFX"] }
+      "consumption_readiness": {
+        "status": "ready",
+        "allowed_consumers": [
+          "build-pages(home only)"
+        ],
+        "restrictions": [
+          "do not reuse for internal pages; use ScrollFX"
+        ]
+      }
     }
   ],
   "recipes": [
-    { "id": "motion-static", "name": "Static", "runtime": "none", "mechanism": "absence of motion (default)", "reduced_motion": "n/a", "reversible": "n/a", "affects_layout": false, "status": "ready", "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "motion.json", "target_id": "motion-static", "checked_at": "2026-06-17" }, "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }, "produced_by": "visual-layer-forge" },
-    { "id": "motion-slow-ambient-drift", "name": "Slow Ambient Drift", "runtime": "css", "mechanism": "@keyframes vl-ambient-drift (transform translate3d+scale) 24s; .motion-slow-ambient-drift; gated by @media (prefers-reduced-motion: no-preference)", "reduced_motion": "animation off -> static", "reversible": true, "affects_layout": false, "affects_document_width": false, "compatible_backgrounds": ["bg-ink-ambient-glow", "bg-cool-mist", "bg-violet-halo"], "status": "ready", "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "motion.json", "target_id": "motion-slow-ambient-drift", "checked_at": "2026-06-17" }, "build": { "status": "dev-compiled", "evidence_source": ":3005 (animationName vl-ambient-drift active)", "checked_at": "2026-06-17" }, "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }, "produced_by": "visual-layer-forge" },
-    { "id": "motion-glow-expansion", "name": "Glow Expansion", "runtime": "ScrollFX", "trigger": "data-scrub -> --scrub 0..1", "mechanism": ".motion-glow-expansion: transform scale(calc(.92 + .12*var(--scrub,1))) + opacity calc(.45 + .55*var(--scrub,1))", "reduced_motion": "ScrollFX pins --scrub:1 -> fully expanded", "reversible": true, "affects_layout": false, "compatible_backgrounds": ["bg-ink-ambient-glow", "bg-violet-halo"], "status": "ready", "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "motion.json", "target_id": "motion-glow-expansion", "checked_at": "2026-06-17" }, "build": { "status": "dev-compiled", "evidence_source": ":3005 (scrub-driven scale/opacity confirmed)", "checked_at": "2026-06-17" }, "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }, "produced_by": "visual-layer-forge" },
-    { "id": "motion-pattern-reveal", "name": "Pattern Reveal", "runtime": "ScrollFX", "trigger": "data-reveal=fade|scale (existing primitive)", "mechanism": ".motion-pattern-reveal[data-reveal] (--reveal-delay) on a pattern layer", "reduced_motion": "is-in immediately (visible, static)", "reversible": false, "affects_layout": false, "compatible_backgrounds": ["bg-dot-grid", "bg-line-field", "bg-concentric-rings"], "status": "ready", "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "motion.json", "target_id": "motion-pattern-reveal", "checked_at": "2026-06-17" }, "build": { "status": "dev-compiled", "evidence_source": ":3005", "checked_at": "2026-06-17" }, "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }, "produced_by": "visual-layer-forge" },
-    { "id": "motion-crossfade", "name": "Crossfade", "runtime": "ScrollFX", "trigger": "data-scrub on parent", "mechanism": ".motion-crossfade__from{opacity:calc(1 - var(--scrub,0))} / __to{opacity:var(--scrub,0)} (two stacked layers)", "reduced_motion": "ScrollFX pins --scrub:1 -> lands on __to", "reversible": true, "affects_layout": false, "status": "ready", "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "motion.json", "target_id": "motion-crossfade", "checked_at": "2026-06-17" }, "build": { "status": "dev-compiled", "evidence_source": ":3005 (crossfade __to opacity scrub-driven)", "checked_at": "2026-06-17" }, "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }, "produced_by": "visual-layer-forge" },
-    { "id": "motion-nebula-drift", "name": "Nebula Drift", "runtime": "css", "mechanism": "@keyframes vl-nebula-drift (transform translate3d -1.2%/-1% + scale 1.04) 32s ease-in-out infinite alternate; .motion-nebula-drift; gated by @media (prefers-reduced-motion: no-preference); applied ON .bg-nebula-blob__layer", "reduced_motion": "animation off -> static", "reversible": true, "affects_layout": false, "affects_document_width": false, "compatible_backgrounds": ["bg-nebula-blob"], "status": "ready", "theme": "dark-nebula", "registration": { "status": "completed", "registered_by": "component-library-preparer", "manifest": "motion.json", "target_id": "motion-nebula-drift", "checked_at": "2026-06-18" }, "build": { "status": "dev-compiled", "evidence_source": ":3005 (animationName vl-nebula-drift active)", "checked_at": "2026-06-18" }, "consumption_readiness": { "status": "ready", "allowed_consumers": ["page-composer", "build-pages"] }, "produced_by": "visual-layer-forge" }
+    {
+      "id": "motion-static",
+      "name": "Static",
+      "runtime": "none",
+      "mechanism": "absence of motion (default)",
+      "reduced_motion": "n/a",
+      "reversible": "n/a",
+      "affects_layout": false,
+      "status": "ready",
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "motion.json",
+        "target_id": "motion-static",
+        "checked_at": "2026-06-17"
+      },
+      "consumption_readiness": {
+        "status": "ready",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
+        ]
+      },
+      "produced_by": "visual-layer-forge"
+    },
+    {
+      "id": "motion-slow-ambient-drift",
+      "name": "Slow Ambient Drift",
+      "runtime": "css",
+      "mechanism": "@keyframes vl-ambient-drift (transform translate3d+scale) 24s; .motion-slow-ambient-drift; gated by @media (prefers-reduced-motion: no-preference)",
+      "reduced_motion": "animation off -> static",
+      "reversible": true,
+      "affects_layout": false,
+      "affects_document_width": false,
+      "compatible_backgrounds": [
+        "bg-ink-ambient-glow",
+        "bg-cool-mist",
+        "bg-violet-halo"
+      ],
+      "status": "ready",
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "motion.json",
+        "target_id": "motion-slow-ambient-drift",
+        "checked_at": "2026-06-17"
+      },
+      "build": {
+        "status": "dev-compiled",
+        "evidence_source": ":3005 (animationName vl-ambient-drift active)",
+        "checked_at": "2026-06-17"
+      },
+      "consumption_readiness": {
+        "status": "ready",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
+        ]
+      },
+      "produced_by": "visual-layer-forge"
+    },
+    {
+      "id": "motion-glow-expansion",
+      "name": "Glow Expansion",
+      "runtime": "ScrollFX",
+      "trigger": "data-scrub -> --scrub 0..1",
+      "mechanism": ".motion-glow-expansion: transform scale(calc(.92 + .12*var(--scrub,1))) + opacity calc(.45 + .55*var(--scrub,1))",
+      "reduced_motion": "ScrollFX pins --scrub:1 -> fully expanded",
+      "reversible": true,
+      "affects_layout": false,
+      "compatible_backgrounds": [
+        "bg-ink-ambient-glow",
+        "bg-violet-halo"
+      ],
+      "status": "ready",
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "motion.json",
+        "target_id": "motion-glow-expansion",
+        "checked_at": "2026-06-17"
+      },
+      "build": {
+        "status": "dev-compiled",
+        "evidence_source": ":3005 (scrub-driven scale/opacity confirmed)",
+        "checked_at": "2026-06-17"
+      },
+      "consumption_readiness": {
+        "status": "ready",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
+        ]
+      },
+      "produced_by": "visual-layer-forge"
+    },
+    {
+      "id": "motion-pattern-reveal",
+      "name": "Pattern Reveal",
+      "runtime": "ScrollFX",
+      "trigger": "data-reveal=fade|scale (existing primitive)",
+      "mechanism": ".motion-pattern-reveal[data-reveal] (--reveal-delay) on a pattern layer",
+      "reduced_motion": "is-in immediately (visible, static)",
+      "reversible": false,
+      "affects_layout": false,
+      "compatible_backgrounds": [
+        "bg-dot-grid",
+        "bg-line-field",
+        "bg-concentric-rings"
+      ],
+      "status": "ready",
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "motion.json",
+        "target_id": "motion-pattern-reveal",
+        "checked_at": "2026-06-17"
+      },
+      "build": {
+        "status": "dev-compiled",
+        "evidence_source": ":3005",
+        "checked_at": "2026-06-17"
+      },
+      "consumption_readiness": {
+        "status": "ready",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
+        ]
+      },
+      "produced_by": "visual-layer-forge"
+    },
+    {
+      "id": "motion-crossfade",
+      "name": "Crossfade",
+      "runtime": "ScrollFX",
+      "trigger": "data-scrub on parent",
+      "mechanism": ".motion-crossfade__from{opacity:calc(1 - var(--scrub,0))} / __to{opacity:var(--scrub,0)} (two stacked layers)",
+      "reduced_motion": "ScrollFX pins --scrub:1 -> lands on __to",
+      "reversible": true,
+      "affects_layout": false,
+      "status": "ready",
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "motion.json",
+        "target_id": "motion-crossfade",
+        "checked_at": "2026-06-17"
+      },
+      "build": {
+        "status": "dev-compiled",
+        "evidence_source": ":3005 (crossfade __to opacity scrub-driven)",
+        "checked_at": "2026-06-17"
+      },
+      "consumption_readiness": {
+        "status": "ready",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
+        ]
+      },
+      "produced_by": "visual-layer-forge"
+    },
+    {
+      "id": "motion-nebula-drift",
+      "name": "Nebula Drift",
+      "runtime": "css",
+      "mechanism": "@keyframes vl-nebula-drift (transform translate3d -1.2%/-1% + scale 1.04) 32s ease-in-out infinite alternate; .motion-nebula-drift; gated by @media (prefers-reduced-motion: no-preference); applied ON .bg-nebula-blob__layer",
+      "reduced_motion": "animation off -> static",
+      "reversible": true,
+      "affects_layout": false,
+      "affects_document_width": false,
+      "compatible_backgrounds": [
+        "bg-nebula-blob"
+      ],
+      "status": "ready",
+      "theme": "dark-nebula",
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "motion.json",
+        "target_id": "motion-nebula-drift",
+        "checked_at": "2026-06-18"
+      },
+      "build": {
+        "status": "dev-compiled",
+        "evidence_source": ":3005 (animationName vl-nebula-drift active)",
+        "checked_at": "2026-06-18"
+      },
+      "consumption_readiness": {
+        "status": "ready",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
+        ]
+      },
+      "produced_by": "visual-layer-forge"
+    },
+    {
+      "id": "motion-pin-flip",
+      "name": "Pin-driven background flip",
+      "runtime": "ScrollFX",
+      "data_attributes": [
+        "data-pin",
+        "data-pin-steps=1"
+      ],
+      "mechanism": "first-element [data-pin] driver: --pin = clamp01(-rect.top/(offsetHeight-vh)). =0 at very top (clean start), ->1 over ~1 viewport, holds at 1. Drives a fixed layer's opacity=var(--pin) for a fast one-pass crossfade.",
+      "gotcha": "do NOT drive via [data-scrub] at page top — scrub reads ~0.476 at scrollY=0 (element already half-crossed) -> muddy half-dark start. Pin reads 0 at top.",
+      "reduced_motion": "force target opacity:1 (land final/dark state), no animation",
+      "reversible": true,
+      "affects_layout": false,
+      "affects_document_width": false,
+      "intended_use": "fast one-pass surface/background flip anchored to page top",
+      "compatible_backgrounds": [
+        "bg-through-gradient-flip"
+      ],
+      "status": "draft",
+      "registration": {
+        "status": "completed",
+        "registered_by": "component-library-preparer",
+        "manifest": "motion.json",
+        "target_id": "motion-pin-flip",
+        "checked_at": "2026-06-23"
+      },
+      "consumption_readiness": {
+        "status": "conditional",
+        "reasons": [
+          "used by a blocked-by-surface-ownership background; motion itself is generic ScrollFX"
+        ],
+        "allowed_consumers": [
+          "page-composer"
+        ],
+        "restrictions": [
+          "fallback required"
+        ]
+      },
+      "produced_by": "component-library-preparer (from user-approved spike)"
+    }
   ]
 }

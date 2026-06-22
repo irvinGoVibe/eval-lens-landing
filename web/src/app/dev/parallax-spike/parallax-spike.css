@@ -1,0 +1,197 @@
+/* ============================================================================
+   dev/parallax-spike — ISOLATED throwaway POC. Everything scoped under
+   .parallax-spike. Do NOT import elsewhere; do NOT touch globals.css.
+
+   THE EFFECT (fast one-pass light→dark flip)
+   ------------------------------------------
+   ONE continuous through-background ("сквозной фон") behind transparent
+   stacked sections. Two FIXED full-viewport layers:
+
+     layer A (.px-bg-light) — the EXACT hero section gradient (.lab-hero__bg).
+     layer B (.px-bg-dark)  — the hero's INK gradient (.lab-hero.ink .lab-hero__bg),
+                              REVERSED (angle 132deg → 312deg) so it mirrors A.
+
+   Layer B sits on top of A and crossfades in (opacity 0→1) over a SHORT scroll
+   range — roughly one viewport / one scroll "pass" near the top — then HOLDS at
+   full dark for the rest of the page. So the user scrolls a little, the whole
+   background flips light→dark fast in one pass, then stays dark. No dot-grid,
+   no halos, no extra noise.
+
+   THE MAPPING — progress that reads 0 at the absolute top
+   -------------------------------------------------------
+   A `[data-pin]` driver (.px-driver) is the FIRST element in the page, ~2×
+   viewport tall. ScrollFX's pin maths is
+       --pin = clamp01( -rect.top / (offsetHeight - vh) )
+   so at scrollY=0 the section top is flush with the viewport top → rect.top===0
+   → --pin===0 (FULLY LIGHT). With offsetHeight ≈ 2vh, (offsetHeight - vh) ≈ vh,
+   so --pin travels 0→1 across ~one viewport of scroll, then ScrollFX clamps it
+   to 1 (HOLD dark).
+
+   (Why not [data-scrub]: scrub maps an element CROSSING the viewport, so an
+   element at the page top is already ~half-crossed at scrollY=0 and reads
+   ≈0.48 — that was the muddy-gray-at-top bug. Pin starts at 0 at the top.)
+
+   Layer B is a CHILD of that driver, so it inherits `--pin` via the CSS cascade
+   even though it is `position:fixed` (custom-property inheritance follows the
+   DOM tree, not the containing block). `opacity: var(--pin)` drives the
+   crossfade: 0 (light) at the top → 1 (dark) after one viewport.
+   ========================================================================== */
+
+.parallax-spike {
+  /* guard against any full-bleed / translate leak (CLAUDE: full-bleed
+     archetypes can leak horizontal scroll → clip, not hidden, sticky-safe). */
+  overflow-x: clip;
+  position: relative;
+  /* page-local fg anchors derived ONLY from existing tokens */
+  --px-fg:    var(--fg);          /* dark text while bg is light */
+  --px-fg-dk: var(--fg-on-dark);  /* light text once bg has gone dark */
+
+  color: var(--px-fg);
+  /* fallback base under the fixed layers (light end of the flip) */
+  background: var(--bg-soft);
+}
+
+/* ── Fixed through-background layers ────────────────────────────────────────
+   Both span the viewport and stay put as you scroll, so they read as one
+   continuous background behind every transparent section. */
+.parallax-spike .px-bg-light,
+.parallax-spike .px-bg-dark {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* layer A — the EXACT hero gradient (.lab-hero__bg), verbatim. */
+.parallax-spike .px-bg-light {
+  background: linear-gradient(
+    132deg,
+    color-mix(in oklab, var(--violet) 18%, var(--bg-soft)) 0%,
+    var(--bg-soft) 48%,
+    color-mix(in oklab, var(--cyan) 14%, var(--bg-soft)) 100%
+  );
+}
+
+/* layer B — the hero INK gradient (.lab-hero.ink .lab-hero__bg), REVERSED:
+   angle 132deg → 312deg so it mirrors layer A. Crossfades in via --scrub. */
+.parallax-spike .px-bg-dark {
+  background: linear-gradient(
+    312deg,
+    color-mix(in oklab, var(--violet) 42%, var(--ink)) 0%,
+    var(--ink) 50%,
+    color-mix(in oklab, var(--cyan) 26%, var(--ink)) 100%
+  );
+  /* driven by the [data-pin] driver this layer lives inside: --pin is 0 at the
+     absolute top of the page (fully light) and reaches 1 after ~one viewport. */
+  opacity: var(--pin, 0);
+  will-change: opacity;
+}
+
+/* ── The pin driver ──────────────────────────────────────────────────────────
+   FIRST element in the page, ~2× viewport tall, anchored at the very top.
+   ScrollFX maps --pin = clamp01(-rect.top / (offsetHeight - vh)): it is 0 at
+   scrollY=0 (rect.top === 0 → fully light) and reaches 1 after ~one viewport
+   (offsetHeight - vh ≈ vh), then holds at 1. It has no visual presence itself —
+   it only carries --pin for its fixed child (layer B). Absolute so it reserves
+   no flow space; the transparent sections still scroll over the fixed layers. */
+.parallax-spike .px-driver {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Transparent content sections ───────────────────────────────────────────
+   No opaque background — the through-bg shows behind. Spacing separates them;
+   no dividers. */
+.parallax-spike .px-sec {
+  position: relative;
+  z-index: 1;
+  background: transparent;          /* explicit: transparent content layer */
+  min-height: 86vh;
+  display: flex;
+  align-items: center;
+  padding: clamp(3rem, 9vh, 7rem) clamp(1.25rem, 6vw, 5rem);
+}
+
+.parallax-spike .px-inner {
+  max-width: 46rem;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.parallax-spike .px-eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--px-fg) 55%, transparent);
+  margin-bottom: 0.9rem;
+}
+
+.parallax-spike .px-sec h2 {
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin: 0 0 1.1rem;
+  color: var(--px-fg);
+  text-wrap: balance;
+}
+
+.parallax-spike .px-sec p {
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.55;
+  margin: 0;
+  color: color-mix(in srgb, var(--px-fg) 78%, transparent);
+  max-width: 40rem;
+}
+
+/* Sections that sit where the through-bg has flipped to dark: recolor text to
+   the light token so it stays legible against the dark gradient. The flip is
+   fast, so only the very first section reads against light; the rest carry
+   .px-on-dark. */
+.parallax-spike .px-on-dark h2 {
+  color: var(--px-fg-dk);
+}
+.parallax-spike .px-on-dark p {
+  color: color-mix(in srgb, var(--px-fg-dk) 84%, transparent);
+}
+.parallax-spike .px-on-dark .px-eyebrow {
+  color: color-mix(in srgb, var(--px-fg-dk) 60%, transparent);
+}
+
+/* ── reveal (built-in ScrollFX data-reveal) — subtle, eased ────────────────
+   Kept gentle so the spike reads premium, not gimmicky. */
+.parallax-spike [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.parallax-spike [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── prefers-reduced-motion ────────────────────────────────────────────────
+   Show the DARK state with all content legible (no crossfade animation):
+   layer B fully opaque, reveals shown immediately. (ScrollFX also pins
+   --pin to 1 under reduced motion, but we force opacity here so the dark
+   state holds even before the engine runs.) */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-spike .px-bg-dark {
+    opacity: 1 !important;
+  }
+  .parallax-spike [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

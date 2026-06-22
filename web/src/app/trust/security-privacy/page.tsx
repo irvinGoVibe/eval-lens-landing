@@ -154,14 +154,6 @@ export default function SecurityPrivacyPage() {
           ]}
         />
 
-        {/* soft → ink bridge before the pinned-steps section (section 4 renders .soft). */}
-        <div
-          className="tr-gradient-bridge"
-          data-from="soft"
-          data-to="ink"
-          aria-hidden="true"
-        />
-
         {/* 5. Under the hood — pinned steps, ink. */}
         <PinnedSteps
           id="flow"
@@ -199,14 +191,6 @@ export default function SecurityPrivacyPage() {
             ariaLabel:
               "A chain from cookies through the server to RLS and isolated project data",
           }}
-        />
-
-        {/* ink → soft bridge after the pinned-steps section. */}
-        <div
-          className="tr-gradient-bridge"
-          data-from="ink"
-          data-to="soft"
-          aria-hidden="true"
         />
 
         {/* 6. Report delivery — editorial split, soft (light → .soft). */}
@@ -256,14 +240,6 @@ export default function SecurityPrivacyPage() {
               body: "Ranking is built from the human Final Score; the organizer decides how the report is used.",
             },
           ]}
-        />
-
-        {/* soft → ink bridge before the closing CTA (section 7 renders .soft). */}
-        <div
-          className="tr-gradient-bridge"
-          data-from="soft"
-          data-to="ink"
-          aria-hidden="true"
         />
 
         {/* 8. Final CTA — quiet CTA, ink. */}
