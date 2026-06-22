@@ -1,8 +1,8 @@
 ---
 title: Section Types — визуальный каталог
 status: generated
-version: 1.0
-updated: 2026-06-16
+version: 1.1
+updated: 2026-06-22
 source: фактический аудит свёрстанных внутренних страниц web/src/app/** (product/*, trust/*, pricing, company/*, legal, sitemap)
 ---
 # Section Types — визуальный каталог
@@ -19,30 +19,45 @@ Design Patterns]] (это *предписывающий* справочник «
 > секции. Все визуальные слоты внутри — это видимые плейсхолдеры `.media-ph`
 > (реальные ассеты ещё не сгенерированы), см. [[page-design-patterns#Плейсхолдеры (видимые)|правило про плейсхолдеры]].
 
+> **Канон потребления (2026-06-22).** Эти `Lab*` — **внутренняя реализация**.
+> Канонический публичный API — prefix-free баррель
+> [`@/components/ds`](../../web/src/components/ds/index.ts), контейнер страницы
+> `<main className="section-lab ds">` (`section-lab` — базовые `.lab-*`; `.ds` —
+> светлый язык дизайн-системы `--dsc-*`, гейт `:not(.ink)`). Чистые алиасы пока
+> у 4 forged-архетипов: **01 → `StatementHero`**, **03 → `PinnedSteps`**,
+> **06 → `Gallery`**, **07 → `Bento`** (re-export над `Lab*`, рендер идентичен) +
+> атомы `Eyebrow`/`Title`/`Media` и `Button`. Отдельно баррель экспортирует
+> **`FullStatement` = `LabFullStatement`** — это **другой** компонент-вариант
+> архетипа 02 (heading+sub), НЕ каталожный `LabStatement` (§2). Остальные
+> архетипы импортируются как `Lab*` напрямую, пока не promoted. Референс-страница
+> из барреля — `/dev/ds-sections`. Полный справочник — [[design-system|Design
+> System]] §Reusable components (v1.4). Горизонтальный скролл секций гасит
+> компонентный guard `.band{overflow-x:clip}`.
+
 ## Сводная таблица
 
-| #   | Тип секции                                                     | Поверхность            | Scroll-FX                      | Класс-пример                      | Где встречается                                  |
-| --- | -------------------------------------------------------------- | ---------------------- | ------------------------------ | --------------------------------- | ------------------------------------------------ |
-| 1   | [Statement hero](#1-statement-hero)                            | `soft` (свет)          | `reveal up` + `reveal scale`   | `*-hero`                          | все hero: product/*, trust/*, pricing, company/* |
-| 2   | [Full-bleed statement](#2-full-bleed-statement)                | `ink` (тёмн.) / `soft` | `reveal up`                    | `eh-problem`, `evr-why`, `lab-statement` (`LabStatement` v1–v2) | разрыв-«вдох»: проблема / тезис                  |
-| 3   | [Pinned multi-screen](#3-pinned-multi-screen)                  | `ink` / `soft`         | `data-pin` + `data-pin-steps`  | `po-path`, `methodology-pipeline` | процессы, конвейеры, timeline, команда           |
-| 4   | [Editorial split](#4-editorial-split)                          | `soft` / `ink`         | `reveal left` / `reveal right` | `po-why`, `ab-problem`, `lab-split` (`LabEditorialSplit` v1/v2/v3) | текст + визуал/тезис; самый частый               |
-| 5   | [Editorial split + scrub-ring](#5-editorial-split--scrub-ring) | `soft` / `ink`         | `reveal` + `data-scrub` (+ `pin` в v3) | `po-pipeline`, `evr-score`, `lab-splitring` (`LabSplitRing` v1/v2/v3) | детерминированная математика / confidence        |
-| 6   | [Horizontal gallery](#6-horizontal-gallery)                    | `soft` / `ink`         | `reveal up` (+ `data-scrub` parallax в v3) | `po-jury`, `usecases-segments`, `lab-gallery` (`LabGallery` v1/v3) | судьи, сегменты, возможности                     |
-| 7   | [Bento overview](#7-bento-overview)                            | `ink` / `soft`         | `reveal up` (+ `reveal scale`/`right` в v2/v3) | `po-modules`, `security-access`, `lab-bento` (`LabBento` v1/v2/v3) | сетка фич, один feature-тайл                     |
-| 8   | [Bento link tiles (hub map)](#8-bento-link-tiles-hub-map)      | `soft`                 | `reveal up`                    | `hub-map`, `lab-hubmap` (`LabHubMap` v1–v3) | hub-страницы: тайлы-ссылки на дочерние           |
-| 9   | [Stat band / counters](#9-stat-band--counters)                 | `ink`                  | `reveal up`                    | `consistency-benchmark`, `lab-stats` (`LabStatBand` v1–v3) | крупные числа + источник                         |
-| 10  | [Editorial numbered list](#10-editorial-numbered-list)         | `soft`                 | `reveal up` (стаггер)          | `methodology-principles`, `lab-numbered` (`LabNumbered` v1–v3) | принципы/манифест нумерованно                    |
-| 11  | [Risk → control grid](#11-risk--control-grid)                  | `soft`                 | `reveal up`                    | `consistency-bias`, `lab-risk` (`LabRiskControl` v1–v3) | парные строки риск ↔ контрмера                   |
-| 12  | [Quiet CTA band](#12-quiet-cta-band)                           | `ink`                  | `reveal up` (стаггер)          | `*-cta`, `lab-quiet-cta` (`LabQuietCta` v1–v3) | финальный призыв на каждой странице              |
-| 13  | [Pricing tiers](#13-pricing-tiers)                             | `soft`                 | `reveal up`                    | `pr-plans`, `lab-pricing` (`LabPricing` v1–v3) | карточки тарифов, один Recommended               |
-| 14  | [Comparison table](#14-comparison-table)                       | `soft`                 | `reveal up`                    | `pr-compare`, `lab-table` (`LabCompareTable` v1–v3) | полная матрица фич × тарифы                      |
-| 15  | [Versus table](#15-versus-table)                               | `ink`                  | `reveal up`                    | `pr-versus`                       | EvalLense vs конкуренты                          |
-| 16  | [FAQ list](#16-faq-list)                                       | `soft`                 | `reveal up`                    | `pr-faq`, `lab-faq` (`LabFaq` v1–v3) | статичный список Q/A                             |
-| 17  | [Contact channels grid](#17-contact-channels-grid)             | свет                   | `reveal up`                    | `ct-channels`                     | тайлы каналов связи                              |
-| 18  | [News / article grid](#18-news--article-grid)                  | свет                   | `reveal up`                    | `ct-news`                         | последние посты, `ArticleCard`                   |
-| 19  | [Legal prose / TOC](#19-legal-prose--toc)                      | `soft`                 | — (без анимаций)               | `LegalDoc`                        | privacy / terms / security                       |
-| 20  | [Sitemap index](#20-sitemap-index)                             | `soft`                 | —                              | `sitemap-tree-band`               | дерево страниц (unicode)                         |
+| #   | Тип секции                                                     | Поверхность            | Scroll-FX                                      | Класс-пример                                                          | Где встречается                                  |
+| --- | -------------------------------------------------------------- | ---------------------- | ---------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------ |
+| 1   | [Statement hero](#1-statement-hero)                            | `soft` (свет)          | `reveal up` + `reveal scale`                   | `*-hero`                                                              | все hero: product/*, trust/*, pricing, company/* |
+| 2   | [Full-bleed statement](#2-full-bleed-statement)                | `ink` (тёмн.) / `soft` | `reveal up`                                    | `eh-problem`, `evr-why`, `lab-statement` (`LabStatement` v1–v2)       | разрыв-«вдох»: проблема / тезис                  |
+| 3   | [Pinned multi-screen](#3-pinned-multi-screen)                  | `ink` / `soft`         | `data-pin` + `data-pin-steps`                  | `po-path`, `methodology-pipeline`                                     | процессы, конвейеры, timeline, команда           |
+| 4   | [Editorial split](#4-editorial-split)                          | `soft` / `ink`         | `reveal left` / `reveal right`                 | `po-why`, `ab-problem`, `lab-split` (`LabEditorialSplit` v1/v2/v3)    | текст + визуал/тезис; самый частый               |
+| 5   | [Editorial split + scrub-ring](#5-editorial-split--scrub-ring) | `soft` / `ink`         | `reveal` + `data-scrub` (+ `pin` в v3)         | `po-pipeline`, `evr-score`, `lab-splitring` (`LabSplitRing` v1/v2/v3) | детерминированная математика / confidence        |
+| 6   | [Horizontal gallery](#6-horizontal-gallery)                    | `soft` / `ink`         | `reveal up` (+ `data-scrub` parallax в v3)     | `po-jury`, `usecases-segments`, `lab-gallery` (`LabGallery` v1/v3)    | судьи, сегменты, возможности                     |
+| 7   | [Bento overview](#7-bento-overview)                            | `ink` / `soft`         | `reveal up` (+ `reveal scale`/`right` в v2/v3) | `po-modules`, `security-access`, `lab-bento` (`LabBento` v1/v2/v3)    | сетка фич, один feature-тайл                     |
+| 8   | [Bento link tiles (hub map)](#8-bento-link-tiles-hub-map)      | `soft`                 | `reveal up`                                    | `hub-map`, `lab-hubmap` (`LabHubMap` v1–v3)                           | hub-страницы: тайлы-ссылки на дочерние           |
+| 9   | [Stat band / counters](#9-stat-band--counters)                 | `ink`                  | `reveal up`                                    | `consistency-benchmark`, `lab-stats` (`LabStatBand` v1–v3)            | крупные числа + источник                         |
+| 10  | [Editorial numbered list](#10-editorial-numbered-list)         | `soft`                 | `reveal up` (стаггер)                          | `methodology-principles`, `lab-numbered` (`LabNumbered` v1–v3)        | принципы/манифест нумерованно                    |
+| 11  | [Risk → control grid](#11-risk--control-grid)                  | `soft`                 | `reveal up`                                    | `consistency-bias`, `lab-risk` (`LabRiskControl` v1–v3)               | парные строки риск ↔ контрмера                   |
+| 12  | [Quiet CTA band](#12-quiet-cta-band)                           | `ink`                  | `reveal up` (стаггер)                          | `*-cta`, `lab-quiet-cta` (`LabQuietCta` v1–v3)                        | финальный призыв на каждой странице              |
+| 13  | [Pricing tiers](#13-pricing-tiers)                             | `soft`                 | `reveal up`                                    | `pr-plans`, `lab-pricing` (`LabPricing` v1–v3)                        | карточки тарифов, один Recommended               |
+| 14  | [Comparison table](#14-comparison-table)                       | `soft`                 | `reveal up`                                    | `pr-compare`, `lab-table` (`LabCompareTable` v1–v3)                   | полная матрица фич × тарифы                      |
+| 15  | [Versus table](#15-versus-table)                               | `ink`                  | `reveal up`                                    | `pr-versus`                                                           | EvalLense vs конкуренты                          |
+| 16  | [FAQ list](#16-faq-list)                                       | `soft`                 | `reveal up`                                    | `pr-faq`, `lab-faq` (`LabFaq` v1–v3)                                  | статичный список Q/A                             |
+| 17  | [Contact channels grid](#17-contact-channels-grid)             | свет                   | `reveal up`                                    | `ct-channels`                                                         | тайлы каналов связи                              |
+| 18  | [News / article grid](#18-news--article-grid)                  | свет                   | `reveal up`                                    | `ct-news`                                                             | последние посты, `ArticleCard`                   |
+| 19  | [Legal prose / TOC](#19-legal-prose--toc)                      | `soft`                 | — (без анимаций)                               | `LegalDoc`                                                            | privacy / terms / security                       |
+| 20  | [Sitemap index](#20-sitemap-index)                             | `soft`                 | —                                              | `sitemap-tree-band`                                                   | дерево страниц (unicode)                         |
 
 ---
 
