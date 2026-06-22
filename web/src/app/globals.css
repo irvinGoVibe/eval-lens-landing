@@ -6646,7 +6646,8 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-card__name{font-size:clamp(18px,1.6vw,21px);letter-spacing:-.01em;font-weight:600;color:var(--fg);margin-top:6px;}
 .pricing .pr-card__price{font-family:var(--font-mono);font-size:clamp(28px,3.4vw,40px);line-height:1.05;letter-spacing:-.02em;color:var(--fg);margin-top:4px;}
 .pricing .pr-card__cadence{display:flex;flex-direction:column;gap:2px;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.02em;color:var(--muted);}
-.pricing .pr-card__bullets{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;}
+.pricing .pr-card__msg{margin:14px 0 0;font-size:14px;line-height:1.45;color:var(--fg);min-width:0;}
+.pricing .pr-card__bullets{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;}
 .pricing .pr-card__bullet{position:relative;padding-left:20px;font-size:14px;line-height:1.45;color:var(--muted);min-width:0;}
 .pricing .pr-card__bullet::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--lens);}
 .pricing .pr-card__cta{margin-top:auto;padding-top:22px;}
@@ -6678,23 +6679,41 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-th__note{display:block;font-size:9.5px;letter-spacing:.1em;color:var(--violet);margin-top:3px;}
 .pricing .pr-td--reco{background:color-mix(in oklab,var(--violet) 7%,transparent);}
 
-/* ---- 4. EvalLense vs alternatives — DARK ---- */
-.pricing .pr-versus .pr-table-scroll{margin-top:clamp(28px,4vw,48px);}
-.pricing .pr-versus .pr-th{color:var(--muted-on-dark);border-bottom-color:var(--border-on-dark);}
-.pricing .pr-versus .pr-th--row,
-.pricing .pr-versus .pr-td--row{color:var(--fg-on-dark);}
-.pricing .pr-versus .pr-td--row{color:var(--muted-on-dark);}
-.pricing .pr-versus .pr-th,
-.pricing .pr-versus .pr-td,
-.pricing .pr-versus .pr-cell{border-bottom-color:var(--border-on-dark-2);}
-.pricing .pr-versus .pr-cell--num{color:var(--fg-on-dark);}
-.pricing .pr-versus .pr-cell--no{color:var(--muted-on-dark);}
-.pricing .pr-versus .pr-th--us{color:var(--lavender);}
-.pricing .pr-versus .pr-td--us{background:color-mix(in oklab,var(--violet) 18%,transparent);}
-.pricing .pr-versus__statements{margin-top:clamp(32px,5vw,56px);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,32px);}
+/* ---- 4. Where EvalLense fits — UNNAMED category framing, INK ---- */
+.pricing .pr-fit .head{margin-bottom:clamp(36px,5vw,60px);}
+.pricing .pr-fit__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.2vw,26px);align-items:stretch;}
+.pricing .pr-fit__card{min-width:0;display:flex;flex-direction:column;gap:12px;background:color-mix(in oklab,#fff 5%,transparent);border:1px solid var(--border-on-dark-2);border-radius:var(--radius-card);padding:clamp(22px,2.6vw,32px);}
+.pricing .pr-fit__card--us{background:color-mix(in oklab,var(--violet) 16%,transparent);border-color:color-mix(in oklab,var(--violet) 42%,transparent);}
+.pricing .pr-fit__card .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
+.pricing .pr-fit__card--us .mini-tag{color:#fff;}
+.pricing .pr-fit__body{margin:0;font-size:15px;line-height:1.5;color:var(--fg-on-dark);min-width:0;}
+.pricing .pr-fit__card:not(.pr-fit__card--us) .pr-fit__body{color:var(--muted-on-dark);}
+.pricing .pr-fit__gap{margin:auto 0 0;font-size:13.5px;line-height:1.5;color:var(--muted-on-dark);min-width:0;}
+.pricing .pr-fit__gap-label{display:inline-block;margin-right:8px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in oklab,var(--lavender) 75%,transparent);}
+.pricing .pr-fit__statements{margin-top:clamp(32px,5vw,56px);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,32px);}
+/* §4 comparison table sits on INK — re-skin .pr-table for dark (does not touch §3 light styling). */
+.pricing .pr-fit{margin-bottom:clamp(32px,5vw,56px);}
+.pricing .pr-fit .pr-table-scroll{margin-bottom:clamp(32px,5vw,56px);}
+.pricing .pr-fit .pr-th,
+.pricing .pr-fit .pr-td,
+.pricing .pr-fit .pr-cell{border-bottom:1px solid var(--border-on-dark-2);}
+.pricing .pr-fit .pr-th{color:var(--muted-on-dark);border-bottom:1px solid var(--border-on-dark-2);}
+.pricing .pr-fit .pr-th--row,
+.pricing .pr-fit .pr-td--row{color:var(--fg-on-dark);}
+.pricing .pr-fit .pr-td--row{color:var(--muted-on-dark);}
+.pricing .pr-fit .pr-cell--num{color:var(--fg-on-dark);}
+.pricing .pr-fit .pr-cell--no{color:var(--muted-on-dark);}
+/* EvalLense column highlight — violet-tinted like the old .pr-fit__card--us. */
+.pricing .pr-fit .pr-th--us{color:var(--lavender);}
+.pricing .pr-fit .pr-td--us{background:color-mix(in oklab,var(--violet) 16%,transparent);}
+.pricing .pr-fit .pr-th--us,
+.pricing .pr-fit .pr-td--us{border-bottom-color:color-mix(in oklab,var(--violet) 42%,transparent);}
 .pricing .pr-statement{margin:0;min-width:0;font-family:var(--font-display);font-size:clamp(19px,2.2vw,26px);line-height:1.32;letter-spacing:-.01em;color:var(--fg-on-dark);padding-left:18px;border-left:2px solid color-mix(in oklab,var(--violet) 55%,transparent);}
+@media (max-width:880px){
+  .pricing .pr-fit__grid{grid-template-columns:1fr;}
+}
 @media (max-width:720px){
-  .pricing .pr-versus__statements{grid-template-columns:1fr;}
+  .pricing .pr-fit__statements{grid-template-columns:1fr;}
 }
 
 /* ---- 5. Capabilities — horizontal scroll gallery ---- */
@@ -6718,10 +6737,6 @@ section.band.ink .mini-tag{color:var(--lavender);}
 @media (max-width:720px){
   .pricing .pr-faq__grid{grid-template-columns:1fr;}
 }
-
-/* ---- 7. Final CTA ---- */
-.pricing .pr-cta .head{display:flex;flex-direction:column;align-items:center;text-align:center;}
-.pricing .pr-cta .cta-row{margin-top:34px;}
 
 /* ============ visual-layer-forge v1 (bg-ink-ambient-glow · tr-gradient-bridge) ============ */
 

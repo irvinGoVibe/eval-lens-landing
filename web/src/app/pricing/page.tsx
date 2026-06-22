@@ -4,6 +4,7 @@ import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+import { StatementHero, Bento, QuietCta } from "@/components/ds";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -19,37 +20,36 @@ const HEADER_NAV: SectionNav = {
 export const metadata: Metadata = {
   title: "EvalLense — Pricing: Pay-per-Event Pitch Evaluation",
   description:
-    "Transparent EvalLense pricing — from a free trial to Enterprise. Pay per event, not per seat; 6 AI judges evaluate every pitch on every plan.",
+    "Transparent EvalLense pricing: pay per event, not per seat. Plans are packages of AI-evaluated submissions; six AI judges on every plan, the human decides.",
 };
 
 /*
  * ── NUMBERS & SOURCE OF TRUTH ────────────────────────────────────────────
- * All prices/limits/validity/add-on packs are USD from the financial model
+ * All prices/limits/validity/top-up packs are USD from the financial model
  * v0.4 ("Тарифы" sheet) — the source of truth. Do not round or invent.
- *   Free trial   $0       · 3 pitches    · until used
- *   Starter      $199     · 15 pitches   · 90 days   (matrix-only, smaller plan)
- *   Pilot        $500     · 40 pitches   · 90 days   (matrix-only, smaller plan)
- *   Standard ⭐  $1,500   · 150 pitches  · 120 days  (recommended)
- *   Professional $3,900   · 500 pitches  · 180 days
- *   Enterprise   from $15,000 · 1,000+ pitches · by contract
- *   Add-on packs: Starter/Pilot +$150·10 ($15/pitch); Standard +$300·25
- *   ($12/pitch); Professional +$500·50 ($10/pitch); Enterprise custom.
+ *   Free Trial   $0           · 3 submissions   · lifetime trial   · 1 project
+ *   Starter      $199         · 15 submissions  · 90 days          (matrix-only)
+ *   Pilot        $500         · 40 submissions  · 90 days          (matrix-only)
+ *   Standard ⭐  $1,500       · 150 submissions · 120 days · 5 projects (recommended)
+ *   Pro          $3,900       · 500 submissions · 180 days · unlimited projects
+ *   Enterprise   from $15,000 · 1,000+ submissions · contract term
+ *   Top-up packs: Starter/Pilot +10/$150 ($15/sub); Standard +25/$300
+ *   ($12/sub); Pro +50/$500 ($10/sub); Enterprise custom.
  *
- * ── DRAFT CONTENT (verify before publish) ────────────────────────────────
- * - Competitor feature values (section 4 — YouNoodle / Evalato / PitchBob VC)
- *   are DRAFT from research v0.2 (competitor-landscape.md). Verify the factual
- *   feature claims before publication. Competitor PRICES are intentionally NOT
- *   shown (user decision — avoids stale-price risk).
- * - Per-tier feature gating beyond price/pitches/validity (custom weights,
- *   templates, export bundle, branding, SSO/SAML, data residency, API,
- *   support level) is DRAFTED from brief §3 + research §11 — needs product
- *   confirmation before publish.
+ * ── CONTENT NOTE (competitor framing) ────────────────────────────────────
+ * Section 4 ("Where EvalLense fits") deliberately shows NO named competitors.
+ * Per user decision (2026-06-17) the former named versus-table was removed in
+ * favour of an UNNAMED category framing — two half-solution categories
+ * (event-workflow platforms · AI deck-analysts) plus EvalLense. Rationale:
+ * competitor features are stale/unverifiable (research draft v0.2) and a named
+ * table reads defensively. If a named comparison is ever needed, it belongs on
+ * a separate "Why EvalLense" page with verified, dated facts — not on pricing.
  *
  * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
- * The image generator is NOT wired up. The hero slot below is a VISIBLE,
- * labeled `.media-ph` placeholder (global primitive in globals.css) on
- * canonical tokens — never an empty grey div. It carries an --ratio so the
- * real asset drops in with zero layout shift.
+ * The image generator is NOT wired up. StatementHero renders its own labeled
+ * `.media-ph` placeholder (global primitive) on canonical tokens — never an
+ * empty grey div. It carries a --ratio so the real asset drops in with zero
+ * layout shift.
  *
  * 1. hero (section 1) — 16:9
  *    An event filtered through a lens into a single ranked result.
@@ -60,86 +60,87 @@ export const metadata: Metadata = {
  *
  * ── MOTION ───────────────────────────────────────────────────────────────
  * This is a dense conversion UTILITY page — it intentionally breaks the
- * editorial scroll format. Movement is `data-reveal` ONLY (no pin/scrub).
- * <ScrollFX/> is mounted once after <Footer/> so reveals fire. reduced-motion
- * is handled by the engine + the primitives' @media block.
+ * editorial scroll format. Movement is `data-reveal` ONLY (no pin/scrub). DS
+ * components carry their own reveals; page-local sections use data-reveal="up"
+ * with staggered --reveal-delay. <ScrollFX/> is mounted once after <Footer/>.
+ * reduced-motion is handled by the engine.
  */
 
 /* 2. Headline pricing cards — 4 public plans (brief §2, financial model v0.4). */
 const PLANS = [
   {
-    name: "Free trial",
+    name: "Free Trial",
     price: "$0",
-    cadence: "3 pitches",
-    validity: "valid until used",
+    cadence: "3 submissions",
+    validity: "lifetime · no credit card",
+    message: "Try EvalLense on your first 3 submissions.",
     cta: "Start Free",
     href: "/company/contact",
     recommended: false,
     bullets: [
-      "3 pitches",
-      "All 6 AI judges",
-      "Evidence reports",
-      "Human review",
+      "3 submissions (lifetime)",
+      "All 6 AI judges (preview)",
+      "Evidence-linked reports",
+      "Human-in-the-loop scoring",
     ],
   },
   {
     name: "Standard",
     price: "$1,500",
-    cadence: "/ 150 pitches",
-    validity: "120-day window",
+    cadence: "150 submissions",
+    validity: "120 days · 5 projects",
+    message: "Run a full pitch competition.",
     cta: "Get Started",
     href: "/company/contact",
     recommended: true,
     bullets: [
       "Everything in evaluation",
-      "Leaderboard",
-      "CSV / PDF export",
-      "Custom criteria weights*",
-      "Add-on packs from $12/pitch",
+      "Leaderboard + CSV / PDF export",
+      "Custom criteria weights",
+      "Top-up +25 / $300 ($12 each)",
     ],
   },
   {
-    name: "Professional",
+    name: "Pro",
     price: "$3,900",
-    cadence: "/ 500 pitches",
-    validity: "180-day window",
+    cadence: "500 submissions",
+    validity: "180 days · unlimited projects",
+    message: "Evaluate large cohorts and recurring programs.",
     cta: "Get Started",
     href: "/company/contact",
     recommended: false,
     bullets: [
       "Everything in Standard",
-      "Event templates",
-      "Export bundle",
-      "Basic branding",
-      "Add-on packs from $10/pitch",
+      "Custom AI judges",
+      "BYO LLM (add-on)",
+      "Top-up +50 / $500 ($10 each)",
     ],
   },
   {
     name: "Enterprise",
     price: "from $15,000",
-    cadence: "/ 1,000+ pitches",
-    validity: "by contract",
+    cadence: "1,000+ submissions",
+    validity: "contract term",
+    message: "Corporate, universities, and custom judging workflows.",
     cta: "Talk to Sales",
     href: "/company/contact",
     recommended: false,
     bullets: [
       "Everything in Pro",
-      "SSO / SAML",
-      "Data residency",
-      "API access",
-      "Custom AI methodology",
+      "White-label branding",
+      "SLA + security review",
       "Dedicated support",
     ],
   },
 ];
 
-/* 3. Full comparison — all 6 levels. ✓ = green, "—" = muted, "✓ all" spans. */
+/* 3. Full comparison — all 6 levels (brief §3, pricing-model.en.md v0.4). */
 const COMPARE_COLS = [
   "Free",
   "Starter",
   "Pilot",
   "Standard",
-  "Professional",
+  "Pro",
   "Enterprise",
 ];
 
@@ -150,29 +151,34 @@ const COMPARE_ROWS = [
     num: true,
   },
   {
-    label: "Pitches included",
-    cells: ["3", "15", "40", "150", "500", "1,000+"],
+    label: "Submissions included",
+    cells: ["3", "15", "40", "150", "500", "custom"],
     num: true,
   },
   {
     label: "Validity",
     cells: [
-      "until used",
+      "lifetime trial",
       "90 days",
       "90 days",
       "120 days",
       "180 days",
-      "by contract",
+      "contract term",
     ],
     num: true,
   },
   {
-    label: "Add-on pack",
-    cells: ["—", "+$150·10", "+$150·10", "+$300·25", "+$500·50", "custom"],
+    label: "Projects",
+    cells: ["1", "1", "2", "5", "unlimited", "custom"],
     num: true,
   },
   {
-    label: "Add-on price per pitch",
+    label: "Top-up package",
+    cells: ["—", "+10 / $150", "+10 / $150", "+25 / $300", "+50 / $500", "custom"],
+    num: true,
+  },
+  {
+    label: "Effective price per submission",
     cells: ["—", "$15", "$15", "$12", "$10", "custom"],
     num: true,
   },
@@ -181,7 +187,7 @@ const COMPARE_ROWS = [
     cells: ["✓", "✓", "✓", "✓", "✓", "✓"],
   },
   {
-    label: "Evidence-linked reports",
+    label: "Evidence-linked rationale",
     cells: ["✓", "✓", "✓", "✓", "✓", "✓"],
   },
   {
@@ -197,140 +203,175 @@ const COMPARE_ROWS = [
     cells: ["✓", "✓", "✓", "✓", "✓", "✓"],
   },
   {
-    label: "CSV / PDF export",
+    label: "Self-upload page",
     cells: ["—", "✓", "✓", "✓", "✓", "✓"],
   },
   {
-    label: "Custom criteria weights",
-    cells: ["—", "—", "—", "—", "✓", "✓"],
+    label: "CSV export",
+    cells: ["—", "✓", "✓", "✓", "✓", "✓"],
   },
   {
-    label: "Event templates",
-    cells: ["—", "—", "—", "—", "✓", "✓"],
+    label: "PDF export",
+    cells: ["—", "—", "✓", "✓", "✓", "✓"],
   },
   {
-    label: "Export bundle",
-    cells: ["—", "—", "—", "—", "✓", "✓"],
+    label: "Remove watermark",
+    cells: ["—", "—", "✓", "✓", "✓", "✓"],
   },
   {
-    label: "Basic branding",
-    cells: ["—", "—", "—", "—", "✓", "✓"],
+    label: "Custom AI judges",
+    cells: ["—", "—", "—", "add-on", "limited", "✓"],
   },
   {
-    label: "SSO / SAML",
+    label: "BYO LLM",
+    cells: ["—", "—", "—", "—", "add-on", "✓"],
+  },
+  {
+    label: "White-label branding",
     cells: ["—", "—", "—", "—", "—", "✓"],
   },
   {
-    label: "Data residency / DPA",
+    label: "SLA + security review",
     cells: ["—", "—", "—", "—", "—", "✓"],
   },
   {
-    label: "API access",
-    cells: ["—", "—", "—", "—", "—", "✓"],
+    label: "Admin seats",
+    cells: ["1", "1", "2", "5", "10", "custom"],
+    num: true,
+  },
+  {
+    label: "Human judges",
+    cells: ["0", "2", "5", "10", "25", "custom"],
+    num: true,
   },
   {
     label: "Support",
     cells: [
-      "Community",
-      "Email",
-      "Email",
-      "Priority",
-      "Priority",
+      "—",
+      "—",
+      "Async setup",
+      "Setup call + priority",
+      "Setup call + priority",
       "Dedicated",
     ],
     num: true,
   },
 ];
 
-/* 4. EvalLense vs alternatives — feature presence, NO competitor prices.
-   Values are DRAFT (research v0.2) — verify before publish. */
-const VERSUS_COLS = ["YouNoodle", "Evalato", "PitchBob VC", "EvalLense"];
-
-const VERSUS_ROWS = [
+/* 4. Where EvalLense fits — UNNAMED category framing. NO competitor names. */
+const FIT_BLOCKS = [
   {
-    label: "AI deck evaluation as core",
-    cells: ["✗", "✗", "✓", "✓"],
+    tag: "Event-workflow platforms",
+    body: "Collect submissions, assign judges, publish results.",
+    gap: "No AI-first pitch evaluation; judging stays manual.",
+    us: false,
   },
   {
-    label: "6 independent judges (P1–P6)",
-    cells: ["✗", "✗", "partial", "✓"],
+    tag: "AI deck-analysts",
+    body: "Score and summarize one deck at a time.",
+    gap: "No event workflow, no judge panel, no leaderboard.",
+    us: false,
   },
   {
-    label: "Transparent rationale (no black box)",
-    cells: ["✗", "✗", "partial", "✓"],
-  },
-  {
-    label: "Evidence-linked scoring",
-    cells: ["✗", "✗", "partial", "✓"],
-  },
-  {
-    label: "Whole-event evaluation (not single deck)",
-    cells: ["✓", "✓", "✗", "✓"],
-  },
-  {
-    label: "Leaderboard / ranking",
-    cells: ["✓", "✓", "✗", "✓"],
-  },
-  {
-    label: "Human-in-the-loop final decision",
-    cells: ["manual", "manual", "✗", "✓"],
-  },
-  {
-    label: "Questions for the live jury",
-    cells: ["✗", "✗", "✗", "✓"],
+    tag: "EvalLense",
+    body: "Both, plus what neither has: six independent judges (P1–P6), transparent evidence-linked rationale, a leaderboard, and human-in-the-loop final scoring.",
+    gap: null,
+    us: true,
   },
 ];
 
-/* 5. Capabilities — horizontal scroll gallery, one card per product category. */
+/* 4b. Where EvalLense fits — UNNAMED comparison table. NO competitor names.
+ * Columns: workflow-platforms · deck-analysts · EvalLense (highlighted). */
+const FIT_TABLE_COLS = [
+  "Event-workflow platforms",
+  "AI deck-analysts",
+  "EvalLense",
+];
+
+const FIT_TABLE_ROWS: { label: string; cells: string[] }[] = [
+  {
+    label: "AI deck evaluation as core",
+    cells: ["✗", "✓", "✓"],
+  },
+  {
+    label: "Six independent judges (P1–P6)",
+    cells: ["✗", "partial", "✓"],
+  },
+  {
+    label: "Transparent rationale (no black box)",
+    cells: ["✗", "partial", "✓"],
+  },
+  {
+    label: "Evidence-linked scoring",
+    cells: ["✗", "partial", "✓"],
+  },
+  {
+    label: "Whole-event evaluation (not single deck)",
+    cells: ["✓", "✗", "✓"],
+  },
+  {
+    label: "Leaderboard / ranking",
+    cells: ["✓", "✗", "✓"],
+  },
+  {
+    label: "Human-in-the-loop final decision",
+    cells: ["manual", "✗", "✓"],
+  },
+  {
+    label: "Questions for the live jury",
+    cells: ["✗", "✗", "✓"],
+  },
+];
+
+/* 5. Capabilities — six product areas (brief §5). Bento tiles. */
 const CAPABILITIES = [
   {
     tag: "Intake",
     title: "Collect every deck",
-    body: "Deck upload (PDF / PPTX / Slides), self-upload links and batch intake.",
+    body: "Collect decks (PDF, PPT, PPTX, Google Slides) by hand or via a self-upload link.",
+    feature: true,
+    media: {
+      label: "Image · decks entering the lens · 16:9",
+      hint: "Decks (PDF / PPT / Slides) flowing into a calm lens perimeter via hand-upload and a self-upload link — lens-gradient violet→cyan→aqua, no security theatre.",
+      ariaLabel:
+        "Pitch decks in several formats entering EvalLense by hand or via a self-upload link",
+    },
   },
   {
     tag: "AI Evaluation",
     title: "Six independent judges",
-    body: "Six independent judges P1–P6, each with confidence and evidence links.",
+    body: "Six independent judges across P1–P6, each score with a confidence signal and evidence.",
   },
   {
     tag: "Reports",
     title: "Explainable reports",
-    body: "An explainable per-participant report — strengths, weaknesses and export.",
+    body: "An explainable report per participant: strengths, weaknesses, and the questions to ask live.",
   },
   {
     tag: "Review & Decision",
     title: "A human makes the call",
-    body: "Review Board, human final scoring and a leaderboard ranked by people.",
+    body: "A Review Board and a leaderboard ranked by your Final Score.",
   },
   {
     tag: "Security & Trust",
     title: "Safe and transparent",
-    body: "Prompt-injection safety, privacy and rationale — never a black box.",
+    body: "Prompt-injection safety, privacy, and no-black-box rationale — on every plan.",
   },
   {
     tag: "Admin",
     title: "Controls by plan",
-    body: "Custom weights, event templates, branding, SSO and API by plan.",
+    body: "Custom weights, reusable templates, branding, and SSO / API by plan.",
   },
 ];
 
-/* 6. FAQ — static Q/A blocks (NOT a JS accordion). */
+/* 6. FAQ — static Q/A blocks (NOT a JS accordion). Brief §6, 9 items. */
 const FAQ = [
   {
-    q: "What counts as a pitch?",
-    a: <>One evaluated deck or presentation.</>,
-  },
-  {
-    q: "How long does a plan stay active?",
-    a: <>90 / 120 / 180 days depending on plan; Enterprise by contract.</>,
-  },
-  {
-    q: "What if I run out of pitches?",
+    q: "What counts as a submission?",
     a: (
       <>
-        Add-on packs (from $150 for 10; cheaper per pitch on higher tiers), or
-        move up a tier.
+        One submitted pitch deck or application that receives one successfully
+        generated AI evaluation report.
       </>
     ),
   },
@@ -338,20 +379,51 @@ const FAQ = [
     q: "Is this a subscription?",
     a: (
       <>
-        No. You pay per event — a pack of pitches plus a validity window — not
-        monthly.
+        No. You pay per event — a package of submissions with a validity window,
+        not a monthly per-seat fee.
       </>
     ),
   },
   {
-    q: "Is there a paid pilot?",
-    a: <>Yes: Pilot, $500 / 40 pitches. Talk to Sales.</>,
-  },
-  {
-    q: "Are my decks secure?",
+    q: "What if I run out of submissions?",
     a: (
       <>
-        Yes, on every plan: prompt-injection safety and privacy.{" "}
+        Add more anytime with top-up packages (from $150 for 10, cheaper on
+        higher plans), or move up a plan.
+      </>
+    ),
+  },
+  {
+    q: "How long do submissions last?",
+    a: (
+      <>
+        Starter and Pilot, 90 days; Standard, 120 days; Pro, 180 days;
+        Enterprise, the contract term.
+      </>
+    ),
+  },
+  {
+    q: "What if a deck can't be processed?",
+    a: (
+      <>
+        It doesn&rsquo;t count as an evaluated submission. Disagreeing with the
+        AI output isn&rsquo;t a failed evaluation either.
+      </>
+    ),
+  },
+  {
+    q: "What if a team resubmits after the report?",
+    a: <>A new report counts as a new evaluation.</>,
+  },
+  {
+    q: "Is there a paid pilot?",
+    a: <>Yes — Pilot, $500 for 40 submissions. Talk to sales.</>,
+  },
+  {
+    q: "Is my data safe?",
+    a: (
+      <>
+        Yes, on every plan.{" "}
         <a href="/trust/security-privacy">Security &amp; Privacy</a>.
       </>
     ),
@@ -360,18 +432,17 @@ const FAQ = [
     q: "Who makes the final decision?",
     a: (
       <>
-        A human. AI prepares the analysis; final scoring stays with your jury.{" "}
-        <a href="/trust">Learn how</a>.
+        A person. AI prepares the analysis; you decide.{" "}
+        <a href="/trust/methodology">Methodology</a>.
       </>
     ),
   },
 ];
 
-/** ✓ → green, "—"/"✗" → muted, anything else (numeric / "partial" / words) →
- *  rendered as a mono cell. Keeps the JSX in the tables compact. */
+/** ✓ → green, "✗" / "—" → muted, anything else (numeric / words) → mono cell. */
 function cellClass(value: string) {
   if (value === "✓") return "pr-cell pr-cell--yes";
-  if (value === "—" || value === "✗") return "pr-cell pr-cell--no";
+  if (value === "✗" || value === "—") return "pr-cell pr-cell--no";
   return "pr-cell pr-cell--num";
 }
 
@@ -379,65 +450,30 @@ export default function PricingPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} />
-      <main className="pricing">
-        {/* 1. Hero — statement-hero, light. Visual slot via .media-ph. */}
-        <section className="band soft pr-hero">
-          <div className="wrap pr-hero__inner">
-            <span
-              className="eyebrow"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "0ms" }}
-            >
-              <span className="dot" aria-hidden="true"></span>
-              Pricing
-            </span>
-            <h1
-              className="pr-hero__title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              Pay <span className="grad-word">per event</span>, not per seat
-            </h1>
-            <p
-              className="sub pr-hero__sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              Each plan is a pack of evaluated pitches with a validity window.
-              The price covers transparent AI evaluation — not just intake.
-            </p>
-            <div
-              className="cta-row"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/company/contact">Start Free</Button>
-              <Button variant="ghost" href="/company/contact">
-                Book a Demo
-              </Button>
-            </div>
-            {/* hero visual slot — see prompt 1 in file header */}
-            <figure
-              className="media-ph pr-hero__media"
-              style={{ ["--ratio" as string]: "16/9" }}
-              data-reveal="scale"
-              role="img"
-              aria-label="An event filtered through a lens into a ranked result"
-            >
-              <span className="media-ph__label">
-                Image · an event filtered through a lens into a ranked result ·
-                16:9
-              </span>
-              <span className="media-ph__hint">
-                Pitches pass through a lens and emerge as a ranked leaderboard —
-                lens-gradient violet→cyan→aqua, calm; see prompt 1 in file
-                header
-              </span>
-            </figure>
-          </div>
-        </section>
+      <main className="pricing section-lab ds">
+        {/* 1. Hero — StatementHero (DS), soft. Lens accent on "per event". */}
+        <StatementHero
+          id="top"
+          surface="soft"
+          eyebrow="Pricing"
+          titleLead="Pay"
+          titleAccent="per event"
+          titleTrail=", not per seat"
+          sub="Every plan is a package of AI-evaluated submissions with a validity window. You pay for transparent AI evaluation — not just collecting decks. No credits, no tokens, no per-seat fees."
+          ctas={[
+            { label: "Start Free", href: "/company/contact" },
+            { label: "Book a Demo", href: "/company/contact", variant: "ghost" },
+          ]}
+          media={{
+            ratio: "16/9",
+            label: "Image · an event filtered through a lens into a ranked result · 16:9",
+            hint: "Pitches pass through a lens and emerge as a ranked leaderboard — lens-gradient violet→cyan→aqua over an Apple-neutral surface, calm; no security theatre, no shield icons.",
+            ariaLabel:
+              "An event filtered through a lens into a single ranked result",
+          }}
+        />
 
-        {/* 2. Plans — 4 headline pricing cards, light. Standard recommended. */}
+        {/* 2. Plans — 4 headline pricing cards (page-local), light. Standard recommended. */}
         <section id="plans" className="band pr-plans">
           <div className="wrap">
             <div className="head" data-reveal="up">
@@ -445,11 +481,10 @@ export default function PricingPage() {
                 <span className="dot" aria-hidden="true"></span>
                 Plans
               </span>
-              <h2 className="title">Four ways to run an event</h2>
+              <h2 className="title">Pick the plan that fits your event</h2>
               <p className="sub">
-                Every plan ships the full evaluation — all 6 AI judges, evidence
-                reports and human review. Plans differ by volume and admin
-                controls, never by trust.
+                Each plan includes AI evaluation reports for a fixed number of
+                participant submissions. Add more anytime with top-up packages.
               </p>
             </div>
             <ul className="pr-cards" data-reveal="up">
@@ -474,6 +509,7 @@ export default function PricingPage() {
                     <span className="pr-card__pitches">{plan.cadence}</span>
                     <span className="pr-card__validity">{plan.validity}</span>
                   </p>
+                  <p className="pr-card__msg">{plan.message}</p>
                   <ul className="pr-card__bullets">
                     {plan.bullets.map((b) => (
                       <li key={b} className="pr-card__bullet">
@@ -493,25 +529,24 @@ export default function PricingPage() {
               ))}
             </ul>
             <p className="pr-smaller" data-reveal="up">
-              Smaller event? Starter — $199 / 15 pitches · Pilot — $500 / 40
-              pitches. See the full comparison below.
+              Smaller event? Starter — $199 / 15 submissions · Pilot — $500 / 40
+              submissions. See the full comparison below.
             </p>
           </div>
         </section>
 
-        {/* 3. Full comparison — all 6 levels, table scrolls inside its wrapper. */}
+        {/* 3. Comparison matrix — all 6 levels (page-local), soft. Scrolls inside wrapper. */}
         <section id="compare" className="band soft pr-compare">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
-                Compare
+                Compare plans
               </span>
-              <h2 className="title">Every plan, side by side</h2>
+              <h2 className="title">What&rsquo;s included, plan by plan</h2>
               <p className="sub">
-                All six levels — Free, Starter, Pilot, Standard, Professional and
-                Enterprise. Evaluation, evidence and human review are on every
-                plan; only volume and admin controls move.
+                The full feature matrix across all six levels — including Starter
+                and Pilot. On mobile: horizontal scroll.
               </p>
             </div>
           </div>
@@ -537,9 +572,7 @@ export default function PricingPage() {
                         key={col}
                         scope="col"
                         className={
-                          col === "Standard"
-                            ? "pr-th pr-th--reco"
-                            : "pr-th"
+                          col === "Standard" ? "pr-th pr-th--reco" : "pr-th"
                         }
                       >
                         {col === "Standard" ? (
@@ -588,21 +621,30 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* 4. EvalLense vs alternatives — DARK statement band. No competitor
-            prices. Feature values are DRAFT (verify before publish). */}
-        <section className="band ink pr-versus">
+        {/* soft → ink transition before section 4. */}
+        <div
+          className="tr-masked-divider"
+          data-from="soft"
+          data-to="ink"
+          aria-hidden="true"
+        />
+
+        {/* 4. Where EvalLense fits — UNNAMED category framing (page-local), INK peak. */}
+        <section className="band ink pr-fit bg-ink-ambient-glow">
+          <div className="bg-ink-ambient-glow__layer" aria-hidden="true" />
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
-                Comparison
+                Where EvalLense fits
               </span>
-              <h2 className="title">
-                Workflow tools or AI analysts. EvalLense is both.
-              </h2>
+              <h2 className="title">Two half-solutions, or one that does both</h2>
               <p className="sub">
-                Each alternative covers part of the picture. EvalLense is the
-                only column that does all of it.
+                Most tools cover one side. Event-workflow platforms run the
+                competition but don&rsquo;t evaluate the pitches. AI deck-analysts
+                score a single deck but have no event, no panel, no leaderboard.
+                EvalLense does both — structured AI evaluation across a whole
+                competition, with the human deciding.
               </p>
             </div>
           </div>
@@ -612,25 +654,24 @@ export default function PricingPage() {
               data-reveal="up"
               tabIndex={0}
               role="region"
-              aria-label="EvalLense compared with alternatives — scroll horizontally on small screens"
+              aria-label="Where EvalLense fits — capabilities compared across two half-solution categories and EvalLense; scroll horizontally on small screens"
             >
-              <table className="pr-table pr-table--versus">
+              <table className="pr-table">
                 <caption className="pr-table__caption">
-                  EvalLense feature coverage versus alternative tools.
+                  Capabilities compared across two half-solution categories and
+                  EvalLense.
                 </caption>
                 <thead>
                   <tr>
                     <th scope="col" className="pr-th pr-th--row">
                       Capability
                     </th>
-                    {VERSUS_COLS.map((col) => (
+                    {FIT_TABLE_COLS.map((col) => (
                       <th
                         key={col}
                         scope="col"
                         className={
-                          col === "EvalLense"
-                            ? "pr-th pr-th--us"
-                            : "pr-th"
+                          col === "EvalLense" ? "pr-th pr-th--us" : "pr-th"
                         }
                       >
                         {col}
@@ -639,24 +680,24 @@ export default function PricingPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {VERSUS_ROWS.map((row) => (
+                  {FIT_TABLE_ROWS.map((row) => (
                     <tr key={row.label}>
                       <th scope="row" className="pr-td pr-td--row">
                         {row.label}
                       </th>
                       {row.cells.map((cell, i) => (
                         <td
-                          key={`${row.label}-${VERSUS_COLS[i]}`}
+                          key={`${row.label}-${FIT_TABLE_COLS[i]}`}
                           className={
-                            VERSUS_COLS[i] === "EvalLense"
+                            FIT_TABLE_COLS[i] === "EvalLense"
                               ? `${cellClass(cell)} pr-td--us`
                               : cellClass(cell)
                           }
                         >
                           {cell === "✓" ? (
-                            <span aria-label="Yes">✓</span>
+                            <span aria-label="Included">✓</span>
                           ) : cell === "✗" ? (
-                            <span aria-label="No">✗</span>
+                            <span aria-label="Not included">✗</span>
                           ) : (
                             cell
                           )}
@@ -667,60 +708,49 @@ export default function PricingPage() {
                 </tbody>
               </table>
             </div>
-          </div>
-          <div className="wrap pr-versus__statements">
-            <blockquote className="pr-statement" data-reveal="up">
-              They manage the competition. We help understand who should win and
-              why.
-            </blockquote>
-            <blockquote
-              className="pr-statement"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "120ms" }}
-            >
-              They review decks. We run structured evaluation across an entire
-              competition.
-            </blockquote>
-          </div>
-        </section>
-
-        {/* 5. Capabilities — horizontal scroll gallery, light. */}
-        <section className="band pr-caps">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                What&rsquo;s included
-              </span>
-              <h2 className="title">Built for structured evaluation</h2>
+            <div className="pr-fit__statements">
+              <p className="pr-statement" data-reveal="up">
+                They manage the competition. We help understand who should win
+                and why.
+              </p>
+              <p
+                className="pr-statement"
+                data-reveal="up"
+                style={{ ["--reveal-delay" as string]: "120ms" }}
+              >
+                They review decks. We run structured evaluation across an entire
+                competition.
+              </p>
             </div>
           </div>
-          <ul
-            className="pr-caps-lane"
-            data-reveal="up"
-            tabIndex={0}
-            aria-label="Capabilities by category — horizontally scrollable"
-          >
-            {CAPABILITIES.map((c) => (
-              <li key={c.tag} className="pr-cap">
-                <span className="pr-cap__signal" aria-hidden="true"></span>
-                <span className="mini-tag">{c.tag}</span>
-                <h3 className="pr-cap__h">{c.title}</h3>
-                <p className="pr-cap__p">{c.body}</p>
-              </li>
-            ))}
-          </ul>
         </section>
 
-        {/* 6. FAQ — static Q/A blocks (NOT a JS accordion), light. */}
+        {/* ink → light transition after section 4. */}
+        <div
+          className="tr-masked-divider"
+          data-from="ink"
+          data-to="light"
+          aria-hidden="true"
+        />
+
+        {/* 5. Capabilities — Bento (DS), light. Six product areas. */}
+        <Bento
+          surface="light"
+          eyebrow="Everything included"
+          title="What every plan can do"
+          sub="The same evaluation engine, across six product areas."
+          items={CAPABILITIES}
+        />
+
+        {/* 6. FAQ — static Q/A blocks (page-local, NOT a JS accordion), soft. */}
         <section id="faq" className="band soft pr-faq">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
-                FAQ
+                Pricing FAQ
               </span>
-              <h2 className="title">Pricing questions</h2>
+              <h2 className="title">Questions, answered</h2>
             </div>
             <dl className="pr-faq__grid" data-reveal="up">
               {FAQ.map((item) => (
@@ -733,32 +763,22 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* 7. Final CTA — quiet CTA, DARK. */}
-        <section className="band ink pr-cta">
-          <div className="wrap head">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              Get started
-            </span>
-            <h2
-              className="title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              Run structured evaluation on your own event
-            </h2>
-            <div
-              className="cta-row"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              <Button href="/company/contact">Book a Demo</Button>
-              <Button variant="ghost" href="/company/contact">
-                Start Free
-              </Button>
-            </div>
-          </div>
-        </section>
+        {/* soft → ink transition before the closing CTA. */}
+        <div
+          className="tr-gradient-bridge"
+          data-from="soft"
+          data-to="ink"
+          aria-hidden="true"
+        />
+
+        {/* 7. Final CTA — QuietCta (DS), ink. Single CTA (Start Free lives in hero). */}
+        <QuietCta
+          surface="ink"
+          eyebrow="Get started"
+          title="Run your next event on EvalLense"
+          sub="Start free on three submissions, or book a demo to see the whole workflow on your own decks."
+          cta={{ label: "Book a Demo", href: "/company/contact" }}
+        />
       </main>
       <Footer />
       <ScrollFX />
