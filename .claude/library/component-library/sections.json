@@ -210,37 +210,39 @@
     }
   ],
   "additional_sections": {
-    "note": "Sections that appear in the DS reference pages (/dev/ds-sections, /dev/ds-theme) but are NOT numbered archetypes 01-16. Recorded 2026-06-22.",
+    "note": "Correct, intentional sections used on the DS reference pages (/dev/ds-sections, /dev/ds-theme) that are NOT numbered archetypes 01-16. Recorded 2026-06-22. The two cinematic forms are both valid: a self-contained inline .ds-cinema and a prop-driven LabCinemaScrim — pick by need.",
     "items": [
       {
-        "name": "LabCinemaScrim", "label": "Cinematic scrim (knockout headline)",
+        "name": "ds-cinema", "label": "Cinematic section (self-contained, pinned)",
+        "source": "INLINE JSX on the page + .ds-cinema* CSS in components/ds/ds.css",
+        "export_name": null,
+        "surfaces": { "available": ["ink"], "note": "ink/black-scrim cinematic moment" },
+        "mechanics": "full-screen video -> SVG knockout heading descends + zoom x7->1 -> lens fill restores letters -> copy; 100% --pin driven by ScrollFX; mobile/reduced-motion = static",
+        "used_on": ["/dev/ds-sections", "/dev/ds-theme", "/dev/ds-theme-3"],
+        "classification": "intentional page-local cinematic section",
+        "consumption_readiness": { "status": "conditional", "reasons": ["self-contained inline pattern (CSS in ds.css), not a prop-driven export — copy the block + CSS, or use the LabCinemaScrim component for a prop-driven version"], "allowed_consumers": ["page-composer (page-local)", "build-pages (page-local)"] },
+        "note": "This is the cinematic section on /dev/ds-sections — correct as-is. Prop-driven sibling: LabCinemaScrim (below)."
+      },
+      {
+        "name": "LabCinemaScrim", "label": "Cinematic scrim (prop-driven)",
         "source_path": "sections/lab/LabCinemaScrim.tsx", "export_name": "LabCinemaScrim", "css": ".lab-cinema* (globals.css)",
         "surfaces": { "available": ["ink"], "note": "ink-only by nature (black scrim)" },
         "props": ["media:{videoSrc?|imageSrc,poster?}", "eyebrow?", "headline*", "sub?", "cta?"],
         "motion": { "pin": "data-pin/data-pin-stage via ScrollFX", "reduced_motion": "static black statement" },
         "role": "prop-driven generalization of the production /trust/methodology .m-cinema pre-footer cinematic CTA",
         "used_on": ["/dev/ds-theme-2", "/dev/visual-lab", "/dev/vivid-demo-2", "/dev/cinematic-demo"],
-        "consumption_readiness": { "status": "conditional", "reasons": ["real prop-driven component, but no formal browser_qa entry; not a numbered archetype"], "allowed_consumers": ["page-composer (with fallback)"] },
-        "note": "Recommended cinematic section. Duplicated by the inline .ds-cinema pattern — see conflicts.json CL-007."
-      },
-      {
-        "name": ".ds-cinema (inline)", "label": "Cinematic section — inline pattern",
-        "source_path": "INLINE JSX (no component)", "export_name": null, "css": ".ds-cinema* (components/ds/ds.css)",
-        "used_on": ["/dev/ds-sections", "/dev/ds-theme", "/dev/ds-theme-3"],
-        "classification": "intentional-page-local / duplication",
-        "duplicates": "LabCinemaScrim (same mechanics: full-screen video -> SVG knockout heading descends+zoom -> lens fill -> copy)",
-        "consumption_readiness": { "status": "unavailable", "reasons": ["inline JSX hand-duplicated across 3 dev pages; no export, no props"], "allowed_consumers": [], "restrictions": ["use LabCinemaScrim instead, or extract/dedup via component-forge"] },
-        "note": "This IS the cinematic section visible on /dev/ds-sections. Recorded honestly as inline; component equivalent = LabCinemaScrim. CL-007."
+        "consumption_readiness": { "status": "conditional", "reasons": ["real prop-driven component; no formal browser_qa entry; not a numbered archetype"], "allowed_consumers": ["page-composer (with fallback)"] },
+        "note": "Prop-driven cinematic option, sibling of the inline ds-cinema."
       },
       {
         "name": "LabFullStatement", "label": "Full-bleed statement (heading+sub variant)",
         "source_path": "sections/lab/LabFullStatement.tsx", "export_name": "LabFullStatement", "barrel_export": "FullStatement",
         "surfaces": { "available": ["light", "ink"], "default": "ink", "control": "surface prop" },
         "props": ["surface?", "eyebrow", "titleLead", "titleAccent", "titleTrail?", "sub"],
-        "relation": "SEPARATE heading+sub variant of archetype 02; NOT the cataloged archetype-02 LabStatement (versions[]). Barrel exports it as FullStatement.",
+        "relation": "Heading+sub variant of archetype 02, distinct from the cataloged archetype-02 LabStatement (versions[]). Barrel exports it as FullStatement; used on the reference pages.",
         "used_on": ["/dev/ds-sections", "/dev/ds-theme"],
-        "consumption_readiness": { "status": "conditional", "reasons": ["real prop-driven component used in reference pages; no formal browser_qa entry; duplicates archetype-02 intent"], "allowed_consumers": ["page-composer (with fallback)"] },
-        "note": "See barrel_extra above + conflicts.json (archetype-02 duplication)."
+        "consumption_readiness": { "status": "conditional", "reasons": ["real prop-driven component used on reference pages; no formal browser_qa entry"], "allowed_consumers": ["page-composer (with fallback)"] },
+        "note": "Clean barrel name: FullStatement."
       }
     ]
   },

@@ -65,8 +65,8 @@
     "conditional": 0,
     "draft": 0,
     "blocked": 0,
-    "registry_code_conflicts": 7,
-    "additional_sections": "3 non-archetype sections recorded in sections.json#additional_sections (LabCinemaScrim component, inline .ds-cinema pattern [dup, CL-007], LabFullStatement variant of archetype 02)",
+    "registry_code_conflicts": 6,
+    "additional_sections": "3 non-archetype sections recorded in sections.json#additional_sections (ds-cinema [self-contained inline cinematic], LabCinemaScrim [prop-driven cinematic sibling], LabFullStatement [archetype-02 heading+sub variant, barrel FullStatement]) — all valid/intentional",
     "dead_code": ["FinalUnicorn", "Trust", "Results"]
   },
   "visual_layer_forge": {

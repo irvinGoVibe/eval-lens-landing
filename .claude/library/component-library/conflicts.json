@@ -52,15 +52,6 @@
       "recommended_resolution": "closed; no component-forge gap remains",
       "status": "resolved",
       "source_of_truth": "code"
-    },
-    {
-      "id": "CL-007", "component": "cinematic section (two implementations)",
-      "documentation": "DS reference pages present one 'cinematic section'",
-      "code": "TWO parallel implementations: (a) LabCinemaScrim.tsx — real prop-driven component (.lab-cinema* in globals.css), used on ds-theme-2/visual-lab/vivid-demo-2/cinematic-demo; (b) inline .ds-cinema markup (.ds-cinema* in components/ds/ds.css) — hand-duplicated across /dev/ds-sections, /dev/ds-theme, /dev/ds-theme-3, no export/props",
-      "impact": "duplication; /dev/ds-sections (the reference page) uses the INLINE one, not the component; same cinematic mechanics maintained twice",
-      "recommended_resolution": "consumers use LabCinemaScrim; treat .ds-cinema as page-local dedup candidate -> component-forge (replace inline usages with LabCinemaScrim, or formally fork .ds-cinema). Recorded in sections.json#additional_sections.",
-      "status": "open",
-      "source_of_truth": "code"
     }
   ],
   "needs_recheck": [],
