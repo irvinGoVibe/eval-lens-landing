@@ -5710,7 +5710,10 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-bento__v--recomp .lab-bento__feature-col,
 .lab-bento__v--recomp .lab-bento__col{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(14px,2vw,22px);min-width:0;}
 .lab-bento__v--recomp .lab-bento__tile--feature{flex:1;}
-.lab-bento__v--recomp .lab-bento__tile--feature .head{margin:0 0 clamp(16px,2.4vw,26px);}
+/* the head lives INSIDE the (left-aligned) feature tile here, so left-align it to
+   match the media + supporting content — the base `.head` is centered for the
+   band-level v1/v3 heads, which left the eyebrow floating mid-card in v2. */
+.lab-bento__v--recomp .lab-bento__tile--feature .head{margin:0 0 clamp(16px,2.4vw,26px);max-width:none;text-align:left;}
 /* Pin heading type so it's identical on soft & ink (beats `.ink .title`); smaller — it sits inside the feature tile. */
 .lab-bento__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
 .lab-bento__v--recomp .lab-bento__tile--feature .sub{max-width:40ch;}
