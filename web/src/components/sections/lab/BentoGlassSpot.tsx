@@ -144,13 +144,14 @@ function attachSpot(grid: HTMLElement): () => void {
   // so it really FLOWS rather than jumping + popping. Must be called with the
   // spot already sitting at the dim travel opacity.
   const crossTo = (fromX: number, fromY: number, tcx: number, tcy: number, el: Element, r: DOMRect, g: DOMRect) => {
-    const spreadDelay = enterFraction(fromX, fromY, tcx, tcy, r, g) * CROSS_MS;
+    // stay compact a beat (pressed to the wall) before spreading toward centre
+    const spreadDelay = Math.max(enterFraction(fromX, fromY, tcx, tcy, r, g), 0.3) * CROSS_MS;
     spot.style.transition =
       `transform ${CROSS_MS}ms cubic-bezier(.55,0,.3,1),` +
       `width ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
       `height ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
       `border-radius ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
-      `opacity ${CROSS_MS}ms ease-in-out`;
+      `opacity ${CROSS_MS}ms ease-in`;
     shrink();
     centerOn(tcx, tcy);
     spot.style.opacity = `${BLOOM_OP}`; // brighter the closer it gets to the centre
@@ -201,17 +202,22 @@ function attachSpot(grid: HTMLElement): () => void {
       // dim + diffuse — the SAME muted weight as the feature's unselected blob
       spot.style.background = `radial-gradient(58% 58% at 46% 42%, rgba(${best.c}, 0.42), transparent 74%)`;
 
-      // born ON the blob — detaches from it at the blob's own weight (blends in,
-      // no pop), ready to flow out
+      // appear INSIDE the target tile, pressed to the wall nearest that blob —
+      // clamp the source blob onto the target's box → its near edge point
+      const inset = 14;
+      const ox = Math.min(Math.max(bcx, r.left - g.left + inset), r.right - g.left - inset);
+      const oy = Math.min(Math.max(bcy, r.top - g.top + inset), r.bottom - g.top - inset);
+
+      // born pressed to that wall, compact + dim (no pop)
       spot.style.transition = "none";
       shrink();
-      centerOn(bcx, bcy);
+      centerOn(ox, oy);
       spot.style.opacity = `${TRAVEL_OP}`;
       void spot.offsetWidth;
       spot.classList.add("is-on");
 
-      // one smooth flow blob → target, brightening as it settles in
-      crossTo(bcx, bcy, tcx, tcy, el, r, g);
+      // glide from the wall to the centre, brightening as it goes in
+      crossTo(ox, oy, tcx, tcy, el, r, g);
     } else {
       // already out (tile → tile): dim instantly, then flow on to the new target
       spot.style.transition = "none";
