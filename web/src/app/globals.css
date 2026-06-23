@@ -5597,18 +5597,18 @@ section.band.ink .mini-tag{color:var(--lavender);}
    recoloured 1:1 to this bento's blue/cyan just below — so the fill/sheen reads
    point-for-point identical to /dev/liquid-glass without changing the markup. */
 .lab-bento.ink .lab-bento__tile > .ds-glass__wash{
-  z-index:0; opacity:.2;
+  position:absolute; inset:0; z-index:0; opacity:.2;
   background:
     radial-gradient(ellipse at 28% 32%, rgba(224,238,255,.2) 0%, rgba(176,208,255,.06) 18%, transparent 43%),
     radial-gradient(ellipse at 70% 58%, rgba(112,168,255,.14) 0%, rgba(46,197,232,.08) 28%, transparent 54%),
     radial-gradient(ellipse at 45% 80%, rgba(64,158,226,.06) 0%, transparent 42%);
 }
 .lab-bento.ink .lab-bento__tile > .ds-glass__orbit{
-  z-index:0; opacity:.42;
+  position:absolute; inset:0; z-index:0; opacity:.42;
   background:radial-gradient(circle, rgba(208,230,255,.24) 0%, rgba(112,168,255,.12) 42%, transparent 70%);
 }
 .lab-bento.ink .lab-bento__tile > .ds-glass__glare{
-  z-index:1; opacity:.6; transition:opacity .4s ease;
+  position:absolute; inset:0; z-index:1; opacity:.6; transition:opacity .4s ease;
   background:linear-gradient(125deg, rgba(224,238,255,.13) 0%, rgba(198,220,255,.03) 26%, transparent 46%);
 }
 .lab-bento.ink .lab-bento__tile:not(.lab-bento__tile--feature):hover > .ds-glass__glare{opacity:.92;}
