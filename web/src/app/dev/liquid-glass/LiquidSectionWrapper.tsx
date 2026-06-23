@@ -17,6 +17,7 @@ export type GradientPreset =
   | "dark-cyan"
   | "dark-ink"
   | "dark-edge-glow"
+  | "dark-test-grid"
   | "cta-focus";
 
 export function LiquidSectionWrapper({

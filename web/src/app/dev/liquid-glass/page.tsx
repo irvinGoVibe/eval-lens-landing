@@ -86,7 +86,7 @@ export default function LiquidGlassPage() {
       </HeroPointer>
 
       {/* ── 02 · Bento overview (dark) ───────────────────────────────────── */}
-      <LiquidSectionWrapper gradient="dark-cyan" theme="dark">
+      <LiquidSectionWrapper gradient="dark-test-grid" theme="dark">
         <RichBento
           eyebrow="Bento overview"
           title="A compact map of"

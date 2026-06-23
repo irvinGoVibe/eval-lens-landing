@@ -114,6 +114,13 @@
   background: linear-gradient(155deg, #0c2231 0%, #081420 45%, #060d16 72%, #04080f 100%);
 }
 
+/* dark-test-grid — DEV probe: a high-contrast grid + vivid colour blobs so you
+   can see exactly how the glass tiles refract / blur / tint what's behind them.
+   Not a production preset. */
+.lgx-bg--dark-test-grid {
+  background: #0a0a12;
+}
+
 /* dark-ink — essentially black (a faint tonal lift up top so the glass keeps depth) */
 .lgx-bg--dark-ink {
   background:
@@ -258,6 +265,7 @@
 }
 
 .liquid-glass-page .lgx-rb__grid {
+  position: relative;
   width: min(1100px, 100% - 2 * clamp(20px, 5vw, 64px));
   margin-inline: auto;
   display: flex;
@@ -265,13 +273,48 @@
   gap: 16px;
   align-items: stretch;
 }
+
+/* the travelling spot — ONE colour patch that lives UNDER the glass. It sits
+   BEHIND the tiles (z below the cards), so each card's backdrop-filter frosts
+   it as it passes beneath. Two phases (TRAVEL compact → BLOOM to fill),
+   orchestrated from RichBento.tsx; centred via the trailing translate(-50%,-50%). */
+.liquid-glass-page .lgx-rb__spot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(60% 60% at 42% 40%, rgba(70, 140, 255, 0.7), transparent 72%),
+    radial-gradient(56% 56% at 64% 66%, rgba(46, 197, 232, 0.55), transparent 74%);
+  filter: blur(22px);
+  mix-blend-mode: screen;
+  transform: translate(0px, 0px) translate(-50%, -50%);
+  transition:
+    transform 0.82s cubic-bezier(0.55, 0, 0.3, 1),
+    width 0.62s cubic-bezier(0.33, 0.7, 0.3, 1),
+    height 0.62s cubic-bezier(0.33, 0.7, 0.3, 1),
+    border-radius 0.62s cubic-bezier(0.33, 0.7, 0.3, 1),
+    opacity 0.45s ease;
+  will-change: transform, width, height, opacity;
+}
+.liquid-glass-page .lgx-rb__spot.is-on,
+.liquid-glass-page .lgx-rb__spot.is-on.is-bloom {
+  opacity: 0.5;
+}
+@media (prefers-reduced-motion: reduce) {
+  .liquid-glass-page .lgx-rb__spot { display: none; }
+}
 .liquid-glass-page .lgx-rb__col {
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: clamp(280px, 32vw, 360px);
 }
-/* cells ARE the .ds-glass roots — let the inner content fill the tile height */
 .liquid-glass-page .lgx-rb__cell { display: flex; flex-direction: column; }
 .liquid-glass-page .lgx-rb__cell .ds-glass__content { flex: 1; display: flex; flex-direction: column; width: 100%; }
 .liquid-glass-page .lgx-rb__cell--feature { width: clamp(320px, 46vw, 560px); min-height: 360px; }
@@ -279,21 +322,44 @@
 .liquid-glass-page .lgx-rb__cell--mr { width: 100%; flex: 1; min-height: 150px; }
 .liquid-glass-page .lgx-rb__cell--b { width: 100%; min-height: 150px; }
 
-/* cooler + more transparent than the shared .ds-glass (scoped to bento tiles):
-   blue/cyan washes instead of lavender/aqua, lower-alpha pane. */
 .liquid-glass-page .lgx-rb__cell.ds-glass {
+  position: relative;
+  z-index: 1;
   background:
     linear-gradient(145deg, rgba(198, 220, 255, 0.06) 0%, rgba(176, 204, 240, 0.03) 50%, rgba(220, 236, 255, 0.014) 100%);
-  border-color: rgba(188, 212, 250, 0.15);
-  backdrop-filter: blur(18px) saturate(1.12);
+  border: 1px solid rgba(165, 195, 238, 0.12);
+  backdrop-filter: blur(12px) saturate(1.12);
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(220, 236, 255, 0.2),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+    inset 0 1px 0 rgba(214, 234, 255, 0.2),
+    inset 0 0 0 1px rgba(96, 165, 255, 0.04),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03),
+    0 24px 60px rgba(0, 0, 0, 0.3),
+    0 26px 56px -32px rgba(46, 150, 232, 0.3);
   transition:
     transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.45s,
     border-color 0.4s;
+}
+.liquid-glass-page .lgx-rb__cell.ds-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(220, 238, 255, 0.38) 0%,
+    rgba(170, 202, 246, 0.09) 36%,
+    rgba(118, 158, 224, 0.02) 66%,
+    rgba(150, 186, 240, 0.07) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 .liquid-glass-page .lgx-rb__cell .ds-glass__glare { transition: opacity 0.4s ease; }
 .liquid-glass-page .lgx-rb__cell .ds-glass__wash {
@@ -311,22 +377,16 @@
   background: linear-gradient(125deg, rgba(224, 238, 255, 0.13) 0%, rgba(198, 220, 255, 0.03) 26%, transparent 46%);
 }
 
-/* big (feature) tile — blue sheen + a light streak that runs across it, plus a
-   soft hover gradient (like the gallery card, but weaker). */
 .liquid-glass-page .lgx-rb__cell--feature.ds-glass {
-  /* faint thin-line texture (very, very subtle) under the blue sheen */
   background:
     repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 7px),
     linear-gradient(150deg, rgba(96, 150, 255, 0.12) 0%, rgba(46, 150, 232, 0.06) 50%, rgba(140, 190, 255, 0.03) 100%);
-  border-color: rgba(120, 165, 255, 0.26);
+  border-color: rgba(132, 172, 240, 0.13);
   transition:
     transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
     background 0.45s,
     border-color 0.4s;
 }
-/* running "ingredient" — soft blue/cyan blobs drifting behind the glass, the
-   same idea as the DS dark gallery's gallery-bubbles: blurred + edge-masked +
-   screen-blended, each radial wandering on its own background-position path. */
 .liquid-glass-page .lgx-rb__cell--feature::before {
   content: "";
   position: absolute;
@@ -345,6 +405,7 @@
           mask: radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
   mix-blend-mode: screen;
   opacity: 0.5;
+  transition: opacity 0.5s ease;
   animation: lgx-rb-drift 12s ease-in-out infinite;
 }
 @keyframes lgx-rb-drift {
@@ -353,7 +414,6 @@
   66%  { background-position: 22% 82%, 82% 18%, 12% 42%; }
   100% { background-position: 0% 0%, 100% 100%, 50% 0%; }
 }
-/* hover — like the gallery card but weaker: lift, drift surfaces, soft glow */
 .liquid-glass-page .lgx-rb__cell--feature:hover {
   transform: translateY(-3px);
   border-color: rgba(140, 180, 255, 0.4);
@@ -367,8 +427,6 @@
   .liquid-glass-page .lgx-rb__cell--feature::before { animation: none; }
 }
 
-/* other tiles — on hover they just glow whitish (no blue drift): a soft white
-   halo + brighter top hairline + the white optical sheen lifts. */
 .liquid-glass-page .lgx-rb__cell--mr:hover,
 .liquid-glass-page .lgx-rb__cell--b:hover {
   transform: translateY(-3px);
