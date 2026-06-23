@@ -78,24 +78,51 @@ function attachSpot(grid: HTMLElement): () => void {
   grid.insertBefore(spot, grid.firstChild);
 
   const TRAVEL = 168; // compact diameter while creeping under the glass
-  const CROSS_MS = 1600; // wall → centre — a slow, smooth glide
-  const BLOOM_MS = 850; // slow spread once inside the target tile
-  const TRAVEL_OP = 0.44; // the detached piece's weight while it flows (visible)
+  const BIRTH_SIZE = 300; // big soft mass it buds off the feature blob from
+  const CROSS_MS = 1600; // feature edge → centre — a slow, smooth glide
+  const TRAVEL_OP = 0.1; // very faint as it detaches — barely there in flight
   const BLOOM_OP = 0.62; // brighter as it settles into the target card
+  const BIRTH_BLUR = 120; // px — VERY soft, formless the whole way across; only
+  //                         sharpens as it reaches the tile (held until `enter`)
+  const LAND_BLUR = 26; // px — resting blur (matches the .lab-bento__spot base)
   const inset = 6; // spread fills (almost) the WHOLE tile, not a small patch
-  let bloomTimer = 0;
-  let originX = 0;
-  let originY = 0;
+  // Motion runs through the Web Animations API rather than CSS transitions:
+  // toggling `transition` + reflow to (re)start a travel proved unreliable here
+  // (the browser collapsed the 1.6s glide into an instant jump). element.animate()
+  // gives an explicit duration + keyframes that always run, and commitStyles()
+  // lets a new gesture pick up smoothly from the current frame.
+  // a gesture runs as a PAIR of animations — motion (transform/size/blur, eased so
+  // it oozes out and settles in) and opacity (linear, so its time checkpoints are
+  // exact). Tracked together so a new gesture can stop/commit both.
+  let anims: Animation[] = [];
+  let currentTile: Element | null = null; // the tile the spot is in / heading to
+  let fading = false; // true while the leave-fade is running
 
-  // drive the transition inline (per-segment transform duration; also dodges the
-  // globals.css hot-reload cache). Width/height/radius keep the slow bloom curve.
-  const applyTransition = (transformMs: number) => {
-    spot.style.transition =
-      `transform ${transformMs}ms cubic-bezier(.55,0,.3,1),` +
-      `width ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
-      `height ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
-      `border-radius ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
-      `opacity 500ms ease`;
+  const transformStr = (cx: number, cy: number) =>
+    `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+
+  // current rendered centre of the spot in grid coords — survives mid-flight, so
+  // a tile→tile hand-off can start exactly where the spot visually is.
+  const currentCenter = () => {
+    const sr = spot.getBoundingClientRect();
+    const gg = grid.getBoundingClientRect();
+    return { x: sr.left - gg.left + sr.width / 2, y: sr.top - gg.top + sr.height / 2 };
+  };
+
+  // stop the running animation pair; optionally freeze the current visual frame
+  // into inline styles first, so the next animation continues from where it is.
+  const stopAnim = (commit: boolean) => {
+    for (const a of anims) {
+      if (commit) {
+        try {
+          a.commitStyles();
+        } catch {
+          /* element detached — nothing to freeze */
+        }
+      }
+      a.cancel();
+    }
+    anims = [];
   };
 
   // the feature tile's drifting blobs (feature-local fractions + their hue):
@@ -138,53 +165,115 @@ function attachSpot(grid: HTMLElement): () => void {
     return Math.min(1, Math.max(0, Math.max(tx, ty)));
   };
 
-  // ONE smooth flow from (fromX,fromY) to the target tile's CENTRE over CROSS_MS.
-  // Opacity ramps from the dim travel weight up to the bright one across the whole
-  // glide (ease-in → stays dim most of the way, brightest as it nears the centre),
-  // so it really FLOWS rather than jumping + popping. Must be called with the
-  // spot already sitting at the dim travel opacity.
-  const crossTo = (fromX: number, fromY: number, tcx: number, tcy: number, el: Element, r: DOMRect, g: DOMRect) => {
-    // stay compact most of the glide (pressed to the wall) so the wall→centre
-    // flow really READS, then spread near the centre
-    const spreadDelay = Math.max(enterFraction(fromX, fromY, tcx, tcy, r, g), 0.6) * CROSS_MS;
-    spot.style.transition =
-      `transform ${CROSS_MS}ms cubic-bezier(.33,0,.2,1),` +
-      `width ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
-      `height ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
-      `border-radius ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
-      `opacity ${CROSS_MS}ms ease-in`;
-    shrink();
-    centerOn(tcx, tcy);
-    spot.style.opacity = `${BLOOM_OP}`; // brighter the closer it gets to the centre
-    // spread — begins as it crosses the border, growing from there (not the centre)
-    bloomTimer = window.setTimeout(() => {
+  // Glide from (fromX,fromY) to the target tile's CENTRE over CROSS_MS as a PAIR of
+  // animations:
+  //   • MOTION (transform/size/blur) — eased (ease-in-out): on `birth` it stays a
+  //     big soft mass merged with the feature blob, oozes out slowly while necking
+  //     into a droplet (so it DISSOLVES out of the parent blob, not a circle that
+  //     pops and flies in a straight line), then decelerates + spreads into the
+  //     tile. Blur is held very soft until the edge, then sharpens.
+  //   • OPACITY — linear, so its time checkpoints are exact (0 at 0ms, 0.2 at
+  //     500ms, bright on landing).
+  const glide = (
+    fromX: number,
+    fromY: number,
+    tcx: number,
+    tcy: number,
+    el: Element,
+    r: DOMRect,
+    birth: boolean,
+  ) => {
+    const enter = Math.max(
+      enterFraction(fromX, fromY, tcx, tcy, r, grid.getBoundingClientRect()),
+      0.6,
+    );
+    const fullW = Math.max(0, r.width - inset * 2);
+    const fullH = Math.max(0, r.height - inset * 2);
+    const radius = getComputedStyle(el).borderRadius;
+
+    // bloom is ON from the very start: it breathes + sways like the parent blob
+    // the whole way. The sway (translate) composes with the travel transform; the
+    // brightness/blur breathe shares `filter` with the motion's blur sweep, so it
+    // visibly takes over once the motion settles — but it's alive from birth.
+    spot.classList.add("is-bloom");
+    spot.style.animation =
+      "lab-bento-spot-pulse 2.8s ease-in-out infinite, lab-bento-spot-sway 9s ease-in-out infinite";
+
+    // ── motion (eased) ──
+    const motionKf = birth
+      ? [
+          // big soft mass fused with the blob → necks into the droplet AS it pulls
+          // away (the neck spans into the travel, so it looks like it peels off)
+          { offset: 0, transform: transformStr(fromX, fromY), width: `${BIRTH_SIZE}px`, height: `${BIRTH_SIZE}px`, borderRadius: "50%", filter: `blur(${BIRTH_BLUR}px)` },
+          { offset: 0.34, width: `${TRAVEL}px`, height: `${TRAVEL}px`, borderRadius: "50%", filter: `blur(${BIRTH_BLUR}px)` },
+          { offset: enter, width: `${TRAVEL}px`, height: `${TRAVEL}px`, borderRadius: "50%", filter: `blur(${BIRTH_BLUR}px)` },
+          { offset: 1, transform: transformStr(tcx, tcy), width: `${fullW}px`, height: `${fullH}px`, borderRadius: radius, filter: `blur(${LAND_BLUR}px)` },
+        ]
+      : [
+          { offset: 0, transform: transformStr(fromX, fromY), width: `${TRAVEL}px`, height: `${TRAVEL}px`, borderRadius: "50%", filter: `blur(${BIRTH_BLUR}px)` },
+          { offset: enter, width: `${TRAVEL}px`, height: `${TRAVEL}px`, borderRadius: "50%", filter: `blur(${BIRTH_BLUR}px)` },
+          { offset: 1, transform: transformStr(tcx, tcy), width: `${fullW}px`, height: `${fullH}px`, borderRadius: radius, filter: `blur(${LAND_BLUR}px)` },
+        ];
+    const motion = spot.animate(motionKf, {
+      duration: CROSS_MS,
+      easing: "cubic-bezier(.45,.05,.3,1)", // gentle ease-in-out: ooze out, settle in
+      fill: "forwards",
+    });
+
+    // ── opacity (linear → exact checkpoints) ──
+    const opacityKf = birth
+      ? [
+          { offset: 0, opacity: 0 },
+          { offset: 0.16, opacity: TRAVEL_OP },
+          { offset: 500 / CROSS_MS, opacity: 0.2 },
+          { offset: 1, opacity: BLOOM_OP },
+        ]
+      : [
+          { offset: 0, opacity: TRAVEL_OP },
+          { offset: 1, opacity: BLOOM_OP },
+        ];
+    const op = spot.animate(opacityKf, { duration: CROSS_MS, easing: "linear", fill: "forwards" });
+
+    anims = [motion, op];
+    motion.onfinish = () => {
+      if (anims[0] !== motion) return; // a newer gesture took over
+      for (const a of anims) {
+        try {
+          a.commitStyles();
+        } catch {
+          /* detached */
+        }
+        a.cancel();
+      }
+      anims = [];
       spot.classList.add("is-bloom");
-      spot.style.width = `${Math.max(0, r.width - inset * 2)}px`;
-      spot.style.height = `${Math.max(0, r.height - inset * 2)}px`;
-      spot.style.borderRadius = getComputedStyle(el).borderRadius;
-      // it has landed → start the gentle breathing pulse
-      spot.style.animation = "lab-bento-spot-pulse 2.8s ease-in-out infinite";
-    }, spreadDelay);
+      // landed → while the cursor stays, it breathes (brightness/blur) and sways
+      // (drift) in place, like the live blobs on the feature card. On leave it
+      // fades out (see fadeOut), it does not drift back.
+      spot.style.animation =
+        "lab-bento-spot-pulse 2.8s ease-in-out infinite, lab-bento-spot-sway 9s ease-in-out infinite";
+    };
   };
 
   const fitTo = (el: Element) => {
-    window.clearTimeout(bloomTimer);
-    spot.style.animation = ""; // no pulse while it's flowing
+    // already in / heading to this tile and not mid-fade → leave it be (so moving
+    // the cursor around inside the same tile doesn't restart the glide).
+    if (el === currentTile && !fading) return;
+    fading = false; // a fresh target cancels any leave-fade
+    currentTile = el;
+
     const g = grid.getBoundingClientRect();
     const r = el.getBoundingClientRect();
     const tcx = r.left - g.left + r.width / 2;
     const tcy = r.top - g.top + r.height / 2;
 
-    spot.classList.remove("is-bloom");
-
     if (!spot.classList.contains("is-on")) {
-      // Emerging from rest: the piece is BORN near the feature card's edge that
-      // faces the target (its nearest blob's shade), then FLOWS in one smooth
-      // glide across to the target tile, brightening toward its centre.
+      // Emerging from rest: the piece is BORN at the feature card's edge that
+      // faces the target (its nearest blob's shade), then glides across.
       const home = grid.querySelector(FEATURE);
       if (!home) return;
       const fr = home.getBoundingClientRect();
-      // nearest blob centre → colour + a starting point
+      // nearest blob centre → colour + the starting point
       let best = BLOBS[0];
       let bcx = 0;
       let bcy = 0;
@@ -202,76 +291,79 @@ function attachSpot(grid: HTMLElement): () => void {
       }
       // dim + diffuse — the SAME muted weight as the feature's unselected blob
       spot.style.background = `radial-gradient(58% 58% at 46% 42%, rgba(${best.c}, 0.42), transparent 74%)`;
-
-      // appear INSIDE the target tile, pressed to the wall nearest that blob —
-      // clamp the source blob onto the target's box → its near edge point
-      const inset = 14;
-      const ox = Math.min(Math.max(bcx, r.left - g.left + inset), r.right - g.left - inset);
-      const oy = Math.min(Math.max(bcy, r.top - g.top + inset), r.bottom - g.top - inset);
-
-      // born pressed to that wall, compact + dim (no pop)
-      spot.style.transition = "none";
-      shrink();
-      centerOn(ox, oy);
-      spot.style.opacity = `${TRAVEL_OP}`;
-      void spot.offsetWidth;
       spot.classList.add("is-on");
-
-      // glide from the wall to the centre, brightening as it goes in
-      crossTo(ox, oy, tcx, tcy, el, r, g);
+      // bud off the feature blob, then flow across to the target centre
+      glide(bcx, bcy, tcx, tcy, el, r, true);
     } else {
-      // already out (tile → tile): dim instantly, then flow on to the new target
-      spot.style.transition = "none";
-      spot.style.opacity = `${TRAVEL_OP}`;
-      void spot.offsetWidth;
-      crossTo(originX, originY, tcx, tcy, el, r, g);
+      // tile → tile: carry on from wherever the spot currently is, so it flows
+      // to the new target instead of restarting from the feature card.
+      const c = currentCenter();
+      stopAnim(false);
+      glide(c.x, c.y, tcx, tcy, el, r, false);
     }
-
-    originX = tcx;
-    originY = tcy;
   };
 
-  const park = () => {
-    window.clearTimeout(bloomTimer);
-    spot.style.animation = ""; // stop pulsing on the way home
-    spot.classList.remove("is-on", "is-bloom");
+  // reset the spot to its invisible resting place on the feature card — no
+  // transition, so the position snap is never seen. Used on mount and after a
+  // leave-fade, so the NEXT hover always emerges fresh from the feature edge.
+  const placeAtHome = () => {
     const home = grid.querySelector(FEATURE);
     if (!home) return;
     const g = grid.getBoundingClientRect();
     const r = home.getBoundingClientRect();
-    applyTransition(CROSS_MS);
+    spot.style.transition = "none"; // motion is WAAPI-only; no base CSS transition
+    spot.style.animation = "";
+    spot.style.translate = ""; // clear any leftover sway offset
+    spot.style.filter = ""; // back to the base blur
     spot.style.opacity = "0";
     shrink();
     centerOn(r.left - g.left + r.width / 2, r.top - g.top + r.height / 2);
+    currentTile = null;
   };
 
-  // park silently on mount — no transition, so it doesn't slide in from 0,0
-  const home0 = grid.querySelector(FEATURE);
-  if (home0) {
-    const g0 = grid.getBoundingClientRect();
-    const r0 = home0.getBoundingClientRect();
-    spot.style.transition = "none";
-    shrink();
-    centerOn(r0.left - g0.left + r0.width / 2, r0.top - g0.top + r0.height / 2);
-    void spot.offsetWidth;
-  }
+  // leave: just fade out IN PLACE (no drift back), then silently reset position
+  // so the next emerge starts fresh from the feature edge.
+  const fadeOut = () => {
+    if (fading || !spot.classList.contains("is-on")) return;
+    fading = true;
+    stopAnim(true); // freeze the current frame so the fade stays put
+    spot.style.animation = ""; // stop the pulse/sway
+    spot.classList.remove("is-bloom");
+    const fade = spot.animate([{ opacity: 0 }], {
+      duration: 520,
+      easing: "ease",
+      fill: "forwards",
+    });
+    anims = [fade];
+    fade.onfinish = () => {
+      if (anims[0] !== fade) return; // a new hover took over mid-fade
+      fade.cancel();
+      anims = [];
+      fading = false;
+      spot.classList.remove("is-on");
+      placeAtHome();
+    };
+  };
+
+  placeAtHome();
+  void spot.offsetWidth;
 
   const onOver = (e: PointerEvent) => {
     const target = e.target as Element | null;
     const small = target?.closest(SMALL);
+    // a supporting tile takes the spot there; anywhere else inside the grid
+    // (feature tile, gaps) fades it out in place.
     if (small && grid.contains(small)) fitTo(small);
-    else park();
+    else fadeOut();
   };
 
   grid.addEventListener("pointermove", onOver);
-  grid.addEventListener("pointerleave", park);
-  window.addEventListener("resize", park, { passive: true });
+  grid.addEventListener("pointerleave", fadeOut); // leaving the grid → fade out
 
   return () => {
-    window.clearTimeout(bloomTimer);
+    for (const a of anims) a.cancel();
     grid.removeEventListener("pointermove", onOver);
-    grid.removeEventListener("pointerleave", park);
-    window.removeEventListener("resize", park);
+    grid.removeEventListener("pointerleave", fadeOut);
     spot.remove();
   };
 }

@@ -5678,6 +5678,15 @@ section.band.ink .mini-tag{color:var(--lavender);}
   0%,100%{ filter:blur(26px) brightness(1); }
   50%    { filter:blur(23px) brightness(1.26); }
 }
+/* gentle drift once landed — uses the `translate` property so it COMPOSES with
+   the inline `transform` (tile centre) instead of replacing it, like the live
+   feature-card blobs swaying in place. Toggled inline alongside the pulse. */
+@keyframes lab-bento-spot-sway{
+  0%,100%{ translate:0 0; }
+  25%    { translate:9px -7px; }
+  50%    { translate:-7px 8px; }
+  75%    { translate:6px 6px; }
+}
 @media (prefers-reduced-motion:reduce){
   .lab-bento.ink .lab-bento__spot{display:none;}
 }
