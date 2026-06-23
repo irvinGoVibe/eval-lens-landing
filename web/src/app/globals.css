@@ -5597,18 +5597,18 @@ section.band.ink .mini-tag{color:var(--lavender);}
    recoloured 1:1 to this bento's blue/cyan just below — so the fill/sheen reads
    point-for-point identical to /dev/liquid-glass without changing the markup. */
 .lab-bento.ink .lab-bento__tile > .ds-glass__wash{
-  z-index:0; opacity:.2;
+  position:absolute; inset:0; z-index:0; opacity:.2;
   background:
     radial-gradient(ellipse at 28% 32%, rgba(224,238,255,.2) 0%, rgba(176,208,255,.06) 18%, transparent 43%),
     radial-gradient(ellipse at 70% 58%, rgba(112,168,255,.14) 0%, rgba(46,197,232,.08) 28%, transparent 54%),
     radial-gradient(ellipse at 45% 80%, rgba(64,158,226,.06) 0%, transparent 42%);
 }
 .lab-bento.ink .lab-bento__tile > .ds-glass__orbit{
-  z-index:0; opacity:.42;
+  position:absolute; inset:0; z-index:0; opacity:.42;
   background:radial-gradient(circle, rgba(208,230,255,.24) 0%, rgba(112,168,255,.12) 42%, transparent 70%);
 }
 .lab-bento.ink .lab-bento__tile > .ds-glass__glare{
-  z-index:1; opacity:.6; transition:opacity .4s ease;
+  position:absolute; inset:0; z-index:1; opacity:.6; transition:opacity .4s ease;
   background:linear-gradient(125deg, rgba(224,238,255,.13) 0%, rgba(198,220,255,.03) 26%, transparent 46%);
 }
 .lab-bento.ink .lab-bento__tile:not(.lab-bento__tile--feature):hover > .ds-glass__glare{opacity:.92;}
@@ -5678,6 +5678,15 @@ section.band.ink .mini-tag{color:var(--lavender);}
   0%,100%{ filter:blur(26px) brightness(1); }
   50%    { filter:blur(23px) brightness(1.26); }
 }
+/* gentle drift once landed — uses the `translate` property so it COMPOSES with
+   the inline `transform` (tile centre) instead of replacing it, like the live
+   feature-card blobs swaying in place. Toggled inline alongside the pulse. */
+@keyframes lab-bento-spot-sway{
+  0%,100%{ translate:0 0; }
+  25%    { translate:9px -7px; }
+  50%    { translate:-7px 8px; }
+  75%    { translate:6px 6px; }
+}
 @media (prefers-reduced-motion:reduce){
   .lab-bento.ink .lab-bento__spot{display:none;}
 }
@@ -5701,7 +5710,10 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-bento__v--recomp .lab-bento__feature-col,
 .lab-bento__v--recomp .lab-bento__col{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(14px,2vw,22px);min-width:0;}
 .lab-bento__v--recomp .lab-bento__tile--feature{flex:1;}
-.lab-bento__v--recomp .lab-bento__tile--feature .head{margin:0 0 clamp(16px,2.4vw,26px);}
+/* the head lives INSIDE the (left-aligned) feature tile here, so left-align it to
+   match the media + supporting content — the base `.head` is centered for the
+   band-level v1/v3 heads, which left the eyebrow floating mid-card in v2. */
+.lab-bento__v--recomp .lab-bento__tile--feature .head{margin:0 0 clamp(16px,2.4vw,26px);max-width:none;text-align:left;}
 /* Pin heading type so it's identical on soft & ink (beats `.ink .title`); smaller — it sits inside the feature tile. */
 .lab-bento__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
 .lab-bento__v--recomp .lab-bento__tile--feature .sub{max-width:40ch;}
