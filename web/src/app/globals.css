@@ -5568,16 +5568,22 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-bento__icon--tl{left:clamp(14px,2vw,22px);top:clamp(14px,2vw,22px);}
 .lab-bento__icon--tr{right:clamp(14px,2vw,22px);top:clamp(14px,2vw,22px);}
 
-/* ── light surface: recolour-only (no geometry change) ── */
-.lab-bento.soft .lab-bento__tile{background:var(--bg);border:1px solid var(--border);box-shadow:var(--shadow-soft);}
+/* ── light surface: recolour-only (no geometry change) ──
+   Covers BOTH light surfaces — `.soft` (lens-tinted) and `.light` (pure white).
+   The base `.lab-bento__tile` rules paint on-dark tokens (white h3/body) for the
+   ink default, so any light surface MUST recolour its tile text to the dark
+   tokens — otherwise the tile headings render white-on-white (invisible). The
+   DevInspector "Light" toggle applies `.light`, which previously had no recolour
+   rule and left the tile headings unreadable. */
+.lab-bento:is(.soft,.light) .lab-bento__tile{background:var(--bg);border:1px solid var(--border);box-shadow:var(--shadow-soft);}
 /* Light surface is uniform: the feature tile reads like every other soft tile
    (white --bg fill, neutral --border, soft shadow) — no violet --lens-soft
    tint, so its outline stays visible and its heading/body keep the standard
    light tokens. The lens-accented feature treatment lives ONLY on the ink
    surface (see .lab-bento__tile--feature above). */
-.lab-bento.soft .lab-bento__tile h3{color:var(--fg);}
-.lab-bento.soft .lab-bento__tile p{color:var(--muted);}
-.lab-bento.soft .lab-bento__tile .mini-tag{color:var(--violet);}
+.lab-bento:is(.soft,.light) .lab-bento__tile h3{color:var(--fg);}
+.lab-bento:is(.soft,.light) .lab-bento__tile p{color:var(--muted);}
+.lab-bento:is(.soft,.light) .lab-bento__tile .mini-tag{color:var(--violet);}
 
 /* ── hover (INK surface only) — ported from the liquid-glass RichBento cards:
    a gentle lift + a soft whitish glow + a brighter top hairline. The light
@@ -5686,6 +5692,18 @@ section.band.ink .mini-tag{color:var(--lavender);}
    that lives UNDER the glass: it peels off the feature tile's nearest blob,
    creeps compactly to the hovered tile, and spreads to fill it once it crosses
    the border. Sits BEHIND the tiles so each pane's backdrop-filter frosts it. ── */
+/* The injected enhancer DOM (travelling spot + the .ds-glass sheen layers below)
+   is an INK-only treatment. The DevInspector toggles Light by swapping the section
+   class WITHOUT remounting React, so these injected nodes linger in the DOM under
+   .soft — where their ink-scoped absolute positioning no longer applies, they fall
+   into the flex/grid flow and shove the tile text down (+ add a phantom grid row).
+   Hide them outright whenever the surface isn't ink: takes them out of flow AND
+   keeps the blue glass off the light tiles. (Real surface="light" pages never
+   mount the enhancer, so this only matters for the dev toggle.) */
+.lab-bento:not(.ink) .lab-bento__spot,
+.lab-bento:not(.ink) .lab-bento__tile > .ds-glass__wash,
+.lab-bento:not(.ink) .lab-bento__tile > .ds-glass__orbit,
+.lab-bento:not(.ink) .lab-bento__tile > .ds-glass__glare{display:none;}
 .lab-bento.ink .lab-bento__grid{position:relative;}
 .lab-bento.ink .lab-bento__spot{
   position:absolute;left:0;top:0;z-index:0;width:168px;height:168px;border-radius:50%;
