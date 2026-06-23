@@ -261,16 +261,23 @@ export default function EvidenceBasedReportsPage() {
           </div>
         </section>
 
-        {/* 2. Beyond the number — full-bleed statement (light · v2, per inspector). */}
-        <FullStatement
-          surface="light"
-          version={2}
-          ariaLabel="Beyond the number — a score you can defend"
-          eyebrow="Beyond the number"
-          titleLead="A score you can’t explain is a score you can’t"
-          titleAccent="defend"
-          sub="A single number tells you where a deck landed, not why. Your team can’t defend a shortlist with it, founders can’t learn from it, and no one can audit it later. EvalLense hands you the reasoning, not just the result."
-        />
+        {/* 2. Beyond the number — full-bleed statement (light · v2, per inspector).
+            Pinned cinematic heading: the statement enters from below, holds in the
+            focal area, then exits upward — driven by ScrollFX --pin cascading into
+            the heading. Copy/surface unchanged. */}
+        <div className="evr-cinepin" data-pin data-pin-steps="1">
+          <div className="evr-cinepin__stage" data-pin-stage>
+            <FullStatement
+              surface="light"
+              version={2}
+              ariaLabel="Beyond the number — a score you can defend"
+              eyebrow="Beyond the number"
+              titleLead="A score you can’t explain is a score you can’t"
+              titleAccent="defend"
+              sub="A single number tells you where a deck landed, not why. Your team can’t defend a shortlist with it, founders can’t learn from it, and no one can audit it later. EvalLense hands you the reasoning, not just the result."
+            />
+          </div>
+        </div>
 
         {/* 3. Anatomy — pinned multi-screen, exactly 3 layers. */}
         <PinnedSteps
@@ -291,7 +298,10 @@ export default function EvidenceBasedReportsPage() {
           }}
         />
 
-        {/* 4. Inside the AI Score Report — gallery + page-local "Also in the report". */}
+        {/* 4. Inside the AI Score Report — gallery + page-local "Also in the report".
+            evr-assemble wrapper: cards rise + assemble in a stagger as the lane
+            enters (ScrollFX is-in cascades to the cards). */}
+        <div className="evr-assemble" data-reveal>
         <Gallery
           id="score"
           surface="light"
@@ -307,25 +317,33 @@ export default function EvidenceBasedReportsPage() {
             href: "href" in c ? c.href : undefined,
           }))}
         />
+        </div>
 
-        {/* 5. Grounded — editorial split: 3 points + evidence visual. */}
-        <EditorialSplit
-          id="grounded"
-          surface="light"
-          ariaLabel="Grounded, not opaque"
-          eyebrow="Grounded, not opaque"
-          titleLead="Every finding links back to a"
-          titleAccent="slide"
-          sub="The report is built to be checked. Each score comes with what supports it and what lowers it, and every finding points to the slide it came from — so a claim reads as an observation, not an opinion."
-          points={GROUNDED.map((g) => ({ title: g.title, body: g.body }))}
-          media={{
-            ratio: "4/3",
-            label: "Image · slide ↔ finding · 4:3",
-            hint: "A slide quote (number · title) next to the supports/lowers it grounds, thin connector lines, calm",
-            ariaLabel:
-              "A slide quote with a slide reference next to the supports and lowers it grounds",
-          }}
-        />
+        {/* 5. Grounded — editorial split: 3 points + evidence visual.
+            Pinned cinematic assembly: the heading holds while the evidence frame
+            flies in from the side and the three points stagger up in sync —
+            driven by ScrollFX --pin. Copy/surface unchanged. */}
+        <div className="evr-cinepin evr-cinepin--split" data-pin data-pin-steps="1">
+          <div className="evr-cinepin__stage" data-pin-stage>
+            <EditorialSplit
+              id="grounded"
+              surface="light"
+              ariaLabel="Grounded, not opaque"
+              eyebrow="Grounded, not opaque"
+              titleLead="Every finding links back to a"
+              titleAccent="slide"
+              sub="The report is built to be checked. Each score comes with what supports it and what lowers it, and every finding points to the slide it came from — so a claim reads as an observation, not an opinion."
+              points={GROUNDED.map((g) => ({ title: g.title, body: g.body }))}
+              media={{
+                ratio: "4/3",
+                label: "Image · slide ↔ finding · 4:3",
+                hint: "A slide quote (number · title) next to the supports/lowers it grounds, thin connector lines, calm",
+                ariaLabel:
+                  "A slide quote with a slide reference next to the supports and lowers it grounds",
+              }}
+            />
+          </div>
+        </div>
 
         {/* 6. Deck completeness — bento tiles + page-local severity grid. */}
         <Bento
@@ -359,7 +377,28 @@ export default function EvidenceBasedReportsPage() {
           }))}
         />
 
-        {/* 7. From shortlist to founder feedback — second gallery (ink, per inspector). */}
+        {/* light → ink: localized through-background flip at the page's single
+            light→dark boundary. Reuses ScrollFX --pin (no new engine): two
+            stacked gradient layers crossfade as you scroll the zone, so the
+            light chapter transforms continuously into the dark chapter — no
+            seam, no flash. Collapses to a short static gradient bridge on
+            mobile / prefers-reduced-motion. aria-hidden: purely visual. */}
+        <section
+          className="evr-toneflip"
+          data-pin
+          data-pin-steps="1"
+          aria-hidden="true"
+        >
+          <div className="evr-toneflip__stage" data-pin-stage>
+            <div className="evr-toneflip__light" />
+            <div className="evr-toneflip__ink" />
+          </div>
+        </section>
+
+        {/* 7. From shortlist to founder feedback — second gallery (ink, per inspector).
+            evr-assemble--side: on the dark surface the cards fly in from the side,
+            alternating direction, as the lane enters. */}
+        <div className="evr-assemble evr-assemble--side" data-reveal>
         <Gallery
           id="uses"
           surface="ink"
@@ -370,6 +409,7 @@ export default function EvidenceBasedReportsPage() {
           laneLabel="Where the report is used — scroll horizontally"
           items={USES.map((u) => ({ tag: u.tag, title: u.title, body: u.body }))}
         />
+        </div>
 
         {/* 8. Final CTA — cinematic close. Self-contained .ds-cinema: full-screen
             video → knockout heading descends & zooms → lens fill → copy.

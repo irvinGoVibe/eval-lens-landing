@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
@@ -230,9 +231,9 @@ export default function ProductOverviewPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="product-overview">
-        {/* §1. Hero → LabStatementHero (ink, version 1). */}
+        {/* §1. Hero → LabStatementHero (soft / light, version 1). */}
         <LabStatementHero
-          surface="ink"
+          surface="soft"
           version={1}
           eyebrow="Product Overview"
           titleLead="The operating layer for structured pitch "
@@ -248,10 +249,10 @@ export default function ProductOverviewPage() {
           }}
         />
 
-        {/* §2. Organizer path → LabPinnedSteps (ink, 7 pinned steps). */}
+        {/* §2. Organizer path → LabPinnedSteps (soft / light, 7 pinned steps). */}
         <LabPinnedSteps
           id="path"
-          surface="ink"
+          surface="soft"
           ariaLabel="The organizer path — seven steps"
           eyebrow="How it works"
           title={{ line1: "The organizer path,", line2: "in seven steps" }}
@@ -266,9 +267,9 @@ export default function ProductOverviewPage() {
           }}
         />
 
-        {/* §3. Evaluation pipeline → LabNumbered (ink). PIPELINE.name → title. */}
+        {/* §3. Evaluation pipeline → LabNumbered (light → .band.soft). PIPELINE.name → title. */}
         <LabNumbered
-          surface="ink"
+          surface="light"
           eyebrow="Evaluation pipeline"
           title="Every deck runs the same five stages"
           sub="Each application passes a fixed pipeline. The numeric layer is deterministic — the same findings and weights produce the same AI Total Score, an advisory reference. Ranking is built from your score, not this one."
@@ -284,7 +285,7 @@ export default function ProductOverviewPage() {
             16/9 internally — so the feature media omits `ratio`. */}
         <LabBento
           id="modules"
-          surface="ink"
+          surface="light"
           eyebrow="Three modules"
           title="One product, three connected modules"
           sub="An Entry Hub for intake, Evidence-Based Reports for the analysis, and a Review Board where a person makes the call."
@@ -303,7 +304,15 @@ export default function ProductOverviewPage() {
           )}
         />
 
-        {/* §5. AI jury → LabGallery (light). JUDGES.code → tag. */}
+        {/* Transition §4 (Modules, soft) → §5 (Jury, ink) — masked dome divider. */}
+        <div
+          className="tr-masked-divider tr-masked-divider--dome"
+          data-from="soft"
+          data-to="ink"
+          aria-hidden="true"
+        />
+
+        {/* §5. AI jury → LabGallery (ink — ink peak №1). JUDGES.code → tag. */}
         <LabGallery
           surface="ink"
           eyebrow="AI jury"
@@ -317,17 +326,26 @@ export default function ProductOverviewPage() {
           }))}
         />
 
+        {/* Transition §5 (Jury, ink) → §6 (Why, light) — masked diagonal divider. */}
+        <div
+          className="tr-masked-divider tr-masked-divider--diagonal"
+          data-from="ink"
+          data-to="light"
+          aria-hidden="true"
+        />
+
         {/* §6. Why it matters — KEPT page-local on purpose (editorial pull-quote,
-            not a Lab component). Do not convert this to a Lab* block. */}
-        <section className="band ink po-why">
+            not a Lab component). Do not convert this to a Lab* block.
+            True-light surface (no .ink) — text falls back to dark --fg/--muted. */}
+        <section className="band po-why">
           <div className="wrap po-why__split">
-            <div className="po-why__copy" data-reveal="left">
-              <span className="eyebrow">
+            <div className="po-why__copy">
+              <span className="eyebrow" data-reveal="down">
                 <span className="dot" aria-hidden="true"></span>
                 Why it matters
               </span>
-              <h2 className="title">Less manual review, a clearer trail</h2>
-              <p className="sub">
+              <h2 className="title" data-reveal="down" style={{ "--reveal-delay": "70ms" } as CSSProperties}>Less manual review, a clearer trail</h2>
+              <p className="sub" data-reveal="down" style={{ "--reveal-delay": "140ms" } as CSSProperties}>
                 EvalLense cuts the hours spent reading decks by hand, holds every
                 evaluation to one standard, and leaves your team a decision trail
                 it can defend.
@@ -349,7 +367,7 @@ export default function ProductOverviewPage() {
             the feature tile renders without a media slot. */}
         <LabBento
           id="outputs"
-          surface="ink"
+          surface="light"
           eyebrow="What you get"
           title="Everything a run leaves behind"
           sub="After a batch runs, you're left with a structured set of outputs — not a folder of scattered files and threads."
