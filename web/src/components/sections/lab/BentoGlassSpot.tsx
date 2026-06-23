@@ -78,7 +78,7 @@ function attachSpot(grid: HTMLElement): () => void {
   grid.insertBefore(spot, grid.firstChild);
 
   const TRAVEL = 168; // compact diameter while creeping under the glass
-  const CROSS_MS = 1300; // blob → target card (the slow flow across)
+  const CROSS_MS = 1600; // wall → centre — a slow, smooth glide
   const BLOOM_MS = 850; // slow spread once inside the target tile
   const TRAVEL_OP = 0.44; // the detached piece's weight while it flows (visible)
   const BLOOM_OP = 0.62; // brighter as it settles into the target card
@@ -144,10 +144,11 @@ function attachSpot(grid: HTMLElement): () => void {
   // so it really FLOWS rather than jumping + popping. Must be called with the
   // spot already sitting at the dim travel opacity.
   const crossTo = (fromX: number, fromY: number, tcx: number, tcy: number, el: Element, r: DOMRect, g: DOMRect) => {
-    // stay compact a beat (pressed to the wall) before spreading toward centre
-    const spreadDelay = Math.max(enterFraction(fromX, fromY, tcx, tcy, r, g), 0.3) * CROSS_MS;
+    // stay compact most of the glide (pressed to the wall) so the wall→centre
+    // flow really READS, then spread near the centre
+    const spreadDelay = Math.max(enterFraction(fromX, fromY, tcx, tcy, r, g), 0.6) * CROSS_MS;
     spot.style.transition =
-      `transform ${CROSS_MS}ms cubic-bezier(.55,0,.3,1),` +
+      `transform ${CROSS_MS}ms cubic-bezier(.33,0,.2,1),` +
       `width ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
       `height ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
       `border-radius ${BLOOM_MS}ms cubic-bezier(.33,.7,.3,1),` +
