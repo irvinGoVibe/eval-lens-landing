@@ -1,0 +1,195 @@
+/* ============================================================================
+   dev/scroll-transitions — ISOLATED GSAP prototype. Scoped under `.tg`.
+   Do NOT import elsewhere; do NOT touch globals.css.
+
+   Tone-flip transition (light → dark), ONE heading:
+     - the heading (eyebrow + lens heading + subtitle) rides up into centre and
+       HOLDS there;
+     - the light gradient lifts off the top, the opposite dark gradient is
+       revealed beneath;
+     - the heading inverts (colour crossfade, timed to the dark arrival).
+
+   Colours derive ONLY from existing tokens.
+   ========================================================================== */
+
+.tg {
+  overflow-x: clip; /* full-bleed guard */
+  position: relative;
+  color: var(--fg);
+  /* run-in = the "White Aurora" light gradient (gradient-showcase) so it reads
+     continuous with the transition's light layer */
+  background:
+    radial-gradient(70% 50% at 28% 18%, rgba(169, 155, 255, 0.22) 0%, rgba(169, 155, 255, 0) 60%),
+    radial-gradient(60% 50% at 78% 28%, rgba(46, 197, 232, 0.13) 0%, rgba(46, 197, 232, 0) 60%),
+    radial-gradient(85% 60% at 50% 104%, rgba(255, 95, 162, 0.05) 0%, rgba(247, 248, 251, 0) 64%),
+    #f7f8fb;
+}
+
+/* ── light run-in ───────────────────────────────────────────────────────────*/
+.tg-pre {
+  position: relative;
+  min-height: 88vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: clamp(2rem, 6vh, 4rem);
+}
+.tg-cue {
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--fg) 45%, transparent);
+}
+
+/* ── transition section ─────────────────────────────────────────────────────
+   .tf is one viewport tall; ScrollTrigger pins it and adds the scroll length. */
+.tf {
+  position: relative;
+  height: 100vh;
+}
+.tf-pin {
+  position: relative;
+  height: 100vh;
+  overflow: clip;
+}
+
+/* full-viewport gradient layers — the flip is an OPACITY CROSSFADE (no moving
+   seam): the dark layer fades in OVER the light base, so white passes through a
+   blended grey into black. */
+.tf-bg {
+  position: absolute;
+  inset: 0;
+  will-change: opacity;
+}
+/* dark = "Deep Aurora" (gradient-showcase): aurora ribbon over deep navy-violet
+   sinking to black. The aurora motif mirrors the light layer so one dissolves
+   into the other. Sits ON TOP of the light base and crossfades in (opacity 0→1). */
+.tf-bg--dark {
+  z-index: 2;
+  opacity: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 6, 8, 0) 42%, rgba(6, 6, 8, 0.85) 100%),
+    radial-gradient(78% 44% at 30% 18%, rgba(123, 92, 246, 0.44) 0%, rgba(123, 92, 246, 0) 62%),
+    radial-gradient(72% 40% at 62% 24%, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0) 62%),
+    radial-gradient(54% 32% at 85% 14%, rgba(169, 155, 255, 0.26) 0%, rgba(169, 155, 255, 0) 60%),
+    linear-gradient(168deg, #121120 0%, #0b0b11 56%, #060608 100%);
+}
+/* light = "White Aurora" (gradient-showcase): the base the others dissolve over */
+.tf-bg--light {
+  z-index: 0;
+  background:
+    radial-gradient(70% 50% at 28% 18%, rgba(169, 155, 255, 0.22) 0%, rgba(169, 155, 255, 0) 60%),
+    radial-gradient(60% 50% at 78% 28%, rgba(46, 197, 232, 0.13) 0%, rgba(46, 197, 232, 0) 60%),
+    radial-gradient(85% 60% at 50% 104%, rgba(255, 95, 162, 0.05) 0%, rgba(247, 248, 251, 0) 64%),
+    #f7f8fb;
+}
+/* mid = a vivid aurora BLOOM (brand violet/cyan/lavender/blue, saturated) that
+   peaks halfway through the flip — so the crossfade passes through luminous
+   colour instead of a muddy grey. Opaque deep-violet base so it fully covers. */
+.tf-bg--mid {
+  z-index: 1;
+  opacity: 0;
+  background:
+    radial-gradient(62% 55% at 26% 30%, rgba(138, 99, 255, 0.7) 0%, rgba(138, 99, 255, 0) 60%),
+    radial-gradient(58% 50% at 76% 30%, rgba(46, 197, 232, 0.52) 0%, rgba(46, 197, 232, 0) 60%),
+    radial-gradient(70% 55% at 52% 92%, rgba(196, 132, 255, 0.42) 0%, rgba(196, 132, 255, 0) 66%),
+    radial-gradient(50% 40% at 84% 70%, rgba(120, 150, 255, 0.34) 0%, rgba(120, 150, 255, 0) 60%),
+    linear-gradient(158deg, #241a44 0%, #1b1638 52%, #120f28 100%);
+}
+
+/* ── the one heading — centred, holds, inverts ──────────────────────────────
+   color is set on the block; children derive their tone from currentColor so a
+   single GSAP colour tween inverts the whole heading at once. */
+.tf-content {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 clamp(1.25rem, 6vw, 5rem);
+  color: var(--fg);
+  will-change: transform, opacity;
+}
+
+/* lens accent — soft luminous halo behind the heading ("с ленсом") */
+.tf-lens {
+  position: absolute;
+  width: min(46rem, 80vw);
+  aspect-ratio: 1.6 / 1;
+  background: var(--lens-soft);
+  filter: blur(70px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.tf-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, currentColor 58%, transparent);
+  margin-bottom: 1.1rem;
+}
+.tf-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lens); /* lens dot — stays luminous on both tones */
+}
+
+.tf-h {
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  margin: 0;
+  color: currentColor;
+  text-wrap: balance;
+}
+/* lens accent — brand-gradient word; gradient-filled text stays luminous on
+   BOTH tones, so it persists through the black→white inversion of the rest. */
+.tf-accent {
+  background: var(--lens);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tf-sub {
+  font-size: clamp(1.05rem, 1.9vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.4;
+  margin: 1.2rem 0 0;
+  max-width: 34rem;
+  color: color-mix(in srgb, currentColor 76%, transparent);
+}
+
+/* ── dark run-out ───────────────────────────────────────────────────────────*/
+.tg-post {
+  position: relative;
+  min-height: 92vh;
+  /* run-out = the "Deep Aurora" dark gradient — continuous with the finish */
+  background:
+    linear-gradient(180deg, rgba(6, 6, 8, 0) 42%, rgba(6, 6, 8, 0.85) 100%),
+    radial-gradient(78% 44% at 30% 18%, rgba(123, 92, 246, 0.44) 0%, rgba(123, 92, 246, 0) 62%),
+    radial-gradient(72% 40% at 62% 24%, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0) 62%),
+    radial-gradient(54% 32% at 85% 14%, rgba(169, 155, 255, 0.26) 0%, rgba(169, 155, 255, 0) 60%),
+    linear-gradient(168deg, #121120 0%, #0b0b11 56%, #060608 100%);
+}
+
+/* ── reduced motion ─────────────────────────────────────────────────────────*/
+@media (prefers-reduced-motion: reduce) {
+  .tf-bg--dark {
+    opacity: 1;
+  }
+  .tf-content {
+    color: var(--fg-on-dark);
+  }
+}
