@@ -95,6 +95,7 @@ const BENTO_ITEMS = [
     title: "Background pattern language",
     body: "Soft lens grids, hairline structure and ambient media areas give dev pages enough context to judge sections.",
     feature: true,
+    icon: { src: "/assets/icons/unicorn.webp", alt: "", corner: "br" as const },
     media: {
       label: "Image · pattern system · 16:9",
       hint: "Layered lens grid, section masks and media frames on a dark surface.",
@@ -105,11 +106,13 @@ const BENTO_ITEMS = [
     tag: "Motion",
     title: "One scroll runtime",
     body: "Sections use data attributes and the shared ScrollFX loop.",
+    icon: { src: "/assets/icons/unicorn.webp", alt: "", corner: "br" as const },
   },
   {
     tag: "Media",
     title: "Visible placeholders",
     body: "Every future image or video slot is labeled and ratio-locked.",
+    icon: { src: "/assets/icons/unicorn.webp", alt: "", corner: "br" as const },
   },
   {
     tag: "QA",

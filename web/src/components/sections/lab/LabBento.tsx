@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
 import { LabEyebrow, MediaPlaceholder } from "./_kit";
 import { BentoGlassSpot } from "./BentoGlassSpot";
 
@@ -34,12 +35,33 @@ import { BentoGlassSpot } from "./BentoGlassSpot";
  * See [section-types#7-bento-overview](../../../../../wiki/architecture/section-types.md).
  */
 export type LabBentoMedia = { label: string; hint: string; ariaLabel: string };
+/**
+ * A decorative background image ATTACHED to a tile. Rendered only when present
+ * — there is no placeholder fallback (unlike the feature-tile `media`). It is
+ * positioned absolutely in a tile CORNER (default bottom-left) and painted
+ * BEHIND the text (low z-index), so the tag/heading/body always read on top of
+ * it — a watermark, not an in-flow glyph. Per-card `corner` lets it sit in a
+ * different spot on different tiles.
+ */
+export type LabBentoIcon = {
+  /** Asset path (e.g. a `/public` path or imported static asset). */
+  src: string;
+  /** Accessible label; empty (the default) marks the image decorative. */
+  alt?: string;
+  /** Which corner to anchor to. Default: `"bl"` (bottom-left). */
+  corner?: "bl" | "br" | "tl" | "tr";
+  /** Intrinsic asset size in px (for correct aspect ratio / no CLS). Default 145×256. */
+  width?: number;
+  height?: number;
+};
 export type LabBentoItem = {
   tag: string;
   title: string;
   body: string;
   feature?: boolean;
   media?: LabBentoMedia;
+  /** Optional icon/image attached to THIS tile. Rendered only when set; no placeholder. */
+  icon?: LabBentoIcon;
   /** Optional content rendered INSIDE this tile, below the body (e.g. a bare
    *  ChipGrid in the feature card). Default: nothing. */
   slot?: ReactNode;
@@ -94,9 +116,38 @@ function Title({ title, accent }: { title: string; accent?: string }) {
 }
 
 /**
- * A single bento tile — mini-tag, heading, body, and (for the feature tile) a
- * ratio-locked media placeholder. Geometry is shared across every version; the
- * per-version grid class scopes placement and the `--feature` modifier the look.
+ * The attached tile watermark — rendered ONLY when the item carries `icon` (no
+ * placeholder). Positioned absolutely in a corner (default bottom-left) and
+ * painted behind the text via CSS, so it reads as a background image and never
+ * covers the tag/heading/body. `next/image` runs `unoptimized` so any local
+ * format (incl. SVG) renders without optimizer config; the explicit
+ * width/height keep its aspect ratio CLS-free. Display size is set in CSS.
+ */
+function TileIcon({ icon, feature }: { icon: LabBentoIcon; feature?: boolean }) {
+  const corner = icon.corner ?? "bl";
+  return (
+    <span
+      className={`lab-bento__icon lab-bento__icon--${corner}${
+        feature ? " lab-bento__icon--feature" : ""
+      }`}
+      aria-hidden="true"
+    >
+      <Image
+        src={icon.src}
+        alt={icon.alt ?? ""}
+        width={icon.width ?? 145}
+        height={icon.height ?? 256}
+        unoptimized
+      />
+    </span>
+  );
+}
+
+/**
+ * A single bento tile — optional attached icon, mini-tag, heading, body, and
+ * (for the feature tile) a ratio-locked media placeholder. Geometry is shared
+ * across every version; the per-version grid class scopes placement and the
+ * `--feature` modifier the look.
  */
 function Tile({ item, delay }: { item: LabBentoItem; delay?: number }) {
   const cls = item.feature
@@ -112,6 +163,7 @@ function Tile({ item, delay }: { item: LabBentoItem; delay?: number }) {
           : undefined
       }
     >
+      {item.icon ? <TileIcon icon={item.icon} feature={item.feature} /> : null}
       <span className="mini-tag">{item.tag}</span>
       <h3>{item.title}</h3>
       <p>{item.body}</p>
@@ -184,6 +236,9 @@ export function LabBento({
                   className="lab-bento__tile lab-bento__tile--feature"
                   data-reveal="up"
                 >
+                  {feature.icon ? (
+                    <TileIcon icon={feature.icon} feature />
+                  ) : null}
                   <div className="head">
                     <LabEyebrow>{eyebrow}</LabEyebrow>
                     <Title title={title} accent="ingredients" />
@@ -240,6 +295,9 @@ export function LabBento({
                     : ({ "--reveal-delay": `${80 + (i - 1) * 70}ms` } as CSSProperties)
                 }
               >
+                {item.icon ? (
+                  <TileIcon icon={item.icon} feature={item.feature} />
+                ) : null}
                 <span className="mini-tag">{item.tag}</span>
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>

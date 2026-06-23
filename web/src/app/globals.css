@@ -5413,10 +5413,23 @@ section.band.ink .mini-tag{color:var(--lavender);}
   background-size:165% 165%,155% 155%,175% 175%;
   background-repeat:no-repeat;
   filter:blur(24px);
+  /* The 24px blur + perpetual animation make Blink composite this pseudo onto its
+     own layer; Chrome then clips that layer with a rect that ignores the card's
+     border-radius/overflow:hidden, so the coloured blur leaks out of the card on
+     hover and paints onto sibling cards down the lane. Relying on the parent to
+     clip the composited child (contain:paint / will-change) is GPU-dependent and
+     unreliable — so the pseudo clips ITSELF: clip-path crops the blurred result to
+     the card box in the layer's own space, which Blink always honours. Firefox/
+     Safari clip correctly regardless; this is a Blink-only compositing quirk. The
+     hover box-shadow halo is the card's own decoration (not a descendant), so it
+     still bleeds out as intended. */
+  -webkit-clip-path:inset(0 round var(--radius-card));
+          clip-path:inset(0 round var(--radius-card));
   /* soft-fade the layer toward all edges so the blurred bubbles never hard-clip
      at the card top/bottom/sides */
   -webkit-mask:radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
           mask:radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
   opacity:0;
   animation:gallery-bubbles 11s ease-in-out infinite;
   transition:opacity .55s var(--ease);
@@ -5534,6 +5547,26 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-bento__tile p{font-size:14px;line-height:1.55;color:var(--muted-on-dark);}
 .lab-bento__tile .mini-tag{position:static;top:auto;right:auto;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
 .lab-bento__media{margin-top:auto;}
+/* ── optional attached tile watermark (LabBentoItem.icon) — rendered ONLY when
+   an item carries an `icon`; there is no placeholder otherwise. It's anchored
+   absolutely in a tile corner (default bottom-left) and painted BEHIND the text
+   so it reads as a background image and never covers the tag/heading/body. The
+   tile clips it to its rounded box. ── */
+.lab-bento__tile{position:relative;overflow:hidden;isolation:isolate;}
+/* lift the real content above the watermark on the light surface (the ink tile
+   already lifts its children via `> *`); the icon is excluded from the lift. */
+.lab-bento.soft .lab-bento__tile > *:not(.lab-bento__icon){position:relative;z-index:1;}
+/* Surface-qualified so it beats the `.lab-bento.<surf> .lab-bento__tile > *`
+   rule that would otherwise force the icon back to position:relative;z-index:1. */
+.lab-bento.soft .lab-bento__tile > .lab-bento__icon,
+.lab-bento.ink .lab-bento__tile > .lab-bento__icon{position:absolute;z-index:0;}
+.lab-bento__icon{pointer-events:none;opacity:.9;}
+.lab-bento__icon img{display:block;width:auto;height:104px;object-fit:contain;}
+.lab-bento__icon--feature img{height:148px;}
+.lab-bento__icon--bl{left:clamp(14px,2vw,22px);bottom:clamp(14px,2vw,22px);}
+.lab-bento__icon--br{right:clamp(14px,2vw,22px);bottom:clamp(14px,2vw,22px);}
+.lab-bento__icon--tl{left:clamp(14px,2vw,22px);top:clamp(14px,2vw,22px);}
+.lab-bento__icon--tr{right:clamp(14px,2vw,22px);top:clamp(14px,2vw,22px);}
 
 /* ── light surface: recolour-only (no geometry change) ── */
 .lab-bento.soft .lab-bento__tile{background:var(--bg);border:1px solid var(--border);box-shadow:var(--shadow-soft);}
