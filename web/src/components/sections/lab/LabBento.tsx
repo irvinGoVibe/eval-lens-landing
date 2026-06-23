@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { LabEyebrow, MediaPlaceholder } from "./_kit";
+import { BentoGlassSpot } from "./BentoGlassSpot";
 
 /**
  * Section type 07 — Bento overview.
@@ -258,6 +259,9 @@ export function LabBento({
             ))}
           </ul>        </div>
       </div>
+
+      {/* ink (glass) bento → the under-glass travelling spot; inert elsewhere */}
+      {surface === "ink" ? <BentoGlassSpot /> : null}
     </section>
   );
 }

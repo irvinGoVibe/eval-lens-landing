@@ -5506,23 +5506,59 @@ section.band.ink .mini-tag{color:var(--lavender);}
    texture and a soft running blue drift (reuses the gallery-bubbles keyframe).
    Ink only — the light (soft) surface keeps its own look. ── */
 .lab-bento.ink .lab-bento__tile{
+  --scroll-progress:.5; /* feeds the injected .ds-glass__wash transform */
   position:relative;isolation:isolate;overflow:hidden;
   background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.03) 50%, rgba(220,236,255,.014) 100%);
-  border:1px solid rgba(188,212,250,.15);
-  backdrop-filter:blur(18px) saturate(1.12);
+  /* faint base rim; the directional gradient stroke (::after) gives the contrast */
+  border:1px solid rgba(165,195,238,.12);
+  backdrop-filter:blur(12px) saturate(1.12);
   box-shadow:
-    0 24px 60px rgba(0,0,0,.28),
-    inset 0 1px 0 rgba(220,236,255,.2),
-    inset 0 -1px 0 rgba(255,255,255,.04);
+    inset 0 1px 0 rgba(214,234,255,.2),
+    inset 0 0 0 1px rgba(96,165,255,.04),
+    inset 0 -1px 0 rgba(255,255,255,.03),
+    0 24px 60px rgba(0,0,0,.3),
+    0 26px 56px -32px rgba(46,150,232,.3);
 }
 .lab-bento.ink .lab-bento__tile > *{position:relative;z-index:1;}
+/* directional gradient rim — a 1px ring following the rounded corners, bright
+   top-left → faint bottom-right, so the outline reads as gradient glass. */
+.lab-bento.ink .lab-bento__tile::after{
+  content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,
+    rgba(220,238,255,.38) 0%,
+    rgba(170,202,246,.09) 36%,
+    rgba(118,158,224,.02) 66%,
+    rgba(150,186,240,.07) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
+/* the screen-blended sheen layers the RichBento .ds-glass tiles carry
+   (__wash/__orbit/__glare) are injected into each tile by <BentoGlassSpot/> and
+   recoloured 1:1 to this bento's blue/cyan just below — so the fill/sheen reads
+   point-for-point identical to /dev/liquid-glass without changing the markup. */
+.lab-bento.ink .lab-bento__tile > .ds-glass__wash{
+  z-index:0; opacity:.2;
+  background:
+    radial-gradient(ellipse at 28% 32%, rgba(224,238,255,.2) 0%, rgba(176,208,255,.06) 18%, transparent 43%),
+    radial-gradient(ellipse at 70% 58%, rgba(112,168,255,.14) 0%, rgba(46,197,232,.08) 28%, transparent 54%),
+    radial-gradient(ellipse at 45% 80%, rgba(64,158,226,.06) 0%, transparent 42%);
+}
+.lab-bento.ink .lab-bento__tile > .ds-glass__orbit{
+  z-index:0; opacity:.42;
+  background:radial-gradient(circle, rgba(208,230,255,.24) 0%, rgba(112,168,255,.12) 42%, transparent 70%);
+}
+.lab-bento.ink .lab-bento__tile > .ds-glass__glare{
+  z-index:1; opacity:.6; transition:opacity .4s ease;
+  background:linear-gradient(125deg, rgba(224,238,255,.13) 0%, rgba(198,220,255,.03) 26%, transparent 46%);
+}
+.lab-bento.ink .lab-bento__tile:not(.lab-bento__tile--feature):hover > .ds-glass__glare{opacity:.92;}
 
 /* feature tile — blue sheen + faint diagonal texture under the glass */
 .lab-bento.ink .lab-bento__tile--feature{
   background:
     repeating-linear-gradient(45deg, rgba(255,255,255,.018) 0 1px, transparent 1px 7px),
     linear-gradient(150deg, rgba(96,150,255,.12) 0%, rgba(46,150,232,.06) 50%, rgba(140,190,255,.03) 100%);
-  border-color:rgba(120,165,255,.26);
+  border-color:rgba(132,172,240,.13);
 }
 /* running blue "ingredient" — soft blobs drifting behind the glass */
 .lab-bento.ink .lab-bento__tile--feature::before{
@@ -5552,6 +5588,39 @@ section.band.ink .mini-tag{color:var(--lavender);}
     0 0 50px rgba(46,197,232,.1);
 }
 .lab-bento.ink .lab-bento__tile--feature:hover::before{opacity:.78;}
+
+/* ── travelling spot (injected by <BentoGlassSpot/>) — one muted colour patch
+   that lives UNDER the glass: it peels off the feature tile's nearest blob,
+   creeps compactly to the hovered tile, and spreads to fill it once it crosses
+   the border. Sits BEHIND the tiles so each pane's backdrop-filter frosts it. ── */
+.lab-bento.ink .lab-bento__grid{position:relative;}
+.lab-bento.ink .lab-bento__spot{
+  position:absolute;left:0;top:0;z-index:0;width:168px;height:168px;border-radius:50%;
+  pointer-events:none;opacity:0;
+  background:
+    radial-gradient(60% 60% at 42% 40%, rgba(70,140,255,.7), transparent 72%),
+    radial-gradient(56% 56% at 64% 66%, rgba(46,197,232,.55), transparent 74%);
+  filter:blur(26px);mix-blend-mode:screen;
+  transform:translate(0px,0px) translate(-50%,-50%);
+  transition:
+    transform 1.3s cubic-bezier(.55,0,.3,1),
+    width .85s cubic-bezier(.33,.7,.3,1),
+    height .85s cubic-bezier(.33,.7,.3,1),
+    border-radius .85s cubic-bezier(.33,.7,.3,1),
+    opacity .5s ease;
+  will-change:transform,width,height,opacity;
+}
+/* opacity is driven inline by <BentoGlassSpot/>: dim in flight, brighter once it
+   arrives + spreads. Once it lands it PULSES — a gentle brightness/blur breathe
+   (filter only, so it never fights the inline transform/opacity), like the live
+   blobs on the main card. The animation is toggled inline by the enhancer. */
+@keyframes lab-bento-spot-pulse{
+  0%,100%{ filter:blur(26px) brightness(1); }
+  50%    { filter:blur(23px) brightness(1.26); }
+}
+@media (prefers-reduced-motion:reduce){
+  .lab-bento.ink .lab-bento__spot{display:none;}
+}
 
 /* ── v1 — Polish: band head + 3-col grid, feature spans 2×2 ──────────────────
    Three supporting tiles stack in the right column; the feature tile is the
