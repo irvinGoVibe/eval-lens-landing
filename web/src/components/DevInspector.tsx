@@ -6,21 +6,25 @@ import { useEffect } from "react";
  * GLOBAL dev inspector — the section-lab `LabMarkers` affordance, generalized to
  * any production page when served from localhost.
  *
- * For every `Lab*` section on the page (matched by its `lab-*` archetype class,
- * NOT by `data-marker`, which real pages don't carry) it injects a small corner
- * "окошечко" that lets you flip, live and per-section:
+ * Everything lives in ONE dock pinned bottom-right. Its sections list holds a row
+ * per `Lab*`/`DS` section on the page (matched by archetype class, NOT by
+ * `data-marker`, which real pages don't carry); each row lets you flip, live and
+ * per-section:
  *   • **Вид (version)** — v1 / v2 / … — toggles `hidden` on the `[data-version]`
  *     payloads the component already renders into the DOM, and
  *   • **Цвет (surface)** — Light / Soft / Dark — swaps the `.band` surface class
  *     (`band` / `band soft` / `band ink`).
- * Clicking the name copies the component name (to bake the chosen props back into
- * the page). Each choice persists per route + section in localStorage.
+ * Hovering a row outlines its section on the page; clicking the name scrolls the
+ * section into view and copies its `<Component …/>` tag (to bake the chosen props
+ * back into the page). Each choice persists per route + section in localStorage.
  *
- * A second floating button — **⚙ dev: save** — snapshots the CURRENT surface +
- * visible version of EVERY section on the page (read from the live DOM) and copies
- * one paste-ready block (also `console.table` + localStorage). The browser can't
- * write source on a static site, so you bake the snapshot's values into the page
- * props by hand.
+ * The dock's bar carries the global controls:
+ *   • **save** — snapshots the CURRENT surface + visible version of EVERY section
+ *     (read from the live DOM) and copies one paste-ready block (also
+ *     `console.table` + localStorage). The browser can't write source on a static
+ *     site, so you bake the snapshot's values into the page props by hand.
+ *   • **hide** — collapses the whole dock to a single dim "⚙ dev" tray chip;
+ *     clicking the chip expands it again. State persists in localStorage.
  *
  * Imperative, ScrollFX-style: enhances the existing DOM and renders nothing.
  *
@@ -67,27 +71,42 @@ const archetypeToken = (section: HTMLElement) =>
 
 const STYLE_ID = "dev-inspector-style";
 const CSS = `
-.dev-inspector{position:absolute;z-index:90;display:flex;flex-direction:column;gap:6px;
-  padding:8px;border-radius:10px;font:500 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;
-  background:rgba(17,17,21,.82);color:#e9e9ee;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  box-shadow:0 6px 20px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);opacity:.32;transition:opacity .15s;
-  pointer-events:auto;user-select:none;max-width:240px;}
-.dev-inspector:hover{opacity:1;}
-.dev-inspector__name{all:unset;cursor:copy;font-weight:600;letter-spacing:.02em;color:#c9c4ff;padding:1px 2px;}
-.dev-inspector__name.is-copied{color:#7ee0a6;}
-.dev-inspector__row{display:flex;gap:6px;flex-wrap:wrap;}
+/* segmented controls (surface + version), reused inside the dock bar */
 .dev-inspector__seg{display:inline-flex;border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,.16);}
 .dev-inspector__seg button{all:unset;cursor:pointer;padding:3px 8px;font:inherit;color:#bdbdc7;}
 .dev-inspector__seg button + button{border-left:1px solid rgba(255,255,255,.12);}
 .dev-inspector__seg button.is-active{background:#6c5cff;color:#fff;}
 .dev-inspector__seg button:disabled{opacity:.4;cursor:default;}
-.dev-inspector__label{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#85858f;align-self:center;}
-.dev-inspector-fab{all:unset;position:fixed;bottom:14px;right:14px;z-index:2147483000;cursor:pointer;
-  padding:6px 12px;border-radius:999px;font:600 11px/1 ui-monospace,monospace;color:#e9e9ee;
-  background:rgba(17,17,21,.85);border:1px solid rgba(255,255,255,.14);box-shadow:0 4px 14px rgba(0,0,0,.4);}
-.dev-inspector-fab--save{bottom:50px;}
-.dev-inspector-fab--save.is-saved{color:#7ee0a6;border-color:rgba(126,224,166,.4);}
-.dev-inspector-hidden .dev-inspector{display:none;}
+
+/* one compact dock pinned bottom-right; shows controls for the CURRENT section
+   (the one under the viewport centre), updated live on scroll */
+.dev-dock{position:fixed;bottom:14px;right:14px;z-index:2147483000;display:flex;align-items:center;gap:7px;
+  padding:5px 5px 5px 10px;border-radius:999px;font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#e9e9ee;
+  background:rgba(17,17,21,.85);border:1px solid rgba(255,255,255,.14);box-shadow:0 4px 14px rgba(0,0,0,.4);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:opacity .15s,padding .15s;}
+/* current-section block: name + surface seg + version seg (empty when no section) */
+.dev-dock__cur{display:flex;align-items:center;gap:7px;}
+.dev-dock__cur:empty{display:none;}
+.dev-dock__name{all:unset;cursor:copy;font-weight:600;letter-spacing:.02em;color:#c9c4ff;white-space:nowrap;}
+.dev-dock__name.is-copied{color:#7ee0a6;}
+.dev-dock__sep{width:1px;height:18px;background:rgba(255,255,255,.14);}
+.dev-dock__brand{color:#85858f;font-size:9px;letter-spacing:.1em;text-transform:uppercase;}
+.dev-dock__btn{all:unset;cursor:pointer;padding:5px 11px;border-radius:999px;color:#e9e9ee;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);transition:background .12s,color .12s;}
+.dev-dock__btn:hover{background:rgba(255,255,255,.14);}
+.dev-dock__save.is-saved{color:#7ee0a6;border-color:rgba(126,224,166,.4);background:rgba(126,224,166,.08);}
+/* the tray chip (own styling — NOT a .dev-dock__btn, so it dodges the reset) */
+.dev-dock__chip{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;color:#e9e9ee;}
+.dev-dock .dev-dock__chip{display:none;}
+/* collapsed: shrink the whole dock to a single dim tray chip */
+.dev-dock.is-collapsed{padding:0;opacity:.45;}
+.dev-dock.is-collapsed:hover{opacity:1;}
+.dev-dock.is-collapsed .dev-dock__cur,
+.dev-dock.is-collapsed .dev-dock__sep,
+.dev-dock.is-collapsed .dev-dock__brand,
+.dev-dock.is-collapsed .dev-dock__save,
+.dev-dock.is-collapsed .dev-dock__hide{display:none;}
+.dev-dock.is-collapsed .dev-dock__chip{display:inline-flex;align-items:center;gap:5px;}
 `;
 
 type Surface = "light" | "soft" | "ink";
@@ -112,31 +131,36 @@ export function DevInspector() {
 
     const path = location.pathname;
     const cleanups: Array<() => void> = [];
-    // body-level panels recompute their document-coord position on resize /
-    // layout shifts (not on scroll — document coords are scroll-stable).
-    const repositions: Array<() => void> = [];
-    const repositionAll = () => {
-      for (const r of repositions) r();
-    };
 
-    // Idempotently enhance one section (no-op if already done). Returns a cleanup.
-    function enhance(section: HTMLElement) {
+    // A registry of every Lab*/DS section's metadata (NO per-section DOM). The
+    // dock renders controls for ONE section at a time — the one under the viewport
+    // centre — so we only need the data here; `renderCurrent` builds the live
+    // controls on demand and rebinds them as you scroll between sections.
+    type Entry = {
+      section: HTMLElement;
+      id: string;
+      meta: { label: string; component: string };
+      keySurface: string;
+      keyVersion: string;
+      versions: HTMLElement[];
+      versionIds: string[];
+    };
+    const registry: Entry[] = [];
+
+    // Register a section once (idempotent). Records its archetype, version
+    // payloads and persistence keys — but touches nothing in the DOM, so it can't
+    // perturb hydration.
+    function register(section: HTMLElement) {
       if (enhancedSections.has(section)) return;
-      // identify the archetype token (`lab-*` substrate or clean `ds-*`)
       const labClass = archetypeToken(section);
       if (!labClass) return;
       enhancedSections.add(section);
 
       const meta = ARCHETYPE[labClass] ?? { label: labClass, component: labClass };
-      // stable index = position among same-archetype sections in the DOM
       const idx = Array.from(
         document.querySelectorAll<HTMLElement>(`section.${labClass}`),
       ).indexOf(section);
       const id = `${labClass}-${idx < 0 ? 0 : idx}`;
-      const keySurface = `dev:${path}:${id}:surface`;
-      const keyVersion = `dev:${path}:${id}:version`;
-
-      // discover this section's own version payloads (not nested ones)
       const versions = Array.from(
         section.querySelectorAll<HTMLElement>("[data-version]"),
       ).filter((el) => el.closest(SECTION_SELECTOR) === section);
@@ -145,20 +169,167 @@ export function DevInspector() {
           ? [...new Set(versions.map((el) => el.dataset.version ?? "1"))].sort()
           : ["1"];
 
-      // The panel lives on <body> (NOT inside the section) so we never add a
-      // child / inline style to a React-owned node — that would diff against the
-      // SSR HTML and trip hydration on every Fast Refresh. It is positioned in
-      // DOCUMENT coordinates (rect + scroll), so it tracks the section on scroll
-      // for free and only needs recompute on resize / layout shifts.
-      const panel = document.createElement("div");
-      panel.className = "dev-inspector";
+      registry.push({
+        section,
+        id,
+        meta,
+        keySurface: `dev:${path}:${id}:surface`,
+        keyVersion: `dev:${path}:${id}:version`,
+        versions,
+        versionIds,
+      });
+      // keep the registry in document order so "nearest above/below" is meaningful
+      registry.sort((a, b) =>
+        a.section.compareDocumentPosition(b.section) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+          ? -1
+          : 1,
+      );
+    }
+
+    // Which section is the user looking at? The one whose box straddles the
+    // viewport centre; failing that (gaps between sections), the nearest one.
+    function pickActive(): Entry | null {
+      if (!registry.length) return null;
+      const cy = window.innerHeight / 2;
+      let best: Entry | null = null;
+      let bestDist = Infinity;
+      for (const e of registry) {
+        const r = e.section.getBoundingClientRect();
+        if (r.top <= cy && r.bottom >= cy) return e;
+        const dist = r.bottom < cy ? cy - r.bottom : r.top - cy;
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = e;
+        }
+      }
+      return best;
+    }
+
+    // Scan + register every not-yet-seen section, then refresh the current view.
+    // Idempotent — safe on mount and on every DOM mutation (route change, HMR).
+    const scan = () => {
+      document.querySelectorAll<HTMLElement>(SECTION_SELECTOR).forEach(register);
+      pickAndRender();
+    };
+
+    // ONE compact dock (created once), pinned bottom-right:
+    //   [ <current section name> · surface · version ] | dev · save · hide
+    // The current-section block is rebuilt by `renderCurrent` as you scroll; the
+    // bar buttons are static. "hide" collapses everything to a dim tray chip.
+    const dock = document.createElement("div");
+    dock.className = "dev-dock";
+
+    // current-section block — filled by renderCurrent(), empty when nothing active
+    const cur = document.createElement("div");
+    cur.className = "dev-dock__cur";
+
+    const sep = document.createElement("span");
+    sep.className = "dev-dock__sep";
+
+    const brand = document.createElement("span");
+    brand.className = "dev-dock__brand";
+    brand.textContent = "dev";
+
+    // Save: snapshot every section's CURRENT surface + visible version (read from
+    // the live DOM, so it reflects exactly what you toggled) → copy a paste-ready
+    // block + console.table, and stash it in localStorage. The browser can't write
+    // source on a static site, so you bake the values into the page props by hand.
+    const saveBtn = document.createElement("button");
+    saveBtn.type = "button";
+    saveBtn.className = "dev-dock__btn dev-dock__save";
+    saveBtn.textContent = "save";
+    let saveTimer: number | undefined;
+    saveBtn.addEventListener("click", () => {
+      const snap = buildSnapshot(path);
+      copyText(snap.text);
+      safeSet(`dev:${path}:snapshot`, snap.text);
+      // eslint-disable-next-line no-console
+      console.log(`%c[dev-inspector] snapshot copied (${snap.rows.length} sections)`, "color:#7ee0a6", `\n\n${snap.text}\n`);
+      // eslint-disable-next-line no-console
+      console.table?.(snap.rows);
+      saveBtn.classList.add("is-saved");
+      saveBtn.textContent = `✓ ${snap.rows.length}`;
+      window.clearTimeout(saveTimer);
+      saveTimer = window.setTimeout(() => {
+        saveBtn.classList.remove("is-saved");
+        saveBtn.textContent = "save";
+      }, 1500);
+    });
+
+    // hide/show: collapses the dock to a tray chip
+    let hidden = safeGet("dev:inspector:hidden") === "1";
+    const hideBtn = document.createElement("button");
+    hideBtn.type = "button";
+    hideBtn.className = "dev-dock__btn dev-dock__hide";
+    hideBtn.textContent = "hide";
+
+    // the collapsed tray — same element acts as the affordance to expand again
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "dev-dock__chip";
+    chip.textContent = "⚙ dev";
+
+    const syncDock = () => {
+      dock.classList.toggle("is-collapsed", hidden);
+    };
+    hideBtn.addEventListener("click", () => {
+      hidden = true;
+      safeSet("dev:inspector:hidden", "1");
+      syncDock();
+    });
+    chip.addEventListener("click", () => {
+      hidden = false;
+      safeSet("dev:inspector:hidden", "0");
+      syncDock();
+    });
+
+    dock.appendChild(cur);
+    dock.appendChild(sep);
+    dock.appendChild(brand);
+    dock.appendChild(saveBtn);
+    dock.appendChild(hideBtn);
+    dock.appendChild(chip);
+    document.body.appendChild(dock);
+    syncDock();
+    cleanups.push(() => {
+      window.clearTimeout(saveTimer);
+      window.clearTimeout(curResetTimer);
+      dock.remove();
+    });
+
+    // Build the live controls for the active section into `cur`, rebinding them to
+    // that section. Rebuilt only when the active section CHANGES (cheap; scroll
+    // ticks that stay on the same section are no-ops). All section mutations happen
+    // on an explicit click (post-hydration), never on render — so hydration is safe.
+    let activeId: string | null = null;
+    let curResetTimer: number | undefined;
+    function renderCurrent(entry: Entry | null) {
+      // toggle the "dev" brand (shown only when no section is active) vs the divider
+      brand.style.display = entry ? "none" : "";
+      sep.style.display = entry ? "" : "none";
+      if (!entry) {
+        cur.replaceChildren();
+        activeId = null;
+        return;
+      }
+      if (entry.id === activeId) return; // same section — nothing to rebuild
+      activeId = entry.id;
+      const { section, meta, versions, versionIds, keySurface, keyVersion } = entry;
+
+      const curSurf = (): Surface =>
+        section.classList.contains("ink")
+          ? "ink"
+          : section.classList.contains("soft")
+            ? "soft"
+            : "light";
 
       const name = document.createElement("button");
       name.type = "button";
-      name.className = "dev-inspector__name";
+      name.className = "dev-dock__name";
       name.tabIndex = -1;
       name.textContent = meta.label;
-      name.title = `Click to copy: ${meta.component}`;
+      name.title = `Copy: ${meta.component}`;
 
       // surface segmented control — Light / Soft / Dark
       const seg = document.createElement("div");
@@ -169,10 +340,14 @@ export function DevInspector() {
         b.type = "button";
         b.tabIndex = -1;
         b.textContent = surf === "light" ? "Light" : surf === "soft" ? "Soft" : "Dark";
-        b.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          applySurface(surf);
+        b.addEventListener("click", () => {
+          if (curSurf() !== surf) {
+            section.classList.remove("soft", "ink");
+            if (surf !== "light") section.classList.add(surf);
+          }
+          (Object.keys(surfBtns) as Surface[]).forEach((s) =>
+            surfBtns[s].classList.toggle("is-active", s === surf),
+          );
           safeSet(keySurface, surf);
         });
         surfBtns[surf] = b;
@@ -189,172 +364,50 @@ export function DevInspector() {
         b.tabIndex = -1;
         b.textContent = `v${vid}`;
         b.disabled = versionIds.length < 2;
-        b.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          applyVersion(vid);
+        b.addEventListener("click", () => {
+          for (const el of versions) el.hidden = (el.dataset.version ?? "1") !== vid;
+          for (const [v, vb] of Object.entries(verBtns))
+            vb.classList.toggle("is-active", v === vid);
           safeSet(keyVersion, vid);
         });
         verBtns[vid] = b;
         vseg.appendChild(b);
       });
 
-      function applySurface(surf: Surface) {
-        // Only touch the React-owned section's classList when the surface
-        // ACTUALLY changes (a user toggle, post-hydration). Re-applying the
-        // current surface on restore would reorder classes (band ink lab-hero ->
-        // band lab-hero ink) and trip hydration on the next Fast Refresh.
-        const cur: Surface = section.classList.contains("ink")
-          ? "ink"
-          : section.classList.contains("soft")
-            ? "soft"
-            : "light";
-        if (cur !== surf) {
-          section.classList.remove("soft", "ink");
-          if (surf !== "light") section.classList.add(surf);
-        }
-        (Object.keys(surfBtns) as Surface[]).forEach((s) =>
-          surfBtns[s].classList.toggle("is-active", s === surf),
-        );
-      }
-      function applyVersion(vid: string) {
-        for (const el of versions) el.hidden = (el.dataset.version ?? "1") !== vid;
-        for (const [v, b] of Object.entries(verBtns))
-          b.classList.toggle("is-active", v === vid);
-      }
-
-      let resetTimer: number | undefined;
-      const onCopy = (e: MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const curSurf = section.classList.contains("ink")
-          ? 'surface="ink"'
-          : section.classList.contains("soft")
-            ? 'surface="soft"'
-            : 'surface="light"';
+      // name click copies the paste-ready `<Component …/>` tag for this section
+      name.addEventListener("click", () => {
+        const s = curSurf();
         const visibleVer =
           versions.find((el) => !el.hidden)?.dataset.version ?? versionIds[0];
-        const curVer =
-          versionIds.length > 1
-            ? ` version={${visibleVer.replace(/\D/g, "")}}`
-            : "";
-        copyText(`<${meta.component} ${curSurf}${curVer} />`);
+        const verProp =
+          versionIds.length > 1 ? ` version={${visibleVer.replace(/\D/g, "")}}` : "";
+        copyText(`<${meta.component} surface="${s}"${verProp} />`);
         name.classList.add("is-copied");
-        const prev = name.textContent;
+        const prev = meta.label;
         name.textContent = "Copied ✓";
-        window.clearTimeout(resetTimer);
-        resetTimer = window.setTimeout(() => {
+        window.clearTimeout(curResetTimer);
+        curResetTimer = window.setTimeout(() => {
           name.classList.remove("is-copied");
           name.textContent = prev;
         }, 1200);
-      };
-      name.addEventListener("click", onCopy);
-
-      const row = document.createElement("div");
-      row.className = "dev-inspector__row";
-      row.appendChild(seg);
-      row.appendChild(vseg);
-      panel.appendChild(name);
-      panel.appendChild(row);
-      document.body.appendChild(panel);
-
-      // Position over the section's top-right in DOCUMENT coordinates. Document
-      // coords don't change on scroll, so this only needs recompute on resize /
-      // layout shifts — no scroll handler, no per-frame work.
-      const reposition = () => {
-        const r = section.getBoundingClientRect();
-        const top = r.top + window.scrollY + 8;
-        const left = r.right + window.scrollX - panel.offsetWidth - 8;
-        panel.style.top = `${Math.max(0, top)}px`;
-        panel.style.left = `${Math.max(0, left)}px`;
-      };
-      reposition();
-      repositions.push(reposition);
-
-      // Initialise control state FROM the SSR DOM — do NOT mutate the section on
-      // load. Restoring a persisted surface/version that differs from the server
-      // HTML mutates the React-owned node before React 19's (concurrent)
-      // hydration settles, which trips a className / `hidden` hydration mismatch.
-      // Persisted choices therefore apply only on an explicit click.
-      const curSurf: Surface = section.classList.contains("ink")
-        ? "ink"
-        : section.classList.contains("soft")
-          ? "soft"
-          : "light";
-      (Object.keys(surfBtns) as Surface[]).forEach((s) =>
-        surfBtns[s].classList.toggle("is-active", s === curSurf),
-      );
-      const curVer = versions.find((el) => !el.hidden)?.dataset.version ?? versionIds[0];
-      for (const [v, b] of Object.entries(verBtns))
-        b.classList.toggle("is-active", v === curVer);
-
-      cleanups.push(() => {
-        window.clearTimeout(resetTimer);
-        name.removeEventListener("click", onCopy);
-        panel.remove();
-        const i = repositions.indexOf(reposition);
-        if (i >= 0) repositions.splice(i, 1);
-        enhancedSections.delete(section);
       });
+
+      // reflect the section's CURRENT live state on the fresh controls
+      const s = curSurf();
+      (Object.keys(surfBtns) as Surface[]).forEach((k) =>
+        surfBtns[k].classList.toggle("is-active", k === s),
+      );
+      const vNow = versions.find((el) => !el.hidden)?.dataset.version ?? versionIds[0];
+      for (const [v, vb] of Object.entries(verBtns))
+        vb.classList.toggle("is-active", v === vNow);
+
+      cur.replaceChildren(name, seg, vseg);
     }
 
-    // Scan the page and enhance every not-yet-enhanced Lab* section. Idempotent,
-    // so it's safe to call on mount AND whenever the DOM mutates (route change,
-    // StrictMode remount, HMR) — panels appear once the sections exist.
-    const scan = () => {
-      document.querySelectorAll<HTMLElement>(SECTION_SELECTOR).forEach(enhance);
-      // sections may have shifted (new panels, late layout) — re-place existing ones
-      repositionAll();
-    };
-
-    // floating show/hide-all toggle (created once)
-    const fab = document.createElement("button");
-    fab.type = "button";
-    fab.className = "dev-inspector-fab";
-    let hidden = safeGet("dev:inspector:hidden") === "1";
-    const syncFab = () => {
-      document.documentElement.classList.toggle("dev-inspector-hidden", hidden);
-      fab.textContent = hidden ? "⚙ dev: show" : "⚙ dev: hide";
-    };
-    fab.addEventListener("click", () => {
-      hidden = !hidden;
-      safeSet("dev:inspector:hidden", hidden ? "1" : "0");
-      syncFab();
-    });
-    document.body.appendChild(fab);
-    syncFab();
-    cleanups.push(() => fab.remove());
-
-    // Save: snapshot every section's CURRENT surface + visible version (read from
-    // the live DOM, so it reflects exactly what you toggled) → copy a paste-ready
-    // block + console.table, and stash it in localStorage. The browser can't write
-    // source on a static site, so you bake the values into the page props by hand.
-    const saveFab = document.createElement("button");
-    saveFab.type = "button";
-    saveFab.className = "dev-inspector-fab dev-inspector-fab--save";
-    saveFab.textContent = "⚙ dev: save";
-    let saveTimer: number | undefined;
-    saveFab.addEventListener("click", () => {
-      const snap = buildSnapshot(path);
-      copyText(snap.text);
-      safeSet(`dev:${path}:snapshot`, snap.text);
-      // eslint-disable-next-line no-console
-      console.log(`%c[dev-inspector] snapshot copied (${snap.rows.length} sections)`, "color:#7ee0a6", `\n\n${snap.text}\n`);
-      // eslint-disable-next-line no-console
-      console.table?.(snap.rows);
-      saveFab.classList.add("is-saved");
-      saveFab.textContent = `✓ saved ${snap.rows.length}`;
-      window.clearTimeout(saveTimer);
-      saveTimer = window.setTimeout(() => {
-        saveFab.classList.remove("is-saved");
-        saveFab.textContent = "⚙ dev: save";
-      }, 1500);
-    });
-    document.body.appendChild(saveFab);
-    cleanups.push(() => {
-      window.clearTimeout(saveTimer);
-      saveFab.remove();
-    });
+    // pick the active section and render it (rebuild only on change)
+    function pickAndRender() {
+      renderCurrent(pickActive());
+    }
 
     // initial scan (after paint) + keep watching for new/replaced sections
     const raf = requestAnimationFrame(scan);
@@ -364,19 +417,27 @@ export function DevInspector() {
       debounce = window.setTimeout(scan, 120);
     });
     observer.observe(document.body, { childList: true, subtree: true });
-    // recompute panel positions on viewport resize (document coords shift)
-    let resizeDebounce: number | undefined;
-    const onResize = () => {
-      window.clearTimeout(resizeDebounce);
-      resizeDebounce = window.setTimeout(repositionAll, 80);
+
+    // follow the scroll: re-pick the active section (rAF-throttled). renderCurrent
+    // only rebuilds when the section actually changes, so ticks are near-free.
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        pickAndRender();
+      });
     };
-    window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+
     cleanups.push(() => {
       cancelAnimationFrame(raf);
       window.clearTimeout(debounce);
-      window.clearTimeout(resizeDebounce);
-      window.removeEventListener("resize", onResize);
       observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     });
 
     return () => {
