@@ -5568,22 +5568,99 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-bento__icon--tl{left:clamp(14px,2vw,22px);top:clamp(14px,2vw,22px);}
 .lab-bento__icon--tr{right:clamp(14px,2vw,22px);top:clamp(14px,2vw,22px);}
 
-/* ── light surface: recolour-only (no geometry change) ──
-   Covers BOTH light surfaces — `.soft` (lens-tinted) and `.light` (pure white).
-   The base `.lab-bento__tile` rules paint on-dark tokens (white h3/body) for the
-   ink default, so any light surface MUST recolour its tile text to the dark
-   tokens — otherwise the tile headings render white-on-white (invisible). The
-   DevInspector "Light" toggle applies `.light`, which previously had no recolour
-   rule and left the tile headings unreadable. */
-.lab-bento:is(.soft,.light) .lab-bento__tile{background:var(--bg);border:1px solid var(--border);box-shadow:var(--shadow-soft);}
-/* Light surface is uniform: the feature tile reads like every other soft tile
-   (white --bg fill, neutral --border, soft shadow) — no violet --lens-soft
-   tint, so its outline stays visible and its heading/body keep the standard
-   light tokens. The lens-accented feature treatment lives ONLY on the ink
-   surface (see .lab-bento__tile--feature above). */
+/* ── light surface: neutral frosted glass (glassmorphism) ──
+   The light tiles are NEUTRAL frosted panes: a faint milky-white veil over a
+   `backdrop-filter` blur, a soft white bevel and a white-highlight rim. NO colour
+   tint of their own — the colour is meant to come from a vivid blurred background
+   placed BEHIND the section (like a glassmorphism card over gradient blobs); the
+   blur then refracts that backdrop through the pane. Covers BOTH light surfaces,
+   `.soft` and `.light`. Lightning-CSS notes: `backdrop-filter` UNPREFIXED only and
+   `saturate` UNITLESS, else Next 16 drops the property (breaks Firefox); colour
+   stops in rgb (raw oklab() stops are silently dropped). Text stays on the dark
+   light-tokens (h3/body/tag below) so it reads on the pale glass. */
+.lab-bento:is(.soft,.light) .lab-bento__tile{
+  --scroll-progress:.5;
+  position:relative;isolation:isolate;overflow:hidden;
+  background:linear-gradient(135deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.08) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(18px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    inset 0 0 0 1px rgba(255,255,255,.22),
+    0 1px 2px rgba(40,30,90,.04),
+    0 22px 50px -24px rgba(70,50,150,.22);
+}
+.lab-bento:is(.soft,.light) .lab-bento__tile > *{position:relative;z-index:1;}
+/* white-highlight rim — a 1px ring following the rounded corners, bright
+   top-left → faint bottom-right, so the edge reads as a glass bevel. */
+.lab-bento:is(.soft,.light) .lab-bento__tile::after{
+  content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.85) 0%,
+    rgba(255,255,255,.3) 42%,
+    rgba(255,255,255,.08) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
+/* feature tile — a touch milkier so it leads the field. */
+.lab-bento:is(.soft,.light) .lab-bento__tile--feature{
+  background:linear-gradient(135deg, rgba(255,255,255,.26) 0%, rgba(255,255,255,.12) 100%);
+  border-color:rgba(255,255,255,.6);
+}
+/* gentle lift + brighter bevel on hover. */
+.lab-bento:is(.soft,.light) .lab-bento__tile{
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), border-color .4s var(--ease);
+}
+.lab-bento:is(.soft,.light) .lab-bento__tile:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 0 0 1px rgba(255,255,255,.3),
+    0 28px 60px -24px rgba(70,50,150,.26),
+    0 0 44px rgba(255,255,255,.4);
+}
 .lab-bento:is(.soft,.light) .lab-bento__tile h3{color:var(--fg);}
 .lab-bento:is(.soft,.light) .lab-bento__tile p{color:var(--muted);}
 .lab-bento:is(.soft,.light) .lab-bento__tile .mini-tag{color:var(--violet);}
+
+/* ── glassmorphism backdrop — a vivid gradient-blob FIELD filling the whole light
+   bento section, so the frosted tiles refract colour through their `backdrop-filter`
+   (the reference look: clear cards over colourful blobs). The blobs DRIFT: two
+   pseudo layers carry split blob sets and slowly translate/rotate/scale in opposite
+   directions (transform-only, so it composites on the GPU and never reflows). The
+   layers are oversized + `overflow:clip` on the section so the moving edges never
+   reveal the base. Palette stays on-brand: violet / lavender / cyan / blue + a soft
+   pink lift, no green. Content is lifted above both layers. Covers `.soft`/`.light`;
+   reduced-motion freezes the drift. */
+.lab-bento:is(.soft,.light){
+  position:relative;
+  overflow:clip;
+  background:var(--bg-soft);
+}
+/* The blob field rides ONE drifting layer on `::after` — `::before` is already
+   the page's faint grid pattern, so we leave it alone. The layer is oversized and
+   slowly translates/rotates/scales (transform-only → composited, no reflow); the
+   section's `overflow:clip` hides the moving edges. */
+.lab-bento:is(.soft,.light)::after{
+  content:'';position:absolute;inset:-28%;z-index:0;pointer-events:none;
+  transform-origin:center;will-change:transform;
+  background:
+    radial-gradient(34% 46% at 18% 32%, rgba(108,76,241,.55), transparent 72%),
+    radial-gradient(30% 40% at 84% 18%, rgba(46,197,232,.5), transparent 72%),
+    radial-gradient(42% 52% at 72% 82%, rgba(169,155,255,.5), transparent 72%),
+    radial-gradient(26% 38% at 24% 88%, rgba(240,150,210,.44), transparent 72%),
+    radial-gradient(30% 42% at 96% 66%, rgba(70,140,255,.48), transparent 72%);
+  animation:bento-soft-drift 30s ease-in-out infinite;
+}
+@keyframes bento-soft-drift{
+  0%,100%{transform:translate(0,0) rotate(0deg) scale(1.08);}
+  33%    {transform:translate(3%,-2.5%) rotate(6deg) scale(1.16);}
+  66%    {transform:translate(-3%,2.5%) rotate(-5deg) scale(1.1);}
+}
+@media (prefers-reduced-motion:reduce){
+  .lab-bento:is(.soft,.light)::after{animation:none;}
+}
+.lab-bento:is(.soft,.light) > *{position:relative;z-index:1;}
 
 /* ── hover (INK surface only) — ported from the liquid-glass RichBento cards:
    a gentle lift + a soft whitish glow + a brighter top hairline. The light
@@ -9197,29 +9274,24 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
     radial-gradient(52% 48% at 12% 96%, color-mix(in oklab,var(--lavender) 7%, transparent) 0%, transparent 72%);
 }
 
-/* (b) per-section atmosphere on light surfaces — connective gradient tissue. */
-.ds .lab-hero:not(.ink),
-.ds .lab-bento:not(.ink){ position:relative; isolation:isolate; }
-.ds .lab-hero:not(.ink) > *,
-.ds .lab-bento:not(.ink) > *{ position:relative; z-index:1; }
+/* (b) per-section atmosphere on light surfaces — connective gradient tissue.
+   NOTE: the light BENTO no longer participates here — it now owns the canonical
+   frosted-glass treatment (transparent tiles over a drifting blob field) defined
+   globally at `.lab-bento:is(.soft,.light)` (search "glassmorphism backdrop"),
+   which must apply identically on `.ds` pages and outside them. So the old
+   `.ds`-scoped bento card/grid overrides were removed; only lab-hero keeps its
+   atmosphere here, and lab-gallery keeps its own glass below. */
+.ds .lab-hero:not(.ink){ position:relative; isolation:isolate; }
+.ds .lab-hero:not(.ink) > *{ position:relative; z-index:1; }
 .ds .lab-hero:not(.ink)::before{
   content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
   background:
     radial-gradient(60% 54% at 80% 14%, color-mix(in oklab,var(--cyan) 18%, transparent) 0%, color-mix(in oklab,var(--cyan) 8%, transparent) 44%, transparent 76%),
     radial-gradient(54% 48% at 16% 92%, color-mix(in oklab,var(--lavender) 13%, transparent) 0%, transparent 72%);
 }
-.ds .lab-bento:not(.ink)::before{
-  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background-image:
-    linear-gradient(90deg, color-mix(in oklab,var(--violet) 16%, transparent) 1px, transparent 1px),
-    linear-gradient(180deg, color-mix(in oklab,var(--cyan) 14%, transparent) 1px, transparent 1px);
-  background-size:42px 42px;
-  -webkit-mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
-          mask-image:radial-gradient(ellipse 64% 54% at 50% 40%, #000 0%, transparent 78%);
-}
 
-/* (c) light cards — lens-soft gradient material, violet border + glow, hover lift. */
-.ds .lab-bento:not(.ink) .lab-bento__tile,
+/* (c) light Gallery cards — lens-soft gradient material base (the milky-glass
+   override below refines them further). Bento is intentionally absent. */
 .ds .lab-gallery:not(.ink) .lab-gallery__card{
   background:var(--dsc-card);
   border:1px solid var(--dsc-border);
@@ -9227,27 +9299,15 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
   box-shadow:var(--dsc-shadow);
   transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
 }
-.ds .lab-bento:not(.ink) .lab-bento__tile:hover,
 .ds .lab-gallery:not(.ink) .lab-gallery__card:hover{
   transform:translateY(-3px);
   border-color:var(--dsc-border-strong);
 }
-.ds .lab-bento:not(.ink) .lab-bento__tile--feature{
-  background:var(--dsc-card-feature);
-  border-color:color-mix(in oklab, var(--violet) 48%, transparent);
-  box-shadow:
-    0 1px 0 #ffffff inset,
-    0 2px 10px -4px color-mix(in oklab,var(--violet) 30%, transparent),
-    0 30px 64px -28px color-mix(in oklab,var(--violet) 55%, transparent);
-}
-.ds .lab-bento:not(.ink) .lab-bento__tile--feature:hover{
-  border-color:color-mix(in oklab, var(--violet) 60%, transparent);
-}
 
 /* light Gallery cards → milky liquid glass (ported from /dev/liquid-glass).
-   Gallery only — the light bento above keeps its --dsc-card look. Frosts
-   whatever's behind; over the page's white it reads as a soft translucent card
-   defined by the violet-tinted drop shadow. backdrop-filter UNPREFIXED. */
+   Gallery only — the light bento owns its own frosted-glass look globally.
+   Frosts whatever's behind; over the page's white it reads as a soft translucent
+   card defined by the violet-tinted drop shadow. backdrop-filter UNPREFIXED. */
 .ds .lab-gallery:not(.ink) .lab-gallery__card{
   background:linear-gradient(150deg, rgba(255,255,255,.32) 0%, rgba(255,255,255,.1) 100%);
   border:1px solid rgba(255,255,255,.6);

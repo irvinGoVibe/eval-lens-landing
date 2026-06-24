@@ -38,11 +38,6 @@ const BENTO_ITEMS = [
     title: "Background pattern language",
     body: "Soft lens grids, hairline structure and ambient media areas give pages enough context to judge sections.",
     feature: true,
-    media: {
-      label: "Image · pattern system · 16:9",
-      hint: "Layered lens grid, section masks and media frames on a dark surface.",
-      ariaLabel: "Background pattern system visual slot",
-    },
   },
   {
     tag: "Motion",
