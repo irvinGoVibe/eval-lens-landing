@@ -177,7 +177,7 @@ export function TransitionsDemo() {
     <main className="tg section-lab ds" ref={root}>
       {/* TOP — real light section */}
       <StatementHero
-        surface="light"
+        surface="soft"
         marker="Top · light section"
         version={1}
         eyebrow="The brief"
