@@ -17,11 +17,11 @@
     "barrel_extra": {
       "FullStatement": "= LabFullStatement.tsx — a SEPARATE heading+sub variant of archetype 02, NOT the library's cataloged archetype-02 component (which is LabStatement, versions[]). Used by /dev/ds-sections + /dev/ds-theme. No library archetype row; not in section-lab catalog. Duplication flagged."
     },
-    "note": "Public API for pages/skills is ONLY @/components/ds. The barrel exports 9 sections: 5 aliases over Lab* (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + 4 genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS, NOT Lab wraps): Numbered (10), EditorialSplit (04, +optional points), QuietCta (12), HubMap (08, glass cards light+dark + travelling-spot enhancer) — all ready, build-passed. Lab*/_kit are a DEPRECATED internal substrate the 5 aliases wrap; direct Lab* import is FORBIDDEN. Sections not in the barrel are component-api-gap (consumption_readiness = unavailable) -> component-forge extracts a clean DS component. The .ds container supplies the light card system (--dsc-*).",
+    "note": "Public API for pages/skills is ONLY @/components/ds. The barrel exports 10 sections: 5 aliases over Lab* (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + 5 genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS, NOT Lab wraps): Numbered (10), EditorialSplit (04, +optional points), QuietCta (12), HubMap (08, glass cards light+dark + travelling-spot enhancer), RiskControl (11, risk↔control grid) — all ready, build-passed. Lab*/_kit are a DEPRECATED internal substrate the 5 aliases wrap; direct Lab* import is FORBIDDEN. Sections not in the barrel are component-api-gap (consumption_readiness = unavailable) -> component-forge extracts a clean DS component. The .ds container supplies the light card system (--dsc-*).",
     "reference_page": "/dev/ds-sections",
     "public_api_only": true,
     "canon_updated": "2026-06-22 (DS reframe)",
-    "gap_policy": "Missing DS section -> component-forge (extract clean DS, not a Lab wrapper/copy). Archetypes still component-api-gap (not exported via @/components/ds): 02, 05, 11, 13, 14, 15, 16. Promoted to clean DS in the barrel: 04 EditorialSplit, 08 HubMap, 09 StatBand, 10 Numbered, 12 QuietCta."
+    "gap_policy": "Missing DS section -> component-forge (extract clean DS, not a Lab wrapper/copy). Archetypes still component-api-gap (not exported via @/components/ds): 02, 05, 13, 14, 15, 16. Promoted to clean DS in the barrel: 04 EditorialSplit, 08 HubMap, 09 StatBand, 10 Numbered, 11 RiskControl, 12 QuietCta."
   },
   "browser_qa": {
     "run": true,
@@ -929,17 +929,18 @@
     },
     {
       "archetype_id": "11",
-      "name": "LabRiskControl",
+      "name": "RiskControl",
       "label": "Risk -> control",
-      "source_path": "sections/lab/LabRiskControl.tsx",
-      "export_name": "LabRiskControl",
+      "source_path": "components/ds/RiskControl.tsx",
+      "export_name": "RiskControl",
       "versions": {
         "available": [
           "v1",
           "v2",
           "v3"
         ],
-        "default": "v1"
+        "default": "v1",
+        "differences": "v1 polish (hairline-ruled .85/1.15 rows, mono Risk/Control tags); v2 recomp (bordered pair-cards, two per row, dashed risk→control connector); v3 expanded (large display head, oversized risk titles, 1fr/1.3fr rows)."
       },
       "surfaces": {
         "available": [
@@ -947,7 +948,8 @@
           "ink"
         ],
         "default": "light",
-        "control": "surface prop"
+        "control": "surface prop",
+        "note": "Surface-invariant geometry; ink flips colour tokens only."
       },
       "props": [
         "id?(=risk-control)",
@@ -955,21 +957,22 @@
         "ariaLabel?",
         "eyebrow*",
         "title*",
+        "titleAccent?",
         "sub*",
         "pairs*:{risk,control}[]",
         "marker?"
       ],
       "content_capacity": {
         "eyebrow": true,
-        "heading": true,
-        "body": true,
-        "pairs": "risk/control"
+        "heading": "title + optional titleAccent lens word",
+        "body": "sub",
+        "pairs": "risk/control rows"
       },
       "media": {
         "supported": false
       },
       "motion": {
-        "reveal": "data-reveal up"
+        "reveal": "data-reveal up (head + grid)"
       },
       "semantic_matching": {
         "primary_roles": [
@@ -986,22 +989,23 @@
         }
       },
       "consumption_readiness": {
-        "status": "unavailable",
-        "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+        "status": "ready",
+        "browser_qa": "run (2026-06-25, /dev/ds-sections, console clean, computed-styles verified, v1/v2/v3 confirmed after reload)",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
         ],
-        "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
+          "trust/proof sections — paired risk↔control content"
         ],
         "forge_level": "forged"
       },
       "public_name": "RiskControl",
-      "barrel_export": null,
-      "source_status": "deprecated-substrate",
+      "barrel_export": "RiskControl",
+      "source_status": "clean-DS extraction (own components/ds/RiskControl.tsx + .ds-risk CSS in ds.css; NOT a Lab wrap)",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "clean-ds",
+      "notes": "Clean-DS twin of the deprecated LabRiskControl. Risk/Control mini-tags rendered static (inline label above text), not the abs corner tag. keyed by index."
     },
     {
       "archetype_id": "12",
