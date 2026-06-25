@@ -138,6 +138,30 @@ export function LabGallery({
         </ol>
       </div>
 
+      {/* ── v4 — Grid rows: the SAME glass cards as v1 (`--polish` is kept so the
+          frosted-glass card material is inherited verbatim), but laid out in a
+          contained grid instead of the full-bleed scroll lane. No horizontal
+          scroll — cards wrap into as many rows as the item count needs (2, 3, …).
+          Only the container layout differs (`--grid`); content is the invariant. ── */}
+      <div
+        className="lab-gallery__v lab-gallery__v--polish lab-gallery__v--grid"
+        data-version="4"
+        hidden
+      >
+        <div className="wrap">
+          <div className="head" data-reveal="up">
+            <LabEyebrow>{eyebrow}</LabEyebrow>
+            <Title title={title} accent={false} />
+            <p className="sub">{sub}</p>
+          </div>
+          <ul className="lab-gallery__grid" data-reveal="up" aria-label={laneLabel}>
+            {items.map((item, i) => (
+              <Card item={item} index={i} key={item.tag} />
+            ))}
+          </ul>
+        </div>
+      </div>
+
       {/* ── v3 — Expanded Expressive: ambient backdrop + parallax + glass ── */}
       <div
         className="lab-gallery__v lab-gallery__v--expr"

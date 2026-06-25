@@ -30,7 +30,8 @@
 /* …and their OWN backdrops (the per-section balls-glass fields used standalone)
    are suppressed inside a canvas — the shared bg is the only one. */
 .ds-canvas .ds-hubmap:is(.soft,.light)::after,
-.ds-canvas .lab-bento:is(.soft,.light)::after{background:none;}
+.ds-canvas .lab-bento:is(.soft,.light)::after,
+.ds-canvas .lab-gallery:is(.soft,.light)::after{background:none;}
 
 /* ── LIGHT canvas background — the gallery-light gradient, ported verbatim from
    `.ds-sections .lab-gallery:not(.soft):not(.ink)`: three soft brand radials
@@ -405,6 +406,97 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 .ds .lab-gallery__v--expr{
   margin-inline:calc(50% - 50vw);
   width:100vw;
+}
+
+/* ── LIGHT (soft) gallery cards — frosted glass, matched 1:1 to the light
+   LabBento tiles (globals `.lab-bento:is(.soft,.light) .lab-bento__tile`): a
+   faint milky-white gradient pane, a white-highlight bevel rim and inset
+   highlights over the drifting brand blobs behind the lane. Scoped to `.ds` so
+   only composed DS pages (which place a vivid blurred backdrop behind the lane)
+   get the glass — the `/dev/section-lab` and `/dev/gallery` catalogs, which have
+   no backdrop, keep the plain catalog card.
+   NB: the cards live in an `overflow-x:auto` lane, which Blink uses to disable
+   `backdrop-filter` on descendants (same reason the ink gallery cards avoid it).
+   The frost is faked the bento way: the already-blurred blobs sit behind the
+   translucent pane, so it reads as glass with no `backdrop-filter` needed.
+   v1 Polish only — v3 (--expr) carries its own full-bleed backdrop scene. ── */
+.ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:linear-gradient(135deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.08) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    inset 0 0 0 1px rgba(255,255,255,.22),
+    0 1px 2px rgba(40,30,90,.04),
+    0 22px 50px -24px rgba(70,50,150,.22);
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), border-color .4s var(--ease);
+}
+/* keep the card content (signal dot, tag, heading, body) above the bevel rim */
+.ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card > *{
+  position:relative;z-index:1;
+}
+/* white-highlight rim — 1px ring following the rounded corners, bright
+   top-left → faint bottom-right, so the edge reads as a glass bevel. */
+.ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card::after{
+  content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.85) 0%,
+    rgba(255,255,255,.3) 42%,
+    rgba(255,255,255,.08) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
+/* gentle lift + brighter bevel on hover — same as the light bento tile. */
+.ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 0 0 1px rgba(255,255,255,.3),
+    0 28px 60px -24px rgba(70,50,150,.26),
+    0 0 44px rgba(255,255,255,.4);
+}
+.ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card h3{color:var(--fg);}
+.ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card p{color:var(--muted);}
+.ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card .mini-tag{color:var(--violet);}
+
+/* ── glassmorphism backdrop behind the LIGHT gallery lane — the same balls-glass
+   blob field bento/hubmap put behind their light sections (and the field that
+   originally sat behind the hero v2 glass stage), so the frosted cards have a
+   vivid pastel-blob backdrop to refract. Without it the frost reads as nothing.
+   Painted in the section `::after` (inset:0, behind the lifted content); inside a
+   `.ds-canvas` it is suppressed (the canvas supplies its own floating blobs — see
+   the `.ds-canvas …::after{background:none}` rule up top). ── */
+.ds .lab-gallery:is(.soft,.light){position:relative;isolation:isolate;}
+.ds .lab-gallery:is(.soft,.light)::after{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:url('/assets/backgrounds/balls-glass.png');
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+}
+.ds .lab-gallery:is(.soft,.light) > *{position:relative;z-index:1;}
+
+/* ── v4 — Grid rows: the v1 glass cards laid out in a contained grid instead of
+   the full-bleed scroll lane. No horizontal scroll; cards wrap into rows (2, 3,
+   … as many as the item count needs). The glass material is inherited from the
+   `--polish` card rules (this version carries `--polish` too) — only the
+   container layout changes here. Lives in `.wrap`, so the grid aligns to the
+   content column like a table. Surface-agnostic (works on light + ink). ── */
+.ds .lab-gallery__v--grid .lab-gallery__grid{
+  list-style:none;margin:clamp(30px,4vw,54px) 0 0;padding:0;
+  display:grid;
+  /* columns are the SAME width as a scroll-lane card (clamp 250–330) — not
+     stretched `1fr`. auto-fill packs as many lane-width cards as fit and the row
+     is centred: ~3 across the 1180 content column (4 can't fit: 4×330 + gaps >
+     1180), dropping cleanly to 2 / 1 on narrow screens instead of squeezing four
+     thin cards in. */
+  grid-template-columns:repeat(auto-fill, clamp(250px, 29vw, 330px));
+  justify-content:center;
+  gap:clamp(16px,2vw,26px);
+  align-items:stretch;
+}
+/* the card is a grid item now, not a lane card: clear the fixed lane width /
+   scroll-snap so it fills its column and stretches to the row height. */
+.ds .lab-gallery__v--grid .lab-gallery__card{
+  flex:initial;width:auto;scroll-snap-align:none;
 }
 
 /* ============================================================
