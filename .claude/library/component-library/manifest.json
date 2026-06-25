@@ -29,13 +29,13 @@
       "Media": "MediaPlaceholder",
       "Button": "ui/Button"
     },
-    "name_map_note": "RHS = deprecated internal source the barrel currently wraps; LHS = the public DS name (the only thing pages/skills name). EXCEPTION: StatementHero, EditorialSplit, HubMap, StatBand, Numbered, RiskControl and QuietCta are genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS), not Lab re-exports.",
+    "name_map_note": "RHS = deprecated internal source the barrel currently wraps; LHS = the public DS name (the only thing pages/skills name). EXCEPTION: StatementHero, EditorialSplit, HubMap, StatBand, Numbered, RiskControl, QuietCta and Faq are genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS), not Lab re-exports.",
     "reference_pages": {
       "sections": "/dev/ds-sections (barrel-composed reference page)",
       "atoms": "/dev/ds-atoms",
       "full_page": "/dev/ds-theme"
     },
-    "gap_policy": "Components NOT yet in the barrel are GAPS, not a license to import Lab* directly. A missing DS section -> component-forge extracts a clean DS component; a missing DS atom/shell -> primitive-layer-forge. The 5 archetypes not yet in the barrel (LabStatement(02), LabSplitRing(05), LabPricing(13), LabCompareTable(14), LabFaq(16)) are component-api-gap for page-composer (consumption_readiness=unavailable) until promoted into clean DS — even though forged at the forge level. Promoted clean-DS extractions (non-alias, build-passed + ready): 04 EditorialSplit, 08 HubMap (glass light+dark), 09 StatBand, 10 Numbered, 11 RiskControl, 12 QuietCta."
+    "gap_policy": "Components NOT yet in the barrel are GAPS. A missing DS section -> component-forge; a missing atom/shell -> primitive-layer-forge. The 4 archetypes not yet in the barrel (LabStatement(02), LabSplitRing(05), LabPricing(13), LabCompareTable(14)) are component-api-gap until promoted into clean DS. Promoted clean-DS extractions (build-passed + ready): 01 StatementHero, 04 EditorialSplit, 08 HubMap, 09 StatBand, 10 Numbered, 11 RiskControl, 12 QuietCta, 16 Faq. 15 Versus is inline."
   },
   "design_system_light": {
     "scope": ".ds (globals.css, end of file); all rules gated on :not(.ink) so surface=ink keeps the native dark look",
@@ -129,11 +129,11 @@
       "count": 16,
       "forged_components": 15,
       "inline_gap": 1,
-      "barrel_exported": 10,
-      "ready_via_barrel": 10,
+      "barrel_exported": 11,
+      "ready_via_barrel": 11,
       "conditional_via_barrel": 0,
-      "component_api_gap_not_in_barrel": 5,
-      "note": "public DS names; Lab* = deprecated source. 10 archetype sections barrel-exported and ready: 3 aliases over Lab* (PinnedSteps 03, Gallery 06, Bento 07) + 7 non-alias clean-DS extractions (StatementHero 01, EditorialSplit 04, HubMap 08, StatBand 09, Numbered 10, RiskControl 11, QuietCta 12); plus FullStatement (02 heading+sub variant, non-archetype). The other 5 archetypes (02,05,13,14,16) are component-api-gap -> component-forge; 15 Versus is inline."
+      "component_api_gap_not_in_barrel": 4,
+      "note": "public DS names; Lab* = deprecated source. 11 archetype sections barrel-exported and ready: 3 aliases over Lab* (PinnedSteps 03, Gallery 06, Bento 07) + 8 non-alias clean-DS extractions (StatementHero 01, EditorialSplit 04, HubMap 08, StatBand 09, Numbered 10, RiskControl 11, QuietCta 12, Faq 16); plus FullStatement (02 variant, non-archetype). The other 4 archetypes (02,05,13,14) are component-api-gap; 15 Versus is inline."
     },
     "L6_production_sections": {
       "manifest": "production-patterns.json",
@@ -186,14 +186,14 @@
     "ds_sections_total": 16,
     "forged_at_forge_level": 15,
     "inline_gap": 1,
-    "barrel_exported": 10,
-    "page_composer_ready_via_barrel": 10,
-    "component_api_gap_not_in_barrel": 5,
+    "barrel_exported": 11,
+    "page_composer_ready_via_barrel": 11,
+    "component_api_gap_not_in_barrel": 4,
     "conditional": 0,
     "draft": 0,
     "blocked": 0,
     "registry_code_conflicts": 7,
-    "ds_reframe_note": "2026-06-25: page-composer consumes only @/components/ds. Barrel exports 10 ready archetype sections — 3 aliases (PinnedSteps, Gallery, Bento) + 7 clean-DS extractions (own ds/*.tsx + .ds-* CSS, no Lab wrap): StatementHero (01, switchable bg + glass v2 stage + glassy v3 placeholder, surface prop — CL-006 resolved), EditorialSplit (04), HubMap (08), StatBand (09), Numbered (10), RiskControl (11), QuietCta (12); plus FullStatement (02 variant). 5 forged Lab* remain component-api-gap (02,05,13,14,16).",
+    "ds_reframe_note": "2026-06-25: page-composer consumes only @/components/ds. Barrel exports 11 ready archetype sections — 3 aliases (PinnedSteps, Gallery, Bento) + 8 clean-DS extractions: StatementHero (01), EditorialSplit (04), HubMap (08), StatBand (09), Numbered (10), RiskControl (11), QuietCta (12), Faq (16); plus FullStatement (02 variant). 4 forged Lab* remain component-api-gap (02,05,13,14); 15 Versus inline.",
     "additional_sections": "3 non-archetype sections recorded in sections.json#additional_sections (ds-cinema [self-contained inline cinematic], LabCinemaScrim [prop-driven cinematic sibling], LabFullStatement [archetype-02 heading+sub variant, barrel FullStatement]) — all valid/intentional",
     "dead_code": [
       "FinalUnicorn",

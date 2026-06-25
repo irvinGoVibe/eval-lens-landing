@@ -17,11 +17,11 @@
     "barrel_extra": {
       "FullStatement": "= LabFullStatement.tsx — a SEPARATE heading+sub variant of archetype 02, NOT the library's cataloged archetype-02 component (which is LabStatement, versions[]). Used by /dev/ds-sections + /dev/ds-theme. No library archetype row; not in section-lab catalog. Duplication flagged."
     },
-    "note": "Public API for pages/skills is ONLY @/components/ds. The barrel exports 10 sections: 5 aliases over Lab* (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + 5 genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS, NOT Lab wraps): Numbered (10), EditorialSplit (04, +optional points), QuietCta (12), HubMap (08, glass cards light+dark + travelling-spot enhancer), RiskControl (11, risk↔control grid) — all ready, build-passed. Lab*/_kit are a DEPRECATED internal substrate the 5 aliases wrap; direct Lab* import is FORBIDDEN. Sections not in the barrel are component-api-gap (consumption_readiness = unavailable) -> component-forge extracts a clean DS component. The .ds container supplies the light card system (--dsc-*).",
+    "note": "Public API for pages/skills is ONLY @/components/ds. The barrel exports 11 sections: 5 aliases over Lab* (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + 5 genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS, NOT Lab wraps): Numbered (10), EditorialSplit (04, +optional points), QuietCta (12), HubMap (08, glass cards light+dark + travelling-spot enhancer), RiskControl (11, risk↔control grid), Faq (16, static Q/A list) — all ready, build-passed. Lab*/_kit are a DEPRECATED internal substrate the 5 aliases wrap; direct Lab* import is FORBIDDEN. Sections not in the barrel are component-api-gap (consumption_readiness = unavailable) -> component-forge extracts a clean DS component. The .ds container supplies the light card system (--dsc-*).",
     "reference_page": "/dev/ds-sections",
     "public_api_only": true,
     "canon_updated": "2026-06-22 (DS reframe)",
-    "gap_policy": "Missing DS section -> component-forge (extract clean DS, not a Lab wrapper/copy). Archetypes still component-api-gap (not exported via @/components/ds): 02, 05, 13, 14, 15, 16. Promoted to clean DS in the barrel: 04 EditorialSplit, 08 HubMap, 09 StatBand, 10 Numbered, 11 RiskControl, 12 QuietCta."
+    "gap_policy": "Missing DS section -> component-forge (extract clean DS, not a Lab wrapper/copy). Archetypes still component-api-gap (not exported via @/components/ds): 02, 05, 13, 14, 15. Promoted to clean DS in the barrel: 01 StatementHero, 04 EditorialSplit, 08 HubMap, 09 StatBand, 10 Numbered, 11 RiskControl, 12 QuietCta, 16 Faq."
   },
   "browser_qa": {
     "run": true,
@@ -1309,17 +1309,18 @@
     },
     {
       "archetype_id": "16",
-      "name": "LabFaq",
+      "name": "Faq",
       "label": "FAQ",
-      "source_path": "sections/lab/LabFaq.tsx",
-      "export_name": "LabFaq",
+      "source_path": "components/ds/Faq.tsx",
+      "export_name": "Faq",
       "versions": {
         "available": [
           "v1",
           "v2",
           "v3"
         ],
-        "default": "v1"
+        "default": "v1",
+        "differences": "v1 polish (2-col hairline grid); v2 recomp (single editorial column, larger questions, max-width 760); v3 expanded (large display head, airier 2-col)."
       },
       "surfaces": {
         "available": [
@@ -1327,7 +1328,8 @@
           "ink"
         ],
         "default": "light",
-        "control": "surface prop"
+        "control": "surface prop",
+        "note": "Surface-invariant geometry; ink flips colour tokens only."
       },
       "props": [
         "id?(=faq)",
@@ -1335,6 +1337,7 @@
         "ariaLabel?",
         "eyebrow*",
         "title*",
+        "titleAccent?",
         "items*:{q,a}[]",
         "marker?"
       ],
@@ -1369,22 +1372,23 @@
         }
       },
       "consumption_readiness": {
-        "status": "unavailable",
-        "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+        "status": "ready",
+        "browser_qa": "run (2026-06-25, /dev/ds-sections, console clean, 2-col grid verified)",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
         ],
-        "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
+          "good before quiet-cta/footer"
         ],
         "forge_level": "forged"
       },
       "public_name": "Faq",
-      "barrel_export": null,
-      "source_status": "deprecated-substrate",
+      "barrel_export": "Faq",
+      "source_status": "clean-DS extraction (own components/ds/Faq.tsx + .ds-faq CSS in ds.css; static <dl>; NOT a Lab wrap)",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "clean-ds",
+      "notes": "Clean-DS twin of the deprecated LabFaq. Static definition list (no JS accordion). keyed by index."
     }
   ],
   "additional_sections": {
