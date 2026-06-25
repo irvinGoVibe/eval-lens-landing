@@ -345,6 +345,303 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 .ds-quiet-cta .sect-cta{margin-top:34px;}
 
 /* ============================================================
+   HubMap — archetype 08 (clean DS extraction of LabHubMap)
+   Navigational bento: every tile is an <a> into a child route. v1 polish
+   (feature spans 2 of 3 cols) · v2 recomp (full-width feature banner + 3-col
+   row) · v3 expanded (tall full-width feature hero + calm row). Robust grids:
+   no fixed grid-row spans — any tile count flows/wraps. Ink overrides COLOUR
+   ONLY; geometry is surface-invariant.
+   ============================================================ */
+.ds-hubmap .head{margin-bottom:clamp(32px,5vw,56px);}
+.ds-hubmap .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* feature tile + supporting-tile container; versions arrange the two differently */
+.ds-hubmap__grid{display:grid;gap:clamp(14px,2vw,22px);align-items:stretch;}
+.ds-hubmap__rest{display:flex;flex-direction:column;gap:clamp(14px,2vw,22px);min-width:0;}
+
+/* link tile — layout only; the surface (glass) look is set per surface below.
+   mini-tag flows at the top of the card (static), as on the bento tiles. */
+.ds-hubmap__card{position:relative;border-radius:var(--radius-card);padding:24px;display:flex;flex-direction:column;gap:9px;min-width:0;text-decoration:none;}
+.ds-hubmap__card h3{font-size:clamp(19px,2.2vw,25px);letter-spacing:-.01em;color:var(--fg);}
+.ds-hubmap__card p{font-size:14px;line-height:1.55;color:var(--muted);}
+.ds-hubmap__card .mini-tag{position:static;top:auto;right:auto;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;}
+.ds-hubmap__more{margin-top:auto;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);}
+
+/* ── LIGHT (soft) cards — frosted-glass material, ported 1:1 from the light
+   `LabBento` tiles (globals `.lab-bento:is(.soft,.light) .lab-bento__tile*`):
+   clear white glass refracting a drifting blob field behind the section, white
+   bevel rim, gentle hover lift. EXCEPTION: the feature tile keeps the existing
+   `--lens-soft` accent gradient (kept accent on purpose — to be refined later),
+   NOT bento's milky-white feature. ── */
+.ds-hubmap:is(.soft,.light) .ds-hubmap__card{
+  --scroll-progress:.5;
+  isolation:isolate;overflow:hidden;
+  background:linear-gradient(135deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.08) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(18px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    inset 0 0 0 1px rgba(255,255,255,.22),
+    0 1px 2px rgba(40,30,90,.04),
+    0 22px 50px -24px rgba(70,50,150,.22);
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), border-color .4s var(--ease);
+}
+.ds-hubmap:is(.soft,.light) .ds-hubmap__card > *{position:relative;z-index:1;}
+/* white-highlight bevel rim — bright top-left → faint bottom-right */
+.ds-hubmap:is(.soft,.light) .ds-hubmap__card::after{
+  content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.85) 0%,
+    rgba(255,255,255,.3) 42%,
+    rgba(255,255,255,.08) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
+/* feature tile — KEEP the accent gradient (intentional accent; refine later),
+   now the light-theme twin of the ink feature: a faint diagonal stripe texture
+   over the lens accent + drifting brand blobs behind the glass. */
+.ds-hubmap:is(.soft,.light) .ds-hubmap__card--feature{
+  background:
+    repeating-linear-gradient(45deg, color-mix(in oklab,var(--violet) 8%,transparent) 0 1px, transparent 1px 7px),
+    var(--lens-soft);
+  border-color:color-mix(in oklab,var(--violet) 32%,transparent);
+}
+/* drifting blobs — light palette (violet/lavender/cyan), multiply so they read
+   as soft colour on the pale glass; same gallery-bubbles drift as the ink feature. */
+.ds-hubmap:is(.soft,.light) .ds-hubmap__card--feature::before{
+  content:'';position:absolute;z-index:0;inset:0;pointer-events:none;border-radius:inherit;
+  background:
+    radial-gradient(44% 54% at 30% 38%, color-mix(in oklab,var(--violet) 55%,transparent), transparent 66%),
+    radial-gradient(42% 52% at 74% 64%, color-mix(in oklab,var(--cyan) 50%,transparent), transparent 66%),
+    radial-gradient(38% 48% at 50% 84%, color-mix(in oklab,var(--lavender) 52%,transparent), transparent 68%);
+  background-size:200% 200%,185% 185%,210% 210%;
+  background-repeat:no-repeat;
+  filter:blur(20px) saturate(1.1);
+  -webkit-mask:radial-gradient(140% 140% at 50% 50%, #000 60%, transparent 98%);
+          mask:radial-gradient(140% 140% at 50% 50%, #000 60%, transparent 98%);
+  opacity:.6;
+  animation:gallery-bubbles 12s ease-in-out infinite;
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-hubmap:is(.soft,.light) .ds-hubmap__card--feature::before{animation:none;}
+}
+/* v3 feature is a large hero — at tile-relative `%` sizes the blobs balloon into
+   one bright central smudge with no visible travel. Shrink them well below the
+   tile so several distinct pastel blobs drift across, soften + dim so it reads as
+   gentle moving colour, not a dirty patch. (Light only — the complaint surface.) */
+.ds-hubmap:is(.soft,.light) .ds-hubmap__v--expanded .ds-hubmap__card--feature::before{
+  /* three muted blobs spread across the hero (violet top-left, cyan right,
+     lavender bottom) → an aurora-like colour field, not one central spot. cyan
+     is dialled down (it was the harsh bright core); heavy blur feathers it all. */
+  background:
+    radial-gradient(48% 56% at 26% 30%, color-mix(in oklab,var(--violet) 44%,transparent), transparent 70%),
+    radial-gradient(46% 54% at 80% 56%, color-mix(in oklab,var(--cyan) 32%,transparent), transparent 70%),
+    radial-gradient(52% 56% at 50% 90%, color-mix(in oklab,var(--lavender) 42%,transparent), transparent 72%);
+  background-size:64% 70%,60% 64%,72% 66%;
+  filter:blur(48px) saturate(1.04);
+  -webkit-mask:radial-gradient(165% 165% at 50% 45%, #000 58%, transparent 100%);
+          mask:radial-gradient(165% 165% at 50% 45%, #000 58%, transparent 100%);
+  opacity:.5;
+}
+/* gentle lift + brighter bevel on hover */
+.ds-hubmap:is(.soft,.light) .ds-hubmap__card:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 0 0 1px rgba(255,255,255,.3),
+    0 28px 60px -24px rgba(70,50,150,.26),
+    0 0 44px rgba(255,255,255,.4);
+}
+.ds-hubmap:is(.soft,.light) .ds-hubmap__card .mini-tag{color:var(--violet);}
+
+/* glassmorphism backdrop — the same drifting blob field bento puts behind its
+   light section, so the frosted cards refract it (clear glass over pastel blobs).
+   Content lifts above it; overflow:clip hides the image edges. */
+.ds-hubmap:is(.soft,.light){position:relative;overflow:clip;background:var(--bg-soft);}
+.ds-hubmap:is(.soft,.light)::after{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:url('/assets/backgrounds/balls-glass.png');
+  background-size:100% auto;background-position:center top;background-repeat:no-repeat;
+}
+.ds-hubmap:is(.soft,.light) > *{position:relative;z-index:1;}
+
+/* ── INK (dark) cards — the RichBento glass material, ported 1:1 from the ink
+   `LabBento` tiles (globals `.lab-bento.ink .lab-bento__tile*`): cool transparent
+   glass + directional gradient rim + injected sheen layers + a blue feature tile
+   with drifting blobs + the travelling spot. Injected layers (.ds-glass__* + the
+   spot) come from <HubMapGlassSpot/>, mounted only on surface="ink". ── */
+.ds-hubmap.ink .ds-hubmap__card{
+  --scroll-progress:.5; /* feeds the injected .ds-glass__wash transform */
+  position:relative;isolation:isolate;overflow:hidden;
+  background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.03) 50%, rgba(220,236,255,.014) 100%);
+  border:1px solid rgba(165,195,238,.12);
+  backdrop-filter:blur(12px) saturate(1.12);
+  box-shadow:
+    inset 0 1px 0 rgba(214,234,255,.2),
+    inset 0 0 0 1px rgba(96,165,255,.04),
+    inset 0 -1px 0 rgba(255,255,255,.03),
+    0 24px 60px rgba(0,0,0,.3),
+    0 26px 56px -32px rgba(46,150,232,.3);
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), border-color .4s var(--ease);
+}
+.ds-hubmap.ink .ds-hubmap__card > *{position:relative;z-index:1;}
+.ds-hubmap.ink .ds-hubmap__card h3{color:var(--fg-on-dark);}
+.ds-hubmap.ink .ds-hubmap__card p{color:var(--muted-on-dark);}
+.ds-hubmap.ink .ds-hubmap__card .mini-tag{position:static;top:auto;right:auto;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
+.ds-hubmap.ink .ds-hubmap__more{color:var(--lavender);}
+
+/* directional gradient rim — bright top-left → faint bottom-right glass outline */
+.ds-hubmap.ink .ds-hubmap__card::after{
+  content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,
+    rgba(220,238,255,.38) 0%,
+    rgba(170,202,246,.09) 36%,
+    rgba(118,158,224,.02) 66%,
+    rgba(150,186,240,.07) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
+/* screen-blended sheen layers injected by <HubMapGlassSpot/> (recoloured blue/cyan) */
+.ds-hubmap.ink .ds-hubmap__card > .ds-glass__wash{
+  position:absolute; inset:0; z-index:0; opacity:.2;
+  background:
+    radial-gradient(ellipse at 28% 32%, rgba(224,238,255,.2) 0%, rgba(176,208,255,.06) 18%, transparent 43%),
+    radial-gradient(ellipse at 70% 58%, rgba(112,168,255,.14) 0%, rgba(46,197,232,.08) 28%, transparent 54%),
+    radial-gradient(ellipse at 45% 80%, rgba(64,158,226,.06) 0%, transparent 42%);
+}
+.ds-hubmap.ink .ds-hubmap__card > .ds-glass__orbit{
+  position:absolute; inset:0; z-index:0; opacity:.42;
+  background:radial-gradient(circle, rgba(208,230,255,.24) 0%, rgba(112,168,255,.12) 42%, transparent 70%);
+}
+.ds-hubmap.ink .ds-hubmap__card > .ds-glass__glare{
+  position:absolute; inset:0; z-index:1; opacity:.6; transition:opacity .4s ease;
+  background:linear-gradient(125deg, rgba(224,238,255,.13) 0%, rgba(198,220,255,.03) 26%, transparent 46%);
+}
+.ds-hubmap.ink .ds-hubmap__card:not(.ds-hubmap__card--feature):hover > .ds-glass__glare{opacity:.92;}
+
+/* supporting-tile hover — gentle lift + whitish glow */
+.ds-hubmap.ink .ds-hubmap__card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(206,222,252,.2);
+  box-shadow:
+    0 26px 64px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(214,230,255,.18),
+    0 0 56px 2px rgba(220,232,255,.1);
+}
+
+/* feature tile — blue sheen + faint diagonal texture under the glass */
+.ds-hubmap.ink .ds-hubmap__card--feature{
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.018) 0 1px, transparent 1px 7px),
+    linear-gradient(150deg, rgba(96,150,255,.12) 0%, rgba(46,150,232,.06) 50%, rgba(140,190,255,.03) 100%);
+  border-color:rgba(132,172,240,.13);
+}
+/* running blue "ingredient" — soft blobs drifting behind the glass */
+.ds-hubmap.ink .ds-hubmap__card--feature::before{
+  content:'';position:absolute;z-index:0;inset:0;pointer-events:none;border-radius:inherit;
+  background:
+    radial-gradient(42% 52% at 30% 40%, rgba(70,140,255,.55), transparent 68%),
+    radial-gradient(40% 50% at 72% 62%, rgba(46,197,232,.5), transparent 68%),
+    radial-gradient(36% 46% at 52% 82%, rgba(120,170,255,.42), transparent 70%);
+  background-size:165% 165%,155% 155%,175% 175%;
+  background-repeat:no-repeat;
+  filter:blur(26px);
+  -webkit-mask:radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
+          mask:radial-gradient(125% 125% at 50% 50%, #000 38%, transparent 84%);
+  mix-blend-mode:screen;opacity:.5;
+  animation:gallery-bubbles 12s ease-in-out infinite;
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-hubmap.ink .ds-hubmap__card--feature::before{animation:none;}
+}
+/* feature hover — blue glow (overrides the whitish hover) */
+.ds-hubmap.ink .ds-hubmap__card--feature:hover{
+  transform:translateY(-3px);
+  border-color:rgba(140,180,255,.4);
+  box-shadow:
+    inset 0 1px 0 rgba(220,236,255,.22),
+    0 0 70px 4px rgba(70,140,255,.14),
+    0 0 50px rgba(46,197,232,.1);
+}
+.ds-hubmap.ink .ds-hubmap__card--feature:hover::before{opacity:.78;}
+
+/* injected enhancer DOM is INK-only — hide it whenever the surface isn't ink so
+   the dev Light toggle (swaps class without remounting) never leaks blue glass
+   or shoves tile text (matches the bento enhancer's not-ink guard). */
+.ds-hubmap:not(.ink) .ds-hubmap__spot,
+.ds-hubmap:not(.ink) .ds-hubmap__card > .ds-glass__wash,
+.ds-hubmap:not(.ink) .ds-hubmap__card > .ds-glass__orbit,
+.ds-hubmap:not(.ink) .ds-hubmap__card > .ds-glass__glare{display:none;}
+
+/* travelling spot — one muted colour patch UNDER the glass, injected by the
+   enhancer; peels off the feature blob and creeps to the hovered tile. */
+.ds-hubmap.ink .ds-hubmap__grid{position:relative;}
+.ds-hubmap.ink .ds-hubmap__spot{
+  position:absolute;left:0;top:0;z-index:0;width:168px;height:168px;border-radius:50%;
+  pointer-events:none;opacity:0;
+  background:
+    radial-gradient(60% 60% at 42% 40%, rgba(70,140,255,.7), transparent 72%),
+    radial-gradient(56% 56% at 64% 66%, rgba(46,197,232,.55), transparent 74%);
+  filter:blur(26px);mix-blend-mode:screen;
+  transform:translate(0px,0px) translate(-50%,-50%);
+  transition:
+    transform 1.3s cubic-bezier(.55,0,.3,1),
+    width .85s cubic-bezier(.33,.7,.3,1),
+    height .85s cubic-bezier(.33,.7,.3,1),
+    border-radius .85s cubic-bezier(.33,.7,.3,1),
+    opacity .5s ease;
+  will-change:transform,width,height,opacity;
+}
+@keyframes ds-hubmap-spot-pulse{
+  0%,100%{ filter:blur(26px) brightness(1); }
+  50%    { filter:blur(23px) brightness(1.26); }
+}
+@keyframes ds-hubmap-spot-sway{
+  0%,100%{ translate:0 0; }
+  25%    { translate:9px -7px; }
+  50%    { translate:-7px 8px; }
+  75%    { translate:6px 6px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-hubmap.ink .ds-hubmap__spot{display:none;}
+}
+
+/* v1 — Polish (original): flat 3-col grid, the feature tile spanning two columns.
+   `__rest` dissolves via display:contents so the supporting tiles join the grid
+   as direct items, exactly like the original single-grid composition. */
+.ds-hubmap__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}
+.ds-hubmap__v--polish .ds-hubmap__grid{grid-template-columns:repeat(3,1fr);}
+.ds-hubmap__v--polish .ds-hubmap__rest{display:contents;}
+.ds-hubmap__v--polish .ds-hubmap__card--feature{grid-column:span 2;}
+
+/* v2 — Modern Recomposition: full-width feature banner over an even 3-col row */
+.ds-hubmap__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
+.ds-hubmap__v--recomp .ds-hubmap__grid{grid-template-columns:1fr;}
+.ds-hubmap__v--recomp .ds-hubmap__rest{display:grid;grid-template-columns:repeat(3,1fr);}
+
+/* v3 — Expanded Expressive: mirrored — routes stacked left, tall feature hero
+   right, large display head. Explicit placement swaps the DOM order (feature
+   first) into a list-left / hero-right composition. */
+.ds-hubmap__v--expanded .head{margin-bottom:clamp(48px,7vw,80px);}
+.ds-hubmap__v--expanded .title{font-size:clamp(38px,6.5vw,80px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.ds-hubmap__v--expanded .ds-hubmap__grid{grid-template-columns:1fr 1.5fr;}
+.ds-hubmap__v--expanded .ds-hubmap__card--feature{grid-column:2;grid-row:1;justify-content:flex-end;min-height:clamp(280px,32vw,420px);padding:clamp(28px,3.4vw,44px);}
+.ds-hubmap__v--expanded .ds-hubmap__rest{grid-column:1;grid-row:1;}
+.ds-hubmap__v--expanded .ds-hubmap__card--feature h3{font-size:clamp(26px,3.4vw,40px);}
+.ds-hubmap__v--expanded .ds-hubmap__card--feature p{font-size:clamp(15px,1.6vw,18px);max-width:46ch;}
+
+/* responsive collapse — every version stacks to a single column */
+@media (max-width:900px){
+  .ds-hubmap__v--polish .ds-hubmap__grid,
+  .ds-hubmap__v--expanded .ds-hubmap__grid{grid-template-columns:1fr;}
+  .ds-hubmap__v--polish .ds-hubmap__card--feature{grid-column:auto;}
+  .ds-hubmap__v--expanded .ds-hubmap__card--feature{grid-column:1;grid-row:auto;}
+  .ds-hubmap__v--expanded .ds-hubmap__rest{grid-column:1;grid-row:auto;}
+  .ds-hubmap__v--recomp .ds-hubmap__rest{grid-template-columns:1fr;}
+  .ds-hubmap__card--feature{min-height:0;}
+}
+
+/* ============================================================
    evidence-based-reports page-local (light cinematic-ink)
    Scoped under `.evidence-reports`. Token-driven only — light cards via
    --dsc-* on `.soft`, ink-aware via `.band.ink`. No `.lab-*`, no hardcoded hex.

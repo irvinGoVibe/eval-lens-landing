@@ -5623,42 +5623,26 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-bento:is(.soft,.light) .lab-bento__tile p{color:var(--muted);}
 .lab-bento:is(.soft,.light) .lab-bento__tile .mini-tag{color:var(--violet);}
 
-/* ── glassmorphism backdrop — a vivid gradient-blob FIELD filling the whole light
-   bento section, so the frosted tiles refract colour through their `backdrop-filter`
-   (the reference look: clear cards over colourful blobs). The blobs DRIFT: two
-   pseudo layers carry split blob sets and slowly translate/rotate/scale in opposite
-   directions (transform-only, so it composites on the GPU and never reflows). The
-   layers are oversized + `overflow:clip` on the section so the moving edges never
-   reveal the base. Palette stays on-brand: violet / lavender / cyan / blue + a soft
-   pink lift, no green. Content is lifted above both layers. Covers `.soft`/`.light`;
-   reduced-motion freezes the drift. */
+/* ── glassmorphism backdrop — a real image (soft pastel glass-blobs) fills the
+   whole light bento section, so the frosted tiles refract it through their
+   `backdrop-filter` (the reference look: clear cards over colourful blobs). The
+   image DRIFTS: one oversized layer slowly translates/rotates/scales (transform-
+   only → composited, no reflow); `overflow:clip` on the section hides the moving
+   edges. On-brand pastel (violet/lavender/cyan, no green). Content is lifted above
+   it. Covers `.soft`/`.light`; reduced-motion freezes the drift. */
 .lab-bento:is(.soft,.light){
   position:relative;
   overflow:clip;
   background:var(--bg-soft);
 }
-/* The blob field rides ONE drifting layer on `::after` — `::before` is already
+/* The blob image rides ONE drifting layer on `::after` — `::before` is already
    the page's faint grid pattern, so we leave it alone. The layer is oversized and
    slowly translates/rotates/scales (transform-only → composited, no reflow); the
    section's `overflow:clip` hides the moving edges. */
 .lab-bento:is(.soft,.light)::after{
-  content:'';position:absolute;inset:-28%;z-index:0;pointer-events:none;
-  transform-origin:center;will-change:transform;
-  background:
-    radial-gradient(34% 46% at 18% 32%, rgba(108,76,241,.55), transparent 72%),
-    radial-gradient(30% 40% at 84% 18%, rgba(46,197,232,.5), transparent 72%),
-    radial-gradient(42% 52% at 72% 82%, rgba(169,155,255,.5), transparent 72%),
-    radial-gradient(26% 38% at 24% 88%, rgba(240,150,210,.44), transparent 72%),
-    radial-gradient(30% 42% at 96% 66%, rgba(70,140,255,.48), transparent 72%);
-  animation:bento-soft-drift 30s ease-in-out infinite;
-}
-@keyframes bento-soft-drift{
-  0%,100%{transform:translate(0,0) rotate(0deg) scale(1.08);}
-  33%    {transform:translate(3%,-2.5%) rotate(6deg) scale(1.16);}
-  66%    {transform:translate(-3%,2.5%) rotate(-5deg) scale(1.1);}
-}
-@media (prefers-reduced-motion:reduce){
-  .lab-bento:is(.soft,.light)::after{animation:none;}
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:url('/assets/backgrounds/balls-glass.png');
+  background-size:100% auto;background-position:center top;background-repeat:no-repeat;
 }
 .lab-bento:is(.soft,.light) > *{position:relative;z-index:1;}
 

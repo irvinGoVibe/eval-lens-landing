@@ -5,6 +5,7 @@ import { FooterFrame } from "@/components/ds/FooterFrame";
 import {
   StatementHero,
   Bento,
+  HubMap,
   FullStatement,
   Gallery,
   PinnedSteps,
@@ -54,6 +55,19 @@ const BENTO_ITEMS = [
     title: "Reusable checks",
     body: "Each section can be inspected at mobile, tablet and desktop widths.",
   },
+];
+
+const HUBMAP_ITEMS = [
+  {
+    tag: "Start here",
+    title: "How evaluation works",
+    body: "The full path from a batch of decks to one defensible leaderboard — read end to end.",
+    href: "#",
+    feature: true,
+  },
+  { tag: "Entry hub", title: "Collect the decks", body: "One link gathers every submission, parsed and queued for review.", href: "#" },
+  { tag: "Reports", title: "Evidence-based reports", body: "Each score links back to the slide and source behind it.", href: "#" },
+  { tag: "Review board", title: "Decide together", body: "A shared leaderboard the whole table reads the same way.", href: "#" },
 ];
 
 const NUMBERED_ITEMS = [
@@ -106,6 +120,18 @@ export default function DsSectionsPage() {
         title="A compact map of reusable ingredients"
         sub="The bento pattern is for overview, not decoration: one large idea plus supporting tiles that explain how the system holds together."
         items={BENTO_ITEMS}
+      />
+
+      <HubMap
+        id="hubmap"
+        surface="ink"
+        marker="08 · Hub map / nav"
+        ariaLabel="Hub map — navigational bento"
+        eyebrow="Hub map / nav"
+        title="One map into the deeper pages"
+        titleAccent="deeper"
+        sub="A navigational bento for hub pages: one feature route plus supporting tiles, each a real link that sends the reader deeper."
+        items={HUBMAP_ITEMS}
       />
 
       <FullStatement

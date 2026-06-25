@@ -56,6 +56,9 @@ export type { EditorialSplitProps } from "./EditorialSplit";
 export { QuietCta } from "./QuietCta";
 export type { QuietCtaProps } from "./QuietCta";
 
+export { HubMap } from "./HubMap";
+export type { HubMapProps, HubLink } from "./HubMap";
+
 export { ChipGrid } from "./ChipGrid";
 export type { ChipGridProps, ChipGridItem, ChipTone } from "./ChipGrid";
 
