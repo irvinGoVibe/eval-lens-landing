@@ -205,6 +205,11 @@
 @media (prefers-reduced-motion:reduce){
   .ds-canvas__bg--lobes-dark::before,.ds-canvas__bg--lobes-dark::after{animation:none;}
 }
+/* STATIC-ON modifier — `--lobes-dark` defaults to opacity:0 because it is built
+   to CROSSFADE in at a tone-flip seam. For a standalone always-dark zone (a group
+   of `surface="ink"` sections with NO flip), add `ds-zone__bg--on` to force it
+   visible without an inline style. (Used by the zone-background skill.) */
+.ds-zone__bg--on{opacity:1;}
 
 /* ── floating blobs layer — big organic PNG orbs positioned DOWN the page (one
    peeking per screen after the hero cluster) with autonomous drift (CanvasBlobs.tsx).
