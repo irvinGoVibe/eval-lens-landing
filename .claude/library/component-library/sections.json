@@ -21,7 +21,7 @@
     "reference_page": "/dev/ds-sections",
     "public_api_only": true,
     "canon_updated": "2026-06-22 (DS reframe)",
-    "gap_policy": "Missing DS section -> component-forge (extract clean DS, not a Lab wrapper/copy). Archetypes still component-api-gap (not exported via @/components/ds): 02, 05, 13, 14, 15. Promoted to clean DS in the barrel: 01 StatementHero, 04 EditorialSplit, 08 HubMap, 09 StatBand, 10 Numbered, 11 RiskControl, 12 QuietCta, 16 Faq."
+    "gap_policy": "Reusable DS-section forging is COMPLETE. 8 clean-DS extractions in @/components/ds: 01 StatementHero, 04 EditorialSplit, 08 HubMap, 09 StatBand, 10 Numbered, 11 RiskControl, 12 QuietCta, 16 Faq; plus 3 Lab aliases (03 PinnedSteps, 06 Gallery, 07 Bento). The remaining archetypes 02, 05, 13, 14, 15 are UNIQUE one-off blocks (classification=unique-oneoff) — deliberately NOT extracted; do NOT route them to component-forge."
   },
   "browser_qa": {
     "run": true,
@@ -210,11 +210,11 @@
       "consumption_readiness": {
         "status": "unavailable",
         "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+          "intentionally a UNIQUE one-off block — not extracted into a reusable DS component (decision: do not forge)"
         ],
         "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
+          "use the page-local Lab*/inline markup where it lives; not a reusable @/components/ds section"
         ],
         "forge_level": "forged"
       },
@@ -222,8 +222,8 @@
       "barrel_export": null,
       "source_status": "deprecated-substrate",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "unique-oneoff",
+      "notes": "Unique one-off block — deliberately NOT forged into clean DS. Not a gap; do not route to component-forge."
     },
     {
       "archetype_id": "03",
@@ -491,11 +491,11 @@
       "consumption_readiness": {
         "status": "unavailable",
         "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+          "intentionally a UNIQUE one-off block — not extracted into a reusable DS component (decision: do not forge)"
         ],
         "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
+          "use the page-local Lab*/inline markup where it lives; not a reusable @/components/ds section"
         ],
         "forge_level": "forged"
       },
@@ -503,8 +503,8 @@
       "barrel_export": null,
       "source_status": "deprecated-substrate",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "unique-oneoff",
+      "notes": "Unique one-off block — deliberately NOT forged into clean DS. Not a gap; do not route to component-forge."
     },
     {
       "archetype_id": "06",
@@ -1172,17 +1172,15 @@
           "density": "high"
         }
       },
-      "notes": [
-        "prices must come from finmodel v0.4 source of truth, not research doc (see memory pricing-source-of-truth)"
-      ],
+      "notes": "Unique one-off block — deliberately NOT forged into clean DS. Not a gap; do not route to component-forge.",
       "consumption_readiness": {
         "status": "unavailable",
         "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+          "intentionally a UNIQUE one-off block — not extracted into a reusable DS component (decision: do not forge)"
         ],
         "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
+          "use the page-local Lab*/inline markup where it lives; not a reusable @/components/ds section"
         ],
         "forge_level": "forged"
       },
@@ -1190,8 +1188,7 @@
       "barrel_export": null,
       "source_status": "deprecated-substrate",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "unique-oneoff"
     },
     {
       "archetype_id": "14",
@@ -1260,11 +1257,11 @@
       "consumption_readiness": {
         "status": "unavailable",
         "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+          "intentionally a UNIQUE one-off block — not extracted into a reusable DS component (decision: do not forge)"
         ],
         "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
+          "use the page-local Lab*/inline markup where it lives; not a reusable @/components/ds section"
         ],
         "forge_level": "forged"
       },
@@ -1272,8 +1269,8 @@
       "barrel_export": null,
       "source_status": "deprecated-substrate",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "unique-oneoff",
+      "notes": "Unique one-off block — deliberately NOT forged into clean DS. Not a gap; do not route to component-forge."
     },
     {
       "archetype_id": "15",
@@ -1292,20 +1289,20 @@
         "control": "hardcoded inline"
       },
       "status_detail": "NOT a forged component — still inline JSX in the catalog page. Renders fine but has no prop-driven API.",
-      "classification": "component-api-gap",
-      "route_to": "component-forge",
+      "classification": "unique-oneoff",
       "consumption_readiness": {
         "status": "unavailable",
         "reasons": [
-          "inline JSX, no export, no props"
+          "intentionally a UNIQUE one-off block — not extracted into a reusable DS component (decision: do not forge)"
         ],
         "allowed_consumers": [],
         "restrictions": [
-          "must be forged into LabVersus before page-composer can use it"
+          "use the page-local Lab*/inline markup where it lives; not a reusable @/components/ds section"
         ]
       },
       "public_name": "Versus",
-      "source_status": "inline (not forged)"
+      "source_status": "inline (not forged)",
+      "notes": "Unique one-off block — deliberately NOT forged into clean DS. Not a gap; do not route to component-forge."
     },
     {
       "archetype_id": "16",
