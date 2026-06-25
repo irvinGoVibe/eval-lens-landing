@@ -22,16 +22,86 @@
    Bento) are full-bleed accents — keep them OUTSIDE the canvas, else their
    backdrop overrides the shared one.
    ============================================================ */
-.ds-canvas{position:relative;isolation:isolate;}
+/* `.ds-zone` is the canonical name for this pattern; `.ds-canvas` stays a
+   working alias (so /dev/canvas-bg keeps running). Selectors are GROUPED across
+   both names, and the transparency rule uses :is() to cover bare `.band`,
+   `.band.soft` and `.band.ink` under either wrapper. See the "Tonal zones"
+   section below for the through-flip variant. */
+.ds-zone,
+.ds-canvas{position:relative;isolation:isolate;overflow-x:clip;}
+.ds-zone__bg,
 .ds-canvas__bg{position:absolute;inset:0;z-index:-1;pointer-events:none;}
 /* child sections drop their fill; tone/colour (incl. `.ink` descendant rules) stay */
-.ds-canvas .band.soft,
-.ds-canvas .band.ink{background:transparent;}
+:is(.ds-zone,.ds-canvas) .band,
+:is(.ds-zone,.ds-canvas) .band.soft,
+:is(.ds-zone,.ds-canvas) .band.ink{background:transparent;}
 /* …and their OWN backdrops (the per-section balls-glass fields used standalone)
-   are suppressed inside a canvas — the shared bg is the only one. */
-.ds-canvas .ds-hubmap:is(.soft,.light)::after,
-.ds-canvas .lab-bento:is(.soft,.light)::after,
-.ds-canvas .lab-gallery:is(.soft,.light)::after{background:none;}
+   are suppressed inside a zone/canvas — the shared bg is the only one. */
+:is(.ds-zone,.ds-canvas) .ds-hubmap:is(.soft,.light)::after,
+:is(.ds-zone,.ds-canvas) .lab-bento:is(.soft,.light)::after,
+:is(.ds-zone,.ds-canvas) .lab-gallery:is(.soft,.light)::after{background:none;}
+
+/* === Tonal zones (visual-layer-forge) ======================================
+   Formalises the "tonal zone" contract: a page is a stack of tonal ZONES.
+   Inside one zone the sections are TRANSPARENT over a single through-running
+   zone background; a tone change inside the zone is a BACKGROUND flip
+   light→dark. Transparency is a property of the ZONE wrapper (`.ds-zone`),
+   NOT of the section — `surface=light|ink` still only sets TONE (text colour),
+   which survives because `.band.ink`'s colour rules live in globals.css.
+
+   The default flip is pure CSS, driven by `--pin` (ScrollFX writes it on the
+   first [data-pin] driver: 0 at the very top → 1 after ~one viewport, then
+   holds). No GSAP. This reuses the proven approach POC'd in
+   web/src/app/dev/parallax-spike/parallax-spike.css — same two stacked FIXED
+   layers, same hero gradient stops, dark layer `opacity:var(--pin)`.
+
+   Markup of a flip zone (the dark layer crossfades in over the light base):
+     <main class="ds ds-zone ds-zone--flip">
+       <div class="ds-zone__bg ds-zone__bg--fixed ds-zone__bg--flip-light" aria-hidden></div>
+       <div class="ds-zone__bg ds-zone__bg--fixed ds-zone__bg--flip-dark is-dark" aria-hidden></div>
+       … light sections … <flip-driver [data-pin]> … ink sections …
+       <ScrollFX/>
+     </main>
+   ========================================================================== */
+
+/* fixed-viewport variant of the through-bg slot — used for the cross-zone
+   flip so the background reads as ONE continuous layer as content scrolls over
+   it (the per-zone, absolute `.ds-zone__bg` slot is unchanged). */
+.ds-zone__bg--fixed{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+
+/* a flip zone owns two stacked fixed layers (light base + dark on top). The
+   dark layer's opacity is the default CSS flip, driven by --pin (0 light → 1
+   dark, then held by ScrollFX). */
+.ds-zone--flip .ds-zone__bg--flip-dark{opacity:var(--pin,0);will-change:opacity;}
+
+/* light base — the EXACT hero gradient (.lab-hero__bg), stops verbatim from
+   parallax-spike (color-mix in oklab over hex/token endpoints — no raw
+   oklab() stops, which Lightning CSS in Next16 silently drops). */
+.ds-zone__bg--flip-light{
+  background:linear-gradient(
+    132deg,
+    color-mix(in oklab, var(--violet) 18%, var(--bg-soft)) 0%,
+    var(--bg-soft) 48%,
+    color-mix(in oklab, var(--cyan) 14%, var(--bg-soft)) 100%
+  );
+}
+/* dark layer — the hero INK gradient (.lab-hero.ink .lab-hero__bg) REVERSED
+   (132deg → 312deg) so it mirrors the light base, stops verbatim from
+   parallax-spike. Crossfades in via --pin. */
+.ds-zone__bg--flip-dark{
+  background:linear-gradient(
+    312deg,
+    color-mix(in oklab, var(--violet) 42%, var(--ink)) 0%,
+    var(--ink) 50%,
+    color-mix(in oklab, var(--cyan) 26%, var(--ink)) 100%
+  );
+}
+
+/* reduced motion — no crossfade: the zone settles statically into the final
+   DARK tone so ink-toned text stays legible without animation. */
+@media (prefers-reduced-motion:reduce){
+  .ds-zone--flip .ds-zone__bg--fixed.is-dark{opacity:1;}
+}
 
 /* ── LIGHT canvas background — the gallery-light gradient, ported verbatim from
    `.ds-sections .lab-gallery:not(.soft):not(.ink)`: three soft brand radials

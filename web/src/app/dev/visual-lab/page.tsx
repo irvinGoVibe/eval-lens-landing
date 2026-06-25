@@ -28,6 +28,26 @@ export default function VisualLabPage() {
           </div>
         </section>
 
+        {/* Pointer — tonal zones (separate route; its fixed through-bg is page-global) */}
+        <section className="band soft">
+          <div className="wrap">
+            <span className="eyebrow">
+              <span className="dot" aria-hidden="true"></span>
+              Layer · tonal zones
+            </span>
+            <h2 className="title">
+              Through-background <span className="grad-word">tonal zones</span>
+            </h2>
+            <p className="sub">
+              The zone contract (transparent DS sections over one through-running
+              background, default CSS light→dark flip on <code>--pin</code>) lives on its
+              own route — its <code>position:fixed</code> layers are page-global and can&apos;t
+              share a page with the stacked static demos here.{" "}
+              <a href="/dev/visual-lab/zones">Open the tonal-zones stand →</a>
+            </p>
+          </div>
+        </section>
+
         {/* Demo A — bg-ink-ambient-glow */}
         <section className="band ink bg-ink-ambient-glow">
           <div className="bg-ink-ambient-glow__layer" aria-hidden="true"></div>

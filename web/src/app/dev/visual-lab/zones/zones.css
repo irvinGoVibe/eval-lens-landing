@@ -1,0 +1,15 @@
+/* /dev/visual-lab/zones — stand-only styles for the tonal-zone flip driver.
+   The flip primitives themselves live in components/ds/ds.css (.ds-zone*).
+   This file only sizes the [data-pin] driver that carries --pin for the two
+   fixed through-bg layers it wraps. Mirrors the parallax-spike POC driver:
+   first element, ~2× viewport tall, absolute so it reserves no flow space and
+   the transparent sections scroll over the fixed layers. */
+.visual-lab-zones .ds-zone__flip-driver{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:200vh;
+  pointer-events:none;
+  z-index:0;
+}
