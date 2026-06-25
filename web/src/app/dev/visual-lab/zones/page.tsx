@@ -76,6 +76,12 @@ export default function VisualLabZonesPage() {
         titleLead="The flip is a property of the"
         titleAccent="zone"
         sub="Sections stay transparent; the zone wrapper owns the two stacked backgrounds, so changing tone is a background crossfade — not a per-section repaint."
+        media={{
+          ratio: "4/3",
+          label: "Diagram · zone background ownership · 4:3",
+          hint: "Two stacked fixed layers behind transparent sections; dark layer opacity = --pin",
+          ariaLabel: "Zone background ownership diagram",
+        }}
         points={[
           { title: "Transparent sections", body: "The shared background runs continuously behind every band." },
           { title: "Tone via surface", body: "surface=light keeps dark-on-light text; the colour survives the transparency." },
@@ -98,6 +104,12 @@ export default function VisualLabZonesPage() {
         titleLead="Past the seam, the same sections read"
         titleAccent="dark"
         sub="No new background here: the through-bg dark layer has crossfaded in. These sections are still transparent — they just carry the ink tone, so light text lands on the dark base."
+        media={{
+          ratio: "4/3",
+          label: "Diagram · through-bg flip on --pin · 4:3",
+          hint: "Dark layer opacity crossfades 0→1 over one viewport, then holds",
+          ariaLabel: "Through-background flip diagram",
+        }}
         points={[
           { title: "Default CSS flip", body: "The dark layer's opacity is var(--pin) — driven by ScrollFX, no GSAP." },
           { title: "Holds dark", body: "After one viewport the pin clamps to 1, so the dark base holds for the rest of the zone." },
