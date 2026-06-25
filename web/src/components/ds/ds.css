@@ -73,6 +73,68 @@
   .ds-canvas__bg--lobes::before,.ds-canvas__bg--lobes::after{animation:none;}
 }
 
+/* ── DARK canvas background — the PAIRED counterpart of `--lobes` (roadmap:
+   "two gradients light/dark"). PURE CSS (no video): a few soft brand "вспышки"
+   that slowly FLOAT and BREATHE in the centre over a cool-violet→black base,
+   reusing the dark-Bento card motion language — `ds-glass__orbit` drift + a
+   brightness/opacity breathe like `lab-bento-spot-pulse` (the flash). The spots
+   live near the centre so the movement reads "a little, in the centre"; the
+   black `::after` frame keeps the top + bottom edges pure black. mix-blend:
+   screen so they glow over the dark floor. Palette stays violet/lavender/cyan/
+   blue — no aqua, no green. Markup (spots are children of the slot):
+       <div class="ds-canvas__bg ds-canvas__bg--lobes" aria-hidden></div>
+       <div class="ds-canvas__bg ds-canvas__bg--lobes-dark" aria-hidden>
+         <span class="ds-canvas__spark ds-canvas__spark--1"></span>
+         <span class="ds-canvas__spark ds-canvas__spark--2"></span>
+         <span class="ds-canvas__spark ds-canvas__spark--3"></span>
+       </div>
+   Stacked OVER `--lobes` and crossfaded in via `opacity` (the tone-flip seam
+   sets it 0→1, then holds dark). ── */
+.ds-canvas__bg--lobes-dark{
+  position:fixed;inset:0;overflow:hidden;opacity:0;will-change:opacity;
+  background:linear-gradient(168deg,#0c0b18 0%,#08080f 55%,#050507 100%);
+}
+.ds-canvas__spark{
+  position:absolute;border-radius:50%;pointer-events:none;
+  mix-blend-mode:screen;filter:blur(70px);
+  will-change:transform,opacity,filter;
+}
+/* blue — centre-left */
+.ds-canvas__spark--1{
+  width:48vmin;height:48vmin;left:24%;top:30%;
+  background:radial-gradient(circle, rgba(70,140,255,.55), transparent 70%);
+  animation:ds-canvas-spark-flash 9s ease-in-out infinite, ds-glass-orbit 18s ease-in-out infinite;
+}
+/* cyan — centre-right, drifting the other way */
+.ds-canvas__spark--2{
+  width:42vmin;height:42vmin;left:58%;top:40%;
+  background:radial-gradient(circle, rgba(46,197,232,.50), transparent 72%);
+  animation:ds-canvas-spark-flash 11s ease-in-out infinite -4s, ds-glass-orbit 22s ease-in-out infinite reverse;
+}
+/* violet — centre */
+.ds-canvas__spark--3{
+  width:40vmin;height:40vmin;left:42%;top:34%;
+  background:radial-gradient(circle, rgba(123,92,246,.50), transparent 72%);
+  animation:ds-canvas-spark-flash 13s ease-in-out infinite -7s, ds-glass-orbit 26s ease-in-out infinite;
+}
+/* the "flash" — a gentle brightness + opacity breathe (cf. lab-bento-spot-pulse):
+   each spot blooms up and recedes, so they appear/float rather than sit static */
+@keyframes ds-canvas-spark-flash{
+  0%,100%{ opacity:.12; filter:blur(78px) brightness(.9); }
+  50%    { opacity:.52; filter:blur(64px) brightness(1.2); }
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-canvas__spark{animation:none !important;opacity:.3;}
+}
+/* black frame top + bottom — keeps both edges pure black */
+.ds-canvas__bg--lobes-dark::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,#050507 0%,rgba(5,5,7,0) 26%,rgba(5,5,7,0) 66%,#060608 100%);
+}
+@media (prefers-reduced-motion:reduce){
+  .ds-canvas__bg--lobes-dark::before,.ds-canvas__bg--lobes-dark::after{animation:none;}
+}
+
 /* ── floating blobs layer — big organic PNG orbs positioned DOWN the page (one
    peeking per screen after the hero cluster) with autonomous drift (CanvasBlobs.tsx).
    Absolute so scroll brings each into view; above the gradient, behind content

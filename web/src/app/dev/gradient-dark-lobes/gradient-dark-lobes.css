@@ -1,0 +1,240 @@
+/* ============================================================================
+   dev/gradient-dark-lobes — focused stand for tuning the PAIRED DARK "lobes"
+   canvas gradient (the CSS counterpart of `.ds-canvas__bg--lobes`). Each panel
+   is one full-viewport candidate with a sample heading + glass card so we judge
+   BOTH the gradient and light-on-dark legibility. The winner is promoted into
+   `.ds-canvas__bg--lobes-dark` in components/ds/ds.css.
+
+   Rules: cool-violet→black tonal base (NOT flat near-black); palette violet /
+   lavender / cyan / blue — no aqua, no green. Scoped under `.gdl`. Reuses the
+   global drift/shimmer keyframes (ds-canvas-drift-a/b, ds-canvas-shimmer) from
+   ds.css. Throwaway dev page.
+   ========================================================================== */
+
+.gdl {
+  scroll-snap-type: y mandatory;
+  color: var(--fg-on-dark);
+}
+.gdl-panel {
+  position: relative;
+  min-height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* ── shared bg scaffold — fixed-to-panel full-bleed; the two pseudo layers carry
+   the drifting brand radials (screen-blended glows over the dark base). ──────*/
+.gdl-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.gdl-bg::before,
+.gdl-bg::after {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  pointer-events: none;
+  will-change: transform, filter;
+  mix-blend-mode: screen;
+}
+.gdl-bg::before {
+  animation: ds-canvas-drift-a 18s ease-in-out infinite alternate, ds-canvas-shimmer 8s ease-in-out infinite alternate;
+}
+.gdl-bg::after {
+  animation: ds-canvas-drift-b 24s ease-in-out infinite alternate, ds-canvas-shimmer 11s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gdl-bg::before, .gdl-bg::after { animation: none; }
+}
+
+/* ============================================================================
+   V2 derivatives — refining the chosen "Aurora top" base. All share the same
+   scaffold: a top→black vertical overlay + cool-violet→black base, the top
+   ribbon in ::before (screen glows), a faint mid wash in ::after so the centre
+   isn't dead-flat. They differ in how the brand triad spreads across the top,
+   ribbon saturation, and how clean/black the floor reads.
+   ========================================================================== */
+
+/* ── V2-A · Balanced triad — violet (left) ↔ cyan (right) ↔ blue (centre)
+   spread across the top for the full brand spectrum; clean black floor. ─────*/
+.gdl-bg--v2a {
+  background:
+    linear-gradient(180deg, rgba(6, 6, 8, 0) 38%, rgba(6, 6, 8, 0.92) 100%),
+    linear-gradient(168deg, #15132a 0%, #0c0c16 55%, #060608 100%);
+}
+.gdl-bg--v2a::before {
+  background:
+    radial-gradient(64% 42% at 22% 14%, rgba(123, 92, 246, 0.52), transparent 60%),
+    radial-gradient(60% 40% at 80% 16%, rgba(46, 197, 232, 0.40), transparent 60%),
+    radial-gradient(70% 38% at 50% 8%, rgba(59, 130, 246, 0.34), transparent 62%);
+}
+.gdl-bg--v2a::after {
+  background:
+    radial-gradient(60% 40% at 36% 40%, rgba(169, 155, 255, 0.18), transparent 64%),
+    radial-gradient(54% 36% at 72% 44%, rgba(123, 92, 246, 0.18), transparent 64%);
+}
+
+/* ── V2-B · Richer violet — punchier, warmer-violet ribbon, deepest brand
+   presence up top; cyan kept as a mid-left accent. ──────────────────────────*/
+.gdl-bg--v2b {
+  background:
+    linear-gradient(180deg, rgba(6, 6, 8, 0) 40%, rgba(6, 6, 8, 0.92) 100%),
+    linear-gradient(168deg, #1a1530 0%, #0e0d1a 54%, #060608 100%);
+}
+.gdl-bg--v2b::before {
+  filter: saturate(1.12);
+  background:
+    radial-gradient(72% 46% at 28% 12%, rgba(123, 92, 246, 0.62), transparent 60%),
+    radial-gradient(58% 40% at 74% 18%, rgba(59, 130, 246, 0.40), transparent 60%),
+    radial-gradient(50% 34% at 90% 10%, rgba(169, 155, 255, 0.34), transparent 58%);
+}
+.gdl-bg--v2b::after {
+  background:
+    radial-gradient(56% 38% at 16% 42%, rgba(46, 197, 232, 0.20), transparent 64%),
+    radial-gradient(50% 34% at 80% 48%, rgba(123, 92, 246, 0.20), transparent 64%);
+}
+
+/* ── V2-C · Wide calm — a single broad low-opacity brand band held in the
+   UPPER-MIDDLE, framed by a CLEAN BLACK top AND bottom. The quiet premium read;
+   black at both edges so the band floats. The band lives in ::before (screen
+   glow); the black frame is ::after (normal blend, static) painted OVER it so
+   the screen glow can't leak to the edges. ──────────────────────────────────*/
+.gdl-bg--v2c {
+  background: linear-gradient(168deg, #0c0b18 0%, #08080f 55%, #050507 100%);
+}
+.gdl-bg--v2c::before {
+  background:
+    radial-gradient(92% 36% at 42% 42%, rgba(123, 92, 246, 0.42), transparent 62%),
+    radial-gradient(74% 30% at 74% 46%, rgba(46, 197, 232, 0.26), transparent 62%);
+}
+.gdl-bg--v2c::after {
+  /* black frame top + bottom — keeps both edges pure black, mid band glows */
+  mix-blend-mode: normal;
+  animation: none;
+  background: linear-gradient(
+    180deg,
+    #050507 0%,
+    rgba(5, 5, 7, 0) 30%,
+    rgba(5, 5, 7, 0) 62%,
+    #060608 100%
+  );
+}
+
+/* ── V5 · CSS sparks — soft brand "вспышки" that slowly FLOAT + BREATHE in the
+   centre over black, reusing the dark-Bento motion (orbit drift + pulse). No
+   video. Mirrors the production `.ds-canvas__bg--lobes-dark`. ────────────────*/
+.gdl-bg--sparks { background: linear-gradient(168deg, #0c0b18 0%, #08080f 55%, #050507 100%); }
+.gdl-spark {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(70px);
+  will-change: transform, opacity, filter;
+}
+.gdl-spark--1 {
+  width: 48vmin; height: 48vmin; left: 24%; top: 30%;
+  background: radial-gradient(circle, rgba(70, 140, 255, 0.55), transparent 70%);
+  animation: ds-canvas-spark-flash 9s ease-in-out infinite, ds-glass-orbit 18s ease-in-out infinite;
+}
+.gdl-spark--2 {
+  width: 42vmin; height: 42vmin; left: 58%; top: 40%;
+  background: radial-gradient(circle, rgba(46, 197, 232, 0.50), transparent 72%);
+  animation: ds-canvas-spark-flash 11s ease-in-out infinite -4s, ds-glass-orbit 22s ease-in-out infinite reverse;
+}
+.gdl-spark--3 {
+  width: 40vmin; height: 40vmin; left: 42%; top: 34%;
+  background: radial-gradient(circle, rgba(123, 92, 246, 0.50), transparent 72%);
+  animation: ds-canvas-spark-flash 13s ease-in-out infinite -7s, ds-glass-orbit 26s ease-in-out infinite;
+}
+.gdl-bg--sparks::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* override the shared scaffold's screen-blend + drift so the black frame
+     actually darkens the edges (screen-blended black would be a no-op) */
+  mix-blend-mode: normal;
+  animation: none;
+  background: linear-gradient(180deg, #050507 0%, rgba(5, 5, 7, 0) 26%, rgba(5, 5, 7, 0) 66%, #060608 100%);
+}
+
+/* ── sample content — judges legibility of light text + a glass card ────────*/
+.gdl-sample {
+  position: relative;
+  z-index: 1;
+  width: min(52rem, 88vw);
+  text-align: center;
+  padding: 2rem;
+}
+.gdl-label {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lavender);
+  border: 1px solid color-mix(in oklab, var(--lavender) 32%, transparent);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  margin-bottom: 1.6rem;
+}
+.gdl-eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--fg-on-dark) 62%, transparent);
+  margin: 0 0 0.9rem;
+}
+.gdl-h {
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  margin: 0;
+  text-wrap: balance;
+}
+.gdl-accent {
+  background: var(--lens);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.gdl-sub {
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  line-height: 1.5;
+  margin: 1.1rem auto 0;
+  max-width: 36rem;
+  color: color-mix(in srgb, var(--fg-on-dark) 80%, transparent);
+}
+/* glass sample — frosts the gradient behind, checks card legibility */
+.gdl-card {
+  margin: 2rem auto 0;
+  max-width: 30rem;
+  padding: 1.3rem 1.5rem;
+  border-radius: 18px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.6);
+}
+.gdl-card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg-on-dark);
+}
+.gdl-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--fg-on-dark) 74%, transparent);
+}

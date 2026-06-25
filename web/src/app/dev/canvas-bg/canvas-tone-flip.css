@@ -1,0 +1,107 @@
+/* ============================================================================
+   canvas-bg tone-flip seam — scoped under `.cbg-flip`.
+   Ports the /dev/scroll-transitions tone-flip ONTO the shared canvas: instead of
+   local light/dark layers, the GLOBAL `.ds-canvas__bg--lobes-dark` crossfades in
+   over `--lobes` (the whole through-background flips light→dark once, then holds).
+   What lives HERE is only the seam-local extras: the pinned transition section,
+   the brand BRIDGE + GLOW that the flip passes through (no dirty grey), and the
+   detached gallery head (GSAP Flip shared element).
+
+   Colours derive ONLY from existing tokens / the approved gradient-showcase
+   bridge. Do NOT import elsewhere.
+   ========================================================================== */
+
+/* ── transition section — 1 viewport tall; ScrollTrigger pins it + adds scroll
+   length. Transparent: the real through-background (light/dark lobes) shows. ──*/
+.cbg-flip .cbg-tf {
+  position: relative;
+  height: 100vh;
+}
+.cbg-flip .cbg-tf-pin {
+  position: relative;
+  height: 100vh;
+  overflow: clip;
+}
+
+/* seam-local bloom layers — opacity driven by the GSAP timeline. */
+.cbg-flip .cbg-tf-bg {
+  position: absolute;
+  inset: 0;
+  will-change: opacity;
+  pointer-events: none;
+}
+/* mid = the BRIDGE (gradient-showcase): a saturated brand gradient the flip
+   passes THROUGH — lavender → violet → deep-blue → near-black, plus violet/cyan
+   radials. Peaks mid-transition so light → brand colour → dark, never grey. */
+.cbg-flip .cbg-tf-bg--mid {
+  z-index: 1;
+  inset: -18%;
+  opacity: 0;
+  filter: saturate(1.15);
+  background:
+    radial-gradient(ellipse at 32% 44%, rgba(108, 76, 241, 0.98) 0%, rgba(169, 155, 255, 0.72) 24%, transparent 55%),
+    radial-gradient(ellipse at 72% 58%, rgba(46, 197, 232, 0.82) 0%, rgba(54, 224, 194, 0.34) 28%, transparent 58%),
+    linear-gradient(150deg, #d8d0ff 0%, #6c4cf1 35%, #303867 68%, #10131e 100%);
+  transform: scale(1.08) rotate(-2deg);
+}
+/* glow-wave — a soft blurred brand glow that brightens the midpoint. */
+.cbg-flip .cbg-tf-bg--glow {
+  z-index: 2;
+  left: -15%;
+  right: -15%;
+  top: 32%;
+  bottom: auto;
+  height: 36%;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(169, 155, 255, 0.92) 0%,
+    rgba(108, 76, 241, 0.72) 28%,
+    rgba(46, 197, 232, 0.38) 48%,
+    transparent 72%
+  );
+  filter: blur(42px);
+  transform: rotate(-4deg) scale(1.08);
+}
+
+/* ── detached gallery head (GSAP Flip shared element) ───────────────────────
+   The dark gallery's real `.head` floats to viewport centre during the flip.
+   Class toggle (NOT reparent) so it keeps its `.lab-gallery`-scoped styles; Flip
+   animates the layout delta. position:fixed + !important to beat the section's
+   data-reveal `transform:none`. Colour forced via --tf-ink so the (initially
+   light) gradient stays readable, then inverts dark→white as the dark lobes
+   arrive. The lens accent (`.grad-word`) is left untouched. */
+.cbg-flip .tf-detached {
+  position: fixed !important;
+  top: 50% !important;
+  transform: translateY(calc(-50% + var(--tf-y, 0) * 1px));
+  z-index: 50;
+  --tf-ink: #1d1d1f;
+}
+.cbg-flip .tf-detached .eyebrow {
+  color: var(--tf-ink) !important;
+}
+/* title + sub: the lens gradient sits BEHIND the text (background-clip:text), so
+   colour riding dark → transparent → white makes the text IGNITE into the lens
+   gradient at the midpoint, then resolve to white. */
+.cbg-flip .tf-detached :is(h2, .sub) {
+  background-image: var(--lens);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--tf-title) !important;
+}
+/* accent word — always lens, stays "marked" through the flip AND docked. */
+.cbg-flip .lab-gallery .head .grad-word,
+.cbg-flip .tf-detached .grad-word {
+  background: var(--lens);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+/* ── reduced motion — show the dark state, head stays docked in the gallery ──*/
+@media (prefers-reduced-motion: reduce) {
+  .ds-canvas__bg--lobes-dark {
+    opacity: 1;
+  }
+}

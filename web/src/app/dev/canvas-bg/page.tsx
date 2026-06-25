@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Footer } from "@/components/Footer";
 import { CanvasBlobs } from "./CanvasBlobs";
+import { CanvasToneFlip } from "./CanvasToneFlip";
+import "./canvas-tone-flip.css";
 import {
   StatementHero,
   HubMap,
@@ -53,8 +55,15 @@ const PINNED_STEPS = [
 export default function CanvasBgPage() {
   return (
     <main className="canvas-bg-demo section-lab ds ds-canvas">
-      {/* one shared background for the whole group */}
+      {/* one shared background for the whole group: light lobes base + its paired
+          dark counterpart stacked on top (opacity 0 → the tone-flip seam crossfades
+          it in, flipping the WHOLE through-background light→dark, then holds dark) */}
       <div className="ds-canvas__bg ds-canvas__bg--lobes" aria-hidden="true" />
+      <div className="ds-canvas__bg ds-canvas__bg--lobes-dark" aria-hidden="true">
+        <span className="ds-canvas__spark ds-canvas__spark--1" />
+        <span className="ds-canvas__spark ds-canvas__spark--2" />
+        <span className="ds-canvas__spark ds-canvas__spark--3" />
+      </div>
       {/* big floating blobs flying across the page (GSAP scroll-driven) */}
       <CanvasBlobs />
 
@@ -120,6 +129,10 @@ export default function CanvasBgPage() {
           ariaLabel: "A track of five steps whose nodes light up in sequence",
         }}
       />
+
+      {/* TONE-FLIP seam — flips the through-background light→dark; the dark
+          gallery below hands its own heading up into the flip and redocks it */}
+      <CanvasToneFlip items={GALLERY_ITEMS} />
 
       {/* cinematic transition — self-contained full-bleed video (own backdrop) */}
       <section
