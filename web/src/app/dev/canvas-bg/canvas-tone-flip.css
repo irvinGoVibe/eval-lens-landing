@@ -5,7 +5,7 @@
    over `--lobes` (the whole through-background flips light→dark once, then holds).
    What lives HERE is only the seam-local extras: the pinned transition section,
    the brand BRIDGE + GLOW that the flip passes through (no dirty grey), and the
-   detached gallery head (GSAP Flip shared element).
+   fixed visual heading that hands off to the real gallery head at the end.
 
    Colours derive ONLY from existing tokens / the approved gradient-showcase
    bridge. Do NOT import elsewhere.
@@ -64,27 +64,40 @@
   transform: rotate(-4deg) scale(1.08);
 }
 
-/* ── detached gallery head (GSAP Flip shared element) ───────────────────────
-   The dark gallery's real `.head` floats to viewport centre during the flip.
-   Class toggle (NOT reparent) so it keeps its `.lab-gallery`-scoped styles; Flip
-   animates the layout delta. position:fixed + !important to beat the section's
-   data-reveal `transform:none`. Colour forced via --tf-ink so the (initially
-   light) gradient stays readable, then inverts dark→white as the dark lobes
-   arrive. The lens accent (`.grad-word`) is left untouched. */
-.cbg-flip .tf-detached {
-  position: fixed !important;
-  top: 50% !important;
-  transform: translateY(calc(-50% + var(--tf-y, 0) * 1px));
+/* ── transition heading overlay ─────────────────────────────────────────────
+   This is the ONLY animated heading. The real LabGallery head remains in its
+   normal layout slot and is revealed only after the overlay reaches it. */
+.cbg-flip .cbg-tf-flyer {
+  position: fixed;
+  left: 50vw;
+  top: 50%;
+  width: min(760px, calc(100vw - (var(--gutter) * 2)));
+  max-width: calc(100vw - (var(--gutter) * 2));
+  transform: translate3d(-50%, calc(-50% + var(--tf-y, 0) * 1px), 0);
   z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   --tf-ink: #1d1d1f;
+  --tf-title: #1d1d1f;
+  will-change: transform, opacity;
 }
-.cbg-flip .tf-detached .eyebrow {
+.cbg-flip .cbg-tf-flyer .head {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+.cbg-flip .cbg-tf-flyer .eyebrow {
   color: var(--tf-ink) !important;
+}
+.cbg-flip .cbg-tf-flyer .title {
+  font-size: clamp(40px, 7vw, 84px);
+  letter-spacing: -.03em;
 }
 /* title + sub: the lens gradient sits BEHIND the text (background-clip:text), so
    colour riding dark → transparent → white makes the text IGNITE into the lens
    gradient at the midpoint, then resolve to white. */
-.cbg-flip .tf-detached :is(h2, .sub) {
+.cbg-flip .cbg-tf-flyer :is(h2, .sub) {
   background-image: var(--lens);
   -webkit-background-clip: text;
   background-clip: text;
@@ -92,7 +105,7 @@
 }
 /* accent word — always lens, stays "marked" through the flip AND docked. */
 .cbg-flip .lab-gallery .head .grad-word,
-.cbg-flip .tf-detached .grad-word {
+.cbg-flip .cbg-tf-flyer .grad-word {
   background: var(--lens);
   -webkit-background-clip: text;
   background-clip: text;

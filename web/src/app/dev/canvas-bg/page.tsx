@@ -118,6 +118,7 @@ export default function CanvasBgPage() {
 
       <PinnedSteps
         surface="light"
+        ariaLabel="Pinned multi-screen process"
         eyebrow="Pinned multi-screen"
         title={{ line1: "One fixed path,", line2: "five steps", line2Accent: "in sequence" }}
         sub="A tall pinned stage holds while the numbered steps light up one by one as you scroll."
