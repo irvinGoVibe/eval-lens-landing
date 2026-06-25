@@ -85,12 +85,13 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
         const centerInGallery = headRect.top - galleryRect.top + headRect.height / 2;
         return Math.round(centerInGallery - window.innerHeight / 2);
       };
+      const measureEntranceY = () => Math.max(96, Math.round(window.innerHeight * 0.2));
 
       hideDockedHead();
       gsap.set(flyer, {
         "--tf-ink": fgDark,
         "--tf-title": fgDark,
-        "--tf-y": () => Math.round(window.innerHeight * 0.42),
+        "--tf-y": () => measureEntranceY(),
         autoAlpha: 0,
       });
 
@@ -100,8 +101,7 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
         return;
       }
 
-      let tl: gsap.core.Timeline | undefined;
-      tl = gsap.timeline({
+      const tl = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: {
           trigger: seam,
@@ -110,6 +110,13 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
           pin: true,
           pinSpacing: false,
           scrub: true,
+          snap: {
+            snapTo: (_value, self) => (self?.direction === -1 ? 0 : 1),
+            duration: { min: 0.72, max: 1.15 },
+            delay: 0,
+            ease: "power2.inOut",
+            inertia: false,
+          },
           invalidateOnRefresh: true,
           onEnter: (self) => {
             hideDockedHead();
@@ -145,11 +152,11 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
         .addLabel("heading-enter", 0)
         .fromTo(
           flyer,
-          { "--tf-y": () => Math.round(window.innerHeight * 0.42) },
-          { "--tf-y": 0, duration: 0.28 },
+          { "--tf-y": () => measureEntranceY() },
+          { "--tf-y": 0, duration: 0.36 },
           "heading-enter",
         )
-        .addLabel("background-transition", 0.34);
+        .addLabel("background-transition", 0.48);
 
       // the GLOBAL through-background flip: dark lobes crossfade in over light —
       // this is the motion the reader sees while the heading holds at centre.
@@ -168,7 +175,7 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
         // title + sub IGNITE: dark → transparent (lens shows) → white; accent stays lens.
         .to(flyer, { "--tf-title": "transparent", duration: 0.12, ease: "none" }, "background-transition+=0.1")
         .to(flyer, { "--tf-title": fgLight, duration: 0.18, ease: "none" }, "background-transition+=0.26")
-        .addLabel("heading-release", 0.82)
+        .addLabel("heading-release", 0.88)
         .to(
           flyer,
           {
