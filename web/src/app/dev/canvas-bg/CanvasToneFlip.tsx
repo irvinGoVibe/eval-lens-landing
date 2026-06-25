@@ -70,10 +70,10 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
       }
 
       const startY = Math.round(window.innerHeight * 0.42); // starts this far BELOW centre
-      const dockY = Math.round(window.innerHeight * 0.3); // travels this far DOWN toward its dock
 
       let detached = false;
       let autoPlayed = false; // guards the one-shot auto-scroll per pass
+      let autoScrolling = false; // true while the take-over scroll is animating
 
       // detach is INSTANT — the vertical travel is scrub-driven (--tf-y). Lock
       // width/left so going position:fixed doesn't shrink-to-fit.
@@ -94,10 +94,34 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
         head.classList.remove("tf-detached");
         head.style.removeProperty("width");
         head.style.removeProperty("left");
+        // calm settle, NO overshoot — `back.out` overshot the slot and snapped
+        // back, which read as the heading wobbling (most visible on reverse).
         Flip.from(state, {
-          duration: 0.85,
-          ease: "back.out(1.5)",
+          duration: 0.7,
+          ease: "power2.out",
           onComplete: () => gsap.set(head, { clearProps: "--tf-ink,--tf-title" }),
+        });
+      };
+
+      // Advance to the gallery and dock the head ONCE it has arrived. The head
+      // holds at viewport centre the whole way down; only when the gallery is in
+      // place (its head slot near the top) does it dock UP into it. This is the
+      // ONLY path that docks going forward — never an in-place redock at the pin
+      // end, where the gallery is still below the fold and the head would be
+      // flung DOWN out of view. Idempotent via the `autoScrolling` guard.
+      const advanceAndDock = () => {
+        if (autoScrolling || !detached) return;
+        autoPlayed = true;
+        autoScrolling = true;
+        gsap.to(window, {
+          scrollTo: { y: galleryEl, offsetY: 0, autoKill: false },
+          duration: 1.0,
+          ease: "power2.inOut",
+          overwrite: true,
+          onComplete: () => {
+            autoScrolling = false;
+            redock();
+          },
         });
       };
 
@@ -112,25 +136,26 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
           invalidateOnRefresh: true,
           onEnter: detach,
           onEnterBack: detach,
-          // AUTO-PLAY: once the heading reaches centre (~0.34) anchor-scroll the
-          // rest to the gallery, so the page rides down WITH the heading.
+          // AUTO-PLAY: as soon as the heading has risen into view and the reader
+          // is moving DOWN, take over and anchor-scroll the rest to the gallery so
+          // the transition rides through to the next block in one motion (no long
+          // manual scrub of the 2-screen pin). Fires EARLY (~0.18) so it engages
+          // promptly. Direction-gated to `=== 1` only — never auto-scroll while the
+          // reader is going back UP (that fought the reverse scrub and made the
+          // heading shudder).
           onUpdate: (self) => {
-            if (!autoPlayed && self.direction === 1 && self.progress >= 0.34) {
-              autoPlayed = true;
-              gsap.to(window, {
-                scrollTo: { y: galleryEl, offsetY: 0, autoKill: false },
-                duration: 1.1,
-                ease: "power2.inOut",
-                overwrite: true,
-              });
-            } else if (self.progress < 0.25) {
+            if (!autoPlayed && self.direction === 1 && self.progress >= 0.18) {
+              advanceAndDock();
+            } else if (self.progress < 0.12) {
               autoPlayed = false; // re-arm once scrolled back near the start
             }
           },
-          onLeave: () => {
-            autoPlayed = true;
-            redock();
-          },
+          // If the reader scrubbed all the way to the pin end without the early
+          // take-over firing (e.g. trackpad inertia flickered the direction past
+          // the 0.18 gate), DON'T redock in place — the gallery is below the fold
+          // here and the head would be flung down. Anchor-scroll it home instead;
+          // advanceAndDock is a no-op if the take-over is already running.
+          onLeave: advanceAndDock,
           onLeaveBack: () => {
             autoPlayed = false;
             redock();
@@ -138,28 +163,37 @@ export function CanvasToneFlip({ items }: { items: GalleryItem[] }) {
         },
       });
 
-      tl
-        // heading rides UP from below into centre — quick, on the LIGHT lobes (0→0.3)…
-        .fromTo(head, { "--tf-y": startY }, { "--tf-y": 0, duration: 0.3 }, 0)
-        // …then immediately starts driving DOWN — STILL light — and the flip catches up.
-        .to(head, { "--tf-y": dockY, duration: 0.6, ease: "power1.in" }, 0.34);
+      // The heading rises to centre on the light lobes (0 → RISE_END) and then
+      // HOLDS there for the whole flip — it must NOT travel down out of view while
+      // the background changes. The only motion during the flip is the background
+      // (dark lobes cross-fade) and the heading's own colour invert; the heading
+      // itself only leaves centre at the very end, when it docks UP into the
+      // arrived gallery (redock, on the take-over scroll's onComplete).
+      const RISE_END = 0.3;
+      const SYNC = 0.4; // background flip begins here, heading staying centred
+      const SYNC_DUR = 0.5;
 
-      // the GLOBAL through-background flip: dark lobes crossfade in over light.
+      tl
+        // heading rides UP from below into centre, then stays put (no descent).
+        .fromTo(head, { "--tf-y": startY }, { "--tf-y": 0, duration: RISE_END }, 0);
+
+      // the GLOBAL through-background flip: dark lobes crossfade in over light —
+      // this is the motion the reader sees while the heading holds at centre.
       if (darkBg) {
-        tl.fromTo(darkBg, { opacity: 0 }, { opacity: 1, duration: 0.45 }, 0.5);
+        tl.fromTo(darkBg, { opacity: 0 }, { opacity: 1, duration: SYNC_DUR }, SYNC);
       }
 
       tl
-        // BRIDGE + GLOW bloom — peaks mid-flip so light → brand colour → dark.
-        .fromTo(".cbg-tf-bg--mid", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.34)
-        .to(".cbg-tf-bg--mid", { opacity: 0, duration: 0.3 }, 0.62)
-        .fromTo(".cbg-tf-bg--glow", { opacity: 0 }, { opacity: 1, duration: 0.28 }, 0.36)
-        .to(".cbg-tf-bg--glow", { opacity: 0, duration: 0.28 }, 0.62)
-        // eyebrow: plain dark → white (late, once descending into the dark)
-        .to(head, { "--tf-ink": fgLight, duration: 0.22, ease: "none" }, 0.6)
+        // BRIDGE + GLOW bloom across the same window → light → brand colour → dark.
+        .fromTo(".cbg-tf-bg--mid", { opacity: 0 }, { opacity: 1, duration: 0.26 }, SYNC)
+        .to(".cbg-tf-bg--mid", { opacity: 0, duration: 0.3 }, SYNC + 0.26)
+        .fromTo(".cbg-tf-bg--glow", { opacity: 0 }, { opacity: 1, duration: 0.24 }, SYNC + 0.02)
+        .to(".cbg-tf-bg--glow", { opacity: 0, duration: 0.28 }, SYNC + 0.26)
+        // eyebrow: plain dark → white, mid-descent as the dark arrives
+        .to(head, { "--tf-ink": fgLight, duration: 0.2, ease: "none" }, SYNC + 0.18)
         // title + sub IGNITE: dark → transparent (lens shows) → white; accent stays lens.
-        .to(head, { "--tf-title": "transparent", duration: 0.12, ease: "none" }, 0.54)
-        .to(head, { "--tf-title": fgLight, duration: 0.16, ease: "none" }, 0.66);
+        .to(head, { "--tf-title": "transparent", duration: 0.12, ease: "none" }, SYNC + 0.12)
+        .to(head, { "--tf-title": fgLight, duration: 0.18, ease: "none" }, SYNC + 0.28);
 
       ScrollTrigger.refresh();
     },
