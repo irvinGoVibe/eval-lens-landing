@@ -41,6 +41,12 @@ export type CinemaProps = {
   /** The headline knocked out of the scrim — media shows through the letters. */
   headline: string;
   /**
+   * Desktop (landscape) knockout lines: wrap the headline across multiple lines.
+   * Defaults to `[headline]` (single line). With >1 line the copy drops lower so
+   * it clears the taller knockout.
+   */
+  lines?: string[];
+  /**
    * Mobile (portrait) knockout lines: the headline wrapped to ≤N lines so the
    * portrait slice doesn't crop it. Defaults to `[headline]` (single line).
    */
@@ -73,6 +79,7 @@ export function Cinema({
   surface = "ink",
   eyebrow,
   headline,
+  lines,
   mobileLines,
   sub,
   cta,
@@ -85,8 +92,16 @@ export function Cinema({
   const slug = maskId ?? slugify(headline);
   const maskD = `ds-cinema-mask-${slug}-d`;
   const maskM = `ds-cinema-mask-${slug}-m`;
-  const lines = mobileLines && mobileLines.length ? mobileLines : [headline];
-  const className = ["band", surface === "ink" ? "ink" : "", "ds-cinema"]
+  const desktopLines = lines && lines.length ? lines : [headline];
+  const mobileWrapped =
+    mobileLines && mobileLines.length ? mobileLines : [headline];
+  const isMultiline = desktopLines.length > 1;
+  const className = [
+    "band",
+    surface === "ink" ? "ink" : "",
+    "ds-cinema",
+    isMultiline ? "ds-cinema--multiline" : "",
+  ]
     .filter(Boolean)
     .join(" ");
 
@@ -139,11 +154,15 @@ export function Cinema({
               <rect width="1280" height="900" fill="#fff" />
               <text
                 x="640"
-                y="420"
+                y={isMultiline ? 420 - (desktopLines.length - 1) * 39 : 420}
                 textAnchor="middle"
                 className="ds-cinema__masktext"
               >
-                {headline}
+                {desktopLines.map((line, i) => (
+                  <tspan key={i} x="640" dy={i === 0 ? 0 : 78}>
+                    {line}
+                  </tspan>
+                ))}
               </text>
             </mask>
           </defs>
@@ -172,7 +191,7 @@ export function Cinema({
                 textAnchor="middle"
                 className="ds-cinema__masktext ds-cinema__masktext--m"
               >
-                {lines.map((line, i) => (
+                {mobileWrapped.map((line, i) => (
                   <tspan key={i} x="220" dy={i === 0 ? 0 : 84}>
                     {line}
                   </tspan>

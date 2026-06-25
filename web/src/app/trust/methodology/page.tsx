@@ -11,7 +11,7 @@ import {
   StatBand,
   EditorialSplit,
   ChipGrid,
-  QuietCta,
+  Cinema,
 } from "@/components/ds";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
@@ -320,16 +320,18 @@ export default function MethodologyPage() {
           }}
         />
 
-        {/* soft → ink : masked divider into the closing CTA peak. */}
-        <div className="tr-masked-divider" data-from="soft" data-to="ink" aria-hidden="true" />
-
-        {/* 9. Final CTA — QuietCta, ink (ink peak #2). */}
-        <QuietCta
+        {/* 9. Final CTA — Cinema, ink (cinematic close; ink peak #2). Butts
+            flush against the light §8 — the cinema owns its own black scrim, so
+            no divider band (a tr-masked-divider here showed as a black strip). */}
+        <Cinema
           surface="ink"
-          eyebrow="Get started"
-          title="See the methodology run on your own decks"
+          headline="See the methodology run on your own decks"
+          lines={["See the methodology run", "on your own decks"]}
+          mobileLines={["See the methodology", "run on your own decks"]}
           sub="Book a demo and watch one deck go from slides to an evidence-linked, explainable score."
           cta={{ label: "Book a Demo", href: "/company/contact" }}
+          media={{ videoSrc: "/assets/methodology/cinema.mp4" }}
+          maskId="methodology-final-cta"
         />
       </main>
       <Footer variant="dark" />
