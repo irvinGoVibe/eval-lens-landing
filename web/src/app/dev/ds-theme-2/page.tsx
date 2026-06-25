@@ -70,7 +70,7 @@ export default function DsTheme2Page() {
       <main className="ds-theme-2 theme-demo section-lab">
         {/* ── 1 — HERO (soft) · chapter anchor ── */}
         <LabStatementHero
-          surface="soft"
+          surface="light"
           version={1}
           className="bg-cool-mist"
           eyebrow="Pitch-deck evaluation"

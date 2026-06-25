@@ -224,7 +224,7 @@ export default function EvidenceBasedReportsPage() {
         {/* 1. Hero — statement hero (light) + page-local illustrative stat-row. */}
         <StatementHero
           id="hero"
-          surface="soft"
+          surface="light"
           version={2}
           eyebrow="Evidence-Based Reports"
           titleLead="A score you can"
@@ -282,7 +282,7 @@ export default function EvidenceBasedReportsPage() {
         {/* 3. Anatomy — pinned multi-screen, exactly 3 layers. */}
         <PinnedSteps
           id="anatomy"
-          surface="soft"
+          surface="light"
           version={3}
           ariaLabel="Anatomy of the report — three layers from summary to questions"
           eyebrow="Anatomy of the report"

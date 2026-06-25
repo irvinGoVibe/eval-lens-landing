@@ -31,8 +31,8 @@ export type LabStatementHeroProps = {
   version?: 1 | 2 | 3 | 4;
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
   marker?: string;
-  /** `.band` surface — `soft` (light) is the default. */
-  surface?: "soft" | "ink";
+  /** `.band` surface — `light` (default) or `ink`. */
+  surface?: "light" | "ink";
   /** Extra classes applied to the outer `section.band` (e.g. atmosphere layers). */
   className?: string;
 };
@@ -49,9 +49,10 @@ export function LabStatementHero({
   pattern = true,
   version = 1,
   marker,
-  surface = "soft",
+  surface = "light",
   className,
 }: LabStatementHeroProps) {
+  const surf = surface === "ink" ? "ink" : "soft";
   const Heading = (
     <>
       {titleLead} <span className="grad-word">{titleAccent}</span>
@@ -73,7 +74,7 @@ export function LabStatementHero({
     ));
 
   return (
-    <section id={id} className={`band ${surface} lab-hero${className ? ` ${className}` : ""}`} data-marker={marker}>
+    <section id={id} className={`band ${surf} lab-hero${className ? ` ${className}` : ""}`} data-marker={marker}>
       {/* ---- v1 — quiet centered statement (no media) ---- */}
       <div className="lab-hero__v" data-version="1" hidden={version !== 1}>
         {pattern ? <div className="lab-pattern" aria-hidden="true" /> : null}

@@ -233,7 +233,7 @@ export default function ProductOverviewPage() {
       <main className="product-overview">
         {/* §1. Hero → LabStatementHero (soft / light, version 1). */}
         <LabStatementHero
-          surface="soft"
+          surface="light"
           version={1}
           eyebrow="Product Overview"
           titleLead="The operating layer for structured pitch "
@@ -252,7 +252,7 @@ export default function ProductOverviewPage() {
         {/* §2. Organizer path → LabPinnedSteps (soft / light, 7 pinned steps). */}
         <LabPinnedSteps
           id="path"
-          surface="soft"
+          surface="light"
           ariaLabel="The organizer path — seven steps"
           eyebrow="How it works"
           title={{ line1: "The organizer path,", line2: "in seven steps" }}

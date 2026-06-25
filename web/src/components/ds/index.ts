@@ -13,8 +13,8 @@
  *
  *     <main className="section-lab ds"> … </main>
  *
- * Sections are surface-adaptive: pass `surface="light" | "soft"` for the
- * lens-soft design-system look, or `surface="ink"` to keep a section dark.
+ * Sections are surface-adaptive: pass `surface="light"` for the lens-soft
+ * design-system look, or `surface="ink"` to keep a section dark.
  *
  * NOTE: the standalone seed files in this folder (Eyebrow.tsx, Heading.tsx,
  * Hero.tsx, SectionFrame.tsx) predate this barrel and are superseded by it —

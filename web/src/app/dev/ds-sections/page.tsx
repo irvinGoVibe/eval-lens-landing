@@ -149,7 +149,7 @@ export default function DsSectionsPage() {
 
       <RiskControl
         id="riskcontrol"
-        surface="soft"
+        surface="light"
         marker="11 · Risk → control"
         ariaLabel="Risk to control grid"
         eyebrow="Risk → control"

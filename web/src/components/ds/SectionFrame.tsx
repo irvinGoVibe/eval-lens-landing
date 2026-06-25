@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 
-type Surface = "soft" | "ink";
+type Surface = "light" | "ink";
 export type FrameState = { surface: Surface; version: 1 | 2 | 3 };
 
 /**
@@ -17,7 +17,7 @@ export type FrameState = { surface: Surface; version: 1 | 2 | 3 };
 export function SectionFrame({
   label,
   versions = 3,
-  defaultSurface = "soft",
+  defaultSurface = "light",
   children,
 }: {
   label: string;
@@ -38,9 +38,9 @@ export function SectionFrame({
         <div className="dssx-seg" role="group" aria-label="Surface">
           <button
             type="button"
-            className={`dssx-seg__btn${surface === "soft" ? " is-active" : ""}`}
-            aria-pressed={surface === "soft"}
-            onClick={() => setSurface("soft")}
+            className={`dssx-seg__btn${surface === "light" ? " is-active" : ""}`}
+            aria-pressed={surface === "light"}
+            onClick={() => setSurface("light")}
           >
             Light
           </button>

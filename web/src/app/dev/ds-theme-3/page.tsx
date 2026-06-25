@@ -61,7 +61,7 @@ export default function DsTheme3Page() {
     <main className="ds-theme-3 theme-demo section-lab">
         {/* ── 1 — HERO (soft) · chapter anchor ── */}
         <LabStatementHero
-          surface="soft"
+          surface="light"
           version={1}
           className="bg-cool-mist"
           eyebrow="Pitch-deck evaluation"

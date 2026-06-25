@@ -25,7 +25,7 @@ export default function DarkLightPage() {
       <main className="section-lab">
         {/* 1 — HERO (soft) */}
         <LabStatementHero
-          surface="soft"
+          surface="light"
           version={2}
           eyebrow="AI evaluation platform"
           titleLead="Know exactly how your"

@@ -151,7 +151,7 @@ export default function ConsistencyReliabilityPage() {
         {/* 1. Hero — StatementHero, soft. */}
         <StatementHero
           id="hero"
-          surface="soft"
+          surface="light"
           eyebrow="Consistency & Reliability"
           titleLead="Reliability you can "
           titleAccent="inspect"
@@ -234,7 +234,7 @@ export default function ConsistencyReliabilityPage() {
         {/* 5. Spread — PinnedSteps, light. */}
         <PinnedSteps
           id="spread"
-          surface="soft"
+          surface="light"
           ariaLabel="Spread — judge disagreement thresholds"
           eyebrow="Disagreement, in the open"
           title={{ line1: "When judges split,", line2: "the report says so" }}

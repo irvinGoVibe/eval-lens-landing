@@ -39,7 +39,7 @@ export default function ReviewBoardPage() {
       <main className="review-board section-lab ds">
         {/* 1 — Statement hero (soft) */}
         <StatementHero
-          surface="soft"
+          surface="light"
           eyebrow="Review Board"
           titleLead="Where AI analysis becomes a human"
           titleAccent="decision"

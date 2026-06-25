@@ -206,7 +206,7 @@ export default function UseCasesPage() {
         {/* 1. Hero — StatementHero, soft. */}
         <StatementHero
           id="usecases-hero"
-          surface="soft"
+          surface="light"
           eyebrow="Use Cases"
           titleLead=""
           titleAccent="One review system"
@@ -266,7 +266,7 @@ export default function UseCasesPage() {
             <p className="sub"> after the section (existing utility class). */}
         <PinnedSteps
           id="flagship"
-          surface="soft"
+          surface="light"
           ariaLabel="A hundred pitches in, a ranked shortlist out"
           eyebrow="Pitch competitions · the flagship case"
           title={{

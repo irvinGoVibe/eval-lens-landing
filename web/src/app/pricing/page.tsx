@@ -454,7 +454,7 @@ export default function PricingPage() {
         {/* 1. Hero — StatementHero (DS), soft. Lens accent on "per event". */}
         <StatementHero
           id="top"
-          surface="soft"
+          surface="light"
           eyebrow="Pricing"
           titleLead="Pay"
           titleAccent="per event"

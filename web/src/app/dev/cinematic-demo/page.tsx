@@ -101,7 +101,7 @@ export default function CinematicDemoPage() {
             page from dropping into a dark block). line2Accent = grad-word. ── */}
         <LabPinnedSteps
           id="process"
-          surface="soft"
+          surface="light"
           ariaLabel="How Northwind works"
           eyebrow="How it works"
           title={{ line1: "A call ends.", line2: "A record", line2Accent: "appears." }}

@@ -196,7 +196,7 @@ export default function MethodologyPage() {
         {/* 1. Hero — StatementHero, soft. */}
         <StatementHero
           id="hero"
-          surface="soft"
+          surface="light"
           eyebrow="Methodology"
           titleLead="The methodology behind every score"
           titleAccent=""

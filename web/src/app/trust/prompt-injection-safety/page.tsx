@@ -161,7 +161,7 @@ export default function PromptInjectionSafetyPage() {
         {/* §1 — Hero (light / soft). */}
         <StatementHero
           id="hero-pis"
-          surface="soft"
+          surface="light"
           eyebrow="Prompt injection safety"
           titleLead="Your deck is "
           titleAccent="evidence"
@@ -247,7 +247,7 @@ export default function PromptInjectionSafetyPage() {
         {/* §5 — Holding layers (soft) — PinnedSteps; visual slot 3. */}
         <PinnedSteps
           id="layers"
-          surface="soft"
+          surface="light"
           ariaLabel="How the result holds across layers even if one line slips through"
           eyebrow="Defense in depth"
           title={{

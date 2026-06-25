@@ -12,8 +12,8 @@ import { useEffect } from "react";
  * per-section:
  *   • **Вид (version)** — v1 / v2 / … — toggles `hidden` on the `[data-version]`
  *     payloads the component already renders into the DOM, and
- *   • **Цвет (surface)** — Light / Soft / Dark — swaps the `.band` surface class
- *     (`band` / `band soft` / `band ink`).
+ *   • **Цвет (surface)** — Light / Dark — swaps the `.band` surface class
+ *     (`band soft` / `band ink`).
  * Hovering a row outlines its section on the page; clicking the name scrolls the
  * section into view and copies its `<Component …/>` tag (to bake the chosen props
  * back into the page). Each choice persists per route + section in localStorage.
@@ -109,7 +109,7 @@ const CSS = `
 .dev-dock.is-collapsed .dev-dock__chip{display:inline-flex;align-items:center;gap:5px;}
 `;
 
-type Surface = "light" | "soft" | "ink";
+type Surface = "light" | "ink";
 
 // Track enhanced sections OUT-OF-DOM so we never mutate a React-owned node's
 // attributes (a `data-*` flag would diff against SSR HTML and trip hydration).
@@ -318,11 +318,7 @@ export function DevInspector() {
       const { section, meta, versions, versionIds, keySurface, keyVersion } = entry;
 
       const curSurf = (): Surface =>
-        section.classList.contains("ink")
-          ? "ink"
-          : section.classList.contains("soft")
-            ? "soft"
-            : "light";
+        section.classList.contains("ink") ? "ink" : "light";
 
       const name = document.createElement("button");
       name.type = "button";
@@ -331,19 +327,20 @@ export function DevInspector() {
       name.textContent = meta.label;
       name.title = `Copy: ${meta.component}`;
 
-      // surface segmented control — Light / Soft / Dark
+      // surface segmented control — Light / Dark. The light render IS the
+      // component's `.band.soft` fill (its real light surface); dark is `.band.ink`.
       const seg = document.createElement("div");
       seg.className = "dev-inspector__seg";
       const surfBtns: Record<Surface, HTMLButtonElement> = {} as Record<Surface, HTMLButtonElement>;
-      (["light", "soft", "ink"] as const).forEach((surf) => {
+      (["light", "ink"] as const).forEach((surf) => {
         const b = document.createElement("button");
         b.type = "button";
         b.tabIndex = -1;
-        b.textContent = surf === "light" ? "Light" : surf === "soft" ? "Soft" : "Dark";
+        b.textContent = surf === "light" ? "Light" : "Dark";
         b.addEventListener("click", () => {
           if (curSurf() !== surf) {
             section.classList.remove("soft", "ink");
-            if (surf !== "light") section.classList.add(surf);
+            section.classList.add(surf === "ink" ? "ink" : "soft");
           }
           (Object.keys(surfBtns) as Surface[]).forEach((s) =>
             surfBtns[s].classList.toggle("is-active", s === surf),
@@ -483,11 +480,7 @@ function buildSnapshot(path: string): { text: string; rows: SnapshotRow[] } {
       const labClass = archetypeToken(section);
       if (!labClass) return;
       const meta = ARCHETYPE[labClass] ?? { label: labClass, component: labClass };
-      const surface: Surface = section.classList.contains("ink")
-        ? "ink"
-        : section.classList.contains("soft")
-          ? "soft"
-          : "light";
+      const surface: Surface = section.classList.contains("ink") ? "ink" : "light";
       const versions = Array.from(
         section.querySelectorAll<HTMLElement>("[data-version]"),
       ).filter((el) => el.closest(SECTION_SELECTOR) === section);
@@ -505,8 +498,7 @@ function buildSnapshot(path: string): { text: string; rows: SnapshotRow[] } {
   });
   const text = [
     `/* dev-inspector snapshot · ${path} · ${rows.length} section(s)`,
-    `   surface = rendered .band class; for components typed "light"|"ink" pass`,
-    `   "light" where this says "soft" (same render). Bake into the page props. */`,
+    `   surface = "light" | "ink". Bake into the page props. */`,
     ...lines,
   ].join("\n");
   return { text, rows };

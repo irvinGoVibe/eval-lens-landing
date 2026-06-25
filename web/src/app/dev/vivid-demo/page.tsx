@@ -78,7 +78,7 @@ export default function VividDemoPage() {
         {/* ── S3 · Pinned steps — surface soft, clean ── */}
         <LabPinnedSteps
           id="process"
-          surface="soft"
+          surface="light"
           ariaLabel="How Northwind works"
           eyebrow="How it works"
           title={{ line1: "A call ends.", line2: "A record", line2Accent: "appears." }}

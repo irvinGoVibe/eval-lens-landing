@@ -68,7 +68,7 @@ export default function DsThemePage() {
       <main className="ds-theme theme-demo section-lab">
         {/* ── 2 — HERO (soft) — the thesis ── */}
         <LabStatementHero
-          surface="soft"
+          surface="light"
           version={1}
           className="bg-cool-mist"
           eyebrow="Pitch-deck evaluation"

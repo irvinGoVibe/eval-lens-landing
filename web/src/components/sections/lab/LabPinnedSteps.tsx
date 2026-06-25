@@ -37,7 +37,7 @@ export type LabPinnedStep = {
 export type LabPinnedStepsProps = {
   id?: string;
   /** `.band` surface — dark (`ink`) is the default for this archetype. */
-  surface?: "ink" | "soft";
+  surface?: "light" | "ink";
   /** Which saved version renders (1 tidy · 2 window · 3 reveal). Default 1. */
   version?: 1 | 2 | 3;
   /** Accessible name for the whole section. */
@@ -144,6 +144,7 @@ export function LabPinnedSteps({
   cta,
   marker,
 }: LabPinnedStepsProps) {
+  const surf = surface === "ink" ? "ink" : "soft";
   const ctaRow = cta ? (
     <div className="cta-row lab-process__cta">
       <Button href={cta.href} variant={cta.variant}>
@@ -155,7 +156,7 @@ export function LabPinnedSteps({
   return (
     <section
       id={id}
-      className={`band ${surface} lab-process`}
+      className={`band ${surf} lab-process`}
       data-marker={marker}
       data-pin
       data-pin-steps={steps.length}

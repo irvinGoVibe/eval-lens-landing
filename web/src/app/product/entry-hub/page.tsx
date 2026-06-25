@@ -176,7 +176,7 @@ export default function EntryHubPage() {
         {/* §3. How it works → PinnedSteps (soft), 6 pinned steps. */}
         <PinnedSteps
           id="how"
-          surface="soft"
+          surface="light"
           ariaLabel="How Entry Hub works — six steps"
           eyebrow="How it works"
           title={{

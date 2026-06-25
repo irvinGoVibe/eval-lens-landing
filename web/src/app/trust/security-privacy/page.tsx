@@ -36,7 +36,7 @@ export default function SecurityPrivacyPage() {
         {/* 1. Statement hero — soft (page-top). */}
         <StatementHero
           id="top"
-          surface="soft"
+          surface="light"
           eyebrow="Security & Privacy"
           titleLead="Private by design, decided by"
           titleAccent="humans"

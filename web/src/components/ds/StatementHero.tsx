@@ -27,8 +27,8 @@ export type StatementHeroCta = {
 };
 export type StatementHeroProps = {
   id?: string;
-  /** `.band` surface — `light`/`soft` (light) or `ink`. Default light. */
-  surface?: "light" | "soft" | "ink";
+  /** `.band` surface — `light` or `ink`. Default light. */
+  surface?: "light" | "ink";
   eyebrow: string;
   titleLead: string;
   titleAccent: string;

@@ -988,7 +988,7 @@ function ExampleSection({ vp }: { vp: Vp }) {
                 { label: "See a report", href: "#examples", variant: "ghost" },
               ]}
               media={{ ratio: "16/9", label: "Hero", hint: "panel verdict scene", ariaLabel: "hero scene" }}
-              surface="soft"
+              surface="light"
             />
           </div>
 
