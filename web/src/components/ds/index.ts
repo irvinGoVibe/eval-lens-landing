@@ -62,6 +62,9 @@ export type { HubMapProps, HubLink } from "./HubMap";
 export { RiskControl } from "./RiskControl";
 export type { RiskControlProps, RiskPair } from "./RiskControl";
 
+export { Faq } from "./Faq";
+export type { FaqProps, FaqItem } from "./Faq";
+
 export { ChipGrid } from "./ChipGrid";
 export type { ChipGridProps, ChipGridItem, ChipTone } from "./ChipGrid";
 

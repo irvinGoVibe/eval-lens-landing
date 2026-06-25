@@ -793,6 +793,43 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 }
 
 /* ============================================================
+   Faq — archetype 16 (clean DS extraction of LabFaq)
+   Static <dl> Q/A list. v1 polish (2-col hairline grid) · v2 recomp (single
+   editorial column, larger questions) · v3 expanded (large head, airier 2-col).
+   Ink overrides COLOUR ONLY.
+   ============================================================ */
+.ds-faq .head{margin-bottom:clamp(32px,5vw,56px);}
+.ds-faq .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+.ds-faq__grid{margin:0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 clamp(28px,4vw,56px);}
+.ds-faq__grid > div{padding:clamp(22px,3vw,32px) 0;border-top:1px solid var(--border);min-width:0;}
+.ds-faq dt{font-size:clamp(17px,1.8vw,20px);font-weight:600;line-height:1.25;letter-spacing:-.01em;color:var(--fg);}
+.ds-faq dd{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--muted);}
+
+/* ink — colour only */
+.ds-faq.ink .ds-faq__grid > div{border-top-color:var(--border-on-dark);}
+.ds-faq.ink dt{color:var(--fg-on-dark);}
+.ds-faq.ink dd{color:var(--muted-on-dark);}
+
+/* v1 — Polish */
+.ds-faq__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}
+
+/* v2 — Modern Recomposition: single editorial column, larger questions */
+.ds-faq__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
+.ds-faq__v--recomp .ds-faq__grid{grid-template-columns:1fr;max-width:760px;margin-inline:auto;}
+.ds-faq__v--recomp dt{font-size:clamp(19px,2.2vw,24px);}
+
+/* v3 — Expanded Expressive: large display head, airier rows */
+.ds-faq__v--expanded .head{margin-bottom:clamp(40px,6vw,72px);}
+.ds-faq__v--expanded .title{font-size:clamp(38px,6.5vw,80px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.ds-faq__v--expanded .ds-faq__grid > div{padding:clamp(26px,3.4vw,40px) 0;}
+
+/* mobile collapse — single column (mirrors globals @media max-width:620px) */
+@media (max-width:620px){
+  .ds-faq__grid{grid-template-columns:1fr;}
+}
+
+/* ============================================================
    evidence-based-reports page-local (light cinematic-ink)
    Scoped under `.evidence-reports`. Token-driven only — light cards via
    --dsc-* on `.soft`, ink-aware via `.band.ink`. No `.lab-*`, no hardcoded hex.

@@ -7,6 +7,7 @@ import {
   Bento,
   HubMap,
   RiskControl,
+  Faq,
   FullStatement,
   Gallery,
   PinnedSteps,
@@ -69,6 +70,15 @@ const HUBMAP_ITEMS = [
   { tag: "Entry hub", title: "Collect the decks", body: "One link gathers every submission, parsed and queued for review.", href: "#" },
   { tag: "Reports", title: "Evidence-based reports", body: "Each score links back to the slide and source behind it.", href: "#" },
   { tag: "Review board", title: "Decide together", body: "A shared leaderboard the whole table reads the same way.", href: "#" },
+];
+
+const FAQ_ITEMS = [
+  { q: "Does AI make the final decision?", a: "No. AI prepares the evidence-based analysis and a score; a person always signs off on the final call." },
+  { q: "How are scores kept comparable?", a: "One deterministic rubric with fixed weights — the same findings always produce the same number." },
+  { q: "Where does each score come from?", a: "Every dimension links back to the exact slide and source behind it, so any number can be checked." },
+  { q: "Can it handle a whole batch at once?", a: "Yes — drop in a batch of decks and each is parsed, read and scored into one comparable leaderboard." },
+  { q: "What about prompt injection in a deck?", a: "Deck text is treated as data, not instructions; injection attempts are detected and quarantined." },
+  { q: "Do we keep our data private?", a: "Decks and reports stay in your workspace; nothing is used to train models." },
 ];
 
 const RISK_PAIRS = [
@@ -147,6 +157,17 @@ export default function DsSectionsPage() {
         titleAccent="guardrail"
         sub="For each way an evaluation could go wrong, the specific system control that keeps it bounded — problem on the left, how it's closed on the right."
         pairs={RISK_PAIRS}
+      />
+
+      <Faq
+        id="faq"
+        surface="light"
+        marker="16 · FAQ"
+        ariaLabel="Frequently asked questions"
+        eyebrow="FAQ"
+        title="The questions teams ask before they trust a score"
+        titleAccent="trust"
+        items={FAQ_ITEMS}
       />
 
       <FullStatement
