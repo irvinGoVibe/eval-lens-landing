@@ -14,7 +14,7 @@ import {
   Numbered,
   EditorialSplit,
   QuietCta,
-  Button,
+  Cinema,
 } from "@/components/ds";
 
 export const metadata: Metadata = { title: "DS Sections" };
@@ -266,93 +266,18 @@ export default function DsSectionsPage() {
         cta={{ label: "Book a Demo", href: "#" }}
       />
 
-      {/* cinematic transition — last section. Self-contained .ds-cinema: full-screen
-          video → knockout heading descends & zooms ×7→1 (video crisp through the
-          letters, no dimming) → lens fill restores letters to solid → copy.
-          Theme is a single Light/Dark toggle via DevInspector (lab-cine hook):
-          default = Dark (.ink), toggle removes .ink → Light (white scrim).
-          100% --pin-driven by <ScrollFX/>; mobile/reduced-motion = static. */}
-      <section
-        className="band ink ds-cinema lab-cine"
-        data-pin
-        data-pin-steps="1"
-        aria-label="AI prepares. You decide."
-      >
-        <div className="ds-cinema__stage" data-pin-stage>
-          <video
-            className="ds-cinema__vid"
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          >
-            <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
-          </video>
-          <div className="ds-cinema__fill" aria-hidden="true" />
-          {/* desktop knockout — landscape viewBox, single line */}
-          <svg
-            className="ds-cinema__knockout ds-cinema__knockout--d"
-            viewBox="0 0 1280 900"
-            preserveAspectRatio="xMidYMid slice"
-            aria-hidden="true"
-          >
-            <defs>
-              <mask id="ds-cinema-mask">
-                <rect width="1280" height="900" fill="#fff" />
-                <text x="640" y="420" textAnchor="middle" className="ds-cinema__masktext">
-                  AI prepares. You decide.
-                </text>
-              </mask>
-            </defs>
-            <rect
-              className="ds-cinema__scrimrect"
-              width="1280"
-              height="900"
-              mask="url(#ds-cinema-mask)"
-            />
-          </svg>
-          {/* mobile knockout — portrait viewBox, headline wrapped to two lines so
-              the slice doesn't crop it; same --pin animation, portrait origin */}
-          <svg
-            className="ds-cinema__knockout ds-cinema__knockout--m"
-            viewBox="0 0 440 900"
-            preserveAspectRatio="xMidYMid slice"
-            aria-hidden="true"
-          >
-            <defs>
-              <mask id="ds-cinema-mask-m">
-                <rect width="440" height="900" fill="#fff" />
-                <text
-                  x="220"
-                  y="404"
-                  textAnchor="middle"
-                  className="ds-cinema__masktext ds-cinema__masktext--m"
-                >
-                  <tspan x="220">AI prepares.</tspan>
-                  <tspan x="220" dy="84">You decide.</tspan>
-                </text>
-              </mask>
-            </defs>
-            <rect
-              className="ds-cinema__scrimrect"
-              width="440"
-              height="900"
-              mask="url(#ds-cinema-mask-m)"
-            />
-          </svg>
-          <div className="ds-cinema__copy">
-            <h2 className="ds-cinema__headline">AI prepares. You decide.</h2>
-            <p className="sub ds-cinema__sub">
-              Evidence-first scoring, then a human signs off — see the full run on your
-              own decks.
-            </p>
-            <div className="sect-cta ds-cinema__cta">
-              <Button href="#" variant="gradient">Book a demo</Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* cinematic transition — last section. Clean DS <Cinema/> (ds-cinema),
+          extracted 1:1 from the inline block: full-screen video → dual knockout
+          (desktop --d / mobile --m, two lines) → lens fill → copy. 100%
+          --pin-driven by <ScrollFX/>; mobile / reduced-motion = static. */}
+      <Cinema
+        surface="ink"
+        headline="AI prepares. You decide."
+        mobileLines={["AI prepares.", "You decide."]}
+        sub="Evidence-first scoring, then a human signs off — see the full run on your own decks."
+        cta={{ label: "Book a demo", href: "#" }}
+        media={{ videoSrc: "/assets/methodology/cinema.mp4" }}
+      />
 
       {/* CTA band — looping background video (production component) */}
       <CtaBand

@@ -33,6 +33,12 @@ Design Patterns]] (это *предписывающий* справочник «
 > `Numbered`** (`ds/Numbered.tsx`), **04 → `EditorialSplit`** (`ds/EditorialSplit.tsx`,
 > расширен опциональным `points?[]`) и **12 → `QuietCta`** (`ds/QuietCta.tsx`) — все
 > через component-forge, 2026-06-22.
+> **Спец-секция (вне нумерованного каталога):** **`Cinema`** (`ds/Cinema.tsx`,
+> surface `light|ink`) — кинематографичный «закрывающий»/переходный блок: full-bleed
+> видео + knockout-заголовок (двойной `--d` desktop / `--m` mobile в 2 строки),
+> `.ds-cinema*` CSS уже в `ds.css`, движение `--pin`-driven (ScrollFX). Извлечён 1:1
+> из инлайн-блока на `/dev/ds-sections` (redraw-block, 2026-06-26); будущий потребитель —
+> `/product/evidence-based-reports` (его инлайн `.ds-cinema` мигрирует на `<Cinema/>`).
 > Остальные архетипы импортируются как `Lab*` напрямую, пока не promoted. Референс-страница
 > из барреля — `/dev/ds-sections`. Полный справочник — [[design-system|Design
 > System]] §Reusable components (v1.4). Горизонтальный скролл секций гасит
