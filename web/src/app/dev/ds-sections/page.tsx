@@ -6,6 +6,7 @@ import {
   StatementHero,
   Bento,
   HubMap,
+  RiskControl,
   FullStatement,
   Gallery,
   PinnedSteps,
@@ -70,6 +71,13 @@ const HUBMAP_ITEMS = [
   { tag: "Review board", title: "Decide together", body: "A shared leaderboard the whole table reads the same way.", href: "#" },
 ];
 
+const RISK_PAIRS = [
+  { risk: "A judge over-weights one strong slide", control: "A fixed rubric scores every dimension independently, so one slide can't swing the verdict." },
+  { risk: "Scores drift between reviewers", control: "The same findings and weights always produce the same number — reviews stay comparable." },
+  { risk: "A claim has no evidence behind it", control: "Every score links back to the slide and source it came from; unbacked claims are flagged." },
+  { risk: "Prompt-injected text steers the model", control: "Deck text is treated as data, not instructions; injection attempts are detected and quarantined." },
+];
+
 const NUMBERED_ITEMS = [
   { num: "01", title: "Evidence before opinion", body: "Every signal links back to the slide and source it came from — no unbacked claims." },
   { num: "02", title: "One deterministic rubric", body: "The same findings and weights always produce the same score, so reviews stay comparable." },
@@ -132,6 +140,18 @@ export default function DsSectionsPage() {
         titleAccent="deeper"
         sub="A navigational bento for hub pages: one feature route plus supporting tiles, each a real link that sends the reader deeper."
         items={HUBMAP_ITEMS}
+      />
+
+      <RiskControl
+        id="riskcontrol"
+        surface="soft"
+        marker="11 · Risk → control"
+        ariaLabel="Risk to control grid"
+        eyebrow="Risk → control"
+        title="Every failure mode has a guardrail"
+        titleAccent="guardrail"
+        sub="For each way an evaluation could go wrong, the specific system control that keeps it bounded — problem on the left, how it's closed on the right."
+        pairs={RISK_PAIRS}
       />
 
       <FullStatement

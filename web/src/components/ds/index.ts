@@ -59,6 +59,9 @@ export type { QuietCtaProps } from "./QuietCta";
 export { HubMap } from "./HubMap";
 export type { HubMapProps, HubLink } from "./HubMap";
 
+export { RiskControl } from "./RiskControl";
+export type { RiskControlProps, RiskPair } from "./RiskControl";
+
 export { ChipGrid } from "./ChipGrid";
 export type { ChipGridProps, ChipGridItem, ChipTone } from "./ChipGrid";
 

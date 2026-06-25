@@ -642,6 +642,53 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 }
 
 /* ============================================================
+   RiskControl — archetype 11 (clean DS extraction of LabRiskControl)
+   Paired risk ↔ control rows. v1 polish (hairline-ruled .85/1.15 rows) ·
+   v2 recomp (bordered pair-cards, two per row, dashed connector) · v3 expanded
+   (large head, oversized risk titles). Ink overrides COLOUR ONLY.
+   ============================================================ */
+.ds-risk .head{margin-bottom:clamp(32px,5vw,56px);}
+.ds-risk .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+/* Risk/Control labels flow inline above their text (mono), not the abs corner tag */
+.ds-risk .mini-tag{position:static;top:auto;right:auto;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.ds-risk.ink .mini-tag{color:var(--lavender);}
+
+.ds-risk__grid{display:flex;flex-direction:column;border-top:1px solid var(--border);}
+.ds-risk__row{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(18px,4vw,60px);padding:clamp(22px,3vw,34px) 0;border-bottom:1px solid var(--border);min-width:0;}
+.ds-risk__row > div{min-width:0;}
+.ds-risk__row strong{display:block;margin-top:8px;font-size:clamp(19px,2.4vw,28px);line-height:1.16;letter-spacing:-.01em;color:var(--fg);}
+.ds-risk__row p{margin-top:8px;font-size:clamp(16px,1.6vw,18px);line-height:1.55;color:var(--muted);}
+
+/* ink — colour only */
+.ds-risk.ink .ds-risk__grid{border-top-color:var(--border-on-dark);}
+.ds-risk.ink .ds-risk__row{border-bottom-color:var(--border-on-dark);}
+.ds-risk.ink .ds-risk__row strong{color:var(--fg-on-dark);}
+.ds-risk.ink .ds-risk__row p{color:var(--muted-on-dark);}
+
+/* v1 — Polish */
+.ds-risk__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}
+
+/* v2 — Modern Recomposition: bordered pair cards, two per row, dashed connector */
+.ds-risk__v--recomp .title{font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-.02em;}
+.ds-risk__v--recomp .ds-risk__grid{flex-direction:row;flex-wrap:wrap;gap:clamp(14px,2vw,22px);border-top:0;}
+.ds-risk__v--recomp .ds-risk__row{flex:1 1 calc(50% - clamp(14px,2vw,22px));border:1px solid var(--border);border-radius:var(--radius-card);padding:clamp(20px,2.6vw,30px);grid-template-columns:1fr;gap:14px;align-content:start;}
+.ds-risk.ink .ds-risk__v--recomp .ds-risk__row{border-color:var(--border-on-dark);background:rgba(255,255,255,.04);}
+.ds-risk__v--recomp .ds-risk__row > div + div{border-top:1px dashed var(--border);padding-top:14px;}
+.ds-risk.ink .ds-risk__v--recomp .ds-risk__row > div + div{border-top-color:var(--border-on-dark);}
+
+/* v3 — Expanded Expressive */
+.ds-risk__v--expanded .head{margin-bottom:clamp(40px,6vw,72px);}
+.ds-risk__v--expanded .title{font-size:clamp(38px,6.5vw,80px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;}
+.ds-risk__v--expanded .ds-risk__row{grid-template-columns:1fr 1.3fr;gap:clamp(24px,5vw,80px);padding:clamp(30px,4.5vw,56px) 0;}
+.ds-risk__v--expanded .ds-risk__row strong{font-size:clamp(24px,3.4vw,42px);}
+
+/* mobile collapse — single column (mirrors globals @media max-width:620px) */
+@media (max-width:620px){
+  .ds-risk__row{grid-template-columns:1fr;gap:12px;}
+  .ds-risk__v--recomp .ds-risk__row{flex-basis:100%;}
+}
+
+/* ============================================================
    evidence-based-reports page-local (light cinematic-ink)
    Scoped under `.evidence-reports`. Token-driven only — light cards via
    --dsc-* on `.soft`, ink-aware via `.band.ink`. No `.lab-*`, no hardcoded hex.
