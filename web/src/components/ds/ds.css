@@ -5,6 +5,30 @@
    the existing `.band.ink` rules. Clean DS namespace (no `Lab` prefix). */
 
 /* ============================================================
+   Shared canvas — decouple SURFACE FILL from TONE.
+   Normally `.band.soft`/`.band.ink` do TWO things: paint a flat fill AND set
+   the text tone. To run ONE shared background under several sections, wrap the
+   group in `.ds-canvas`:
+     • `.ds-canvas__bg` is the single shared-background slot (the gradient +
+       parallax live here — see step 2); it sits behind everything.
+     • child `.band` sections go TRANSPARENT, so that one background shows
+       through continuously — but each section KEEPS its tone via `surface`:
+         surface="ink"        → dark tone (light text + all `.ink` rules)
+         surface="light|soft" → light tone (default dark-on-light text)
+   The author picks each section's `surface` to match the part of the canvas it
+   sits over (dark zone → ink, light zone → soft). No component changes — inside
+   a canvas, `surface` simply means "tone".
+   CAVEAT: sections that paint their OWN backdrop (Hero v1/v2, HubMap light,
+   Bento) are full-bleed accents — keep them OUTSIDE the canvas, else their
+   backdrop overrides the shared one.
+   ============================================================ */
+.ds-canvas{position:relative;isolation:isolate;}
+.ds-canvas__bg{position:absolute;inset:0;z-index:-1;pointer-events:none;}
+/* child sections drop their fill; tone/colour (incl. `.ink` descendant rules) stay */
+.ds-canvas .band.soft,
+.ds-canvas .band.ink{background:transparent;}
+
+/* ============================================================
    StatementHero — archetype 01 (clean DS extraction of LabStatementHero)
    v1 centered (switchable background: gradient/image/video) · v2 cinematic
    gradient stage · v3 editorial + lens orb. Ported 1:1 from .lab-hero*;
