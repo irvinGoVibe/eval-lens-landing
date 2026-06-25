@@ -45,55 +45,63 @@
   "sections": [
     {
       "archetype_id": "01",
-      "name": "LabStatementHero",
+      "name": "StatementHero",
       "label": "Statement hero",
-      "source_path": "sections/lab/LabStatementHero.tsx",
-      "export_name": "LabStatementHero",
+      "source_path": "components/ds/StatementHero.tsx",
+      "export_name": "StatementHero",
       "barrel_export": "StatementHero",
       "versions": {
         "available": [
           "v1",
           "v2",
-          "v3",
-          "v4"
+          "v3"
         ],
         "default": "v1",
-        "differences": "v1 type-led; v2/v3 CSS gradient/orb scenes; v4 cinema photo/video bg"
+        "differences": "v1 quiet centered statement with a SWITCHABLE background (gradient | full-bleed image | full-bleed video); v2 frosted-glass cinematic stage (refracts a full-bleed backdrop — balls-glass bubble field on light, dark gradient on ink); v3 editorial (text left + a glassy 16:9 .media-ph image placeholder right). (former v4 photo/video hero removed — folded into v1 background.)"
       },
       "surfaces": {
         "available": [
+          "light",
           "soft",
           "ink"
         ],
-        "control": "NO surface prop — hardcoded `band soft`; surface toggled only via LabMarkers",
-        "note": "API gap vs all other archetypes (CL gap)"
+        "default": "light",
+        "control": "surface prop (light/soft → soft, ink); image/video background forces ink (scrim + light text + glass CTAs)",
+        "note": "CL-006 RESOLVED — clean DS now has a real surface prop."
       },
       "props": [
         "id?",
+        "surface?(=light)",
         "eyebrow*",
         "titleLead*",
         "titleAccent*",
         "titleTrail?",
         "sub*",
         "ctas*:{label,href,variant?}[]",
-        "media*:{ratio,label,hint,ariaLabel}",
+        "background?(=gradient|image|video)",
+        "backgroundSrc?",
+        "backgroundPoster?",
+        "media?(back-compat; v3 placeholder descriptor)",
         "pattern?(=true)",
-        "marker?"
+        "version?(1-3)",
+        "marker?",
+        "className?"
       ],
       "content_capacity": {
         "eyebrow": true,
         "heading": "lead+accent+trail",
         "body": "sub",
         "cta": "array",
-        "media": "v4 cinema tag"
+        "media": "v3 .media-ph placeholder + v1 image/video bg"
       },
       "media": {
         "supported": true,
         "modes": [
           "css-scene",
-          "photo/video bg(v4)"
+          "v1 full-bleed image/video bg",
+          "v3 ratio-locked .media-ph"
         ],
-        "primitive": "none (no MediaPlaceholder)"
+        "primitive": "MediaPlaceholder (v3)"
       },
       "motion": {
         "reveal": "data-reveal up + --reveal-delay",
@@ -124,13 +132,10 @@
           ]
         }
       },
-      "known_issues": [
-        "no surface prop (LabMarkers-only)",
-        "v1 button glow ~67px contained artifact"
-      ],
+      "known_issues": [],
       "consumption_readiness": {
         "status": "ready",
-        "browser_qa": "run",
+        "browser_qa": "run (2026-06-25, /dev/ds-sections + evidence-based-reports/pricing/design-system consumers; v1/v2/v3 + ink glass verified, console clean)",
         "allowed_consumers": [
           "page-composer",
           "build-pages"
@@ -140,7 +145,10 @@
         ]
       },
       "public_name": "StatementHero",
-      "source_status": "deprecated-substrate (wrapped by @/components/ds barrel)"
+      "source_status": "clean-DS extraction (own components/ds/StatementHero.tsx + .ds-hero* CSS in ds.css; ink CTAs use the shared liquid-glass button group; NOT a Lab wrap)",
+      "forge_status": "forged",
+      "classification": "clean-ds",
+      "notes": "Clean-DS twin of the deprecated LabStatementHero. Backward-compatible props (accepts surface=\"soft\", media, cta variant) so the ~12 existing barrel consumers keep working. v2 glass stage refracts a full-bleed backdrop; v1 background switchable; v3 uses the shared .media-ph (glassy override vs the .ds deep-frame)."
     },
     {
       "archetype_id": "02",
