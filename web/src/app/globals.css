@@ -816,7 +816,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cta-band .btn-glass,
 .vivid-demo .band.ink .cta-row .btn-glass,
 .cinematic-demo .lab-cinema__cta .btn,
-.lab-hero.ink .cta-row .btn{
+.lab-hero.ink .cta-row .btn,
+.ds-hero.ink .cta-row .btn{
   position:relative;isolation:isolate;overflow:hidden;z-index:0;
   font-weight:500;letter-spacing:-.02em;
   font-size:17px;line-height:1.1;
@@ -845,6 +846,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .vivid-demo .band.ink .cta-row .btn-glass::before,
 .cinematic-demo .lab-cinema__cta .btn::before,
 .lab-hero.ink .cta-row .btn::before,
+.ds-hero.ink .cta-row .btn::before,
 .lab-gallery.ink .lab-gallery__lane--expr .lab-gallery__card::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-2;
   background:
@@ -859,6 +861,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .vivid-demo .band.ink .cta-row .btn-glass::after,
 .cinematic-demo .lab-cinema__cta .btn::after,
 .lab-hero.ink .cta-row .btn::after,
+.ds-hero.ink .cta-row .btn::after,
 .lab-gallery.ink .lab-gallery__lane--expr .lab-gallery__card::after{
   content:"";position:absolute;inset:-60% -40%;border-radius:inherit;pointer-events:none;z-index:-1;
   background:
@@ -875,7 +878,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cta-band .btn-glass:hover,
 .vivid-demo .band.ink .cta-row .btn-glass:hover,
 .cinematic-demo .lab-cinema__cta .btn:hover,
-.lab-hero.ink .cta-row .btn:hover{
+.lab-hero.ink .cta-row .btn:hover,
+.ds-hero.ink .cta-row .btn:hover{
   border-color:rgba(255,255,255,.52);
   -webkit-backdrop-filter:blur(48px) saturate(2) brightness(1.1);
   backdrop-filter:blur(48px) saturate(2) brightness(1.1);
@@ -893,7 +897,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cta-band .btn-glass:hover::after,
 .vivid-demo .band.ink .cta-row .btn-glass:hover::after,
 .cinematic-demo .lab-cinema__cta .btn:hover::after,
-.lab-hero.ink .cta-row .btn:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
+.lab-hero.ink .cta-row .btn:hover::after,
+.ds-hero.ink .cta-row .btn:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
 .hero .cta-row .btn-primary,
 .site-header__cta.btn-primary,
 .ds-atoms .dsx-cell.ink .btn-glass,
@@ -902,7 +907,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cta-band .btn-glass,
 .vivid-demo .band.ink .cta-row .btn-glass,
 .cinematic-demo .lab-cinema__cta .btn,
-.lab-hero.ink .cta-row .btn{
+.lab-hero.ink .cta-row .btn,
+.ds-hero.ink .cta-row .btn{
   background:
     linear-gradient(145deg,
       rgba(255,255,255,.22) 0%,
@@ -918,7 +924,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .cta-band .btn-glass:hover,
 .vivid-demo .band.ink .cta-row .btn-glass:hover,
 .cinematic-demo .lab-cinema__cta .btn:hover,
-.lab-hero.ink .cta-row .btn:hover{
+.lab-hero.ink .cta-row .btn:hover,
+.ds-hero.ink .cta-row .btn:hover{
   background:
     linear-gradient(145deg,
       rgba(255,255,255,.3) 0%,
@@ -6598,8 +6605,8 @@ section.band.ink .mini-tag{color:var(--lavender);}
 
   /* Hero (#1) — strengthen the existing reveal into a cinematic
      assemble (uses ScrollFX's own data-reveal/is-in, no conflict). */
-  .evidence-reports .lab-hero__title[data-reveal]{transform:translateY(52px) scale(.985);}
-  .evidence-reports .lab-hero__sub[data-reveal]{transform:translateY(40px);}
+  .evidence-reports .ds-hero__title[data-reveal]{transform:translateY(52px) scale(.985);}
+  .evidence-reports .ds-hero__sub[data-reveal]{transform:translateY(40px);}
 
   /* Assemble galleries (#4 Score, #7 Uses) — wrapper reveals, cards
      stagger in. Neutralise the wrapper's own travel so only the cards

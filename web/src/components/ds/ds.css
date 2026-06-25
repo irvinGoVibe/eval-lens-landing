@@ -5,23 +5,127 @@
    the existing `.band.ink` rules. Clean DS namespace (no `Lab` prefix). */
 
 /* ============================================================
-   Hero — Statement hero (eyebrow + big title + sub + CTAs)
+   StatementHero — archetype 01 (clean DS extraction of LabStatementHero)
+   v1 centered (switchable background: gradient/image/video) · v2 cinematic
+   gradient stage · v3 editorial + lens orb. Ported 1:1 from .lab-hero*;
+   surface-adaptive (ink flips colour). Glass CTAs use the shared global
+   liquid-glass group (.ds-hero.ink .cta-row .btn added there).
    ============================================================ */
-.ds-hero{padding-top:clamp(120px,16vw,190px);text-align:center;}
-.ds-hero__inner{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;}
+.ds-hero{padding-top:clamp(132px,18vw,200px);overflow-x:clip;}
+.ds-hero__inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;width:100%;padding-bottom:clamp(28px,5vw,64px);}
 .ds-hero .eyebrow{margin-bottom:22px;}
-/* size pinned across surfaces (beats the global `.ink .title` scale) */
-.ds-hero .ds-hero__title{font-size:clamp(44px,7vw,96px);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:15ch;}
-.ds-hero .ds-hero__sub{width:min(100%,60ch);margin-top:24px;}
-.ds-hero__cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:34px;}
-/* lens-accent word (.grad-word is otherwise scoped per consumer in globals.css) */
+.ds-hero__title{font-size:clamp(44px,7vw,96px);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:15ch;}
+.ds-hero__sub{width:min(100%,68ch);margin-top:26px;}
+.ds-hero .cta-row{justify-content:center;}
 .ds-hero .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+/* hero content shows immediately (no scroll-reveal gate) — pages may opt back in */
+.ds-hero [data-reveal]{opacity:1;transform:none;}
 
-/* version variants — same content, different layout (surface-invariant) */
-.ds-hero[data-version="2"] .ds-hero__inner{align-items:flex-start;text-align:left;}
-.ds-hero[data-version="2"] .ds-hero__cta{justify-content:flex-start;}
-.ds-hero[data-version="3"] .ds-hero__title{font-size:clamp(56px,9.5vw,132px);max-width:14ch;}
-.ds-hero[data-version="3"] .ds-hero__sub{width:min(100%,46ch);}
+/* lens-grid pattern behind the v1 gradient background */
+.ds-pattern{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.ds-pattern::before{content:"";position:absolute;inset:clamp(80px,12vw,150px) max(18px,calc((100vw - var(--maxw)) / 2));border-radius:var(--radius-stage);background:linear-gradient(90deg,color-mix(in oklab,var(--violet) 9%, transparent) 1px,transparent 1px),linear-gradient(180deg,color-mix(in oklab,var(--cyan) 8%, transparent) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at 50% 30%, #000 0%, transparent 72%);opacity:.75;}
+.ds-pattern::after{content:"";position:absolute;left:50%;top:16%;width:min(72vw,880px);aspect-ratio:1;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle,color-mix(in oklab,var(--violet) 20%, transparent),transparent 62%);filter:blur(44px);opacity:.65;}
+
+/* ── v1 media background (image/video) — full-bleed scene + bottom-up scrim ── */
+.ds-hero__v--media{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin-left:50%;transform:translateX(-50%);min-height:clamp(560px,82vh,880px);display:grid;align-items:center;padding:clamp(120px,16vw,190px) 0 clamp(40px,6vw,80px);}
+.ds-hero__media-bg{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#0a0a0d;background-image:radial-gradient(90% 80% at 72% 22%, color-mix(in oklab,var(--violet) 40%,transparent), transparent 60%),radial-gradient(70% 60% at 14% 28%, color-mix(in oklab,var(--cyan) 22%,transparent), transparent 62%),var(--ink-grad);}
+.ds-hero__media-vid{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;background:#0a0a0d;}
+.ds-hero__media-scrim{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(0deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.30) 38%, transparent 72%);}
+.ds-hero__bg-tag{position:absolute;top:16px;left:18px;z-index:1;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);background:rgba(0,0,0,.34);border:1px solid var(--border-on-dark);border-radius:var(--r-pill);padding:4px 11px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+.ds-hero__v--media .ds-hero__inner{padding-bottom:0;}
+
+/* ── v2 — cinematic gradient stage ── */
+.ds-hero__overlay{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center;}
+.ds-hero__overlay .eyebrow{margin-bottom:18px;}
+.ds-hero__title--over{font-size:clamp(40px,6vw,88px);max-width:16ch;}
+.ds-hero__sub--over{width:min(100%,52ch);margin-top:22px;}
+.ds-hero__v2 .cta-row{justify-content:center;margin-top:clamp(26px,3vw,40px);}
+.ds-hero__v2{position:relative;margin-top:clamp(-72px,-5vw,-44px);}
+
+/* colourful backdrop BEHIND the glass stage (full-bleed) — the frosted stage
+   refracts it, so the background shows through the card. */
+.ds-hero__bg{position:absolute;top:calc(-1 * clamp(132px,18vw,200px));bottom:-8vh;left:50%;width:100vw;transform:translateX(-50%);z-index:0;pointer-events:none;
+  /* the balls-glass bubble field — full-bleed from the section top to below it,
+     so the frosted stage refracts it and reads as very transparent. */
+  background-color:var(--bg-soft);
+  background-image:url('/assets/backgrounds/balls-glass.png');
+  background-size:cover;background-position:center top;background-repeat:no-repeat;
+}
+.ds-hero.ink .ds-hero__bg{
+  background:
+    radial-gradient(80% 72% at 72% 16%, color-mix(in oklab,var(--violet) 48%,transparent), transparent 58%),
+    radial-gradient(60% 60% at 14% 30%, color-mix(in oklab,var(--cyan) 28%,transparent), transparent 62%),
+    var(--ink-grad);
+}
+
+/* the stage is a frosted glass card (like the light bento tile): translucent
+   fill + backdrop-filter so the backdrop refracts through, white bevel rim. */
+.ds-hero__stage{position:relative;z-index:1;isolation:isolate;overflow:hidden;border-radius:var(--radius-stage);min-height:clamp(520px,72vh,760px);display:grid;place-items:center;align-items:start;padding:clamp(40px,5vw,72px) clamp(24px,6vw,72px) clamp(44px,7vw,96px);
+  background:linear-gradient(135deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.08) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(20px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    inset 0 0 0 1px rgba(255,255,255,.22),
+    0 2px 4px rgba(40,30,90,.05),
+    0 36px 80px -30px rgba(70,50,150,.32);
+}
+.ds-hero__stage--wide{width:min(100vw - clamp(48px,9vw,128px), 1640px);margin-left:50%;transform:translateX(-50%);}
+/* white bevel rim — bright top-left → faint bottom-right */
+.ds-hero__stage::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,.3) 42%, rgba(255,255,255,.08) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;}
+.ds-hero__stage > *{position:relative;z-index:1;}
+/* faint dot texture on the glass */
+.ds-hero__stage::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(color-mix(in oklab,var(--fg) 8%,transparent) 1px, transparent 1px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%, #000 0%, transparent 78%);mask-image:radial-gradient(ellipse at 50% 40%, #000 0%, transparent 78%);opacity:.4;}
+
+/* ink — cool dark glass stage */
+.ds-hero.ink .ds-hero__stage{
+  background:linear-gradient(145deg, rgba(198,220,255,.07) 0%, rgba(176,204,240,.03) 100%);
+  border-color:rgba(165,195,238,.18);
+  box-shadow:
+    inset 0 1px 0 rgba(214,234,255,.2),
+    0 36px 80px -30px rgba(0,0,0,.42);
+}
+.ds-hero.ink .ds-hero__stage::before{background:linear-gradient(135deg, rgba(220,238,255,.4) 0%, rgba(170,202,246,.1) 40%, rgba(118,158,224,.03) 100%);}
+.ds-hero.ink .ds-hero__stage::after{background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);}
+
+/* ── v3 — editorial: text left, lens orb right ── */
+.ds-hero__editorial{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center;}
+.ds-hero__ed-copy{min-width:0;text-align:left;display:flex;flex-direction:column;align-items:flex-start;}
+.ds-hero__ed-copy .eyebrow{margin-bottom:20px;}
+.ds-hero__title--left{text-align:left;max-width:14ch;}
+.ds-hero__sub--left{text-align:left;width:min(100%,46ch);margin-top:22px;}
+.ds-hero .cta-row--left{justify-content:flex-start;}
+/* v3 right column = the shared ratio-locked image placeholder (.media-ph atom).
+   The `.ds` scope normally reskins .media-ph into the branded deep frame
+   (--lens-deep, for in-page media slots); the hero wants the lighter glassy
+   lens-grid look instead, so restore it locally (higher specificity + later). */
+.ds-hero__ed-media{min-width:0;width:100%;}
+.ds .band.ds-hero .ds-hero__ed-media.media-ph{
+  background:var(--lens-soft);
+  border:1.5px dashed color-mix(in oklab,var(--violet) 45%, var(--border));
+  box-shadow:none;
+}
+.ds .band.ds-hero .ds-hero__ed-media.media-ph::before{
+  background:repeating-linear-gradient(45deg,transparent 0 13px,color-mix(in oklab,var(--violet) 7%, transparent) 13px 14px);
+}
+.ds .band.ds-hero .ds-hero__ed-media.media-ph::after{ background:none; }
+.ds .band.ds-hero .ds-hero__ed-media.media-ph .media-ph__label{
+  color:var(--violet);
+  background:color-mix(in oklab,#fff 72%, transparent);
+  border:1px solid var(--hairline);
+}
+.ds .band.ds-hero .ds-hero__ed-media.media-ph .media-ph__hint{ color:var(--muted); }
+
+/* mobile */
+@media (max-width:620px){
+  .ds-hero__title{max-width:11ch;}
+  .ds-hero .cta-row{flex-direction:column;align-items:center;gap:12px;}
+  .ds-hero .btn{width:min(100%,240px);justify-content:center;}
+  .ds-hero__editorial{grid-template-columns:1fr;}
+}
 
 /* ============================================================
    Cinema — pinned cinematic transition (self-contained, smooth).

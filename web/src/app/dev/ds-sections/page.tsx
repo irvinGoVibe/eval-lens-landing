@@ -101,8 +101,9 @@ export default function DsSectionsPage() {
     <main className="ds-sections section-lab ds">
       <StatementHero
         marker="01 · Statement hero"
-        surface="soft"
+        surface="light"
         version={1}
+        background="gradient"
         eyebrow="Statement hero"
         titleLead="AI prepares the analysis — a human"
         titleAccent="decides"
@@ -111,12 +112,6 @@ export default function DsSectionsPage() {
           { label: "Get started", href: "#" },
           { label: "See how it works", href: "#" },
         ]}
-        media={{
-          ratio: "16/9",
-          label: "Hero · lens",
-          hint: "Lens-gradient violet→cyan→aqua over Apple-neutral, calm depth",
-          ariaLabel: "Hero lens illustration",
-        }}
       />
 
       <Bento

@@ -22,8 +22,8 @@
  */
 
 /* ── Sections ───────────────────────────────────────────── */
-export { LabStatementHero as StatementHero } from "@/components/sections/lab/LabStatementHero";
-export type { LabStatementHeroProps as StatementHeroProps } from "@/components/sections/lab/LabStatementHero";
+export { StatementHero } from "./StatementHero";
+export type { StatementHeroProps, StatementHeroCta } from "./StatementHero";
 
 export { LabBento as Bento } from "@/components/sections/lab/LabBento";
 export type {
