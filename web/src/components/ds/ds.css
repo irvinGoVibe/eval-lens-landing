@@ -272,14 +272,10 @@
    frosted stage refracts whatever is behind the section (the page / shared
    canvas gradient), so it reads as a clean glass plate, NOT a built-in image.
    (the balls-glass field that used to be here was a temporary transparency test.)
-   INK keeps a dark cinematic gradient (below). */
+   INK now matches light — no built-in backdrop either (the dark cinematic
+   gradient was removed per art-direction); the transparent stage refracts the
+   page / shared zone background. */
 .ds-hero__bg{position:absolute;top:calc(-1 * clamp(132px,18vw,200px));bottom:-8vh;left:50%;width:100vw;transform:translateX(-50%);z-index:0;pointer-events:none;}
-.ds-hero.ink .ds-hero__bg{
-  background:
-    radial-gradient(80% 72% at 72% 16%, color-mix(in oklab,var(--violet) 48%,transparent), transparent 58%),
-    radial-gradient(60% 60% at 14% 30%, color-mix(in oklab,var(--cyan) 28%,transparent), transparent 62%),
-    var(--ink-grad);
-}
 
 /* the stage is a frosted glass card (like the light bento tile): translucent
    fill + backdrop-filter so the backdrop refracts through, white bevel rim. */
@@ -303,16 +299,25 @@
 /* faint dot texture on the glass */
 .ds-hero__stage::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(color-mix(in oklab,var(--fg) 8%,transparent) 1px, transparent 1px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%, #000 0%, transparent 78%);mask-image:radial-gradient(ellipse at 50% 40%, #000 0%, transparent 78%);opacity:.4;}
 
-/* ink — cool dark glass stage */
+/* ink stage — glass card matching the DARK BENTO tile (RichBento ink glass,
+   ported 1:1 from `.lab-bento.ink .lab-bento__tile`): translucent blue fill +
+   backdrop frost + directional rim. No coloured backdrop behind it (the __bg
+   gradient is removed) — it frosts the page / shared zone background. No dot
+   texture (bento tiles don't carry one). */
 .ds-hero.ink .ds-hero__stage{
-  background:linear-gradient(145deg, rgba(198,220,255,.07) 0%, rgba(176,204,240,.03) 100%);
-  border-color:rgba(165,195,238,.18);
+  background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.03) 50%, rgba(220,236,255,.014) 100%);
+  border-color:rgba(165,195,238,.12);
+  backdrop-filter:blur(12px) saturate(1.12);
   box-shadow:
     inset 0 1px 0 rgba(214,234,255,.2),
-    0 36px 80px -30px rgba(0,0,0,.42);
+    inset 0 0 0 1px rgba(96,165,255,.04),
+    inset 0 -1px 0 rgba(255,255,255,.03),
+    0 24px 60px rgba(0,0,0,.3),
+    0 26px 56px -32px rgba(46,150,232,.3);
 }
-.ds-hero.ink .ds-hero__stage::before{background:linear-gradient(135deg, rgba(220,238,255,.4) 0%, rgba(170,202,246,.1) 40%, rgba(118,158,224,.03) 100%);}
-.ds-hero.ink .ds-hero__stage::after{background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);}
+/* directional glass rim — bright top-left → faint bottom-right (dark bento tile). */
+.ds-hero.ink .ds-hero__stage::before{background:linear-gradient(135deg, rgba(220,238,255,.38) 0%, rgba(170,202,246,.09) 36%, rgba(118,158,224,.02) 66%, rgba(150,186,240,.07) 100%);}
+.ds-hero.ink .ds-hero__stage::after{background-image:none;}
 
 /* ── v3 — editorial: text left, lens orb right ── */
 .ds-hero__editorial{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center;}
@@ -400,6 +405,11 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 .ds-cinema__sub{max-width:54ch;opacity:clamp(0, calc((var(--pin,0) - .80) / .07), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .80) / .07), 1))));}
 .ds-cinema__cta{margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:clamp(0, calc((var(--pin,0) - .87) / .07), 1);transform:translateY(calc(16px * (1 - clamp(0, calc((var(--pin,0) - .87) / .07), 1))));}
 .ds-cinema__headline{display:none;}
+/* desktop multi-line headline (Cinema `lines` prop): the wrapped knockout sits
+   taller, so drop the copy below it (mobile already bumps its copy in @media). */
+@media (min-width:881px){
+  .ds-cinema--multiline .ds-cinema__copy{top:54%;}
+}
 /* reduced-motion ONLY: un-pin → static lens-gradient statement (no scroll motion).
    Mobile now keeps the animated cinematic (see the block below). */
 @media (prefers-reduced-motion:reduce){
@@ -529,19 +539,11 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 .ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card p{color:var(--muted);}
 .ds .lab-gallery:is(.soft,.light) .lab-gallery__v--polish .lab-gallery__card .mini-tag{color:var(--violet);}
 
-/* ── glassmorphism backdrop behind the LIGHT gallery lane — the same balls-glass
-   blob field bento/hubmap put behind their light sections (and the field that
-   originally sat behind the hero v2 glass stage), so the frosted cards have a
-   vivid pastel-blob backdrop to refract. Without it the frost reads as nothing.
-   Painted in the section `::after` (inset:0, behind the lifted content); inside a
-   `.ds-canvas` it is suppressed (the canvas supplies its own floating blobs — see
-   the `.ds-canvas …::after{background:none}` rule up top). ── */
-.ds .lab-gallery:is(.soft,.light){position:relative;isolation:isolate;}
-.ds .lab-gallery:is(.soft,.light)::after{
-  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:url('/assets/backgrounds/balls-glass.png');
-  background-size:cover;background-position:center;background-repeat:no-repeat;
-}
+/* light gallery lane — TRANSPARENT. The balls-glass blob field that used to sit
+   behind the lane (a viewing-only preview on /dev/ds-sections) is removed per
+   art-direction, and the section's own soft fill is dropped so the lane reads the
+   page / shared zone background through it. */
+.ds .lab-gallery:is(.soft,.light){position:relative;background:transparent;}
 .ds .lab-gallery:is(.soft,.light) > *{position:relative;z-index:1;}
 
 /* ── v4 — Grid rows: the v1 glass cards laid out in a contained grid instead of
@@ -669,25 +671,24 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
   padding:clamp(40px,6vw,96px) var(--gutter) clamp(40px,6vw,80px);}
 .ds-split__cine-scene{
   position:absolute;inset:0;z-index:-2;
-  background:
-    radial-gradient(72% 60% at 70% 16%, color-mix(in oklab,var(--violet) 22%,transparent), transparent 60%),
-    radial-gradient(58% 55% at 14% 94%, color-mix(in oklab,var(--cyan) 15%,transparent), transparent 62%),
-    var(--bg-soft);
+  /* light: TRANSPARENT — v3 scene reads the page / shared zone background
+     (decorative gradient backdrop removed per art-direction). ink keeps its own
+     cinematic scene below. */
+  background:transparent;
 }
 .ds-split.ink .ds-split__cine-scene{
-  background:
-    radial-gradient(80% 70% at 72% 12%, color-mix(in oklab,var(--violet) 42%,transparent), transparent 56%),
-    radial-gradient(60% 60% at 14% 96%, color-mix(in oklab,var(--cyan) 22%,transparent), transparent 60%),
-    linear-gradient(160deg,#0a0a0d 0%,#16131f 100%);
+  /* ink: TRANSPARENT — v3 scene reads the page / shared zone background
+     (cinematic backdrop removed per art-direction). */
+  background:transparent;
 }
 .ds-split__cine-scrim{
   position:absolute;inset:0;z-index:-1;
-  /* bottom-up full-width scrim: the lower band (where the lockup sits) stays
-     legible across the whole width, fading up into the scene. */
-  background:linear-gradient(0deg, color-mix(in oklab,var(--bg-soft) 92%,transparent) 0%, color-mix(in oklab,var(--bg-soft) 58%,transparent) 34%, transparent 76%);
+  /* light: TRANSPARENT (background removed per art-direction). ink keeps its
+     legibility scrim below. */
+  background:transparent;
 }
 .ds-split.ink .ds-split__cine-scrim{
-  background:linear-gradient(0deg, rgba(5,5,8,.82) 0%, rgba(5,5,8,.45) 34%, transparent 76%);
+  background:transparent;
 }
 .ds-split__cine-tag{
   position:absolute;top:16px;left:18px;z-index:1;
@@ -872,15 +873,11 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 }
 .ds-hubmap:is(.soft,.light) .ds-hubmap__card .mini-tag{color:var(--violet);}
 
-/* glassmorphism backdrop — the same drifting blob field bento puts behind its
-   light section, so the frosted cards refract it (clear glass over pastel blobs).
-   Content lifts above it; overflow:clip hides the image edges. */
-.ds-hubmap:is(.soft,.light){position:relative;overflow:clip;background:var(--bg-soft);}
-.ds-hubmap:is(.soft,.light)::after{
-  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:url('/assets/backgrounds/balls-glass.png');
-  background-size:100% auto;background-position:center top;background-repeat:no-repeat;
-}
+/* light hub map — TRANSPARENT. The balls-glass blob field that used to sit behind
+   the cards (a viewing-only preview on /dev/ds-sections) is removed per art-
+   direction, and the soft fill is dropped so the section reads the page / shared
+   zone background through it. */
+.ds .ds-hubmap:is(.soft,.light){position:relative;overflow:clip;background:transparent;}
 .ds-hubmap:is(.soft,.light) > *{position:relative;z-index:1;}
 
 /* ── INK (dark) cards — the RichBento glass material, ported 1:1 from the ink
@@ -1248,14 +1245,60 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 .ds-statband{padding-top:clamp(72px,9vw,120px);padding-bottom:clamp(72px,9vw,120px);}
 .ds-statband .head{margin-bottom:clamp(28px,4vw,48px);}
 .ds-statband__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);}
-.ds-statband__grid li{border:1px solid var(--border-on-dark);border-radius:var(--radius-card);padding:clamp(22px,3vw,32px);background:rgba(255,255,255,.04);display:flex;flex-direction:column;gap:8px;min-width:0;text-align:center;}
+/* glass cards — same material as the Bento tiles (size/layout unchanged), all 3
+   versions. Default = RichBento INK glass (ported 1:1 from
+   `.lab-bento.ink .lab-bento__tile`); `.soft` swaps to the light glass below.
+   No injected sheen/spot — just the static card material + bevel rim. */
+.ds-statband__grid li{
+  position:relative;isolation:isolate;overflow:hidden;
+  border:1px solid rgba(165,195,238,.12);border-radius:var(--radius-card);
+  padding:clamp(22px,3vw,32px);
+  background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.03) 50%, rgba(220,236,255,.014) 100%);
+  backdrop-filter:blur(12px) saturate(1.12);
+  box-shadow:
+    inset 0 1px 0 rgba(214,234,255,.2),
+    inset 0 0 0 1px rgba(96,165,255,.04),
+    inset 0 -1px 0 rgba(255,255,255,.03),
+    0 24px 60px rgba(0,0,0,.3),
+    0 26px 56px -32px rgba(46,150,232,.3);
+  display:flex;flex-direction:column;gap:8px;min-width:0;text-align:center;
+}
+.ds-statband__grid li > *{position:relative;z-index:1;}
+/* directional glass rim — 1px ring, bright top-left → faint bottom-right. */
+.ds-statband__grid li::after{
+  content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,
+    rgba(220,238,255,.38) 0%,
+    rgba(170,202,246,.09) 36%,
+    rgba(118,158,224,.02) 66%,
+    rgba(150,186,240,.07) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
 .ds-statband__grid strong{font-family:var(--font-mono);font-size:clamp(36px,6vw,72px);line-height:1;background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums;}
 .ds-statband__grid span{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-on-dark);}
 .ds-statband__grid .ds-statband__src{font-size:10px;letter-spacing:.06em;text-transform:none;color:var(--muted-2);margin-top:2px;}
 .ds-statband__band{margin-top:clamp(22px,3vw,40px);}
 
 /* ink is base; soft override */
-.ds-statband.soft .ds-statband__grid li{border-color:var(--border);background:var(--bg);box-shadow:var(--shadow-soft);}
+/* light glass (ported from `.lab-bento:is(.soft,.light) .lab-bento__tile`). */
+.ds-statband.soft .ds-statband__grid li{
+  background:linear-gradient(135deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.08) 100%);
+  border-color:rgba(255,255,255,.55);
+  backdrop-filter:blur(18px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    inset 0 0 0 1px rgba(255,255,255,.22),
+    0 1px 2px rgba(40,30,90,.04),
+    0 22px 50px -24px rgba(70,50,150,.22);
+}
+/* light bevel rim — white top-left → faint bottom-right (overrides the ink rim). */
+.ds-statband.soft .ds-statband__grid li::after{
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.85) 0%,
+    rgba(255,255,255,.3) 42%,
+    rgba(255,255,255,.08) 100%);
+}
 .ds-statband.soft .ds-statband__grid span{color:var(--muted);}
 .ds-statband.soft .ds-statband__grid .ds-statband__src{color:var(--muted-2);}
 .ds-statband__v--polish .title{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.02em;}

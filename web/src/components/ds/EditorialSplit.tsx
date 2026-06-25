@@ -145,7 +145,6 @@ export function EditorialSplit({
           role="img"
           aria-label={media.ariaLabel}
         />
-        <span className="ds-split__cine-tag">{media.label}</span>
         <div className="ds-split__cine-scrim" aria-hidden="true" />
         <div className="wrap ds-split__cine-inner">
           <div className="ds-split__cine-copy" data-reveal="up">
