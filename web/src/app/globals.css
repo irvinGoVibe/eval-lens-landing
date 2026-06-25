@@ -5630,26 +5630,14 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-bento:is(.soft,.light) .lab-bento__tile p{color:var(--muted);}
 .lab-bento:is(.soft,.light) .lab-bento__tile .mini-tag{color:var(--violet);}
 
-/* ── glassmorphism backdrop — a real image (soft pastel glass-blobs) fills the
-   whole light bento section, so the frosted tiles refract it through their
-   `backdrop-filter` (the reference look: clear cards over colourful blobs). The
-   image DRIFTS: one oversized layer slowly translates/rotates/scales (transform-
-   only → composited, no reflow); `overflow:clip` on the section hides the moving
-   edges. On-brand pastel (violet/lavender/cyan, no green). Content is lifted above
-   it. Covers `.soft`/`.light`; reduced-motion freezes the drift. */
+/* light bento section — plain soft surface. The balls-glass.png image backdrop
+   that used to fill this section (so frosted tiles refracted it) was a temporary
+   transparency test; removed per art-direction. Tiles now sit on the flat soft
+   surface. */
 .lab-bento:is(.soft,.light){
   position:relative;
   overflow:clip;
   background:var(--bg-soft);
-}
-/* The blob image rides ONE drifting layer on `::after` — `::before` is already
-   the page's faint grid pattern, so we leave it alone. The layer is oversized and
-   slowly translates/rotates/scales (transform-only → composited, no reflow); the
-   section's `overflow:clip` hides the moving edges. */
-.lab-bento:is(.soft,.light)::after{
-  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:url('/assets/backgrounds/balls-glass.png');
-  background-size:100% auto;background-position:center top;background-repeat:no-repeat;
 }
 .lab-bento:is(.soft,.light) > *{position:relative;z-index:1;}
 
