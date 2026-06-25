@@ -1,7 +1,7 @@
 {
   "$schema": "./manifest.schema (informal)",
   "generated": "2026-06-17",
-  "last_updated": "2026-06-22",
+  "last_updated": "2026-06-25",
   "generator": "component-library-preparer (full re-scan 2026-06-22 — DS canon reframe: @/components/ds is the only public API; Lab*/_kit deprecated substrate; 11 non-barrel archetypes downgraded to component-api-gap)",
   "product": "EvalLense landing",
   "purpose": "Normalized source-of-truth inventory of the live UI library. Consumed by page-composer (only `ready`), build-pages, component-forge (gaps), forge-index (incremental refresh).",
@@ -16,29 +16,65 @@
     "page_container": "<main className=\"section-lab ds\">",
     "page_container_reason": "ds = public light design-system language (tokens + lens-soft cards + atmosphere), gated on :not(.ink). section-lab = TEMPORARY technical-debt class, present only while .lab-* rules are still load-bearing; it goes away as .lab-* migrates into ds.css/.ds.",
     "name_map": {
-      "StatementHero": "LabStatementHero", "Bento": "LabBento", "FullStatement": "LabFullStatement",
-      "Gallery": "LabGallery", "PinnedSteps": "LabPinnedSteps",
+      "StatementHero": "LabStatementHero",
+      "Bento": "LabBento",
+      "FullStatement": "LabFullStatement",
+      "Gallery": "LabGallery",
+      "PinnedSteps": "LabPinnedSteps",
       "Numbered": "(clean DS — web/src/components/ds/Numbered.tsx; NOT a Lab alias)",
       "EditorialSplit": "(clean DS — web/src/components/ds/EditorialSplit.tsx; NOT a Lab alias; +optional points?[])",
       "QuietCta": "(clean DS — web/src/components/ds/QuietCta.tsx; NOT a Lab alias)",
-      "Eyebrow": "LabEyebrow", "Title": "LabTitle", "Media": "MediaPlaceholder", "Button": "ui/Button"
+      "Eyebrow": "LabEyebrow",
+      "Title": "LabTitle",
+      "Media": "MediaPlaceholder",
+      "Button": "ui/Button"
     },
-    "name_map_note": "RHS = deprecated internal source the barrel currently wraps; LHS = the public DS name (the only thing pages/skills name). EXCEPTION: Numbered, EditorialSplit and QuietCta are genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS), not Lab re-exports.",
-    "reference_pages": { "sections": "/dev/ds-sections (barrel-composed reference page)", "atoms": "/dev/ds-atoms", "full_page": "/dev/ds-theme" },
-    "gap_policy": "Components NOT yet in the barrel are GAPS, not a license to import Lab* directly. A missing DS section -> component-forge extracts a clean DS component; a missing DS atom/shell -> primitive-layer-forge. The ~8 archetypes not yet in the barrel (LabStatement(02), LabSplitRing(05), LabHubMap(08), LabStatBand(09), LabRiskControl(11), LabPricing(13), LabCompareTable(14), LabFaq(16)) are component-api-gap for page-composer (consumption_readiness=unavailable) until promoted into clean DS — even though they are forged at the forge level. Promoted 2026-06-22 (non-alias clean-DS extractions, all build-passed + ready): archetype 10 (Numbered), archetype 04 (EditorialSplit, +optional points), archetype 12 (QuietCta)."
+    "name_map_note": "RHS = deprecated internal source the barrel currently wraps; LHS = the public DS name (the only thing pages/skills name). EXCEPTION: EditorialSplit, HubMap, StatBand, Numbered and QuietCta are genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS), not Lab re-exports.",
+    "reference_pages": {
+      "sections": "/dev/ds-sections (barrel-composed reference page)",
+      "atoms": "/dev/ds-atoms",
+      "full_page": "/dev/ds-theme"
+    },
+    "gap_policy": "Components NOT yet in the barrel are GAPS, not a license to import Lab* directly. A missing DS section -> component-forge extracts a clean DS component; a missing DS atom/shell -> primitive-layer-forge. The 6 archetypes not yet in the barrel (LabStatement(02), LabSplitRing(05), LabRiskControl(11), LabPricing(13), LabCompareTable(14), LabFaq(16)) are component-api-gap for page-composer (consumption_readiness=unavailable) until promoted into clean DS — even though forged at the forge level. Promoted clean-DS extractions (non-alias, build-passed + ready): 04 EditorialSplit, 08 HubMap (glass light+dark), 09 StatBand, 10 Numbered, 12 QuietCta."
   },
   "design_system_light": {
     "scope": ".ds (globals.css, end of file); all rules gated on :not(.ink) so surface=ink keeps the native dark look",
-    "tokens": ["--dsc-card", "--dsc-card-feature (violet->cyan->violet — deliberately NOT aqua/green)", "--dsc-border", "--dsc-border-strong", "--dsc-shadow", "--dsc-radius"],
-    "surfaces": ["lens-soft gradient light cards", "cool-mist page wash + per-section atmosphere", "branded --lens-deep media frame on light sections"],
+    "tokens": [
+      "--dsc-card",
+      "--dsc-card-feature (violet->cyan->violet — deliberately NOT aqua/green)",
+      "--dsc-border",
+      "--dsc-border-strong",
+      "--dsc-shadow",
+      "--dsc-radius"
+    ],
+    "surfaces": [
+      "lens-soft gradient light cards",
+      "cool-mist page wash + per-section atmosphere",
+      "branded --lens-deep media frame on light sections"
+    ],
     "overflow_guard": ".band{overflow-x:clip} (+ .section-mist-bridge / .section-orange-glow) — removes page-level horizontal scroll from full-bleed children; clip (NOT hidden) so position:sticky pinned stages (.lab-process, .ds-cinema) keep working",
     "docs": "wiki/architecture/design-system.md §Reusable components (v1.4); cloud DS bundle .claude/designs/evallense + claude.ai/design project synced 2026-06-22",
-    "qa_2026_06_22": { "method": "read-only HTTP render-check on running :3005 (preview tool blocked — user dev server owns the port)", "routes": { "/dev/ds-sections": 200, "/dev/ds-atoms": 200, "/dev/ds-theme": 200 }, "ds_scope_live": true, "build_evidence": "dev-compiled", "note": "Lab section geometry/API unchanged this scan → browser_qa from 2026-06-17 carries forward; overflow guard + --dsc-* verified in served source." }
+    "qa_2026_06_22": {
+      "method": "read-only HTTP render-check on running :3005 (preview tool blocked — user dev server owns the port)",
+      "routes": {
+        "/dev/ds-sections": 200,
+        "/dev/ds-atoms": 200,
+        "/dev/ds-theme": 200
+      },
+      "ds_scope_live": true,
+      "build_evidence": "dev-compiled",
+      "note": "Lab section geometry/API unchanged this scan → browser_qa from 2026-06-17 carries forward; overflow guard + --dsc-* verified in served source."
+    }
   },
   "browser_qa": {
     "run": true,
     "url": "http://localhost:3005/dev/section-lab",
-    "widths": [1440, 1280, 768, 375],
+    "widths": [
+      1440,
+      1280,
+      768,
+      375
+    ],
     "console_errors": 0,
     "page_level_horizontal_overflow_px": 0,
     "version_switching": "confirmed (v1->v2 live)",
@@ -47,89 +83,382 @@
   },
   "readiness_policy": "A component is `ready` only when ALL hold: source+export exist, rendered in Section Lab, props parsed, versions+surfaces confirmed, browser QA run, build ok, light/dark ok, responsive ok, horizontal-overflow ok, media contract known, consumption contract complete. page-composer consumes ONLY `ready`; `conditional` requires an explicit fallback. ALSO: `ready` requires registration.status=completed and honest build evidence (`dev-compiled` != `passed`); a recipe is `ready` only when all member backgrounds/transitions/motion are themselves `ready` + registered.",
   "layers": {
-    "L1_tokens": { "manifest": "(inlined in component-library.md + globals.css)", "count": 60, "status": "indexed", "note": "no z-index token group; spacing only --gutter/--maxw" },
-    "L2_global_primitives": { "manifest": "atoms.json#global_primitives", "count": 1, "items": ["Button"] },
-    "L3_atoms": { "manifest": "atoms.json", "count": 3, "public_items": ["Eyebrow", "Title", "Media"], "deprecated_source": ["LabEyebrow", "LabTitle", "MediaPlaceholder (_kit.tsx)"], "gap_atoms": ["Card", "Chip", "Stat", "Ring", "Bars", "ListItem (markup-only /dev/ds-atoms -> primitive-layer-forge)"] },
-    "L4_layouts": { "manifest": "layouts.json", "count": 0, "status": "documented-missing", "note": "no DS shells in @/components/ds; CL-001" },
-    "L5_ds_sections": { "manifest": "sections.json", "count": 16, "forged_components": 15, "inline_gap": 1, "barrel_exported": 8, "ready_via_barrel": 8, "conditional_via_barrel": 0, "component_api_gap_not_in_barrel": 8, "note": "public DS names; Lab* = deprecated source. 8 barrel-exported and ready (5 aliases over Lab* + 3 non-alias clean-DS extractions Numbered + EditorialSplit + QuietCta, all build-passed 2026-06-22); the other 8 are component-api-gap -> component-forge." },
-    "L6_production_sections": { "manifest": "production-patterns.json", "count": 19, "dead": 3 },
-    "L7_chrome": { "manifest": "chrome.json", "count": 4 },
-    "L8_nav": { "manifest": "chrome.json#nav", "count": 1 },
-    "L9_newsroom": { "manifest": "newsroom.json", "count": 5 },
-    "L10_social": { "manifest": "social.json", "count": 3 },
-    "L11_media": { "manifest": "atoms.json#MediaPlaceholder", "count": 1 },
-    "L12_motion": { "manifest": "motion.json", "count": 2, "recipes": 6, "note": "2 runtimes (ScrollFX, ScrollOrchestrator) + 6 visual-layer-forge motion recipes: static, slow-ambient-drift, glow-expansion, pattern-reveal, crossfade, nebula-drift(batch4 dark)" },
-    "L13_backgrounds": { "manifest": "backgrounds.json", "count": 28, "note": "13 audited + 8 visual-layer-forge (batch 1) + 7 batch 4 dark themes: ink-floor-glow, nebula-layers, nebula-blob, glass-tinted, glass-plain, nebula-video-scrim, heading-lens-gradient. +7 dark tokens in :root (tokens_added_batch4)." },
-    "L14_transitions": { "manifest": "transitions.json", "count": 12, "note": "5 audited + tr-gradient-bridge(per-direction) + 4 visual-layer-forge + tr-lens-seam(batch4 dark); + tr-overlap-bridge (blocked). BLUR/MIST seams DROPPED by user 2026-06-17." },
-    "L15_recipes": { "manifest": "recipes.json", "count": 7, "status": "7 composition recipes ready: calm-product, dense-evidence, trust-methodology, cinematic-break, quiet-conversion, dark-refined(batch4), dark-nebula(batch4). style_anchors: 3 light + 2 dark (style-dark-refined/style-dark-nebula ready)." }
+    "L1_tokens": {
+      "manifest": "(inlined in component-library.md + globals.css)",
+      "count": 60,
+      "status": "indexed",
+      "note": "no z-index token group; spacing only --gutter/--maxw"
+    },
+    "L2_global_primitives": {
+      "manifest": "atoms.json#global_primitives",
+      "count": 1,
+      "items": [
+        "Button"
+      ]
+    },
+    "L3_atoms": {
+      "manifest": "atoms.json",
+      "count": 3,
+      "public_items": [
+        "Eyebrow",
+        "Title",
+        "Media"
+      ],
+      "deprecated_source": [
+        "LabEyebrow",
+        "LabTitle",
+        "MediaPlaceholder (_kit.tsx)"
+      ],
+      "gap_atoms": [
+        "Card",
+        "Chip",
+        "Stat",
+        "Ring",
+        "Bars",
+        "ListItem (markup-only /dev/ds-atoms -> primitive-layer-forge)"
+      ]
+    },
+    "L4_layouts": {
+      "manifest": "layouts.json",
+      "count": 0,
+      "status": "documented-missing",
+      "note": "no DS shells in @/components/ds; CL-001"
+    },
+    "L5_ds_sections": {
+      "manifest": "sections.json",
+      "count": 16,
+      "forged_components": 15,
+      "inline_gap": 1,
+      "barrel_exported": 9,
+      "ready_via_barrel": 9,
+      "conditional_via_barrel": 0,
+      "component_api_gap_not_in_barrel": 6,
+      "note": "public DS names; Lab* = deprecated source. 9 archetype sections barrel-exported and ready: 4 aliases over Lab* (StatementHero 01, PinnedSteps 03, Gallery 06, Bento 07) + 5 non-alias clean-DS extractions (EditorialSplit 04, HubMap 08, StatBand 09, Numbered 10, QuietCta 12); plus FullStatement (02 heading+sub variant, non-archetype). The other 6 archetypes (02,05,11,13,14,16) are component-api-gap -> component-forge; 15 Versus is inline."
+    },
+    "L6_production_sections": {
+      "manifest": "production-patterns.json",
+      "count": 19,
+      "dead": 3
+    },
+    "L7_chrome": {
+      "manifest": "chrome.json",
+      "count": 4
+    },
+    "L8_nav": {
+      "manifest": "chrome.json#nav",
+      "count": 1
+    },
+    "L9_newsroom": {
+      "manifest": "newsroom.json",
+      "count": 5
+    },
+    "L10_social": {
+      "manifest": "social.json",
+      "count": 3
+    },
+    "L11_media": {
+      "manifest": "atoms.json#MediaPlaceholder",
+      "count": 1
+    },
+    "L12_motion": {
+      "manifest": "motion.json",
+      "count": 2,
+      "recipes": 6,
+      "note": "2 runtimes (ScrollFX, ScrollOrchestrator) + 6 visual-layer-forge motion recipes: static, slow-ambient-drift, glow-expansion, pattern-reveal, crossfade, nebula-drift(batch4 dark)"
+    },
+    "L13_backgrounds": {
+      "manifest": "backgrounds.json",
+      "count": 28,
+      "note": "13 audited + 8 visual-layer-forge (batch 1) + 7 batch 4 dark themes: ink-floor-glow, nebula-layers, nebula-blob, glass-tinted, glass-plain, nebula-video-scrim, heading-lens-gradient. +7 dark tokens in :root (tokens_added_batch4)."
+    },
+    "L14_transitions": {
+      "manifest": "transitions.json",
+      "count": 12,
+      "note": "5 audited + tr-gradient-bridge(per-direction) + 4 visual-layer-forge + tr-lens-seam(batch4 dark); + tr-overlap-bridge (blocked). BLUR/MIST seams DROPPED by user 2026-06-17."
+    },
+    "L15_recipes": {
+      "manifest": "recipes.json",
+      "count": 7,
+      "status": "7 composition recipes ready: calm-product, dense-evidence, trust-methodology, cinematic-break, quiet-conversion, dark-refined(batch4), dark-nebula(batch4). style_anchors: 3 light + 2 dark (style-dark-refined/style-dark-nebula ready)."
+    }
   },
   "summary": {
     "ds_sections_total": 16,
     "forged_at_forge_level": 15,
     "inline_gap": 1,
-    "barrel_exported": 8,
-    "page_composer_ready_via_barrel": 8,
-    "component_api_gap_not_in_barrel": 8,
+    "barrel_exported": 9,
+    "page_composer_ready_via_barrel": 9,
+    "component_api_gap_not_in_barrel": 6,
     "conditional": 0,
     "draft": 0,
     "blocked": 0,
     "registry_code_conflicts": 7,
-    "ds_reframe_note": "2026-06-22: page-composer consumes only @/components/ds. Barrel exports 8 ready sections — 5 aliases (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + 3 genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS, no Lab wrap): Numbered (10), EditorialSplit (04, +optional points), QuietCta (12) — all build-passed 2026-06-22. 8 forged Lab* remain component-api-gap until extracted into clean DS by component-forge.",
+    "ds_reframe_note": "2026-06-25: page-composer consumes only @/components/ds. Barrel exports 9 ready archetype sections — 4 aliases (StatementHero, PinnedSteps, Gallery, Bento) + 5 clean-DS extractions (own ds/*.tsx + .ds-* CSS, no Lab wrap): EditorialSplit (04), HubMap (08, glass cards light+dark + travelling-spot enhancer), StatBand (09), Numbered (10), QuietCta (12); plus FullStatement (02 variant). 6 forged Lab* remain component-api-gap (02,05,11,13,14,16) until extracted into clean DS by component-forge.",
     "additional_sections": "3 non-archetype sections recorded in sections.json#additional_sections (ds-cinema [self-contained inline cinematic], LabCinemaScrim [prop-driven cinematic sibling], LabFullStatement [archetype-02 heading+sub variant, barrel FullStatement]) — all valid/intentional",
-    "dead_code": ["FinalUnicorn", "Trust", "Results"]
+    "dead_code": [
+      "FinalUnicorn",
+      "Trust",
+      "Results"
+    ]
   },
   "visual_layer_forge": {
     "produced_by": "visual-layer-forge skill (v1, 2026-06-17)",
     "ready": [
-      { "id": "bg-ink-ambient-glow", "layer": "L13", "manifest": "backgrounds.json", "note": "refactored: --aqua dropped" },
-      { "id": "bg-neutral-light/soft/ink", "layer": "L13", "manifest": "backgrounds.json" },
-      { "id": "bg-cool-mist", "layer": "L13", "manifest": "backgrounds.json" },
-      { "id": "bg-violet-halo", "layer": "L13", "manifest": "backgrounds.json" },
-      { "id": "bg-dot-grid", "layer": "L13", "manifest": "backgrounds.json" },
-      { "id": "bg-line-field", "layer": "L13", "manifest": "backgrounds.json" },
-      { "id": "bg-concentric-rings", "layer": "L13", "manifest": "backgrounds.json" },
-      { "id": "bg-media-scrim", "layer": "L13", "manifest": "backgrounds.json" },
-      { "id": "tr-gradient-bridge", "layer": "L14", "manifest": "transitions.json", "note": "per-direction multi-stop (hex)" },
-      { "id": "tr-hard-cut", "layer": "L14", "manifest": "transitions.json" },
-      { "id": "tr-pattern-dissolve", "layer": "L14", "manifest": "transitions.json" },
-      { "id": "tr-masked-divider", "layer": "L14", "manifest": "transitions.json" },
-      { "id": "tr-glow-crossover", "layer": "L14", "manifest": "transitions.json" },
-      { "id": "motion-static", "layer": "L12", "manifest": "motion.json" },
-      { "id": "motion-slow-ambient-drift", "layer": "L12", "manifest": "motion.json" },
-      { "id": "motion-glow-expansion", "layer": "L12", "manifest": "motion.json" },
-      { "id": "motion-pattern-reveal", "layer": "L12", "manifest": "motion.json" },
-      { "id": "motion-crossfade", "layer": "L12", "manifest": "motion.json" },
-      { "id": "recipe-calm-product", "layer": "L15", "manifest": "recipes.json" },
-      { "id": "recipe-dense-evidence", "layer": "L15", "manifest": "recipes.json" },
-      { "id": "recipe-trust-methodology", "layer": "L15", "manifest": "recipes.json" },
-      { "id": "recipe-cinematic-break", "layer": "L15", "manifest": "recipes.json" },
-      { "id": "recipe-quiet-conversion", "layer": "L15", "manifest": "recipes.json" },
-      { "id": "bg-ink-floor-glow", "layer": "L13", "manifest": "backgrounds.json", "note": "batch 4 dark — Ink Refined floor glow (bottom-anchored)" },
-      { "id": "bg-nebula-layers", "layer": "L13", "manifest": "backgrounds.json", "note": "batch 4 dark — Nebula surface base" },
-      { "id": "bg-nebula-blob", "layer": "L13", "manifest": "backgrounds.json", "note": "batch 4 dark — dual radial blob, --pin driven" },
-      { "id": "bg-glass-tinted", "layer": "L13", "manifest": "backgrounds.json", "note": "batch 4 dark — violet glass (+--accent)" },
-      { "id": "bg-glass-plain", "layer": "L13", "manifest": "backgrounds.json", "note": "batch 4 dark — neutral 6% glass" },
-      { "id": "bg-nebula-video-scrim", "layer": "L13", "manifest": "backgrounds.json", "note": "batch 4 dark — twin video overlay" },
-      { "id": "heading-lens-gradient", "layer": "L13", "manifest": "backgrounds.json", "note": "batch 4 dark — H1 gradient text-clip" },
-      { "id": "tr-lens-seam", "layer": "L14", "manifest": "transitions.json", "note": "batch 4 dark — 1px lens hairline seam" },
-      { "id": "motion-nebula-drift", "layer": "L12", "manifest": "motion.json", "note": "batch 4 dark — nebula ambient drift" },
-      { "id": "recipe-dark-refined", "layer": "L15", "manifest": "recipes.json", "note": "batch 4 dark — Ink Refined arc" },
-      { "id": "recipe-dark-nebula", "layer": "L15", "manifest": "recipes.json", "note": "batch 4 dark — Nebula Deep arc" }
+      {
+        "id": "bg-ink-ambient-glow",
+        "layer": "L13",
+        "manifest": "backgrounds.json",
+        "note": "refactored: --aqua dropped"
+      },
+      {
+        "id": "bg-neutral-light/soft/ink",
+        "layer": "L13",
+        "manifest": "backgrounds.json"
+      },
+      {
+        "id": "bg-cool-mist",
+        "layer": "L13",
+        "manifest": "backgrounds.json"
+      },
+      {
+        "id": "bg-violet-halo",
+        "layer": "L13",
+        "manifest": "backgrounds.json"
+      },
+      {
+        "id": "bg-dot-grid",
+        "layer": "L13",
+        "manifest": "backgrounds.json"
+      },
+      {
+        "id": "bg-line-field",
+        "layer": "L13",
+        "manifest": "backgrounds.json"
+      },
+      {
+        "id": "bg-concentric-rings",
+        "layer": "L13",
+        "manifest": "backgrounds.json"
+      },
+      {
+        "id": "bg-media-scrim",
+        "layer": "L13",
+        "manifest": "backgrounds.json"
+      },
+      {
+        "id": "tr-gradient-bridge",
+        "layer": "L14",
+        "manifest": "transitions.json",
+        "note": "per-direction multi-stop (hex)"
+      },
+      {
+        "id": "tr-hard-cut",
+        "layer": "L14",
+        "manifest": "transitions.json"
+      },
+      {
+        "id": "tr-pattern-dissolve",
+        "layer": "L14",
+        "manifest": "transitions.json"
+      },
+      {
+        "id": "tr-masked-divider",
+        "layer": "L14",
+        "manifest": "transitions.json"
+      },
+      {
+        "id": "tr-glow-crossover",
+        "layer": "L14",
+        "manifest": "transitions.json"
+      },
+      {
+        "id": "motion-static",
+        "layer": "L12",
+        "manifest": "motion.json"
+      },
+      {
+        "id": "motion-slow-ambient-drift",
+        "layer": "L12",
+        "manifest": "motion.json"
+      },
+      {
+        "id": "motion-glow-expansion",
+        "layer": "L12",
+        "manifest": "motion.json"
+      },
+      {
+        "id": "motion-pattern-reveal",
+        "layer": "L12",
+        "manifest": "motion.json"
+      },
+      {
+        "id": "motion-crossfade",
+        "layer": "L12",
+        "manifest": "motion.json"
+      },
+      {
+        "id": "recipe-calm-product",
+        "layer": "L15",
+        "manifest": "recipes.json"
+      },
+      {
+        "id": "recipe-dense-evidence",
+        "layer": "L15",
+        "manifest": "recipes.json"
+      },
+      {
+        "id": "recipe-trust-methodology",
+        "layer": "L15",
+        "manifest": "recipes.json"
+      },
+      {
+        "id": "recipe-cinematic-break",
+        "layer": "L15",
+        "manifest": "recipes.json"
+      },
+      {
+        "id": "recipe-quiet-conversion",
+        "layer": "L15",
+        "manifest": "recipes.json"
+      },
+      {
+        "id": "bg-ink-floor-glow",
+        "layer": "L13",
+        "manifest": "backgrounds.json",
+        "note": "batch 4 dark — Ink Refined floor glow (bottom-anchored)"
+      },
+      {
+        "id": "bg-nebula-layers",
+        "layer": "L13",
+        "manifest": "backgrounds.json",
+        "note": "batch 4 dark — Nebula surface base"
+      },
+      {
+        "id": "bg-nebula-blob",
+        "layer": "L13",
+        "manifest": "backgrounds.json",
+        "note": "batch 4 dark — dual radial blob, --pin driven"
+      },
+      {
+        "id": "bg-glass-tinted",
+        "layer": "L13",
+        "manifest": "backgrounds.json",
+        "note": "batch 4 dark — violet glass (+--accent)"
+      },
+      {
+        "id": "bg-glass-plain",
+        "layer": "L13",
+        "manifest": "backgrounds.json",
+        "note": "batch 4 dark — neutral 6% glass"
+      },
+      {
+        "id": "bg-nebula-video-scrim",
+        "layer": "L13",
+        "manifest": "backgrounds.json",
+        "note": "batch 4 dark — twin video overlay"
+      },
+      {
+        "id": "heading-lens-gradient",
+        "layer": "L13",
+        "manifest": "backgrounds.json",
+        "note": "batch 4 dark — H1 gradient text-clip"
+      },
+      {
+        "id": "tr-lens-seam",
+        "layer": "L14",
+        "manifest": "transitions.json",
+        "note": "batch 4 dark — 1px lens hairline seam"
+      },
+      {
+        "id": "motion-nebula-drift",
+        "layer": "L12",
+        "manifest": "motion.json",
+        "note": "batch 4 dark — nebula ambient drift"
+      },
+      {
+        "id": "recipe-dark-refined",
+        "layer": "L15",
+        "manifest": "recipes.json",
+        "note": "batch 4 dark — Ink Refined arc"
+      },
+      {
+        "id": "recipe-dark-nebula",
+        "layer": "L15",
+        "manifest": "recipes.json",
+        "note": "batch 4 dark — Nebula Deep arc"
+      }
     ],
-    "status": { "state": "complete", "summary": "starter library + batch 4 dark themes: 15 backgrounds + 8 transitions(+1 blocked) + 6 motion + 7 recipes + 2 dark style anchors — all ready + registered", "scope": "6-8 bg / 6-8 transitions / 4-5 motion / recipes + dark-theme batch" },
-    "batch4_dark_themes": { "produced_by": "visual-layer-forge (batch 4, 2026-06-18)", "source_of_truth": ".claude/designs/dark-themes/design-council.md", "themes": ["style-dark-refined (Ink Refined)", "style-dark-nebula (Nebula Deep)"], "browser_qa": { "run": true, "url": "http://localhost:3005/dev/visual-lab", "widths": [375, 1440], "page_level_horizontal_overflow_px": 0, "console_errors": 0, "note": "backdrop-filter fix: unitless saturate + unprefixed-only so Lightning CSS keeps both prefixes" } },
-    "browser_qa": { "run": true, "url": "http://localhost:3005/dev/visual-lab", "widths": [375, 768, 1280], "page_level_horizontal_overflow_px": 0, "console_errors": 0 },
+    "status": {
+      "state": "complete",
+      "summary": "starter library + batch 4 dark themes: 15 backgrounds + 8 transitions(+1 blocked) + 6 motion + 7 recipes + 2 dark style anchors — all ready + registered",
+      "scope": "6-8 bg / 6-8 transitions / 4-5 motion / recipes + dark-theme batch"
+    },
+    "batch4_dark_themes": {
+      "produced_by": "visual-layer-forge (batch 4, 2026-06-18)",
+      "source_of_truth": ".claude/designs/dark-themes/design-council.md",
+      "themes": [
+        "style-dark-refined (Ink Refined)",
+        "style-dark-nebula (Nebula Deep)"
+      ],
+      "browser_qa": {
+        "run": true,
+        "url": "http://localhost:3005/dev/visual-lab",
+        "widths": [
+          375,
+          1440
+        ],
+        "page_level_horizontal_overflow_px": 0,
+        "console_errors": 0,
+        "note": "backdrop-filter fix: unitless saturate + unprefixed-only so Lightning CSS keeps both prefixes"
+      }
+    },
+    "browser_qa": {
+      "run": true,
+      "url": "http://localhost:3005/dev/visual-lab",
+      "widths": [
+        375,
+        768,
+        1280
+      ],
+      "page_level_horizontal_overflow_px": 0,
+      "console_errors": 0
+    },
     "backlog_blocked": [
-      { "id": "bg-shared-page-grid", "layer": "L13", "status": "blocked-by-surface-ownership" },
-      { "id": "tr-grid-continuation", "layer": "L14", "status": "blocked-by-surface-ownership" },
-      { "id": "tr-overlap-bridge", "layer": "L14", "status": "blocked-by-surface-ownership", "note": "designed, not implemented; page owns cross-section overlap" }
+      {
+        "id": "bg-shared-page-grid",
+        "layer": "L13",
+        "status": "blocked-by-surface-ownership"
+      },
+      {
+        "id": "tr-grid-continuation",
+        "layer": "L14",
+        "status": "blocked-by-surface-ownership"
+      },
+      {
+        "id": "tr-overlap-bridge",
+        "layer": "L14",
+        "status": "blocked-by-surface-ownership",
+        "note": "designed, not implemented; page owns cross-section overlap"
+      }
     ],
     "unblock_condition": "Lab sections support transparent/inherit surface -> component-forge -> visual-layer-forge targeted -> shared page backgrounds enabled",
-    "recipes_layer": { "id": "L15_recipes", "manifest": "recipes.json", "status": "created (scaffold; empty recipes[]); composition-recipe layer is now part of the library model" }
+    "recipes_layer": {
+      "id": "L15_recipes",
+      "manifest": "recipes.json",
+      "status": "created (scaffold; empty recipes[]); composition-recipe layer is now part of the library model"
+    }
   },
   "manifests": [
-    "sections.json", "atoms.json", "layouts.json", "chrome.json", "motion.json",
-    "newsroom.json", "social.json", "backgrounds.json", "transitions.json",
-    "production-patterns.json", "conflicts.json"
+    "sections.json",
+    "atoms.json",
+    "layouts.json",
+    "chrome.json",
+    "motion.json",
+    "newsroom.json",
+    "social.json",
+    "backgrounds.json",
+    "transitions.json",
+    "production-patterns.json",
+    "conflicts.json"
   ]
 }

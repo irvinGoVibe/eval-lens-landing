@@ -1,6 +1,6 @@
 {
   "generated": "2026-06-17",
-  "last_updated": "2026-06-22",
+  "last_updated": "2026-06-25",
   "source_dir": "web/src/components/sections/lab/",
   "catalog": "web/src/app/dev/section-lab/page.tsx",
   "consumption": {
@@ -17,11 +17,11 @@
     "barrel_extra": {
       "FullStatement": "= LabFullStatement.tsx — a SEPARATE heading+sub variant of archetype 02, NOT the library's cataloged archetype-02 component (which is LabStatement, versions[]). Used by /dev/ds-sections + /dev/ds-theme. No library archetype row; not in section-lab catalog. Duplication flagged."
     },
-    "note": "Public API for pages/skills is ONLY @/components/ds. The barrel exports 8 sections: 5 aliases over Lab* (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + 3 genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS, NOT Lab wraps): Numbered (10), EditorialSplit (04, +optional points), QuietCta (12) — all ready, build-passed. Lab*/_kit are a DEPRECATED internal substrate the 5 aliases wrap; direct Lab* import is FORBIDDEN. Sections not in the barrel are component-api-gap (consumption_readiness = unavailable) -> component-forge extracts a clean DS component. The .ds container supplies the light card system (--dsc-*).",
+    "note": "Public API for pages/skills is ONLY @/components/ds. The barrel exports 9 sections: 5 aliases over Lab* (StatementHero, Bento, FullStatement, Gallery, PinnedSteps) + 4 genuine clean-DS extractions (own ds/*.tsx + .ds-* CSS, NOT Lab wraps): Numbered (10), EditorialSplit (04, +optional points), QuietCta (12), HubMap (08, glass cards light+dark + travelling-spot enhancer) — all ready, build-passed. Lab*/_kit are a DEPRECATED internal substrate the 5 aliases wrap; direct Lab* import is FORBIDDEN. Sections not in the barrel are component-api-gap (consumption_readiness = unavailable) -> component-forge extracts a clean DS component. The .ds container supplies the light card system (--dsc-*).",
     "reference_page": "/dev/ds-sections",
     "public_api_only": true,
     "canon_updated": "2026-06-22 (DS reframe)",
-    "gap_policy": "Missing DS section -> component-forge (extract clean DS, not a Lab wrapper/copy). 11 forged archetypes (02,04,05,08,09,10,11,12,13,14,16) are component-api-gap until promoted into clean DS."
+    "gap_policy": "Missing DS section -> component-forge (extract clean DS, not a Lab wrapper/copy). Archetypes still component-api-gap (not exported via @/components/ds): 02, 05, 11, 13, 14, 15, 16. Promoted to clean DS in the barrel: 04 EditorialSplit, 08 HubMap, 09 StatBand, 10 Numbered, 12 QuietCta."
   },
   "browser_qa": {
     "run": true,
@@ -656,17 +656,18 @@
     },
     {
       "archetype_id": "08",
-      "name": "LabHubMap",
+      "name": "HubMap",
       "label": "Hub map / nav",
-      "source_path": "sections/lab/LabHubMap.tsx",
-      "export_name": "LabHubMap",
+      "source_path": "components/ds/HubMap.tsx",
+      "export_name": "HubMap",
       "versions": {
         "available": [
           "v1",
           "v2",
           "v3"
         ],
-        "default": "v1"
+        "default": "v1",
+        "differences": "v1 polish (3-col grid, feature spans 2 cols); v2 recomp (full-width feature banner + 3-col row); v3 expanded (mirrored: routes stacked left, tall feature hero right, large display head). Robust — feature + __rest split, no fixed grid-row spans, any tile count flows/wraps."
       },
       "surfaces": {
         "available": [
@@ -674,7 +675,8 @@
           "ink"
         ],
         "default": "light",
-        "control": "surface prop"
+        "control": "surface prop",
+        "note": "Glass material ported 1:1 from LabBento. INK: RichBento glass (glass fill, gradient rim, drifting feature blobs, travelling spot). LIGHT: frosted glass over the balls-glass blob field; feature keeps the lens-soft accent + light-palette drifting blobs + stripe texture (v3 hero aurora tuned)."
       },
       "props": [
         "id?",
@@ -682,22 +684,24 @@
         "ariaLabel?",
         "eyebrow*",
         "title*",
+        "titleAccent?",
         "sub*",
-        "items*:LabContentSet<{tag,title,body,href,feature?}[]>",
+        "items*:{tag,title,body,href,feature?}[]",
         "marker?"
       ],
       "content_capacity": {
         "eyebrow": true,
-        "heading": true,
-        "body": true,
+        "heading": "title + optional titleAccent lens word",
+        "body": "sub",
         "links": "items[].href",
-        "content_modes": "placeholder/real (LabContentSet)"
+        "feature": "items[].feature (first tile)"
       },
       "media": {
         "supported": false
       },
       "motion": {
-        "reveal": "head only (grids omit by design)"
+        "reveal": "head only (grids omit by design)",
+        "ink_enhancer": "HubMapGlassSpot (client) — ink-only; injects .ds-glass sheen layers + WAAPI travelling spot; mounted by HubMap when surface=\"ink\""
       },
       "semantic_matching": {
         "primary_roles": [
@@ -713,22 +717,26 @@
         }
       },
       "consumption_readiness": {
-        "status": "unavailable",
-        "reasons": [
-          "forged Lab* but NOT exported via @/components/ds; direct Lab* import forbidden by DS canon"
+        "status": "ready",
+        "browser_qa": "run (2026-06-25, /dev/ds-sections, console clean, no server errors)",
+        "allowed_consumers": [
+          "page-composer",
+          "build-pages"
         ],
-        "allowed_consumers": [],
         "restrictions": [
-          "promote into clean DS via component-forge before page-composer can use it"
+          "hub/nav sections only — every tile is a real route <a>"
         ],
         "forge_level": "forged"
       },
       "public_name": "HubMap",
-      "barrel_export": null,
-      "source_status": "deprecated-substrate",
+      "barrel_export": "HubMap",
+      "source_status": "clean-DS extraction (own components/ds/HubMap.tsx + .ds-hubmap CSS in ds.css; HubMapGlassSpot enhancer; NOT a Lab wrap)",
       "forge_status": "forged",
-      "classification": "component-api-gap",
-      "route_to": "component-forge"
+      "classification": "clean-ds",
+      "dependencies": [
+        "/assets/backgrounds/balls-glass.png (light backdrop, shared with Bento)"
+      ],
+      "notes": "Clean-DS twin of the deprecated LabHubMap. Navigational bento (vs Bento 07 = content tiles). HubMapGlassSpot is a near-verbatim port of BentoGlassSpot on .ds-hubmap selectors — dedup candidate once a shared glass primitive is extracted."
     },
     {
       "archetype_id": "09",
