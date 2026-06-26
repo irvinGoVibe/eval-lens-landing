@@ -4,12 +4,14 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
-import { LabStatementHero } from "@/components/sections/lab/LabStatementHero";
-import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
-import { LabNumbered } from "@/components/sections/lab/LabNumbered";
-import { LabBento } from "@/components/sections/lab/LabBento";
-import { LabGallery } from "@/components/sections/lab/LabGallery";
-import { CtaBand } from "@/components/sections/CtaBand";
+import {
+  StatementHero,
+  PinnedSteps,
+  Numbered,
+  Bento,
+  Gallery,
+  CtaBand,
+} from "@/components/ds";
 
 /** Header nav for this page — anchor links to its own sections (see the
  *  matching `id`s on the Lab* sections below). Each page declares its own. */
@@ -230,9 +232,9 @@ export default function ProductOverviewPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} />
-      <main className="product-overview">
+      <main className="product-overview section-lab ds">
         {/* §1. Hero → LabStatementHero (soft / light, version 1). */}
-        <LabStatementHero
+        <StatementHero
           surface="light"
           version={1}
           eyebrow="Product Overview"
@@ -250,7 +252,7 @@ export default function ProductOverviewPage() {
         />
 
         {/* §2. Organizer path → LabPinnedSteps (soft / light, 7 pinned steps). */}
-        <LabPinnedSteps
+        <PinnedSteps
           id="path"
           surface="light"
           ariaLabel="The organizer path — seven steps"
@@ -268,7 +270,7 @@ export default function ProductOverviewPage() {
         />
 
         {/* §3. Evaluation pipeline → LabNumbered (light → .band.soft). PIPELINE.name → title. */}
-        <LabNumbered
+        <Numbered
           surface="light"
           eyebrow="Evaluation pipeline"
           title="Every deck runs the same five stages"
@@ -283,7 +285,7 @@ export default function ProductOverviewPage() {
         {/* §4. Three modules → LabBento (light). Media on the feature tile only.
             Note: LabBentoMedia has no `ratio` field — the component hardcodes
             16/9 internally — so the feature media omits `ratio`. */}
-        <LabBento
+        <Bento
           id="modules"
           surface="light"
           eyebrow="Three modules"
@@ -304,16 +306,8 @@ export default function ProductOverviewPage() {
           )}
         />
 
-        {/* Transition §4 (Modules, soft) → §5 (Jury, ink) — masked dome divider. */}
-        <div
-          className="tr-masked-divider tr-masked-divider--dome"
-          data-from="soft"
-          data-to="ink"
-          aria-hidden="true"
-        />
-
         {/* §5. AI jury → LabGallery (ink — ink peak №1). JUDGES.code → tag. */}
-        <LabGallery
+        <Gallery
           surface="ink"
           eyebrow="AI jury"
           title="Six independent judges, six lenses"
@@ -324,14 +318,6 @@ export default function ProductOverviewPage() {
             title: j.title,
             body: j.body,
           }))}
-        />
-
-        {/* Transition §5 (Jury, ink) → §6 (Why, light) — masked diagonal divider. */}
-        <div
-          className="tr-masked-divider tr-masked-divider--diagonal"
-          data-from="ink"
-          data-to="light"
-          aria-hidden="true"
         />
 
         {/* §6. Why it matters — KEPT page-local on purpose (editorial pull-quote,
@@ -365,7 +351,7 @@ export default function ProductOverviewPage() {
 
         {/* §7. What you get → LabBento (light). No media (brief has no §7 image);
             the feature tile renders without a media slot. */}
-        <LabBento
+        <Bento
           id="outputs"
           surface="light"
           eyebrow="What you get"

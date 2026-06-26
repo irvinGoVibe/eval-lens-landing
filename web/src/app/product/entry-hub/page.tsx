@@ -3,7 +3,11 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
-import { StatementHero, FullStatement, PinnedSteps, EditorialSplit, Bento, Gallery, QuietCta } from "@/components/ds";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
+import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
+import { StatementHero, FullStatement, PinnedSteps, EditorialSplit, Bento, Gallery, CtaBand } from "@/components/ds";
+import { CanvasFlowField } from "@/components/CanvasFlowField";
 
 /** Header nav for this page — anchor links to its own sections (see the
  *  matching `id`s on the DS sections below). Each page declares its own. */
@@ -144,9 +148,50 @@ export default function EntryHubPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="entry-hub section-lab ds">
+        {/* ── ONE continuous tonal zone (§1–§7): dark→light→dark on the shared
+            through-background. Layer stack (z-index:-1, DOM order = back→front):
+              1) --lobes-dark + --on     dark BASE (always on) — §1–§3
+              2) --lobes ds-relight      light layer, faded 0→1 by <ZoneToneFlipReverse/>
+                 at §3→§4 → covers the dark, so §4–§5 read light
+              3) --lobes-dark .ds-redark second dark layer, faded 0→1 by
+                 <ZoneToneFlip targetSelector=".ds-redark"/> at §5→§6 → dark §6–§7
+              4) ds-flip-bridge + __glow brand bloom at the §3→§4 reverse seam
+            ZoneBlobs banded to §4–§5 light island (top + bottom on single component).
+            CtaBand + Footer own their own backdrops → OUTSIDE the zone. ── */}
+        <div className="ds-zone">
+          <div
+            className="ds-zone__bg ds-canvas__bg--lobes-dark ds-zone__bg--on"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          <div
+            className="ds-zone__bg ds-canvas__bg--lobes ds-relight"
+            aria-hidden="true"
+          />
+          <div
+            className="ds-zone__bg ds-canvas__bg--lobes-dark ds-redark"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          <div className="ds-flip-bridge" aria-hidden="true" />
+          <div className="ds-flip-bridge__glow" aria-hidden="true" />
+          {/* PNG blobs banded to light island §4–§5 only.
+              top="38%" clips blobs off §1–§3 dark; bottom="28%" clips off §6–§7 dark.
+              Fine-tune via ?blobs inspector. */}
+          <ZoneBlobs top="38%" bottom="28%" />
+          <CanvasFlowField blue />
+
         {/* §1. Hero → StatementHero (ships soft; no surface prop). */}
         <StatementHero
           id="top"
+          surface="ink"
+          version={2}
           eyebrow="Entry Hub"
           titleLead="One"
           titleAccent="entry point"
@@ -166,6 +211,7 @@ export default function EntryHubPage() {
         <FullStatement
           id="problem"
           surface="ink"
+          version={2}
           ariaLabel="The intake problem"
           eyebrow="The intake problem"
           titleLead="Decks arrive from"
@@ -176,7 +222,8 @@ export default function EntryHubPage() {
         {/* §3. How it works → PinnedSteps (soft), 6 pinned steps. */}
         <PinnedSteps
           id="how"
-          surface="light"
+          surface="ink"
+          version={1}
           ariaLabel="How Entry Hub works — six steps"
           eyebrow="How it works"
           title={{
@@ -195,11 +242,15 @@ export default function EntryHubPage() {
           }}
         />
 
+        {/* ── seam §3→§4 — dark→light (fades ds-relight in + brand bloom). ── */}
+        <ZoneToneFlipReverse />
+
         {/* §4. Two ways to collect → EditorialSplit (light). The two modes
             are grounded as `points` rows beside the visual. */}
         <EditorialSplit
           id="collect-modes"
           surface="light"
+          version={2}
           eyebrow="Two ways to collect"
           titleLead="Add teams yourself,"
           titleAccent="or let them submit"
@@ -227,6 +278,7 @@ export default function EntryHubPage() {
         <Bento
           id="collect"
           surface="light"
+          version={2}
           eyebrow="What gets collected"
           title="Everything the review needs, in one record"
           sub="Each entry carries the same fields, so the batch is consistent before evaluation starts."
@@ -245,12 +297,17 @@ export default function EntryHubPage() {
           )}
         />
 
+        {/* ── seam §5→§6 — light→dark (fades .ds-redark in). ── */}
+        <ZoneToneFlip targetSelector=".ds-redark" />
+
         {/* §6. Built-in controls → Gallery (light — supports light/ink only). */}
         <Gallery
           id="controls"
-          surface="light"
+          surface="ink"
+          version={4}
           eyebrow="Built-in controls"
-          title="You decide who submits, and when"
+          titleAccent="You decide"
+          title="who submits, and when"
           sub="The page is private until you say otherwise, and submissions close on your terms."
           laneLabel="Entry Hub controls — horizontally scrollable"
           items={CONTROLS}
@@ -260,11 +317,26 @@ export default function EntryHubPage() {
             into the closing line of `sub`; media slot holds the value visual. */}
         <EditorialSplit
           id="value"
-          surface="light"
+          surface="ink"
+          version={3}
           eyebrow="Why it matters"
           titleLead="One clean batch"
           titleAccent="before evaluation starts"
-          sub="Every deck and every detail your review needs, in one private workspace — not scattered across inboxes, forms, and drives. When you start judging, the batch is already complete and consistent. Collect once, in one place — from there, EvalLense prepares the analysis, and the final call is always yours."
+          sub="Collect once, in one place — when you start judging, the batch is already complete and consistent."
+          points={[
+            {
+              title: "One private workspace",
+              body: "Every deck and every detail your review needs in one place — not scattered across inboxes, forms, and drives.",
+            },
+            {
+              title: "Complete and consistent",
+              body: "When you start judging, the batch is already whole — same fields on every entry, nothing missing.",
+            },
+            {
+              title: "The final call is yours",
+              body: "From there, EvalLense prepares the analysis, and the decision always stays with you.",
+            },
+          ]}
           media={{
             ratio: "16/9",
             label: "Image · one clean workspace · 16:9",
@@ -274,17 +346,31 @@ export default function EntryHubPage() {
           }}
         />
 
-        {/* §8. Final CTA → QuietCta (ink) — cinematic peak #2. */}
-        <QuietCta
-          id="cta"
-          surface="ink"
+        {/* seam §7→§8 — gradient bridge into CtaBand: transparent (top) → ink (bottom). */}
+        <div
+          className="tr-gradient-bridge"
+          data-to="ink"
+          style={{ ["--from" as string]: "transparent", height: "200px" } as React.CSSProperties}
+          aria-hidden="true"
+        />
+        </div>{/* /ds-zone §1–§7 */}
+
+        {/* §8. Final CTA → CtaBand (ink/dark) — cinematic peak #2. Looping
+            background video (`neo`) with `bleed` so it spills onto the footer;
+            `auroraVariant` is the CSS fallback when the video can't play. */}
+        <CtaBand
+          theme="dark"
+          bleed
+          videoSrc="/assets/cta/neo.mp4"
+          auroraVariant="violet"
           eyebrow="Get started"
-          title="See your intake flow on your own event"
+          title="See your intake flow on"
+          titleAccent="your own event"
           sub="Book a demo and watch one link turn a flood of decks into a clean, ready-to-judge batch."
-          cta={{ label: "Book a Demo", href: "/company/contact" }}
+          primary={{ label: "Book a Demo", href: "/company/contact" }}
         />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );

@@ -13,6 +13,11 @@ panel from Claude Code gets in the way. **Do not call `preview_start`,
 explicitly asks** ("запусти превью", "подними сервер", "посмотри визуально"
 or similar). If you need to verify a change, ask first.
 
+**Never use `mcp__Claude_in_Chrome__*` tools** — these take over the user's
+real Chrome browser and disrupt their work. For visual verification, use only
+the `preview_*` Claude Code tools (headless, isolated). This prohibition
+applies to all agents, workers, and skills in this project.
+
 When the user does ask:
 
 - Use the Claude Code preview tool (`preview_start` with name `web`), which

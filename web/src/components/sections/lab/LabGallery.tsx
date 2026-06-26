@@ -52,6 +52,12 @@ export type LabGalleryProps = {
   eyebrow: string;
   /** Section heading. The first word is lens-accented in v3. */
   title: string;
+  /** Optional lead fragment rendered before the accented part (plain). When set
+   *  with `titleAccent`, overrides the single-string `title` rendering. */
+  titleLead?: string;
+  /** Optional accented fragment rendered in `.grad-word`. When set, the heading
+   *  becomes `{titleLead} <span class="grad-word">{titleAccent}</span>`. */
+  titleAccent?: string;
   sub: string;
   /** Accessible name for the scroll-snap `<ol>` lane. */
   laneLabel: string;
@@ -66,7 +72,27 @@ export type LabGalleryProps = {
  * first word in `.grad-word` for the lens accent. `title` stays a single
  * string prop — the accent is purely a layout-markup concern.
  */
-function Title({ title, accent }: { title: string; accent: boolean }) {
+function Title({
+  title,
+  titleLead,
+  titleAccent,
+  accent,
+}: {
+  title: string;
+  titleLead?: string;
+  titleAccent?: string;
+  accent: boolean;
+}) {
+  // Explicit lead/accent fragments take precedence (works in every version).
+  if (titleLead != null || titleAccent != null) {
+    return (
+      <h2 className="title">
+        {titleLead ? <span>{titleLead} </span> : null}
+        {titleAccent ? <span className="grad-word">{titleAccent}</span> : null}
+        {title ? ` ${title}` : null}
+      </h2>
+    );
+  }
   if (!accent) {
     return <h2 className="title">{title}</h2>;
   }
@@ -106,6 +132,8 @@ export function LabGallery({
   ariaLabel,
   eyebrow,
   title,
+  titleLead,
+  titleAccent,
   sub,
   laneLabel,
   items,
@@ -125,7 +153,7 @@ export function LabGallery({
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
-            <Title title={title} accent={false} />
+            <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent={false} />
             <p className="sub">{sub}</p>
           </div>
         </div>
@@ -136,7 +164,7 @@ export function LabGallery({
           aria-label={laneLabel}
         >
           {items.map((item, i) => (
-            <Card item={item} index={i} key={item.tag} />
+            <Card item={item} index={i} key={`${item.tag}-${i}`} />
           ))}
         </ol>
       </div>
@@ -154,12 +182,12 @@ export function LabGallery({
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
-            <Title title={title} accent={false} />
+            <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent={false} />
             <p className="sub">{sub}</p>
           </div>
           <ul className="lab-gallery__grid" data-reveal="up" aria-label={laneLabel}>
             {items.map((item, i) => (
-              <Card item={item} index={i} key={item.tag} />
+              <Card item={item} index={i} key={`${item.tag}-${i}`} />
             ))}
           </ul>
         </div>
@@ -179,7 +207,7 @@ export function LabGallery({
           <div className="wrap">
             <div className="head" data-reveal="up">
               <LabEyebrow>{eyebrow}</LabEyebrow>
-              <Title title={title} accent />
+              <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent />
               <p className="sub">{sub}</p>
             </div>
           </div>
@@ -189,8 +217,8 @@ export function LabGallery({
             tabIndex={0}
             aria-label={laneLabel}
           >
-            {items.map((item) => (
-              <li className="lab-gallery__card" key={item.tag}>
+            {items.map((item, i) => (
+              <li className="lab-gallery__card" key={`${item.tag}-${i}`}>
                 <span className="lab-signal" aria-hidden="true" />
                 {item.href ? (
         <a className="mini-tag mini-tag--link" href={item.href}>{item.tag}</a>

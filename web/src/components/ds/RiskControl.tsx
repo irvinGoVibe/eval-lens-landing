@@ -33,21 +33,32 @@ export type RiskControlProps = {
   titleAccent?: string;
   sub: string;
   pairs: RiskPair[];
+  /** Column tag labels (mono). Default to the trust-page "Risk"/"Control". */
+  leftTag?: string;
+  rightTag?: string;
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
   marker?: string;
 };
 
-function Grid({ pairs }: { pairs: RiskPair[] }) {
+function Grid({
+  pairs,
+  leftTag,
+  rightTag,
+}: {
+  pairs: RiskPair[];
+  leftTag: string;
+  rightTag: string;
+}) {
   return (
     <div className="ds-risk__grid" data-reveal="up">
       {pairs.map((pair, i) => (
         <div key={i} className="ds-risk__row">
           <div>
-            <span className="mini-tag">Risk</span>
+            <span className="mini-tag">{leftTag}</span>
             <strong>{pair.risk}</strong>
           </div>
           <div>
-            <span className="mini-tag">Control</span>
+            <span className="mini-tag">{rightTag}</span>
             <p>{pair.control}</p>
           </div>
         </div>
@@ -65,6 +76,8 @@ export function RiskControl({
   titleAccent,
   sub,
   pairs,
+  leftTag = "Risk",
+  rightTag = "Control",
   marker,
 }: RiskControlProps) {
   const surf = surface === "ink" ? "ink" : "soft";
@@ -83,7 +96,7 @@ export function RiskControl({
             <Title title={title} accent={titleAccent} />
             <p className="sub">{sub}</p>
           </div>
-          <Grid pairs={pairs} />
+          <Grid pairs={pairs} leftTag={leftTag} rightTag={rightTag} />
         </div>
       </div>
 
@@ -95,7 +108,7 @@ export function RiskControl({
             <Title title={title} accent={titleAccent} />
             <p className="sub">{sub}</p>
           </div>
-          <Grid pairs={pairs} />
+          <Grid pairs={pairs} leftTag={leftTag} rightTag={rightTag} />
         </div>
       </div>
 
@@ -107,7 +120,7 @@ export function RiskControl({
             <Title title={title} accent={titleAccent} />
             <p className="sub">{sub}</p>
           </div>
-          <Grid pairs={pairs} />
+          <Grid pairs={pairs} leftTag={leftTag} rightTag={rightTag} />
         </div>
       </div>
     </section>

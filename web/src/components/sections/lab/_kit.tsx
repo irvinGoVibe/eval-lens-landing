@@ -92,21 +92,30 @@ export function LabTitle({
     );
   }
   const words = title.split(" ");
-  const target = accent.toLowerCase();
-  let done = false;
+  // Accent matches a contiguous RUN of words (a single word is the n=1 case);
+  // the FIRST such run is wrapped in one `.grad-word`. No match → plain words.
+  const targetWords = accent.toLowerCase().split(" ");
+  let start = -1;
+  for (let i = 0; i + targetWords.length <= words.length; i++) {
+    if (targetWords.every((t, j) => words[i + j].toLowerCase() === t)) {
+      start = i;
+      break;
+    }
+  }
+  const end = start + targetWords.length;
   return (
     <h2 className="title" data-reveal={reveal} style={style}>
       {words.map((word, i) => {
         const space = i > 0 ? " " : "";
-        if (!done && word.toLowerCase() === target) {
-          done = true;
+        if (start !== -1 && i === start) {
           return (
             <span key={i}>
               {space}
-              <span className="grad-word">{word}</span>
+              <span className="grad-word">{words.slice(start, end).join(" ")}</span>
             </span>
           );
         }
+        if (start !== -1 && i > start && i < end) return null;
         return <span key={i}>{`${space}${word}`}</span>;
       })}
     </h2>

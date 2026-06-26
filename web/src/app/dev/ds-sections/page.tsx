@@ -111,7 +111,7 @@ export default function DsSectionsPage() {
     <main className="ds-sections section-lab ds">
       <StatementHero
         marker="01 · Statement hero"
-        surface="light"
+        surface="ink"
         version={1}
         background="gradient"
         eyebrow="Statement hero"
@@ -126,7 +126,8 @@ export default function DsSectionsPage() {
 
       <Bento
         id="bento"
-        surface="ink"
+        surface="light"
+        version={1}
         marker="07 · Bento overview"
         ariaLabel="Bento overview"
         eyebrow="Bento overview"
@@ -173,6 +174,7 @@ export default function DsSectionsPage() {
       <FullStatement
         marker="02 · Full-bleed statement"
         surface="ink"
+        version={1}
         ariaLabel="Full-bleed statement"
         eyebrow="The thesis"
         titleLead="AI does the reading; the"
@@ -184,6 +186,7 @@ export default function DsSectionsPage() {
       <Gallery
         id="gallery"
         surface="light"
+        version={1}
         marker="06 · Horizontal gallery"
         ariaLabel="Horizontal gallery"
         eyebrow="Horizontal gallery"
@@ -196,6 +199,7 @@ export default function DsSectionsPage() {
       <PinnedSteps
         id="pinned"
         surface="ink"
+        version={3}
         marker="03 · Pinned multi-screen"
         ariaLabel="Pinned multi-screen — the five-step path"
         eyebrow="Pinned multi-screen"
@@ -224,7 +228,8 @@ export default function DsSectionsPage() {
 
       <Numbered
         id="numbered"
-        surface="light"
+        surface="ink"
+        version={3}
         marker="10 · Editorial numbered list"
         ariaLabel="Editorial numbered list — operating principles"
         eyebrow="Operating principles"
@@ -236,6 +241,7 @@ export default function DsSectionsPage() {
       <EditorialSplit
         id="editorial"
         surface="light"
+        version={1}
         marker="04 · Editorial split"
         ariaLabel="Editorial split"
         eyebrow="Grounded, not opaque"

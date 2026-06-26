@@ -28,7 +28,7 @@
    `.band.soft` and `.band.ink` under either wrapper. See the "Tonal zones"
    section below for the through-flip variant. */
 .ds-zone,
-.ds-canvas{position:relative;isolation:isolate;overflow-x:clip;}
+.ds-canvas{position:relative;isolation:isolate;overflow:clip;}
 .ds-zone__bg,
 .ds-canvas__bg{position:absolute;inset:0;z-index:-1;pointer-events:none;}
 /* child sections drop their fill; tone/colour (incl. `.ink` descendant rules) stay */
@@ -278,6 +278,26 @@
 .ds-flow__blob--e .ds-flow__blob-inner{
   background:radial-gradient(closest-side, rgba(54,224,194,.42), transparent 72%);
   filter:blur(64px);animation:ds-flow-breathe-e 21s ease-in-out infinite;
+}
+/* ── BLUE palette modifier — per-instance (.ds-flow--blue) so a single page can
+   shift the field into the brand blue/cyan/lavender range WITHOUT recolouring
+   the shared .ds-flow__blob--* classes used by other pages (canvas-bg,
+   dark-anim, trust/security-privacy). Scoped to .ds-flow--blue only. Colours are
+   hex/rgb (Lightning CSS drops raw oklab/oklch stops). No green, no dirty grey. */
+.ds-flow--blue .ds-flow__blob--a .ds-flow__blob-inner{
+  background:radial-gradient(closest-side, rgba(58,108,246,.56), transparent 72%);
+}
+.ds-flow--blue .ds-flow__blob--b .ds-flow__blob-inner{
+  background:radial-gradient(58% 38% at 50% 50%, rgba(52,142,255,.54), transparent 70%);
+}
+.ds-flow--blue .ds-flow__blob--c .ds-flow__blob-inner{
+  background:radial-gradient(closest-side, rgba(64,196,247,.52), transparent 70%);
+}
+.ds-flow--blue .ds-flow__blob--d .ds-flow__blob-inner{
+  background:radial-gradient(closest-side, rgba(150,160,255,.48), transparent 72%);
+}
+.ds-flow--blue .ds-flow__blob--e .ds-flow__blob-inner{
+  background:radial-gradient(closest-side, rgba(86,176,255,.44), transparent 72%);
 }
 /* slow autonomous deform — small scale/rotate/translate, varied per mass */
 @keyframes ds-flow-breathe-a{0%,100%{transform:scale(1) rotate(0deg);}50%{transform:scale(1.09) rotate(6deg);}}

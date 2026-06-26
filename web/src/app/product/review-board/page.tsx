@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
+import { CanvasFlowField } from "@/components/CanvasFlowField";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
+import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
 import {
   StatementHero,
   Numbered,
   Bento,
-  StatBand,
+  RiskControl,
   Gallery,
   PinnedSteps,
   EditorialSplit,
-  FullStatement,
-  QuietCta,
+  CtaBand,
 } from "@/components/ds";
 
 export const metadata: Metadata = {
@@ -36,10 +40,50 @@ export default function ReviewBoardPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} />
-      <main className="review-board section-lab ds">
+      <main className="review-board section-lab ds ds-canvas">
+        {/* ── Primary dark bg — OUTSIDE the zone, position:fixed (viewport-sized).
+            Must NOT be inside .ds-zone with --contained: that forces position:absolute
+            (zone-height ≈ 5000px) so animations use zone-% instead of viewport-%.
+            Flow-field blobs and orbit animation are designed for viewport dimensions;
+            here the bg stays viewport-sized while scrolling, and CtaBand/Footer
+            (both opaque) naturally paint over it. ds-canvas on <main> gives
+            isolation:isolate so z-index:-1 scopes correctly within main. ── */}
+        <div
+          className="ds-canvas__bg ds-canvas__bg--lobes-dark ds-zone__bg--on"
+          aria-hidden="true"
+        >
+          <span className="ds-canvas__spark ds-canvas__spark--1" />
+          <span className="ds-canvas__spark ds-canvas__spark--2" />
+          <span className="ds-canvas__spark ds-canvas__spark--3" />
+        </div>
+
+        {/* ── ONE continuous tonal zone (§1–§7): the zone wrapper controls
+            the FLIP layers only — the dark base is the fixed bg above.
+            Layer stack (z-index:-1, DOM order = back→front):
+              1) --lobes .ds-relight      light, faded 0→1 by ZoneToneFlipReverse → §4–5
+              2) .ds-flip-bridge/__glow   brand bloom at the §3/§4 reverse seam
+              3) --lobes-dark .ds-redark  second dark, faded 0→1 by ZoneToneFlip → §6–7
+            No light base needed — dark-start pages open on the fixed bg above.
+            CtaBand (§8, own video) + Footer stay OUTSIDE the zone. ── */}
+        <div className="ds-zone">
+          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes ds-relight" aria-hidden="true" />
+          <div className="ds-flip-bridge" aria-hidden="true" />
+          <div className="ds-flip-bridge__glow" aria-hidden="true" />
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark ds-redark"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          {/* blobs only over the LIGHT band §4–5, clipped off the dark §1–3 (top)
+              and §6–7 (bottom) — % to live-tune via ?blobs */}
+          <ZoneBlobs top="40%" bottom="34%" />
+
         {/* 1 — Statement hero (soft) */}
         <StatementHero
-          surface="light"
+          surface="ink"
           eyebrow="Review Board"
           titleLead="Where AI analysis becomes a human"
           titleAccent="decision"
@@ -59,7 +103,8 @@ export default function ReviewBoardPage() {
 
         {/* 2 — Numbered: after the scores (light) */}
         <Numbered
-          surface="light"
+          surface="ink"
+          version={2}
           eyebrow="After the scores"
           title="A scored batch isn't a decision yet"
           sub="Once the AI analysis is ready, the work shifts from reading single reports to making one call across the whole batch — and that's where the friction starts."
@@ -90,7 +135,7 @@ export default function ReviewBoardPage() {
         {/* 3 — Bento: one board to decide from (light) */}
         <Bento
           id="board"
-          surface="light"
+          surface="ink"
           className="bg-dot-grid"
           eyebrow="One workspace"
           title="One board to decide from"
@@ -136,31 +181,46 @@ export default function ReviewBoardPage() {
           ]}
         />
 
-        {/* 4 — StatBand: a human scale (light) */}
-        <StatBand
+        {/* ── reverse tone-flip seam (§3 → §4): dark→light through the brand
+            bridge — fades the .ds-relight layer in (covers the dark) + blooms the
+            bridge, inside the same continuous zone. ── */}
+        <ZoneToneFlipReverse />
+
+        {/* 4 — RiskControl: AI signal → human decision (light · v1) */}
+        <RiskControl
           surface="light"
-          eyebrow="By the numbers"
-          title="A board built on a human scale"
-          stats={[
+          ariaLabel="AI signal to human decision — every system signal leads to a human call"
+          eyebrow="AI SIGNAL → HUMAN DECISION"
+          title="Every signal leads to a human call"
+          titleAccent="human call"
+          sub="EvalLense structures the ranking, evidence, and disagreements. Your team reviews the context, builds the shortlist, and owns the final decision."
+          leftTag="AI SIGNAL"
+          rightTag="HUMAN DECISION"
+          pairs={[
             {
-              value: "0.0–10.0",
-              label: "Jury Score per dimension",
-              src: "Human scale",
+              risk: "A project ranks at the top",
+              control:
+                "The team opens the report, checks the supporting evidence, and decides whether the project belongs in the shortlist.",
             },
             {
-              value: "6",
-              label: "Evaluation dimensions, P1–P6",
-              src: "Applied to every deck",
+              risk: "Judges disagree on key dimensions",
+              control:
+                "Reviewers inspect the split, compare the reasoning, and resolve the disagreement together.",
             },
             {
-              value: "1,000+",
-              label: "Evaluation runs",
-              src: "Behind the methodology",
+              risk: "A strong score has weak evidence",
+              control:
+                "The project is flagged for closer review before its score influences the final decision.",
             },
             {
-              value: "1",
-              label: "Organizer owns the call",
-              src: "Single Mode (MVP)",
+              risk: "A lower-ranked project fits the mandate",
+              control:
+                "The team can override the ranking, document the rationale, and move the project into the shortlist.",
+            },
+            {
+              risk: "The batch is ready for selection",
+              control:
+                "Reviewers confirm statuses, leave notes, and publish the final shortlist with a complete decision trail.",
             },
           ]}
         />
@@ -168,6 +228,7 @@ export default function ReviewBoardPage() {
         {/* 5 — Gallery: read the whole batch at a glance (light) */}
         <Gallery
           surface="light"
+          version={4}
           eyebrow="Always legible"
           title="Read the whole batch at a glance"
           sub="Every entry carries one status, so you can see what's ready, what's mid-review and what needs your attention — without opening a thing."
@@ -200,6 +261,10 @@ export default function ReviewBoardPage() {
             },
           ]}
         />
+
+        {/* ── tone-flip seam (§5 → §6): light→dark — fades the SECOND dark layer
+            (.ds-redark) in, so the shared background returns to dark for §6–7. ── */}
+        <ZoneToneFlip targetSelector=".ds-redark" />
 
         {/* 6 — PinnedSteps: human in the loop (INK PEAK 1) */}
         <PinnedSteps
@@ -247,7 +312,8 @@ export default function ReviewBoardPage() {
         {/* 7 — EditorialSplit: compare & rank (light) */}
         <EditorialSplit
           id="compare"
-          surface="light"
+          surface="ink"
+          version={3}
           eyebrow="Compare & rank"
           titleLead="From separate reports to one"
           titleAccent="ranked"
@@ -280,27 +346,44 @@ export default function ReviewBoardPage() {
           }}
         />
 
-        {/* 8 — FullStatement: decision trail (INK PEAK 2) */}
-        <FullStatement
-          surface="ink"
-          eyebrow="Decision trail"
-          titleLead="The AI score and your score stay"
-          titleAccent="side by side"
-          titleTrail="."
-          sub="Neither overwrites the other: the AI Total Score stays an advisory baseline, your Jury Score becomes the final input. That keeps the reasoning intact and makes every decision explainable later."
+        </div>
+        {/* ── end tonal zone (§1–§7) — CtaBand (own video) + Footer stay outside ── */}
+
+        {/* ── tr-gradient-bridge (200px, ink→ink) between the dark zone end (§7
+            EditorialSplit, ink) and the dark CtaBand (§9, ink video): smooths the
+            seam between the two dark surfaces. 200px height; gradient direction
+            bottom→top (--from is the bottom stop). ── */}
+        <div
+          className="tr-gradient-bridge"
+          data-from="ink"
+          data-to="ink"
+          aria-hidden="true"
+          style={
+            {
+              height: "200px",
+              background:
+                "linear-gradient(in oklab to top, var(--from) 0%, var(--to) 100%)",
+            } as CSSProperties
+          }
         />
 
-        {/* 9 — QuietCta: get started (light) */}
-        <QuietCta
-          surface="light"
-          eyebrow="Get started"
-          title="See your next cohort ranked in a day"
-          sub="Book a demo and watch a scored batch turn into a shortlist, a leaderboard and a decision a person owns — with the final call always yours."
-          cta={{ label: "Book a Demo", href: "/company/contact" }}
+        {/* 9 — CtaBand: decision trail (dark, aurora) — copy moved from §8 */}
+        <CtaBand
+          theme="dark"
+          videoSrc="/assets/cta/cube-1.mp4"
+          eyebrow="Decision trail"
+          title="The AI score and your score stay"
+          titleAccent="side by side."
+          sub="Neither overwrites the other: the AI Total Score stays an advisory baseline, your Jury Score becomes the final input. That keeps the reasoning intact and makes every decision explainable later."
+          primary={{ label: "Book a Demo", href: "/company/contact" }}
         />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
+      {/* Blue flow-field over the first (top) dark layer covering §1–3 — the hero
+          plays a brand-blue gradient field. `blue` scopes the palette to this
+          page only via the .ds-flow--blue modifier. */}
+      <CanvasFlowField blue />
     </>
   );
 }

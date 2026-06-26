@@ -69,6 +69,23 @@ const archetypeToken = (section: HTMLElement) =>
     (c) => (c.startsWith("lab-") || c.startsWith("ds-")) && c !== "lab-inspector",
   );
 
+/* A real page section is a `<section>` that:
+ *   1. carries a strict archetype class (NOT just a substring match), AND
+ *   2. is TOP-LEVEL on the page — not a nested `<section>` that a host renders
+ *      inside its own markup (e.g. a non-`bare` ChipGrid/Cinema dropped into a
+ *      Bento `slot`).
+ * Crucially, `Lab*`/`DS` sections render every `[data-version]` payload into the
+ * DOM at once (only one un-`hidden`); a nested archetype section therefore appears
+ * ONCE PER VERSION COPY of its host. A flat `querySelectorAll(SECTION_SELECTOR)`
+ * counts all of them, so Save reported (and would bake) more sections than the
+ * page actually has. Excluding any `<section>` whose nearest matching ancestor is
+ * a DIFFERENT section collapses those copies back to the host's single row. */
+const isPageSection = (section: HTMLElement) => {
+  if (!archetypeToken(section)) return false;
+  const host = section.parentElement?.closest<HTMLElement>(SECTION_SELECTOR);
+  return !(host && archetypeToken(host));
+};
+
 const STYLE_ID = "dev-inspector-style";
 const CSS = `
 /* segmented controls (surface + version), reused inside the dock bar */
@@ -154,6 +171,9 @@ export function DevInspector() {
       if (enhancedSections.has(section)) return;
       const labClass = archetypeToken(section);
       if (!labClass) return;
+      // skip nested archetype sections living inside another section's version
+      // payload — they aren't top-level page sections (see `isPageSection`).
+      if (!isPageSection(section)) return;
       enhancedSections.add(section);
 
       const meta = ARCHETYPE[labClass] ?? { label: labClass, component: labClass };
@@ -479,6 +499,10 @@ function buildSnapshot(path: string): { text: string; rows: SnapshotRow[] } {
     (section, i) => {
       const labClass = archetypeToken(section);
       if (!labClass) return;
+      // count only top-level page sections — a nested archetype section (e.g. a
+      // non-bare ChipGrid in a Bento slot) is rendered once per host version copy
+      // and would otherwise inflate the row count. See `isPageSection`.
+      if (!isPageSection(section)) return;
       const meta = ARCHETYPE[labClass] ?? { label: labClass, component: labClass };
       const surface: Surface = section.classList.contains("ink") ? "ink" : "light";
       const versions = Array.from(

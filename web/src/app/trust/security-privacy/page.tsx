@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
-import { CanvasFlowField } from "@/app/dev/canvas-bg/CanvasFlowField";
+import { CanvasFlowField } from "@/components/CanvasFlowField";
 import {
   StatementHero,
   EditorialSplit,

@@ -3,6 +3,8 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
 import {
   StatementHero,
   FullStatement,
@@ -221,6 +223,25 @@ export default function EvidenceBasedReportsPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="evidence-reports section-lab ds">
+        {/* ── ONE continuous tonal zone (§1–§8): a single shared background that
+            flips light→dark at the §6/§7 seam and holds dark through §7–8.
+            Layer stack (z-index:-1, DOM order = back→front):
+              1) --lobes        light BASE (always on)
+              2) --lobes-dark   dark layer, faded 0→1 by <ZoneToneFlip/> (§6/§7)
+            Cinema (§9, own video) + Footer stay OUTSIDE. ── */}
+        <div className="ds-zone">
+          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes" aria-hidden="true" />
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          {/* light blobs over §1–6; clipped off the dark §7–8 tail (tune via ?blobs) */}
+          <ZoneBlobs bottom="24%" />
+
         {/* 1. Hero — statement hero (light) + page-local illustrative stat-row. */}
         <StatementHero
           id="hero"
@@ -262,22 +283,16 @@ export default function EvidenceBasedReportsPage() {
         </section>
 
         {/* 2. Beyond the number — full-bleed statement (light · v2, per inspector).
-            Pinned cinematic heading: the statement enters from below, holds in the
-            focal area, then exits upward — driven by ScrollFX --pin cascading into
-            the heading. Copy/surface unchanged. */}
-        <div className="evr-cinepin" data-pin data-pin-steps="1">
-          <div className="evr-cinepin__stage" data-pin-stage>
-            <FullStatement
-              surface="light"
-              version={2}
-              ariaLabel="Beyond the number — a score you can defend"
-              eyebrow="Beyond the number"
-              titleLead="A score you can’t explain is a score you can’t"
-              titleAccent="defend"
-              sub="A single number tells you where a deck landed, not why. Your team can’t defend a shortlist with it, founders can’t learn from it, and no one can audit it later. EvalLense hands you the reasoning, not just the result."
-            />
-          </div>
-        </div>
+            Default DS reveal motion. */}
+        <FullStatement
+          surface="light"
+          version={2}
+          ariaLabel="Beyond the number — a score you can defend"
+          eyebrow="Beyond the number"
+          titleLead="A score you can’t explain is a score you can’t"
+          titleAccent="defend"
+          sub="A single number tells you where a deck landed, not why. Your team can’t defend a shortlist with it, founders can’t learn from it, and no one can audit it later. EvalLense hands you the reasoning, not just the result."
+        />
 
         {/* 3. Anatomy — pinned multi-screen, exactly 3 layers. */}
         <PinnedSteps
@@ -316,35 +331,33 @@ export default function EvidenceBasedReportsPage() {
         />
 
         {/* 5. Grounded — editorial split: 3 points + evidence visual.
-            Pinned cinematic assembly: the heading holds while the evidence frame
-            flies in from the side and the three points stagger up in sync —
-            driven by ScrollFX --pin. Copy/surface unchanged. */}
-        <div className="evr-cinepin evr-cinepin--split" data-pin data-pin-steps="1">
-          <div className="evr-cinepin__stage" data-pin-stage>
-            <EditorialSplit
-              id="grounded"
-              surface="light"
-              ariaLabel="Grounded, not opaque"
-              eyebrow="Grounded, not opaque"
-              titleLead="Every finding links back to a"
-              titleAccent="slide"
-              sub="The report is built to be checked. Each score comes with what supports it and what lowers it, and every finding points to the slide it came from — so a claim reads as an observation, not an opinion."
-              points={GROUNDED.map((g) => ({ title: g.title, body: g.body }))}
-              media={{
-                ratio: "4/3",
-                label: "Image · slide ↔ finding · 4:3",
-                hint: "A slide quote (number · title) next to the supports/lowers it grounds, thin connector lines, calm",
-                ariaLabel:
-                  "A slide quote with a slide reference next to the supports and lowers it grounds",
-              }}
-            />
-          </div>
-        </div>
+            Default DS reveal motion. */}
+        <EditorialSplit
+          id="grounded"
+          surface="light"
+          ariaLabel="Grounded, not opaque"
+          eyebrow="Grounded, not opaque"
+          titleLead="Every finding links back to a"
+          titleAccent="slide"
+          sub="The report is built to be checked. Each score comes with what supports it and what lowers it, and every finding points to the slide it came from — so a claim reads as an observation, not an opinion."
+          points={GROUNDED.map((g) => ({ title: g.title, body: g.body }))}
+          media={{
+            ratio: "4/3",
+            label: "Image · slide ↔ finding · 4:3",
+            hint: "A slide quote (number · title) next to the supports/lowers it grounds, thin connector lines, calm",
+            ariaLabel:
+              "A slide quote with a slide reference next to the supports and lowers it grounds",
+          }}
+        />
+        {/* ── tone-flip seam (§6 → §7): transparent light→dark flip of the shared
+            through-background — crossfades the --lobes-dark layer in as it crosses
+            the viewport (canvas-bg mechanism, reusable, no flying heading). ── */}
+        <ZoneToneFlip />
 
         {/* 6. Deck completeness — bento tiles + page-local severity grid. */}
         <Bento
           id="completeness"
-          surface="light"
+          surface="ink"
           ariaLabel="Deck completeness — a signal, not a verdict"
           eyebrow="Deck completeness"
           title="See what the deck never covered"
@@ -373,24 +386,6 @@ export default function EvidenceBasedReportsPage() {
           }))}
         />
 
-        {/* light → ink: localized through-background flip at the page's single
-            light→dark boundary. Reuses ScrollFX --pin (no new engine): two
-            stacked gradient layers crossfade as you scroll the zone, so the
-            light chapter transforms continuously into the dark chapter — no
-            seam, no flash. Collapses to a short static gradient bridge on
-            mobile / prefers-reduced-motion. aria-hidden: purely visual. */}
-        <section
-          className="evr-toneflip"
-          data-pin
-          data-pin-steps="1"
-          aria-hidden="true"
-        >
-          <div className="evr-toneflip__stage" data-pin-stage>
-            <div className="evr-toneflip__light" />
-            <div className="evr-toneflip__ink" />
-          </div>
-        </section>
-
         {/* 7. From shortlist to founder feedback — second gallery (ink,
             default DS reveal motion). */}
         <Gallery
@@ -403,6 +398,8 @@ export default function EvidenceBasedReportsPage() {
           laneLabel="Where the report is used — scroll horizontally"
           items={USES.map((u) => ({ tag: u.tag, title: u.title, body: u.body }))}
         />
+        {/* ── /zone — Cinema (§9, own video) + Footer stay outside ── */}
+        </div>
 
         {/* 8. Final CTA — DS Cinema (ink). Knockout: "AI prepares. You decide."
             Copy heading: brief §8 "See a real report on your own deck". */}

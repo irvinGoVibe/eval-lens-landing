@@ -23,7 +23,7 @@ updated: 2026-06-15
   - [[agents-orchestrators|Agents & Orchestrators]] — карта всех агентов, скиллов-оркестраторов и команд: что делают, как работают, как складываются в пайплайны
   - [[design-system|Design System]] — токены, цвет, типографика, компоненты; опора для внутренних страниц
   - [[page-design-patterns|Page Design Patterns]] — как собирать внутренние страницы: архетипы, ритм, scroll-движок, QA
-  - [[page-build-skills|Page Build Skills]] — скиллы сборки и правки страницы: трио точечного редактирования (zone-background · ds-ify-page · retype-section) + слой оркестраторов
+  - [[page-build-skills|Page Build Skills]] — скиллы сборки и правки страницы: точечное редактирование (zone-background · zone-rhythm · ds-ify-page · retype-section) + верификатор `page-validate` (сверка с `_new.md`) + слой оркестраторов
   - [[section-types|Section Types]] — визуальный каталог типов секций со скриншотами (что реально используется)
   - [[component-forge|Component Forge]] — агент-оркестратор переработки архетипов Section Lab в переиспользуемые блоки (фазы, гейты, агенты, demo-медиа)
   - [[component-forge-batch|Component Forge Batch]] — автономный batch-оркестратор над forge: пачка архетипов одной командой, параллельный дизайн + сериализованная запись, locks, resume, один отчёт

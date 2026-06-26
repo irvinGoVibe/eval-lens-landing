@@ -145,6 +145,31 @@ Entry Hub даёт команде **единый source of truth до старт
 - `wiki/product/scope.md` §4 — manual/self-upload, published-gate, лимиты файла
 - `wiki/product/site/homepage-structure.md` — Product Workflow «Launch your entry point»
 
+## Статус реализации
+
+### 2026-06-26 — Design rhythm завершён
+
+Страница `/product/entry-hub` собрана и задизайнена:
+
+**Сделано:**
+- 8 секций на DS-барреле (`@/components/ds`): StatementHero · FullStatement · PinnedSteps · EditorialSplit ×2 · Bento · Gallery · CtaBand
+- Тональный ритм **dark→light→dark** через zone-rhythm:
+  - §1–3 ink (тёмная база `ds-zone__bg--on`)
+  - §3→§4 `ZoneToneFlipReverse` (ink→light + brand bloom)
+  - §4–5 light (светлый остров + `ZoneBlobs top="38%" bottom="28%"`)
+  - §5→§6 `ZoneToneFlip targetSelector=".ds-redark"` (light→ink возврат)
+  - §6–7 ink (второй тёмный слой `ds-redark`)
+- `CanvasFlowField blue` — синие flow-blobs поверх тёмных секций
+- `tr-gradient-bridge` 200px (transparent→ink) между §7 и CtaBand
+- `CtaBand theme="dark" bleed videoSrc="/assets/cta/neo.mp4"` — видео-CTA
+- Footer `variant="dark"`
+- §7 EditorialSplit v3 с 3 пунктами («One private workspace» / «Complete and consistent» / «The final call is yours»)
+- §6 Gallery `titleAccent="You decide"` + LabGallery расширен `titleLead`/`titleAccent` пропами
+
+**Осталось:**
+- [ ] Загрузить изображения (media-слоты на страницах — сейчас labeled placeholders)
+- [ ] Вычитать и откорректировать тексты
+
 ## Acceptance (что считать готовым)
 
 - [ ] страница доступна по `/product/entry-hub`, обёрнута в `SiteHeader` + `Footer`
