@@ -267,6 +267,12 @@ export default function MethodologyPage() {
             ariaLabel:
               "Horizontal track of the five pipeline stages, Decoder to Report",
           }}
+          videoScrub={{
+            src: "/assets/methodology/methodology-transition.mp4",
+            frames: 0,
+            ariaLabel:
+              "Methodology transition — scrubbed by scroll through the stages",
+          }}
         />
 
         {/* §3 ink → §4 ink : the pipeline peak now extends through the Judges
