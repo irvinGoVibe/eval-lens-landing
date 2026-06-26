@@ -4,7 +4,9 @@ import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
-import { StatementHero, Bento, QuietCta } from "@/components/ds";
+import { StatementHero, Bento, Faq, CtaBand, Cinema } from "@/components/ds";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -364,67 +366,44 @@ const CAPABILITIES = [
   },
 ];
 
-/* 6. FAQ — static Q/A blocks (NOT a JS accordion). Brief §6, 9 items. */
+/* 6. FAQ — static Q/A blocks (NOT a JS accordion). Brief §6, 9 items.
+ *
+ * `FaqItem.a` is `ReactNode`, so an answer may be plain text or JSX — the two
+ * answers below carry real inline <a> links to the Trust pages. */
 const FAQ = [
   {
     q: "What counts as a submission?",
-    a: (
-      <>
-        One submitted pitch deck or application that receives one successfully
-        generated AI evaluation report.
-      </>
-    ),
+    a: "One submitted pitch deck or application that receives one successfully generated AI evaluation report.",
   },
   {
     q: "Is this a subscription?",
-    a: (
-      <>
-        No. You pay per event — a package of submissions with a validity window,
-        not a monthly per-seat fee.
-      </>
-    ),
+    a: "No. You pay per event — a package of submissions with a validity window, not a monthly per-seat fee.",
   },
   {
     q: "What if I run out of submissions?",
-    a: (
-      <>
-        Add more anytime with top-up packages (from $150 for 10, cheaper on
-        higher plans), or move up a plan.
-      </>
-    ),
+    a: "Add more anytime with top-up packages (from $150 for 10, cheaper on higher plans), or move up a plan.",
   },
   {
     q: "How long do submissions last?",
-    a: (
-      <>
-        Starter and Pilot, 90 days; Standard, 120 days; Pro, 180 days;
-        Enterprise, the contract term.
-      </>
-    ),
+    a: "Starter and Pilot, 90 days; Standard, 120 days; Pro, 180 days; Enterprise, the contract term.",
   },
   {
     q: "What if a deck can't be processed?",
-    a: (
-      <>
-        It doesn&rsquo;t count as an evaluated submission. Disagreeing with the
-        AI output isn&rsquo;t a failed evaluation either.
-      </>
-    ),
+    a: "It doesn’t count as an evaluated submission. Disagreeing with the AI output isn’t a failed evaluation either.",
   },
   {
     q: "What if a team resubmits after the report?",
-    a: <>A new report counts as a new evaluation.</>,
+    a: "A new report counts as a new evaluation.",
   },
   {
     q: "Is there a paid pilot?",
-    a: <>Yes — Pilot, $500 for 40 submissions. Talk to sales.</>,
+    a: "Yes — Pilot, $500 for 40 submissions. Talk to sales.",
   },
   {
     q: "Is my data safe?",
     a: (
       <>
-        Yes, on every plan.{" "}
-        <a href="/trust/security-privacy">Security &amp; Privacy</a>.
+        Yes, on every plan. <a href="/trust/security-privacy">Security &amp; Privacy</a>.
       </>
     ),
   },
@@ -451,19 +430,25 @@ export default function PricingPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="pricing section-lab ds">
+          {/* Zone §2–§3: Plans + Compare — light (--lobes + ZoneBlobs) */}
+          <div className="ds-zone">
+          <div className="ds-canvas__bg ds-canvas__bg--lobes ds-zone__bg--contained" aria-hidden />
+          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark" aria-hidden="true">
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          <ZoneBlobs top="40%" bottom="28%" />
         {/* 1. Hero — StatementHero (DS), soft. Lens accent on "per event". */}
         <StatementHero
           id="top"
           surface="light"
+          version={1}
           eyebrow="Pricing"
           titleLead="Pay"
           titleAccent="per event"
-          titleTrail=", not per seat"
+          titleTrail="not per seat"
           sub="Every plan is a package of AI-evaluated submissions with a validity window. You pay for transparent AI evaluation — not just collecting decks. No credits, no tokens, no per-seat fees."
-          ctas={[
-            { label: "Start Free", href: "/company/contact" },
-            { label: "Book a Demo", href: "/company/contact", variant: "ghost" },
-          ]}
           media={{
             ratio: "16/9",
             label: "Image · an event filtered through a lens into a ranked result · 16:9",
@@ -473,20 +458,11 @@ export default function PricingPage() {
           }}
         />
 
+      
+
         {/* 2. Plans — 4 headline pricing cards (page-local), light. Standard recommended. */}
         <section id="plans" className="band pr-plans">
           <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Plans
-              </span>
-              <h2 className="title">Pick the plan that fits your event</h2>
-              <p className="sub">
-                Each plan includes AI evaluation reports for a fixed number of
-                participant submissions. Add more anytime with top-up packages.
-              </p>
-            </div>
             <ul className="pr-cards" data-reveal="up">
               {PLANS.map((plan) => (
                 <li
@@ -620,18 +596,11 @@ export default function PricingPage() {
             </div>
           </div>
         </section>
-
-        {/* soft → ink transition before section 4. */}
-        <div
-          className="tr-masked-divider"
-          data-from="soft"
-          data-to="ink"
-          aria-hidden="true"
-        />
+        {/* light→ink flip seam: light zone (§1–§3) crossfades into INK §4. */}
+        <ZoneToneFlip />
 
         {/* 4. Where EvalLense fits — UNNAMED category framing (page-local), INK peak. */}
-        <section className="band ink pr-fit bg-ink-ambient-glow">
-          <div className="bg-ink-ambient-glow__layer" aria-hidden="true" />
+        <section className="band ink pr-fit">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -724,63 +693,58 @@ export default function PricingPage() {
             </div>
           </div>
         </section>
+        </div>{/* /ds-zone §1–§4 */}
 
-        {/* ink → light transition after section 4. */}
+        {/* 4b. Cinema — How it works (DS), ink. Cinematic knockout over video. */}
+        <Cinema
+          surface="ink"
+          eyebrow="How it works"
+          headline="From deck to decision"
+          sub="Every submission runs through six independent AI judges, gets an evidence-linked report, and lands in a leaderboard — ready for the human to decide."
+          media={{ videoSrc: "/assets/cta/cube-1.mp4" }}
+        />
+
+        {/* ink → ink after Cinema (§5 Bento is ink — no tonal flip). */}
         <div
           className="tr-masked-divider"
           data-from="ink"
-          data-to="light"
+          data-to="ink"
           aria-hidden="true"
         />
 
-        {/* 5. Capabilities — Bento (DS), light. Six product areas. */}
+        {/* 5. Capabilities — Bento (DS), ink. Six product areas. */}
         <Bento
-          surface="light"
+          surface="ink"
+          version={2}
           eyebrow="Everything included"
           title="What every plan can do"
           sub="The same evaluation engine, across six product areas."
           items={CAPABILITIES}
         />
 
-        {/* 6. FAQ — static Q/A blocks (page-local, NOT a JS accordion), soft. */}
-        <section id="faq" className="band soft pr-faq">
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Pricing FAQ
-              </span>
-              <h2 className="title">Questions, answered</h2>
-            </div>
-            <dl className="pr-faq__grid" data-reveal="up">
-              {FAQ.map((item) => (
-                <div key={item.q} className="pr-faq__item">
-                  <dt className="pr-faq__q">{item.q}</dt>
-                  <dd className="pr-faq__a">{item.a}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </section>
-
-        {/* soft → ink transition before the closing CTA. */}
-        <div
-          className="tr-gradient-bridge"
-          data-from="soft"
-          data-to="ink"
-          aria-hidden="true"
+        {/* 6. FAQ — Faq (DS), light. Static Q/A, NOT a JS accordion. */}
+        <Faq
+          id="faq"
+          surface="ink"
+          eyebrow="Pricing FAQ"
+          title="Questions, answered"
+          items={FAQ}
         />
 
-        {/* 7. Final CTA — QuietCta (DS), ink. Single CTA (Start Free lives in hero). */}
-        <QuietCta
-          surface="ink"
+        {/* 7. Final CTA — CtaBand (DS), dark. CSS aurora (no video).
+            FAQ→CtaBand seam is a 200px ink→transparent overlay on .cta-band::before
+            (see globals.css), so the sections sit flush with no gap in the flow. */}
+        <CtaBand
+          theme="dark"
           eyebrow="Get started"
           title="Run your next event on EvalLense"
           sub="Start free on three submissions, or book a demo to see the whole workflow on your own decks."
-          cta={{ label: "Book a Demo", href: "/company/contact" }}
+          primary={{ label: "Book a Demo", href: "/company/contact" }}
+          secondary={{ label: "Start Free", href: "/company/contact" }}
+          videoSrc="/assets/cta/neo.mp4"
         />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );

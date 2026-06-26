@@ -12,7 +12,7 @@ import {
   Bento,
   StatBand,
   ChipGrid,
-  QuietCta,
+  CtaBand,
   Button,
 } from "@/components/ds";
 
@@ -371,13 +371,13 @@ export default function UseCasesPage() {
           aria-hidden="true"
         />
 
-        {/* 8. Final CTA — QuietCta, ink. */}
-        <QuietCta
-          surface="ink"
+        {/* 8. Final CTA — CtaBand, ink. */}
+        <CtaBand
+          theme="dark"
           eyebrow="Get started"
           title="Bring your next batch to EvalLense"
           sub="Book a demo and we'll walk your exact workflow — and a pilot batch of your own decks."
-          cta={{ label: "Book a Demo", href: "/company/contact" }}
+          primary={{ label: "Book a Demo", href: "/company/contact" }}
         />
       </main>
       <Footer variant="dark" />

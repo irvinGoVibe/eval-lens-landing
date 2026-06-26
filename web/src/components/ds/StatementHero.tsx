@@ -30,11 +30,11 @@ export type StatementHeroProps = {
   /** `.band` surface — `light` or `ink`. Default light. */
   surface?: "light" | "ink";
   eyebrow: string;
-  titleLead: string;
-  titleAccent: string;
+  titleLead?: string;
+  titleAccent?: string;
   titleTrail?: string;
-  sub: string;
-  ctas: StatementHeroCta[];
+  sub?: string;
+  ctas?: StatementHeroCta[];
   /** v1 background mode. Default `gradient`. */
   background?: "gradient" | "image" | "video";
   /** Image or video URL for v1 `image`/`video` backgrounds. Omit for a CSS-scene slot. */
@@ -65,7 +65,7 @@ export function StatementHero({
   titleAccent,
   titleTrail,
   sub,
-  ctas,
+  ctas = [],
   background = "gradient",
   backgroundSrc,
   backgroundPoster,
@@ -88,12 +88,14 @@ export function StatementHero({
     ariaLabel: "Hero editorial image",
   };
 
-  const Heading = (
+  const hasHeading = Boolean(titleLead || titleAccent || titleTrail);
+  const Heading = hasHeading ? (
     <>
-      {titleLead} <span className="grad-word">{titleAccent}</span>
+      {titleLead ? `${titleLead} ` : null}
+      {titleAccent ? <span className="grad-word">{titleAccent}</span> : null}
       {titleTrail ? ` ${titleTrail}` : null}
     </>
-  );
+  ) : null;
 
   // Buttons follow the surface rail: filled gradient on light, glass on dark/media.
   const glass = surf === "ink";
@@ -154,27 +156,33 @@ export function StatementHero({
           <Eyebrow reveal="up" delay={0}>
             {eyebrow}
           </Eyebrow>
-          <h1
-            className="ds-hero__title"
-            data-reveal="up"
-            style={{ "--reveal-delay": "90ms" } as CSSProperties}
-          >
-            {Heading}
-          </h1>
-          <p
-            className="sub ds-hero__sub"
-            data-reveal="up"
-            style={{ "--reveal-delay": "180ms" } as CSSProperties}
-          >
-            {sub}
-          </p>
-          <div
-            className="cta-row"
-            data-reveal="up"
-            style={{ "--reveal-delay": "270ms" } as CSSProperties}
-          >
-            {ctaSet()}
-          </div>
+          {Heading ? (
+            <h1
+              className="ds-hero__title"
+              data-reveal="up"
+              style={{ "--reveal-delay": "90ms" } as CSSProperties}
+            >
+              {Heading}
+            </h1>
+          ) : null}
+          {sub ? (
+            <p
+              className="sub ds-hero__sub"
+              data-reveal="up"
+              style={{ "--reveal-delay": "180ms" } as CSSProperties}
+            >
+              {sub}
+            </p>
+          ) : null}
+          {ctas.length ? (
+            <div
+              className="cta-row"
+              data-reveal="up"
+              style={{ "--reveal-delay": "270ms" } as CSSProperties}
+            >
+              {ctaSet()}
+            </div>
+          ) : null}
         </div>
       </div>
 
@@ -185,9 +193,11 @@ export function StatementHero({
         <div className="ds-hero__stage ds-hero__stage--wide">
           <div className="ds-hero__overlay">
             <Eyebrow>{eyebrow}</Eyebrow>
-            <h1 className="ds-hero__title ds-hero__title--over">{Heading}</h1>
-            <p className="sub ds-hero__sub ds-hero__sub--over">{sub}</p>
-            <div className="cta-row">{ctaSet()}</div>
+            {Heading ? (
+              <h1 className="ds-hero__title ds-hero__title--over">{Heading}</h1>
+            ) : null}
+            {sub ? <p className="sub ds-hero__sub ds-hero__sub--over">{sub}</p> : null}
+            {ctas.length ? <div className="cta-row">{ctaSet()}</div> : null}
           </div>
         </div>
       </div>
@@ -197,9 +207,11 @@ export function StatementHero({
         <div className="wrap ds-hero__editorial">
           <div className="ds-hero__ed-copy">
             <Eyebrow>{eyebrow}</Eyebrow>
-            <h1 className="ds-hero__title ds-hero__title--left">{Heading}</h1>
-            <p className="sub ds-hero__sub ds-hero__sub--left">{sub}</p>
-            <div className="cta-row cta-row--left">{ctaSet()}</div>
+            {Heading ? (
+              <h1 className="ds-hero__title ds-hero__title--left">{Heading}</h1>
+            ) : null}
+            {sub ? <p className="sub ds-hero__sub ds-hero__sub--left">{sub}</p> : null}
+            {ctas.length ? <div className="cta-row cta-row--left">{ctaSet()}</div> : null}
           </div>
           <Media
             className="ds-hero__ed-media"

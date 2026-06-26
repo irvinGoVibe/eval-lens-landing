@@ -9,6 +9,58 @@
 
 export type NavLink = { label: string; href: string };
 
+/**
+ * Global page entry for the header switcher (`GlobalNavSwitcher`).
+ *
+ * The dropdown next to the brand lets the user jump between the site's main
+ * pages without going back home. `match` is the pathname prefix used to mark
+ * the entry the user is currently on (`aria-current`).
+ */
+export type GlobalNavEntry = {
+  /** Label shown in the dropdown row. */
+  label: string;
+  /** One-line description shown beside the label. */
+  description: string;
+  /** Canonical landing route for the section. */
+  href: string;
+  /** Pathname prefix that identifies the active section. */
+  match: string;
+};
+
+/** The five top-level destinations, in display order. */
+export const GLOBAL_NAV: GlobalNavEntry[] = [
+  {
+    label: "Product",
+    description: "Platform, modules and outputs",
+    href: "/product/overview",
+    match: "/product",
+  },
+  {
+    label: "Trust",
+    description: "Methodology, consistency and security",
+    href: "/trust/methodology",
+    match: "/trust",
+  },
+  {
+    label: "Pricing",
+    description: "Plans, limits and usage",
+    href: "/pricing",
+    match: "/pricing",
+  },
+  {
+    label: "Newsroom",
+    description: "Research, releases and product updates",
+    href: "/blog",
+    match: "/blog",
+  },
+  {
+    label: "About",
+    description: "Company, mission and contacts",
+    href: "/company/about",
+    match: "/company",
+  },
+];
+
 export type SectionNav = {
   /** Section name shown after the brand divider (e.g. "Product"). */
   section: string;

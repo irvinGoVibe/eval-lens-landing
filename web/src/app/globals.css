@@ -7197,7 +7197,9 @@ section.band.ink .mini-tag{color:var(--lavender);}
    Wrapper is .pricing. Intentionally breaks editorial scroll.
    ============================================================ */
 .pricing .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
-.pricing section.band{padding:clamp(64px,10vw,140px) var(--gutter);}
+/* Cinema (§4b) is full-bleed: it sets its own padding:0 — keep the page
+   gutter off it so the cinematic knockout runs edge-to-edge. */
+.pricing section.band:not(.ds-cinema){padding:clamp(64px,10vw,140px) var(--gutter);}
 
 /* ---- 1. Hero ---- */
 .pricing .pr-hero__inner{max-width:var(--maxw);margin-inline:auto;text-align:center;display:flex;flex-direction:column;align-items:center;}
@@ -7206,10 +7208,11 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-hero__media{margin-top:clamp(36px,5vw,60px);max-width:980px;}
 
 /* ---- 2. Plans — pricing cards ---- */
+.pricing .pr-plans{padding-top:clamp(32px,5vw,70px);margin-top:-250px;}
 .pricing .pr-plans .head{margin-bottom:clamp(36px,5vw,60px);}
 .pricing .pr-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,22px);align-items:stretch;}
-.pricing .pr-card{position:relative;min-width:0;display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:clamp(22px,2.4vw,30px);box-shadow:var(--shadow-soft);}
-.pricing .pr-card--recommended{background:var(--lens-soft);border-color:color-mix(in oklab,var(--violet) 32%,transparent);}
+.pricing .pr-card{position:relative;min-width:0;display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,0.55);backdrop-filter:saturate(160%) blur(14px);border:1px solid rgba(255,255,255,0.65);border-radius:var(--radius-card);padding:clamp(22px,2.4vw,30px);box-shadow:0 4px 24px rgba(0,0,0,.10);}
+.pricing .pr-card--recommended{background:color-mix(in srgb,var(--lens-soft) 70%,transparent);border-color:color-mix(in oklab,var(--violet) 32%,transparent);}
 .pricing .pr-card__badge{position:absolute;top:-14px;left:clamp(22px,2.4vw,30px);background:#fff;}
 .pricing .pr-card__name{font-size:clamp(18px,1.6vw,21px);letter-spacing:-.01em;font-weight:600;color:var(--fg);margin-top:6px;}
 .pricing .pr-card__price{font-family:var(--font-mono);font-size:clamp(28px,3.4vw,40px);line-height:1.05;letter-spacing:-.02em;color:var(--fg);margin-top:4px;}
@@ -7241,7 +7244,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-td--row{text-align:left;font-family:var(--font-text);font-weight:400;color:var(--fg);text-transform:none;letter-spacing:0;font-size:14px;white-space:normal;min-width:160px;}
 .pricing .pr-td--row{color:var(--muted);}
 .pricing .pr-cell--num{font-family:var(--font-mono);font-size:13px;letter-spacing:.01em;color:var(--fg);}
-.pricing .pr-cell--yes{color:var(--green);font-weight:600;}
+.pricing .pr-cell--yes{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600;position:relative;z-index:1;}
 .pricing .pr-cell--no{color:var(--muted);}
 .pricing .pr-th--reco{color:var(--violet);}
 .pricing .pr-th__note{display:block;font-size:9.5px;letter-spacing:.1em;color:var(--violet);margin-top:3px;}
@@ -7249,6 +7252,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 
 /* ---- 4. Where EvalLense fits — UNNAMED category framing, INK ---- */
 .pricing .pr-fit .head{margin-bottom:clamp(36px,5vw,60px);}
+.pricing .pr-fit .head .sub{font-size:clamp(14px,1.7vw,19px);}
 .pricing .pr-fit__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.2vw,26px);align-items:stretch;}
 .pricing .pr-fit__card{min-width:0;display:flex;flex-direction:column;gap:12px;background:color-mix(in oklab,#fff 5%,transparent);border:1px solid var(--border-on-dark-2);border-radius:var(--radius-card);padding:clamp(22px,2.6vw,32px);}
 .pricing .pr-fit__card--us{background:color-mix(in oklab,var(--violet) 16%,transparent);border-color:color-mix(in oklab,var(--violet) 42%,transparent);}
@@ -7260,29 +7264,106 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-fit__gap-label{display:inline-block;margin-right:8px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in oklab,var(--lavender) 75%,transparent);}
 .pricing .pr-fit__statements{margin-top:clamp(32px,5vw,56px);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,32px);}
 /* §4 comparison table sits on INK — re-skin .pr-table for dark (does not touch §3 light styling). */
-.pricing .pr-fit{margin-bottom:clamp(32px,5vw,56px);}
-.pricing .pr-fit .pr-table-scroll{margin-bottom:clamp(32px,5vw,56px);}
+/* The .pr-fit z-index:3 (#46) was dead: .pr-fit lives INSIDE .ds-zone, whose
+   `isolation:isolate` (ds.css) traps that z-index inside the zone's own stacking
+   context — it can never compete with the sibling .ds-cinema (z-index:2) or its
+   ::before overlay (z-index:10, scoped to cinema's context). So cinema's ink
+   overlay painted OVER the whole zone tail, hiding .pr-statement. Fix: lift the
+   ZONE itself above cinema (z-index:4 > cinema's 2) so its statements paint on top. */
+.pricing .ds-zone{position:relative;z-index:4;}
+.pricing .pr-fit{position:relative;z-index:3;margin-bottom:clamp(32px,5vw,56px);}
+/* §4 → Cinema (§4b) sit flush: drop §4 bottom spacing so the INK band butts directly into Cinema.
+   Specificity 0,3,1 — must outrank task #26's `.pricing section.band:not(.ds-cinema)` (0,2,1). */
+.pricing section.band.pr-fit{padding-bottom:0;margin-bottom:0;}
+/* glass material ported 1:1 from the ink Bento tile
+   (`.lab-bento.ink .lab-bento__tile`): translucent blue fill + backdrop frost
+   + faint base rim + the layered inner/outer shadow stack. */
+.pricing .pr-fit .pr-table-scroll{
+  margin-bottom:clamp(32px,5vw,56px);
+  background:linear-gradient(145deg,rgba(198,220,255,.03) 0%,rgba(176,204,240,.015) 50%,rgba(220,236,255,.007) 100%);
+  border:1px solid rgba(165,195,238,.07);
+  backdrop-filter:blur(16px) saturate(1.3);
+  box-shadow:
+    inset 0 1px 0 rgba(214,234,255,.2),
+    inset 0 0 0 1px rgba(96,165,255,.04),
+    inset 0 -1px 0 rgba(255,255,255,.03),
+    0 24px 60px rgba(0,0,0,.3),
+    0 26px 56px -32px rgba(46,150,232,.3);
+  border-radius:var(--r-md);
+  overflow:hidden;
+}
 .pricing .pr-fit .pr-th,
 .pricing .pr-fit .pr-td,
 .pricing .pr-fit .pr-cell{border-bottom:1px solid var(--border-on-dark-2);}
-.pricing .pr-fit .pr-th{color:var(--muted-on-dark);border-bottom:1px solid var(--border-on-dark-2);}
+.pricing .pr-fit .pr-th{color:var(--muted-on-dark);background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.08);}
+.pricing .pr-fit .pr-td{border-bottom:1px solid rgba(255,255,255,.05);}
 .pricing .pr-fit .pr-th--row,
 .pricing .pr-fit .pr-td--row{color:var(--fg-on-dark);}
 .pricing .pr-fit .pr-td--row{color:var(--muted-on-dark);}
 .pricing .pr-fit .pr-cell--num{color:var(--fg-on-dark);}
 .pricing .pr-fit .pr-cell--no{color:var(--muted-on-dark);}
 /* EvalLense column highlight — violet-tinted like the old .pr-fit__card--us. */
-.pricing .pr-fit .pr-th--us{color:var(--lavender);}
-.pricing .pr-fit .pr-td--us{background:color-mix(in oklab,var(--violet) 16%,transparent);}
+.pricing .pr-fit .pr-th--us{
+  position:relative;
+  overflow:hidden;
+  color:#3b82f6;
+  background:rgba(59,130,246,.18);
+  border-left:1px solid rgba(59,130,246,.4);
+  border-right:1px solid rgba(59,130,246,.4);
+  backdrop-filter:blur(12px) saturate(1.12);
+}
+/* EvalLense header floating blob */
+.pricing .pr-fit .pr-th--us::before{
+  content:"";
+  position:absolute;
+  width:100px;height:100px;
+  background:radial-gradient(ellipse,rgba(59,130,246,.4) 0%,rgba(99,160,255,.2) 40%,transparent 70%);
+  top:-30px;right:-20px;
+  border-radius:50%;
+  animation:pr-blob-float 6s ease-in-out infinite;
+  pointer-events:none;
+}
+.pricing .pr-fit .pr-td--us{
+  position:relative;
+  overflow:hidden;
+  background:radial-gradient(ellipse at 60% 40%,rgba(59,130,246,.22) 0%,rgba(99,160,255,.08) 50%,transparent 75%);
+  border-left:1px solid rgba(59,130,246,.25);
+  border-right:1px solid rgba(59,130,246,.25);
+}
+@keyframes pr-blob-float{
+  0%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(-4px,3px) scale(1.04);}
+  66%{transform:translate(3px,-2px) scale(.97);}
+  100%{transform:translate(0,0) scale(1);}
+}
 .pricing .pr-fit .pr-th--us,
-.pricing .pr-fit .pr-td--us{border-bottom-color:color-mix(in oklab,var(--violet) 42%,transparent);}
-.pricing .pr-statement{margin:0;min-width:0;font-family:var(--font-display);font-size:clamp(19px,2.2vw,26px);line-height:1.32;letter-spacing:-.01em;color:var(--fg-on-dark);padding-left:18px;border-left:2px solid color-mix(in oklab,var(--violet) 55%,transparent);}
+.pricing .pr-fit .pr-td--us{border-bottom-color:rgba(59,130,246,.42);}
+.pricing .pr-statement{margin:0;min-width:0;font-family:var(--font-display);font-size:clamp(19px,2.2vw,26px);line-height:1.32;letter-spacing:-.01em;color:var(--fg-on-dark);padding-left:18px;border-left:2px solid rgba(59,130,246,.55);}
 @media (max-width:880px){
   .pricing .pr-fit__grid{grid-template-columns:1fr;}
 }
 @media (max-width:720px){
   .pricing .pr-fit__statements{grid-template-columns:1fr;}
 }
+
+/* ---- §3 pr-fit (ink) → §4b Cinema overlap transition ----
+   ::before pulls UP 200px over the bottom of pr-fit (solid ink → blends with the
+   ink section), then ~80px solid ink strip, then a 100px ink→transparent fade so
+   the Cinema video shows through below. Total height 200 + 80 + 100 = 380px. */
+.pricing .ds-cinema{position:relative;z-index:2;}
+.pricing .ds-cinema::before{
+  content:"";
+  position:absolute;
+  top:-200px;
+  left:0;right:0;
+  height:380px;
+  background:linear-gradient(to bottom,var(--bg-ink) 0%,var(--bg-ink) 74%,transparent 100%);
+  pointer-events:none;
+  z-index:10;
+}
+
+/* ---- Bento section pull-up ---- */
+.pricing .lab-bento{margin-top:-160px;}
 
 /* ---- 5. Capabilities — horizontal scroll gallery ---- */
 .pricing .pr-caps .head{margin-bottom:clamp(32px,5vw,56px);}
@@ -7304,6 +7385,24 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-faq__a a:hover{text-decoration:underline;}
 @media (max-width:720px){
   .pricing .pr-faq__grid{grid-template-columns:1fr;}
+}
+
+/* ---- §7 CtaBand overlaps the footer below (layered "card on top") ---- */
+.pricing .foot{margin-top:-80px;padding-top:80px;position:relative;z-index:0;}
+
+/* ---- §6 FAQ → §7 CtaBand seam: 200px overlay gradient at the top of CtaBand,
+   dark→transparent bottom-to-top. The FAQ and CtaBand sit FLUSH (no divider in
+   the flow); the gradient is an overlay (::before, out of flow) so the top of
+   CtaBand starts black (ink) and dissolves down into the video. ---- */
+.pricing .cta-band{position:relative;z-index:1;isolation:isolate;}
+.pricing .cta-band::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:200px;
+  background:linear-gradient(to bottom,var(--bg-ink),transparent);
+  pointer-events:none;
+  z-index:2;
 }
 
 /* ============ visual-layer-forge v1 (bg-ink-ambient-glow · tr-gradient-bridge) ============ */

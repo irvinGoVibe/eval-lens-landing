@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { Eyebrow, Title } from "@/components/ds";
 
 /**
@@ -19,7 +21,7 @@ import { Eyebrow, Title } from "@/components/ds";
  *
  * Motion is `data-reveal` only, consumed by the page's single `<ScrollFX/>`.
  */
-export type FaqItem = { q: string; a: string };
+export type FaqItem = { q: string; a: ReactNode };
 export type FaqProps = {
   id?: string;
   /** `.band` surface — `light` (default → `soft`) or `ink`. */
