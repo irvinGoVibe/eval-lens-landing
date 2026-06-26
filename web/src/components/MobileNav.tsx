@@ -2,32 +2,41 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Button } from "@/components/ui/Button";
-import {
-  BOOK_CALL_CTA,
-  GLOBAL_NAV,
-  type NavLink,
-  type SectionNav,
-} from "@/lib/site-nav";
+import { Button } from "@/components/ds";
+import { NavIconGlyph } from "@/components/nav-icons";
+import { MOBILE_NAV, type NavLink, type SectionNav } from "@/lib/site-nav";
 
 /**
  * Mobile navigation for the internal-page header. On narrow viewports the
- * desktop switcher + anchor row are hidden (CSS) and the bar collapses to
- * `[EvalLense]            [Menu]`. Tapping Menu opens a FULL-SCREEN frosted
- * overlay covering the viewport: a top row (brand + close), the global pages
- * with their sub-links expanded, then a divider and the current page's own
- * anchor links, with two CTAs pinned at the bottom — a primary gradient
- * "Launch App" and a subordinate glass "Book a call".
+ * desktop switcher + anchor row are hidden (CSS) and the bar collapses to the
+ * burger trigger. Tapping it opens a FULL-HEIGHT frosted bottom-sheet overlay:
  *
- * Opens on click. Closes on the × button, scrim tap, Escape, route change, and
- * any selection — focus always returns to the trigger. While open, focus is
- * trapped inside the panel and body scroll is locked. The overlay is portaled
- * to <body> (the header's `transform` would otherwise trap a fixed child), so
- * the dark surface is mirrored onto it via the `mnav__overlay--dark` modifier
- * rather than inherited from `.page-header--dark`. This is a self-contained
- * client component with local state — it is NOT part of ScrollOrchestrator.
+ *   grabber → top (brand + bare × close glyph) → scrollable body
+ *     · each global section = a SPLIT-TAP row: a Link (glossy lens-gradient ORB
+ *       + name + one-line desc) that NAVIGATES to the section page, and a sibling
+ *       toggle button (the remaining field + chevron) that OPENS/CLOSES an
+ *       accordion of its sub-links (plain text, no markers/rail); the active
+ *       section is expanded on open and its orb glows brighter
+ *     · divider + "On this page" anchors for the current page
+ *     · a single ghost "Launch App" CTA at the END of the scroll flow — it
+ *       sits below the anchors in normal flow, NOT pinned to the bottom of the
+ *       screen
+ *
+ * Accordion / section-access UX: split-tap keeps a clean a11y model (link
+ * navigates, button toggles) as two non-nested siblings inside the row. Tapping
+ * the section name/orb goes straight to the section page (entry.href); tapping
+ * the rest of the row field or the chevron expands/collapses the accordion of
+ * sub-links. Every section's index route is also present as a sub-link.
+ *
+ * Mechanics preserved from the previous drawer: createPortal to <body> (the
+ * header's `transform` would otherwise trap a fixed child), focus-trap (focus
+ * enters the panel, Tab cycles, focus returns to the trigger on every close),
+ * body scroll-lock, Escape, route-change close, managed tabIndex, and the
+ * dark-mirror snapshot (`openDrawer` reads `.page-header--dark` →
+ * `mnav__overlay--dark`). Self-contained client component — NOT part of
+ * ScrollOrchestrator.
  */
 export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
   const pathname = usePathname();
@@ -37,14 +46,28 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
   // `.page-header--dark` ancestor. Snapshot the header surface when opening and
   // mirror it onto the overlay via `--dark`.
   const [dark, setDark] = useState(false);
+  // The single expanded accordion section (by `match` key), or null when all
+  // are collapsed. Single-open: opening one section closes any other.
+  const [expanded, setExpanded] = useState<string | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelId = useId();
 
+  // Section whose `match` prefixes the current path (used for active accent and
+  // default-expanded state).
+  const activeMatch = useMemo(
+    () =>
+      MOBILE_NAV.find((entry) => pathname.startsWith(entry.match))?.match ??
+      null,
+    [pathname],
+  );
+
   const openDrawer = () => {
     const header = document.querySelector(".page-header");
     setDark(Boolean(header?.classList.contains("page-header--dark")));
+    // Active section starts open (single-open); none if there's no active one.
+    setExpanded(activeMatch);
     setOpen(true);
   };
 
@@ -53,6 +76,12 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
   const closeDrawer = useCallback(() => {
     setOpen(false);
     triggerRef.current?.focus();
+  }, []);
+
+  // Single-open accordion: clicking the open section collapses it (null);
+  // clicking a collapsed section makes it the ONLY open one.
+  const toggleSection = useCallback((match: string) => {
+    setExpanded((prev) => (prev === match ? null : match));
   }, []);
 
   // Portal target only exists after mount (the drawer is rendered to <body> so
@@ -121,7 +150,7 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
       onClick={closeDrawer}
     >
       <div
-        className="mnav__panel"
+        className="mnav__sheet"
         id={panelId}
         ref={panelRef}
         role="dialog"
@@ -129,8 +158,11 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         aria-label="Site navigation"
         onClick={(e) => e.stopPropagation()}
       >
+        <span className="mnav__grabber" aria-hidden="true" />
+
         <div className="mnav__top">
-          <span className="mnav__brand" aria-hidden="true">
+          <span className="mnav__brand">
+            <span className="mnav__mark" aria-hidden="true" />
             EvalLense
           </span>
           <button
@@ -145,15 +177,15 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
               className="mnav__close-icon"
               viewBox="0 0 24 24"
               fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               aria-hidden="true"
               focusable="false"
             >
-              <path
-                d="M6 6L18 18M18 6L6 18"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
+              <path d="M17 7 7 17" />
+              <path d="m7 7 10 10" />
             </svg>
           </button>
         </div>
@@ -161,47 +193,90 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         <div className="mnav__scroll">
           <p className="mnav__heading">Explore EvalLense</p>
           <ul className="mnav__list">
-            {GLOBAL_NAV.map((entry) => (
-              <li key={entry.href} className="mnav__group">
-                <Link
-                  href={entry.href}
-                  className="mnav__page"
-                  aria-current={pathname === entry.href ? "page" : undefined}
-                  tabIndex={open ? undefined : -1}
-                  onClick={closeDrawer}
+            {MOBILE_NAV.map((entry) => {
+              const isActive = entry.match === activeMatch;
+              const isExpanded = expanded === entry.match;
+              return (
+                <li
+                  key={entry.href}
+                  className="mnav__group"
+                  data-active={isActive || undefined}
+                  data-expanded={isExpanded || undefined}
                 >
-                  <span className="mnav__page-name">{entry.label}</span>
-                  {entry.description !== undefined && (
-                    <span className="mnav__page-desc">{entry.description}</span>
-                  )}
-                </Link>
-                {entry.links !== undefined && (
-                  <ul className="mnav__sublinks">
-                    {entry.links.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="mnav__sublink"
-                          aria-current={
-                            pathname === link.href ? "page" : undefined
-                          }
-                          tabIndex={open ? undefined : -1}
-                          onClick={closeDrawer}
+                  <div className="mnav__row">
+                    <Link
+                      href={entry.href}
+                      className="mnav__row-link"
+                      aria-current={
+                        pathname === entry.href ? "page" : undefined
+                      }
+                      tabIndex={open ? undefined : -1}
+                      onClick={closeDrawer}
+                    >
+                      <span className="mnav__orb" aria-hidden="true" />
+                      <span className="mnav__row-text">
+                        <span className="mnav__row-name">{entry.label}</span>
+                        {entry.desc !== undefined && (
+                          <span className="mnav__row-desc">{entry.desc}</span>
+                        )}
+                      </span>
+                    </Link>
+                    <button
+                      type="button"
+                      className="mnav__row-toggle"
+                      aria-expanded={isExpanded}
+                      aria-label={`Toggle ${entry.label} links`}
+                      tabIndex={open ? undefined : -1}
+                      onClick={() => toggleSection(entry.match)}
+                    >
+                      <span className="mnav__chevron" aria-hidden="true">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          focusable="false"
                         >
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+
+                  {entry.links !== undefined && (
+                    <div className="mnav__sublinks">
+                      <div className="mnav__sublinks-inner">
+                        <ul>
+                          {entry.links.map((link) => (
+                            <li key={link.href}>
+                              <Link
+                                href={link.href}
+                                className="mnav__sublink"
+                                aria-current={
+                                  pathname === link.href ? "page" : undefined
+                                }
+                                tabIndex={open && isExpanded ? undefined : -1}
+                                onClick={closeDrawer}
+                              >
+                                {link.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
 
           {nav && nav.links.length > 0 && (
             <>
               <div className="mnav__divider" role="presentation" />
-              <p className="mnav__subhead">On this page</p>
+              <p className="mnav__heading">On this page</p>
               <ul className="mnav__anchors">
                 {nav.links.map((link) => (
                   <li key={link.href}>
@@ -211,6 +286,7 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
                       tabIndex={open ? undefined : -1}
                       onClick={closeDrawer}
                     >
+                      <NavIconGlyph name="anchor" className="mnav__anchor-icon" />
                       {link.label}
                     </Link>
                   </li>
@@ -218,28 +294,21 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
               </ul>
             </>
           )}
-        </div>
 
-        <div className="mnav__ctas">
-          <Button
-            variant="gradient"
-            className="mnav__cta mnav__cta--primary"
-            href={cta.href}
-            arrow
-            tabIndex={open ? undefined : -1}
-            onClick={closeDrawer}
-          >
-            {cta.label}
-          </Button>
-          <Button
-            variant="glass"
-            className="mnav__cta mnav__cta--secondary"
-            href={BOOK_CALL_CTA.href}
-            tabIndex={open ? undefined : -1}
-            onClick={closeDrawer}
-          >
-            {BOOK_CALL_CTA.label}
-          </Button>
+          {/* The single ghost CTA lives at the END of the scroll flow (not a
+              pinned footer): it appears below the anchors as you scroll down. */}
+          <div className="mnav__ctas">
+            <Button
+              variant="ghost"
+              className="mnav__cta mnav__cta--primary"
+              href={cta.href}
+              arrow
+              tabIndex={open ? undefined : -1}
+              onClick={closeDrawer}
+            >
+              {cta.label}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -251,16 +320,26 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         type="button"
         ref={triggerRef}
         className="mnav__trigger"
+        aria-label="Open menu"
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => (open ? closeDrawer() : openDrawer())}
       >
-        <span className="mnav__trigger-label">Menu</span>
-        <span className="mnav__trigger-icon" aria-hidden="true">
-          <span />
-          <span />
-        </span>
+        <svg
+          className="mnav__trigger-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M5 9h14" />
+          <path d="M5 15h14" />
+        </svg>
       </button>
 
       {mounted && createPortal(overlay, document.body)}

@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EvalLense — Mobile menu icon proposal</title>
+<style>
+  :root {
+    --violet: #6c4cf1;
+    --cyan: #2ec5e8;
+    --ink: #07070b;
+    --lens: linear-gradient(118deg, var(--violet) 0%, #9d8bff 32%, var(--cyan) 68%, #43e0c0 100%);
+
+    /* light frosted bar sample */
+    --light-bg: linear-gradient(135deg, #f4f2fb 0%, #eef0fa 50%, #f3eef9 100%);
+    --light-panel: rgba(255,255,255,0.62);
+    --light-stroke: rgba(255,255,255,0.7);
+    --light-glyph: #1a1a24;
+    --light-label: #6a6a78;
+    --light-cell-line: rgba(20,20,40,0.07);
+
+    /* dark frosted bar sample */
+    --dark-bg: radial-gradient(120% 140% at 20% 0%, #15101f 0%, #0a0810 55%, #050409 100%);
+    --dark-panel: rgba(255,255,255,0.045);
+    --dark-stroke: rgba(255,255,255,0.09);
+    --dark-glyph: #eceaf6;
+    --dark-label: #9a96ad;
+    --dark-cell-line: rgba(255,255,255,0.07);
+
+    --r: 16px;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    background:
+      radial-gradient(80% 60% at 50% -10%, rgba(108,76,241,0.10), transparent 60%),
+      #0d0c12;
+    color: #e9e7f2;
+    padding: 56px 28px 80px;
+    min-height: 100vh;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 8px; }
+  .kicker {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--cyan); opacity: 0.85; font-weight: 600; margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 30px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 10px;
+    background: linear-gradient(110deg, #fff 30%, #c9c2ff 70%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lead {
+    font-size: 14px; line-height: 1.6; color: #a6a2bb; max-width: 620px;
+    margin: 0 auto 40px;
+  }
+
+  /* section heading */
+  .section-head {
+    display: flex; align-items: baseline; gap: 14px;
+    margin: 48px 0 18px;
+  }
+  .section-head h2 {
+    font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase;
+    font-weight: 600; color: #d8d4ec; margin: 0;
+  }
+  .section-head .sub { font-size: 12.5px; color: #837f97; }
+  .rule { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.14), transparent); }
+
+  /* the two-theme board */
+  .board {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+  }
+  @media (max-width: 720px) { .board { grid-template-columns: 1fr; } }
+
+  .pane {
+    border-radius: 22px; padding: 22px 20px 24px;
+    border: 1px solid; backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+  }
+  .pane.light { background: var(--light-bg); border-color: rgba(20,20,40,0.06); }
+  .pane.dark  { background: var(--dark-bg);  border-color: rgba(255,255,255,0.07); }
+
+  .pane-label {
+    font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-weight: 600; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+  }
+  .pane.light .pane-label { color: #8a8698; }
+  .pane.dark  .pane-label { color: #8d89a0; }
+  .pane-label .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .pane.light .pane-label .dot { background: #cfcadf; }
+  .pane.dark  .pane-label .dot { background: rgba(255,255,255,0.22); }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+  @media (max-width: 480px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .cell {
+    border-radius: var(--r); padding: 16px 10px 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    border: 1px solid; text-align: center;
+  }
+  .pane.light .cell { background: var(--light-panel); border-color: var(--light-cell-line); }
+  .pane.dark  .cell { background: var(--dark-panel);  border-color: var(--dark-cell-line); }
+
+  /* the real-size glyph row: actual 22px + magnified 40px detail */
+  .glyphrow { display: flex; align-items: center; justify-content: center; gap: 14px; height: 46px; }
+  .pane.light svg { color: var(--light-glyph); }
+  .pane.dark  svg { color: var(--dark-glyph); }
+
+  .g-real { width: 22px; height: 22px; }
+  .g-big  { width: 40px; height: 40px; opacity: 0.92; }
+  .divider {
+    width: 1px; height: 30px; opacity: 0.5;
+  }
+  .pane.light .divider { background: var(--light-cell-line); }
+  .pane.dark  .divider { background: var(--dark-cell-line); }
+
+  .label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.01em; }
+  .pane.light .label { color: var(--light-glyph); }
+  .pane.dark  .label { color: var(--dark-glyph); }
+  .meta { font-size: 9.5px; letter-spacing: 0.04em; }
+  .pane.light .meta { color: var(--light-label); }
+  .pane.dark  .meta { color: var(--dark-label); }
+
+  /* brand-accent variant uses gradient stroke */
+  .brand .g-real, .brand .g-big { color: transparent; }
+
+  /* stroke comparison strip */
+  .strokes {
+    margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: center; justify-content: center;
+  }
+  .scell {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 10px 14px; border-radius: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  }
+  .scell svg { width: 24px; height: 24px; color: #e9e7f2; }
+  .scell span { font-size: 9.5px; color: #908ca5; letter-spacing: 0.04em; }
+
+  .note {
+    margin: 14px 0 0; font-size: 12px; line-height: 1.6; color: #908ca5;
+    text-align: center;
+  }
+  .rec {
+    margin: 52px auto 0; max-width: 760px; padding: 22px 26px;
+    border-radius: 18px; border: 1px solid rgba(108,76,241,0.28);
+    background: linear-gradient(140deg, rgba(108,76,241,0.10), rgba(46,197,232,0.06));
+  }
+  .rec h3 {
+    margin: 0 0 10px; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--cyan); font-weight: 600;
+  }
+  .rec p { margin: 0 0 8px; font-size: 13.5px; line-height: 1.65; color: #cbc7de; }
+  .rec b { color: #fff; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">EvalLense · Mobile menu</div>
+    <h1>Menu &amp; close icon proposal</h1>
+    <p class="lead">
+      Standalone glyphs only — no pill, no circle wrapper. Each is the bare icon as it
+      would live in the bar / sheet. Real Lucide geometry + a few thin custom marks.
+      Hairline stroke, <code style="font-family:inherit">stroke=currentColor</code>,
+      round caps. Shown on a light frosted bar and a near-black frosted bar.
+    </p>
+  </header>
+
+  <!-- ============ BURGERS ============ -->
+  <div class="section-head">
+    <h2>Open · burger</h2>
+    <span class="sub">6 candidates — pick one</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="board">
+    <!-- LIGHT -->
+    <div class="pane light">
+      <div class="pane-label"><span class="dot"></span>Light bar</div>
+      <div class="grid" id="burger-light"></div>
+    </div>
+    <!-- DARK -->
+    <div class="pane dark">
+      <div class="pane-label"><span class="dot"></span>Near-black bar</div>
+      <div class="grid" id="burger-dark"></div>
+    </div>
+  </div>
+
+  <p class="note">Each cell: real 22px glyph · magnified 40px for detail.</p>
+
+  <!-- ============ CLOSERS ============ -->
+  <div class="section-head">
+    <h2>Close · ×</h2>
+    <span class="sub">5 candidates — pick one</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="board">
+    <div class="pane light">
+      <div class="pane-label"><span class="dot"></span>Light bar</div>
+      <div class="grid" id="close-light"></div>
+    </div>
+    <div class="pane dark">
+      <div class="pane-label"><span class="dot"></span>Near-black bar</div>
+      <div class="grid" id="close-dark"></div>
+    </div>
+  </div>
+
+  <!-- ============ STROKE COMPARISON ============ -->
+  <div class="section-head">
+    <h2>Stroke weight</h2>
+    <span class="sub">menu &amp; × at 1.25 / 1.5 / 1.75</span>
+    <div class="rule"></div>
+  </div>
+  <div class="strokes" id="strokes"></div>
+
+  <!-- ============ RECOMMENDATION ============ -->
+  <div class="rec">
+    <h3>Recommendation</h3>
+    <p>Burger → <b>“menu — short”</b> (custom: 3 lines inset to <code style="font-family:inherit">M5–19</code>, 1.5). Reads lighter and more premium than full-width Lucide <code style="font-family:inherit">menu</code> while staying perfectly symmetric and unambiguous.</p>
+    <p>Close → <b>“× inset”</b> (custom: Lucide x pulled in to 7–17, 1.5). The slightly shorter, optically-centered cross feels calmer and more refined than the full-bleed Lucide <code style="font-family:inherit">x</code>. Both at stroke 1.5 to match the nav icon set.</p>
+  </div>
+
+</div>
+
+<script>
+  // ---- glyph geometry (real Lucide inner geometry + thin custom marks) ----
+  // viewBox 0 0 24 24, fill none, currentColor, round caps/joins.
+  const BURGERS = [
+    { label: "menu",            meta: "lucide · 1.5",   sw: 1.5, paths: ['M4 5h16','M4 12h16','M4 19h16'] },
+    { label: "menu — short",    meta: "custom · 1.5 ★", sw: 1.5, paths: ['M5 5h14','M5 12h14','M5 19h14'] },
+    { label: "align-justify",   meta: "lucide · 1.5",   sw: 1.5, paths: ['M3 5h18','M3 12h18','M3 19h18'] },
+    { label: "align-left",      meta: "lucide · 1.5",   sw: 1.5, paths: ['M21 5H3','M15 12H3','M17 19H3'] },
+    { label: "equal — 2 line",  meta: "lucide · 1.5",   sw: 1.5, paths: ['M5 9h14','M5 15h14'] },
+    { label: "stagger + dot",   meta: "custom · 1.5",   sw: 1.5, paths: ['M4 7h16','M4 12h11'], dots: [[18,12],[4,17]], tail: 'M9 17h11' },
+  ];
+
+  const CLOSERS = [
+    { label: "x",          meta: "lucide · 1.5",   sw: 1.5, paths: ['M18 6 6 18','m6 6 12 12'] },
+    { label: "x — thin",   meta: "lucide · 1.25",  sw: 1.25, paths: ['M18 6 6 18','m6 6 12 12'] },
+    { label: "× inset",    meta: "custom · 1.5 ★", sw: 1.5, paths: ['M17 7 7 17','m7 7 10 10'] },
+    { label: "× soft",     meta: "custom · 1.5",   sw: 1.5, cap: 'round', paths: ['M16.5 7.5 7.5 16.5','m7.5 7.5 9 9'] },
+    { label: "× heavier",  meta: "custom · 1.75",  sw: 1.75, paths: ['M17 7 7 17','m7 7 10 10'] },
+  ];
+
+  const NS = "http://www.w3.org/2000/svg";
+
+  function makeSvg(g, size, useBrand) {
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("width", size); svg.setAttribute("height", size);
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", useBrand ? "url(#lensgrad)" : "currentColor");
+    svg.setAttribute("stroke-width", g.sw);
+    svg.setAttribute("stroke-linecap", g.cap || "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    (g.paths || []).forEach(d => {
+      const p = document.createElementNS(NS, "path");
+      p.setAttribute("d", d); svg.appendChild(p);
+    });
+    if (g.tail) { const p = document.createElementNS(NS,"path"); p.setAttribute("d", g.tail); svg.appendChild(p); }
+    (g.dots || []).forEach(([cx,cy]) => {
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", cx); c.setAttribute("cy", cy); c.setAttribute("r", 0.9);
+      c.setAttribute("fill", useBrand ? "url(#lensgrad)" : "currentColor");
+      c.setAttribute("stroke", "none");
+      svg.appendChild(c);
+    });
+    return svg;
+  }
+
+  // shared gradient def (one hidden svg in the doc) for the brand-accent example
+  const defsSvg = document.createElementNS(NS, "svg");
+  defsSvg.setAttribute("width", 0); defsSvg.setAttribute("height", 0);
+  defsSvg.style.position = "absolute";
+  defsSvg.innerHTML =
+    '<defs><linearGradient id="lensgrad" x1="0" y1="0" x2="1" y2="1">' +
+    '<stop offset="0" stop-color="#6c4cf1"/><stop offset="0.55" stop-color="#7b5cf6"/>' +
+    '<stop offset="1" stop-color="#2ec5e8"/></linearGradient></defs>';
+  document.body.appendChild(defsSvg);
+
+  function buildCell(g) {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    const row = document.createElement("div");
+    row.className = "glyphrow";
+
+    const real = makeSvg(g, 22, false); real.classList.add("g-real");
+    const div = document.createElement("div"); div.className = "divider";
+    const big = makeSvg(g, 40, false); big.classList.add("g-big");
+    row.append(real, div, big);
+
+    const lab = document.createElement("div"); lab.className = "label"; lab.textContent = g.label;
+    const meta = document.createElement("div"); meta.className = "meta"; meta.textContent = g.meta;
+    cell.append(row, lab, meta);
+    return cell;
+  }
+
+  function fill(id, list) {
+    const el = document.getElementById(id);
+    list.forEach(g => el.appendChild(buildCell(g)));
+  }
+  fill("burger-light", BURGERS);
+  fill("burger-dark", BURGERS);
+  fill("close-light", CLOSERS);
+  fill("close-dark", CLOSERS);
+
+  // ---- stroke comparison strip (menu + x at three weights) ----
+  const STROKE_DEMO = [
+    { base: { sw: 1.25, paths: ['M5 5h14','M5 12h14','M5 19h14'] }, tag: "menu 1.25" },
+    { base: { sw: 1.5,  paths: ['M5 5h14','M5 12h14','M5 19h14'] }, tag: "menu 1.5" },
+    { base: { sw: 1.75, paths: ['M5 5h14','M5 12h14','M5 19h14'] }, tag: "menu 1.75" },
+    { base: { sw: 1.25, paths: ['M17 7 7 17','m7 7 10 10'] }, tag: "× 1.25" },
+    { base: { sw: 1.5,  paths: ['M17 7 7 17','m7 7 10 10'] }, tag: "× 1.5" },
+    { base: { sw: 1.75, paths: ['M17 7 7 17','m7 7 10 10'] }, tag: "× 1.75" },
+  ];
+  const strip = document.getElementById("strokes");
+  STROKE_DEMO.forEach(d => {
+    const s = document.createElement("div"); s.className = "scell";
+    s.appendChild(makeSvg(d.base, 24, false));
+    const t = document.createElement("span"); t.textContent = d.tag;
+    s.appendChild(t); strip.appendChild(s);
+  });
+</script>
+</body>
+</html>
