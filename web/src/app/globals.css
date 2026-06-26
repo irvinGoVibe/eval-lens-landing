@@ -3204,15 +3204,21 @@ a.page-header__section:hover{color:var(--fg);}
   position:absolute;top:calc(100% + 8px);left:var(--gutter);z-index:5;
   width:min(600px, calc(100vw - var(--gutter) * 2));padding:20px;
   border-radius:var(--radius-card);
-  /* See-through "glass on glass": low white tint + heavy frost so the page
-     reads through it, with a bright rim + top highlight to catch the light. */
-  background-color:rgba(255,255,255,.36);
-  backdrop-filter:saturate(1.7) blur(50px);
-  border:1px solid rgba(255,255,255,.55);
+  isolation:isolate;overflow:hidden;
+  /* Frosted "liquid glass" card material — same structure as the V3 gallery
+     cards on dark: a diagonal white sheen over a MILKY MATTE floor (heavily
+     frosted, not see-through), a bright rim, and a top-edge inset highlight
+     (the shine). The brand-coloured `::before` wisp glows through underneath. */
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.72) 0%, rgba(238,242,251,.58) 42%, rgba(255,255,255,.46) 100%),
+    rgba(255,255,255,.7);
+  -webkit-backdrop-filter:blur(72px) saturate(1.8) brightness(1.05);
+  backdrop-filter:blur(72px) saturate(1.8) brightness(1.05);
+  border:1px solid rgba(255,255,255,.78);
   box-shadow:
-    0 30px 80px -34px rgba(60,50,110,.5),
-    0 2px 8px -4px rgba(60,50,110,.18),
-    inset 0 1px 0 rgba(255,255,255,.7);
+    inset 0 1.5px 0 rgba(255,255,255,.9),
+    inset 0 -1px 0 rgba(255,255,255,.35),
+    0 30px 80px -30px rgba(60,50,110,.45);
   opacity:0;visibility:hidden;transform-origin:top left;
   transform:translateY(-6px) scale(.985);
   transition:opacity .2s var(--ease), transform .2s var(--ease), visibility 0s linear .2s;
@@ -3278,14 +3284,17 @@ a.page-header__section:hover{color:var(--fg);}
 .page-header--dark .gnav__trigger[aria-expanded="true"]{
   background:color-mix(in oklab,var(--lavender) 14%,transparent);
 }
-/* Dark surface: deep translucent glass (frost still active from the base rule),
-   brighter hairline + top highlight for contrast against light text. */
+/* Dark surface: the V3 gallery card material 1:1 — white sheen over a dark
+   --bg-ink floor (AA contrast for light text), bright rim, top-edge shine. */
 .page-header--dark .gnav__panel{
-  background-color:rgba(10,12,22,.55);
-  border-color:rgba(255,255,255,.16);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.24) 0%, rgba(220,232,248,.12) 40%, rgba(255,255,255,.05) 100%),
+    color-mix(in oklab, var(--bg-ink) 82%, transparent);
+  border-color:rgba(255,255,255,.36);
   box-shadow:
-    0 30px 80px -32px rgba(0,0,0,.7),
-    inset 0 1px 0 rgba(255,255,255,.10);
+    inset 0 1.5px 0 rgba(255,255,255,.5),
+    inset 0 -1px 0 rgba(255,255,255,.1),
+    0 18px 50px -16px rgba(0,0,0,.5);
 }
 .page-header--dark .gnav__heading{color:var(--muted-on-dark);}
 .page-header--dark .gnav__item-name{color:var(--fg-on-dark);}
@@ -7569,7 +7578,8 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-td--row{text-align:left;font-family:var(--font-text);font-weight:400;color:var(--fg);text-transform:none;letter-spacing:0;font-size:14px;white-space:normal;min-width:160px;}
 .pricing .pr-td--row{color:var(--muted);}
 .pricing .pr-cell--num{font-family:var(--font-mono);font-size:13px;letter-spacing:.01em;color:var(--fg);}
-.pricing .pr-cell--yes{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600;position:relative;z-index:10;}
+.pricing .pr-cell--yes{font-weight:600;position:relative;z-index:10;color:var(--cyan);}
+.pricing .pr-cell--yes span{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700;font-size:1.05em;}
 .pricing .pr-cell--no{color:var(--muted);}
 .pricing .pr-th--reco{color:var(--violet);}
 .pricing .pr-th__note{display:block;font-size:9.5px;letter-spacing:.1em;color:var(--violet);margin-top:3px;}
@@ -7604,6 +7614,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
    (`.lab-bento.ink .lab-bento__tile`): translucent blue fill + backdrop frost
    + faint base rim + the layered inner/outer shadow stack. */
 .pricing .pr-fit .pr-table-scroll{
+  position:relative;
   margin-bottom:clamp(32px,5vw,56px);
   background:linear-gradient(145deg,rgba(198,220,255,.03) 0%,rgba(176,204,240,.015) 50%,rgba(220,236,255,.007) 100%);
   border:1px solid rgba(165,195,238,.07);
@@ -7644,7 +7655,25 @@ section.band.ink .mini-tag{color:var(--lavender);}
   border-right:none;
 }
 .pricing .pr-fit .pr-th--us,
-.pricing .pr-fit .pr-td--us{border-bottom-color:rgba(59,130,246,.3);}
+.pricing .pr-fit .pr-td--us{border-bottom-color:rgba(29,78,216,.16);width:132px;}
+/* One continuous lens gradient laid over the whole EvalLense column (rightmost),
+   not re-started per cell. Pinned to the right edge; width matches the column
+   width set above. Sits ABOVE the flat-blue cell fill (z:1) but BELOW the
+   checkmarks (.pr-cell--yes td is z:10) and the header label (z:11), so the
+   ✓ glyphs and "EVALLENSE" stay crisp on top. */
+.pricing .pr-fit .pr-th--us{z-index:11;}
+.pricing .pr-fit .pr-table-scroll::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  right:0;
+  width:132px;
+  background:var(--lens);
+  opacity:.5;
+  pointer-events:none;
+  z-index:1;
+}
 .pricing .pr-statement{margin:0;min-width:0;font-family:var(--font-display);font-size:clamp(19px,2.2vw,26px);line-height:1.32;letter-spacing:-.01em;color:var(--fg-on-dark);padding-left:18px;border-left:2px solid rgba(59,130,246,.55);}
 @media (max-width:880px){
   .pricing .pr-fit__grid{grid-template-columns:1fr;}
