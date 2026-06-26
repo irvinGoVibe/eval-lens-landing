@@ -74,6 +74,9 @@ export type { StatBandProps, Stat, StatBandMedia } from "./StatBand";
 export { Cinema } from "./Cinema";
 export type { CinemaProps, CinemaMedia } from "./Cinema";
 
+export { CtaBand } from "@/components/sections/CtaBand";
+export type { CtaBandProps, CtaLink } from "@/components/sections/CtaBand";
+
 /* ── Backgrounds ────────────────────────────────────────── */
 export { AuroraBackground } from "./AuroraBackground";
 export type {
