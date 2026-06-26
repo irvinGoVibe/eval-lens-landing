@@ -4,6 +4,7 @@ import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import {
   StatementHero,
   Numbered,
@@ -186,14 +187,24 @@ export default function MethodologyPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="section-lab ds">
-        {/* ── Tonal zone A (§1–2): shared LIGHT canvas background (--lobes +
-            floating blobs) under the first two screens. Hero v2 + Principles go
-            transparent over it. ── */}
+        {/* ── Tonal zone (§1–4): ONE continuous canvas background that FLIPS
+            light→dark across the §2/§3 seam. The light base (--lobes + blobs)
+            always shows; the dark layer (--lobes-dark + sparks) is stacked on top
+            at opacity 0 and crossfaded in by <ZoneToneFlip/> at the seam. Sections
+            stay transparent and carry only tone via `surface` (light → ink). ── */}
         <div className="ds-zone">
           <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes" aria-hidden="true" />
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
           <ZoneBlobs />
 
-          {/* 1. Hero — StatementHero, soft. */}
+          {/* 1. Hero — StatementHero, soft (light tone). */}
           <StatementHero
             id="hero"
             surface="light"
@@ -221,25 +232,12 @@ export default function MethodologyPage() {
           sub="The reliability of an EvalLense score comes from the method, not from any single model."
           items={PRINCIPLES}
         />
-        </div>
-        {/* ── end tonal zone A (§1–2) ── */}
+        {/* ── tone-flip seam (§2 → §3): transparent light→dark flip of the shared
+            through-background. Crossfades the dark layer in as it crosses the
+            viewport — replaces the old masked-divider shelf. ── */}
+        <ZoneToneFlip />
 
-        {/* light → ink : masked divider into pipeline peak. */}
-        <div className="tr-masked-divider" data-from="light" data-to="ink" aria-hidden="true" />
-
-        {/* ── Tonal zone B (§3–4): shared DARK canvas background (--lobes-dark,
-            static via --on) under the pipeline + judges peak. Sections stay ink. ── */}
-        <div className="ds-zone">
-          <div
-            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark ds-zone__bg--on"
-            aria-hidden="true"
-          >
-            <span className="ds-canvas__spark ds-canvas__spark--1" />
-            <span className="ds-canvas__spark ds-canvas__spark--2" />
-            <span className="ds-canvas__spark ds-canvas__spark--3" />
-          </div>
-
-          {/* 3. Pipeline — PinnedSteps, ink (ink peak #1). */}
+        {/* 3. Pipeline — PinnedSteps, ink (ink peak #1). */}
           <PinnedSteps
             id="pipeline"
             surface="ink"
@@ -272,7 +270,7 @@ export default function MethodologyPage() {
           items={JUDGES}
         />
         </div>
-        {/* ── end tonal zone B (§3–4) ── */}
+        {/* ── end tonal zone (§1–4, light→dark flip) ── */}
 
         {/* ink → light : masked divider settling out of the ink peak. */}
         <div className="tr-masked-divider" data-from="ink" data-to="light" aria-hidden="true" />
