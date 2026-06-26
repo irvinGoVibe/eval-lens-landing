@@ -45,17 +45,22 @@ export function ZoneToneFlip({
         return;
       }
 
+      // Switch the light IN PLACE — not tied to scroll position, no auto-scroll.
+      // The crossfade is a timed tween that plays when the seam crosses the
+      // viewport line: cross down → flip to dark over ~0.8s while the page barely
+      // moves; cross back up → reverse. No scrub, so no extra travel is needed to
+      // "finish" the flip — the light just switches to the next tone.
       const tween = gsap.fromTo(
         darkBg,
         { opacity: 0 },
         {
           opacity: 1,
-          ease: "none",
+          duration: 0.3,
+          ease: "power2.inOut",
           scrollTrigger: {
             trigger: seam,
-            start: "top 72%",
-            end: "top 28%",
-            scrub: true,
+            start: "top 50%", // single line at the viewport centre
+            toggleActions: "play none none reverse",
           },
         },
       );

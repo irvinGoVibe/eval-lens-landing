@@ -44,27 +44,36 @@ export function ZoneToneFlipReverse() {
         return;
       }
 
+      // Switch the light IN PLACE — not tied to scroll position, no auto-scroll.
+      // The dark→light crossfade (with the brand bloom) is a timed timeline that
+      // plays when the seam crosses the viewport line: cross down → re-light over
+      // ~1s while the page barely moves; cross back up → reverse. No scrub, so no
+      // extra travel is needed to "finish" the flip.
       const tl = gsap.timeline({
-        defaults: { ease: "none" },
+        defaults: { ease: "power2.inOut" },
         scrollTrigger: {
           trigger: seam,
-          start: "top 78%", // seam enters from low in the viewport
-          end: "top 32%", // …flip is done before the first light section centres
-          scrub: true,
+          start: "top 50%", // single line at the viewport centre
+          toggleActions: "play none none reverse",
         },
       });
 
       // dark → light: the re-light layer rises across the whole window
       tl.fromTo(relight, { opacity: 0 }, { opacity: 1, duration: 1 }, 0);
-      // brand BRIDGE blooms up then recedes around the midpoint → colour, no grey
+      // brand BRIDGE blooms up then recedes → colour, no grey. Quick in, quick
+      // out, but HOLD the violet peak through the centre (in ends ~0.36, out
+      // starts ~0.64 → ~0.28 of full-colour dwell).
       if (bridge) {
-        tl.fromTo(bridge, { opacity: 0 }, { opacity: 1, duration: 0.42 }, 0.12)
-          .to(bridge, { opacity: 0, duration: 0.42 }, 0.56);
+        tl.fromTo(bridge, { opacity: 0 }, { opacity: 1, duration: 0.18 }, 0.18)
+          .to(bridge, { opacity: 0, duration: 0.18 }, 0.64);
       }
       if (glow) {
-        tl.fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.38 }, 0.16)
-          .to(glow, { opacity: 0, duration: 0.42 }, 0.56);
+        tl.fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.18 }, 0.18)
+          .to(glow, { opacity: 0, duration: 0.18 }, 0.64);
       }
+
+      // Whole re-light + bloom plays in ~0.3s (timeline totals ~1s → ×3.3).
+      tl.timeScale(3.3);
 
       return () => {
         tl.scrollTrigger?.kill();
