@@ -151,8 +151,9 @@
    brightness/opacity breathe like `lab-bento-spot-pulse` (the flash). The spots
    live near the centre so the movement reads "a little, in the centre"; the
    black `::after` frame keeps the top + bottom edges pure black. mix-blend:
-   screen so they glow over the dark floor. Palette stays violet/lavender/cyan/
-   blue — no aqua, no green. Markup (spots are children of the slot):
+   screen so they glow over the dark floor. Palette = blue / pink / light-blue
+   (the Bento ink feature-blob hues) — no cyan/aqua/green. Markup (spots are
+   children of the slot):
        <div class="ds-canvas__bg ds-canvas__bg--lobes" aria-hidden></div>
        <div class="ds-canvas__bg ds-canvas__bg--lobes-dark" aria-hidden>
          <span class="ds-canvas__spark ds-canvas__spark--1"></span>
@@ -163,47 +164,77 @@
    sets it 0→1, then holds dark). ── */
 .ds-canvas__bg--lobes-dark{
   position:fixed;inset:0;overflow:hidden;opacity:0;will-change:opacity;
-  background:linear-gradient(168deg,#0c0b18 0%,#08080f 55%,#050507 100%);
+  /* near-pure black floor — the "real" background is black; all colour comes
+     from the blob field, all edges are clamped black by the ::after vignette. */
+  background:linear-gradient(168deg,#070710 0%,#040407 55%,#020204 100%);
 }
-.ds-canvas__spark{
-  position:absolute;border-radius:50%;pointer-events:none;
-  mix-blend-mode:screen;filter:blur(70px);
-  will-change:transform,opacity,filter;
+/* ── blobs LIFTED FROM the ink Bento feature tile
+   (`.lab-bento.ink .lab-bento__tile--feature::before`): the SAME three radial
+   "ingredient" blobs — blue / cyan / light-blue — screen-blended over the dark
+   floor. Tuned for the full-viewport canvas: the blobs are kept SMALL and
+   CLUSTERED near the centre, and instead of the wide `gallery-bubbles` sweep
+   (0→100% → blooms to the edges) they ORBIT the centre on a tight
+   `ds-canvas-blob-orbit` loop (positions stay ~40–60%). A tight centre mask +
+   the `::after` vignette below keep all colour mid-screen so the EDGES never
+   light up or shift hue. Lower opacity → the whole field reads darker. ── */
+.ds-canvas__bg--lobes-dark::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  /* saturated, higher-alpha stops → more contrast against the black floor */
+  background:
+    radial-gradient(24% 28% at 40% 44%, rgba(56,128,255,.66), transparent 60%),
+    radial-gradient(22% 26% at 60% 56%, rgba(38,206,242,.58), transparent 60%),
+    radial-gradient(20% 24% at 50% 62%, rgba(126,166,255,.52), transparent 62%);
+  background-size:130% 130%;
+  background-repeat:no-repeat;
+  filter:blur(50px) saturate(1.15);
+  -webkit-mask:radial-gradient(58% 58% at 50% 50%, #000 8%, transparent 62%);
+          mask:radial-gradient(58% 58% at 50% 50%, #000 8%, transparent 62%);
+  mix-blend-mode:screen;opacity:.66;
+  animation:ds-canvas-blob-orbit 13s ease-in-out infinite;
+  will-change:background-position,background-size;
 }
-/* blue — centre-left */
-.ds-canvas__spark--1{
-  width:48vmin;height:48vmin;left:24%;top:30%;
-  background:radial-gradient(circle, rgba(70,140,255,.55), transparent 70%);
-  animation:ds-canvas-spark-flash 9s ease-in-out infinite, ds-glass-orbit 18s ease-in-out infinite;
+/* livelier centre motion — the 3 blobs' tracks CROSS (blue ↔ cyan swap sides)
+   and each one's `background-size` pulses, so they jostle / shove past one
+   another near the centre rather than gliding in formation. Travel stays mid-
+   field (~38–66%); the mask + ::after vignette still clamp the edges to black. */
+@keyframes ds-canvas-blob-orbit{
+  0%,100%{ background-position:38% 38%, 64% 60%, 50% 66%; background-size:124% 124%, 120% 120%, 134% 134%; }
+  25%    { background-position:62% 46%, 42% 58%, 60% 48%; background-size:138% 138%, 132% 132%, 122% 122%; }
+  50%    { background-position:66% 62%, 38% 42%, 44% 60%; background-size:122% 122%, 140% 140%, 130% 130%; }
+  75%    { background-position:44% 60%, 60% 42%, 56% 42%; background-size:134% 134%, 126% 126%, 140% 140%; }
 }
-/* cyan — centre-right, drifting the other way */
-.ds-canvas__spark--2{
-  width:42vmin;height:42vmin;left:58%;top:40%;
-  background:radial-gradient(circle, rgba(46,197,232,.50), transparent 72%);
-  animation:ds-canvas-spark-flash 11s ease-in-out infinite -4s, ds-glass-orbit 22s ease-in-out infinite reverse;
-}
-/* violet — centre */
-.ds-canvas__spark--3{
-  width:40vmin;height:40vmin;left:42%;top:34%;
-  background:radial-gradient(circle, rgba(123,92,246,.50), transparent 72%);
-  animation:ds-canvas-spark-flash 13s ease-in-out infinite -7s, ds-glass-orbit 26s ease-in-out infinite;
-}
-/* the "flash" — a gentle brightness + opacity breathe (cf. lab-bento-spot-pulse):
-   each spot blooms up and recedes, so they appear/float rather than sit static */
-@keyframes ds-canvas-spark-flash{
-  0%,100%{ opacity:.12; filter:blur(78px) brightness(.9); }
-  50%    { opacity:.52; filter:blur(64px) brightness(1.2); }
-}
-@media (prefers-reduced-motion:reduce){
-  .ds-canvas__spark{animation:none !important;opacity:.3;}
-}
-/* black frame top + bottom — keeps both edges pure black */
+/* legacy spark spans — superseded by the Bento blob field above, kept inert so
+   existing markup (.ds-canvas__spark) renders nothing. */
+.ds-canvas__spark{display:none;}
+/* vignette FRAME — the "surface" the blobs ride on: a radial that is clear in
+   the centre and ramps to SOLID black by the edges (so every edge stays pure
+   black, never lit, never hue-shifted), plus a top/bottom linear deepening.
+   Painted (normal blend) OVER the screen-blended blobs → it always wins at the
+   edges. */
 .ds-canvas__bg--lobes-dark::after{
   content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,#050507 0%,rgba(5,5,7,0) 26%,rgba(5,5,7,0) 66%,#060608 100%);
+  background:
+    radial-gradient(68% 68% at 50% 48%, transparent 18%, rgba(3,3,5,.62) 52%, #020204 88%),
+    linear-gradient(180deg,#020204 0%,rgba(2,2,4,0) 22%,rgba(2,2,4,0) 72%,#030305 100%);
+}
+/* ── anim 2 — SCROLL-BOUND flow (switch via data-anim="2", driven by
+   CanvasBgAnimSwitch). The blobs stop orbiting the fixed centre: their vertical
+   position is tied to page scroll through `--canvas-flow` (a vh offset the
+   switch updates on scroll), so the colour STREAMS down from one section to the
+   next as you scroll, instead of sitting in the middle of the viewport. The
+   ::after vignette still clamps the edges black. ── */
+.ds-canvas__bg--lobes-dark[data-anim="2"]::before{
+  animation:none;
+  background-position:
+    40% calc(50% + var(--canvas-flow, 0px)),
+    60% calc(56% + var(--canvas-flow, 0px)),
+    50% calc(62% + var(--canvas-flow, 0px));
 }
 @media (prefers-reduced-motion:reduce){
   .ds-canvas__bg--lobes-dark::before,.ds-canvas__bg--lobes-dark::after{animation:none;}
+  .ds-canvas__bg--lobes-dark[data-anim="2"]::before{
+    background-position:40% 50%, 60% 56%, 50% 62%;
+  }
 }
 /* STATIC-ON modifier — `--lobes-dark` defaults to opacity:0 because it is built
    to CROSSFADE in at a tone-flip seam. For a standalone always-dark zone (a group

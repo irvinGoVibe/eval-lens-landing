@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Footer } from "@/components/Footer";
 import { CanvasBlobs } from "./CanvasBlobs";
+import { CanvasBgAnimSwitch } from "./CanvasBgAnimSwitch";
 import { CanvasToneFlip } from "./CanvasToneFlip";
 import "./canvas-tone-flip.css";
 import {
@@ -62,13 +63,15 @@ export default function CanvasBgPage() {
           dark counterpart stacked on top (opacity 0 → the tone-flip seam crossfades
           it in, flipping the WHOLE through-background light→dark, then holds dark) */}
       <div className="ds-canvas__bg ds-canvas__bg--lobes" aria-hidden="true" />
-      <div className="ds-canvas__bg ds-canvas__bg--lobes-dark" aria-hidden="true">
+      <div className="ds-canvas__bg ds-canvas__bg--lobes-dark" data-anim="1" aria-hidden="true">
         <span className="ds-canvas__spark ds-canvas__spark--1" />
         <span className="ds-canvas__spark ds-canvas__spark--2" />
         <span className="ds-canvas__spark ds-canvas__spark--3" />
       </div>
       {/* big floating blobs flying across the page (GSAP scroll-driven) */}
       <CanvasBlobs />
+      {/* dev switch: dark-bg motion — 1 orbit (CSS) · 2 scroll-bound flow */}
+      <CanvasBgAnimSwitch />
 
       <StatementHero
         surface="light"
