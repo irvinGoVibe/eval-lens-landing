@@ -212,7 +212,10 @@ export default function MethodologyPage() {
           <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes ds-relight" aria-hidden="true" />
           <div className="ds-flip-bridge" aria-hidden="true" />
           <div className="ds-flip-bridge__glow" aria-hidden="true" />
+          {/* blobs: one cluster up top (§1–4) + one lower (§5–8) — a single layer's
+              orbs only span ~2.5 screens from its own top, so a tall zone needs two. */}
           <ZoneBlobs />
+          <ZoneBlobs top="52%" />
 
           {/* 1. Hero — StatementHero, soft (light tone). */}
           <StatementHero

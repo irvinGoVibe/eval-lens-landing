@@ -34,7 +34,13 @@ const BLOBS = [
   { src: "/assets/backgrounds/blobs/blob_four_lobes.png", cls: "ds-blob ds-blob--f", d: { x: 30, y: 26, r: -8, dur: 14 }, px: -90, py: -110 },
 ];
 
-export function ZoneBlobs() {
+/**
+ * @param top  Optional CSS `top` for the blobs layer (overrides the default
+ *   `inset:0`). Use it to place a SECOND cluster lower down a tall zone (e.g.
+ *   `top="52%"`) so the lower sections get orbs too — one layer's orbs only span
+ *   ~the first 2.5 viewports from its own top.
+ */
+export function ZoneBlobs({ top }: { top?: string } = {}) {
   const root = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -78,7 +84,12 @@ export function ZoneBlobs() {
   );
 
   return (
-    <div className="ds-canvas__blobs" ref={root} aria-hidden="true">
+    <div
+      className="ds-canvas__blobs"
+      ref={root}
+      aria-hidden="true"
+      style={top ? { top } : undefined}
+    >
       {BLOBS.map((b, i) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img key={i} src={b.src} alt="" className={b.cls} />
