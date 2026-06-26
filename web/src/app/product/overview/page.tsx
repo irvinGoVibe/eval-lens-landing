@@ -235,8 +235,8 @@ export default function ProductOverviewPage() {
       <main className="product-overview section-lab ds">
         {/* §1. Hero → LabStatementHero (soft / light, version 1). */}
         <StatementHero
-          surface="light"
-          version={1}
+          surface="ink"
+          version={2}
           eyebrow="Product Overview"
           titleLead="The operating layer for structured pitch "
           titleAccent="evaluation"
@@ -254,7 +254,8 @@ export default function ProductOverviewPage() {
         {/* §2. Organizer path → LabPinnedSteps (soft / light, 7 pinned steps). */}
         <PinnedSteps
           id="path"
-          surface="light"
+          surface="ink"
+          version={3}
           ariaLabel="The organizer path — seven steps"
           eyebrow="How it works"
           title={{ line1: "The organizer path,", line2: "in seven steps" }}
@@ -271,7 +272,8 @@ export default function ProductOverviewPage() {
 
         {/* §3. Evaluation pipeline → LabNumbered (light → .band.soft). PIPELINE.name → title. */}
         <Numbered
-          surface="light"
+          surface="ink"
+          version={1}
           eyebrow="Evaluation pipeline"
           title="Every deck runs the same five stages"
           sub="Each application passes a fixed pipeline. The numeric layer is deterministic — the same findings and weights produce the same AI Total Score, an advisory reference. Ranking is built from your score, not this one."
@@ -288,6 +290,7 @@ export default function ProductOverviewPage() {
         <Bento
           id="modules"
           surface="light"
+          version={1}
           eyebrow="Three modules"
           title="One product, three connected modules"
           sub="An Entry Hub for intake, Evidence-Based Reports for the analysis, and a Review Board where a person makes the call."
@@ -308,7 +311,8 @@ export default function ProductOverviewPage() {
 
         {/* §5. AI jury → LabGallery (ink — ink peak №1). JUDGES.code → tag. */}
         <Gallery
-          surface="ink"
+          surface="light"
+          version={4}
           eyebrow="AI jury"
           title="Six independent judges, six lenses"
           sub="Evaluation runs through a jury of six AI judges, each with its own lens across P1–P6. They work independently and never see one another's scores — and where they disagree, the report shows it."
@@ -353,7 +357,8 @@ export default function ProductOverviewPage() {
             the feature tile renders without a media slot. */}
         <Bento
           id="outputs"
-          surface="light"
+          surface="ink"
+          version={1}
           eyebrow="What you get"
           title="Everything a run leaves behind"
           sub="After a batch runs, you're left with a structured set of outputs — not a folder of scattered files and threads."
