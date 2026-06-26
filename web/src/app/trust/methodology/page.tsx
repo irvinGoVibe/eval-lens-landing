@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
+import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
 import {
   StatementHero,
   Numbered,
@@ -187,11 +188,17 @@ export default function MethodologyPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="section-lab ds">
-        {/* ── Tonal zone (§1–4): ONE continuous canvas background that FLIPS
-            light→dark across the §2/§3 seam. The light base (--lobes + blobs)
-            always shows; the dark layer (--lobes-dark + sparks) is stacked on top
-            at opacity 0 and crossfaded in by <ZoneToneFlip/> at the seam. Sections
-            stay transparent and carry only tone via `surface` (light → ink). ── */}
+        {/* ── ONE continuous tonal zone (§1–8): a single shared background that
+            flips light→dark at the §2/§3 seam, holds dark through §3–4, then flips
+            dark→light through the brand BRIDGE at the §4/§5 seam. Layer stack
+            (z-index:-1, painted in DOM order = back→front):
+              1) --lobes        light BASE (always on)
+              2) --lobes-dark   dark layer, faded 0→1 by <ZoneToneFlip/> (§2/§3)
+              3) --lobes .ds-relight  light layer faded 0→1 by <ZoneToneFlipReverse/>
+                 (§4/§5) — covers the dark again so the zone ends light
+              4) .ds-flip-bridge + __glow  brand "third colour" bloom at §4/§5
+            ONE zone = no gap/strip between transitions; each flip drives a DIFFERENT
+            layer (dark vs relight), so they never fight over one opacity. ── */}
         <div className="ds-zone">
           <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes" aria-hidden="true" />
           <div
@@ -202,6 +209,9 @@ export default function MethodologyPage() {
             <span className="ds-canvas__spark ds-canvas__spark--2" />
             <span className="ds-canvas__spark ds-canvas__spark--3" />
           </div>
+          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes ds-relight" aria-hidden="true" />
+          <div className="ds-flip-bridge" aria-hidden="true" />
+          <div className="ds-flip-bridge__glow" aria-hidden="true" />
           <ZoneBlobs />
 
           {/* 1. Hero — StatementHero, soft (light tone). */}
@@ -263,27 +273,20 @@ export default function MethodologyPage() {
         <Gallery
           id="judges"
           surface="ink"
+          version={4}
           eyebrow="The AI jury"
           title="Six judges, six lenses"
           sub="Each judge owns one lens and answers a single question. They run in parallel and never compare notes — six independent reads, not one blurred opinion."
           laneLabel="The six AI judges, J-P1 through J-P6"
           items={JUDGES}
         />
-        </div>
-        {/* ── end tonal zone (§1–4, light→dark flip) ── */}
+        {/* ── reverse tone-flip seam (§4 → §5): dark→light through the brand
+            bridge ("third colour", no grey). Fades the .ds-relight layer in
+            (covering the dark again) + blooms the bridge, INSIDE the same
+            continuous zone — no divider, no gap, nothing left behind. ── */}
+        <ZoneToneFlipReverse />
 
-        {/* ink → light : masked divider settling out of the ink peak. */}
-        <div className="tr-masked-divider" data-from="ink" data-to="light" aria-hidden="true" />
-
-        {/* ── Tonal zone (§5–8): one shared LIGHT canvas background (--lobes +
-            floating blobs) runs behind the four light sections. They go
-            transparent and keep only their tone (surface="light"). The
-            ink→light divider above and the Cinema below stay OUTSIDE. ── */}
-        <div className="ds-zone">
-          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes" aria-hidden="true" />
-          <ZoneBlobs />
-
-          {/* 5. Coverage — StatBand, light. */}
+        {/* 5. Coverage — StatBand, light. */}
           <StatBand
             surface="light"
             eyebrow="The AI jury"

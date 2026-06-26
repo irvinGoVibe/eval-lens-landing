@@ -45,6 +45,8 @@ export type LabGalleryProps = {
   id?: string;
   /** `.band` surface — `light` (`.soft`) is the default for this archetype. */
   surface?: "light" | "ink";
+  /** Which saved version renders (1 Polish lane · 4 Grid rows · 3 Expanded). Default 1. */
+  version?: 1 | 3 | 4;
   /** Optional accessible name for the section. */
   ariaLabel?: string;
   eyebrow: string;
@@ -100,6 +102,7 @@ function Card({ item, index }: { item: LabGalleryItem; index: number }) {
 export function LabGallery({
   id = "gallery",
   surface = "light",
+  version = 1,
   ariaLabel,
   eyebrow,
   title,
@@ -118,7 +121,7 @@ export function LabGallery({
       aria-label={ariaLabel}
     >
       {/* ── v1 — Polish: the original composition, token-clean ── */}
-      <div className="lab-gallery__v lab-gallery__v--polish" data-version="1">
+      <div className="lab-gallery__v lab-gallery__v--polish" data-version="1" hidden={version !== 1}>
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
@@ -146,7 +149,7 @@ export function LabGallery({
       <div
         className="lab-gallery__v lab-gallery__v--polish lab-gallery__v--grid"
         data-version="4"
-        hidden
+        hidden={version !== 4}
       >
         <div className="wrap">
           <div className="head" data-reveal="up">
@@ -167,7 +170,7 @@ export function LabGallery({
         className="lab-gallery__v lab-gallery__v--expr"
         data-version="3"
         data-scrub
-        hidden
+        hidden={version !== 3}
       >
         {/* full-bleed photo backdrop (parallax) under a generated-CSS scrim */}
         <div className="lab-gallery__backdrop" aria-hidden="true" />

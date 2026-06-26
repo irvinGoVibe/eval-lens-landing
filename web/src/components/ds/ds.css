@@ -221,6 +221,34 @@
    the zone region. ALWAYS use it for a subset zone. (zone-background skill.) */
 .ds-zone__bg--contained{position:absolute;}
 
+/* ── tone-flip BRIDGE — the brand "third colour" a tone-flip passes THROUGH so it
+   reads light→colour→dark (or dark→colour→light) with NO dirty grey midpoint.
+   Ported verbatim from the approved canvas-bg seam (canvas-tone-flip.css
+   .cbg-tf-bg--mid / --glow). Two stacked layers inside a `.ds-zone` (z-index:-1,
+   above the lobes bg, below content); opacity is driven 0→peak→0 by a tone-flip
+   seam component (ZoneToneFlip / ZoneToneFlipReverse). Decorative, no pointer. */
+.ds-flip-bridge,
+.ds-flip-bridge__glow{position:absolute;z-index:-1;opacity:0;pointer-events:none;will-change:opacity;}
+.ds-flip-bridge{
+  inset:-18%;filter:saturate(1.15);
+  background:
+    radial-gradient(ellipse at 32% 44%, rgba(108,76,241,.98) 0%, rgba(169,155,255,.72) 24%, transparent 55%),
+    radial-gradient(ellipse at 72% 58%, rgba(46,197,232,.82) 0%, rgba(54,224,194,.34) 28%, transparent 58%),
+    linear-gradient(150deg,#d8d0ff 0%,#6c4cf1 35%,#303867 68%,#10131e 100%);
+  transform:scale(1.08) rotate(-2deg);
+}
+.ds-flip-bridge__glow{
+  left:-15%;right:-15%;top:32%;bottom:auto;height:36%;
+  background:radial-gradient(ellipse at center,
+    rgba(169,155,255,.92) 0%, rgba(108,76,241,.72) 28%, rgba(46,197,232,.38) 48%, transparent 72%);
+  filter:blur(42px);transform:rotate(-4deg) scale(1.08);
+}
+/* RE-LIGHT layer — a second `--lobes` light layer stacked ABOVE the dark one,
+   starting hidden. A reverse tone-flip (ZoneToneFlipReverse) fades it 0→1 to
+   cover the dark again so a zone that went dark can end light — without touching
+   (and fighting over) the dark layer's own opacity. */
+.ds-relight{opacity:0;}
+
 /* ── floating blobs layer — big organic PNG orbs positioned DOWN the page (one
    peeking per screen after the hero cluster) with autonomous drift (CanvasBlobs.tsx).
    Absolute so scroll brings each into view; above the gradient, behind content
