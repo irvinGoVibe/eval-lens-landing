@@ -4,6 +4,9 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
+import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
 import {
   StatementHero,
   PinnedSteps,
@@ -232,7 +235,41 @@ export default function ProductOverviewPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} />
-      <main className="product-overview section-lab ds">
+      <main className="product-overview section-lab ds ds-canvas">
+        {/* ── Primary dark bg — OUTSIDE the zone, position:fixed (viewport-sized).
+            Must NOT be inside .ds-zone with --contained: that forces position:absolute
+            (zone-height ≈ thousands of px) → background spreads vertically and
+            viewport-based blob/spark animations break. ds-canvas on <main> gives
+            isolation:isolate so z-index:-1 scopes within main. ── */}
+        <div
+          className="ds-canvas__bg ds-canvas__bg--lobes-dark ds-zone__bg--on"
+          aria-hidden="true"
+        >
+          <span className="ds-canvas__spark ds-canvas__spark--1" />
+          <span className="ds-canvas__spark ds-canvas__spark--2" />
+          <span className="ds-canvas__spark ds-canvas__spark--3" />
+        </div>
+
+        {/* ── ONE continuous tonal zone (§1–§7) — FLIP layers only; the dark base
+            is the fixed bg above (dark-start). Stack (z:-1, back→front):
+              1) --lobes .ds-relight     light, faded 0→1 by ZoneToneFlipReverse → §4–6
+              2) .ds-flip-bridge/__glow  brand bloom at the §3/§4 reverse seam
+              3) --lobes-dark .ds-redark second dark, faded 0→1 by ZoneToneFlip → §7 ── */}
+        <div className="ds-zone">
+          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes ds-relight" aria-hidden="true" />
+          <div className="ds-flip-bridge" aria-hidden="true" />
+          <div className="ds-flip-bridge__glow" aria-hidden="true" />
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark ds-redark"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          {/* blobs over the light band §4–6, clipped off dark §1–3 (top) & §7 (bottom) */}
+          <ZoneBlobs top="55%" bottom="12%" />
+
         {/* §1. Hero → LabStatementHero (soft / light, version 1). */}
         <StatementHero
           surface="ink"
@@ -283,6 +320,9 @@ export default function ProductOverviewPage() {
             body: p.body,
           }))}
         />
+
+        {/* T1: ink→light */}
+        <ZoneToneFlipReverse />
 
         {/* §4. Three modules → LabBento (light). Media on the feature tile only.
             Note: LabBentoMedia has no `ratio` field — the component hardcodes
@@ -353,6 +393,9 @@ export default function ProductOverviewPage() {
           </div>
         </section>
 
+        {/* T2: light→ink */}
+        <ZoneToneFlip targetSelector=".ds-redark" />
+
         {/* §7. What you get → LabBento (light). No media (brief has no §7 image);
             the feature tile renders without a media slot. */}
         <Bento
@@ -364,6 +407,8 @@ export default function ProductOverviewPage() {
           sub="After a batch runs, you're left with a structured set of outputs — not a folder of scattered files and threads."
           items={OUTPUTS}
         />
+
+        </div>{/* /ds-zone §1–§7 */}
 
         {/* §8 — Final CTA. Cinematic closer: CtaBand on the dark (ink) theme with
             a looping background video (`neo`) and `bleed` so it spills onto the
