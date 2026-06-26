@@ -35,12 +35,15 @@ const BLOBS = [
 ];
 
 /**
- * @param top  Optional CSS `top` for the blobs layer (overrides the default
+ * @param top    Optional CSS `top` for the blobs layer (overrides the default
  *   `inset:0`). Use it to place a SECOND cluster lower down a tall zone (e.g.
- *   `top="52%"`) so the lower sections get orbs too — one layer's orbs only span
+ *   `top="57%"`) so the lower sections get orbs too — one layer's orbs only span
  *   ~the first 2.5 viewports from its own top.
+ * @param bottom Optional CSS `bottom`. Together with `top` it CLIPS the layer to a
+ *   band (the wrap is `overflow:hidden`), so orbs — and their scroll drift — stay
+ *   off neighbouring sections (e.g. a dark block the orbs must not cover).
  */
-export function ZoneBlobs({ top }: { top?: string } = {}) {
+export function ZoneBlobs({ top, bottom }: { top?: string; bottom?: string } = {}) {
   const root = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -88,7 +91,7 @@ export function ZoneBlobs({ top }: { top?: string } = {}) {
       className="ds-canvas__blobs"
       ref={root}
       aria-hidden="true"
-      style={top ? { top } : undefined}
+      style={top || bottom ? { top, bottom } : undefined}
     >
       {BLOBS.map((b, i) => (
         // eslint-disable-next-line @next/next/no-img-element

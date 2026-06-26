@@ -212,10 +212,13 @@ export default function MethodologyPage() {
           <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes ds-relight" aria-hidden="true" />
           <div className="ds-flip-bridge" aria-hidden="true" />
           <div className="ds-flip-bridge__glow" aria-hidden="true" />
-          {/* blobs: one cluster up top (§1–4) + one lower (§5–8) — a single layer's
-              orbs only span ~2.5 screens from its own top, so a tall zone needs two. */}
-          <ZoneBlobs />
-          <ZoneBlobs top="52%" />
+          {/* blobs only over the LIGHT bands, clipped off the dark §3–4 block
+              (~25.6%–55% of the zone). The dark block carries its own sparks, not
+              blobs — so each cluster is banded: upper = §1–2 (top→25%), lower =
+              §5–8 (57%→bottom). Banding also stops scroll-parallax drift from
+              carrying an orb onto the dark sections. */}
+          <ZoneBlobs bottom="75%" />
+          <ZoneBlobs top="57%" />
 
           {/* 1. Hero — StatementHero, soft (light tone). */}
           <StatementHero
