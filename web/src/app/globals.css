@@ -5008,6 +5008,31 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-process.soft .lab-rv__slide--ph{background:linear-gradient(180deg, #eef0f7 0%, #f6f6f8 50%, #e8ebf4 100%);}
 .lab-rv__phlabel{position:relative;z-index:1;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);}
 .lab-process.soft .lab-rv__phlabel{color:var(--muted);}
+/* ── Methodology · Pipeline (§3 #pipeline) — OPAQUE BLACK FIELD behind the
+   scrubbed video. The clip is letterboxed onto pure black (.lab-rv__square
+   #05060a), but the shared dark zone bg (--lobes-dark) is faded IN by the
+   tone-flip and is NOT fully opaque across this pinned stage — so the field
+   around the video read light/tinted, not black. Give the sticky stage its OWN
+   opaque dark fill so the section is reliably black regardless of the flip's
+   progress: an opaque cool-violet→black base (matching --lobes-dark so it sits
+   flush with the §4 Judges peak) with a PURE-BLACK core centred on the block —
+   full width, deepening toward the centre where the video sits — so the clip
+   reads against true black and the section is the high-contrast ink peak. Fully
+   opaque (no transparent stops) → cannot leak the light base through. Sits ON
+   the stage (z-index:0) UNDER copy/steps/video (z-index:1). Page-scoped via
+   #pipeline so other lab-process stages are untouched. ── */
+#pipeline .lab-process__stage::after{
+  content:"";
+  position:absolute; inset:0; z-index:0; pointer-events:none;
+  /* one OPAQUE vertical gradient — full WIDTH, varying UP & DOWN: a PURE-BLACK
+     core through the middle (where the video sits) lifting to a dark violet at
+     the top & bottom edges (toward the §2/§4 seams). Every stop is an opaque
+     colour so the light base can't leak; the black↔violet falloff reads as a
+     clear centred gradient and the clip sits against true black. */
+  background:linear-gradient(180deg,
+    #1c1547 0%, #0c0926 26%, #000000 52%, #0c0926 80%, #1c1547 100%);
+}
+#pipeline .lab-process__stage > *{ position:relative; z-index:1; }
 /* steps reveal sequentially AND the whole list glides up into the space the head
    vacated, settling near the heading's old level (transform-only). */
 /* steps fade in EARLY (during the first step's pin window) so step 1 is visibly
@@ -5085,6 +5110,9 @@ section.band.ink .mini-tag{color:var(--lavender);}
 @media (max-width:760px) and (prefers-reduced-motion:reduce){
   .lab-process:has(.lab-pv--reveal:not([hidden])){min-height:0;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__stage{position:static;min-height:0;overflow:visible;}
+  /* keep the #pipeline black-field `::after` anchored to the (now un-pinned)
+     stage box, not the tall .ds-zone, so it doesn't black out the page. */
+  #pipeline .lab-process__stage{position:relative;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__grid{min-height:0;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-rv__media{margin-top:clamp(20px,4svh,32px);transform:none;}
   .lab-process:has(.lab-pv--reveal:not([hidden])) .lab-process__steps--reveal .lab-step{opacity:1;}
