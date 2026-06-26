@@ -267,14 +267,20 @@ export function LabPinnedSteps({
                 <Steps steps={steps} variant="tidy" />
                 {ctaRow}
               </div>
-              <MediaPlaceholder
-                className="lab-process__media"
-                ratio={media.ratio}
-                label={media.label}
-                hint={media.hint}
-                ariaLabel={media.ariaLabel}
-                parallaxY={media.parallaxY}
-              />
+              {mediaNode ? (
+                <div className="lab-process__media lab-process__node">
+                  {mediaNode}
+                </div>
+              ) : (
+                <MediaPlaceholder
+                  className="lab-process__media"
+                  ratio={media.ratio}
+                  label={media.label}
+                  hint={media.hint}
+                  ariaLabel={media.ariaLabel}
+                  parallaxY={media.parallaxY}
+                />
+              )}
             </div>
           </div>
         )}

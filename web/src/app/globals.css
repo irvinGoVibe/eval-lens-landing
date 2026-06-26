@@ -5550,6 +5550,12 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-rv__media{display:grid;place-items:center;min-width:0;}
 /* opt-in custom visual (mediaNode) fills the pinned column edge-to-edge */
 .lab-rv__node{width:100%;min-width:0;}
+/* v1 tidy mediaNode slot + framed product shot (rounded, hairline, soft glow) */
+.lab-process__node{min-width:0;width:100%;display:flex;}
+.lab-process__shot{width:100%;height:auto;display:block;border-radius:var(--radius-stage,20px);
+  border:1px solid var(--border-on-dark,rgba(255,255,255,.12));
+  box-shadow:0 30px 70px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.35);}
+.lab-process.soft .lab-process__shot{border-color:var(--border);box-shadow:0 24px 60px rgba(46,48,90,.14);}
 /* head (eyebrow+title+sub) flies UP and fades over the first ~60% of the pin —
    "exit upward = back" (ui-ux §7 hierarchy-motion); transform/opacity only. */
 .lab-rv__head{grid-area:1/1;align-self:start;z-index:2;will-change:transform,opacity;pointer-events:none;
@@ -10433,3 +10439,33 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
 }
 
 
+
+/* ── PAGE INJECTION (review-board §status "See the whole batch at a glance"):
+   turn each lane card's plain mono tag into a colour-coded status PILL (dot +
+   label), and lay a very faint status tint over the card. Five statuses, keyed
+   by card order. Neutral glass card + coloured pill + ≤6% tint = three levels,
+   no fully-painted cards. ── */
+.review-board #status .lab-signal{ display:none; }
+.review-board #status .lab-gallery__card{ position:relative; }
+.review-board #status .lab-gallery__card .mini-tag{
+  display:inline-flex; align-items:center; gap:7px; align-self:flex-start;
+  height:28px; padding:0 12px; border-radius:999px;
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--st,#6c4cf1);
+  background:color-mix(in oklab, var(--st,#6c4cf1) 11%, transparent);
+  border:1px solid color-mix(in oklab, var(--st,#6c4cf1) 28%, transparent);
+}
+.review-board #status .lab-gallery__card .mini-tag::before{
+  content:""; flex:none; width:6px; height:6px; border-radius:50%; background:var(--st,#6c4cf1);
+}
+/* faint status tint, top of the card (kept under ~6%); above content but inert */
+.review-board #status .lab-gallery__card::after{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:radial-gradient(120% 62% at 50% 0%, color-mix(in oklab, var(--st,#6c4cf1) 6%, transparent), transparent 72%);
+}
+/* per-status colours (slightly deepened from brand hexes for text legibility on light) */
+.review-board #status .lab-gallery__card:nth-child(1){ --st:#19b89a; }  /* READY — mint/aqua */
+.review-board #status .lab-gallery__card:nth-child(2){ --st:#6c4cf1; }  /* ACTIVE — violet */
+.review-board #status .lab-gallery__card:nth-child(3){ --st:#1aa3cf; }  /* COMPLETE — cyan-teal */
+.review-board #status .lab-gallery__card:nth-child(4){ --st:#73737d; }  /* PENDING — neutral gray */
+.review-board #status .lab-gallery__card:nth-child(5){ --st:#c47f1e; }  /* ACTION NEEDED — amber */
