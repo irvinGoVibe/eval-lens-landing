@@ -12,6 +12,7 @@ import {
   FullStatement,
   Gallery,
   PinnedSteps,
+  Bento,
   CtaBand,
 } from "@/components/ds";
 import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
@@ -139,6 +140,24 @@ export default function CanvasBgPage() {
       {/* TONE-FLIP seam — flips the through-background light→dark; the dark
           gallery below hands its own heading up into the flip and redocks it */}
       <CanvasToneFlip items={GALLERY_ITEMS} />
+
+      <RiskControl
+        surface="ink"
+        eyebrow="Risk → control"
+        title="Every failure mode has a guardrail"
+        titleAccent="guardrail"
+        sub="For each way an evaluation could go wrong, the specific system control that keeps it bounded."
+        pairs={RISK_PAIRS}
+      />
+
+      <Bento
+        surface="ink"
+        eyebrow="Bento"
+        title="One map into the deeper pages"
+        sub="A compact tile field: one feature idea plus a set of supporting tiles, each a real link deeper into the product."
+        items={HUBMAP_ITEMS}
+      />
+
       <LabPinnedSteps
         surface="ink"
         version={3}
