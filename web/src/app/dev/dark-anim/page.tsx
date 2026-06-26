@@ -60,8 +60,8 @@ export default function DarkAnimPage() {
         data-anim="1"
         aria-hidden="true"
       />
-      {/* dev switch: dark-bg motion — 1 orbit (CSS) · 2 scroll-bound flow */}
-      <CanvasBgAnimSwitch />
+      {/* dev switch: dark-bg motion — 1 orbit (CSS) · 2 rich per-section flow field */}
+      <CanvasBgAnimSwitch richFlow />
 
       <StatementHero
         surface="ink"

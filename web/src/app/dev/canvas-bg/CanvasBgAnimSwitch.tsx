@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CanvasFlowField } from "./CanvasFlowField";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,15 +12,16 @@ gsap.registerPlugin(ScrollTrigger);
  *
  *   • anim 1 — the fixed-centre orbit (pure CSS; blobs jostle around the middle
  *     of the viewport, edges clamped black).
- *   • anim 2 — SCROLL-BOUND flow: the blobs' vertical position is tied to page
- *     scroll via the `--canvas-flow` custom property, so the colour streams DOWN
- *     from section to section as you scroll instead of holding centre. Driven by
- *     a single GSAP ScrollTrigger (scrubbed), mirroring CanvasBlobs.
+ *   • anim 2 — flow. Default: a simple SCROLL-BOUND vertical flow via the
+ *     `--canvas-flow` custom property (legacy, used on canvas-bg). With
+ *     `richFlow`, anim 2 instead mounts <CanvasFlowField/> — a per-section
+ *     re-composing gradient FIELD (5 masses, one master timeline). Used on the
+ *     dark-anim bench.
  *
  * Toggling sets `data-anim` on the dark layer; the CSS keys off it. The
- * ScrollTrigger only lives while anim 2 is active and is torn down on switch.
+ * scroll wiring only lives while anim 2 is active and is torn down on switch.
  */
-export function CanvasBgAnimSwitch() {
+export function CanvasBgAnimSwitch({ richFlow = false }: { richFlow?: boolean }) {
   const [anim, setAnim] = useState<1 | 2>(1);
 
   useEffect(() => {
@@ -27,7 +29,9 @@ export function CanvasBgAnimSwitch() {
     if (!el) return;
     el.setAttribute("data-anim", String(anim));
 
-    if (anim !== 2) {
+    // richFlow's CanvasFlowField owns the dark layer in flow mode → skip the
+    // legacy simple-flow ScrollTrigger entirely.
+    if (anim !== 2 || richFlow) {
       el.style.removeProperty("--canvas-flow");
       return;
     }
@@ -49,15 +53,17 @@ export function CanvasBgAnimSwitch() {
       st.kill();
       el.style.removeProperty("--canvas-flow");
     };
-  }, [anim]);
+  }, [anim, richFlow]);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        left: 16,
-        bottom: 16,
-        zIndex: 60,
+    <>
+      {richFlow && anim === 2 ? <CanvasFlowField /> : null}
+      <div
+        style={{
+          position: "fixed",
+          left: 16,
+          bottom: 16,
+          zIndex: 60,
         display: "flex",
         gap: 6,
         alignItems: "center",
@@ -90,6 +96,7 @@ export function CanvasBgAnimSwitch() {
           {n === 1 ? "1 · orbit" : "2 · flow"}
         </button>
       ))}
-    </div>
+      </div>
+    </>
   );
 }

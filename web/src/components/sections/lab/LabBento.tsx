@@ -219,8 +219,8 @@ export function LabBento({
             data-reveal="up"
             style={{ "--reveal-delay": "120ms" } as CSSProperties}
           >
-            {items.map((item) => (
-              <Tile item={item} key={item.tag} />
+            {items.map((item, i) => (
+              <Tile item={item} key={`${item.tag}-${i}`} />
             ))}
           </ul>        </div>
       </div>
@@ -264,7 +264,7 @@ export function LabBento({
             ) : null}
             <ul className="lab-bento__col">
               {supporting.map((item, i) => (
-                <Tile item={item} delay={80 + i * 80} key={item.tag} />
+                <Tile item={item} delay={80 + i * 80} key={`${item.tag}-${i}`} />
               ))}
             </ul>
           </div>        </div>
@@ -285,7 +285,7 @@ export function LabBento({
           <ul className="lab-bento__grid">
             {items.map((item, i) => (
               <li
-                key={item.tag}
+                key={`${item.tag}-${i}`}
                 className={
                   item.feature
                     ? "lab-bento__tile lab-bento__tile--feature"

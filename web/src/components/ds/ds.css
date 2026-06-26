@@ -212,7 +212,7 @@
    Painted (normal blend) OVER the screen-blended blobs → it always wins at the
    edges. */
 .ds-canvas__bg--lobes-dark::after{
-  content:"";position:absolute;inset:0;pointer-events:none;
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
   background:
     radial-gradient(68% 68% at 50% 48%, transparent 18%, rgba(3,3,5,.62) 52%, #020204 88%),
     linear-gradient(180deg,#020204 0%,rgba(2,2,4,0) 22%,rgba(2,2,4,0) 72%,#030305 100%);
@@ -229,6 +229,59 @@
     40% calc(50% + var(--canvas-flow, 0px)),
     60% calc(56% + var(--canvas-flow, 0px)),
     50% calc(62% + var(--canvas-flow, 0px));
+}
+
+/* ════════ RICH FLOW FIELD (CanvasFlowField) ════════
+   A field of 5 blurred colour masses injected into the dark layer. Each mass:
+   an outer `.ds-flow__blob` (GSAP target — transform + opacity, the per-section
+   composition) wrapping an inner `.ds-flow__blob-inner` (the gradient + a slow
+   autonomous CSS "breathe" so the field lives its own life). The two transforms
+   compose: scroll re-composition × idle deform. Sits UNDER the ::after vignette
+   (z-index:2) and replaces the orbit ::before while active. */
+.ds-canvas__bg--lobes-dark.has-flow-field::before{display:none;}
+.ds-flow{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.ds-flow__blob{
+  position:absolute;left:50%;top:50%;
+  width:62vw;height:62vw;margin:-31vw 0 0 -31vw;
+  pointer-events:none;will-change:transform,opacity;
+}
+.ds-flow__blob-inner{
+  position:absolute;inset:0;mix-blend-mode:screen;
+  will-change:transform;backface-visibility:hidden;
+}
+/* one large base mass (violet) */
+.ds-flow__blob--a .ds-flow__blob-inner{
+  background:radial-gradient(closest-side, rgba(108,76,241,.55), transparent 72%);
+  filter:blur(72px);animation:ds-flow-breathe-a 23s ease-in-out infinite;
+}
+/* one elongated directional mass (blue → cyan), naturally stretched */
+.ds-flow__blob--b .ds-flow__blob-inner{
+  background:radial-gradient(58% 38% at 50% 50%, rgba(70,140,255,.5), transparent 70%);
+  filter:blur(66px);animation:ds-flow-breathe-b 29s ease-in-out infinite;
+}
+/* local cyan highlight */
+.ds-flow__blob--c .ds-flow__blob-inner{
+  background:radial-gradient(closest-side, rgba(46,197,232,.5), transparent 70%);
+  filter:blur(60px);animation:ds-flow-breathe-c 19s ease-in-out infinite;
+}
+/* local lavender highlight */
+.ds-flow__blob--d .ds-flow__blob-inner{
+  background:radial-gradient(closest-side, rgba(169,155,255,.46), transparent 72%);
+  filter:blur(60px);animation:ds-flow-breathe-d 25s ease-in-out infinite;
+}
+/* aqua accent — only opened up in the accent scene */
+.ds-flow__blob--e .ds-flow__blob-inner{
+  background:radial-gradient(closest-side, rgba(54,224,194,.42), transparent 72%);
+  filter:blur(64px);animation:ds-flow-breathe-e 21s ease-in-out infinite;
+}
+/* slow autonomous deform — small scale/rotate/translate, varied per mass */
+@keyframes ds-flow-breathe-a{0%,100%{transform:scale(1) rotate(0deg);}50%{transform:scale(1.09) rotate(6deg);}}
+@keyframes ds-flow-breathe-b{0%,100%{transform:scale(1) rotate(0deg) translate(0,0);}50%{transform:scale(1.13) rotate(-9deg) translate(2%,-3%);}}
+@keyframes ds-flow-breathe-c{0%,100%{transform:scale(1) translate(0,0);}50%{transform:scale(1.12) translate(-3%,2%);}}
+@keyframes ds-flow-breathe-d{0%,100%{transform:scale(1) rotate(0deg);}50%{transform:scale(1.1) rotate(8deg);}}
+@keyframes ds-flow-breathe-e{0%,100%{transform:scale(1) translate(0,0);}50%{transform:scale(1.14) translate(3%,3%);}}
+@media (prefers-reduced-motion:reduce){
+  .ds-flow__blob-inner{animation:none !important;}
 }
 @media (prefers-reduced-motion:reduce){
   .ds-canvas__bg--lobes-dark::before,.ds-canvas__bg--lobes-dark::after{animation:none;}

@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
 import {
   StatementHero,
   FullStatement,
@@ -186,6 +187,10 @@ export default function PromptInjectionSafetyPage() {
           </div>
           <div className="ds-flip-bridge" aria-hidden="true" />
           <div className="ds-flip-bridge__glow" aria-hidden="true" />
+          {/* floating PNG blobs, banded to the LIGHT middle (§3–§5) so they fly
+              over the light gradient and stay off the dark top/bottom. The % band
+              is approximate — tune top/bottom to the rendered section heights. */}
+          <ZoneBlobs top="28%" bottom="18%" />
 
         {/* §1 — Hero (light / soft). */}
         <StatementHero
