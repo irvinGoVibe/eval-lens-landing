@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Footer } from "@/components/Footer";
 import { CanvasBgAnimSwitch } from "../canvas-bg/CanvasBgAnimSwitch";
+import { CanvasFlowEditor } from "../canvas-bg/CanvasFlowEditor";
 import {
   StatementHero,
   Bento,
@@ -62,6 +63,8 @@ export default function DarkAnimPage() {
       />
       {/* dev switch: dark-bg motion — 1 orbit (CSS) · 2 rich per-section flow field */}
       <CanvasBgAnimSwitch richFlow />
+      {/* dev overlay: tune each section's gradient scene with sliders */}
+      <CanvasFlowEditor />
 
       <StatementHero
         surface="ink"
@@ -113,6 +116,7 @@ export default function DarkAnimPage() {
 
       <PinnedSteps
         surface="ink"
+        version={3}
         ariaLabel="Pinned multi-screen process"
         eyebrow="Pinned multi-screen"
         title={{ line1: "One fixed path,", line2: "five steps", line2Accent: "in sequence" }}
@@ -123,6 +127,11 @@ export default function DarkAnimPage() {
           label: "Image · pinned flow · 4:3",
           hint: "A five-step track whose nodes light up in sequence",
           ariaLabel: "A track of five steps whose nodes light up in sequence",
+        }}
+        videoScrub={{
+          src: "/assets/methodology/methodology-transition.mp4",
+          frames: 0,
+          ariaLabel: "Methodology transition — scrubbed by scroll through the stages",
         }}
       />
 

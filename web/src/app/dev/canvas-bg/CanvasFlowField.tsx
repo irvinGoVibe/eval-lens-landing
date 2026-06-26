@@ -33,7 +33,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /** One blob's target transform in a scene. x/y are GSAP xPercent/yPercent
  *  (percent of the blob's own size); scaleX/scaleY/rotation/opacity as named. */
-type Blob = {
+export type Blob = {
   x: number;
   y: number;
   scaleX: number;
@@ -41,7 +41,7 @@ type Blob = {
   rotation: number;
   opacity: number;
 };
-type Scene = {
+export type Scene = {
   /** rough share of the section the field covers — drives quick tuning + docs. */
   coverage: "high" | "medium" | "low";
   /** overall colour strength multiplier (kept in the blob opacities here). */
@@ -52,7 +52,7 @@ type Scene = {
 
 /* ── DECLARATIVE SCENE PRESETS — tweak these to retune the whole field without
    touching the timeline. Keyed by section "kind" (see classify() below). ── */
-const SCENES: Record<string, Scene> = {
+export const SCENES: Record<string, Scene> = {
   // 1 · large central object — field spreads wide behind the object, broad soft
   // volume, cyan + violet переливы at the edges.
   hero: {
@@ -79,30 +79,33 @@ const SCENES: Record<string, Scene> = {
       { x: 0, y: 0, scaleX: 0.5, scaleY: 0.5, rotation: 0, opacity: 0 },
     ],
   },
-  // 2 · calm text — minimal; main mass shoved to a corner / partly offscreen;
-  // near-black centre; only a faint glow near the heading. Max text contrast.
+  // 2 · calm text — minimal field, sides/bottom stay near-black for max text
+  // contrast, BUT a deliberate brand ACCENT highlight (cyan + lavender) spawns
+  // tight behind the heading as the section centres. Base mass stays shoved to a
+  // corner so the centre doesn't wash out.
   text: {
+    coverage: "low",
+    intensity: 0.45,
+    blobs: [
+      { x: -60, y: -50, scaleX: 0.8, scaleY: 0.8, rotation: 0, opacity: 0.22 }, // base, far corner, faint
+      { x: 66, y: 60, scaleX: 0.55, scaleY: 0.55, rotation: 0, opacity: 0.1 }, // almost offscreen
+      { x: 0, y: -14, scaleX: 0.95, scaleY: 0.62, rotation: 0, opacity: 0.72 }, // CYAN accent — wider + brighter, up by heading
+      { x: -8, y: -18, scaleX: 0.68, scaleY: 0.52, rotation: 0, opacity: 0.48 }, // lavender broadens the accent
+      { x: 0, y: 0, scaleX: 0.4, scaleY: 0.4, rotation: 0, opacity: 0 }, // aqua off
+    ],
+  },
+  // 1/5 · object NOT lit — the field just slips past on the SIDES and drifts off
+  // to the left; the centre (the object/steps) stays dark. No mass sits behind
+  // the object. A faint right-edge touch keeps it from going fully black.
+  object: {
     coverage: "low",
     intensity: 0.3,
     blobs: [
-      { x: -58, y: -46, scaleX: 0.85, scaleY: 0.85, rotation: 0, opacity: 0.34 }, // pushed to corner
-      { x: 64, y: 62, scaleX: 0.6, scaleY: 0.6, rotation: 0, opacity: 0.12 }, // almost offscreen
-      { x: 4, y: -42, scaleX: 0.4, scaleY: 0.3, rotation: 0, opacity: 0.2 }, // faint near heading
-      { x: 0, y: 0, scaleX: 0.4, scaleY: 0.4, rotation: 0, opacity: 0 },
-      { x: 0, y: 0, scaleX: 0.4, scaleY: 0.4, rotation: 0, opacity: 0 },
-    ],
-  },
-  // 1/5 · large object + downward lead — wide mass behind the centre with a
-  // vertical directional mass leading the eye down to the next section.
-  object: {
-    coverage: "high",
-    intensity: 0.85,
-    blobs: [
-      { x: 0, y: 8, scaleX: 1.5, scaleY: 1.5, rotation: 0, opacity: 0.85 }, // base behind object
-      { x: 10, y: 40, scaleX: 0.8, scaleY: 1.45, rotation: 12, opacity: 0.5 }, // vertical lead-down
-      { x: -36, y: -20, scaleX: 0.7, scaleY: 0.7, rotation: 0, opacity: 0.45 }, // cyan edge
-      { x: 38, y: 24, scaleX: 0.7, scaleY: 0.7, rotation: 0, opacity: 0.4 }, // lavender edge
-      { x: 0, y: 0, scaleX: 0.6, scaleY: 0.6, rotation: 0, opacity: 0 },
+      { x: -88, y: 6, scaleX: 0.68, scaleY: 1.05, rotation: -10, opacity: 0.3 }, // base hugging / slipping off the left edge
+      { x: -68, y: 44, scaleX: 0.5, scaleY: 0.85, rotation: 16, opacity: 0.15 }, // faint lower-left, leading away
+      { x: 78, y: -30, scaleX: 0.36, scaleY: 0.36, rotation: 0, opacity: 0.1 }, // tiny faint right edge
+      { x: 0, y: 0, scaleX: 0.4, scaleY: 0.4, rotation: 0, opacity: 0 }, // off (centre stays dark)
+      { x: 0, y: 0, scaleX: 0.4, scaleY: 0.4, rotation: 0, opacity: 0 }, // off
     ],
   },
   // 4 · accent — denser, masses overlap into a complex violet/lavender/cyan/aqua
@@ -122,7 +125,7 @@ const SCENES: Record<string, Scene> = {
 
 /** Map a dark section to a scene kind from its root class. Declarative + adapts
  *  to any dark page (canvas-bg, dark-anim, …) without per-page wiring. */
-function classify(el: Element): keyof typeof SCENES {
+export function classify(el: Element): keyof typeof SCENES {
   const c = el.className || "";
   if (/cta-band/.test(c)) return "accent";
   if (/lab-process/.test(c)) return "object";
@@ -231,6 +234,31 @@ export function CanvasFlowField() {
     };
     window.addEventListener("resize", onResize);
 
+    // dev controller — lets CanvasFlowEditor pause the timeline and live-apply
+    // slider values to the blobs while tuning a scene. (dev-only window handle)
+    const controller = {
+      blobs,
+      pause() {
+        st?.disable(false); // stop scroll-writing, keep current frame
+      },
+      resume() {
+        st?.enable();
+      },
+      apply(arr: Blob[]) {
+        arr.forEach((b, i) => {
+          if (blobs[i]) gsap.set(blobs[i], toVars(b));
+        });
+      },
+      sections() {
+        return Array.from(
+          main.querySelectorAll<HTMLElement>(":scope > .band.ink, :scope > .cta-band"),
+        );
+      },
+      classify,
+      scenes: SCENES,
+    };
+    (window as unknown as { __canvasFlow?: typeof controller }).__canvasFlow = controller;
+
     return () => {
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
@@ -238,6 +266,7 @@ export function CanvasFlowField() {
       tl?.kill();
       host.classList.remove("has-flow-field");
       field.remove();
+      delete (window as unknown as { __canvasFlow?: typeof controller }).__canvasFlow;
     };
   }, []);
 

@@ -239,6 +239,11 @@
    compose: scroll re-composition × idle deform. Sits UNDER the ::after vignette
    (z-index:2) and replaces the orbit ::before while active. */
 .ds-canvas__bg--lobes-dark.has-flow-field::before{display:none;}
+/* dark-anim bench: hide the v3 PinnedSteps mask-gradient envelope (the masked
+   solid-black field behind the scrubbed video, `.lab-pv--reveal::before`) so the
+   video sits on the flow field instead of a black box. HIDDEN, not removed —
+   scoped to this page only (methodology/canvas-bg keep their black field). */
+.dark-anim-demo .lab-process.ink .lab-pv--reveal::before{display:none;}
 .ds-flow{position:absolute;inset:0;z-index:1;pointer-events:none;}
 .ds-flow__blob{
   position:absolute;left:50%;top:50%;
