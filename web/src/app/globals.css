@@ -4989,6 +4989,42 @@ section.band.ink .mini-tag{color:var(--lavender);}
 /* the square stays put (centered in the pinned stage); its content slides */
 .lab-rv__square{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--radius-stage,20px);overflow:hidden;box-shadow:var(--sh-3);background:#05060a;display:grid;place-items:center;}
 .lab-process.soft .lab-rv__square{background:var(--bg-soft);box-shadow:none;border:1px solid var(--border);}
+/* ── v3 ink — FULL-BLEED black field across the whole pinned viewport (full
+   width + full height), densest on the video and fading out toward the screen
+   edges, so only the video sits on solid black and everything around it is this
+   gradient melting into the section's bg. Lives on .lab-pv--reveal (full width of
+   the sticky stage) at z-index:-1 — above the section/zone bg, below all content
+   (copy, steps, video stay on top). Stage is overflow:hidden, so the full-bleed
+   layer can't leak horizontal scroll. --rv-cx = where the dense core sits
+   horizontally (the video is in the right column); --rv-core = radius of the pure
+   black plateau; --rv-spread = how far the fade reaches toward the edges. */
+.lab-process.ink .lab-rv__square{box-shadow:var(--sh-3);position:relative;z-index:1;}
+.lab-process.ink .lab-rv__copy{position:relative;z-index:1;}
+/* break the sticky stage out to full viewport width so the field reaches the
+   screen edges despite the section's horizontal padding (var(--gutter)). Scoped
+   via :has to the v3-active ink stage only — v1/v2, other pages, and the section
+   padding for normal content are untouched; the centered .wrap inside keeps the
+   copy/video exactly where they are. */
+.lab-process.ink:has(.lab-pv--reveal:not([hidden])) .lab-process__stage{
+  margin-inline:calc(-1 * var(--gutter));
+  width:calc(100% + 2 * var(--gutter));
+}
+.lab-process.ink .lab-pv--reveal{position:relative;}
+.lab-process.ink .lab-pv--reveal::before{
+  content:"";position:absolute;z-index:-1;pointer-events:none;
+  /* extend 300px past each side so the field reaches (and overshoots) the screen
+     edges — sides stay solid, no visible blobs; clipped to the viewport by the
+     full-bleed stage → no horizontal scroll. inset = top-bottom / sides */
+  inset:0 var(--rv-overscan-x,-300px);
+  /* SOLID black across the full width — sides stay opaque; only the TOP and
+     BOTTOM are made transparent, by the vertical mask below. */
+  background:#000;
+  /* vertical envelope — top fades in slowly (more transparent up high via the
+     mid .5 stop), solid black around the video, bottom fades to zero. Nothing
+     leaks into the neighbouring sections. */
+  -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.5) var(--rv-top-soft,30%), #000 var(--rv-top-fade,46%), #000 calc(100% - var(--rv-bot-fade,16%)), rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.5) var(--rv-top-soft,30%), #000 var(--rv-top-fade,46%), #000 calc(100% - var(--rv-bot-fade,16%)), rgba(0,0,0,0) 100%);
+}
 /* side darkening — fade the video's left & right edges into the surface */
 .lab-rv__square::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(90deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,0) 17%, rgba(0,0,0,0) 83%, rgba(0,0,0,.62) 100%);}
