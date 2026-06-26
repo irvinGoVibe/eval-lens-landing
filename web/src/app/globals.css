@@ -3210,11 +3210,11 @@ a.page-header__section:hover{color:var(--fg);}
      frosted, not see-through), a bright rim, and a top-edge inset highlight
      (the shine). The brand-coloured `::before` wisp glows through underneath. */
   background:
-    linear-gradient(145deg, rgba(255,255,255,.72) 0%, rgba(238,242,251,.58) 42%, rgba(255,255,255,.46) 100%),
-    rgba(255,255,255,.7);
-  -webkit-backdrop-filter:blur(72px) saturate(1.8) brightness(1.05);
-  backdrop-filter:blur(72px) saturate(1.8) brightness(1.05);
-  border:1px solid rgba(255,255,255,.78);
+    linear-gradient(145deg, rgba(255,255,255,.86) 0%, rgba(238,242,251,.74) 42%, rgba(255,255,255,.66) 100%),
+    rgba(255,255,255,.82);
+  -webkit-backdrop-filter:blur(90px) saturate(2) brightness(1.06);
+  backdrop-filter:blur(90px) saturate(2) brightness(1.06);
+  border:1px solid rgba(255,255,255,.85);
   box-shadow:
     inset 0 1.5px 0 rgba(255,255,255,.9),
     inset 0 -1px 0 rgba(255,255,255,.35),
@@ -3241,8 +3241,12 @@ a.page-header__section:hover{color:var(--fg);}
 }
 .gnav__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;}
 .gnav__item{
-  position:relative;display:grid;grid-template-columns:7px minmax(0,auto) minmax(0,1fr) auto;
-  align-items:center;gap:0 18px;min-height:60px;padding:0 16px;
+  /* 4 columns: indicator · name (auto) · flexible gap holding the right-aligned
+     description · arrow. The name hugs its content on the left; the middle column
+     stretches so the description is pushed RIGHT, ending in a single aligned
+     column just before the arrow (which stays pinned right in its own column). */
+  position:relative;display:grid;grid-template-columns:7px auto minmax(0,1fr) auto;
+  align-items:center;gap:0 14px;min-height:60px;padding:0 16px;
   border-radius:14px;border:1px solid transparent;
   transition:background-color .2s var(--ease), border-color .2s var(--ease);
 }
@@ -3259,6 +3263,7 @@ a.page-header__section:hover{color:var(--fg);}
   font-family:var(--font-ui);
   font-size:13px;line-height:1.3;color:var(--muted);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-align:right;justify-self:end;min-width:0;
 }
 .gnav__item-arrow{
   font-size:15px;color:var(--muted);
@@ -3289,7 +3294,7 @@ a.page-header__section:hover{color:var(--fg);}
 .page-header--dark .gnav__panel{
   background:
     linear-gradient(145deg, rgba(255,255,255,.24) 0%, rgba(220,232,248,.12) 40%, rgba(255,255,255,.05) 100%),
-    color-mix(in oklab, var(--bg-ink) 82%, transparent);
+    color-mix(in oklab, var(--bg-ink) 88%, transparent);
   border-color:rgba(255,255,255,.36);
   box-shadow:
     inset 0 1.5px 0 rgba(255,255,255,.5),
@@ -5930,37 +5935,6 @@ section.band.ink .mini-tag{color:var(--lavender);}
   right:-8vw !important;
 }
 
-/* ── PAGE INJECTION (methodology): hover-accent headings fill with the lens
-   gradient LEFT→RIGHT (a wipe) instead of switching colour instantly. Each
-   heading is always clipped to a 200%-wide gradient — [lens 0–50% | base
-   50–100%]; at rest the position shows the base half, on hover/active it slides
-   to 0% so the lens sweeps in from the first letter to the last. ── */
-.trust-methodology .lab-bento .lab-bento__tile h3,
-.trust-methodology .lab-gallery .lab-gallery__card h3,
-.trust-methodology .ds-routing__judge-name{
-  background-image:linear-gradient(90deg,var(--violet) 0%,var(--lavender) 17%,var(--cyan) 35%,var(--aqua) 50%,var(--fg) 50%,var(--fg) 100%) !important;
-  background-size:200% 100% !important;
-  background-position:100% 0 !important;
-  background-repeat:no-repeat !important;
-  -webkit-background-clip:text !important;background-clip:text !important;
-  -webkit-text-fill-color:transparent !important;color:transparent !important;
-  transition:background-position 2.5s cubic-bezier(.33,0,.2,1) !important;
-}
-/* dark-surface headings (the judges Gallery is .ink) use the on-dark base */
-.trust-methodology .lab-gallery.ink .lab-gallery__card h3{
-  background-image:linear-gradient(90deg,var(--violet) 0%,var(--lavender) 17%,var(--cyan) 35%,var(--aqua) 50%,var(--fg-on-dark) 50%,var(--fg-on-dark) 100%) !important;
-}
-/* reveal on hover (cards) / on the active row (matrix judge) */
-.trust-methodology .lab-bento .lab-bento__tile:hover h3,
-.trust-methodology .lab-gallery .lab-gallery__card:hover h3,
-.trust-methodology .ds-routing__row.is-active .ds-routing__judge-name{
-  background-position:0 0 !important;
-}
-@media (prefers-reduced-motion: reduce){
-  .trust-methodology .lab-bento .lab-bento__tile h3,
-  .trust-methodology .lab-gallery .lab-gallery__card h3,
-  .trust-methodology .ds-routing__judge-name{transition:none !important;}
-}
 /* ── optional attached tile watermark (LabBentoItem.icon) — rendered ONLY when
    an item carries an `icon`; there is no placeholder otherwise. It's anchored
    absolutely in a tile corner (default bottom-left) and painted BEHIND the text
