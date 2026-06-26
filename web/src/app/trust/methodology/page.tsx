@@ -186,11 +186,18 @@ export default function MethodologyPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="section-lab ds">
-        {/* 1. Hero — StatementHero, soft. */}
-        <StatementHero
-          id="hero"
-          surface="light"
-          version={2}
+        {/* ── Tonal zone A (§1–2): shared LIGHT canvas background (--lobes +
+            floating blobs) under the first two screens. Hero v2 + Principles go
+            transparent over it. ── */}
+        <div className="ds-zone">
+          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes" aria-hidden="true" />
+          <ZoneBlobs />
+
+          {/* 1. Hero — StatementHero, soft. */}
+          <StatementHero
+            id="hero"
+            surface="light"
+            version={2}
           eyebrow="Methodology"
           titleLead="The methodology behind every score"
           titleAccent=""
@@ -214,15 +221,29 @@ export default function MethodologyPage() {
           sub="The reliability of an EvalLense score comes from the method, not from any single model."
           items={PRINCIPLES}
         />
+        </div>
+        {/* ── end tonal zone A (§1–2) ── */}
 
         {/* light → ink : masked divider into pipeline peak. */}
         <div className="tr-masked-divider" data-from="light" data-to="ink" aria-hidden="true" />
 
-        {/* 3. Pipeline — PinnedSteps, ink (ink peak #1). */}
-        <PinnedSteps
-          id="pipeline"
-          surface="ink"
-          version={3}
+        {/* ── Tonal zone B (§3–4): shared DARK canvas background (--lobes-dark,
+            static via --on) under the pipeline + judges peak. Sections stay ink. ── */}
+        <div className="ds-zone">
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark ds-zone__bg--on"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+
+          {/* 3. Pipeline — PinnedSteps, ink (ink peak #1). */}
+          <PinnedSteps
+            id="pipeline"
+            surface="ink"
+            version={3}
           ariaLabel="Every deck runs the same five stages"
           eyebrow="The pipeline"
           title={{ line1: "Every deck runs", line2: "the same five stages" }}
@@ -250,6 +271,8 @@ export default function MethodologyPage() {
           laneLabel="The six AI judges, J-P1 through J-P6"
           items={JUDGES}
         />
+        </div>
+        {/* ── end tonal zone B (§3–4) ── */}
 
         {/* ink → light : masked divider settling out of the ink peak. */}
         <div className="tr-masked-divider" data-from="ink" data-to="light" aria-hidden="true" />
