@@ -321,8 +321,11 @@
 /* hero content shows immediately (no scroll-reveal gate) — pages may opt back in */
 .ds-hero [data-reveal]{opacity:1;transform:none;}
 
-/* lens-grid pattern behind the v1 gradient background */
-.ds-pattern{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+/* lens-grid pattern behind the v1 gradient background.
+   overflow-y:visible lets the radial glow (::after) bleed PAST the hero's bottom
+   into the next section (soft overlap, no hard clip) — wanted on every page;
+   overflow-x stays clipped so the orb can't cause horizontal scroll. */
+.ds-pattern{position:absolute;inset:0;pointer-events:none;overflow-x:clip;overflow-y:visible;}
 .ds-pattern::before{content:"";position:absolute;inset:clamp(80px,12vw,150px) max(18px,calc((100vw - var(--maxw)) / 2));border-radius:var(--radius-stage);background:linear-gradient(90deg,color-mix(in oklab,var(--violet) 9%, transparent) 1px,transparent 1px),linear-gradient(180deg,color-mix(in oklab,var(--cyan) 8%, transparent) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at 50% 30%, #000 0%, transparent 72%);opacity:.75;}
 .ds-pattern::after{content:"";position:absolute;left:50%;top:16%;width:min(72vw,880px);aspect-ratio:1;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle,color-mix(in oklab,var(--violet) 20%, transparent),transparent 62%);filter:blur(44px);opacity:.65;}
 

@@ -3,6 +3,8 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
+import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
 import {
   StatementHero,
   FullStatement,
@@ -150,8 +152,41 @@ const HOLDING_LAYERS = [
 export default function PromptInjectionSafetyPage() {
   return (
     <>
-      <PageHeader nav={HEADER_NAV} />
+      <PageHeader nav={HEADER_NAV} theme="dark" />
       <main className="section-lab ds injection">
+        {/* ── ONE continuous tonal zone (§1–§7): dark→light→dark on the shared
+            through-background. Layer stack (z-index:-1, DOM order = back→front):
+              1) --lobes-dark + --on     dark BASE (always on) — §1–§2b
+              2) --lobes ds-relight      light layer, faded 0→1 by <ZoneToneFlipReverse/>
+                 at §2b→§3 → covers the dark, so §3–§5 read light (through the bridge)
+              3) --lobes-dark .ds-redark second dark layer, faded 0→1 by
+                 <ZoneToneFlip targetSelector=".ds-redark"/> at §5→§6 → dark again §6–§7
+              4) ds-flip-bridge + __glow brand bloom at the §2b→§3 reverse seam
+            §8 CtaBand + Footer own their own backdrops → OUTSIDE the zone. ── */}
+        <div className="ds-zone">
+          <div
+            className="ds-zone__bg ds-canvas__bg--lobes-dark ds-zone__bg--on"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          <div
+            className="ds-zone__bg ds-canvas__bg--lobes ds-relight"
+            aria-hidden="true"
+          />
+          <div
+            className="ds-zone__bg ds-canvas__bg--lobes-dark ds-redark"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          <div className="ds-flip-bridge" aria-hidden="true" />
+          <div className="ds-flip-bridge__glow" aria-hidden="true" />
+
         {/* §1 — Hero (light / soft). */}
         <StatementHero
           id="hero-pis"
@@ -179,6 +214,14 @@ export default function PromptInjectionSafetyPage() {
           }}
         />
 
+        {/* seam §1→§2 — transparent spacer; the zone's continuous animated
+            --lobes-dark shows through (no own background). */}
+        <div
+          className="tr-gradient-bridge"
+          style={{ background: "none" }}
+          aria-hidden="true"
+        />
+
         {/* §2 — What can go wrong (soft) + page-local neutralized demo figure. */}
         <Bento
           surface="ink"
@@ -198,6 +241,9 @@ export default function PromptInjectionSafetyPage() {
           titleAccent="the score holds"
           sub="One real red-team case, side by side: the instruction is ignored, the weaknesses still appear, and the score doesn't move."
         />
+
+        {/* ── seam §2b→§3 — dark→light reverse tone-flip (fades ds-relight in + bridge bloom). ── */}
+        <ZoneToneFlipReverse />
 
         {/* §3 — Boundary (light). */}
         <FullStatement
@@ -243,6 +289,9 @@ export default function PromptInjectionSafetyPage() {
           }}
         />
 
+        {/* ── seam §5→§6 — light→dark forward tone-flip (fades the .ds-redark layer in). ── */}
+        <ZoneToneFlip targetSelector=".ds-redark" />
+
         {/* §6 — We tested it (INK, the peak) — FullStatement. */}
         <FullStatement
           surface="ink"
@@ -280,6 +329,16 @@ export default function PromptInjectionSafetyPage() {
               "The strongest pitch rising in a leaderboard while an injected prompt stays inert, with a person setting the final score",
           }}
         />
+
+        {/* seam §7→§8 — gradient bridge into the CtaBand: transparent (top) → black (bottom). */}
+        <div
+          className="tr-gradient-bridge"
+          data-to="ink"
+          style={{ ["--from" as string]: "transparent", height: "200px" }}
+          aria-hidden="true"
+        />
+        </div>
+        {/* ── end tonal zone (§1–§7) ── */}
 
         {/* §8 — Final CTA (light) — CtaBand, bleed closer over a looping clip. */}
         <CtaBand

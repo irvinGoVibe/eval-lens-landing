@@ -174,8 +174,8 @@
     },
     "L14_transitions": {
       "manifest": "transitions.json",
-      "count": 12,
-      "note": "5 audited + tr-gradient-bridge(per-direction) + 4 visual-layer-forge + tr-lens-seam(batch4 dark); + tr-overlap-bridge (blocked). BLUR/MIST seams DROPPED by user 2026-06-17."
+      "count": 14,
+      "note": "5 audited + tr-gradient-bridge(per-direction) + 4 visual-layer-forge + tr-lens-seam(batch4 dark); + tr-overlap-bridge (blocked) + tone-flip (page-local GSAP flyer, needs-extraction) + tr-tone-flip (2026-06-26 READY: pinned tonal crossfade light/soft->ink, ScrollFX --pin, +--bloom mid-frame). BLUR/MIST seams DROPPED by user 2026-06-17."
     },
     "L15_recipes": {
       "manifest": "recipes.json",

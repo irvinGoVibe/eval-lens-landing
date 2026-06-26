@@ -22,14 +22,22 @@ gsap.registerPlugin(ScrollTrigger);
  * heading — no new gradient CSS, just animates the existing `--lobes-dark` layer.
  * Client-side, scoped, auto-cleaned, prefers-reduced-motion aware.
  */
-export function ZoneToneFlip() {
+export function ZoneToneFlip({
+  targetSelector = ".ds-canvas__bg--lobes-dark",
+}: {
+  /** Which dark layer to fade in. Defaults to the zone's `--lobes-dark` base.
+   *  Pass a more specific selector when a zone stacks MORE than one dark layer
+   *  (e.g. a dark→light→dark arc whose second dark layer is marked `.ds-redark`),
+   *  so this seam drives that layer instead of the first `--lobes-dark` match. */
+  targetSelector?: string;
+} = {}) {
   const ref = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const seam = ref.current;
       const zone = seam?.closest<HTMLElement>(".ds-zone");
-      const darkBg = zone?.querySelector<HTMLElement>(".ds-canvas__bg--lobes-dark");
+      const darkBg = zone?.querySelector<HTMLElement>(targetSelector);
       if (!seam || !darkBg) return;
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -58,7 +66,7 @@ export function ZoneToneFlip() {
         gsap.set(darkBg, { clearProps: "opacity" });
       };
     },
-    { scope: ref },
+    { scope: ref, dependencies: [targetSelector] },
   );
 
   return <div ref={ref} className="ds-zone__flip-seam" aria-hidden="true" />;

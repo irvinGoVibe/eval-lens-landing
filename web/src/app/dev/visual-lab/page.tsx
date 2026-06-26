@@ -136,6 +136,79 @@ export default function VisualLabPage() {
           </div>
         </section>
 
+        {/* Demo C — tr-tone-flip (pinned tonal-flip zone) */}
+        <section className="band soft">
+          <div className="wrap">
+            <span className="eyebrow">
+              <span className="dot" aria-hidden="true"></span>
+              Demo C · tr-tone-flip
+            </span>
+            <h2 className="title">Pinned tonal-flip zone</h2>
+            <p className="sub">
+              A reusable, de-scoped generalization of the evidence-reports light→ink
+              boundary: a sticky 150vh zone whose ink layer crossfades in via ScrollFX{" "}
+              <code>--pin</code>. First plain, then the <code>--bloom</code> variant that
+              passes the flip through a brand mid-frame so it never goes dirty grey.{" "}
+              <strong>Needs real scroll</strong> — the flip is driven by the pinned zone
+              scrolling past, so it only animates on a live, scrollable page.
+            </p>
+          </div>
+        </section>
+
+        {/* tr-tone-flip — plain (soft → ink) */}
+        <section className="band soft">
+          <div className="wrap">
+            <p className="sub">tr-tone-flip · from (soft)</p>
+          </div>
+        </section>
+        <div
+          className="tr-tone-flip"
+          data-from="soft"
+          data-to="ink"
+          data-pin
+          data-pin-steps="1"
+          aria-hidden="true"
+        >
+          <div className="tr-tone-flip__stage" data-pin-stage>
+            <div className="tr-tone-flip__from"></div>
+            <div className="tr-tone-flip__to"></div>
+            <div className="tr-tone-flip__bloom-mid"></div>
+            <div className="tr-tone-flip__bloom-glow"></div>
+          </div>
+        </div>
+        <section className="band ink">
+          <div className="wrap">
+            <p className="sub">tr-tone-flip · to (ink)</p>
+          </div>
+        </section>
+
+        {/* tr-tone-flip --bloom (soft → ink) */}
+        <section className="band soft">
+          <div className="wrap">
+            <p className="sub">tr-tone-flip tr-tone-flip--bloom · from (soft)</p>
+          </div>
+        </section>
+        <div
+          className="tr-tone-flip tr-tone-flip--bloom"
+          data-from="soft"
+          data-to="ink"
+          data-pin
+          data-pin-steps="1"
+          aria-hidden="true"
+        >
+          <div className="tr-tone-flip__stage" data-pin-stage>
+            <div className="tr-tone-flip__from"></div>
+            <div className="tr-tone-flip__to"></div>
+            <div className="tr-tone-flip__bloom-mid"></div>
+            <div className="tr-tone-flip__bloom-glow"></div>
+          </div>
+        </div>
+        <section className="band ink">
+          <div className="wrap">
+            <p className="sub">tr-tone-flip--bloom · to (ink)</p>
+          </div>
+        </section>
+
         {/* ============ Backgrounds (batch 1) ============ */}
         <section className="band soft">
           <div className="wrap">

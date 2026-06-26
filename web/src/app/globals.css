@@ -9413,3 +9413,139 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
 .ds .band:not(.ink) .media-ph > *{ position:relative; z-index:1; }
 .ds .band:not(.ink) .media-ph__label{ color:#eef; background:#ffffff1f; border:1px solid #ffffff33; }
 .ds .band:not(.ink) .media-ph__hint{ color:#cfcce8; }
+
+/* ===== visual-layer-forge: tr-tone-flip — pinned tonal-flip zone ===== */
+/* A reusable, de-scoped generalization of the production
+   `.evidence-reports .evr-toneflip` light→ink boundary. Two stacked
+   full-viewport tonal layers live inside a sticky stage; the destination
+   (ink) layer crossfades in via ScrollFX `--pin` as the [data-pin] zone
+   scrolls, so one surface transforms into the next with no seam. The zone's
+   own height (150vh) sets the pin travel: (height - 100vh) of scroll takes
+   --pin 0→1. Direction is set per-instance via tokens (data-from / data-to).
+   The OPTIONAL `--bloom` modifier adds a brand mid-frame so the flip never
+   passes through dirty grey. Motion is ScrollFX-only (no GSAP/JS); decorative
+   layers are pointer-events:none and the zone is aria-hidden.
+
+   Markup contract:
+     <div class="tr-tone-flip" data-from="soft" data-to="ink"
+          data-pin data-pin-steps="1" aria-hidden="true">
+       <div class="tr-tone-flip__stage" data-pin-stage>
+         <div class="tr-tone-flip__from"></div>
+         <div class="tr-tone-flip__to"></div>
+         <div class="tr-tone-flip__bloom-mid"></div>
+         <div class="tr-tone-flip__bloom-glow"></div>
+       </div>
+     </div>
+
+   data-from / data-to accept: "light" (→ --bg), "soft" (→ --bg-soft),
+   "ink" (→ --bg-ink). Add `tr-tone-flip--bloom` to the wrapper for the brand
+   mid-frame. */
+.tr-tone-flip{
+  position:relative;
+  height:150vh;
+  /* base zone background = a vertical from→to ramp so the zone's own top/bottom
+     edges read continuous with the bands above/below it. */
+  --from-surface:var(--bg-soft);
+  --to-surface:var(--bg-ink);
+  background:linear-gradient(180deg,
+    var(--from-surface) 0%,
+    var(--from-surface) 22%,
+    var(--to-surface) 100%);
+}
+/* direction tokens — mirror the other tr-* primitives */
+.tr-tone-flip[data-from="light"]{--from-surface:var(--bg);}
+.tr-tone-flip[data-from="soft"]{--from-surface:var(--bg-soft);}
+.tr-tone-flip[data-from="ink"]{--from-surface:var(--bg-ink);}
+.tr-tone-flip[data-to="light"]{--to-surface:var(--bg);}
+.tr-tone-flip[data-to="soft"]{--to-surface:var(--bg-soft);}
+.tr-tone-flip[data-to="ink"]{--to-surface:var(--bg-ink);}
+
+.tr-tone-flip__stage{position:sticky;top:0;height:100vh;overflow:hidden;}
+.tr-tone-flip__from,
+.tr-tone-flip__to,
+.tr-tone-flip__bloom-mid,
+.tr-tone-flip__bloom-glow{position:absolute;inset:0;pointer-events:none;}
+
+/* from layer — the light/soft tonal layer (mirrors evr __light), masked to
+   fade UP so there is no step at the top of the zone. */
+.tr-tone-flip__from{
+  background:linear-gradient(132deg,
+    color-mix(in oklab,var(--violet) 18%, var(--bg-soft)) 0%,
+    var(--bg-soft) 48%,
+    color-mix(in oklab,var(--cyan) 14%, var(--bg-soft)) 100%);
+  -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 26%);
+          mask-image:linear-gradient(180deg, transparent 0%, #000 26%);
+}
+/* to layer — the ink tonal layer reversed (312deg); crossfades in over the
+   pin pass (mirrors evr __ink). */
+.tr-tone-flip__to{
+  background:linear-gradient(312deg,
+    color-mix(in oklab,var(--violet) 42%, var(--ink)) 0%,
+    var(--ink) 50%,
+    color-mix(in oklab,var(--cyan) 26%, var(--ink)) 100%);
+  opacity:var(--pin,0);
+  will-change:opacity;
+}
+/* bloom layers are off unless the --bloom modifier opts in */
+.tr-tone-flip__bloom-mid,
+.tr-tone-flip__bloom-glow{display:none;}
+
+/* ── --bloom modifier — brand mid-frame so the flip never passes through dirty
+   grey. Bloom opacity is a CSS triangle off --pin: 0 at the ends, 1.0 at
+   --pin=0.5, driven purely by ScrollFX (no abs(), no GSAP). ── */
+.tr-tone-flip--bloom .tr-tone-flip__bloom-mid{
+  display:block;
+  opacity:calc(min(var(--pin,0), 1 - var(--pin,0)) * 2);
+  filter:saturate(1.15);
+  /* the BRIDGE — two brand radials over a lavender→violet→deep-blue→near-black
+     ramp (reuse of canvas-tone-flip .cbg-tf-bg--mid). */
+  background:
+    radial-gradient(ellipse at 32% 44%, rgba(108, 76, 241, 0.98) 0%, rgba(169, 155, 255, 0.72) 24%, transparent 55%),
+    radial-gradient(ellipse at 72% 58%, rgba(46, 197, 232, 0.82) 0%, rgba(120, 210, 240, 0.32) 28%, transparent 58%),
+    linear-gradient(150deg, #d8d0ff 0%, #6c4cf1 35%, #303867 68%, #10131e 100%);
+}
+.tr-tone-flip--bloom .tr-tone-flip__bloom-glow{
+  display:block;
+  opacity:calc(min(var(--pin,0), 1 - var(--pin,0)) * 2);
+  filter:blur(42px);
+  /* a soft blurred brand glow band (reuse of canvas-tone-flip .cbg-tf-bg--glow),
+     kept as a horizontal band across the midline. */
+  inset:auto 0 auto 0;
+  top:32%;
+  height:36%;
+  background:radial-gradient(
+    ellipse at center,
+    rgba(169, 155, 255, 0.92) 0%,
+    rgba(108, 76, 241, 0.72) 28%,
+    rgba(46, 197, 232, 0.38) 48%,
+    transparent 72%
+  );
+}
+
+/* Mobile + reduced-motion: collapse to a SHORT static gradient bridge — no
+   pin, no sticky, no empty scroll. A single vertical from→ink ramp carries the
+   eye across the boundary. (Mirrors the evr collapse.) */
+@media (max-width:760px),(prefers-reduced-motion:reduce){
+  .tr-tone-flip{
+    height:clamp(140px,40vh,320px);
+    background:linear-gradient(180deg,
+      var(--from-surface) 0%,
+      color-mix(in oklab,var(--violet) 22%, var(--ink)) 62%,
+      var(--to-surface) 100%);
+  }
+  .tr-tone-flip__stage{position:static;height:100%;}
+  /* ancestor-scoped so these match/out-specify the `--bloom` show rules
+     (`.tr-tone-flip--bloom .tr-tone-flip__bloom-*{display:block}`) — otherwise
+     the bloom layers stay visible in the collapsed static bridge. */
+  .tr-tone-flip .tr-tone-flip__from,
+  .tr-tone-flip .tr-tone-flip__to,
+  .tr-tone-flip--bloom .tr-tone-flip__bloom-mid,
+  .tr-tone-flip--bloom .tr-tone-flip__bloom-glow{display:none;}
+}
+
+/* prompt-injection — the zone's .ds-flip-bridge is position:absolute; inset:-18%,
+   so its bottom edge hangs 18% of the (tall) zone height BELOW the zone, adding
+   empty scroll under the footer. The zone can't clip Y (would break the §5
+   PinnedSteps sticky pin), so clamp the bridge's bottom to the zone instead. The
+   bloom sits at the §2b→§3 seam (top), so losing the bottom overhang is invisible. */
+.injection .ds-flip-bridge{bottom:0;}
