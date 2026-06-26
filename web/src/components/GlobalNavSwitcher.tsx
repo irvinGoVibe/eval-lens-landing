@@ -131,9 +131,6 @@ export function GlobalNavSwitcher({ label }: { label: string }) {
                     <span className="gnav__item-indicator" aria-hidden="true" />
                     <span className="gnav__item-name">{entry.label}</span>
                     <span className="gnav__item-desc">{entry.description}</span>
-                    <span className="gnav__item-arrow" aria-hidden="true">
-                      →
-                    </span>
                   </Link>
                 </li>
               );
@@ -159,9 +156,6 @@ export function GlobalNavSwitcher({ label }: { label: string }) {
                   onClick={() => setOpen(false)}
                 >
                   <span className="gnav__item-name">{entry.label}</span>
-                  <span className="gnav__item-arrow" aria-hidden="true">
-                    →
-                  </span>
                 </Link>
                 <span className="gnav__sublinks">
                   {entry.links.map((link, i) => (

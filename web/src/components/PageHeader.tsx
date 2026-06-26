@@ -98,6 +98,7 @@ export function PageHeader({
         {/* Mobile-only: collapses the switcher + anchors + CTA into a drawer. */}
         <MobileNav nav={nav} cta={cta} />
       </div>
+
       <HeaderThemeSync />
     </header>
   );

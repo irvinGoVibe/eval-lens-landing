@@ -16,8 +16,9 @@ export type NavLink = { label: string; href: string };
  * pages without going back home. Every entry shares the top-level `label` +
  * `href` (canonical landing route) + `match` (pathname prefix used to mark the
  * active section). Each entry then carries EITHER a list of in-section `links`
- * (Product / Trust / Pricing / About) OR a one-line `description` (Newsroom,
- * which has no sub-links — the whole row just leads to `/blog`).
+ * (Product / Trust / Pricing / Newsroom / About) OR a one-line `description`.
+ * Today every entry uses `links`; the `description` form is kept for any
+ * future section that has no sub-links (the whole row then just leads to `href`).
  */
 type GlobalNavBase = {
   /** Label shown as the section name in the dropdown row. */
@@ -81,7 +82,11 @@ export const GLOBAL_NAV: GlobalNavEntry[] = [
     label: "Newsroom",
     href: "/blog",
     match: "/blog",
-    description: "Research, product updates and company news",
+    links: [
+      { label: "Research", href: "/blog/all?research" },
+      { label: "Product News", href: "/blog/all?product" },
+      { label: "Company Updates", href: "/blog/all?press-release" },
+    ],
   },
   {
     label: "About",

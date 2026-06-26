@@ -3246,12 +3246,15 @@ a.page-header__section:hover{color:var(--fg);}
     radial-gradient(130% 92% at 8% -6%, color-mix(in oklab,#8b93ff 12%,transparent) 0%, transparent 56%),
     radial-gradient(120% 90% at 100% 108%, color-mix(in oklab,var(--cyan) 9%,transparent) 0%, transparent 60%),
     /* diagonal white sheen — light, gives the top its bright milk read */
-    linear-gradient(145deg, rgba(255,255,255,.45) 0%, rgba(235,238,251,.30) 42%, rgba(244,246,255,.22) 100%),
-    /* FLAT dense milk floor — uniform frost top-to-bottom (no vertical fade). */
-    linear-gradient(180deg, rgba(248,249,255,.94) 0%, rgba(248,249,255,.94) 100%);
-  /* Uniform strong frost across the whole panel. */
-  -webkit-backdrop-filter:blur(120px) saturate(1.8) brightness(1.05);
-  backdrop-filter:blur(120px) saturate(1.8) brightness(1.05);
+    linear-gradient(145deg, rgba(255,255,255,.32) 0%, rgba(235,238,251,.20) 42%, rgba(244,246,255,.14) 100%),
+    /* FLAT translucent milk floor — uniform frost top-to-bottom (no vertical
+       fade). Alpha dropped from .94 → .52 so the page background reads through
+       the glass; readability is carried by the heavy blur + inner light. */
+    linear-gradient(180deg, rgba(248,249,255,.52) 0%, rgba(248,249,255,.52) 100%);
+  /* Uniform strong frost across the whole panel — heavier blur now does the
+     work the dense floor used to: page shows through but stays soft. */
+  -webkit-backdrop-filter:blur(56px) saturate(1.8) brightness(1.05);
+  backdrop-filter:blur(56px) saturate(1.8) brightness(1.05);
   border:1px solid rgba(255,255,255,.85);
   /* Crisp floating card: a thin neutral rim hairline draws a SHARP bottom edge
      (no blur tail), then a deep soft drop shadow makes the card float like the
@@ -3260,8 +3263,8 @@ a.page-header__section:hover{color:var(--fg);}
     inset 0 1.5px 0 rgba(255,255,255,.9),
     inset 0 -1px 0 rgba(255,255,255,.35),
     0 0 0 1px rgba(60,50,110,.08),
-    0 18px 50px -16px rgba(60,50,110,.5),
-    0 30px 80px -30px rgba(60,50,110,.45);
+    0 10px 32px -16px rgba(60,50,110,.25),
+    0 18px 52px -30px rgba(60,50,110,.22);
   opacity:0;visibility:hidden;transform-origin:top left;
   transform:translateY(-6px) scale(.985);
   transition:opacity .2s var(--ease), transform .2s var(--ease), visibility 0s linear .2s;
@@ -3286,13 +3289,13 @@ a.page-header__section:hover{color:var(--fg);}
 .gnav__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;}
 .gnav__item{
   /* Row geometry shared by both shapes: indicator · name (auto) · flexible gap
-     holding the right-aligned content · arrow. The name hugs its content on the
+     holding the right-aligned content. The name hugs its content on the
      left; the middle column stretches so the description / sub-links are pushed
-     RIGHT, ending just before the arrow (which stays pinned right). */
-  position:relative;display:grid;grid-template-columns:7px auto minmax(0,1fr) auto;
+     RIGHT. */
+  position:relative;display:grid;grid-template-columns:7px auto minmax(0,1fr);
   align-items:center;gap:0 14px;min-height:60px;padding:0 16px;
   border-radius:14px;border:1px solid transparent;
-  transition:background-color .2s var(--ease), border-color .2s var(--ease);
+  transition:background-color .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
 }
 /* Single-link row (Newsroom): the whole row is one <Link> — it keeps the grid
    above and lays out name + description directly. */
@@ -3317,10 +3320,6 @@ a.page-header__section:hover{color:var(--fg);}
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   text-align:right;justify-self:end;min-width:0;
 }
-.gnav__item-arrow{
-  font-size:15px;color:var(--muted);
-  transition:transform .2s var(--ease), color .2s var(--ease);
-}
 /* Sectioned-row head: name + arrow as a single link, occupying the name column.
    It carries its own focus ring (the <li> is not focusable). */
 .gnav__item-head{
@@ -3328,8 +3327,19 @@ a.page-header__section:hover{color:var(--fg);}
   text-decoration:none;color:inherit;white-space:nowrap;
 }
 .gnav__item-head:focus-visible{outline:2px solid var(--violet);outline-offset:3px;}
-/* Sub-links cluster, right-aligned just before the arrow column would sit. */
+/* Stretched link: the head's ::after spans the WHOLE group row. The container
+   `.gnav__item--group` is position:relative (via base `.gnav__item`) while
+   `.gnav__item-head` is NOT relative, so inset:0 resolves against the row — a
+   click on any empty part of the row hits the head/parent link. Sub-links sit
+   above this layer (z-index:2) and stay individually clickable. Group rows
+   only — single-link rows are already one whole <Link>. */
+.gnav__item--group .gnav__item-head::after{
+  content:"";position:absolute;inset:0;border-radius:14px;z-index:1;
+}
+/* Sub-links cluster, right-aligned just before the arrow column would sit.
+   Lifted above the stretched layer so each sub-link keeps its own click. */
 .gnav__sublinks{
+  position:relative;z-index:2;
   justify-self:end;min-width:0;display:inline;text-align:end;
 }
 .gnav__sublink-wrap{display:inline;}
@@ -3340,6 +3350,7 @@ a.page-header__section:hover{color:var(--fg);}
 /* Underline-on-hover sub-link: no layout shift, no size/weight/color jump.
    The underline is a 0%→100% wide background image that grows L→R. */
 .gnav__sublink{
+  position:relative;z-index:2;
   font-family:var(--font-ui);font-size:13px;line-height:1.3;color:var(--muted);
   text-decoration:none;white-space:nowrap;
   background-image:linear-gradient(currentColor,currentColor);
@@ -3355,8 +3366,6 @@ a.page-header__section:hover{color:var(--fg);}
   background-color:color-mix(in oklab,var(--violet) 7%,rgba(255,255,255,.55));
   border-color:color-mix(in oklab,var(--violet) 22%,transparent);
 }
-.gnav__item--single:hover .gnav__item-arrow,
-.gnav__item--group:hover .gnav__item-arrow{transform:translateX(4px);color:var(--violet);}
 .gnav__item--single:hover .gnav__item-name,
 .gnav__item--group:hover .gnav__item-name{
   background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;
@@ -3389,54 +3398,78 @@ a.page-header__section:hover{color:var(--fg);}
      periwinkle header glass; floor raised ~82%→~96% so it reads matte and the
      busy near-black hero behind it barely shows through, internal lighting
      dialled to a faint cold blue (cyan/sky), no periwinkle wash. */
-  background:
-    /* cool internal lighting — faint cold blue only: a soft sky-blue top glow
-       + a low cyan floor glow, much weaker than the old periwinkle fan */
-    radial-gradient(120% 200% at 50% -30%, rgba(255,255,255,.06) 0%, color-mix(in oklab,#6f8dff 10%,transparent) 46%, transparent 80%),
-    radial-gradient(90% 180% at 100% 140%, color-mix(in oklab,var(--cyan) 8%,transparent) 0%, transparent 66%),
-    linear-gradient(180deg,rgba(255,255,255,.05) 0%,rgba(255,255,255,.012) 60%,rgba(255,255,255,0) 100%),
-    /* FLAT dense matte ink floor — uniform cool blue-black (no vertical fade). */
-    color-mix(in oklab,var(--bg-ink) 89%,transparent);
-  border:1px solid rgba(150,180,235,.16);
-  /* Uniform frost across the whole panel. */
-  -webkit-backdrop-filter:blur(92px) saturate(1.8) brightness(1.04);
-  backdrop-filter:blur(92px) saturate(1.8) brightness(1.04);
+  /* EXPERIMENT (reversible): material ported 1:1 from the STATIC glass of the
+     dark Bento tile (`.lab-bento.ink .lab-bento__tile`). Only the MATERIAL
+     (background / border / backdrop-filter / box-shadow) is swapped here;
+     geometry (position/top/left/width/padding/border-radius/isolation/overflow/
+     z-index/transform) stays inherited from base `.gnav__panel`. Animated sheen
+     layers (.ds-glass__wash/__orbit/__glare) are NOT ported — those are injected
+     by the BentoGlassSpot JS enhancer into Bento markup; this panel has none. */
+  background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.03) 50%, rgba(220,236,255,.014) 100%);
+  border:1px solid rgba(165,195,238,.12);
+  -webkit-backdrop-filter:blur(12px) saturate(1.12);
+  backdrop-filter:blur(12px) saturate(1.12);
   box-shadow:
-    /* cool rim shine + faint blue inner glow (bento-style), a crisp dark rim
-       hairline for a SHARP bottom edge, then a DEEP soft external drop (gallery
-       ink-card character) so the card floats and casts a real shadow */
-    inset 0 1.5px 0 rgba(214,230,255,.30),
+    inset 0 1px 0 rgba(214,234,255,.2),
     inset 0 0 0 1px rgba(96,165,255,.04),
-    inset 0 18px 40px -26px color-mix(in oklab,#6f8dff 22%,transparent),
-    0 0 0 1px rgba(0,0,0,.4),
-    0 18px 50px -16px rgba(0,0,0,.55),
-    0 30px 80px -30px rgba(20,28,60,.55);
+    inset 0 -1px 0 rgba(255,255,255,.03),
+    0 24px 60px rgba(0,0,0,.3),
+    0 26px 56px -32px rgba(46,150,232,.3);
+}
+/* Directional gradient rim ported 1:1 from `.lab-bento.ink .lab-bento__tile::after`
+   — a 1px masked ring following the rounded corners (bright top-left → faint
+   bottom-right). `.gnav__panel::after` is unused (light panel uses only ::before
+   for its brand glow, which the dark panel inherits untouched), so scoping the rim
+   to `.page-header--dark .gnav__panel::after` adds it for dark only without
+   clobbering any existing pseudo-element or the light panel. */
+.page-header--dark .gnav__panel::after{
+  content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,
+    rgba(220,238,255,.38) 0%,
+    rgba(170,202,246,.09) 36%,
+    rgba(118,158,224,.02) 66%,
+    rgba(150,186,240,.07) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
 }
 .page-header--dark .gnav__heading{color:var(--muted-on-dark);}
 .page-header--dark .gnav__item-name{color:var(--fg-on-dark);}
 .page-header--dark .gnav__item-desc{color:var(--muted-on-dark);}
-.page-header--dark .gnav__item-arrow{color:var(--muted-on-dark);}
 .page-header--dark .gnav__sublink{color:var(--muted-on-dark);}
 .page-header--dark .gnav__sublink[aria-current="page"]{color:var(--fg-on-dark);}
 .page-header--dark .gnav__sep{color:var(--muted-on-dark);}
 .page-header--dark .gnav__item--single:hover,
 .page-header--dark .gnav__item--group:hover{
-  /* dark menu hover = neutral white lift, NOT violet — a soft, readable bump */
-  background-color:rgba(255,255,255,.07);
-  border-color:rgba(255,255,255,.16);
+  /* dark menu hover = FEATHERED soft-glow, not a flat white plate and not a
+     border. A nested backdrop-filter is invisible inside the panel (the panel
+     has its own backdrop-filter + overflow:hidden + isolation:isolate), so the
+     hover is painted as a radial highlight that fades to transparent toward the
+     row edges — soft in the centre, zero at the rim, so there is no hard
+     rectangle/edge. Border stays transparent (inherited from the base). */
+  background:radial-gradient(120% 140% at 50% 50%,
+    rgba(255,255,255,.075) 0%,
+    rgba(255,255,255,.03) 45%,
+    transparent 78%);
+  border-color:transparent;
 }
-/* dark menu: name stays plain white on hover (no rainbow lens gradient/clip);
-   arrow keeps its rightward shift but in a neutral light tone, not violet */
+/* dark menu: name stays plain white on hover (no rainbow lens gradient/clip) */
 .page-header--dark .gnav__item--single:hover .gnav__item-name,
 .page-header--dark .gnav__item--group:hover .gnav__item-name{
   background:none;-webkit-background-clip:border-box;background-clip:border-box;
   color:var(--fg-on-dark);
 }
-.page-header--dark .gnav__item--single:hover .gnav__item-arrow,
-.page-header--dark .gnav__item--group:hover .gnav__item-arrow{color:var(--fg-on-dark);}
 .page-header--dark .gnav__item--single[aria-current="page"],
 .page-header--dark .gnav__item--group[data-active]{
-  background-color:color-mix(in oklab,var(--violet) 18%,transparent);
+  /* active row = same FEATHERED soft-glow as hover, just a touch stronger
+     (a hair more centre opacity), so the selected row reads as the brightest
+     soft patch — consistent with hover, never a saturated white fill. The
+     highlight still fades to transparent at the edges (no hard rectangle), and
+     the border stays transparent (inherited base) so there is no hard edge. */
+  background:radial-gradient(120% 140% at 50% 50%,
+    rgba(255,255,255,.11) 0%,
+    rgba(255,255,255,.045) 45%,
+    transparent 78%);
+  border-color:transparent;
 }
 
 /* ============================================================================
@@ -3537,7 +3570,7 @@ a.page-header__section:hover{color:var(--fg);}
 .mnav__overlay--dark .mnav__divider{background:var(--border-on-dark);}
 
 @media (prefers-reduced-motion: reduce){
-  .gnav__panel,.gnav__caret,.gnav__item,.gnav__item-arrow,.gnav__sublink,
+  .gnav__panel,.gnav__caret,.gnav__item,.gnav__sublink,
   .mnav__overlay,.mnav__panel{transition:none;}
 }
 
@@ -7791,6 +7824,12 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-hero__media{margin-top:clamp(36px,5vw,60px);max-width:980px;}
 
 /* ---- 2. Plans — pricing cards ---- */
+/* The cards deliberately overlap UP into the hero media on desktop
+   (margin-top:-250px). That pull is sized for a tall, wide 16:9 hero; as the
+   viewport narrows the hero (and its media) shrinks, so a fixed -250px yanks
+   the cards up over the hero copy. The overlap is relaxed in steps below and
+   dropped entirely once the grid is single-column — see the media block after
+   .pr-smaller. */
 .pricing .pr-plans{padding-top:clamp(32px,5vw,70px);margin-top:-250px;}
 .pricing .pr-plans .head{margin-bottom:clamp(36px,5vw,60px);}
 .pricing .pr-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,22px);align-items:stretch;}
@@ -7807,11 +7846,20 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-card__cta{margin-top:auto;padding-top:22px;}
 .pricing .pr-card__cta .btn{width:100%;justify-content:center;}
 .pricing .pr-smaller{margin-top:clamp(24px,3vw,36px);text-align:center;font-size:14px;line-height:1.55;color:var(--muted);max-width:72ch;margin-inline:auto;}
+/* Relax the hero overlap as the viewport narrows; kill it once 1-column. */
+@media (max-width:1180px){
+  .pricing .pr-plans{margin-top:-170px;}
+}
 @media (max-width:980px){
   .pricing .pr-cards{grid-template-columns:repeat(2,1fr);}
+  .pricing .pr-plans{margin-top:-110px;}
+}
+@media (max-width:760px){
+  .pricing .pr-plans{margin-top:-48px;}
 }
 @media (max-width:560px){
   .pricing .pr-cards{grid-template-columns:1fr;}
+  .pricing .pr-plans{margin-top:0;}
 }
 
 /* ---- comparison tables (sections 3 & 4) ---- */
@@ -7948,7 +7996,19 @@ section.band.ink .mini-tag{color:var(--lavender);}
 }
 
 /* ---- Bento section pull-up ---- */
+/* Desktop overlap into the Cinema band above. The -160px is tuned for the tall
+   desktop Cinema; relax it on narrow screens so the Bento doesn't ride up over
+   the Cinema copy. */
 .pricing .lab-bento{margin-top:-160px;}
+@media (max-width:980px){
+  .pricing .lab-bento{margin-top:-96px;}
+}
+@media (max-width:760px){
+  .pricing .lab-bento{margin-top:-48px;}
+}
+@media (max-width:560px){
+  .pricing .lab-bento{margin-top:-12px;}
+}
 
 /* ---- 5. Capabilities — horizontal scroll gallery ---- */
 .pricing .pr-caps .head{margin-bottom:clamp(32px,5vw,56px);}
