@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { HeaderThemeSync } from "@/components/HeaderThemeSync";
+import { GlobalNavSwitcher } from "@/components/GlobalNavSwitcher";
+import { MobileNav } from "@/components/MobileNav";
 import { LAUNCH_CTA, type NavLink, type SectionNav } from "@/lib/site-nav";
 
 /**
@@ -59,13 +61,10 @@ export function PageHeader({
         {nav && (
           <>
             <span className="page-header__divider" aria-hidden="true"></span>
-            {nav.sectionHref ? (
-              <Link href={nav.sectionHref} className="page-header__section">
-                {nav.section}
-              </Link>
-            ) : (
-              <span className="page-header__section">{nav.section}</span>
-            )}
+            {/* Global page switcher — replaces the old static section label.
+                The trigger shows the current section; the dropdown jumps
+                between top-level pages. */}
+            <GlobalNavSwitcher label={nav.section} />
             <nav
               className="page-header__nav"
               aria-label={`${nav.section} sections`}
@@ -95,6 +94,9 @@ export function PageHeader({
         >
           {cta.label}
         </Button>
+
+        {/* Mobile-only: collapses the switcher + anchors + CTA into a drawer. */}
+        <MobileNav nav={nav} cta={cta} />
       </div>
       <HeaderThemeSync />
     </header>
