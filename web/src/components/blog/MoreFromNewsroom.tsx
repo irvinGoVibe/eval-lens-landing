@@ -4,19 +4,19 @@ const MORE_LINKS = [
   {
     title: "Press Releases",
     desc: "Official announcements from EvalLense.",
-    href: "/blog/all",
+    href: "/blog/all?press-release",
     accent: "violet",
   },
   {
     title: "Product Updates",
     desc: "What shipped, and what it changes.",
-    href: "/blog/all",
+    href: "/blog/all?product",
     accent: "aqua",
   },
   {
     title: "Research",
     desc: "How the evaluation engine actually works.",
-    href: "/blog/all",
+    href: "/blog/all?research",
     accent: "orange",
   },
 ] as const;
