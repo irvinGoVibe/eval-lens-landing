@@ -128,7 +128,7 @@ export const SCENES: Record<string, Scene> = {
 export function classify(el: Element): keyof typeof SCENES {
   const c = el.className || "";
   if (/cta-band/.test(c)) return "accent";
-  if (/lab-process/.test(c)) return "object";
+  if (/lab-process/.test(c)) return "cards";
   if (/lab-bento|ds-risk|lab-gallery/.test(c)) return "cards";
   if (/lab-fullstmt/.test(c)) return "text";
   if (/ds-hero/.test(c)) return "hero";
@@ -183,7 +183,7 @@ export function CanvasFlowField() {
 
     const build = () => {
       const sections = Array.from(
-        main.querySelectorAll<HTMLElement>(":scope > .band.ink, :scope > .cta-band"),
+        main.querySelectorAll<HTMLElement>(".band.ink, .cta-band"),
       );
       if (!sections.length) return;
       const scenes = sections.map((el) => SCENES[classify(el)]);
@@ -251,7 +251,7 @@ export function CanvasFlowField() {
       },
       sections() {
         return Array.from(
-          main.querySelectorAll<HTMLElement>(":scope > .band.ink, :scope > .cta-band"),
+          main.querySelectorAll<HTMLElement>(".band.ink, .cta-band"),
         );
       },
       classify,

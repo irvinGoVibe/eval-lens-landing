@@ -11,7 +11,7 @@ import {
   EditorialSplit,
   Bento,
   ChipGrid,
-  Button,
+  Cinema,
 } from "@/components/ds";
 
 export const metadata: Metadata = {
@@ -298,10 +298,7 @@ export default function EvidenceBasedReportsPage() {
           }}
         />
 
-        {/* 4. Inside the AI Score Report — gallery + page-local "Also in the report".
-            evr-assemble wrapper: cards rise + assemble in a stagger as the lane
-            enters (ScrollFX is-in cascades to the cards). */}
-        <div className="evr-assemble" data-reveal>
+        {/* 4. Inside the AI Score Report — gallery (default DS reveal motion). */}
         <Gallery
           id="score"
           surface="light"
@@ -317,7 +314,6 @@ export default function EvidenceBasedReportsPage() {
             href: "href" in c ? c.href : undefined,
           }))}
         />
-        </div>
 
         {/* 5. Grounded — editorial split: 3 points + evidence visual.
             Pinned cinematic assembly: the heading holds while the evidence frame
@@ -395,10 +391,8 @@ export default function EvidenceBasedReportsPage() {
           </div>
         </section>
 
-        {/* 7. From shortlist to founder feedback — second gallery (ink, per inspector).
-            evr-assemble--side: on the dark surface the cards fly in from the side,
-            alternating direction, as the lane enters. */}
-        <div className="evr-assemble evr-assemble--side" data-reveal>
+        {/* 7. From shortlist to founder feedback — second gallery (ink,
+            default DS reveal motion). */}
         <Gallery
           id="uses"
           surface="ink"
@@ -409,90 +403,19 @@ export default function EvidenceBasedReportsPage() {
           laneLabel="Where the report is used — scroll horizontally"
           items={USES.map((u) => ({ tag: u.tag, title: u.title, body: u.body }))}
         />
-        </div>
 
-        {/* 8. Final CTA — cinematic close. Self-contained .ds-cinema: full-screen
-            video → knockout heading descends & zooms → lens fill → copy.
-            --pin-driven by <ScrollFX/>; mobile/reduced-motion = static. */}
-        <section
+        {/* 8. Final CTA — DS Cinema (ink). Knockout: "AI prepares. You decide."
+            Copy heading: brief §8 "See a real report on your own deck". */}
+        <Cinema
           id="cta"
-          className="band ink ds-cinema"
-          data-pin
-          data-pin-steps="1"
-          aria-label="Get started — AI prepares, you decide"
-        >
-          <div className="ds-cinema__stage" data-pin-stage>
-            <video
-              className="ds-cinema__vid"
-              autoPlay
-              muted
-              loop
-              playsInline
-              aria-hidden="true"
-            >
-              <source src="/assets/methodology/cinema.mp4" type="video/mp4" />
-            </video>
-            <div className="ds-cinema__fill" aria-hidden="true" />
-            <svg
-              className="ds-cinema__knockout ds-cinema__knockout--d"
-              viewBox="0 0 1280 900"
-              preserveAspectRatio="xMidYMid slice"
-              aria-hidden="true"
-            >
-              <defs>
-                <mask id="evr-cinema-mask">
-                  <rect width="1280" height="900" fill="#fff" />
-                  <text x="640" y="420" textAnchor="middle" className="ds-cinema__masktext">
-                    AI prepares. You decide.
-                  </text>
-                </mask>
-              </defs>
-              <rect
-                className="ds-cinema__scrimrect"
-                width="1280"
-                height="900"
-                mask="url(#evr-cinema-mask)"
-              />
-            </svg>
-            <svg
-              className="ds-cinema__knockout ds-cinema__knockout--m"
-              viewBox="0 0 440 900"
-              preserveAspectRatio="xMidYMid slice"
-              aria-hidden="true"
-            >
-              <defs>
-                <mask id="evr-cinema-mask-m">
-                  <rect width="440" height="900" fill="#fff" />
-                  <text
-                    x="220"
-                    y="404"
-                    textAnchor="middle"
-                    className="ds-cinema__masktext ds-cinema__masktext--m"
-                  >
-                    <tspan x="220">AI prepares.</tspan>
-                    <tspan x="220" dy="84">You decide.</tspan>
-                  </text>
-                </mask>
-              </defs>
-              <rect
-                className="ds-cinema__scrimrect"
-                width="440"
-                height="900"
-                mask="url(#evr-cinema-mask-m)"
-              />
-            </svg>
-            <div className="ds-cinema__copy">
-              <h2 className="ds-cinema__headline">See a real report on your own deck</h2>
-              <p className="sub ds-cinema__sub">
-                Book a demo and walk through a full evaluation report — summary, reasoning,
-                and the questions to ask live.
-              </p>
-              <div className="sect-cta ds-cinema__cta">
-                <Button href="/#demo" variant="gradient">Book a Demo</Button>
-              </div>
-            </div>
-          </div>
-        </section>
+          surface="ink"
+          eyebrow="Get started"
+          headline="AI prepares. You decide."
+          mobileLines={["AI prepares.", "You decide."]}
+          sub="See a real report on your own deck — book a demo and walk through a full evaluation report: summary, reasoning, and the questions to ask live."
+          cta={{ label: "Book a Demo", href: "/#demo" }}
+          media={{ videoSrc: "/assets/methodology/cinema.mp4" }}
+        />
       </main>
       <Footer variant="dark" />
       <ScrollFX />

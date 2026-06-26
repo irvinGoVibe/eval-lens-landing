@@ -7353,6 +7353,16 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .tr-gradient-bridge[data-to="soft"]   { --to:var(--bg-soft); }
 .tr-gradient-bridge[data-to="ink"]    { --to:var(--bg-ink); }
 
+/* ---- tr-fade-ink — 200px transparent→black fade. Closes a dark zone into a
+   black CTA with no hard seam: drop it as the LAST child of a dark `.ds-zone`
+   so its transparent top reveals the zone's dark field and the bottom lands on
+   pure #000 (--bg-ink), exactly where the dark CTA picks up. ---- */
+.tr-fade-ink{
+  display:block; width:100%; height:200px;
+  pointer-events:none;
+  background:linear-gradient(to bottom, transparent 0%, var(--bg-ink) 100%);
+}
+
 /* ============================================================
    /trust/methodology §9 — Apple-grade cinematic CTA
    Layer stack (bottom→top): video → lens fill (fades in at end) →

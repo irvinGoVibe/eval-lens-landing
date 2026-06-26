@@ -567,6 +567,38 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
   .ds-cinema__copy{top:58%;}
 }
 
+/* ── ds-cinema--lens-end ────────────────────────────────────────────────────
+   Variant: scrim fades OUT at pin≈0.70–0.85 so the section resolves to the
+   full lens gradient rather than stopping on white. Timeline:
+     0.12→0.20  scrim fades IN  (white bg, gradient through letter holes)
+     0.60→0.76  fill fades IN   (lens gradient covers everything behind scrim)
+     0.70→0.85  scrim fades OUT (gradient fills the whole scene, letters merge)
+   The section background matches so the gradient holds after the pin releases. */
+/* ── ds-cinema--lens-end ────────────────────────────────────────────────────
+   Variant: Cinema dissolves into the shared light-zone lobes background.
+   Timeline:
+     0.12→0.20  scrim fades IN  (white bg, letters punch through to video)
+     0.62→0.80  video fades OUT + lobes bg fades IN simultaneously
+     0.70→0.85  scrim fades OUT (lobes bg fills everything — blobs visible)
+   Fill (--lens) is suppressed; lobes bg is injected as ds-cinema__zone-bg. */
+section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 0%,#f3f1fb 100%);}
+.ds-cinema--lens-end .ds-cinema__fill{display:none;}
+.ds-cinema--lens-end .ds-cinema__vid{
+  opacity:min(1,clamp(0,calc(1-(var(--pin,0)-.62)/.18),1));will-change:opacity;}
+.ds-cinema--lens-end .ds-cinema__knockout{
+  opacity:min(
+    clamp(0, calc((var(--pin,0) - .12) / .08), 1),
+    clamp(0, calc(1 - (var(--pin,0) - .70) / .15), 1)
+  );
+}
+/* The lobes bg div injected inside Cinema stage — overrides position:fixed
+   from ds-canvas__bg--lobes to absolute so it stays inside the stage. */
+.ds-cinema__zone-bg{
+  position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;
+  will-change:opacity;
+  opacity:clamp(0,calc((var(--pin,0)-.62)/.18),1);
+}
+
 /* kill the sub-pixel seam between the cinema (a composited sticky layer) and the
    CTA band below: overlap them by 1px so no hairline shows at the join. */
 .ds-sections .cta-band{margin-top:-1px;}

@@ -3,13 +3,16 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
+import { CanvasFlowField } from "@/app/dev/canvas-bg/CanvasFlowField";
 import {
   StatementHero,
   EditorialSplit,
   Bento,
   Numbered,
   PinnedSteps,
-  QuietCta,
+  CtaBand,
 } from "@/components/ds";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
@@ -33,10 +36,25 @@ export default function SecurityPrivacyPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="section-lab ds">
+        {/* ── Single tonal zone §1–7: light bg always visible; dark bg starts at
+            opacity:0 and is crossfaded in by <ZoneToneFlip/> at the §4→§5 seam. ── */}
+        <div className="ds-zone">
+          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes" aria-hidden />
+          <div className="ds-canvas__bg ds-canvas__bg--lobes-dark" data-anim="2" aria-hidden>
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          {/* Floating PNG orbs drifting behind the whole tonal zone (§1–7), above
+              the lobes gradient, behind content. One ZoneBlobs layer only spans
+              ~the top of a zone, so a second cluster is placed lower (top:55%) to
+              carry orbs across the dark §5–7 too. */}
+          <ZoneBlobs />
         {/* 1. Statement hero — soft (page-top). */}
         <StatementHero
           id="top"
           surface="light"
+          version={1}
           eyebrow="Security & Privacy"
           titleLead="Private by design, decided by"
           titleAccent="humans"
@@ -51,12 +69,16 @@ export default function SecurityPrivacyPage() {
           }}
         />
 
+    
+
         {/* 2. Why privacy matters — editorial split, light. */}
         <EditorialSplit
           surface="light"
+          version={3}
           ariaLabel="Why privacy matters"
           eyebrow="Why privacy matters"
-          titleLead="Decks and results are sensitive"
+          titleLead="Decks and results are"
+          titleAccent="sensitive"
           sub="Pitch decks and evaluation results carry information that should not move freely. Handling them carelessly puts founders, funds and outcomes at risk."
           media={{
             ratio: "4/3",
@@ -89,6 +111,7 @@ export default function SecurityPrivacyPage() {
         <Bento
           id="workspace"
           surface="light"
+          version={2}
           eyebrow="Private workspace"
           title="Every batch lives in a controlled space"
           sub="Evaluation doesn't happen in the open. Each batch runs inside a controlled workspace where access is scoped to the people who belong there."
@@ -121,6 +144,7 @@ export default function SecurityPrivacyPage() {
         {/* 4. Access control — numbered, light. */}
         <Numbered
           surface="light"
+          version={3}
           ariaLabel="Access control"
           eyebrow="Access control"
           title="Who sees what is enforced, not trusted"
@@ -154,10 +178,16 @@ export default function SecurityPrivacyPage() {
           ]}
         />
 
+        {/* ── Tone-flip seam §4→§5: ZoneToneFlip crossfades the dark bg 0→1. ── */}
+        <ZoneToneFlip />
+        {/* Flow-field: scrub-driven coloured blobs inside the dark bg layer. */}
+        <CanvasFlowField />
+
         {/* 5. Under the hood — pinned steps, ink. */}
         <PinnedSteps
           id="flow"
           surface="ink"
+          version={1}
           ariaLabel="How access is protected under the hood"
           eyebrow="Under the hood"
           title={{ line1: "How access", line2: "is protected" }}
@@ -193,9 +223,10 @@ export default function SecurityPrivacyPage() {
           }}
         />
 
-        {/* 6. Report delivery — editorial split, soft (light → .soft). */}
+        {/* 6. Report delivery — editorial split, ink. */}
         <EditorialSplit
-          surface="light"
+          surface="ink"
+          version={2}
           ariaLabel="Report delivery"
           eyebrow="Report delivery"
           titleLead="Reports are shared deliberately"
@@ -215,9 +246,10 @@ export default function SecurityPrivacyPage() {
           ]}
         />
 
-        {/* 7. Human in the loop — editorial split, light. */}
+        {/* 7. Human in the loop — editorial split, ink. */}
         <EditorialSplit
-          surface="light"
+          surface="ink"
+          version={1}
           ariaLabel="Human in the loop"
           eyebrow="Human in the loop"
           titleLead="Decisions stay with a"
@@ -242,17 +274,28 @@ export default function SecurityPrivacyPage() {
           ]}
         />
 
-        {/* 8. Final CTA — quiet CTA, ink. */}
-        <QuietCta
-          id="cta"
-          surface="ink"
+          {/* Fade the dark zone to pure black over 200px before the CTA closer. */}
+          <div className="tr-fade-ink" aria-hidden />
+        </div>
+        {/* ── End unified tonal zone ── */}
+
+        {/* 8. Final CTA — CtaBand on the dark (ink) theme with a looping
+            background video and `bleed` so it spills onto the black footer:
+            the page's single cinematic ink closer. `auroraVariant` is the CSS
+            fallback when the video can't play. */}
+        <CtaBand
+          theme="dark"
+          bleed
+          videoSrc="/assets/cta/neo.mp4"
+          auroraVariant="violet"
           eyebrow="Get started"
-          title="Run a private pilot on your own data"
+          title="Run a private pilot on"
+          titleAccent="your own data"
           sub="Book a demo and see private handling, controlled access and human-owned decisions end to end."
-          cta={{ label: "Book a Demo", href: "/#demo" }}
+          primary={{ label: "Book a Demo", href: "/#demo" }}
         />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );

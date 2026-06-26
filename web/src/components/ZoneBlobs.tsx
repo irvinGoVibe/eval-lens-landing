@@ -2,36 +2,36 @@
 
 import { useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { type BlobCfg, BLOB_DIR, LETTERS, initBlobLayer, nextZoneId } from "@/components/ds/blobKit";
+import { BlobInspector } from "@/components/ds/BlobInspector";
 
 /**
  * Floating background blobs for a `.ds-zone` — the production-grade driver for the
- * big organic PNG orbs (CSS lives in `components/ds/ds.css`: `.ds-canvas__blobs`
- * + `.ds-blob--*`). Render it INSIDE a zone, right after the `.ds-zone__bg` slot;
- * the orbs drift behind the (transparent) zone sections and refract through their
- * glass.
+ * big organic PNG orbs. Render it INSIDE a zone, right after the `.ds-zone__bg`
+ * slot; the orbs drift behind the (transparent) zone sections and refract through
+ * their glass.
  *
- * Adapted from `app/dev/canvas-bg/CanvasBlobs.tsx`, with one key difference: the
- * scroll parallax is scoped to **this zone** (trigger = the nearest `.ds-zone`),
- * not `document.body` — so a mid-page zone parallaxes as it passes through the
- * viewport instead of off the whole-page scroll. Two motion layers compose:
- *   • idle drift  — gentle autonomous loop (runs forever, no scroll needed),
- *   • scroll parallax — `yPercent` scrubbed to the zone's pass through viewport.
- * Decorative (aria-hidden), behind content, above the gradient. useGSAP cleans up.
+ * Geometry lives in the JS config below (applied inline via blobKit); the
+ * `.ds-blob--*` rules in `ds.css` are only the no-flash first-paint default.
+ * Two motion layers compose: idle drift (autonomous) + scroll parallax scoped to
+ * **this zone** (parallax `mode: "zone"` → trigger = the nearest `.ds-zone`), so
+ * a mid-page zone parallaxes as it passes through the viewport. Decorative
+ * (aria-hidden), behind content, above the gradient. useGSAP cleans up.
  *
  * A trimmed 6-orb set (hero cluster + two side peekers) — sized for a few-section
  * zone; the full 10-orb page layout would scatter orbs far below a short zone.
+ *
+ * Registers with the blobKit registry, so adding `?blobs` to any page URL surfaces
+ * the shared `BlobInspector` (mounted here, self-gated) to tune these orbs live.
  */
-const BLOBS = [
-  { src: "/assets/backgrounds/blobs/blob_four_lobes.png", cls: "ds-blob ds-blob--a", d: { x: 28, y: 24, r: 7, dur: 11 }, px: 30, py: 120 },
-  { src: "/assets/backgrounds/blobs/sphere_large.png", cls: "ds-blob ds-blob--b", d: { x: -32, y: 26, r: -6, dur: 13 }, px: -40, py: 150 },
-  { src: "/assets/backgrounds/blobs/blob_irregular.png", cls: "ds-blob ds-blob--c", d: { x: 24, y: 30, r: 9, dur: 9 }, px: 55, py: -90 },
-  { src: "/assets/backgrounds/blobs/sphere_small.png", cls: "ds-blob ds-blob--d", d: { x: -22, y: 28, r: 12, dur: 8 }, px: -70, py: 180 },
-  { src: "/assets/backgrounds/blobs/sphere_large.png", cls: "ds-blob ds-blob--e", d: { x: -26, y: 22, r: 5, dur: 12 }, px: 80, py: 170 },
-  { src: "/assets/backgrounds/blobs/blob_four_lobes.png", cls: "ds-blob ds-blob--f", d: { x: 30, y: 26, r: -8, dur: 14 }, px: -90, py: -110 },
+const BLOBS: BlobCfg[] = [
+  { src: BLOB_DIR + "blob_four_lobes.png", anchor: "left", ax: -38, top: 42, w: 114, cap: 1560, op: 0.72, d: { x: 28, y: 24, r: 7, dur: 11 }, px: 30, py: 120 },
+  { src: BLOB_DIR + "sphere_large.png", anchor: "right", ax: -22, top: 16, w: 99, cap: 1350, op: 0.72, d: { x: -32, y: 26, r: -6, dur: 13 }, px: -40, py: 150 },
+  { src: BLOB_DIR + "blob_irregular.png", anchor: "left", ax: 44, top: 64, w: 63, cap: 870, op: 0.72, d: { x: 24, y: 30, r: 9, dur: 9 }, px: 55, py: -90 },
+  { src: BLOB_DIR + "sphere_small.png", anchor: "left", ax: 38, top: -2, w: 36, cap: 495, op: 0.72, d: { x: -22, y: 28, r: 12, dur: 8 }, px: -70, py: 180 },
+  { src: BLOB_DIR + "sphere_large.png", anchor: "right", ax: -28, top: 128, w: 72, cap: 990, op: 0.72, d: { x: -26, y: 22, r: 5, dur: 12 }, px: 80, py: 170 },
+  { src: BLOB_DIR + "blob_four_lobes.png", anchor: "left", ax: -32, top: 246, w: 78, cap: 1080, op: 0.72, d: { x: 30, y: 26, r: -8, dur: 14 }, px: -90, py: -110 },
 ];
 
 /**
@@ -42,61 +42,43 @@ const BLOBS = [
  * @param bottom Optional CSS `bottom`. Together with `top` it CLIPS the layer to a
  *   band (the wrap is `overflow:hidden`), so orbs — and their scroll drift — stay
  *   off neighbouring sections (e.g. a dark block the orbs must not cover).
+ * @param label  Optional human label for the inspector's zone picker.
  */
-export function ZoneBlobs({ top, bottom }: { top?: string; bottom?: string } = {}) {
+export function ZoneBlobs({ top, bottom, label }: { top?: string; bottom?: string; label?: string } = {}) {
   const root = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const zone = root.current?.closest<HTMLElement>(".ds-zone") ?? root.current;
       const els = gsap.utils.toArray<HTMLElement>(".ds-blob", root.current);
-      els.forEach((el, i) => {
-        const cfg = BLOBS[i];
-        if (!cfg) return;
-        // 1) autonomous idle drift — forever, no scroll needed
-        gsap.to(el, {
-          x: cfg.d.x,
-          y: cfg.d.y,
-          rotation: cfg.d.r,
-          duration: cfg.d.dur,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-          delay: -i * 1.3,
-        });
-        // 2) scroll travel — scoped to this zone's pass through the viewport, so a
-        //    mid-page zone parallaxes locally (not off whole-page scroll).
-        gsap.fromTo(
-          el,
-          { xPercent: 0, yPercent: 0 },
-          {
-            xPercent: cfg.px,
-            yPercent: cfg.py,
-            ease: "none",
-            scrollTrigger: {
-              trigger: zone,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          },
-        );
+      const unregister = initBlobLayer({
+        id: nextZoneId("zone"),
+        label: label ?? "zone",
+        els,
+        blobs: BLOBS,
+        trigger: zone ?? document.body,
+        mode: "zone",
       });
+      return unregister;
     },
     { scope: root },
   );
 
   return (
-    <div
-      className="ds-canvas__blobs"
-      ref={root}
-      aria-hidden="true"
-      style={top || bottom ? { top, bottom } : undefined}
-    >
-      {BLOBS.map((b, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img key={i} src={b.src} alt="" className={b.cls} />
-      ))}
-    </div>
+    <>
+      <div
+        className="ds-canvas__blobs"
+        ref={root}
+        aria-hidden="true"
+        style={top || bottom ? { top, bottom } : undefined}
+      >
+        {BLOBS.map((b, i) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img key={i} src={b.src} alt="" className={`ds-blob ds-blob--${LETTERS[i]}`} />
+        ))}
+      </div>
+      {/* self-gated: invisible unless the URL carries ?blobs */}
+      <BlobInspector />
+    </>
   );
 }

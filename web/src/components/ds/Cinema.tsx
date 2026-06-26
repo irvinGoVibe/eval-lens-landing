@@ -62,6 +62,9 @@ export type CinemaProps = {
   /** Stable id used to scope the SVG masks so multiple instances don't collide. */
   maskId?: string;
   id?: string;
+  /** `lens-end` — scrim fades out at the end so the section resolves to the
+   *  full lens gradient instead of white/black. Requires `surface="light"`. */
+  variant?: "lens-end";
 };
 
 /** Deterministic slug → unique-enough mask id when none is supplied. */
@@ -87,6 +90,7 @@ export function Cinema({
   pinSteps = 1,
   maskId,
   id,
+  variant,
 }: CinemaProps) {
   const useVideo = Boolean(media.videoSrc);
   const slug = maskId ?? slugify(headline);
@@ -101,6 +105,7 @@ export function Cinema({
     surface === "ink" ? "ink" : "",
     "ds-cinema",
     isMultiline ? "ds-cinema--multiline" : "",
+    variant === "lens-end" ? "ds-cinema--lens-end" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -135,6 +140,16 @@ export function Cinema({
                 : undefined
             }
             aria-hidden="true"
+          />
+        )}
+
+        {/* lens-end variant: animated lobes bg fades in as video fades out.
+            Uses ds-canvas__bg--lobes for the gradient + blob animations;
+            ds-cinema__zone-bg overrides position:fixed → absolute. */}
+        {variant === "lens-end" && (
+          <div
+            className="ds-cinema__zone-bg ds-canvas__bg--lobes"
+            aria-hidden
           />
         )}
 
