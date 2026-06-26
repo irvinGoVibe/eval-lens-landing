@@ -28,6 +28,8 @@ export type EditorialSplitProps = {
   id?: string;
   /** `.band` surface — `light` (default → `soft`) or `ink`. */
   surface?: "light" | "ink";
+  /** Which saved version renders (1 split · 2 mirror · 3 cinematic). Default 1. */
+  version?: 1 | 2 | 3;
   /** Optional accessible name for the section. */
   ariaLabel?: string;
   eyebrow: string;
@@ -82,6 +84,7 @@ function Points({ points }: { points?: EditorialSplitProps["points"] }) {
 export function EditorialSplit({
   id,
   surface = "light",
+  version = 1,
   ariaLabel,
   eyebrow,
   titleLead,
@@ -103,7 +106,7 @@ export function EditorialSplit({
       aria-label={ariaLabel}
     >
       {/* ── v1 — split (base): two columns, copy + media placeholder ── */}
-      <div className="wrap ds-split__grid" data-version="1">
+      <div className="wrap ds-split__grid" data-version="1" hidden={version !== 1}>
         <div className="ds-split__copy" data-reveal="left">
           <Eyebrow>{eyebrow}</Eyebrow>
           <Title {...titleParts} />
@@ -121,7 +124,7 @@ export function EditorialSplit({
       </div>
 
       {/* ── v2 — mirror: clean swap of v1 — media left, copy right ── */}
-      <div className="wrap ds-split__grid ds-split__grid--mirror" data-version="2" hidden>
+      <div className="wrap ds-split__grid ds-split__grid--mirror" data-version="2" hidden={version !== 2}>
         <Media
           className="ds-split__media"
           ratio={media.ratio}
@@ -139,7 +142,7 @@ export function EditorialSplit({
       </div>
 
       {/* ── v3 — cinematic (bold): scene fills the band, copy over a scrim ── */}
-      <div className="ds-split__cine" data-version="3" hidden>
+      <div className="ds-split__cine" data-version="3" hidden={version !== 3}>
         <div
           className="ds-split__cine-scene"
           role="img"

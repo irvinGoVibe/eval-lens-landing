@@ -3,6 +3,7 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
 import {
   StatementHero,
   Numbered,
@@ -10,7 +11,6 @@ import {
   Gallery,
   StatBand,
   EditorialSplit,
-  ChipGrid,
   Cinema,
 } from "@/components/ds";
 
@@ -147,13 +147,6 @@ const RUBRIC_PROCEDURE = [
   },
 ];
 
-const RUBRIC_BANDS: { name: string; sev: "critical" | "warning" | "info" }[] = [
-  { name: "0–3 · absent or unsubstantiated", sev: "critical" },
-  { name: "4–6 · plausible but thin", sev: "warning" },
-  { name: "7–8 · specific and credible", sev: "info" },
-  { name: "9–10 · demonstrated, not asserted", sev: "info" },
-];
-
 const SCORING_POINTS = [
   {
     title: "Per dimension",
@@ -197,6 +190,7 @@ export default function MethodologyPage() {
         <StatementHero
           id="hero"
           surface="light"
+          version={2}
           eyebrow="Methodology"
           titleLead="The methodology behind every score"
           titleAccent=""
@@ -214,6 +208,7 @@ export default function MethodologyPage() {
         {/* 2. Principles — Numbered, light. */}
         <Numbered
           surface="light"
+          version={3}
           eyebrow="What we hold to"
           title="Four principles behind the method"
           sub="The reliability of an EvalLense score comes from the method, not from any single model."
@@ -227,6 +222,7 @@ export default function MethodologyPage() {
         <PinnedSteps
           id="pipeline"
           surface="ink"
+          version={3}
           ariaLabel="Every deck runs the same five stages"
           eyebrow="The pipeline"
           title={{ line1: "Every deck runs", line2: "the same five stages" }}
@@ -241,13 +237,13 @@ export default function MethodologyPage() {
           }}
         />
 
-        {/* ink → soft : gradient bridge settling out of the pipeline peak. */}
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
+        {/* §3 ink → §4 ink : the pipeline peak now extends through the Judges
+            gallery, so the two dark bands butt flush — no bridge. */}
 
-        {/* 4. Judges — Gallery, light. */}
+        {/* 4. Judges — Gallery, ink (ink peak, shared with the pipeline). */}
         <Gallery
           id="judges"
-          surface="light"
+          surface="ink"
           eyebrow="The AI jury"
           title="Six judges, six lenses"
           sub="Each judge owns one lens and answers a single question. They run in parallel and never compare notes — six independent reads, not one blurred opinion."
@@ -255,19 +251,31 @@ export default function MethodologyPage() {
           items={JUDGES}
         />
 
-        {/* 5. Coverage — StatBand, light. */}
-        <StatBand
-          surface="light"
-          eyebrow="The AI jury"
-          title="No score rests on one opinion"
-          stats={COVERAGE_STATS}
-        />
+        {/* ink → light : masked divider settling out of the ink peak. */}
+        <div className="tr-masked-divider" data-from="ink" data-to="light" aria-hidden="true" />
+
+        {/* ── Tonal zone (§5–8): one shared LIGHT canvas background (--lobes +
+            floating blobs) runs behind the four light sections. They go
+            transparent and keep only their tone (surface="light"). The
+            ink→light divider above and the Cinema below stay OUTSIDE. ── */}
+        <div className="ds-zone">
+          <div className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes" aria-hidden="true" />
+          <ZoneBlobs />
+
+          {/* 5. Coverage — StatBand, light. */}
+          <StatBand
+            surface="light"
+            eyebrow="The AI jury"
+            title="No score rests on one opinion"
+            stats={COVERAGE_STATS}
+          />
 
         {/* 6. Rubric — EditorialSplit (light) for the evidence-before-score
-            procedure, then a ChipGrid for the four bands. */}
+            procedure. */}
         <EditorialSplit
           id="rubric"
           surface="light"
+          version={3}
           eyebrow="The rubric"
           titleLead="One scale, four bands, evidence first"
           sub="Every dimension is scored on the same 0–10 scale, split into four bands. A judge has to assemble the evidence before it can name a score — never the other way around."
@@ -280,17 +288,11 @@ export default function MethodologyPage() {
               "A 0 to 10 rubric scale split into four bands",
           }}
         />
-        <ChipGrid
-          surface="light"
-          ariaLabel="The four rubric bands on the 0–10 scale"
-          columns={4}
-          tight
-          items={RUBRIC_BANDS}
-        />
 
         {/* 7. Scoring — EditorialSplit, light. */}
         <EditorialSplit
           surface="light"
+          version={1}
           eyebrow="The scoring model"
           titleLead="From six reads to one advisory score"
           sub="A deterministic math step turns the judges' scores into one number — the same inputs always produce the same result. It's an advisory reference, not the ranking."
@@ -307,6 +309,7 @@ export default function MethodologyPage() {
         {/* 8. Human-in-the-loop — EditorialSplit, light. */}
         <EditorialSplit
           surface="light"
+          version={2}
           eyebrow="Where the human decides"
           titleLead="The AI prepares. You decide."
           sub="Every AI score is advisory. You read the evidence, set your Jury Score on each dimension, and the leaderboard is built from your Final Score — never from the AI's."
@@ -319,6 +322,8 @@ export default function MethodologyPage() {
               "Six AI lenses do the reading. The final call is always yours.",
           }}
         />
+        </div>
+        {/* ── end tonal zone (§5–8) ── */}
 
         {/* 9. Final CTA — Cinema, ink (cinematic close; ink peak #2). Butts
             flush against the light §8 — the cinema owns its own black scrim, so

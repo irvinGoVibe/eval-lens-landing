@@ -211,6 +211,16 @@
    visible without an inline style. (Used by the zone-background skill.) */
 .ds-zone__bg--on{opacity:1;}
 
+/* CONTAINED modifier — `--lobes` / `--lobes-dark` default to `position:fixed`,
+   which is correct only for a WHOLE-PAGE zone (no sibling sections outside it,
+   e.g. /dev/canvas-bg). For a PARTIAL, mid-page zone wrapping just a few sections,
+   a fixed layer covers the full viewport and — because `.ds-zone`'s
+   `isolation:isolate` lifts it above earlier siblings — paints OVER the sections
+   above/below the zone (they vanish). `--contained` pins the background to the
+   zone's own box (`position:absolute`, scrolls with the zone) so it only fills
+   the zone region. ALWAYS use it for a subset zone. (zone-background skill.) */
+.ds-zone__bg--contained{position:absolute;}
+
 /* ── floating blobs layer — big organic PNG orbs positioned DOWN the page (one
    peeking per screen after the hero cluster) with autonomous drift (CanvasBlobs.tsx).
    Absolute so scroll brings each into view; above the gradient, behind content

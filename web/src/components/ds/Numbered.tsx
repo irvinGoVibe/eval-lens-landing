@@ -27,6 +27,8 @@ export type NumberedProps = {
   id?: string;
   /** `.band` surface — `light` (default → `soft`) or `ink`. */
   surface?: "light" | "ink";
+  /** Which saved version renders (1 Polish · 2 Recomposition · 3 Expanded). Default 1. */
+  version?: 1 | 2 | 3;
   ariaLabel?: string;
   eyebrow: string;
   title: string;
@@ -58,6 +60,7 @@ function List({ items }: { items: NumberedItem[] }) {
 export function Numbered({
   id,
   surface = "light",
+  version = 1,
   ariaLabel,
   eyebrow,
   title,
@@ -74,7 +77,7 @@ export function Numbered({
       aria-label={ariaLabel}
     >
       {/* ── v1 — Polish: hairline-ruled rows, narrow numeral column ── */}
-      <div className="ds-numbered__v ds-numbered__v--polish" data-version="1">
+      <div className="ds-numbered__v ds-numbered__v--polish" data-version="1" hidden={version !== 1}>
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -86,7 +89,7 @@ export function Numbered({
       </div>
 
       {/* ── v2 — Modern Recomposition: narrower numeral column, denser rhythm ── */}
-      <div className="ds-numbered__v ds-numbered__v--recomp" data-version="2" hidden>
+      <div className="ds-numbered__v ds-numbered__v--recomp" data-version="2" hidden={version !== 2}>
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -98,7 +101,7 @@ export function Numbered({
       </div>
 
       {/* ── v3 — Expanded Expressive: large display head, oversized numerals ── */}
-      <div className="ds-numbered__v ds-numbered__v--expanded" data-version="3" hidden>
+      <div className="ds-numbered__v ds-numbered__v--expanded" data-version="3" hidden={version !== 3}>
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
