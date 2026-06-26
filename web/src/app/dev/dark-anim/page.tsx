@@ -1,5 +1,7 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { ScrollFX } from "@/components/ScrollFX";
+import { Footer } from "@/components/Footer";
 import { CanvasBgAnimSwitch } from "../canvas-bg/CanvasBgAnimSwitch";
 import {
   StatementHero,
@@ -124,15 +126,28 @@ export default function DarkAnimPage() {
         }}
       />
 
+      {/* shelf into the black CTA: transparent (dark canvas above) → ink ledge */}
+      <div
+        className="tr-gradient-bridge"
+        data-to="ink"
+        style={{ "--from": "transparent", height: "200px" } as CSSProperties}
+        aria-hidden="true"
+      />
+
       <CtaBand
         theme="dark"
+        bleed
         eyebrow="Ready when you are"
         title="AI prepares the analysis. "
         titleAccent="You decide."
         sub="Evidence-first scoring, then a human signs off — see the full run on your own decks."
         primary={{ label: "Book a demo", href: "#" }}
         secondary={{ label: "See how it works", href: "#" }}
+        videoSrc="/assets/_demo-pool/video/bg-stones.mp4"
       />
+
+      {/* Footer as a section — dark theme */}
+      <Footer variant="dark" />
 
       <ScrollFX />
     </main>

@@ -14,6 +14,7 @@ import {
   Gallery,
   PinnedSteps,
   Bento,
+  Faq,
   CtaBand,
 } from "@/components/ds";
 import { LabPinnedSteps } from "@/components/sections/lab/LabPinnedSteps";
@@ -39,6 +40,13 @@ const GALLERY_ITEMS = [
   { tag: "Growth", title: "Scaling proof", body: "Compare efficiency and defensibility as the numbers mature." },
   { tag: "Diligence", title: "Evidence trail", body: "Every score links to the deck page and the source behind it." },
   { tag: "Committee", title: "Shared view", body: "One comparable report the whole table can read the same way." },
+];
+
+const FAQ_ITEMS = [
+  { q: "How are scores made comparable?", a: "A fixed rubric scores every dimension independently, so the same findings and weights always produce the same number." },
+  { q: "Where does each score come from?", a: "Every score links back to the slide and source it came from; unbacked claims are flagged rather than scored." },
+  { q: "Does the AI make the final call?", a: "No. The model prepares the analysis; a person signs off — the final decision always stays human." },
+  { q: "Can I evaluate a whole batch at once?", a: "Yes. Drop in a batch of decks; each is parsed, queued and rolled up into one leaderboard you can defend line by line." },
 ];
 
 const PINNED_STEPS = [
@@ -181,6 +189,15 @@ export default function CanvasBgPage() {
           ariaLabel: "Methodology transition — scrubbed by scroll through the stages",
         }}
       />
+
+      <Faq
+        surface="ink"
+        eyebrow="FAQ"
+        title="Questions, answered"
+        titleAccent="answered"
+        items={FAQ_ITEMS}
+      />
+
       {/* shelf into the black CTA: transparent (dark canvas above) → ink ledge */}
       <div
         className="tr-gradient-bridge"
