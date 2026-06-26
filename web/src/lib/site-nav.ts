@@ -129,3 +129,14 @@ export const NEWSROOM_NAV: SectionNav = {
  * `/#demo` is a functional placeholder that lands on the homepage demo section.
  */
 export const LAUNCH_CTA: NavLink = { label: "Launch App", href: "/#demo" };
+
+/**
+ * Secondary CTA shown beside `LAUNCH_CTA` in the mobile full-screen menu.
+ * Visually subordinate (glass, not a second bright gradient). Targets the real
+ * `/company/contact` route — a reasonable placeholder until a dedicated booking
+ * URL exists.
+ */
+export const BOOK_CALL_CTA: NavLink = {
+  label: "Book a call",
+  href: "/company/contact",
+};

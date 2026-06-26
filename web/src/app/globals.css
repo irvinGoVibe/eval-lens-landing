@@ -815,6 +815,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .horse-ctas .btn-glass,
 .cta-band .btn-glass,
 .vivid-demo .band.ink .cta-row .btn-glass,
+.mnav__overlay--dark .mnav__cta--secondary.btn-glass,
 .cinematic-demo .lab-cinema__cta .btn,
 .lab-hero.ink .cta-row .btn,
 .ds-hero.ink .cta-row .btn{
@@ -844,6 +845,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .horse-ctas .btn-glass::before,
 .cta-band .btn-glass::before,
 .vivid-demo .band.ink .cta-row .btn-glass::before,
+.mnav__overlay--dark .mnav__cta--secondary.btn-glass::before,
 .cinematic-demo .lab-cinema__cta .btn::before,
 .lab-hero.ink .cta-row .btn::before,
 .ds-hero.ink .cta-row .btn::before,
@@ -859,6 +861,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .horse-ctas .btn-glass::after,
 .cta-band .btn-glass::after,
 .vivid-demo .band.ink .cta-row .btn-glass::after,
+.mnav__overlay--dark .mnav__cta--secondary.btn-glass::after,
 .cinematic-demo .lab-cinema__cta .btn::after,
 .lab-hero.ink .cta-row .btn::after,
 .ds-hero.ink .cta-row .btn::after,
@@ -877,6 +880,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .horse-ctas .btn-glass:hover,
 .cta-band .btn-glass:hover,
 .vivid-demo .band.ink .cta-row .btn-glass:hover,
+.mnav__overlay--dark .mnav__cta--secondary.btn-glass:hover,
 .cinematic-demo .lab-cinema__cta .btn:hover,
 .lab-hero.ink .cta-row .btn:hover,
 .ds-hero.ink .cta-row .btn:hover{
@@ -896,6 +900,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .horse-ctas .btn-glass:hover::after,
 .cta-band .btn-glass:hover::after,
 .vivid-demo .band.ink .cta-row .btn-glass:hover::after,
+.mnav__overlay--dark .mnav__cta--secondary.btn-glass:hover::after,
 .cinematic-demo .lab-cinema__cta .btn:hover::after,
 .lab-hero.ink .cta-row .btn:hover::after,
 .ds-hero.ink .cta-row .btn:hover::after{opacity:1;transform:translateY(-2%) scale(1.02);}
@@ -906,6 +911,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .horse-ctas .btn-glass,
 .cta-band .btn-glass,
 .vivid-demo .band.ink .cta-row .btn-glass,
+.mnav__overlay--dark .mnav__cta--secondary.btn-glass,
 .cinematic-demo .lab-cinema__cta .btn,
 .lab-hero.ink .cta-row .btn,
 .ds-hero.ink .cta-row .btn{
@@ -923,6 +929,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .horse-ctas .btn-glass:hover,
 .cta-band .btn-glass:hover,
 .vivid-demo .band.ink .cta-row .btn-glass:hover,
+.mnav__overlay--dark .mnav__cta--secondary.btn-glass:hover,
 .cinematic-demo .lab-cinema__cta .btn:hover,
 .lab-hero.ink .cta-row .btn:hover,
 .ds-hero.ink .cta-row .btn:hover{
@@ -958,7 +965,8 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .horse-ctas .btn-glass .btn-txt,
 .horse-ctas .btn-glass .arr,
 .cta-band .btn-glass .btn-txt,
-.cta-band .btn-glass .arr{position:relative;z-index:1;}
+.cta-band .btn-glass .arr,
+.mnav__overlay--dark .mnav__cta--secondary.btn-glass .btn-txt{position:relative;z-index:1;}
 .hero .cta-row .btn .arr{
   opacity:.95;
   filter:drop-shadow(0 0 10px rgba(220,235,255,.45));
@@ -3477,6 +3485,13 @@ a.page-header__section:hover{color:var(--fg);}
    desktop; the 820px media query above swaps the desktop nav out for `.mnav`.
    ============================================================================ */
 .mnav{display:none;align-items:center;flex:none;}
+/* Restore burger visibility at ≤820px: the early header media-query (~3168)
+   tried to show `.mnav`, but this base `display:none` sits later in the file
+   and wins the cascade at equal specificity. Re-assert `display:flex` AFTER
+   the base rule so the burger shows on mobile and stays hidden on desktop. */
+@media (max-width:820px){
+  .mnav{display:flex;margin-left:auto;}
+}
 .mnav__trigger{
   display:inline-flex;align-items:center;gap:9px;padding:8px 14px;
   font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
@@ -3487,9 +3502,15 @@ a.page-header__section:hover{color:var(--fg);}
 .mnav__trigger-icon span{display:block;width:16px;height:1.5px;background:currentColor;border-radius:2px;}
 .page-header--dark .mnav__trigger{color:var(--fg-on-dark);border-color:var(--border-on-dark);}
 
+/* full-screen frosted overlay. The scrim's backdrop-blur is the dismissal
+   signal; the panel itself is the milky "liquid glass" material (deep near-black
+   frost in `--dark`). 100dvh + safe-area so the top row / CTA zone clear notches
+   and home indicators. */
 .mnav__overlay{
   position:fixed;inset:0;z-index:200;
+  display:flex;
   background:rgba(8,8,16,.42);
+  -webkit-backdrop-filter:blur(6px);
   backdrop-filter:blur(6px);
   opacity:0;visibility:hidden;
   transition:opacity .2s var(--ease), visibility 0s linear .2s;
@@ -3498,16 +3519,58 @@ a.page-header__section:hover{color:var(--fg);}
   opacity:1;visibility:visible;transition:opacity .22s var(--ease), visibility 0s;
 }
 .mnav__panel{
-  position:absolute;top:0;right:0;height:100%;width:min(360px,86vw);
-  display:flex;flex-direction:column;padding:74px 20px 24px;
-  background-color:rgba(255,255,255,.7);
-  backdrop-filter:saturate(1.7) blur(40px);
+  position:relative;
+  flex:1 1 auto;
+  width:100%;min-height:100dvh;
+  display:flex;flex-direction:column;
+  padding:max(16px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right))
+          max(20px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));
+  background-color:rgba(255,255,255,.62);
+  -webkit-backdrop-filter:saturate(1.7) blur(44px);
+  backdrop-filter:saturate(1.7) blur(44px);
   border-left:1px solid rgba(255,255,255,.5);
-  box-shadow:inset 1px 0 0 rgba(255,255,255,.6);
-  transform:translateX(14px);opacity:0;overflow-y:auto;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+  transform:translateY(8px) scale(.98);opacity:0;
   transition:transform .24s var(--ease), opacity .24s var(--ease);
 }
 .mnav__overlay[data-open="true"] .mnav__panel{transform:none;opacity:1;}
+
+/* top row — brand left, close right (≥44px touch target) */
+.mnav__top{
+  display:flex;align-items:center;justify-content:space-between;
+  flex:none;margin-bottom:18px;
+}
+.mnav__brand{
+  font-family:var(--font-display);font-size:17px;font-weight:600;
+  letter-spacing:-.02em;color:var(--fg);
+}
+.mnav__close{
+  display:inline-grid;place-items:center;
+  width:44px;height:44px;margin:-6px -6px -6px 0;
+  color:var(--fg);background:transparent;border:1px solid transparent;
+  border-radius:50%;cursor:pointer;
+  transition:background-color .2s var(--ease), border-color .2s var(--ease);
+}
+.mnav__close:hover{
+  background-color:color-mix(in oklab,var(--violet) 8%,transparent);
+  border-color:color-mix(in oklab,var(--violet) 20%,transparent);
+}
+.mnav__close:active{opacity:.7;}
+.mnav__close:focus-visible{outline:2px solid var(--violet);outline-offset:2px;}
+.mnav__close-icon{width:22px;height:22px;}
+
+/* scrollable region between the fixed top row and the pinned CTA zone */
+.mnav__scroll{
+  flex:1 1 auto;min-height:0;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* pinned CTA zone — two stacked actions, primary then subordinate glass */
+.mnav__ctas{
+  flex:none;display:flex;flex-direction:column;gap:10px;
+  padding-top:18px;margin-top:8px;
+}
+.mnav__cta.btn{align-self:stretch;justify-content:center;}
 .mnav__heading,.mnav__subhead{
   font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--muted);margin:0 0 10px;
@@ -3546,14 +3609,37 @@ a.page-header__section:hover{color:var(--fg);}
   color:var(--muted);transition:color .2s var(--ease), background-color .2s var(--ease);
 }
 .mnav__anchor:hover{color:var(--fg);background-color:color-mix(in oklab,var(--violet) 6%,transparent);}
-.mnav__cta.btn{margin-top:auto;align-self:stretch;justify-content:center;}
+
+/* light gap between tappable rows; pressed feedback without layout shift */
+.mnav__page:active,.mnav__anchor:active{opacity:.78;}
+.mnav__sublink:active{opacity:.7;}
+
+/* subtle stagger of the list items on open (transform/opacity only) */
+.mnav__overlay .mnav__group,
+.mnav__overlay .mnav__anchors > li{
+  opacity:0;transform:translateY(8px);
+  transition:opacity .26s var(--ease), transform .26s var(--ease);
+}
+.mnav__overlay[data-open="true"] .mnav__group,
+.mnav__overlay[data-open="true"] .mnav__anchors > li{opacity:1;transform:none;}
+.mnav__overlay[data-open="true"] .mnav__group:nth-child(1){transition-delay:.04s;}
+.mnav__overlay[data-open="true"] .mnav__group:nth-child(2){transition-delay:.08s;}
+.mnav__overlay[data-open="true"] .mnav__group:nth-child(3){transition-delay:.12s;}
+.mnav__overlay[data-open="true"] .mnav__group:nth-child(4){transition-delay:.16s;}
+.mnav__overlay[data-open="true"] .mnav__group:nth-child(5){transition-delay:.2s;}
 
 /* dark drawer — the overlay is portaled to <body>, so dark is mirrored onto it
    via `--dark` (it can't inherit `.page-header--dark`). */
 .mnav__overlay--dark .mnav__panel{
-  background-color:rgba(10,12,22,.78);
-  border-left-color:rgba(255,255,255,.16);
-  box-shadow:inset 1px 0 0 rgba(255,255,255,.08);
+  background-color:rgba(9,10,18,.82);
+  border-left-color:rgba(255,255,255,.14);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+.mnav__overlay--dark .mnav__brand{color:var(--fg-on-dark);}
+.mnav__overlay--dark .mnav__close{color:var(--fg-on-dark);}
+.mnav__overlay--dark .mnav__close:hover{
+  background-color:color-mix(in oklab,var(--lavender) 18%,transparent);
+  border-color:color-mix(in oklab,var(--lavender) 30%,transparent);
 }
 .mnav__overlay--dark .mnav__heading,
 .mnav__overlay--dark .mnav__subhead{color:var(--muted-on-dark);}
@@ -3569,9 +3655,29 @@ a.page-header__section:hover{color:var(--fg);}
 .mnav__overlay--dark .mnav__anchor:hover{color:var(--fg-on-dark);}
 .mnav__overlay--dark .mnav__divider{background:var(--border-on-dark);}
 
+/* Secondary CTA ("Book a call") on the LIGHT overlay — subdued glass tint that
+   reads on the milky panel (the canonical white-text liquid-glass material is
+   registered for the dark overlay below; on light it would vanish). */
+.mnav__cta--secondary.btn-glass{
+  color:var(--fg);
+  background:color-mix(in oklab,#ffffff 55%,transparent);
+  border:1px solid color-mix(in oklab,var(--violet) 24%,transparent);
+  -webkit-backdrop-filter:blur(8px) saturate(1.4);
+  backdrop-filter:blur(8px) saturate(1.4);
+}
+.mnav__cta--secondary.btn-glass:hover{
+  background:color-mix(in oklab,#ffffff 72%,transparent);
+  border-color:color-mix(in oklab,var(--violet) 36%,transparent);
+}
+
 @media (prefers-reduced-motion: reduce){
   .gnav__panel,.gnav__caret,.gnav__item,.gnav__sublink,
-  .mnav__overlay,.mnav__panel{transition:none;}
+  .mnav__overlay,.mnav__panel,
+  .mnav__overlay .mnav__group,
+  .mnav__overlay .mnav__anchors > li{transition:none;}
+  .mnav__panel{transform:none;}
+  .mnav__overlay .mnav__group,
+  .mnav__overlay .mnav__anchors > li{opacity:1;transform:none;}
 }
 
 /* anchored sections clear the sticky header when jumped to from the nav */

@@ -444,7 +444,7 @@ export default function MethodologyPage() {
           mobileLines={["See the methodology", "run on your own decks"]}
           sub="Book a demo and watch one deck go from slides to an evidence-linked, explainable score."
           cta={{ label: "Book a Demo", href: "/company/contact" }}
-          media={{ videoSrc: "/assets/methodology/cinema-3.mp4" }}
+          media={{ videoSrc: "/assets/methodology/methodology-transition.mp4" }}
           maskId="methodology-final-cta"
         />
       </main>

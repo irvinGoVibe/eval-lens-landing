@@ -100,7 +100,7 @@ const COLLECTED = [
       src: "/assets/entry-hub/deck-cards.webp",
       width: 1536,
       height: 1024,
-      corner: "br",
+      corner: "br" as const,
     },
   },
   {
@@ -111,7 +111,7 @@ const COLLECTED = [
       src: "/assets/entry-hub/note-cards.webp",
       width: 1536,
       height: 1024,
-      corner: "br",
+      corner: "br" as const,
     },
   },
   {
@@ -122,7 +122,7 @@ const COLLECTED = [
       src: "/assets/entry-hub/status-cards-v2.webp",
       width: 1536,
       height: 1024,
-      corner: "br",
+      corner: "br" as const,
     },
   },
 ];
