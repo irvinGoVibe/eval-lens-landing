@@ -5021,16 +5021,14 @@ section.band.ink .mini-tag{color:var(--lavender);}
    opaque (no transparent stops) → cannot leak the light base through. Sits ON
    the stage (z-index:0) UNDER copy/steps/video (z-index:1). Page-scoped via
    #pipeline so other lab-process stages are untouched. ── */
+/* Pipeline §3 background DISABLED — both the section fill and the stage field are
+   removed so the block has no background of its own (page-scoped via #pipeline; the
+   global `.band.ink` fill is NOT touched, so every other dark section is unaffected). */
+#pipeline{ background:none; }
 #pipeline .lab-process__stage::after{
   content:"";
   position:absolute; inset:0; z-index:0; pointer-events:none;
-  /* one OPAQUE vertical gradient — full WIDTH, varying UP & DOWN: a PURE-BLACK
-     core through the middle (where the video sits) lifting to a dark violet at
-     the top & bottom edges (toward the §2/§4 seams). Every stop is an opaque
-     colour so the light base can't leak; the black↔violet falloff reads as a
-     clear centred gradient and the clip sits against true black. */
-  background:linear-gradient(180deg,
-    #1c1547 0%, #0c0926 26%, #000000 52%, #0c0926 80%, #1c1547 100%);
+  background:none;
 }
 #pipeline .lab-process__stage > *{ position:relative; z-index:1; }
 /* steps reveal sequentially AND the whole list glides up into the space the head
