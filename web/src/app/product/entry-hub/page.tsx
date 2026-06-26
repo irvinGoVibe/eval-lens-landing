@@ -54,28 +54,28 @@ export const metadata: Metadata = {
 const HOW_STEPS = [
   {
     num: "01",
-    label: "Create the project",
-    desc: "A five-step wizard sets the details, criteria, judges, collection method, and a final review.",
+    label: "Set up the project",
+    desc: "Add the event details, criteria, and judges.",
   },
   {
     num: "02",
-    label: "Set up the submission page",
-    desc: "Choose manual or self-upload. For self-upload, set the required deck, the deadline, an optional cap, and whether the page is open or invite-only.",
+    label: "Choose how teams enter",
+    desc: "Add teams yourself or let them submit through a public page.",
   },
   {
     num: "03",
-    label: "Publish and share",
-    desc: "Publishing makes your page live at a public link. Copy the link, share a QR code, or preview the page as a participant first.",
+    label: "Add or share",
+    desc: "Add teams manually, or publish and share the submission link.",
   },
   {
     num: "04",
-    label: "Teams submit",
-    desc: "Participants sign in with Google and upload their own deck. Each entry appears in your workspace automatically.",
+    label: "Collect the entries",
+    desc: "Every deck and team detail lands in the same project workspace.",
   },
   {
     num: "05",
-    label: "The workspace fills up",
-    desc: "Every entry lands in one private list with its status and completeness at a glance.",
+    label: "Check readiness",
+    desc: "See what's ready, what's incomplete, and what still needs attention.",
   },
   {
     num: "06",
@@ -95,51 +95,69 @@ const COLLECTED = [
   {
     tag: "Deck",
     title: "Pitch deck",
-    body: "PDF, PPT, PPTX, or a Google Slides link — one file per team, up to 50 MB.",
+    body: "PDF, PPT, PPTX, or Google Slides link. One deck per team, up to 50 MB.",
+    icon: {
+      src: "/assets/entry-hub/deck-cards.webp",
+      width: 1536,
+      height: 1024,
+      corner: "br",
+    },
   },
   {
     tag: "Note",
-    title: "Note for the jury",
-    body: "An optional comment each team can add for context.",
+    title: "Note for judges",
+    body: "An optional note teams can add for context.",
+    icon: {
+      src: "/assets/entry-hub/note-cards.webp",
+      width: 1536,
+      height: 1024,
+      corner: "br",
+    },
   },
   {
     tag: "Status",
-    title: "Submission status",
-    body: "Every entry shows ready, incomplete, or submitted at a glance.",
+    title: "Entry status",
+    body: "See whether each entry is ready, incomplete, or submitted.",
+    icon: {
+      src: "/assets/entry-hub/status-cards-v2.webp",
+      width: 1536,
+      height: 1024,
+      corner: "br",
+    },
   },
 ];
 
 /* 6. Built-in controls — horizontal gallery of equal cards. */
 const CONTROLS = [
   {
-    tag: "Publish gate",
-    title: "Publish gate",
-    body: "Your page stays private until you publish it. Before that, the public link returns nothing.",
+    tag: "Publish",
+    title: "Publish when ready",
+    body: "Keep the submission page private until you are ready to publish.",
   },
   {
     tag: "Preview",
-    title: "Preview first",
-    body: "See exactly what teams will see before you go live.",
+    title: "Preview before publishing",
+    body: "Check exactly what teams will see before the page goes live.",
   },
   {
     tag: "Access",
-    title: "Open or invite-only",
-    body: "Let anyone with the link submit, or restrict it to a list of emails you seed.",
+    title: "Open or restricted access",
+    body: "Accept submissions from anyone with the link or only from approved email addresses.",
   },
   {
     tag: "Window",
-    title: "Submission window",
-    body: "Entries open on your start date and close at the deadline — or the moment you start judging.",
+    title: "Set the submission window",
+    body: "Choose when submissions open and close. You can also close them when judging begins.",
   },
   {
     tag: "Share",
-    title: "Link, QR, and share",
-    body: "Copy the link, share a QR code, or post it to Telegram or X in one click.",
+    title: "Share by link or QR code",
+    body: "Share the submission page by link, QR code, Telegram, or X.",
   },
   {
     tag: "Invites",
-    title: "Auto-linked invites",
-    body: "Pre-add a team by email; when they sign in with the same Google account, their entry links up on its own.",
+    title: "Automatically link invites",
+    body: "Add a team by email. When they sign in with the same Google account, their submission connects automatically.",
   },
 ];
 
@@ -193,10 +211,9 @@ export default function EntryHubPage() {
           surface="ink"
           version={2}
           eyebrow="Entry Hub"
-          titleLead="One"
-          titleAccent="entry point"
-          titleTrail="for every batch"
-          sub="Open a private submission page, gather pitch decks and team details in one place, and start evaluation from a batch that's already complete."
+          titleLead="One place for"
+          titleAccent="every pitch deck"
+          sub="Add teams yourself or share a submission link. Every deck and detail lands in one batch, ready for review."
           ctas={[{ label: "Book a Demo", href: "/company/contact" }]}
           media={{
             ratio: "16/9",
@@ -214,31 +231,36 @@ export default function EntryHubPage() {
           version={2}
           ariaLabel="The intake problem"
           eyebrow="The intake problem"
-          titleLead="Decks arrive from"
-          titleAccent="everywhere"
-          sub="Email, Google Forms, Airtable, Notion, Telegram, shared drives. Files go missing, duplicates pile up, and the details you need sit in five different places. The work starts long before evaluation does — and it's the wrong work."
+          titleLead="Before judging starts, you're already"
+          titleAccent="chasing files"
+          sub="Decks come through email, Forms, Airtable, Notion, Telegram, and shared drives. Some go missing. Others arrive twice. The details you need are split across all of them."
         />
 
         {/* §3. How it works → PinnedSteps (soft), 6 pinned steps. */}
         <PinnedSteps
           id="how"
           surface="ink"
-          version={1}
+          version={3}
           ariaLabel="How Entry Hub works — six steps"
           eyebrow="How it works"
           title={{
-            line1: "From one link",
-            line2: "to one",
-            line2Accent: "ready batch",
+            line1: "From setup",
+            line2: "to judging in",
+            line2Accent: "six steps",
           }}
-          sub="Set up the page once, publish it, and let entries collect themselves. Each step lights up as you scroll."
+          sub="Choose how teams enter. Add them yourself or open submissions. Every entry lands in the same workspace."
           steps={HOW_STEPS}
+          videoLoop={{
+            src: "/assets/entry-hub/entry-hub-flow.mp4",
+            ariaLabel:
+              "The EvalLense Entry Hub interface, from project setup to start judging",
+          }}
           media={{
             ratio: "4/3",
-            label: "Image · entry hub flow · 4:3",
-            hint: "A six-step track whose nodes light up in sequence on a light surface",
+            label: "EvalLense · workflow",
+            hint: "The EvalLense Entry Hub interface, from project setup to start judging",
             ariaLabel:
-              "A six-step track whose nodes light up in sequence",
+              "The EvalLense Entry Hub interface, from project setup to start judging",
           }}
         />
 
@@ -250,19 +272,19 @@ export default function EntryHubPage() {
         <EditorialSplit
           id="collect-modes"
           surface="light"
-          version={2}
-          eyebrow="Two ways to collect"
-          titleLead="Add teams yourself,"
-          titleAccent="or let them submit"
-          sub="Pick the method that fits your event — both land entries in the same workspace."
+          version={3}
+          eyebrow="Two ways to add teams"
+          titleLead="Add teams yourself or"
+          titleAccent="collect submissions"
+          sub="Use manual entry or share a public submission link. Everything stays in one workspace."
           points={[
             {
-              title: "Manual",
-              body: "Add each team yourself on the project page — name, project, pitch deck, and an optional note for the jury.",
+              title: "Add manually",
+              body: "Add each team from the project page: name, project, pitch deck, and an optional note for the jury.",
             },
             {
-              title: "Self-upload",
-              body: "Share one public link. Teams sign in with Google and upload their own deck — no files in your inbox, no accounts to manage on your side.",
+              title: "Team submission",
+              body: "Share one public link. Teams sign in with Google and upload their own decks. No email attachments or accounts to manage.",
             },
           ]}
           media={{
@@ -279,18 +301,22 @@ export default function EntryHubPage() {
           id="collect"
           surface="light"
           version={2}
-          eyebrow="What gets collected"
-          title="Everything the review needs, in one record"
-          sub="Each entry carries the same fields, so the batch is consistent before evaluation starts."
+          eyebrow="One complete entry"
+          title="Everything judges need, in one record"
+          titleAccent="record"
+          sub="Every entry follows the same structure, so judging starts with clean, consistent data."
           items={COLLECTED.map((c) =>
             c.feature
               ? {
                   ...c,
                   media: {
+                    src: "/assets/entry-hub/entry-record-v2.webp",
+                    width: 1536,
+                    height: 1024,
                     label: "Image · entry record · 16:9",
-                    hint: "One structured entry record holding team, deck, note, and status",
+                    hint: "One structured record for the team, deck, note, and status",
                     ariaLabel:
-                      "One structured entry record holding team, deck, note, and status",
+                      "One structured record for the team, deck, note, and status",
                   },
                 }
               : c,
@@ -305,10 +331,10 @@ export default function EntryHubPage() {
           id="controls"
           surface="ink"
           version={4}
-          eyebrow="Built-in controls"
-          titleAccent="You decide"
-          title="who submits, and when"
-          sub="The page is private until you say otherwise, and submissions close on your terms."
+          eyebrow="Submission controls"
+          titleAccent="Control"
+          title="who can submit and when"
+          sub="Keep the page private, choose who gets access, and close submissions on your schedule."
           laneLabel="Entry Hub controls — horizontally scrollable"
           items={CONTROLS}
         />
@@ -318,31 +344,34 @@ export default function EntryHubPage() {
         <EditorialSplit
           id="value"
           surface="ink"
-          version={3}
-          eyebrow="Why it matters"
-          titleLead="One clean batch"
-          titleAccent="before evaluation starts"
-          sub="Collect once, in one place — when you start judging, the batch is already complete and consistent."
+          version={1}
+          eyebrow="Ready for review"
+          titleLead="Start judging with"
+          titleAccent="everything in place"
+          sub="No missing files, scattered notes, or inconsistent submission formats."
           points={[
             {
-              title: "One private workspace",
-              body: "Every deck and every detail your review needs in one place — not scattered across inboxes, forms, and drives.",
+              title: "One shared workspace",
+              body: "Keep every deck, note, and team detail in one place instead of across inboxes, forms, and drives.",
             },
             {
-              title: "Complete and consistent",
-              body: "When you start judging, the batch is already whole — same fields on every entry, nothing missing.",
+              title: "Complete by default",
+              body: "Every submission follows the same structure, making missing information easy to spot before judging starts.",
             },
             {
-              title: "The final call is yours",
-              body: "From there, EvalLense prepares the analysis, and the decision always stays with you.",
+              title: "Ready to evaluate",
+              body: "Start evaluation with a complete, consistent set of submissions.",
             },
           ]}
           media={{
             ratio: "16/9",
             label: "Image · one clean workspace · 16:9",
-            hint: "A single private workspace holding every entry, ready to judge",
+            hint: "Every submission organized, complete, and ready for review",
             ariaLabel:
-              "One private workspace holding every entry, ready to judge",
+              "Every submission organized, complete, and ready for review",
+            src: "/assets/entry-hub/clean-workspace-v2.webp",
+            width: 1672,
+            height: 941,
           }}
         />
 
@@ -363,11 +392,11 @@ export default function EntryHubPage() {
           bleed
           videoSrc="/assets/cta/neo.mp4"
           auroraVariant="violet"
-          eyebrow="Get started"
-          title="See your intake flow on"
-          titleAccent="your own event"
-          sub="Book a demo and watch one link turn a flood of decks into a clean, ready-to-judge batch."
-          primary={{ label: "Book a Demo", href: "/company/contact" }}
+          eyebrow="See it in action"
+          title="See your submission flow"
+          titleAccent="in action"
+          sub="Book a demo and walk through the full journey from public link to structured review workspace."
+          primary={{ label: "Book a demo", href: "/company/contact" }}
         />
       </main>
       <Footer variant="dark" />

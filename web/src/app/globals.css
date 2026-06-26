@@ -5170,6 +5170,13 @@ section.band.ink .mini-tag{color:var(--lavender);}
    cross-fading photo stack (.lab-rv__photo opacity follows --pin-step). */
 .lab-process__media--photos{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:var(--radius-stage,20px);background:#05060a;box-shadow:var(--sh-3);}
 .lab-process.soft .lab-process__media--photos{box-shadow:none;border:1px solid var(--border);}
+/* v1 video mode — a single autoplaying loop in the tidy media slot. A touch
+   larger than the photo card, on the video's native portrait aspect. Opt-in
+   via the `videoLoop` prop, so existing PinnedSteps consumers are unaffected. */
+.lab-process__media--video{position:relative;width:100%;max-width:600px;justify-self:center;aspect-ratio:1080/1358;overflow:hidden;border-radius:var(--radius-stage,20px);background:#05060a;box-shadow:var(--sh-3);}
+.lab-process.soft .lab-process__media--video{box-shadow:none;border:1px solid var(--border);}
+.lab-process__media--video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+@media (max-width:760px){.lab-process__media--video{max-width:none;order:-1;margin-inline:auto;}}
 /* head wrapper for v1 photo mode — transparent to layout on desktop (tidy stays
    as is); the mobile block turns it into the flying-up heading. */
 .lab-pt__head{display:contents;}
@@ -5215,6 +5222,13 @@ section.band.ink .mini-tag{color:var(--lavender);}
   opacity:calc(1 - clamp(0, calc(var(--pin,0) / .12), 1) * clamp(0, calc(var(--pin,0) / .12), 1));}
 /* the square stays put (centered in the pinned stage); its content slides */
 .lab-rv__square{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--radius-stage,20px);overflow:hidden;box-shadow:var(--sh-3);background:#05060a;display:grid;place-items:center;}
+/* v3 video-loop mode — give the pinned square the clip's native portrait aspect
+   (a centered phone-like frame) so the walkthrough plays uncropped. Opt-in via
+   `videoLoop`, so the default 16:9 square is unchanged for every other page. */
+.lab-rv__square--video{aspect-ratio:1080/1358;width:100%;max-width:430px;margin-inline:auto;}
+/* entry-hub inject — scale the §3 video frame 1.5× (430 → 645px), page-scoped
+   so the generic videoLoop default and every other page stay untouched. */
+.entry-hub .lab-rv__square--video{max-width:645px;}
 .lab-process.soft .lab-rv__square{background:var(--bg-soft);box-shadow:none;border:1px solid var(--border);}
 /* ── v3 ink — FULL-BLEED black field across the whole pinned viewport (full
    width + full height), densest on the video and fading out toward the screen
@@ -5909,21 +5923,53 @@ section.band.ink .mini-tag{color:var(--lavender);}
   margin-bottom:-10px;
 }
 
-/* ── PAGE INJECTION (methodology only): drop a real transparent image into the
-   "Where the human decides" EditorialSplit media slot WITHOUT touching the
-   shared component — override just this instance's placeholder via its id. ── */
-#human-decides .ds-split__media{
-  background-color:transparent !important;
-  background-image:url("/assets/methodology/human-decides.webp") !important;
-  background-size:contain !important;
-  background-position:center !important;
-  background-repeat:no-repeat !important;
-  border:0 !important;box-shadow:none !important;
+/* ── PAGE INJECTION (entry-hub §5 Bento): the "Note for judges" tile carries a
+   wide, transparent glass-cards illustration as a decorative `icon`. It is
+   absolutely positioned (so it NEVER changes the card's layout) and anchored to
+   the card's bottom-right, sized wider than the card so the leftmost note card
+   spills past the left edge and is clipped (cards 2 & 3 read in full). The tile
+   keeps its default `overflow:hidden`, so both the spill and the slightly
+   cropped bottom are clean. Scoped to .entry-hub → no other Bento is touched. ── */
+.entry-hub .lab-bento__icon--br{
+  left:50%;
+  right:auto;
+  transform:translateX(-50%);
+  top:auto;
+  bottom:-12%;         /* lowered: card bottoms dip just past the card edge */
+  width:88%;           /* sized to the real (wide) tile so the cards read */
+  max-width:none;
+  opacity:1;
 }
-/* kill the placeholder's dashed/striped pseudo layers that sit over the bg */
-#human-decides .ds-split__media::before,
-#human-decides .ds-split__media::after{content:none !important;background:none !important;display:none !important;}
-#human-decides .ds-split__media > *{display:none !important;} /* hide label/hint */
+.entry-hub .lab-bento__icon--br img{
+  width:100%;
+  height:auto;
+  max-height:none;
+  object-fit:contain;
+  object-position:bottom;
+}
+
+/* ── PAGE INJECTION (entry-hub §7): scale the "clean workspace" dashboard image
+   up 30%. transform keeps the layout box, so it just reads larger without
+   reflowing the split. Scoped to the section, other pages untouched. ── */
+.entry-hub #value .ds-split__media--img{transform:scale(1.3);transform-origin:center;}
+
+/* ── PAGE INJECTION (methodology): the "Where the human decides" media slot is a
+   looping video, rendered by a page-local block (not the shared Media
+   placeholder), so it just needs frame styling. ── */
+#human-decides .ds-split__media--video{margin:0;border:0;background:none;min-width:0;}
+#human-decides .ds-split__media--video video{
+  display:block;width:100%;height:auto;border-radius:var(--radius-stage);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 22px 50px -24px rgba(70,50,150,.3);
+}
+
+/* ── PAGE INJECTION (consistency-reliability): §2 media slot is a real <img>
+   (local block, not the shared Media placeholder) — just frame it cleanly. ── */
+.ds-split__media--img{margin:0;min-width:0;}
+.ds-split__media--img img{
+  display:block;width:100%;height:auto;
+  border-radius:var(--radius-stage);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 22px 50px -24px rgba(70,50,150,.25);
+}
 
 /* ── PAGE INJECTION (methodology): the lower-cluster blobs that drift behind the
    routing matrix compete with its markers. Push the centre-left ones to the

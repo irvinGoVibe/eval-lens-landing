@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import { Eyebrow, Media } from "@/components/ds";
 
 /**
@@ -40,7 +41,17 @@ export type EditorialSplitProps = {
   /** Optional plain text after the accent. */
   titleTrail?: string;
   sub: string;
-  media: { ratio: string; label: string; hint: string; ariaLabel: string };
+  /** Media slot. With `src` set, a real `next/image` renders instead of the
+   *  ratio-locked placeholder — additive, so existing consumers are unchanged. */
+  media: {
+    ratio: string;
+    label: string;
+    hint: string;
+    ariaLabel: string;
+    src?: string;
+    width?: number;
+    height?: number;
+  };
   /** Optional grounded-detail rows (dot + heading + body) under the sub. */
   points?: { title: string; body: string }[];
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
@@ -63,6 +74,40 @@ function Title({
       ) : null}
       {titleTrail ? titleTrail : null}
     </h2>
+  );
+}
+
+/** The split's visual slot: a real `next/image` when `media.src` is set,
+ *  otherwise the ratio-locked placeholder. */
+function MediaSlot({
+  media,
+  reveal,
+}: {
+  media: EditorialSplitProps["media"];
+  reveal: "left" | "right";
+}) {
+  if (media.src) {
+    return (
+      <Image
+        className="ds-split__media ds-split__media--img"
+        src={media.src}
+        alt={media.ariaLabel}
+        width={media.width ?? 1672}
+        height={media.height ?? 941}
+        sizes="(max-width:880px) 90vw, 640px"
+        data-reveal={reveal}
+      />
+    );
+  }
+  return (
+    <Media
+      className="ds-split__media"
+      ratio={media.ratio}
+      label={media.label}
+      hint={media.hint}
+      ariaLabel={media.ariaLabel}
+      reveal={reveal}
+    />
   );
 }
 
@@ -113,26 +158,12 @@ export function EditorialSplit({
           <p className="sub">{sub}</p>
           <Points points={points} />
         </div>
-        <Media
-          className="ds-split__media"
-          ratio={media.ratio}
-          label={media.label}
-          hint={media.hint}
-          ariaLabel={media.ariaLabel}
-          reveal="right"
-        />
+        <MediaSlot media={media} reveal="right" />
       </div>
 
       {/* ── v2 — mirror: clean swap of v1 — media left, copy right ── */}
       <div className="wrap ds-split__grid ds-split__grid--mirror" data-version="2" hidden={version !== 2}>
-        <Media
-          className="ds-split__media"
-          ratio={media.ratio}
-          label={media.label}
-          hint={media.hint}
-          ariaLabel={media.ariaLabel}
-          reveal="left"
-        />
+        <MediaSlot media={media} reveal="left" />
         <div className="ds-split__copy" data-reveal="right">
           <Eyebrow>{eyebrow}</Eyebrow>
           <Title {...titleParts} />

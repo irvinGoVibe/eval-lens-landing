@@ -68,6 +68,11 @@ export type LabPinnedStepsProps = {
    * the media is a cross-fading photo stack (active photo follows `--pin-step`)
    * instead of a scrubbed video. Production (no `photos`) keeps the tidy v1. */
   photos?: string[];
+  /** v1 video mode: a single autoplaying / muted / looping video in the right
+   * media slot of the tidy v1 layout (replaces the placeholder / `photos`).
+   * Additive and opt-in — when unset the component behaves exactly as before,
+   * so existing consumers are unaffected. Takes priority over `photos`. */
+  videoLoop?: { src: string; poster?: string; ariaLabel: string };
   /** Optional CTA under the steps. */
   cta?: { label: string; href: string; variant?: "primary" | "ghost" | "glass" };
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
@@ -149,6 +154,7 @@ export function LabPinnedSteps({
   media,
   videoScrub,
   photos,
+  videoLoop,
   cta,
   marker,
 }: LabPinnedStepsProps) {
@@ -177,7 +183,41 @@ export function LabPinnedSteps({
             a cross-fading PHOTO stack (active photo follows --pin-step) and the
             steps carry data-pin-step so scrolling drives the photo switch.
             Without `photos`: the plain static "tidy" layout. ── */}
-        {photos && photos.length ? (
+        {videoLoop ? (
+          /* ── v1 — video mode: the tidy layout (copy left / media right), but
+              the media slot holds a single autoplaying, muted, looping video.
+              Opt-in via `videoLoop`; unset = original behaviour. ── */
+          <div className="lab-pv lab-pv--tidy lab-pv--video" data-version="1" hidden={version !== 1}>
+            <div className="lab-pattern" aria-hidden="true" />
+            <div className="wrap lab-pv__grid">
+              <div className="lab-process__copy">
+                <LabEyebrow>{eyebrow}</LabEyebrow>
+                <Title title={title} />
+                <p className="sub">{sub}</p>
+                <Steps steps={steps} variant="tidy" />
+                {ctaRow}
+              </div>
+              <div
+                className="lab-process__media lab-process__media--video"
+                role="img"
+                aria-label={videoLoop.ariaLabel}
+              >
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  disablePictureInPicture
+                  poster={videoLoop.poster}
+                  aria-label={videoLoop.ariaLabel}
+                >
+                  <source src={videoLoop.src} type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        ) : photos && photos.length ? (
           <div className="lab-pv lab-pv--tidy lab-pv--photos" data-version="1" hidden={version !== 1}>
             <div className="lab-pattern" aria-hidden="true" />
             <div className="wrap lab-pv__grid">
@@ -290,11 +330,33 @@ export function LabPinnedSteps({
               {/* square stays pinned & centered; its content (.lab-rv__slide)
                   slides vertically under the frame (subtle parallax) */}
               <div
-                className="lab-rv__square"
+                className={`lab-rv__square${videoLoop ? " lab-rv__square--video" : ""}`}
                 role="img"
-                aria-label={videoScrub ? videoScrub.ariaLabel : media.ariaLabel}
+                aria-label={
+                  videoLoop
+                    ? videoLoop.ariaLabel
+                    : videoScrub
+                      ? videoScrub.ariaLabel
+                      : media.ariaLabel
+                }
               >
-                {videoScrub ? (
+                {videoLoop ? (
+                  /* opt-in autoplaying loop; the frame takes the video's
+                     native aspect so the walkthrough isn't cropped. */
+                  <video
+                    className="lab-rv__slide"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    disablePictureInPicture
+                    poster={videoLoop.poster}
+                    aria-label={videoLoop.ariaLabel}
+                  >
+                    <source src={videoLoop.src} type="video/mp4" />
+                  </video>
+                ) : videoScrub ? (
                   /* No autoPlay: ScrollFX seeks currentTime from the pin. */
                   <video
                     className="lab-rv__slide"

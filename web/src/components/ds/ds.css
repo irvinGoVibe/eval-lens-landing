@@ -846,6 +846,9 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
 .ds-split__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,80px);align-items:center;}
 .ds-split__copy{min-width:0;}
 .ds-split__media{min-width:0;}
+/* real-image media slot (when `media.src` is set) — fills the column, keeps the
+   asset's aspect, no frame so transparent PNGs sit straight on the surface. */
+.ds-split__media--img{width:100%;height:auto;display:block;}
 
 /* lens-accent word (local declaration, per .ds-numbered / .ds-hero precedent) */
 .ds-split .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
