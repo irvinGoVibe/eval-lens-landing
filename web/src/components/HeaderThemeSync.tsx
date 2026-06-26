@@ -21,6 +21,8 @@ export function HeaderThemeSync() {
     if (!header) return;
     let raf = 0;
     let lastY = window.scrollY;
+    let pointerNearHeader = false;
+    const HEADER_REVEAL_ZONE = 96;
     const sync = () => {
       raf = 0;
       const r = header.getBoundingClientRect();
@@ -42,7 +44,7 @@ export function HeaderThemeSync() {
       const delta = yNow - lastY;
       if (yNow <= 4) {
         header.classList.remove("is-hidden");
-      } else if (delta > 8) {
+      } else if (delta > 8 && !pointerNearHeader) {
         header.classList.add("is-hidden");
       } else if (delta < -6) {
         header.classList.remove("is-hidden");
@@ -52,13 +54,30 @@ export function HeaderThemeSync() {
     const schedule = () => {
       if (!raf) raf = requestAnimationFrame(sync);
     };
+    const onPointerMove = (event: PointerEvent) => {
+      if (event.pointerType && event.pointerType !== "mouse") return;
+      pointerNearHeader = event.clientY <= HEADER_REVEAL_ZONE;
+      if (pointerNearHeader) {
+        header.classList.remove("is-hidden");
+        return;
+      }
+
+      const menuOpen = Boolean(
+        header.querySelector('.gnav__trigger[aria-expanded="true"]'),
+      );
+      if (window.scrollY > 4 && !menuOpen) {
+        header.classList.add("is-hidden");
+      }
+    };
 
     sync();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
     return () => {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
+      window.removeEventListener("pointermove", onPointerMove);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);

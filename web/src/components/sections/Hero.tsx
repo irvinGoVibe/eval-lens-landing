@@ -220,6 +220,73 @@ export function Hero() {
             </Button>
           </div>
         </div>
+
+        <div
+          className="hero-interface hero-fade d3"
+          role="img"
+          aria-label="Sample EvalLense review board interface"
+        >
+          <div className="hero-interface__window">
+            <div className="hero-interface__topbar">
+              <span>Sample cohort</span>
+              <span>Review board</span>
+            </div>
+
+            <div className="hero-interface__body">
+              <div className="hero-interface__main">
+                <div className="hero-interface__summary">
+                  <span className="hero-interface__kicker">Panel consensus</span>
+                  <strong>3 companies ready for partner review</strong>
+                  <p>
+                    Ranked by evidence quality, market timing, team signal, and
+                    unresolved risk.
+                  </p>
+                </div>
+
+                <div className="hero-interface__list">
+                  <article className="hero-interface__row is-active">
+                    <span className="hero-interface__rank">01</span>
+                    <div>
+                      <strong>Northstar Battery</strong>
+                      <span>Climate hardware</span>
+                    </div>
+                    <b>Lead</b>
+                  </article>
+                  <article className="hero-interface__row">
+                    <span className="hero-interface__rank">02</span>
+                    <div>
+                      <strong>VantaCare</strong>
+                      <span>Clinical workflow</span>
+                    </div>
+                    <b>Shortlist</b>
+                  </article>
+                  <article className="hero-interface__row">
+                    <span className="hero-interface__rank">03</span>
+                    <div>
+                      <strong>GridPilot</strong>
+                      <span>Energy operations</span>
+                    </div>
+                    <b>Watch</b>
+                  </article>
+                </div>
+              </div>
+
+              <aside className="hero-interface__memo">
+                <span>Evidence memo</span>
+                <strong>Why it ranked first</strong>
+                <p>
+                  Clear wedge, credible pilots, and a defensible procurement
+                  path. Main risk is manufacturing pace.
+                </p>
+                <div className="hero-interface__chips" aria-hidden="true">
+                  <i>market pull</i>
+                  <i>pilot proof</i>
+                  <i>risk noted</i>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

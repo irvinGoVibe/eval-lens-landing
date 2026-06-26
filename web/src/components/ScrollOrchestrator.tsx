@@ -61,6 +61,8 @@ function runScript() {
     const header = document.getElementById("site-header");
     if (!header) return;
     let lastY = window.scrollY;
+    let pointerNearHeader = false;
+    const HEADER_REVEAL_ZONE = 96;
     const sync = () => {
       const r = header.getBoundingClientRect();
       const x = Math.round(window.innerWidth / 2);
@@ -96,14 +98,27 @@ function runScript() {
       if (yNow <= 4) {
         header.classList.remove("is-hidden");
       } else if (document.body.classList.contains("hero-ready")) {
-        if (delta > 8) header.classList.add("is-hidden");
+        if (delta > 8 && !pointerNearHeader) header.classList.add("is-hidden");
         else if (delta < -6) header.classList.remove("is-hidden");
       }
       if (Math.abs(delta) > 1) lastY = yNow;
     };
+    const onPointerMove = (event: PointerEvent) => {
+      if (event.pointerType && event.pointerType !== "mouse") return;
+      pointerNearHeader = event.clientY <= HEADER_REVEAL_ZONE;
+      if (pointerNearHeader) {
+        header.classList.remove("is-hidden");
+      } else if (
+        window.scrollY > 4 &&
+        document.body.classList.contains("hero-ready")
+      ) {
+        header.classList.add("is-hidden");
+      }
+    };
     sync();
     window.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync, { passive: true });
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
   })();
 
   /* orange-glow scroll-driven phase — writes --glow-p / --glow-zarya on
