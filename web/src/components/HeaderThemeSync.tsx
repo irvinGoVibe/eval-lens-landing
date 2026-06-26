@@ -25,7 +25,10 @@ export function HeaderThemeSync() {
       raf = 0;
       const r = header.getBoundingClientRect();
       const x = Math.round(window.innerWidth / 2);
-      const y = Math.max(1, Math.round(r.bottom - 2));
+      // Probe just below the fixed 56px bar row, NOT the header's bottom — the
+      // header grows when the menu opens, so `r.bottom` would drift into the
+      // open panel and read the wrong band.
+      const y = Math.max(1, Math.round(r.top + 56 - 2));
       const band = document
         .elementsFromPoint(x, y)
         .find(

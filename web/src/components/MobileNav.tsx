@@ -66,10 +66,6 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
     };
   }, [open]);
 
-  const activeHref = GLOBAL_NAV.find((entry) =>
-    pathname.startsWith(entry.match),
-  )?.href;
-
   const overlay = (
     <div
       className={dark ? "mnav__overlay mnav__overlay--dark" : "mnav__overlay"}
@@ -88,17 +84,38 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         <p className="mnav__heading">Explore EvalLense</p>
         <ul className="mnav__list">
           {GLOBAL_NAV.map((entry) => (
-            <li key={entry.href}>
+            <li key={entry.href} className="mnav__group">
               <Link
                 href={entry.href}
                 className="mnav__page"
-                aria-current={entry.href === activeHref ? "page" : undefined}
+                aria-current={pathname === entry.href ? "page" : undefined}
                 tabIndex={open ? undefined : -1}
                 onClick={() => setOpen(false)}
               >
                 <span className="mnav__page-name">{entry.label}</span>
-                <span className="mnav__page-desc">{entry.description}</span>
+                {entry.description !== undefined && (
+                  <span className="mnav__page-desc">{entry.description}</span>
+                )}
               </Link>
+              {entry.links !== undefined && (
+                <ul className="mnav__sublinks">
+                  {entry.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="mnav__sublink"
+                        aria-current={
+                          pathname === link.href ? "page" : undefined
+                        }
+                        tabIndex={open ? undefined : -1}
+                        onClick={() => setOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>

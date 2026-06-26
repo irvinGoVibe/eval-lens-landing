@@ -13,51 +13,84 @@ export type NavLink = { label: string; href: string };
  * Global page entry for the header switcher (`GlobalNavSwitcher`).
  *
  * The dropdown next to the brand lets the user jump between the site's main
- * pages without going back home. `match` is the pathname prefix used to mark
- * the entry the user is currently on (`aria-current`).
+ * pages without going back home. Every entry shares the top-level `label` +
+ * `href` (canonical landing route) + `match` (pathname prefix used to mark the
+ * active section). Each entry then carries EITHER a list of in-section `links`
+ * (Product / Trust / Pricing / About) OR a one-line `description` (Newsroom,
+ * which has no sub-links — the whole row just leads to `/blog`).
  */
-export type GlobalNavEntry = {
-  /** Label shown in the dropdown row. */
+type GlobalNavBase = {
+  /** Label shown as the section name in the dropdown row. */
   label: string;
-  /** One-line description shown beside the label. */
-  description: string;
-  /** Canonical landing route for the section. */
+  /** Canonical landing (top-level) route for the section. */
   href: string;
   /** Pathname prefix that identifies the active section. */
   match: string;
 };
 
+/** Section with in-menu sub-links (e.g. Product → Overview · Entry Hub · …). */
+export type GlobalNavLinksEntry = GlobalNavBase & {
+  /** In-section destinations shown beside the section name. */
+  links: NavLink[];
+  description?: never;
+};
+
+/** Section with no sub-links — a descriptive line; the whole row leads to `href`. */
+export type GlobalNavDescriptionEntry = GlobalNavBase & {
+  /** One-line description shown in place of sub-links. */
+  description: string;
+  links?: never;
+};
+
+export type GlobalNavEntry = GlobalNavLinksEntry | GlobalNavDescriptionEntry;
+
 /** The five top-level destinations, in display order. */
 export const GLOBAL_NAV: GlobalNavEntry[] = [
   {
     label: "Product",
-    description: "Platform, modules and outputs",
     href: "/product/overview",
     match: "/product",
+    links: [
+      { label: "Overview", href: "/product/overview" },
+      { label: "Entry Hub", href: "/product/entry-hub" },
+      { label: "Reports", href: "/product/evidence-based-reports" },
+      { label: "Review Board", href: "/product/review-board" },
+    ],
   },
   {
     label: "Trust",
-    description: "Methodology, consistency and security",
     href: "/trust/methodology",
     match: "/trust",
+    links: [
+      { label: "Methodology", href: "/trust/methodology" },
+      { label: "Consistency", href: "/trust/consistency-reliability" },
+      { label: "Security", href: "/trust/security-privacy" },
+      { label: "Use Cases", href: "/trust/use-cases" },
+    ],
   },
   {
     label: "Pricing",
-    description: "Plans, limits and usage",
     href: "/pricing",
     match: "/pricing",
+    links: [
+      { label: "Pricing Overview", href: "/pricing" },
+      { label: "Benefits", href: "/pricing#compare" },
+    ],
   },
   {
     label: "Newsroom",
-    description: "Research, releases and product updates",
     href: "/blog",
     match: "/blog",
+    description: "Research, product updates and company news",
   },
   {
     label: "About",
-    description: "Company, mission and contacts",
     href: "/company/about",
     match: "/company",
+    links: [
+      { label: "About EvalLense", href: "/company/about" },
+      { label: "Contact", href: "/company/contact" },
+    ],
   },
 ];
 

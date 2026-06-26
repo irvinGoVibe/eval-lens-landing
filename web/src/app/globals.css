@@ -3057,7 +3057,14 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
    and `--dark` (near-black bar / light text). Component: PageHeader.tsx. */
 .page-header{
   position:fixed;top:0;left:0;right:0;z-index:150;
-  height:56px;
+  /* Bar height (56px) + the menu it pushes open. `--gnav-grow` is set by the
+     GlobalNavSwitcher to the measured panel height + drop gap while open, 0 when
+     closed — so the header BODY really grows by exactly the menu height and the
+     glass floor (inset:0) follows. The bar row itself stays pinned to the top
+     56px (see `.page-header__inner`); the menu occupies the new space below. */
+  --gnav-grow:0px;
+  height:calc(56px + var(--gnav-grow));
+  transition:height .28s var(--ease);
   isolation:isolate;
   opacity:1;
   pointer-events:auto;
@@ -3160,6 +3167,12 @@ a.page-header__section:hover{color:var(--fg);}
 .page-header--dark{
   color:var(--fg-on-dark);
 }
+/* Dark header bar = the same soapy frosted-ink material as the dark menu panel
+   (`.page-header--dark .gnav__panel`), tuned for a thin sticky bar: a dense ink
+   floor with a COOL (periwinkle/cyan) internal cast — kept a touch more
+   translucent than the panel so scrolling content mils softly through it. The
+   uniform blur is inherited from the base `.page-header__glass`; here we override
+   only the floor colour / hairline / drop for the dark surface. */
 .page-header--dark .page-header__glass{
   background-color:rgba(5,6,12,.48);
   border-bottom-color:rgba(255,255,255,.16);
@@ -3201,23 +3214,50 @@ a.page-header__section:hover{color:var(--fg);}
 .gnav__trigger[aria-expanded="true"] .gnav__caret{transform:rotate(180deg);}
 
 .gnav__panel{
-  position:absolute;top:calc(100% + 8px);left:var(--gutter);z-index:5;
-  width:min(600px, calc(100vw - var(--gutter) * 2));padding:20px;
+  /* Anchored to the fixed 56px bar row (not the grown header bottom): the bar is
+     56px, plus an 8px drop gap = 64px. The header height grows by exactly this
+     panel's height + the gap (see `--gnav-grow`), so the panel sits inside the
+     header BODY rather than overlaying page content below it. */
+  position:absolute;top:64px;left:var(--gutter);z-index:5;
+  width:min(600px, calc(100vw - var(--gutter) * 2));
+  /* +24px of frosted glass below the last menu item: extra bottom padding makes
+     the card itself 24px taller, so the SAME backdrop-filter / rim / drop shadow
+     extend down and end at the card's SHARP bottom edge — no blurred fade tail
+     (no `.page-header::after` gradient mask). The 24px is pure breathing room;
+     `--gnav-grow` reads the taller card and lifts the header to fit. */
+  padding:20px 20px 44px;
   border-radius:var(--radius-card);
   isolation:isolate;overflow:hidden;
   /* Frosted "liquid glass" card material — same structure as the V3 gallery
      cards on dark: a diagonal white sheen over a MILKY MATTE floor (heavily
      frosted, not see-through), a bright rim, and a top-edge inset highlight
-     (the shine). The brand-coloured `::before` wisp glows through underneath. */
+     (the shine). The brand-coloured `::before` wisp glows through underneath.
+     Per art-direction: matteness comes from BLUR + a DENSE milky floor + inner
+     light — NOT from transparency, so the page never shows through as a hole.
+     The floor is kept opaque (base .94) and the inner light carries a faint
+     COOL cast (periwinkle/cyan, like the frosted Bento tiles) so the frosted
+     glass reads as a cool milk rather than dead grey-white. */
   background:
-    linear-gradient(145deg, rgba(255,255,255,.86) 0%, rgba(238,242,251,.74) 42%, rgba(255,255,255,.66) 100%),
-    rgba(255,255,255,.82);
-  -webkit-backdrop-filter:blur(90px) saturate(2) brightness(1.06);
-  backdrop-filter:blur(90px) saturate(2) brightness(1.06);
+    /* cool inner-light wash — periwinkle top-left → ice-cyan bottom-right,
+       very faint so it tints the milk without colouring the whole panel */
+    radial-gradient(130% 92% at 8% -6%, color-mix(in oklab,#8b93ff 12%,transparent) 0%, transparent 56%),
+    radial-gradient(120% 90% at 100% 108%, color-mix(in oklab,var(--cyan) 9%,transparent) 0%, transparent 60%),
+    /* diagonal white sheen — light, gives the top its bright milk read */
+    linear-gradient(145deg, rgba(255,255,255,.45) 0%, rgba(235,238,251,.30) 42%, rgba(244,246,255,.22) 100%),
+    /* FLAT dense milk floor — uniform frost top-to-bottom (no vertical fade). */
+    linear-gradient(180deg, rgba(248,249,255,.94) 0%, rgba(248,249,255,.94) 100%);
+  /* Uniform strong frost across the whole panel. */
+  -webkit-backdrop-filter:blur(120px) saturate(1.8) brightness(1.05);
+  backdrop-filter:blur(120px) saturate(1.8) brightness(1.05);
   border:1px solid rgba(255,255,255,.85);
+  /* Crisp floating card: a thin neutral rim hairline draws a SHARP bottom edge
+     (no blur tail), then a deep soft drop shadow makes the card float like the
+     hero/gallery cards. Inner sheen highlights kept. */
   box-shadow:
     inset 0 1.5px 0 rgba(255,255,255,.9),
     inset 0 -1px 0 rgba(255,255,255,.35),
+    0 0 0 1px rgba(60,50,110,.08),
+    0 18px 50px -16px rgba(60,50,110,.5),
     0 30px 80px -30px rgba(60,50,110,.45);
   opacity:0;visibility:hidden;transform-origin:top left;
   transform:translateY(-6px) scale(.985);
@@ -3227,12 +3267,13 @@ a.page-header__section:hover{color:var(--fg);}
   opacity:1;visibility:visible;transform:none;
   transition:opacity .22s var(--ease), transform .22s var(--ease), visibility 0s;
 }
-/* soft brand-coloured inner glow — violet top-left, cyan bottom-right */
+/* soft brand-coloured inner glow — cool periwinkle/violet top-left, ice-cyan
+   bottom-right (the cool Bento cast), so the frosted milk reads cool, not grey */
 .gnav__panel::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;
   background:
-    radial-gradient(120% 86% at 0% 0%, color-mix(in oklab,var(--violet) 15%,transparent), transparent 58%),
-    radial-gradient(120% 86% at 100% 100%, color-mix(in oklab,var(--cyan) 13%,transparent), transparent 58%);
+    radial-gradient(120% 86% at 0% 0%, color-mix(in oklab,var(--violet) 16%,transparent), color-mix(in oklab,#8b93ff 10%,transparent) 40%, transparent 60%),
+    radial-gradient(120% 86% at 100% 100%, color-mix(in oklab,var(--cyan) 15%,transparent), transparent 58%);
 }
 .gnav__heading,.gnav__list{position:relative;z-index:1;}
 .gnav__heading{
@@ -3241,15 +3282,23 @@ a.page-header__section:hover{color:var(--fg);}
 }
 .gnav__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;}
 .gnav__item{
-  /* 4 columns: indicator · name (auto) · flexible gap holding the right-aligned
-     description · arrow. The name hugs its content on the left; the middle column
-     stretches so the description is pushed RIGHT, ending in a single aligned
-     column just before the arrow (which stays pinned right in its own column). */
+  /* Row geometry shared by both shapes: indicator · name (auto) · flexible gap
+     holding the right-aligned content · arrow. The name hugs its content on the
+     left; the middle column stretches so the description / sub-links are pushed
+     RIGHT, ending just before the arrow (which stays pinned right). */
   position:relative;display:grid;grid-template-columns:7px auto minmax(0,1fr) auto;
   align-items:center;gap:0 14px;min-height:60px;padding:0 16px;
   border-radius:14px;border:1px solid transparent;
   transition:background-color .2s var(--ease), border-color .2s var(--ease);
 }
+/* Single-link row (Newsroom): the whole row is one <Link> — it keeps the grid
+   above and lays out name + description directly. */
+.gnav__item--single{display:grid;}
+/* Sectioned row: the <li> is a NON-interactive container. The head (name +
+   arrow) is one link; the sub-links sit in the flexible middle column,
+   right-aligned. The arrow lives inside `.gnav__item-head`, not the grid, so the
+   container spans 3 columns: indicator · head (auto) · sub-links (1fr). */
+.gnav__item--group{grid-template-columns:7px auto minmax(0,1fr);}
 .gnav__item:focus-visible{outline:2px solid var(--violet);outline-offset:2px;}
 .gnav__item-indicator{
   width:7px;height:7px;border-radius:50%;background:var(--lens);
@@ -3269,17 +3318,53 @@ a.page-header__section:hover{color:var(--fg);}
   font-size:15px;color:var(--muted);
   transition:transform .2s var(--ease), color .2s var(--ease);
 }
-.gnav__item:hover{
+/* Sectioned-row head: name + arrow as a single link, occupying the name column.
+   It carries its own focus ring (the <li> is not focusable). */
+.gnav__item-head{
+  display:inline-flex;align-items:center;gap:10px;border-radius:8px;
+  text-decoration:none;color:inherit;white-space:nowrap;
+}
+.gnav__item-head:focus-visible{outline:2px solid var(--violet);outline-offset:3px;}
+/* Sub-links cluster, right-aligned just before the arrow column would sit. */
+.gnav__sublinks{
+  justify-self:end;min-width:0;display:inline;text-align:end;
+}
+.gnav__sublink-wrap{display:inline;}
+.gnav__sep{
+  color:var(--muted);font-family:var(--font-ui);font-size:13px;line-height:1.3;
+  white-space:pre;user-select:none;
+}
+/* Underline-on-hover sub-link: no layout shift, no size/weight/color jump.
+   The underline is a 0%→100% wide background image that grows L→R. */
+.gnav__sublink{
+  font-family:var(--font-ui);font-size:13px;line-height:1.3;color:var(--muted);
+  text-decoration:none;white-space:nowrap;
+  background-image:linear-gradient(currentColor,currentColor);
+  background-position:0 100%;background-repeat:no-repeat;background-size:0% 1px;
+  transition:background-size 180ms var(--ease);
+}
+.gnav__sublink:hover{background-size:100% 1px;}
+.gnav__sublink:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:4px;}
+.gnav__sublink[aria-current="page"]{color:var(--fg);background-size:100% 1px;}
+/* Hover/active surface — applies to single-link rows and sectioned containers. */
+.gnav__item--single:hover,
+.gnav__item--group:hover{
   background-color:color-mix(in oklab,var(--violet) 7%,rgba(255,255,255,.55));
   border-color:color-mix(in oklab,var(--violet) 22%,transparent);
 }
-.gnav__item:hover .gnav__item-arrow{transform:translateX(5px);color:var(--violet);}
-.gnav__item:hover .gnav__item-name{
+.gnav__item--single:hover .gnav__item-arrow,
+.gnav__item--group:hover .gnav__item-arrow{transform:translateX(4px);color:var(--violet);}
+.gnav__item--single:hover .gnav__item-name,
+.gnav__item--group:hover .gnav__item-name{
   background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.gnav__item[aria-current="page"] .gnav__item-indicator{opacity:1;}
-.gnav__item[aria-current="page"]{
+/* Active section: indicator dot lit + thin glass border + faint surface. */
+.gnav__item--single[aria-current="page"] .gnav__item-indicator,
+.gnav__item--group[data-active] .gnav__item-indicator{opacity:1;}
+.gnav__item--single[aria-current="page"],
+.gnav__item--group[data-active]{
   background-color:color-mix(in oklab,var(--violet) 5%,rgba(255,255,255,.4));
+  border-color:color-mix(in oklab,var(--violet) 16%,transparent);
 }
 
 /* dark header surface */
@@ -3292,24 +3377,62 @@ a.page-header__section:hover{color:var(--fg);}
 /* Dark surface: the V3 gallery card material 1:1 — white sheen over a dark
    --bg-ink floor (AA contrast for light text), bright rim, top-edge shine. */
 .page-header--dark .gnav__panel{
+  /* Dark menu panel = the dense, MATTE "ink" material of the dark bento tiles
+     (`.lab-bento.ink .lab-bento__tile`), shifted toward blue/black with far
+     LESS violet than before. Keeps its OWN geometry/animation/external drop
+     (set in base `.gnav__panel` — position/width/radius/transform); here we
+     override only the MATERIAL: a near-opaque cool blue-black floor + faint
+     cold-blue inner light + frost blur. Was the soapy 82%-translucent
+     periwinkle header glass; floor raised ~82%→~96% so it reads matte and the
+     busy near-black hero behind it barely shows through, internal lighting
+     dialled to a faint cold blue (cyan/sky), no periwinkle wash. */
   background:
-    linear-gradient(145deg, rgba(255,255,255,.24) 0%, rgba(220,232,248,.12) 40%, rgba(255,255,255,.05) 100%),
-    color-mix(in oklab, var(--bg-ink) 88%, transparent);
-  border-color:rgba(255,255,255,.36);
+    /* cool internal lighting — faint cold blue only: a soft sky-blue top glow
+       + a low cyan floor glow, much weaker than the old periwinkle fan */
+    radial-gradient(120% 200% at 50% -30%, rgba(255,255,255,.06) 0%, color-mix(in oklab,#6f8dff 10%,transparent) 46%, transparent 80%),
+    radial-gradient(90% 180% at 100% 140%, color-mix(in oklab,var(--cyan) 8%,transparent) 0%, transparent 66%),
+    linear-gradient(180deg,rgba(255,255,255,.05) 0%,rgba(255,255,255,.012) 60%,rgba(255,255,255,0) 100%),
+    /* FLAT dense matte ink floor — uniform cool blue-black (no vertical fade). */
+    color-mix(in oklab,var(--bg-ink) 89%,transparent);
+  border:1px solid rgba(150,180,235,.16);
+  /* Uniform frost across the whole panel. */
+  -webkit-backdrop-filter:blur(92px) saturate(1.8) brightness(1.04);
+  backdrop-filter:blur(92px) saturate(1.8) brightness(1.04);
   box-shadow:
-    inset 0 1.5px 0 rgba(255,255,255,.5),
-    inset 0 -1px 0 rgba(255,255,255,.1),
-    0 18px 50px -16px rgba(0,0,0,.5);
+    /* cool rim shine + faint blue inner glow (bento-style), a crisp dark rim
+       hairline for a SHARP bottom edge, then a DEEP soft external drop (gallery
+       ink-card character) so the card floats and casts a real shadow */
+    inset 0 1.5px 0 rgba(214,230,255,.30),
+    inset 0 0 0 1px rgba(96,165,255,.04),
+    inset 0 18px 40px -26px color-mix(in oklab,#6f8dff 22%,transparent),
+    0 0 0 1px rgba(0,0,0,.4),
+    0 18px 50px -16px rgba(0,0,0,.55),
+    0 30px 80px -30px rgba(20,28,60,.55);
 }
 .page-header--dark .gnav__heading{color:var(--muted-on-dark);}
 .page-header--dark .gnav__item-name{color:var(--fg-on-dark);}
 .page-header--dark .gnav__item-desc{color:var(--muted-on-dark);}
 .page-header--dark .gnav__item-arrow{color:var(--muted-on-dark);}
-.page-header--dark .gnav__item:hover{
-  background-color:color-mix(in oklab,var(--violet) 24%,transparent);
-  border-color:color-mix(in oklab,var(--lavender) 40%,transparent);
+.page-header--dark .gnav__sublink{color:var(--muted-on-dark);}
+.page-header--dark .gnav__sublink[aria-current="page"]{color:var(--fg-on-dark);}
+.page-header--dark .gnav__sep{color:var(--muted-on-dark);}
+.page-header--dark .gnav__item--single:hover,
+.page-header--dark .gnav__item--group:hover{
+  /* dark menu hover = neutral white lift, NOT violet — a soft, readable bump */
+  background-color:rgba(255,255,255,.07);
+  border-color:rgba(255,255,255,.16);
 }
-.page-header--dark .gnav__item[aria-current="page"]{
+/* dark menu: name stays plain white on hover (no rainbow lens gradient/clip);
+   arrow keeps its rightward shift but in a neutral light tone, not violet */
+.page-header--dark .gnav__item--single:hover .gnav__item-name,
+.page-header--dark .gnav__item--group:hover .gnav__item-name{
+  background:none;-webkit-background-clip:border-box;background-clip:border-box;
+  color:var(--fg-on-dark);
+}
+.page-header--dark .gnav__item--single:hover .gnav__item-arrow,
+.page-header--dark .gnav__item--group:hover .gnav__item-arrow{color:var(--fg-on-dark);}
+.page-header--dark .gnav__item--single[aria-current="page"],
+.page-header--dark .gnav__item--group[data-active]{
   background-color:color-mix(in oklab,var(--violet) 18%,transparent);
 }
 
@@ -3367,6 +3490,19 @@ a.page-header__section:hover{color:var(--fg);}
 .mnav__page[aria-current="page"] .mnav__page-name{
   background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;
 }
+/* Per-page sub-links under each top-level page in the drawer. Underline-on-hover
+   only — no size/weight/color jump, no layout shift. */
+.mnav__sublinks{list-style:none;margin:2px 0 6px;padding:0 0 0 12px;display:flex;flex-direction:column;gap:1px;}
+.mnav__sublink{
+  display:inline-block;align-self:flex-start;padding:7px 0;
+  font-family:var(--font-ui);font-size:14px;color:var(--muted);text-decoration:none;
+  background-image:linear-gradient(currentColor,currentColor);
+  background-position:0 calc(100% - 6px);background-repeat:no-repeat;background-size:0% 1px;
+  transition:background-size 180ms var(--ease);
+}
+.mnav__sublink:hover{background-size:100% 1px;}
+.mnav__sublink:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:4px;}
+.mnav__sublink[aria-current="page"]{color:var(--fg);background-size:100% 1px;}
 .mnav__divider{height:1px;background:var(--border);margin:16px 4px;}
 .mnav__anchor{
   display:block;padding:10px 12px;border-radius:12px;
@@ -3387,7 +3523,9 @@ a.page-header__section:hover{color:var(--fg);}
 .mnav__overlay--dark .mnav__subhead{color:var(--muted-on-dark);}
 .mnav__overlay--dark .mnav__page-name{color:var(--fg-on-dark);}
 .mnav__overlay--dark .mnav__page-desc,
+.mnav__overlay--dark .mnav__sublink,
 .mnav__overlay--dark .mnav__anchor{color:var(--muted-on-dark);}
+.mnav__overlay--dark .mnav__sublink[aria-current="page"]{color:var(--fg-on-dark);}
 .mnav__overlay--dark .mnav__page:hover{
   background-color:color-mix(in oklab,var(--violet) 22%,transparent);
   border-color:color-mix(in oklab,var(--lavender) 36%,transparent);
@@ -3396,7 +3534,7 @@ a.page-header__section:hover{color:var(--fg);}
 .mnav__overlay--dark .mnav__divider{background:var(--border-on-dark);}
 
 @media (prefers-reduced-motion: reduce){
-  .gnav__panel,.gnav__caret,.gnav__item,.gnav__item-arrow,
+  .gnav__panel,.gnav__caret,.gnav__item,.gnav__item-arrow,.gnav__sublink,
   .mnav__overlay,.mnav__panel{transition:none;}
 }
 

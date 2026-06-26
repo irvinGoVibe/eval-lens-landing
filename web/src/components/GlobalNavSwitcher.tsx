@@ -26,7 +26,24 @@ export function GlobalNavSwitcher({ label }: { label: string }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
+
+  // Grow the header body by exactly the menu's height while open: measure the
+  // panel and write `--gnav-grow` (panel height + 8px drop gap) onto the nearest
+  // `.page-header`; CSS animates `height: calc(56px + var(--gnav-grow))`. Set to
+  // 0 on close so the header collapses back. The header carries the transition,
+  // so this is just a target value — no per-frame work, no ScrollOrchestrator.
+  useEffect(() => {
+    const header = rootRef.current?.closest<HTMLElement>(".page-header");
+    if (!header) return;
+    if (open) {
+      const h = panelRef.current?.offsetHeight ?? 0;
+      header.style.setProperty("--gnav-grow", `${h + 8}px`);
+    } else {
+      header.style.setProperty("--gnav-grow", "0px");
+    }
+  }, [open, pathname]);
 
   // Close whenever the route changes (covers in-panel selections too).
   useEffect(() => {
@@ -54,10 +71,6 @@ export function GlobalNavSwitcher({ label }: { label: string }) {
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);
-
-  const activeHref = GLOBAL_NAV.find((entry) =>
-    pathname.startsWith(entry.match),
-  )?.href;
 
   return (
     <div className="gnav" ref={rootRef}>
@@ -91,6 +104,7 @@ export function GlobalNavSwitcher({ label }: { label: string }) {
 
       <div
         className="gnav__panel"
+        ref={panelRef}
         id={menuId}
         role="menu"
         data-open={open}
@@ -99,24 +113,79 @@ export function GlobalNavSwitcher({ label }: { label: string }) {
         <p className="gnav__heading">Explore EvalLense</p>
         <ul className="gnav__list">
           {GLOBAL_NAV.map((entry) => {
-            const active = entry.href === activeHref;
+            const sectionActive = pathname.startsWith(entry.match);
+            const tab = open ? undefined : -1;
+
+            // Newsroom-style entry: no sub-links — the whole row is ONE link.
+            if (entry.description !== undefined) {
+              return (
+                <li key={entry.href} role="none">
+                  <Link
+                    role="menuitem"
+                    href={entry.href}
+                    className="gnav__item gnav__item--single"
+                    aria-current={pathname === entry.href ? "page" : undefined}
+                    tabIndex={tab}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="gnav__item-indicator" aria-hidden="true" />
+                    <span className="gnav__item-name">{entry.label}</span>
+                    <span className="gnav__item-desc">{entry.description}</span>
+                    <span className="gnav__item-arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              );
+            }
+
+            // Sectioned entry: the ROW is a non-interactive container. Section
+            // name + arrow are ONE link to the top-level route; each sub-link is
+            // its own link. No nested <a>.
             return (
-              <li key={entry.href} role="none">
+              <li
+                key={entry.href}
+                role="none"
+                className="gnav__item gnav__item--group"
+                data-active={sectionActive || undefined}
+              >
+                <span className="gnav__item-indicator" aria-hidden="true" />
                 <Link
                   role="menuitem"
                   href={entry.href}
-                  className="gnav__item"
-                  aria-current={active ? "page" : undefined}
-                  tabIndex={open ? undefined : -1}
+                  className="gnav__item-head"
+                  aria-current={pathname === entry.href ? "page" : undefined}
+                  tabIndex={tab}
                   onClick={() => setOpen(false)}
                 >
-                  <span className="gnav__item-indicator" aria-hidden="true" />
                   <span className="gnav__item-name">{entry.label}</span>
-                  <span className="gnav__item-desc">{entry.description}</span>
                   <span className="gnav__item-arrow" aria-hidden="true">
                     →
                   </span>
                 </Link>
+                <span className="gnav__sublinks">
+                  {entry.links.map((link, i) => (
+                    <span className="gnav__sublink-wrap" key={link.href}>
+                      {i > 0 && (
+                        <span className="gnav__sep" aria-hidden="true">
+                          ,{" "}
+                        </span>
+                      )}
+                      <Link
+                        role="menuitem"
+                        href={link.href}
+                        className="gnav__sublink"
+                        aria-current={
+                          pathname === link.href ? "page" : undefined
+                        }
+                        tabIndex={tab}
+                        onClick={() => setOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </span>
+                  ))}
+                </span>
               </li>
             );
           })}
