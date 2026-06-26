@@ -71,6 +71,9 @@ export type { ChipGridProps, ChipGridItem, ChipTone } from "./ChipGrid";
 export { StatBand } from "./StatBand";
 export type { StatBandProps, Stat, StatBandMedia } from "./StatBand";
 
+export { RoutingMatrix } from "./RoutingMatrix";
+export type { RoutingMatrixProps, RoutingJudge, RoutingWeight } from "./RoutingMatrix";
+
 export { Cinema } from "./Cinema";
 export type { CinemaProps, CinemaMedia } from "./Cinema";
 

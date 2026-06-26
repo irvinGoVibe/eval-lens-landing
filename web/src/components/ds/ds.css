@@ -898,7 +898,9 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
   .ds-split__cine-inner:has(.ds-split__cine-aside){
     grid-template-columns:minmax(0,1.05fr) minmax(0,.85fr);
   }
-  .ds-split__cine-inner:has(.ds-split__cine-aside) .ds-split__cine-copy{max-width:none;}
+  /* top-align the copy so a short headline lines up with the first point instead
+     of sinking to the bottom rule (cine grid is otherwise bottom-anchored). */
+  .ds-split__cine-inner:has(.ds-split__cine-aside) .ds-split__cine-copy{max-width:none;align-self:start;}
   .ds-split__cine-aside{padding-left:clamp(20px,2.4vw,36px);border-left:1px solid var(--border);}
   .ds-split.ink .ds-split__cine-aside{border-left-color:var(--border-on-dark);}
 }
@@ -1497,6 +1499,199 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
 .ds-statband__v--expanded .ds-statband__grid strong{font-size:clamp(48px,9vw,112px);}
 .ds-statband__v--expanded .ds-statband__band{margin-top:clamp(32px,5vw,56px);}
 @media (max-width:620px){.ds-statband__grid{grid-template-columns:1fr;}}
+
+/* ============================================================
+   RoutingMatrix — interactive judge × dimension grid (@/components/ds)
+   Light is the default surface; the lens palette carries the weight markers
+   (primary = bright gradient disc · secondary = soft half-weight disc ·
+   advisory = small muted dot · none = faint echo). Hovering a judge lights
+   their row, fades the rest, and drives the side panel.
+   ============================================================ */
+.ds-routing{padding-top:clamp(72px,9vw,120px);padding-bottom:clamp(72px,9vw,120px);}
+.ds-routing .head{margin-bottom:clamp(30px,4.4vw,52px);max-width:48ch;}
+.ds-routing .sub{max-width:54ch;}
+
+.ds-routing__sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+.ds-routing__layout{
+  display:grid;grid-template-columns:minmax(0,1.62fr) minmax(238px,1fr);
+  gap:clamp(20px,3vw,40px);align-items:start;
+}
+
+/* ── matrix card ── */
+.ds-routing__grid{
+  border-radius:var(--radius-card);padding:clamp(8px,1.4vw,16px);
+  background:linear-gradient(135deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.07) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(18px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    inset 0 0 0 1px rgba(255,255,255,.22),
+    0 1px 2px rgba(40,30,90,.04),
+    0 22px 50px -24px rgba(70,50,150,.22);
+}
+.ds-routing__table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;}
+.ds-routing__corner{width:clamp(108px,15vw,168px);}
+
+.ds-routing__colhead{
+  padding:10px 4px 14px;text-align:center;vertical-align:bottom;
+  font-family:var(--font-mono);font-size:clamp(9.5px,1vw,11px);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;
+}
+.ds-routing__colhead span{display:inline-block;line-height:1.18;}
+
+.ds-routing__row > *{transition:opacity .28s ease,background .22s ease;}
+.ds-routing[data-active] .ds-routing__row > *{opacity:.32;}
+.ds-routing[data-active] .ds-routing__row.is-active > *{opacity:1;}
+/* active row — soft glass band across the whole row. Flat fill (NOT a per-cell
+   gradient) so the 7 cells read as one seamless band, not separate squares. */
+.ds-routing__row.is-active > *{
+  background:rgba(255,255,255,.5);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+}
+.ds-routing__row.is-active .ds-routing__rowhead{border-top-left-radius:12px;border-bottom-left-radius:12px;}
+.ds-routing__row.is-active .ds-routing__cell:last-child{border-top-right-radius:12px;border-bottom-right-radius:12px;}
+
+.ds-routing__rowhead{
+  text-align:left;padding:0;border-top:1px solid var(--hairline);font-weight:400;
+}
+.ds-routing__judge{
+  display:flex;flex-direction:column;gap:1px;width:100%;
+  padding:clamp(10px,1.5vw,15px) clamp(8px,1.2vw,14px);
+  background:none;border:0;cursor:default;text-align:left;border-radius:12px;
+  transition:background .2s ease;
+}
+.ds-routing__judge:focus-visible{outline:2px solid var(--violet);outline-offset:-2px;}
+.ds-routing__judge-code{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted-2);
+}
+.ds-routing__judge-name{
+  font-size:clamp(13px,1.5vw,15.5px);line-height:1.2;color:var(--fg);font-weight:500;
+  transition:color .2s ease;
+}
+.ds-routing__row.is-active .ds-routing__judge-name{
+  background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+.ds-routing__cell{
+  position:relative;text-align:center;border-top:1px solid var(--hairline);
+  padding:clamp(10px,1.5vw,15px) 4px;
+}
+.ds-routing__mark{display:inline-block;border-radius:50%;vertical-align:middle;transition:transform .2s ease,opacity .2s ease;}
+/* primary — large bright lens disc with a glow */
+.ds-routing__mark--primary{
+  width:clamp(18px,2.2vw,24px);height:clamp(18px,2.2vw,24px);
+  background:var(--lens);
+  box-shadow:0 0 14px -1px color-mix(in oklab,var(--violet) 70%, transparent),
+    0 2px 8px -2px color-mix(in oklab,var(--cyan) 50%, transparent),
+    inset 0 1px 0 rgba(255,255,255,.5);
+}
+/* secondary — medium disc, 65% */
+.ds-routing__mark--secondary{
+  width:clamp(13px,1.6vw,16px);height:clamp(13px,1.6vw,16px);
+  background:var(--lens);opacity:.65;
+}
+/* advisory — small dot, 38% */
+.ds-routing__mark--advisory{
+  width:8px;height:8px;background:var(--violet);opacity:.38;
+}
+/* none — empty cell */
+.ds-routing__mark--none{display:none;}
+/* in the active row, push the live markers to full strength */
+.ds-routing__cell[data-current] .ds-routing__mark--primary{transform:scale(1.08);}
+.ds-routing__cell[data-current] .ds-routing__mark--secondary{opacity:.9;transform:scale(1.08);}
+.ds-routing__cell[data-current] .ds-routing__mark--advisory{opacity:.62;}
+
+/* ── side panel ── */
+.ds-routing__aside{
+  display:flex;flex-direction:column;gap:clamp(20px,2.6vw,30px);
+  padding:clamp(20px,2.6vw,30px);border-radius:var(--radius-card);
+  background:linear-gradient(135deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.05) 100%);
+  border:1px solid rgba(255,255,255,.5);backdrop-filter:blur(14px) saturate(1.3);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 18px 44px -26px rgba(70,50,150,.2);
+  position:sticky;top:88px;
+}
+/* compact one-line legend above the matrix */
+.ds-routing__legend{
+  display:flex;flex-wrap:wrap;align-items:center;gap:clamp(18px,3vw,38px);
+  margin-bottom:clamp(18px,2.4vw,28px);
+}
+.ds-routing__legend-item{display:inline-flex;align-items:center;gap:9px;}
+.ds-routing__legend-item .ds-routing__mark{flex:none;}
+/* clean flat dots in the legend — drop the primary's outer glow so it doesn't
+   read as a stray rounded backing on the open light strip */
+.ds-routing__legend .ds-routing__mark{box-shadow:none !important;filter:none;}
+.ds-routing__legend-label{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;
+}
+.ds-routing__legend-value{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;
+  color:var(--fg);font-variant-numeric:tabular-nums;font-weight:600;
+}
+
+/* reserve a stable height for the tallest judge (J-P4: 1 primary line + 6
+   supporting) so swapping judges never reflows the section — otherwise the
+   section height changes and the page's background blobs jump. */
+.ds-routing__detail{min-height:272px;}
+.ds-routing__detail-hint{font-size:14px;line-height:1.5;color:var(--muted-2);max-width:30ch;}
+.ds-routing__detail-judge{
+  display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;
+  font-size:clamp(17px,2vw,21px);font-weight:600;color:var(--fg);
+  background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:14px;
+}
+.ds-routing__detail-code{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  -webkit-text-fill-color:var(--muted-2);
+}
+.ds-routing__detail-group + .ds-routing__detail-group{margin-top:16px;}
+.ds-routing__detail-kicker{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted-2);margin-bottom:7px;
+}
+.ds-routing__detail-item{
+  display:flex;align-items:center;gap:10px;
+  font-size:14.5px;line-height:1.3;color:var(--fg);padding:1.5px 0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ds-routing__detail-item .ds-routing__mark{flex:none;}
+.ds-routing__detail-item--muted{color:var(--muted-2);}
+
+/* ── ink surface ── */
+.ds-routing.ink .ds-routing__colhead,
+.ds-routing.ink .ds-routing__judge-code,
+.ds-routing.ink .ds-routing__legend-label,
+.ds-routing.ink .ds-routing__detail-code{color:var(--muted-on-dark);}
+.ds-routing.ink .ds-routing__judge-name,
+.ds-routing.ink .ds-routing__legend-value{color:var(--fg-on-dark);}
+.ds-routing.ink .ds-routing__row.is-active > *{
+  background:rgba(198,220,255,.08);
+  box-shadow:inset 0 1px 0 rgba(214,234,255,.14);
+}
+.ds-routing.ink .ds-routing__grid,
+.ds-routing.ink .ds-routing__aside{
+  background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.02) 100%);
+  border-color:rgba(165,195,238,.14);
+  box-shadow:inset 0 1px 0 rgba(214,234,255,.16),0 24px 60px -34px rgba(0,0,0,.5);
+}
+.ds-routing.ink .ds-routing__rowhead,
+.ds-routing.ink .ds-routing__cell,
+.ds-routing.ink .ds-routing__detail{border-top-color:var(--border-on-dark);}
+.ds-routing.ink .ds-routing__mark--advisory{background:var(--lavender);opacity:.5;}
+.ds-routing.ink .ds-routing__mark--none{background:var(--border-on-dark);}
+.ds-routing.ink .ds-routing__detail-item{color:var(--fg-on-dark);}
+
+/* ── responsive ── */
+@media (max-width:900px){
+  .ds-routing__layout{grid-template-columns:1fr;}
+  .ds-routing__aside{position:static;}
+}
+@media (max-width:620px){
+  .ds-routing__grid{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .ds-routing__table{min-width:520px;}
+}
 
 /* ============================================================
    AuroraBackground — premium dark gradient backdrop (@/components/ds)

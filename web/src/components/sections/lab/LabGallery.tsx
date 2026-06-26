@@ -36,7 +36,7 @@ import { LabEyebrow } from "./_kit";
 export type LabGalleryItem = {
   tag: string;
   title: string;
-  body: string;
+  body: string | string[];
   /** When set, the `tag` label renders as a link (only the tag word, not the card). */
   href?: string;
 };
@@ -58,6 +58,8 @@ export type LabGalleryProps = {
   /** Optional accented fragment rendered in `.grad-word`. When set, the heading
    *  becomes `{titleLead} <span class="grad-word">{titleAccent}</span>`. */
   titleAccent?: string;
+  /** Words in the title to accent with the lens gradient (overrides default first-word rule). */
+  accentWords?: string[];
   sub: string;
   /** Accessible name for the scroll-snap `<ol>` lane. */
   laneLabel: string;
@@ -68,20 +70,22 @@ export type LabGalleryProps = {
 };
 
 /**
- * Heading. v1 renders the title plain (no grad-word per brief); v3 wraps the
- * first word in `.grad-word` for the lens accent. `title` stays a single
- * string prop — the accent is purely a layout-markup concern.
+ * Heading. v1 renders the title plain; v3 wraps the first word in `.grad-word`.
+ * `accentWords` overrides the default first-word behaviour: any word in the set
+ * gets the lens accent regardless of position.
  */
 function Title({
   title,
   titleLead,
   titleAccent,
   accent,
+  accentWords,
 }: {
   title: string;
   titleLead?: string;
   titleAccent?: string;
   accent: boolean;
+  accentWords?: Set<string>;
 }) {
   // Explicit lead/accent fragments take precedence (works in every version).
   if (titleLead != null || titleAccent != null) {
@@ -93,16 +97,20 @@ function Title({
       </h2>
     );
   }
-  if (!accent) {
+  if (!accent && !accentWords?.size) {
     return <h2 className="title">{title}</h2>;
   }
-  const [first, ...rest] = title.split(" ");
-  return (
-    <h2 className="title">
-      <span className="grad-word">{first}</span>
-      {rest.length ? ` ${rest.join(" ")}` : null}
-    </h2>
-  );
+  const words = title.split(" ");
+  const parts = words.map((word, i) => {
+    const bare = word.replace(/[^a-zA-Z]/g, "");
+    const shouldAccent = accentWords ? accentWords.has(bare) : i === 0;
+    return shouldAccent ? (
+      <span key={i} className="grad-word">{(i > 0 ? " " : "") + word}</span>
+    ) : (
+      <span key={i}>{(i > 0 ? " " : "") + word}</span>
+    );
+  });
+  return <h2 className="title">{parts}</h2>;
 }
 
 /** A single equal card — signal dot, tag, heading, body. Geometry is shared
@@ -120,7 +128,9 @@ function Card({ item, index }: { item: LabGalleryItem; index: number }) {
         <span className="mini-tag">{item.tag}</span>
       )}
       <h3>{item.title}</h3>
-      <p>{item.body}</p>
+      {Array.isArray(item.body)
+        ? item.body.map((p, i) => <p key={i}>{p}</p>)
+        : <p>{item.body}</p>}
     </li>
   );
 }
@@ -134,11 +144,13 @@ export function LabGallery({
   title,
   titleLead,
   titleAccent,
+  accentWords,
   sub,
   laneLabel,
   items,
   marker,
 }: LabGalleryProps) {
+  const accentSet = accentWords ? new Set(accentWords) : undefined;
   const surf = surface === "ink" ? "ink" : "soft";
 
   return (
@@ -153,7 +165,7 @@ export function LabGallery({
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
-            <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent={false} />
+            <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent={false} accentWords={accentSet} />
             <p className="sub">{sub}</p>
           </div>
         </div>
@@ -182,7 +194,7 @@ export function LabGallery({
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
-            <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent={false} />
+            <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent={false} accentWords={accentSet} />
             <p className="sub">{sub}</p>
           </div>
           <ul className="lab-gallery__grid" data-reveal="up" aria-label={laneLabel}>
@@ -207,7 +219,7 @@ export function LabGallery({
           <div className="wrap">
             <div className="head" data-reveal="up">
               <LabEyebrow>{eyebrow}</LabEyebrow>
-              <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent />
+              <Title title={title} titleLead={titleLead} titleAccent={titleAccent} accent accentWords={accentSet} />
               <p className="sub">{sub}</p>
             </div>
           </div>

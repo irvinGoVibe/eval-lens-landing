@@ -43,8 +43,8 @@ export type LabPinnedStepsProps = {
   /** Accessible name for the whole section. */
   ariaLabel: string;
   eyebrow: string;
-  /** Two-line title; `line2Accent` gets the lens gradient appended to line 2. */
-  title: { line1: string; line2: string; line2Accent?: string };
+  /** Two-line title; `line1Accent`/`line2Accent` get the lens gradient appended. */
+  title: { line1: string; line1Accent?: string; line2: string; line2Accent?: string };
   sub: string;
   steps: LabPinnedStep[];
   /** Static placeholder slot (v1). */
@@ -78,7 +78,15 @@ function Title({ title }: { title: LabPinnedStepsProps["title"] }) {
   return (
     <h2 className="title lab-process__title" data-reveal="fade">
       <span className="lab-process__line">
-        <span>{title.line1}</span>
+        <span>
+          {title.line1}
+          {title.line1Accent ? (
+            <>
+              {" "}
+              <span className="grad-word">{title.line1Accent}</span>
+            </>
+          ) : null}
+        </span>
       </span>
       <span className="lab-process__line">
         <span>

@@ -34,7 +34,18 @@ import { BentoGlassSpot } from "./BentoGlassSpot";
  *
  * See [section-types#7-bento-overview](../../../../../wiki/architecture/section-types.md).
  */
-export type LabBentoMedia = { label: string; hint: string; ariaLabel: string };
+export type LabBentoMedia = {
+  label: string;
+  hint: string;
+  ariaLabel: string;
+  /** Real asset path. When set, a `next/image` renders instead of the placeholder. */
+  src?: string;
+  /** Intrinsic asset size in px (for ratio / no CLS). Default 1536×1024. */
+  width?: number;
+  height?: number;
+  /** CSS `aspect-ratio` for the PLACEHOLDER frame. Default `16/9`. */
+  ratio?: string;
+};
 /**
  * A decorative background image ATTACHED to a tile. Rendered only when present
  * — there is no placeholder fallback (unlike the feature-tile `media`). It is
@@ -76,6 +87,9 @@ export type LabBentoProps = {
   ariaLabel?: string;
   eyebrow: string;
   title: string;
+  /** Word in `title` to lens-accent. Overrides the per-version default
+   *  (v1 none · v2 "ingredients" · v3 "map"). */
+  titleAccent?: string;
   sub: string;
   /** 4 tiles, first one `feature` (carries the media slot). */
   items: LabBentoItem[];
@@ -97,13 +111,12 @@ function Title({ title, accent }: { title: string; accent?: string }) {
   }
   const words = title.split(" ");
   const target = accent.toLowerCase();
-  let done = false;
+  const accentIdx = words.findIndex((w) => w.toLowerCase() === target);
   return (
     <h2 className="title">
       {words.map((word, i) => {
         const space = i > 0 ? " " : "";
-        if (!done && word.toLowerCase() === target) {
-          done = true;
+        if (i === accentIdx) {
           return (
             <span key={i}>
               {space}
@@ -146,6 +159,35 @@ function TileIcon({ icon, feature }: { icon: LabBentoIcon; feature?: boolean }) 
 }
 
 /**
+ * Feature-tile media: a real `next/image` (ratio-locked, object-fit cover) when
+ * `media.src` is set, else the visible ratio placeholder. Both share the
+ * `lab-bento__media` slot (pushed to the tile bottom).
+ */
+function FeatureMedia({ media }: { media: LabBentoMedia }) {
+  if (media.src) {
+    return (
+      <Image
+        className="lab-bento__media lab-bento__media--img"
+        src={media.src}
+        alt={media.ariaLabel}
+        width={media.width ?? 1536}
+        height={media.height ?? 1024}
+        sizes="(max-width:880px) 90vw, 640px"
+      />
+    );
+  }
+  return (
+    <MediaPlaceholder
+      className="lab-bento__media"
+      ratio={media.ratio ?? "16/9"}
+      label={media.label}
+      hint={media.hint}
+      ariaLabel={media.ariaLabel}
+    />
+  );
+}
+
+/**
  * A single bento tile — optional attached icon, mini-tag, heading, body, and
  * (for the feature tile) a ratio-locked media placeholder. Geometry is shared
  * across every version; the per-version grid class scopes placement and the
@@ -169,15 +211,7 @@ function Tile({ item, delay }: { item: LabBentoItem; delay?: number }) {
       <span className="mini-tag">{item.tag}</span>
       <h3>{item.title}</h3>
       <p>{item.body}</p>
-      {item.feature && item.media ? (
-        <MediaPlaceholder
-          className="lab-bento__media"
-          ratio="16/9"
-          label={item.media.label}
-          hint={item.media.hint}
-          ariaLabel={item.media.ariaLabel}
-        />
-      ) : null}
+      {item.media ? <FeatureMedia media={item.media} /> : null}
       {item.slot ? <div className="lab-bento__tileslot">{item.slot}</div> : null}
     </li>
   );
@@ -190,6 +224,7 @@ export function LabBento({
   ariaLabel,
   eyebrow,
   title,
+  titleAccent,
   sub,
   items,
   marker,
@@ -211,7 +246,7 @@ export function LabBento({
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
-            <Title title={title} />
+            <Title title={title} accent={titleAccent} />
             <p className="sub">{sub}</p>
           </div>
           <ul
@@ -244,18 +279,10 @@ export function LabBento({
                   ) : null}
                   <div className="head">
                     <LabEyebrow>{eyebrow}</LabEyebrow>
-                    <Title title={title} accent="ingredients" />
+                    <Title title={title} accent={titleAccent ?? "ingredients"} />
                     <p className="sub">{sub}</p>
                   </div>
-                  {feature.media ? (
-                    <MediaPlaceholder
-                      className="lab-bento__media"
-                      ratio="16/9"
-                      label={feature.media.label}
-                      hint={feature.media.hint}
-                      ariaLabel={feature.media.ariaLabel}
-                    />
-                  ) : null}
+                  {feature.media ? <FeatureMedia media={feature.media} /> : null}
                   {feature.slot ? (
                     <div className="lab-bento__tileslot">{feature.slot}</div>
                   ) : null}
@@ -279,7 +306,7 @@ export function LabBento({
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
-            <Title title={title} accent="map" />
+            <Title title={title} accent={titleAccent ?? "map"} />
             <p className="sub">{sub}</p>
           </div>
           <ul className="lab-bento__grid">
@@ -304,15 +331,7 @@ export function LabBento({
                 <span className="mini-tag">{item.tag}</span>
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
-                {item.feature && item.media ? (
-                  <MediaPlaceholder
-                    className="lab-bento__media"
-                    ratio="16/9"
-                    label={item.media.label}
-                    hint={item.media.hint}
-                    ariaLabel={item.media.ariaLabel}
-                  />
-                ) : null}
+                {item.media ? <FeatureMedia media={item.media} /> : null}
                 {item.slot ? (
                   <div className="lab-bento__tileslot">{item.slot}</div>
                 ) : null}

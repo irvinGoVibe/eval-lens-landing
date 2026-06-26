@@ -5082,6 +5082,12 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-process__steps--reveal .lab-step.is-current .lab-step__num{
   background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;
 }
+.lab-process__steps--reveal .lab-step.is-current .lab-step__label{
+  background:linear-gradient(100deg, var(--violet) 0%, var(--violet) 20%, var(--cyan) 65%, var(--aqua) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:brightness(1.35) saturate(1.4);
+  transition:background .3s ease,color .3s ease,filter .3s ease;
+}
 .lab-pv--reveal .lab-process__cta{margin-top:clamp(26px,3.6vw,40px);}
 /* ── v3 head recomposition (ui-ux-pro-max: visual-hierarchy + whitespace-balance
    + line-length). A tighter display lockup with a deliberate eyebrow→title→sub
@@ -5172,6 +5178,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy .lab-step{opacity:.3;transform:none;border-top-color:var(--border-on-dark);transition:opacity .22s ease-out, color .18s ease-out;}
   .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy .lab-step.is-active{opacity:1;}
   .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy .lab-step.is-current .lab-step__num{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__steps--tidy .lab-step.is-current .lab-step__label{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;transition:background .3s ease,color .3s ease;}
   /* photo frame: full-bleed band, starts raised under the heading then slides to bottom */
   .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__media--photos{position:absolute;left:0;right:0;bottom:0;width:100%;max-width:none;height:34svh;aspect-ratio:unset;border-radius:0;box-shadow:none;border:0;z-index:1;margin:0;will-change:transform;transform:translateY(calc(-32svh * (1 - clamp(0, calc(var(--pin,0) / .12), 1))));}
   .lab-process:has(.lab-pv--photos:not([hidden])) .lab-process__media--photos::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 100%);}
@@ -5454,7 +5461,13 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-gallery__lane::-webkit-scrollbar{display:none;}
 .lab-gallery__lane:focus-visible{outline:2px solid var(--violet);outline-offset:4px;border-radius:var(--radius-card);}
 .lab-gallery__card{position:relative;flex:0 0 clamp(250px,29vw,330px);scroll-snap-align:start;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:10px;min-width:0;min-height:240px;}
-.lab-gallery__card h3{font-size:22px;letter-spacing:-.01em;margin-top:6px;color:var(--fg);}
+.lab-gallery__card h3{font-size:22px;letter-spacing:-.01em;margin-top:6px;color:var(--fg);transition:color .25s ease;}
+/* hover a card → its heading takes the lens gradient (surface-scoped so it wins
+   over the per-surface base colour) */
+.lab-gallery.ink .lab-gallery__card:hover h3,
+.lab-gallery:is(.soft,.light) .lab-gallery__card:hover h3{
+  background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
 .lab-gallery__card p{font-size:14px;line-height:1.5;color:var(--muted);}
 /* card tag sits inline at the top of the card, not absolute-pinned (the global
    .mini-tag is position:absolute — override scoped to the gallery card only,
@@ -5623,10 +5636,109 @@ section.band.ink .mini-tag{color:var(--lavender);}
    violet → periwinkle #8b93ff → lavender). The light surface overrides this to a
    plain --bg fill below, so this tint is dark-only. */
 .lab-bento__tile--feature{background:linear-gradient(118deg, color-mix(in oklab,var(--violet) 14%, transparent), color-mix(in oklab,#8b93ff 11%, transparent) 60%, color-mix(in oklab,var(--lavender) 9%, transparent));border-color:color-mix(in oklab,var(--violet) 28%, transparent);}
-.lab-bento__tile h3{font-size:clamp(18px,2.2vw,25px);letter-spacing:-.01em;color:var(--fg-on-dark);}
+.lab-bento__tile h3{font-size:clamp(18px,2.2vw,25px);letter-spacing:-.01em;color:var(--fg-on-dark);transition:color .25s ease;}
+/* hover a tile → its heading takes the lens gradient (surface-scoped so it wins
+   over the per-surface base colour) */
+.lab-bento.ink .lab-bento__tile:hover h3,
+.lab-bento:is(.soft,.light) .lab-bento__tile:hover h3{
+  background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
 .lab-bento__tile p{font-size:14px;line-height:1.55;color:var(--muted-on-dark);}
 .lab-bento__tile .mini-tag{position:static;top:auto;right:auto;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
 .lab-bento__media{margin-top:auto;}
+/* real-image variant of the feature media (LabBentoMedia.src) — transparent PNG,
+   no frame. Bottom-anchored (margin-top:auto) and centred; size is CAPPED so the
+   tiles stay compact and the grid doesn't over-stretch the feature column. */
+.lab-bento__media--img{
+  display:block;margin-top:auto;margin-inline:auto;
+  width:auto;height:auto;max-width:100%;
+}
+/* feature (left) — moderate cap, near the bottom edge */
+.lab-bento__tile--feature .lab-bento__media--img{
+  max-height:clamp(220px,24vw,330px);
+  margin-bottom:-8px;
+}
+
+/* ── methodology scoring bento → clean 2-row "perfect bento". Per dimension is
+   shortened to ONE row (cols 1-2, row 1); Disagreement + Reproducible move under
+   it in row 2, bottom-aligned with Across. Confidence (col3 r1) + Across
+   (col3 r2) are UNTOUCHED — same size, same images (their cap is the shared
+   supporting rule below, NOT shrunk here). Desktop only, this page only. ── */
+@media (min-width:901px){
+  .ds-scoring-bento .lab-bento__v--polish .lab-bento__grid{grid-template-rows:auto auto;}
+  .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature{grid-column:1 / 3;grid-row:1;}
+  .ds-scoring-bento .lab-bento__v--polish .lab-bento__grid > li:nth-child(2){grid-column:3/4;grid-row:1;} /* Confidence */
+  .ds-scoring-bento .lab-bento__v--polish .lab-bento__grid > li:nth-child(3){grid-column:3/4;grid-row:2;} /* Across (untouched) */
+  .ds-scoring-bento .lab-bento__v--polish .lab-bento__grid > li:nth-child(4){grid-column:1/2;grid-row:2;} /* Disagreement */
+  .ds-scoring-bento .lab-bento__v--polish .lab-bento__grid > li:nth-child(5){grid-column:2/3;grid-row:2;} /* Reproducible */
+  /* Per dimension lives in one row now → smaller hero so its height ≈ Confidence */
+  .ds-scoring-bento .lab-bento__tile--feature .lab-bento__media--img{max-height:clamp(180px,20vw,240px);}
+}
+/* supporting tiles with an image (Confidence + Across) — equal mid cards; the
+   image is large enough to read clearly so they feel like proper square-ish
+   tiles, not collapsed. Dropped to almost touch the card bottom. */
+.lab-bento__tile:not(.lab-bento__tile--feature) .lab-bento__media--img{
+  max-height:clamp(120px,14vw,160px);
+  margin-bottom:-10px;
+}
+
+/* ── PAGE INJECTION (methodology only): drop a real transparent image into the
+   "Where the human decides" EditorialSplit media slot WITHOUT touching the
+   shared component — override just this instance's placeholder via its id. ── */
+#human-decides .ds-split__media{
+  background-color:transparent !important;
+  background-image:url("/assets/methodology/human-decides.webp") !important;
+  background-size:contain !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  border:0 !important;box-shadow:none !important;
+}
+/* kill the placeholder's dashed/striped pseudo layers that sit over the bg */
+#human-decides .ds-split__media::before,
+#human-decides .ds-split__media::after{content:none !important;background:none !important;display:none !important;}
+#human-decides .ds-split__media > *{display:none !important;} /* hide label/hint */
+
+/* ── PAGE INJECTION (methodology): the lower-cluster blobs that drift behind the
+   routing matrix compete with its markers. Push the centre-left ones to the
+   right. Base position is inline left/right (vw) → override with !important; the
+   drift lives on `transform`, so it keeps animating. ── */
+.trust-methodology .ds-canvas__blobs[style*="57%"] .ds-blob--c,
+.trust-methodology .ds-canvas__blobs[style*="57%"] .ds-blob--d{
+  left:auto !important;
+  right:-8vw !important;
+}
+
+/* ── PAGE INJECTION (methodology): hover-accent headings fill with the lens
+   gradient LEFT→RIGHT (a wipe) instead of switching colour instantly. Each
+   heading is always clipped to a 200%-wide gradient — [lens 0–50% | base
+   50–100%]; at rest the position shows the base half, on hover/active it slides
+   to 0% so the lens sweeps in from the first letter to the last. ── */
+.trust-methodology .lab-bento .lab-bento__tile h3,
+.trust-methodology .lab-gallery .lab-gallery__card h3,
+.trust-methodology .ds-routing__judge-name{
+  background-image:linear-gradient(90deg,var(--violet) 0%,var(--lavender) 17%,var(--cyan) 35%,var(--aqua) 50%,var(--fg) 50%,var(--fg) 100%) !important;
+  background-size:200% 100% !important;
+  background-position:100% 0 !important;
+  background-repeat:no-repeat !important;
+  -webkit-background-clip:text !important;background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;color:transparent !important;
+  transition:background-position 2.5s cubic-bezier(.33,0,.2,1) !important;
+}
+/* dark-surface headings (the judges Gallery is .ink) use the on-dark base */
+.trust-methodology .lab-gallery.ink .lab-gallery__card h3{
+  background-image:linear-gradient(90deg,var(--violet) 0%,var(--lavender) 17%,var(--cyan) 35%,var(--aqua) 50%,var(--fg-on-dark) 50%,var(--fg-on-dark) 100%) !important;
+}
+/* reveal on hover (cards) / on the active row (matrix judge) */
+.trust-methodology .lab-bento .lab-bento__tile:hover h3,
+.trust-methodology .lab-gallery .lab-gallery__card:hover h3,
+.trust-methodology .ds-routing__row.is-active .ds-routing__judge-name{
+  background-position:0 0 !important;
+}
+@media (prefers-reduced-motion: reduce){
+  .trust-methodology .lab-bento .lab-bento__tile h3,
+  .trust-methodology .lab-gallery .lab-gallery__card h3,
+  .trust-methodology .ds-routing__judge-name{transition:none !important;}
+}
 /* ── optional attached tile watermark (LabBentoItem.icon) — rendered ONLY when
    an item carries an `icon`; there is no placeholder otherwise. It's anchored
    absolutely in a tile corner (default bottom-left) and painted BEHIND the text
