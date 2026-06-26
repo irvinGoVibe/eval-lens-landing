@@ -778,7 +778,7 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
 .lab-fullstmt__h{font-family:var(--font-display);font-weight:600;font-size:clamp(40px,6.5vw,84px);
   line-height:1.04;letter-spacing:-.03em;text-wrap:balance;margin:0;}
 .lab-fullstmt .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
-.lab-fullstmt__sub{font-family:var(--font-ui);font-weight:400;font-size:clamp(18px,2vw,22px);line-height:1.5;
+.lab-fullstmt__sub{font-family:var(--font-ui);font-weight:400;font-size:clamp(14px,2vw,18px);line-height:1.5;
   color:var(--muted);margin-top:clamp(16px,2vw,22px);text-wrap:pretty;}
 .lab-fullstmt.ink .lab-fullstmt__sub{color:var(--muted-on-dark);}
 

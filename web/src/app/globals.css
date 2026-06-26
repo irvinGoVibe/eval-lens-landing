@@ -402,7 +402,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
 .ink .eyebrow{color:var(--lavender);}
 .title{font-size:clamp(33px,5vw,56px);}
 .ink .title{font-size:clamp(40px,7vw,84px);letter-spacing:-.03em;}
-.sub{font-size:clamp(18px,2.1vw,23px);line-height:1.42;color:var(--muted);margin-top:18px;font-family:var(--font-text);font-weight:400;letter-spacing:0;}
+.sub{font-size:clamp(14px,2.1vw,19px);line-height:1.42;color:var(--muted);margin-top:18px;font-family:var(--font-text);font-weight:400;letter-spacing:0;}
 .keymsg{font-family:var(--font-text);font-weight:400;}
 .ink .sub{color:var(--muted-on-dark);}
 .keymsg{max-width:660px;margin:22px auto 0;font-size:16px;line-height:1.6;color:var(--muted);}
@@ -799,7 +799,7 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   margin-top:18px;
   font-family:"SF Pro Text", BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight:400;
-  font-size:clamp(18px, 2.1vw, 23px);
+  font-size:clamp(14px, 2.1vw, 19px);
   line-height:1.58;
   letter-spacing:-.01em;
   color:var(--muted-on-dark);
