@@ -3,6 +3,7 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
+import { CanvasFlowField } from "@/components/CanvasFlowField";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
@@ -181,7 +182,7 @@ const SCORING_TILES: BentoItem[] = [
     feature: true,
     tag: "Calculation",
     title: "Per dimension",
-    body: "Judge scores are combined using their routing weights to produce a weighted average.",
+    body: "Judge scores are combined using their \nrouting weights to produce a weighted average.",
     media: {
       src: "/assets/bento/scoring-model-transparent.webp",
       ratio: "3/2",
@@ -449,6 +450,13 @@ export default function MethodologyPage() {
       </main>
       <Footer variant="dark" />
       <ScrollFX />
+      {/* Blue flow-field injected into the shared dark layer (--lobes-dark) that
+          fades in over the §3–4 ink peak (PinnedSteps + Gallery) via ZoneToneFlip.
+          The field inherits that layer's opacity (0 over the light §1–2 / §5–8,
+          1 over §3–4), so it only paints on the dark band. `.ds-flow` is
+          position:fixed (see ds.css) → blobs track the viewport, not the
+          contained zone-height host. `blue` scopes the palette to this page. */}
+      <CanvasFlowField blue />
     </>
   );
 }

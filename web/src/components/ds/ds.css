@@ -244,7 +244,17 @@
    video sits on the flow field instead of a black box. HIDDEN, not removed —
    scoped to this page only (methodology/canvas-bg keep their black field). */
 .dark-anim-demo .lab-process.ink .lab-pv--reveal::before{display:none;}
-.ds-flow{position:absolute;inset:0;z-index:1;pointer-events:none;}
+/* `position:fixed` (NOT absolute): the blob field tracks the VIEWPORT, not the
+   host box. On a whole-page dark host (review-board: `--lobes-dark` is fixed,
+   viewport-sized) fixed vs absolute are identical. But on a PARTIAL mid-page
+   zone (methodology: the dark host is `--contained` = absolute, zone-height
+   ~5000px), absolute would stretch the field over the whole zone and shove the
+   `top/left:50%` blobs to the zone's centre. Fixed keeps the blobs viewport-
+   centred regardless of host height; visibility is still gated by the dark
+   layer's opacity (ancestor opacity:0 flattens the whole subtree, incl. a fixed
+   descendant). The host has only `will-change:opacity` → no containing block for
+   fixed, so it resolves to the viewport. */
+.ds-flow{position:fixed;inset:0;z-index:1;pointer-events:none;}
 .ds-flow__blob{
   position:absolute;left:50%;top:50%;
   width:62vw;height:62vw;margin:-31vw 0 0 -31vw;
