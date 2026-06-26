@@ -70,6 +70,8 @@ export type LabBentoProps = {
   id?: string;
   /** `.band` surface — `ink` (`.ink`) is the default for this archetype. */
   surface?: "light" | "ink";
+  /** Which saved version renders (1 Polish · 2 Recomp · 3 Expanded). Default 1. */
+  version?: 1 | 2 | 3;
   /** Optional accessible name for the section. */
   ariaLabel?: string;
   eyebrow: string;
@@ -184,6 +186,7 @@ function Tile({ item, delay }: { item: LabBentoItem; delay?: number }) {
 export function LabBento({
   id = "bento",
   surface = "ink",
+  version = 1,
   ariaLabel,
   eyebrow,
   title,
@@ -204,7 +207,7 @@ export function LabBento({
       aria-label={ariaLabel}
     >
       {/* ── v1 — Polish: original composition, 3-col, feature spans 2×2 ── */}
-      <div className="lab-bento__v lab-bento__v--polish" data-version="1">
+      <div className="lab-bento__v lab-bento__v--polish" data-version="1" hidden={version !== 1}>
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
@@ -226,7 +229,7 @@ export function LabBento({
       <div
         className="lab-bento__v lab-bento__v--recomp"
         data-version="2"
-        hidden
+        hidden={version !== 2}
       >
         <div className="wrap">
           <div className="lab-bento__grid">
@@ -271,7 +274,7 @@ export function LabBento({
       <div
         className="lab-bento__v lab-bento__v--expanded"
         data-version="3"
-        hidden
+        hidden={version !== 3}
       >
         <div className="wrap">
           <div className="head" data-reveal="up">
