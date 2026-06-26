@@ -21,7 +21,15 @@ import { Eyebrow, Title } from "@/components/ds";
  *
  * Motion is `data-reveal` only, consumed by the page's single `<ScrollFX/>`.
  */
-export type RiskPair = { risk: string; control: string };
+export type RiskPair = {
+  risk: string;
+  control: string;
+  /** Per-row tag overrides. When set, this row uses its own mono tags instead of
+   *  the section-wide `leftTag`/`rightTag` — turns repeated column headers into a
+   *  distinct label per row. Additive: rows without them fall back to the column tags. */
+  leftTag?: string;
+  rightTag?: string;
+};
 export type RiskControlProps = {
   id?: string;
   /** `.band` surface — `light` (default → `soft`) or `ink`. */
@@ -54,11 +62,11 @@ function Grid({
       {pairs.map((pair, i) => (
         <div key={i} className="ds-risk__row">
           <div>
-            <span className="mini-tag">{leftTag}</span>
+            <span className="mini-tag">{pair.leftTag ?? leftTag}</span>
             <strong>{pair.risk}</strong>
           </div>
           <div>
-            <span className="mini-tag">{rightTag}</span>
+            <span className="mini-tag">{pair.rightTag ?? rightTag}</span>
             <p>{pair.control}</p>
           </div>
         </div>

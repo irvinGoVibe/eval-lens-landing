@@ -5548,6 +5548,8 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-rv__grid{display:grid;grid-template-columns:1fr clamp(320px,40vw,620px);gap:clamp(36px,5vw,84px);align-items:center;width:100%;}
 .lab-rv__copy{min-width:0;display:grid;grid-template-columns:1fr;}
 .lab-rv__media{display:grid;place-items:center;min-width:0;}
+/* opt-in custom visual (mediaNode) fills the pinned column edge-to-edge */
+.lab-rv__node{width:100%;min-width:0;}
 /* head (eyebrow+title+sub) flies UP and fades over the first ~60% of the pin —
    "exit upward = back" (ui-ux §7 hierarchy-motion); transform/opacity only. */
 .lab-rv__head{grid-area:1/1;align-self:start;z-index:2;will-change:transform,opacity;pointer-events:none;
@@ -10409,3 +10411,25 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
    PinnedSteps sticky pin), so clamp the bridge's bottom to the zone instead. The
    bloom sits at the §2b→§3 seam (top), so losing the bottom overhang is invisible. */
 .injection .ds-flip-bridge{bottom:0;}
+
+/* ── PAGE INJECTION (evidence-based-reports hero): enlarge the report image 2×.
+   The image carries data-reveal="right"; inside .ds-hero, the rule
+   `.ds-hero [data-reveal]{transform:none}` (ds.css, specificity 0,2,0, loaded
+   after globals.css) silently overrode every equal-specificity transform we
+   tried. Beat it with a 3-class selector (0,3,0). Grow from the left edge so the
+   enlargement expands into the empty right space, never over the headline.
+   .ds-hero has overflow-x:clip, so anything past the viewport edge is trimmed. */
+.evidence-reports .ds-hero__v3 .ds-hero__ed-media--img{
+  transform:translateX(-20%) scale(1.65);
+  transform-origin:center;
+}
+
+/* ── PAGE INJECTION (evidence-based-reports §5 Grounded): enlarge the slide↔finding
+   image 1.5×. `#grounded` id + !important guarantees it beats both
+   `[data-reveal].is-in{transform:none}` and any reveal transition state. ── */
+.evidence-reports #grounded .ds-split__media--img{
+  transform:scale(1.25) !important;
+  transform-origin:center;
+}
+
+

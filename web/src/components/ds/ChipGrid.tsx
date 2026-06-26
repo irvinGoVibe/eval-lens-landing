@@ -13,7 +13,22 @@ import type { CSSProperties } from "react";
  * `/product/evidence-based-reports`, but content-agnostic and reusable.
  */
 export type ChipTone = "info" | "warning" | "critical";
-export type ChipGridItem = { name: string; sev: ChipTone };
+export type ChipStatus = "present" | "thin" | "missing";
+export type ChipGridItem = {
+  name: string;
+  sev: ChipTone;
+  /** Optional coverage result. When set, a status pill renders after the name;
+   *  `present` reads quiet (muted), `thin`/`missing` carry the `sev` colour. */
+  status?: ChipStatus;
+  /** Optional affected dimension tag (e.g. "P5 Viability"); shown after status. */
+  dimension?: string;
+};
+
+const STATUS_LABEL: Record<ChipStatus, string> = {
+  present: "Present",
+  thin: "Thin",
+  missing: "Missing",
+};
 export type ChipGridProps = {
   id?: string;
   /** `.band` surface — `light` (→ `soft`) or `ink`. Default light. */
@@ -54,12 +69,18 @@ export function ChipGrid({
         {items.map((it, i) => (
           <li
             key={it.name}
-            className={`ds-chip ds-chip--${it.sev}`}
+            className={`ds-chip ds-chip--${it.sev}${it.status ? ` ds-chip--st-${it.status}` : ""}`}
             // desynced float phase per chip (negative delay = mid-cycle start)
             style={{ "--float-delay": `-${((i % 6) * 0.55).toFixed(2)}s` } as CSSProperties}
           >
             <span className="ds-chip__dot" aria-hidden="true" />
             <span className="ds-chip__name">{it.name}</span>
+            {it.status ? (
+              <span className="ds-chip__status">{STATUS_LABEL[it.status]}</span>
+            ) : null}
+            {it.dimension ? (
+              <span className="ds-chip__dim">{it.dimension}</span>
+            ) : null}
           </li>
         ))}
       </ul>

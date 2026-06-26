@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
+import { ExplodedGlassReport } from "./ExplodedGlassReport";
 import {
   StatementHero,
   FullStatement,
@@ -13,6 +14,7 @@ import {
   EditorialSplit,
   Bento,
   ChipGrid,
+  RiskControl,
   Cinema,
 } from "@/components/ds";
 
@@ -57,16 +59,16 @@ export const metadata: Metadata = {
    Page-local markup (NOT a barrel section); rendered under the hero. */
 const HERO_STATS = [
   {
-    v: "20–30 min → 0",
-    k: "human reading per deck — you start at the report, not the raw slides",
+    v: "Skip the first read",
+    k: "Start with the report, not the raw deck.",
   },
   {
-    v: "~40 hours",
-    k: "reclaimed per 100-deck batch — a full review week of reading",
+    v: "Up to 40 hours saved",
+    k: "Across 100 decks, that can save a full week of reading.",
   },
   {
-    v: "The whole batch",
-    k: "evaluated in parallel, unattended — not one deck at a time",
+    v: "Review all decks at once",
+    k: "Decks are processed in parallel, not one by one.",
   },
 ] as const;
 
@@ -75,17 +77,17 @@ const ANATOMY = [
   {
     num: "01",
     label: "Project Summary",
-    desc: "What the project is, how strong it looks, and what to probe: an AI summary, the score overview, strengths and weaknesses, why it can pass, why it can fail, and what to confirm live.",
+    desc: "The fast read: what the project does, how it scored, where it looks strong, and what to verify live.",
   },
   {
     num: "02",
     label: "AI Score Report",
-    desc: "The methodology, how the score was formed, a short conclusion from each judge, the judge contribution matrix, and a per-dimension breakdown.",
+    desc: "See what shaped the score, how each judge contributed, and how every dimension affected the result.",
   },
   {
     num: "03",
-    label: "Questions for Participants",
-    desc: "Ready-made questions for live Q&A, grouped critical, important, and optional, each tied to the dimension it tests.",
+    label: "Questions for Live Q&A",
+    desc: "Ready-to-use questions, ranked by priority and linked to the dimension each one tests.",
   },
 ] as const;
 
@@ -95,34 +97,34 @@ const ANATOMY = [
 const REPORT_CARDS = [
   {
     tag: "Per-dimension breakdown",
-    title: "Every dimension, in the open",
-    body: "For every dimension: the score, its confidence, what supports it, what lowers it, and what would move it up or down.",
+    title: "What raised it. What lowered it.",
+    body: "For each dimension, see the score, confidence, what supports it, what lowers it, and what would change it.",
   },
   {
     tag: "Judge contribution matrix",
-    title: "Who weighed in where",
-    body: "Which judge contributed to each dimension, with strong disagreements flagged, not averaged away.",
+    title: "How each judge contributed",
+    body: "See who contributed to each dimension and where strong disagreements were flagged.",
   },
   {
     tag: "Score formation",
-    title: "How the score adds up",
-    body: "A per-dimension view: each score, its weight, and its contribution to the total.",
+    title: "How the total adds up",
+    body: "See each dimension score, its weight, and its contribution to the final result.",
   },
   {
     tag: "Methodology",
-    title: "How the score is built",
-    body: "The rules and the scale behind every dimension — how findings turn into a comparable score, and why the same deck always lands the same way. Read the full model on the Methodology page.",
+    title: "The rules behind the score",
+    body: "The scale and scoring rules used consistently across every deck.",
     href: "/trust/methodology",
   },
   {
     tag: "Initial criteria",
-    title: "The weights you set",
-    body: "Your dimension weights, applied read-only across the whole batch — so every team is scored on the same basis you defined up front, not re-tuned deck by deck.",
+    title: "Your weights, fixed across the batch",
+    body: "Your criteria stay read-only and apply to every team on the same basis.",
   },
   {
     tag: "Judge conclusions",
-    title: "Where each judge landed",
-    body: "A short takeaway, the main concern, and one live question from each judge — their reasoning kept in brief and on the record, never averaged into the number.",
+    title: "Each judge, on the record",
+    body: "A takeaway, main concern, and live question from every judge.",
   },
 ] as const;
 
@@ -145,65 +147,77 @@ const GROUNDED = [
 /* 6. Deck completeness — 10 sections, severity info / warning / critical
    (brief §6, report.md §7). A SIGNAL about a missing/thin section — never a
    fact-check / verdict. */
+/* Sample completeness output for one deck — turns the abstract section list into
+   a concrete result: present rows read quiet, gaps carry severity + the affected
+   dimension (drives the ChipGrid `status` / `dimension` pills). */
 const COMPLETENESS = [
-  { name: "Problem", sev: "info" },
-  { name: "Solution", sev: "info" },
-  { name: "Market", sev: "warning" },
-  { name: "Business model", sev: "info" },
-  { name: "Traction", sev: "warning" },
-  { name: "Team", sev: "info" },
-  { name: "Roadmap", sev: "info" },
-  { name: "Financials", sev: "critical" },
-  { name: "Ask", sev: "warning" },
-  { name: "Other", sev: "info" },
+  { name: "Problem", sev: "info", status: "present" },
+  { name: "Solution", sev: "info", status: "present" },
+  { name: "Market", sev: "warning", status: "thin", dimension: "P3 Market" },
+  { name: "Business model", sev: "info", status: "present" },
+  { name: "Traction", sev: "info", status: "thin", dimension: "P4 Traction" },
+  { name: "Team", sev: "info", status: "present" },
+  { name: "Roadmap", sev: "info", status: "present" },
+  { name: "Financials", sev: "critical", status: "missing", dimension: "P5 Viability" },
+  { name: "Ask", sev: "warning", status: "thin" },
+  { name: "Other", sev: "info", status: "present" },
 ] as const;
 
 /* completeness tiles — 3 bento items (signal, not verdict). */
 const COMPLETENESS_TILES = [
   {
-    tag: "Ten key sections",
-    title: "Each one checked, present or thin",
-    body: "Problem, Solution, Market, Business model, Traction, Team, Roadmap, Financials, Ask, and anything else — each checked for presence and depth.",
+    tag: "10 core sections",
+    title: "Present, thin, or missing",
+    body: "Problem, Solution, Market, Business Model, Traction, Team, Roadmap, Financials, Ask, and Other — each checked for presence and depth.",
     feature: true,
   },
   {
-    tag: "Severity, not noise",
-    title: "A weighted signal, linked to a dimension",
-    body: "Every gap is marked info, warning, or critical, and linked to the dimension it affects.",
+    tag: "Severity",
+    title: "Every gap ranked by severity",
+    body: "Each gap is marked info, warning, or critical and linked to the dimension it affects.",
   },
   {
     tag: "Not a fact-check",
-    title: "It flags a gap, it doesn’t judge a claim",
-    body: "Completeness flags a missing or thin section. It doesn’t validate the claims — that stays a human’s job in the room.",
+    title: "Missing does not mean false",
+    body: "Completeness flags missing or thin coverage. It does not validate the claim itself — that remains a human judgment.",
   },
 ] as const;
 
-/* 7. From shortlist to founder feedback — 5 cards (brief §7). */
+/* 7. Across the review — 5 use cases as RiskControl pairs. Left = a moment in the
+   review process (per-row tag + the use case); right = the concrete outcome
+   (per-row tag + what the report gives you). */
 const USES = [
   {
-    tag: "Reviewer prep",
-    title: "A briefed first read",
-    body: "Walk in already knowing each deck's strengths, gaps, and what to ask.",
+    leftTag: "Before review",
+    risk: "Reviewer prep",
+    rightTag: "What you know",
+    control:
+      "A briefed first read — walk in already knowing each deck's strengths, gaps, and what to ask.",
   },
   {
-    tag: "Shortlist discussion",
-    title: "A discussion you can defend",
-    body: "Compare teams on the same structured basis, not gut feel.",
+    leftTag: "During shortlisting",
+    risk: "Shortlist discussion",
+    rightTag: "What you can defend",
+    control: "Compare teams on the same structured basis, not gut feel.",
   },
   {
-    tag: "Founder feedback",
-    title: "Structured, actionable notes",
-    body: "Give every team a concrete, structured read — not just a yes or a no.",
+    leftTag: "After review",
+    risk: "Founder feedback",
+    rightTag: "What you can share",
+    control:
+      "Give every team concrete, structured feedback — not just a yes or no.",
   },
   {
-    tag: "Committee prep",
-    title: "Material for the committee",
-    body: "Bring a defensible, evidence-linked basis to the decision.",
+    leftTag: "Before the committee",
+    risk: "Committee prep",
+    rightTag: "What you bring",
+    control: "Bring a defensible, evidence-linked basis for the decision.",
   },
   {
-    tag: "Batch archive",
-    title: "A decision trail per batch",
-    body: "Keep a clear record of how every team was evaluated.",
+    leftTag: "After the decision",
+    risk: "Batch archive",
+    rightTag: "What you keep",
+    control: "Keep a clear record of how every team was evaluated.",
   },
 ] as const;
 
@@ -246,12 +260,12 @@ export default function EvidenceBasedReportsPage() {
         <StatementHero
           id="hero"
           surface="light"
-          version={2}
+          version={3}
           eyebrow="Evidence-Based Reports"
-          titleLead="A score you can"
-          titleAccent="explain,"
-          titleTrail="with the evidence"
-          sub="Walk into every review with a defensible read on each team — scores across each dimension, the reasoning behind them, and the questions to ask live. The final call always yours."
+          titleLead="A score you can explain."
+          titleAccent="Evidence"
+          titleTrail="you can check."
+          sub="See how each team scored, what drove the result, and what to ask next. You make the final call."
           ctas={[
             { label: "Book a Demo", href: "/#demo" },
             { label: "View Sample Report", href: "#" },
@@ -260,8 +274,10 @@ export default function EvidenceBasedReportsPage() {
             ratio: "16/9",
             label: "Image · score linked to the deck · 16:9",
             hint: "A score with thin lines tracing back to deck slides — lens-gradient violet→cyan→aqua, calm",
-            ariaLabel:
-              "A score with quote-lines tracing back to slides of a pitch deck",
+            ariaLabel: "A score with quote-lines tracing back to slides of a pitch deck",
+            src: "/assets/evidence-reports/hero-score-report.webp",
+            width: 1256,
+            height: 810,
           }}
         />
 
@@ -287,11 +303,11 @@ export default function EvidenceBasedReportsPage() {
         <FullStatement
           surface="light"
           version={2}
-          ariaLabel="Beyond the number — a score you can defend"
+          ariaLabel="Beyond the number — if you can’t explain the score, you can’t defend the decision"
           eyebrow="Beyond the number"
-          titleLead="A score you can’t explain is a score you can’t"
-          titleAccent="defend"
-          sub="A single number tells you where a deck landed, not why. Your team can’t defend a shortlist with it, founders can’t learn from it, and no one can audit it later. EvalLense hands you the reasoning, not just the result."
+          titleLead="If you can’t explain the score, you can’t defend the"
+          titleAccent="decision."
+          sub="A number shows the result. It doesn’t show what drove it. Without the reasoning behind the score, your team can’t defend a shortlist, founders can’t act on the feedback, and reviewers can’t revisit the decision later. EvalLense shows what influenced the score and links each finding back to the deck."
         />
 
         {/* 3. Anatomy — pinned multi-screen, exactly 3 layers. */}
@@ -301,26 +317,30 @@ export default function EvidenceBasedReportsPage() {
           version={3}
           ariaLabel="Anatomy of the report — three layers from summary to questions"
           eyebrow="Anatomy of the report"
-          title={{ line1: "One report,", line2: "three", line2Accent: "layers" }}
-          sub="Each team’s report runs from a quick read to the full reasoning to the questions for live Q&A. Each layer opens as you scroll."
+          title={{ line1: "One report.", line2: "Three", line2Accent: "layers." }}
+          sub="Start with the summary. See what shaped the score. Walk into the room with the right questions."
           steps={ANATOMY.map((a) => ({ num: a.num, label: a.label, desc: a.desc }))}
+          mediaNode={<ExplodedGlassReport />}
           media={{
             ratio: "4/3",
             label: "Sample · real report needed · 4:3",
             hint: "A live report embed — Project Summary with score, supports/lowers, and slide refs. #1 trust lever: drop the real founder sample here.",
             ariaLabel:
-              "A live sample report — Project Summary with score, supports and lowers, and slide references",
+              "Three report layers — Project Summary, AI Score Report, and Questions for Live Q&A — cycling forward in turn",
           }}
         />
 
-        {/* 4. Inside the AI Score Report — gallery (default DS reveal motion). */}
+        {/* 4. Inside the AI Score Report — gallery, v4 grid (clean 3×2, no backdrop). */}
         <Gallery
           id="score"
           surface="light"
+          version={4}
           ariaLabel="Inside the AI Score Report"
           eyebrow="Inside the AI Score Report"
-          title="The reasoning, shown in the open"
-          sub="The reasoning layer shows its work — nothing hidden behind a number."
+          title="every score"
+          titleLead="See what"
+          titleAccent="shaped"
+          sub="See the evidence, confidence, judge input, and weights behind every score."
           laneLabel="Inside the AI Score Report — scroll horizontally"
           items={REPORT_CARDS.map((c) => ({
             tag: c.tag,
@@ -347,6 +367,9 @@ export default function EvidenceBasedReportsPage() {
             hint: "A slide quote (number · title) next to the supports/lowers it grounds, thin connector lines, calm",
             ariaLabel:
               "A slide quote with a slide reference next to the supports and lowers it grounds",
+            src: "/assets/evidence-reports/slide-finding-v4.webp",
+            width: 1600,
+            height: 1200,
           }}
         />
         {/* ── tone-flip seam (§6 → §7): transparent light→dark flip of the shared
@@ -361,7 +384,7 @@ export default function EvidenceBasedReportsPage() {
           ariaLabel="Deck completeness — a signal, not a verdict"
           eyebrow="Deck completeness"
           title="See what the deck never covered"
-          sub="Beyond scoring what’s there, the report flags what’s missing — the key sections a strong deck usually carries, and how serious each gap is. It’s a signal, not a verdict."
+          sub="The report checks which core sections are present, thin, or missing, then shows the severity and the dimension affected. It’s a review signal, not a verdict."
           items={COMPLETENESS_TILES.map((t) => ({
             tag: t.tag,
             title: t.title,
@@ -374,8 +397,13 @@ export default function EvidenceBasedReportsPage() {
                   bare
                   surface="ink"
                   columns={2}
-                  ariaLabel="The ten key sections, with a severity signal each"
-                  items={COMPLETENESS.map((c) => ({ name: c.name, sev: c.sev }))}
+                  ariaLabel="Sample deck completeness — each section present, thin, or missing, with severity and the affected dimension"
+                  items={COMPLETENESS.map((c) => ({
+                    name: c.name,
+                    sev: c.sev,
+                    status: c.status,
+                    dimension: "dimension" in c ? c.dimension : undefined,
+                  }))}
                   legend={[
                     { sev: "info", label: "info" },
                     { sev: "warning", label: "warning" },
@@ -386,17 +414,22 @@ export default function EvidenceBasedReportsPage() {
           }))}
         />
 
-        {/* 7. From shortlist to founder feedback — second gallery (ink,
-            default DS reveal motion). */}
-        <Gallery
+        {/* 7. Across the review — RiskControl v1 (ink): each row is a distinct use
+            case, left = the moment + use case, right = the concrete outcome. */}
+        <RiskControl
           id="uses"
           surface="ink"
-          ariaLabel="From shortlist to founder feedback"
-          eyebrow="One report, many uses"
-          title="From shortlist to founder feedback"
-          sub="The same report works across the whole review, not just the score screen."
-          laneLabel="Where the report is used — scroll horizontally"
-          items={USES.map((u) => ({ tag: u.tag, title: u.title, body: u.body }))}
+          ariaLabel="One report, from first read to final record"
+          eyebrow="Across the review"
+          title="One report, from first read to final record"
+          titleAccent="report"
+          sub="The same report supports preparation, selection, feedback, committee decisions, and the final record."
+          pairs={USES.map((u) => ({
+            leftTag: u.leftTag,
+            risk: u.risk,
+            rightTag: u.rightTag,
+            control: u.control,
+          }))}
         />
         {/* ── /zone — Cinema (§9, own video) + Footer stay outside ── */}
         </div>

@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { LabEyebrow, MediaPlaceholder } from "./_kit";
 
@@ -73,6 +73,10 @@ export type LabPinnedStepsProps = {
    * Additive and opt-in — when unset the component behaves exactly as before,
    * so existing consumers are unaffected. Takes priority over `photos`. */
   videoLoop?: { src: string; poster?: string; ariaLabel: string };
+  /** v3 custom media: an arbitrary React node (e.g. an animated visual) rendered
+   * in the pinned right column INSTEAD of the placeholder/video. Additive and
+   * opt-in — unset = original behaviour. */
+  mediaNode?: ReactNode;
   /** Optional CTA under the steps. */
   cta?: { label: string; href: string; variant?: "primary" | "ghost" | "glass" };
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
@@ -155,6 +159,7 @@ export function LabPinnedSteps({
   videoScrub,
   photos,
   videoLoop,
+  mediaNode,
   cta,
   marker,
 }: LabPinnedStepsProps) {
@@ -327,8 +332,13 @@ export function LabPinnedSteps({
               {ctaRow}
             </div>
             <div className="lab-rv__media">
-              {/* square stays pinned & centered; its content (.lab-rv__slide)
-                  slides vertically under the frame (subtle parallax) */}
+              {/* opt-in custom visual fills the whole pinned column (e.g. an
+                  animated glass scene); falls back to the square otherwise. */}
+              {mediaNode ? (
+                <div className="lab-rv__node">{mediaNode}</div>
+              ) : (
+              /* square stays pinned & centered; its content (.lab-rv__slide)
+                  slides vertically under the frame (subtle parallax) */
               <div
                 className={`lab-rv__square${videoLoop ? " lab-rv__square--video" : ""}`}
                 role="img"
@@ -378,6 +388,7 @@ export function LabPinnedSteps({
                   </>
                 )}
               </div>
+              )}
             </div>
           </div>
         </div>
