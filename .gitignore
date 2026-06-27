@@ -87,3 +87,12 @@ ds-bundle/
 .design-sync/.cache/
 .design-sync/learnings/
 .design-sync/node_modules
+
+# Stray root-level package files — the app lives in web/ (pnpm). Never commit
+# these (npm lockfile is forbidden; root package.json/pnpm-lock are accidental).
+/package.json
+/package-lock.json
+/pnpm-lock.yaml
+
+# Supabase CLI local link state (temp)
+supabase/.temp/
