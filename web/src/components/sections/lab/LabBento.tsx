@@ -38,6 +38,10 @@ export type LabBentoMedia = {
   label: string;
   hint: string;
   ariaLabel: string;
+  /** Coded visual rendered in the media slot INSTEAD of the placeholder/image
+   *  (e.g. a Tailwind product mockup). Additive & opt-in — takes priority over
+   *  `src`; unset = original placeholder/image behaviour. */
+  node?: ReactNode;
   /** Real asset path. When set, a `next/image` renders instead of the placeholder. */
   src?: string;
   /** Intrinsic asset size in px (for ratio / no CLS). Default 1536×1024. */
@@ -167,6 +171,9 @@ function TileIcon({ icon, feature }: { icon: LabBentoIcon; feature?: boolean }) 
  * `lab-bento__media` slot (pushed to the tile bottom).
  */
 function FeatureMedia({ media }: { media: LabBentoMedia }) {
+  if (media.node) {
+    return <div className="lab-bento__media">{media.node}</div>;
+  }
   if (media.src) {
     return (
       <Image

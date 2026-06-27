@@ -347,11 +347,12 @@ export default function EntryHubPage() {
           ]}
           media={{
             ratio: "16/9",
-            label: "Image · one clean workspace · 16:9",
-            hint: "Every submission organized, complete, and ready for review",
+            label: "Image · glass workspace station · 16:9",
+            hint:
+              "Futuristic glass workspace with startup signals, market analysis, pitch decks, and progress controls",
             ariaLabel:
-              "Every submission organized, complete, and ready for review",
-            src: "/assets/entry-hub/clean-workspace-v2.webp",
+              "Futuristic glass workspace for tracking startup submissions, market signals, pitch decks, and review progress",
+            src: "/assets/entry-hub/evallense-glass-light-workspace-station-01.webp",
             width: 1672,
             height: 941,
           }}

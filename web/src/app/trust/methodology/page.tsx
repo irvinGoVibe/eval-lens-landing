@@ -84,7 +84,7 @@ const FOUNDATIONS_TILES: BentoItem[] = [
     title: "Lean Startup",
     body: "Hypothesis and problem-solution logic - feeds Problem significance and Solution differentiation.",
     media: {
-      src: "/assets/methodology/foundations-lean-startup.webp",
+      src: "/assets/methodology/foundations-lean-startup-v3.png",
       width: 1229,
       height: 359,
       ratio: "1229/359",

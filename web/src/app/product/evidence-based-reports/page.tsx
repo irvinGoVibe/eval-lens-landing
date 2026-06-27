@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
-import { ExplodedGlassReport } from "./ExplodedGlassReport";
+import Image from "next/image";
 import {
   StatementHero,
   FullStatement,
@@ -314,13 +314,22 @@ export default function EvidenceBasedReportsPage() {
         <PinnedSteps
           id="anatomy"
           surface="light"
-          version={3}
+          version={1}
           ariaLabel="Anatomy of the report — three layers from summary to questions"
           eyebrow="Anatomy of the report"
           title={{ line1: "One report.", line2: "Three", line2Accent: "layers." }}
           sub="Start with the summary. See what shaped the score. Walk into the room with the right questions."
           steps={ANATOMY.map((a) => ({ num: a.num, label: a.label, desc: a.desc }))}
-          mediaNode={<ExplodedGlassReport />}
+          mediaNode={
+            <Image
+              src="/assets/evidence-reports/layered-glass-report-stack-01.webp"
+              alt="Three report layers — Project Summary with score, AI Score Report with the dimension breakdown, and Questions for Live Q&A"
+              width={1448}
+              height={1086}
+              sizes="(max-width: 880px) 90vw, 640px"
+              style={{ width: "100%", height: "auto" }}
+            />
+          }
           media={{
             ratio: "4/3",
             label: "Sample · real report needed · 4:3",

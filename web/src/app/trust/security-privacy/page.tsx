@@ -227,9 +227,9 @@ export default function SecurityPrivacyPage() {
             hint: "Show AI analysis handed to a human reviewer. The visual should make it clear: analysis is automated, the verdict is not.",
             ariaLabel:
               "An AI-to-human handoff where AI prepares the analysis and a person owns the decision",
-            src: "/assets/security-privacy/final-decision-human-ranking-02.png",
-            width: 1672,
-            height: 941,
+            src: "/assets/security-privacy/final-decision-human-ranking.webp",
+            width: 1619,
+            height: 972,
           }}
           points={[
             {
