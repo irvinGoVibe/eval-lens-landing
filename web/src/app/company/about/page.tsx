@@ -92,6 +92,10 @@ const PRINCIPLES = [
     body: "When evaluation lenses disagree, EvalLense does not hide the conflict inside an average. It shows the split so reviewers know where to look.",
   },
   {
+    title: "The same standard for every team.",
+    body: "Every application is judged against the same criteria and the same scale, so results stay comparable across the whole batch — and where repeated runs differ, that is visible too.",
+  },
+  {
     title: "Methodology beats model choice.",
     body: "Reliable evaluation needs clear criteria, controlled roles, structured outputs, and consistent scoring logic. The model is only one part of the system.",
   },
@@ -333,8 +337,12 @@ export default function AboutPage() {
                   ))}
                 </ol>
                 {/* link to the long-form origin story (Newsroom: founding-story) */}
-                <div className="ab-story__cta" data-reveal="up">
-                  <Button href="/blog/founding-story" variant="ghost" arrow>
+                <div
+                  className="ab-story__cta"
+                  data-reveal="up"
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <Button href="/blog/founding-story" variant="gradient" arrow>
                     Read the full story
                   </Button>
                 </div>
@@ -384,19 +392,95 @@ export default function AboutPage() {
                 methodology comes before the model.
               </p>
             </div>
-            <ul className="ab-prin-grid" data-reveal="up">
-              {PRINCIPLES.map((p) => (
-                <li
-                  key={p.title}
-                  className={
-                    p.feature ? "ab-prin-tile ab-prin-tile--feature" : "ab-prin-tile"
-                  }
+            {/* Principles bento — page-local injection (globals untouched),
+                modeled on the use-cases "Workflow Atlas" field-grid: a tall dark
+                media feature card (human-in-the-loop) beside a 2×2 of light
+                principle cards. */}
+            <style>{`
+              .ab-principles .ab-prin-bento{
+                display:grid; grid-template-columns:minmax(0,0.92fr) minmax(0,1.32fr);
+                gap:clamp(14px,1.6vw,22px); align-items:stretch;
+              }
+              .ab-principles .ab-prin-bento__feature{
+                position:relative; overflow:hidden; isolation:isolate;
+                border-radius:var(--radius-card); min-height:clamp(420px,42vw,560px);
+                display:flex; align-items:flex-end; padding:clamp(26px,3vw,42px);
+                color:var(--fg-on-dark); background:#05050a;
+              }
+              .ab-principles .ab-prin-bento__feature video{
+                position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+                filter:saturate(1.3) contrast(1.04) brightness(.6); z-index:-2;
+              }
+              .ab-principles .ab-prin-bento__feature::before{
+                content:""; position:absolute; inset:0; z-index:-1;
+                background:linear-gradient(180deg, rgba(5,5,12,.12) 0%, rgba(5,5,12,.5) 55%, rgba(5,5,12,.86) 100%);
+              }
+              .ab-principles .ab-prin-bento__feature-copy{ display:grid; gap:clamp(10px,1vw,14px); max-width:34ch; }
+              .ab-principles .ab-prin-bento__feature-eyebrow{
+                font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--lavender);
+              }
+              .ab-principles .ab-prin-bento__feature-h{
+                margin:0; font-size:clamp(25px,2.5vw,36px); line-height:1.08; letter-spacing:-.02em; font-weight:650; color:var(--fg-on-dark);
+              }
+              .ab-principles .ab-prin-bento__feature-p{
+                margin:0; font-size:clamp(14px,1vw,15.5px); line-height:1.5; color:rgba(255,255,255,.78); max-width:44ch;
+              }
+              .ab-principles .ab-prin-bento__cards{
+                display:grid; grid-template-columns:1fr 1fr; gap:clamp(14px,1.6vw,22px);
+              }
+              .ab-principles .ab-prin-bento__card{
+                display:flex; flex-direction:column; gap:12px; min-width:0;
+                background:#fff; border:1px solid var(--border); border-radius:var(--radius-card);
+                padding:clamp(22px,2.4vw,30px); box-shadow:var(--shadow-soft);
+              }
+              .ab-principles .ab-prin-bento__card-idx{
+                font-family:var(--font-mono); font-size:12px; letter-spacing:.1em;
+                background:var(--lens); -webkit-background-clip:text; background-clip:text; color:transparent;
+              }
+              .ab-principles .ab-prin-bento__card-h{
+                margin:0; font-size:clamp(18px,1.6vw,22px); line-height:1.16; letter-spacing:-.015em; font-weight:600; color:var(--fg);
+              }
+              .ab-principles .ab-prin-bento__card-p{
+                margin:0; font-size:clamp(14px,1.1vw,15.5px); line-height:1.52; color:var(--muted);
+              }
+              @media (max-width:920px){
+                .ab-principles .ab-prin-bento{ grid-template-columns:1fr; }
+                .ab-principles .ab-prin-bento__feature{ min-height:clamp(340px,60vw,440px); }
+              }
+              @media (max-width:560px){
+                .ab-principles .ab-prin-bento__cards{ grid-template-columns:1fr; }
+              }
+            `}</style>
+            <div className="ab-prin-bento" data-reveal="up">
+              <div className="ab-prin-bento__feature">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster="/assets/section2-scroll-2-poster.jpg"
+                  aria-hidden="true"
                 >
-                  <h3 className="ab-prin-h">{p.title}</h3>
-                  <p className="ab-prin-p">{p.body}</p>
-                </li>
-              ))}
-            </ul>
+                  <source src="/assets/backgrounds/bg-abstract-cinematic.mp4" type="video/mp4" />
+                </video>
+                <div className="ab-prin-bento__feature-copy">
+                  <span className="ab-prin-bento__feature-eyebrow">Human in the loop</span>
+                  <h3 className="ab-prin-bento__feature-h">{PRINCIPLES[0].title}</h3>
+                  <p className="ab-prin-bento__feature-p">{PRINCIPLES[0].body}</p>
+                </div>
+              </div>
+              <div className="ab-prin-bento__cards">
+                {PRINCIPLES.slice(1).map((p, i) => (
+                  <div key={p.title} className="ab-prin-bento__card">
+                    <span className="ab-prin-bento__card-idx">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="ab-prin-bento__card-h">{p.title}</h3>
+                    <p className="ab-prin-bento__card-p">{p.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 

@@ -458,6 +458,23 @@ export default function PromptInjectionSafetyPage() {
         />
 
         {/* §5 — Holding layers (soft) — PinnedSteps; visual slot 3. */}
+        {/* page-local: the funnel art goes "gigantism" — scaled +30% and nudged
+            down + left from its centered position. transform (not box size) so the
+            grid never reflows; the sticky stage clips any overflow. Tune --pis-*.
+            Mobile resets to the in-flow size. */}
+        <style>{`
+          #protection .lab-process__node img{
+            --pis-scale: 1.3;
+            --pis-x: -11%;
+            --pis-y: 5%;
+            transform: translate(var(--pis-x), var(--pis-y)) scale(var(--pis-scale));
+            transform-origin: center;
+            will-change: transform;
+          }
+          @media (max-width: 880px){
+            #protection .lab-process__node img{ transform: none; }
+          }
+        `}</style>
         <PinnedSteps
           id="protection"
           surface="light"
