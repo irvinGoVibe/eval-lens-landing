@@ -5,6 +5,7 @@ import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { CanvasFlowField } from "@/components/CanvasFlowField";
+import { ReviewBoardMockup } from "@/components/ReviewBoardMockup";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
@@ -88,7 +89,7 @@ export default function ReviewBoardPage() {
           eyebrow="Review Board"
           titleLead="Compare the evidence. Make the"
           titleAccent="final call."
-          sub="Review every scored startup in one place. Compare the evidence, set your Jury Scores, and rank the batch. AI prepares the analysis. Your jury decides what moves forward."
+          sub="Review Board turns AI-scored reports into a human-ranked batch decision. Compare every startup on the same criteria, set your Jury Scores, and build the final ranking — the call stays yours."
           ctas={[
             { label: "Book a demo", href: "/company/contact" },
             { label: "Try live demo", href: "/#demo", variant: "ghost" },
@@ -106,29 +107,29 @@ export default function ReviewBoardPage() {
         <Numbered
           surface="ink"
           version={3}
-          eyebrow="After the scores"
-          title="A scored batch still needs a decision"
-          sub="AI can score every startup. Your jury still needs to compare the evidence, resolve disagreements, and decide what moves forward."
+          eyebrow="After scoring"
+          title="A scored batch is not a decision"
+          sub="AI can score every startup, but a stack of separate scores is not a ranked outcome. The differences, the evidence, and the progress stay scattered across reports."
           items={[
             {
               num: "01",
-              title: "Separate reports hide differences",
+              title: "Separate reports hide the differences",
               body: "Important differences are easy to miss when every report lives in a separate tab.",
             },
             {
               num: "02",
               title: "Scores need evidence",
-              body: "A number means little unless reviewers can see the findings behind it.",
+              body: "A score means little unless reviewers can see what supports it.",
             },
             {
               num: "03",
               title: "Batch progress is hard to track",
-              body: "Reviewers need one place to see what's ready, in review, scored, or blocked.",
+              body: "Reviewers need one place to see what is ready, in review, scored, or blocked.",
             },
             {
               num: "04",
-              title: "Decisions lose their context",
-              body: "Scores, notes, and reasoning need to remain visible after the shortlist is final.",
+              title: "Decisions lose context",
+              body: "Scores, notes, and reasoning should stay visible after the shortlist is final.",
             },
           ]}
         />
@@ -141,29 +142,30 @@ export default function ReviewBoardPage() {
           eyebrow="One workspace"
           title="One board for the whole decision"
           titleAccent="decision"
-          sub="See every startup, status, AI Total Score, Jury Score, and finding in one place. Compare the batch, open the evidence, and build the shortlist without moving between reports and spreadsheets."
+          sub="One place to turn scored reports into a decision. See every startup, status, AI Total Score, Jury Scores, and key finding — compare the batch, open the evidence, and build the shortlist without jumping between reports and spreadsheets."
           items={[
             {
               tag: "Startup list",
               title: "Every startup and its current status",
-              body: "See the full batch and know which startups are ready, under review or waiting for a score.",
+              body: "See the full batch and know which startups are ready, under review, or still waiting for a score.",
               feature: true,
               media: {
                 label: "Image · board bento · 16:9",
                 hint: "Startup list with statuses, scores, comparison and leaderboard — hairline tiles, one lens accent",
                 ariaLabel:
                   "A bento of the board: startup list with statuses, scores, comparison and leaderboard",
+                node: <ReviewBoardMockup />,
               },
             },
             {
               tag: "AI Total Score",
-              title: "A reference, not the final score",
-              body: "Use the AI score as context. Your Jury Score determines the ranking.",
+              title: "Reference, not final score",
+              body: "Use the AI score as context. Your Jury Scores determine the ranking.",
             },
             {
               tag: "Judge findings",
               title: "The reasoning behind each score",
-              body: "Review the findings across your evaluation criteria and see what supports each score.",
+              body: "Review findings across your criteria and see what supports each score.",
             },
             {
               tag: "Comparison",
@@ -172,13 +174,13 @@ export default function ReviewBoardPage() {
             },
             {
               tag: "Leaderboard",
-              title: "Ranked by your Jury Score",
-              body: "Rank the batch using your Jury Scores and project weights. The AI score stays advisory.",
+              title: "Ranked by Jury Scores",
+              body: "Rank the batch using Jury Scores and project weights. AI scores stay advisory.",
             },
             {
               tag: "Shortlist",
               title: "Build the shortlist without leaving the board",
-              body: "Shortlist the strongest startups without moving the decision into a separate spreadsheet or document.",
+              body: "Shortlist the strongest startups without moving the decision into a spreadsheet or separate document.",
             },
           ]}
         />
@@ -191,28 +193,28 @@ export default function ReviewBoardPage() {
         {/* 4 — RiskControl: AI signal → human decision (light · v1) */}
         <RiskControl
           surface="light"
-          ariaLabel="AI signal to human decision — AI shows where to look, your jury decides what to do"
-          eyebrow="AI SIGNAL → HUMAN DECISION"
-          title="AI shows where to look. Your jury decides what to do."
-          titleAccent="decides"
-          sub="High scores, weak evidence, and judge disagreement are signals for review, not automatic decisions."
-          leftTag="AI SIGNAL"
-          rightTag="HUMAN DECISION"
+          ariaLabel="Review signals — the cases AI flags for a closer look"
+          eyebrow="Review signals"
+          title="AI flags where to look closer"
+          titleAccent="closer"
+          sub="High scores with weak evidence, judge disagreement, and a strong criteria fit are the cases worth a second look."
+          leftTag="Signal"
+          rightTag="What to check"
           pairs={[
             {
               risk: "Judges disagree",
               control:
-                "Review the split, compare the reasoning, and resolve it together.",
+                "Open the split and compare the reasoning before you score.",
             },
             {
               risk: "A high score has weak evidence",
               control:
-                "Open the findings and check whether the score is supported.",
+                "Open the findings and check what actually supports it.",
             },
             {
               risk: "A lower-ranked startup fits your criteria",
               control:
-                "Move it into the shortlist and keep the reason with the decision.",
+                "Pull up the evidence and give it a closer read.",
             },
           ]}
         />
@@ -224,33 +226,33 @@ export default function ReviewBoardPage() {
           version={1}
           eyebrow="Batch status"
           title="See the whole batch at a glance"
-          sub="Each startup has one clear status, so you can see what's ready, in review, scored or blocked without opening every report."
+          sub="Each startup has one clear status, so you can see what is ready, in review, scored, or blocked without opening every report."
           laneLabel="Participant statuses across the board"
           items={[
             {
               tag: "Ready",
-              title: "AI Report Ready",
-              body: "The AI analysis is complete and ready for your review.",
+              title: "AI report ready",
+              body: "The AI analysis is complete and ready for review.",
             },
             {
               tag: "Active",
-              title: "In Review",
-              body: "The report is open and the human review is underway.",
+              title: "In review",
+              body: "The report is open and human review is underway.",
             },
             {
               tag: "Complete",
               title: "Scored",
-              body: "A Jury Score has been submitted for every dimension.",
+              body: "Jury Scores have been submitted for every dimension.",
             },
             {
               tag: "Pending",
-              title: "Not Scored",
-              body: "Human scoring hasn't started yet.",
+              title: "Not scored",
+              body: "Human scoring has not started yet.",
             },
             {
               tag: "Action needed",
-              title: "Error",
-              body: "One or more judge runs failed. Rerun the entry before scoring it.",
+              title: "Needs rerun",
+              body: "One or more judge runs failed. Rerun the entry before scoring.",
             },
           ]}
         />
@@ -266,16 +268,16 @@ export default function ReviewBoardPage() {
           ariaLabel="Human in the loop — AI prepares the analysis, you make the call"
           eyebrow="Human in the loop"
           title={{
-            line1: "AI prepares the evidence.",
-            line2: "Your jury makes",
-            line2Accent: "the call",
+            line1: "Four steps from",
+            line2: "report to",
+            line2Accent: "final ranking.",
           }}
-          sub="AI reviews every deck across the same criteria. You check the evidence, ask questions, set the Jury Score and generate the final ranking."
+          sub="Check the evidence, ask questions, set Jury Scores, and generate the final ranking — all in one board."
           steps={[
             {
               num: "01",
               label: "Open the report",
-              desc: "Review the startup summary, AI Total Score, and findings across your project criteria.",
+              desc: "Review the startup summary, AI Total Score, and findings across your criteria.",
             },
             {
               num: "02",
@@ -284,13 +286,13 @@ export default function ReviewBoardPage() {
             },
             {
               num: "03",
-              label: "Set the Jury Score",
-              desc: "Score each criterion from 0.0 to 10.0. The AI Total Score remains read-only.",
+              label: "Set Jury Scores",
+              desc: "Score each criterion from 0.0 to 10.0. The AI Total Score stays read-only.",
             },
             {
               num: "04",
               label: "Generate the leaderboard",
-              desc: "Once every startup is scored, generate a ranking based on Jury Scores and project weights.",
+              desc: "Once every startup is scored, generate the ranking from Jury Scores and project weights.",
             },
           ]}
           mediaNode={
@@ -318,26 +320,26 @@ export default function ReviewBoardPage() {
           id="compare"
           surface="ink"
           version={3}
-          eyebrow="Compare & rank"
+          eyebrow="Compare and rank"
           titleLead="Turn separate reports into one"
           titleAccent="ranked list"
-          sub="Compare every startup against the same criteria, see where the judges disagree, and build a shortlist in one place."
+          sub="Put every startup on the same criteria and let your Jury Scores order the batch — one human-ranked leaderboard instead of scattered reports."
           points={[
             {
-              title: "Compare side by side",
-              body: "Compare startups using the same criteria. Sort the list by total score or any individual dimension.",
+              title: "Compare on the same criteria",
+              body: "Line up every startup against the same criteria and sort by total score or any single dimension.",
             },
             {
-              title: "See where judges disagree",
-              body: "When AI judges differ, we show the spread instead of averaging it away. You can see consensus, a split, or a conflict — and where human review matters.",
+              title: "From reports to one list",
+              body: "Separate reports collapse into one ranked batch you can act on, not scattered tabs.",
             },
             {
-              title: "Use your criteria",
-              body: "Set your own rubric and weights. For custom jury processes, we adapt the evaluation setup to match how you already work.",
+              title: "Use your own criteria and weights",
+              body: "Set the criteria and weights so the ranking matches how your jury already works.",
             },
             {
-              title: "Human Jury Score sets the rank",
-              body: "The leaderboard is ranked by your Jury Score, weighted by your criteria. AI scores stay visible as context, but never determine the final order.",
+              title: "Jury Scores set the rank",
+              body: "The leaderboard is ranked by Jury Scores, weighted by your criteria. AI scores stay context, never the final order.",
             },
           ]}
           media={{
@@ -375,10 +377,11 @@ export default function ReviewBoardPage() {
           theme="dark"
           videoSrc="/assets/cta/cube-1.mp4"
           eyebrow="Decision trail"
-          title="AI advises. Your Jury Score"
-          titleAccent="decides."
-          sub="The AI Total Score stays visible as context. Your Jury Scores determine the ranking, so the final order reflects your jury's decision."
-          primary={{ label: "Book a demo", href: "/company/contact" }}
+          title="AI advises. Your Jury Scores"
+          titleAccent="decide."
+          sub="Every decision keeps its trail — AI Total Score as context, Jury Scores as the verdict, and a ranking your jury can defend."
+          primary={{ label: "Review one batch", href: "/#demo" }}
+          secondary={{ label: "Book a demo", href: "/company/contact" }}
         />
       </main>
       <Footer variant="dark" />
