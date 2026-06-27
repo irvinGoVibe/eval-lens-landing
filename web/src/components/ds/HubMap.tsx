@@ -33,6 +33,7 @@ export type HubLink = {
   title: string;
   body: string;
   href: string;
+  ctaLabel?: string;
   feature?: boolean;
 };
 export type HubMapProps = {
@@ -45,6 +46,7 @@ export type HubMapProps = {
   /** Optional lens-accented word inside the title (first case-insensitive match). */
   titleAccent?: string;
   sub: string;
+  note?: string;
   /** Link tiles; the first one `feature`. */
   items: HubLink[];
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
@@ -63,7 +65,7 @@ function LinkCard({ item }: { item: HubLink }) {
       <span className="mini-tag">{item.tag}</span>
       <h3>{item.title}</h3>
       <p>{item.body}</p>
-      <span className="ds-hubmap__more">Open route →</span>
+      <span className="ds-hubmap__more">{item.ctaLabel ?? "Open route"} →</span>
     </a>
   );
 }
@@ -90,6 +92,11 @@ function Layout({ items }: { items: HubLink[] }) {
   );
 }
 
+function Note({ note }: { note?: string }) {
+  if (!note) return null;
+  return <p className="ds-hubmap__note">{note}</p>;
+}
+
 export function HubMap({
   id,
   surface = "light",
@@ -98,6 +105,7 @@ export function HubMap({
   title,
   titleAccent,
   sub,
+  note,
   items,
   marker,
 }: HubMapProps) {
@@ -118,6 +126,7 @@ export function HubMap({
             <p className="sub">{sub}</p>
           </div>
           <Layout items={items} />
+          <Note note={note} />
         </div>
       </div>
 
@@ -130,6 +139,7 @@ export function HubMap({
             <p className="sub">{sub}</p>
           </div>
           <Layout items={items} />
+          <Note note={note} />
         </div>
       </div>
 
@@ -142,6 +152,7 @@ export function HubMap({
             <p className="sub">{sub}</p>
           </div>
           <Layout items={items} />
+          <Note note={note} />
         </div>
       </div>
 

@@ -987,6 +987,8 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
 .ds-hubmap__card p{font-size:14px;line-height:1.55;color:var(--muted);}
 .ds-hubmap__card .mini-tag{position:static;top:auto;right:auto;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;}
 .ds-hubmap__more{margin-top:auto;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);}
+.ds-hubmap__note{max-width:70ch;margin:clamp(24px,4vw,38px) auto 0;text-align:center;font-size:13px;line-height:1.55;color:var(--muted);}
+.ds-hubmap.ink .ds-hubmap__note{color:var(--muted-on-dark);}
 
 /* ── LIGHT (soft) cards — frosted-glass material, ported 1:1 from the light
    `LabBento` tiles (globals `.lab-bento:is(.soft,.light) .lab-bento__tile*`):

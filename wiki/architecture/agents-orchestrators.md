@@ -146,8 +146,8 @@ stale-каталог `evallense-visual-restyler/` без `SKILL.md` — канд
 
 ### 3.3 Pages — сборка внутренних страниц
 
-- **`page-composer`** (`/page-composer <route>` | `/page-builder`) — **Page
-  Orchestrator**: один запуск = **одна** страница, глубокая реконструкция. Резолвит
+- **`page-composer`** (`/page-composer <route>`) — **Page Orchestrator**:
+  один запуск = **одна** страница, глубокая реконструкция. Резолвит
   бриф `wiki/product/<slug>.md` + route + существующую `page.tsx`, сохраняет все
   обязательные секции/порядок/факты, матчит **только `ready`** библиотеку
   (манифесты), планирует реконструкцию, держит **один Design Review Gate**, после
@@ -160,6 +160,11 @@ stale-каталог `evallense-visual-restyler/` без `SKILL.md` — канд
   секции → `component-forge`, атомы/каркасы → `primitive-layer-forge`, фоны/переходы
   → `visual-layer-forge`. Не коммитит/не пушит. Это потребитель `page-composer` из
   манифестов (ранее значился «ещё не существует»). Дока: [[component-library#Source of truth для page-composer (preparer)|Source of truth для page-composer]].
+
+  **Не путать с Page Builder.** Если в проекте есть отдельный Page Builder
+  runtime/editor/registry/serialized blocks, это другой слой. `/page-builder`
+  не является алиасом `page-composer`; при таком запросе сначала найти реальные
+  builder-доки/модуль и уточнить желаемый режим работы.
 
 - **`build-pages`** (`/build-pages /product/entry-hub …`) — пакетно собирает
   внутренние страницы из продуктовых брифов `wiki/product/<slug>.md`. На каждую

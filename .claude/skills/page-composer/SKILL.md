@@ -1,808 +1,879 @@
 ---
 name: page-composer
-description: "ОРКЕСТРАТОР постраничной реконструкции сайта EvalLense: один запуск = одна страница. Находит продуктовый бриф, резолвит route, находит существующую Next.js-страницу, сохраняет все обязательные смысловые секции и порядок, раскладывает новый контент, заменяет локальные элементы готовыми (`ready`) компонентами библиотеки, подбирает surfaces/backgrounds/transitions/motion, недостающие переиспользуемые ассеты заказывает у component-forge / visual-layer-forge (не лепит локально), собирает страницу и проводит full-page browser QA. Это долгожданный Page Orchestrator (consumer `page-composer` из манифестов) — потребитель готовой библиотеки, не новый реестр. Сам application-код пишет только назначенный инженер после user-гейта. Не batch (это build-pages). Триггеры — /page-composer, /page-builder, «собери страницу <route>», «реконструируй страницу product/trust», «resume <route>», «audit <route>»."
+description: "ГЛАВНЫЙ вход для создания или реконструкции ОДНОЙ страницы EvalLense из продуктовой документации. Берёт целевую route/page.tsx и выбранный пользователем бриф wiki/product/<slug>.md или <slug>_new.md, сохраняет обязательные секции/факты/порядок, матчится только на ready DS-библиотеку, роутит gaps в forge-скиллы и по умолчанию ведёт страницу через расслоённый pipeline: page-skeleton → page-skin → page-motion → page-validate. Это НЕ Page Builder: не работать с builder registry/serialized builder blocks, если пользователь явно просит Page Builder. Сам application-код не пишет без user-гейта; не batch (это build-pages); не редактирует продуктовый бриф (это evallense-site). Триггеры — /page-composer, «создай страницу из продуктовой документации», «собери страницу <route> из <brief>», «реконструируй страницу product/trust», «resume <route>», «audit <route>»."
 metadata:
-  package: component-library
+  package: page-build
   role: orchestrator
   product: EvalLense
-  identity: "Page Orchestrator / consumer `page-composer` (ранее помечен в манифестах как «ещё не существует как skill»)"
-  consumes: [component-library-preparer manifests]
-  routes_to: [component-forge, visual-layer-forge, component-library-preparer]
+  identity: "Page Composer / top-level page build entrypoint"
+  default_mode: layered
+  pipeline: [page-skeleton, page-skin, page-motion, page-validate]
+  consumes: [wiki/product briefs, component-library-preparer manifests]
+  routes_to: [evallense-site, page-skeleton, page-skin, page-motion, page-validate, component-forge, primitive-layer-forge, visual-layer-forge, component-library-preparer]
 ---
 
-# page-composer — оркестратор постраничной реконструкции
+# page-composer — главный вход: продуктовый бриф → страница
 
-Ты — **дирижёр**. **Сам application code не пишешь** до утверждённой
-implementation-фазы. Читаешь контекст, находишь страницу, раскладываешь контент по
-обязательным секциям, **матчишь только готовую (`ready`) библиотеку**, планируешь
-реконструкцию, **назначаешь специализированных агентов**, передаёшь короткие
-**task packets** (не весь чат), держишь **один Design Review Gate**, ведёшь
-full-page QA + fix loop (≤3), регистрируешь новые gaps через профильные forge-скиллы.
+Ты — **дирижёр постраничной сборки**. Главная задача: из продуктовой документации
+собрать или реконструировать **одну** страницу EvalLense в `web/src/app/<route>/page.tsx`,
+сохранив смысл, факты, обязательные секции и порядок.
 
 ```text
 один запуск = одна страница
+default: page-composer → page-skeleton → page-skin → page-motion → page-validate
 ```
 
-> Место в экосистеме. Это **Page Orchestrator** — потребитель `page-composer`,
-> который во всех манифестах (`manifest.json`) и в `wiki/architecture/agents-orchestrators.md`
-> числится как «ещё не существует». Он **потребляет** готовую библиотеку
-> (`component-library-preparer`), **заказывает** недостающее у `component-forge`
-> (секции/каркасы/API/слоты) и `visual-layer-forge` (фоны/переходы/motion). Это
-> доработка существующей системы, **не новый параллельный реестр и не batch**.
-> Batch-сборка нескольких страниц — это `build-pages`, его не трогаем (§16).
+`page-composer` больше не должен решать структуру, цвет, переходы и motion одним
+монолитным гейтом. Нормальный режим — **layered orchestration**:
+
+1. `page-skeleton` — структура в светлом нейтрале.
+2. `page-skin` — тема, surface-драматургия и стиль.
+3. `page-motion` — переходы и scroll/ambient motion.
+4. `page-validate` — сверка live page с продуктовым брифом и QA.
+
+Legacy one-shot допустим только если пользователь явно попросил: `one-shot`,
+`legacy composer`, `без трёх проходов`, `сразу собрать полностью`. Даже тогда действуют
+все запреты, draft-first gate и QA.
+
+## 0.1 Page Composer != Page Builder
+
+Не смешивать термины:
+
+- **Page Composer** — агентский оркестратор “product brief + existing repo + DS
+  library → one coded page”. Он читает `wiki/product/*.md`, текущие routes/pages,
+  `@/components/ds`, архитектурные docs и собирает/реконструирует `page.tsx`.
+- **Page Builder** — если в проекте есть отдельный builder/editor/runtime, registry,
+  serialized blocks или CMS-like tooling, это другой слой. Composer не должен
+  называть себя Page Builder, менять builder registry или придумывать builder data
+  model без явного запроса пользователя.
+
+Если пользователь говорит `/page-builder` или явно просит “Page Builder”, сначала
+найти в репозитории реальный builder-модуль/доки и уточнить, что нужно: работать
+с Page Builder tooling или собрать страницу через Page Composer. Не маршрутизировать
+`/page-builder` молча в этот skill.
 
 ---
 
-## 0. Жёсткие запреты (read first)
+## 0. Что делает и чего не делает
 
-Скилл оркеструет; application-код пишет назначенный инженер только в Фазе 8 после
-гейта. **Нельзя:**
+**Делает:**
 
-- удалять обязательные секции; переписывать продуктовый смысл; выдумывать факты,
-  числа, утверждения; сокращать контент ради дизайна; менять смысловой порядок;
-  объединять секции без явного разрешения;
-- **импортировать `Lab*` / `_kit` / `sections/lab/*` напрямую** — это deprecated
-  внутренний субстрат; код страниц называет и импортирует **только** чистый
-  `@/components/ds` (см. [[design-system]]). Нужного DS-компонента нет в барреле
-  → это gap → forge извлекает чистый DS, страница в обход не импортирует;
-- **создавать скрытые форки библиотеки внутри страницы** — недостающий
-  reusable-ассет уходит в forge, а не копируется локально;
-- импортировать internal fragments, которые библиотека не экспортирует
-  (см. `composition_access` в манифестах) — нет нужного export/slot → `component-api-gap`;
-- вручную править манифесты `.claude/library/component-library/*.json` (регистрация —
-  только через `component-library-preparer` incremental);
-- использовать `conditional` как `ready` без явного fallback; использовать
-  `blocked` / `blocked-by-surface-ownership` ассеты;
-- создавать новую палитру/токены вне design-system; создавать отдельный animation
-  runtime — движение только через `<ScrollFX/>` + `data-reveal`/`data-scrub`/`data-pin`
-  (внутренние страницы) или `ScrollOrchestrator` (только home, не переиспользовать);
-- вводить новые зависимости; менять **другие** production-страницы; редизайнить
-  reusable-компоненты внутри page run (любая доработка — через forge);
-- `git commit` / `git push` / создавать PR / deploy / трогать `.env*`.
+- принимает целевую страницу (`route` или путь к `page.tsx`);
+- обязательно уточняет источник контента: `wiki/product/<slug>.md`,
+  `wiki/product/<slug>_new.md` или произвольный `.md`;
+- проверяет, готов ли бриф для сборки;
+- раскладывает бриф на обязательные секции и факты;
+- проверяет текущую страницу, если она уже есть;
+- матчится на `ready` DS-компоненты и visual-layer манифесты;
+- определяет gaps и отправляет их в нужный forge-процесс;
+- ведёт пользователя через layered pipeline;
+- хранит run state и resume packet;
+- в конце запускает/вызывает `page-validate`.
 
-Сервер/браузер поднимаем **только в Фазе 9 (Full-page QA)** — по правилу CLAUDE.md
-preview сам не стартует; разрешение даёт approve Design Review Gate (§8) либо уже
-запущенный рабочий сервер. `pnpm build` — только с отдельного разрешения и по
-правилам репо. pnpm only, порт **3005**, порт не менять.
+**Не делает:**
+
+- не пишет продуктовый бриф с нуля — это `evallense-site`;
+- не собирает несколько страниц — это `build-pages`;
+- не работает с Page Builder registry/serialized blocks/editor tooling без явного
+  отдельного запроса;
+- не редизайнит reusable-компоненты внутри page run — это `redraw-block` /
+  `component-forge`;
+- не создаёт новые backgrounds/transitions/motion локально — это `visual-layer-forge`;
+- не импортирует `Lab*`, `_kit`, `sections/lab/*` напрямую;
+- не правит манифесты руками;
+- не делает commit/push/PR/deploy и не трогает `.env*`.
+
+Если пользователь говорит: «есть чистая продуктовая документация, создай страницу»,
+выбор по умолчанию — **этот skill**. Если брифа ещё нет или он сырой — сначала
+маршрутизировать в `evallense-site`, затем вернуться в `page-composer`.
 
 ---
 
-## 1. Главный принцип структуры страницы
+## 1. Жёсткие инварианты страницы
 
-Смысловой состав страницы **уже задан брифом** (`wiki/product/<slug>.md`). Оркестратор
-**обязан сохранить**:
+Смысловой состав задаёт выбранный бриф. Composer обязан сохранить:
 
 ```text
-все обязательные секции · весь утверждённый смысл · ключевые факты и числа · смысловой порядок
+обязательные секции · утверждённый смысл · ключевые факты и числа · порядок секций
 ```
 
-Разрешены только:
+Запрещено:
 
-- визуальная реконструкция секции;
-- выбор другого библиотечного архетипа под **тот же** смысл;
-- изменение масштаба / плотности;
-- добавление **несмысловой** визуальной паузы;
-- добавление transition / stat band / statement / media break / ambient visual,
-  если это улучшает ритм и **не добавляет новых продуктовых утверждений**.
+- удалять обязательные секции;
+- выдумывать факты, цифры, claims, названия клиентов, интеграции, цены;
+- сокращать контент ради дизайна так, что меняется смысл;
+- менять смысловой порядок без явного user approval;
+- объединять секции, если бриф требует их отдельно;
+- заменять продуктовый нарратив декоративной “красотой”.
 
-Визуальная пауза — **не** новая продуктовая секция.
+Разрешено:
+
+- выбрать другой ready DS-архетип под тот же смысл;
+- изменить масштаб/плотность/ритм секции;
+- добавить несмысловую визуальную паузу;
+- предложить gap в библиотеке, если текущих компонентов не хватает.
+
+Визуальная пауза — не новая продуктовая секция.
 
 ---
 
-## 2. Вход и определение страницы (resolver)
+## 2. Resolve: цель и источник контента
 
-**Модель ввода (нерушимо):** пользователь указывает **целевую страницу** — какую
-`page.tsx` правим. Оркестратор в ответ **сам спрашивает, из какого файла брать
-контент** (источник-бриф) — `AskUserQuestion`, всегда, даже если кандидат один.
-**Бриф по route молча не угадывается.** Аргумент команды = цель, источник = вопрос.
+**Аргумент команды = целевая страница. Источник контента выбирает пользователь.**
+Бриф молча не угадывать.
 
-Допустимые вызовы (аргумент = **целевая страница**):
+Допустимые вызовы:
 
 ```text
-/page-composer product/overview                 # route → web/src/app/product/overview/page.tsx
+/page-composer product/overview
 /page-composer trust/methodology
-/page-composer evidence-based-reports           # slug/токен → fuzzy-матч на страницу
-/page-composer web/src/app/pricing/page.tsx     # прямой путь к page.tsx
-/page-composer "resume <route>"
-/page-composer "audit <route>"
-/page-composer                                  # пусто → показать страницы, спросить какую
+/page-composer evidence-based-reports
+/page-composer web/src/app/pricing/page.tsx
+/page-composer "resume product/overview"
+/page-composer "audit product/overview"
+/page-composer
 ```
 
-### 2.1 Фактическая конвенция репозитория (не выдумывать)
+### 2.1 Целевая страница
 
-- **Целевые страницы:** `web/src/app/<route>/page.tsx`. Маршруты — `wiki/product/sitemap.md`
-  (**мягкая сверка**, не жёсткий фильтр: напр. `pricing` есть как страница, но исключён
-  из P0 sitemap — это норма).
-- **Файлы-источники (брифы) — плоские:** `wiki/product/<slug>.md`, где `slug` =
-  **последний сегмент route** (`/product/overview` → `overview.md`, `/trust/methodology`
-  → `methodology.md`). Структура — по `wiki/product/_page-template.md`; frontmatter
-  несёт `route:` / `section:` / `nav_label:` / `in_header_nav` / `in_footer_nav` / `cta`.
-- **Обогащённый вариант** (output `evallense-site`): `wiki/product/<slug>_new.md` —
-  суффикс ровно **`_new`** (не `new` / `-new`).
-- **Папочные** `wiki/product/<Section>/<slug>.md` — старые, без frontmatter,
-  **вторичны** (доп. контекст, не первичный источник).
+- путь к `page.tsx` → взять как цель;
+- route/slug → нормализовать и найти `web/src/app/**/page.tsx`;
+- если страницы нет → status `missing`, можно создать новую;
+- если несколько кандидатов → спросить, не угадывать;
+- если пустой вызов → показать кандидаты страниц/route и спросить.
 
-Конвенция нужна resolver'у, чтобы **собрать список кандидатов-источников** для вопроса
-(шаг 2 ниже) — а не чтобы выбрать источник за пользователя.
+### 2.2 Источник контента
 
-### 2.2 Процедура resolve
+Для route собрать кандидатов:
 
-1. **Определить целевую страницу из аргумента.**
-   - путь к `page.tsx` → взять как есть, `route` вывести из пути;
-   - route/slug-токен → нормализовать (убрать ведущий `/`, убрать суффикс `_new`),
-     сматчить на существующую `web/src/app/**/page.tsx` (точный сегмент, иначе
-     подстрока slug); цель → `web/src/app/<route>/page.tsx`;
-   - пусто → показать список существующих `page.tsx`, спросить какую (`AskUserQuestion`).
-   Несколько кандидатов-страниц / неоднозначно → **спросить**, не угадывать. Страница →
-   `existing` | `missing`.
-2. **⛔ Спросить источник контента (обязательно, `AskUserQuestion`).** Для найденной
-   страницы (по её slug) собрать кандидатов из §2.1: `wiki/product/<slug>.md`,
-   `<slug>_new.md`, папочные варианты — и **спросить, из какого файла брать контент**.
-   Не выбирать молча даже при единственном кандидате (подтвердить). Пользователь может
-   указать **произвольный путь** к иному источнику. Без ответа дальше не идём.
-3. **Прочитать выбранный источник.** Для `.md` с frontmatter взять `route:` и сверить
-   с целевой страницей — расхождение route↔страница **показать**, не игнорировать.
-4. **Cross-check sitemap** (информативно, не блок).
-5. **Стоп при неоднозначности цели или отсутствии источника** — показать и спросить
-   (`AskUserQuestion`), ничего не выдумывать.
+- `wiki/product/<slug>.md`;
+- `wiki/product/<slug>_new.md`;
+- старые папочные варианты как вторичный контекст;
+- путь, явно указанный пользователем.
 
-Выход:
+Обязательно спросить: **из какого файла брать контент**. Даже если кандидат один,
+получить подтверждение.
+
+Если выбранный `.md` имеет frontmatter `route:`, сверить с целевой страницей. Если
+route расходится — показать конфликт и остановиться до подтверждения.
+
+Выход resolve:
 
 ```yaml
 page_target:
-  page_source:     # web/src/app/<route>/page.tsx  — ЦЕЛЬ (указал пользователь)
-  route:           # /<section>/<slug>
-  document:        # файл-источник контента, ВЫБРАННЫЙ пользователем (шаг 2)
-  status: existing | missing | ambiguous
-  brief_variant_conflict:   # существовали ли альтернативные источники (base/_new/папочный)
-```
-
----
-
-## 3. Compose-mode awareness (ключевой раздел)
-
-page-composer **mode-aware**: он читает `compose_mode` из
-`.claude/library/component-library/manifest.json` и работает по фактической
-готовности библиотеки, **не выдумывая несуществующие каркасы**.
-
-> **Канон импорта (нерушимо).** Страница импортирует и называет **только** чистый
-> публичный API дизайн-системы — `@/components/ds` (см. [[design-system]]
-> §«Дизайн-система — `@/components/ds`»). `Lab*` / `_kit` / прямой
-> `sections/lab/*` — **deprecated субстрат**, в коде страниц **не импортируется**.
-> Контейнер — `<main className="section-lab ds">` (`.ds` — публичный светлый язык;
-> `.section-lab` — временный technical-debt класс, нужен пока `.lab-*` ещё несущие).
-
-| `compose_mode` | Что значит | Как собирает page-composer |
-|---|---|---|
-| `whole-sections-only` (**сейчас**) | `_layout.tsx` не существует (конфликт CL-001); слой каркасов L4 пуст | целые `ready` **DS-секции** (`@/components/ds`: `StatementHero`/`Bento`/…) + `page-local на shared tokens/`.ds`/`data-*`/`.media-ph`` там, где готового нет; недостающая DS-секция/каркас/атом/слот → **gap в `component-forge`** (извлечь чистый DS) |
-| `atoms-and-layouts` | `_layout.tsx` сфоржен и экспортирует подтверждённые DS-каркасы (`Band/Wrap/SplitGrid/BentoGrid/GalleryRail/PinnedStage`) | сборка **по частям** из DS-атомов+каркасов: matcher предлагает atoms+layouts, reconstruction-planner использует `use-slot`/`replace-internal-elements`/`use-props` на уровне частей |
-
-**Честный статус сегодня (по факту кода):**
-
-- Публичный DS-API (`@/components/ds`) сейчас покрывает **5 секций**
-  (`StatementHero` · `Bento` · `FullStatement` · `Gallery` · `PinnedSteps`) +
-  **3 атома** (`Eyebrow` · `Title` · `Media`) + `Button`. Остальные ~13 секций
-  ещё не вынесены в баррель — это **gaps** (см. [[design-system]] §«Состав»).
-- Каркасов (L4) в публичном API пока нет: `_layout.tsx` отсутствует
-  (`documented-missing`, CL-001). «Лейаут» сейчас — CSS `.wrap`/`.stage` +
-  инлайн-гриды внутри (deprecated) субстрата.
-- `page-local на shared DS tokens/`.ds`` (как текущая `trust/methodology/page.tsx`)
-  — **легитимная** стратегия для действительно уникальной сцены, пока используются
-  только канонические DS-токены/`.ds` и **не** дублируются library-ассеты и **не**
-  импортируется `Lab*`/`_kit`.
-- **Неполнота барреля ≠ право трогать Lab напрямую.** Нужной DS-секции/атома нет в
-  `@/components/ds` → это gap → forge извлекает **чистый DS**; страница в обход
-  `Lab*`/`_kit` не импортирует.
-
-**Разблокировка сборки по частям:** слой частей (DS-атомы + DS-каркасы `_layout.tsx`)
-строит **`primitive-layer-forge`** (извлекает повторяющиеся internal_fragments из
-(deprecated) субстрата в импортируемые **чистые DS** атомы/каркасы под visual
-parity); `component-library-preparer` переключает `compose_mode` →
-`atoms-and-layouts`; **тот же page-composer без переписывания** включает композицию
-из частей. page-composer сам слой частей не создаёт — только заказывает
-atom/layout-gap (§7.1).
-
----
-
-## 4. Работники (только подтверждённые `name:`)
-
-Тот же ростер, что у `component-forge` / `visual-layer-forge`. Новых агентов не вводить.
-
-| Роль | Исполнитель |
-|---|---|
-| Page Resolver · Current Page Analyzer · Content Mapper · Library Matcher · Reconstruction Planner | оркестратор **сам** + `repo-reader` / `Explore` (read-only) |
-| Page Composition Director | `ui-ux-designer` (ритм/композиция) + advisory **Skill `ui-ux-pro-max`** (зовёт оркестратор сам, не subagent) |
-| Visual Composition Director | `ui-ux-designer` / `design-system-architect` + advisory `ui-ux-pro-max`; ассеты — только `ready` |
-| Frontend Implementation | **`multi-platform-apps-frontend-developer`** (один writer) |
-| Full-page QA | preview/Chrome (3005) + `ui-visual-validator` · `accessibility-expert` · `comprehensive-review-code-reviewer` |
-| Component gap | Skill `component-forge` |
-| Visual-layer gap | Skill `visual-layer-forge` |
-| Registration / library read | Skill `component-library-preparer` (incremental) |
-
-`ui-reviewer` и story/flow-агенты (`story-writer`/`implementation-planner`/
-`developer-agent`) здесь **не используются** (как и в форж-семействе). Vendor-агенты
-`.claude/agents/wshobson/` не менять. Агенту — только task packet (id цели, контракт,
-нужные правила DS дословно, что вернуть), не весь чат.
-
----
-
-## 5. Pipeline (одна страница, draft-first)
-
-```
-Ф0 Resolve → ⛔ Ф0.5 Style intake (USER: какая страница + какие стили)
-→ Ф1 Current Page Analysis → Ф2 Content Map → Ф3 Library Match
-→ Ф4 Reconstruction Plan → Ф5 Page Composition (+ui-ux-pro-max)
-→ Ф6 Visual Composition × N стилей (один visual-вариант на стиль, +ui-ux-pro-max)
-→ Ф7 Gap Routing
-→ ⛔ DESIGN REVIEW GATE (user) — N стиль-вариантов; user выбирает ОДИН; стоп
-→ Ф8 Frontend Implementation (только выбранный стиль) → Ф9 Full-page QA (3005, fix loop ≤3)
-→ Ф10 Final UI/UX review (ui-ux-pro-max, ≤1 correction) → Final Report
-```
-
-Состояние хранится по §12; стадия за гейтом **не стартует автоматически**. Если
-forge-gap требует отдельного user-approval — страница уходит в
-`waiting-for-gap-approval` с resume packet (§7).
-
-### Ф0 — Resolve (оркестратор)
-По §2. Выход `page_target`. Состояние → `audit`. При `missing`/`ambiguous`/нет брифа
-— стоп, спросить/доложить.
-
-### ⛔ Ф0.5 — Style intake (USER, обязательно — спросить ДО композиции)
-Через `AskUserQuestion`, **до** Ф5/Ф6 (даже если route уже передан) спросить **двумя
-вопросами в одном раунде**:
-1. **Какую страницу** — route/бриф (если не задан явно в команде; иначе подтвердить).
-2. **Тема (light / dark)** — single-select: `Light` (по умолчанию) · `Dark`. Определяет,
-   из какого пула берутся стиль-якоря (§Ф6-styles).
-3. **В каком стиле** — multiSelect из якорей выбранной темы (§Ф6-styles):
-   - **тема Light** → `Cinematic Ink` · `Vivid Blocks` · `Calm Editorial` (дефолт — все три);
-   - **тема Dark** → `Ink Refined` (`dark-refined`) · `Nebula Deep` (`dark-nebula`)
-     (дефолт — оба).
-   Можно выбрать один (быстрее) или подмножество.
-
-Зафиксировать в `page_run.theme` (`light|dark`) и `page_run.styles[]`. Без ответа дальше
-не идём. Каждый выбранный стиль даёт отдельный visual-вариант на Ф6 и отдельную колонку
-на гейте. **Light- и dark-стили не смешиваются в одном раунде** — тема выбирается одна на
-запуск (хочешь сравнить light vs dark — это два отдельных запуска / явный override).
-
-### Ф1 — Current Page Analysis
-Разобрать существующую `page.tsx` (read-only). Смысл заново **не** оценивать.
-
-```yaml
-current_page_inventory:
   route:
-  sections:
-    - id:
-      purpose:
-      source:                 # inline | <LabComponent> | production-section
-      current_component:
-      current_surface:        # light | soft | ink
-      reusable_parts:         # что стоит сохранить
-      replacement_candidates:
-  chrome: { header:, footer:, scrollfx_mounted: }
-  tech_debt:                  # one-off реализации, local copies library-ассетов
+  page_source: web/src/app/<route>/page.tsx
+  document: wiki/product/<slug>_new.md
+  status: existing | missing | ambiguous
+  brief_variant_conflict: none | base+_new | route_mismatch
 ```
-
-### Ф2 — Content Map
-Прочитать бриф (`_page-template.md` H2-секции: «Роль и аудитория», «Структура
-секций», «Контент по секциям», «Числа и факты», «Изображения», «Внутренние
-ссылки», «SEO / meta», «Acceptance», «Открытые вопросы»). Разложить **новый
-контент по обязательным секциям**.
-
-```yaml
-content_map:
-  - section_id:
-    purpose:
-    source_heading:
-    required_content:
-    facts:                    # числа/утверждения — дословно из брифа, не выдумывать
-    cta:
-    media_requirement:
-checks:
-  - no section dropped
-  - no fact invented; numbers/claims unchanged
-  - seo/meta + internal links учтены
-  - incomplete content → open_question (не выдуманный текст)
-```
-
-### Ф3 — Library Match
-Читать **только манифесты** `.claude/library/component-library/*.json`
-(`sections · atoms · layouts · chrome · newsroom · social · backgrounds ·
-transitions · motion · recipes · production-patterns · manifest`). Автоматически
-использовать **только `ready`**; `conditional` — лишь с явным fallback в плане;
-`blocked` / `blocked-by-surface-ownership` — нельзя. Уважать `compose_mode` (§3) и
-`composition_access` (фактические exports/slots, internal fragments не importable).
-
-```yaml
-library_match:
-  section_id:
-  section_archetype:
-  component_id:               # library ID | none
-  composition_access:         # whole-section | slots | (atoms+layouts если режим позволяет)
-  supported_props:
-  supported_slots:
-  supported_versions:         # v1/v2/v3 + surfaces
-  limitations:
-  confidence:
-```
-
-### Ф4 — Reconstruction Plan
-Для каждой обязательной секции — **одна** стратегия:
-
-```text
-reuse-current · replace-with-library-section · reuse-shell-replace-content
-· replace-internal-elements · use-props · use-slot · use-version
-· page-local-unique · library-gap
-```
-
-Правила выбора:
-
-```text
-меняется только контент              → use-props
-каркас тот же, меняется внутр. visual → use-slot (официальный slot)
-тот же архетип, другая подача         → use-version
-меняется layout/reading order/responsive/motion model → новый archetype через component-forge
-действительно уникальная сцена        → page-local на shared tokens/atoms/motion
-```
-
-Нет нужного API/slot/export → `component-api-gap` (не скрытая локальная копия).
-Состояние → `waiting-for-approval` (после сборки плана).
-
-### Ф5 — Page Composition (UI/UX, не редактор смысла)
-Получает **уже утверждённый** набор и порядок секций. Определяет визуальный ритм,
-масштаб, плотность, чередование крупных/компактных и текст/визуал блоков, визуальные
-паузы там, где монотонно. **Новых продуктовых смыслов не создаёт.** Оркестратор сам
-зовёт advisory **Skill `ui-ux-pro-max`** (page rhythm · hierarchy · scale · density ·
-pacing · white space · light/soft/ink balance · повторяемость · mobile rhythm ·
-Apple-grade цельность). Опора — `wiki/architecture/page-design-patterns.md`.
-
-```yaml
-page_composition_plan:
-  overall_rhythm:
-  sections:
-    - section_id:
-      scale: compact | standard | large | immersive
-      density: low | medium | high
-      visual_role: statement | evidence | process | comparison | conversion | pause
-      spacing_before:
-      spacing_after:
-      composition_notes:
-  optional_visual_pauses:
-    - { after_section:, type:, reason: }
-```
-
-### Ф6 — Visual Composition (целостность всей страницы, anti-stripe)
-Назначает каждой секции surface/background/transition/motion **только из `ready`**
-visual-layer библиотеки. Главная цель — **страница как одна гармоничная дорогая
-сцена, а не «зебра»** (light↔ink↔light↔ink). Оркестратор зовёт `ui-ux-pro-max` до
-реализации — и на **глобальный ритм всей страницы**, не только на пары.
-
-**Шаг 1 — якорь на готовый composition recipe (L15).** Сначала подобрать `ready`
-рецепт из `recipes.json`, чей `best_for` совпадает с интентом страницы
-(`recipe-calm-product` · `recipe-dense-evidence` · `recipe-trust-methodology` ·
-`recipe-cinematic-break` · `recipe-quiet-conversion`). Рецепт задаёт **выверенную
-арку поверхностей/переходов/motion на всю страницу** — брать её как backbone, а не
-решать каждую пару с нуля. Отклоняться от рецепта — только точечно и с причиной в плане.
-
-**Шаг 2 — surface rhythm как нарратив, а не чередование.** Поверхности — это
-драматургия, не паттерн:
-- база страницы — **light/soft** (Apple-нейтраль, спокойствие); `ink` — **дефицитный
-  ресурс** для 1–2 намеренных «кинематографичных» моментов (обычно hero-statement
-  и/или финальный CTA), **не** каждая вторая секция;
-- **`soft` — мост** между `light` и `ink`; резкий `light→ink` без перехода/паузы — по
-  умолчанию запрещён;
-- **жёсткие лимиты (anti-stripe):** ≤2 `ink`-секций на страницу (больше — только если
-  recipe = `cinematic-break`); **никаких** повторяющихся `A·B·A·B` пробегов
-  поверхностей длиной ≥4; смена surface — не чаще, чем раз в ≥2 секции по умолчанию;
-- цель арки: спокойное начало → нарастание → 1 кинематографичный пик → спокойный
-  финал; не пила «контраст-контраст-контраст».
-
-**Шаг 3 — переходы направленные и намеренные.** Между разными поверхностями —
-**направленный `ready`-переход** (`tr-gradient-bridge` per-direction ·
-`tr-masked-divider` · `tr-glow-crossover` · `tr-pattern-dissolve`), а **не голый
-чёрно-белый cut**. `tr-hard-cut` допустим **только** как осознанный приём на одном
-high-contrast statement с явной причиной — не как дефолт между полосами.
-
-```yaml
-visual_composition:
-  recipe_anchor:               # ready L15 recipe ID | none(+reason)
-  surface_sequence:            # вся страница строкой: light·soft·light·ink·soft·light·ink
-  arc_intent:                  # calm-build → one cinematic peak → quiet close
-  sections:
-    - section_id:
-      surface: light | soft | ink
-      background_id:            # ready bg | none
-      transition_before:       # ready tr (directional) | none
-      transition_after:
-      motion_id:               # ready motion | static
-      intensity: low | medium | high
-stripe_check:                  # ВСЯ страница, не пары
-  ink_count:                   # ≤2 (или recipe=cinematic-break)
-  longest_ABAB_run:            # <4 обязательно
-  hard_cuts:                   # каждый — с intent или баг
-  verdict: harmonious | striped(+fix)
-adjacency_review:              # дополняет глобальную проверку
-  - { from_section:, to_section:, contrast:, density_change:, scale_change:,
-      surface_change:, motion_overlap:, transition_quality:, verdict: }
-```
-
-Не допускать: «зебры» light↔ink↔light↔ink; >2 `ink` без recipe-обоснования; резкого
-`black↔white` cut без намерения; одинаковых тяжёлых секций подряд; нескольких
-high-intensity/motion подряд; повтора одного background без причины; перехода,
-несовместимого с соседними surfaces; blur/glow/mist, ухудшающих читаемость; декора,
-конкурирующего с контентом. **`ui-ux-pro-max` обязан подписать глобальный ритм
-(`stripe_check.verdict: harmonious`) — иначе план на гейт не выносится.**
-
-### Ф6-styles — variant-якоря (по выбору на Ф0.5; пул зависит от темы)
-Каждый выбранный стиль даёт ОТДЕЛЬНЫЙ `visual_composition` (своя арка
-surface/bg/transition/motion), якорный на свой L15 recipe. Контент/секции/порядок
-(Ф2–Ф5) у всех вариантов **общие** — различается только визуальный слой. Все стили
-строятся на **НАШИХ реальных токенах** (`globals.css` + scope `.ds`:
-`--violet`/`--cyan`/`--dsc-*`/surfaces) и **публичных DS-компонентах**
-(`@/components/ds`: `Button`/`Eyebrow`/`Title`/`Media` + DS-секции) — никаких
-приближённых хексов/Inter и никакого прямого `Lab*`/`_kit`.
-
-#### Пул LIGHT (тема `light`)
-
-- **Cinematic Ink** (`recipe: style-cinematic-ink`) — светлая база + 1–2 full-bleed
-  кинематографичных ink-момента (`CinemaScrim` — DS-секция, пока gap → component-forge: видео/медиа + knockout + pinned →
-  ink/футер). Драма редкими точками.
-- **Vivid Blocks** (`recipe: style-vivid-blocks`) — светлая база + насыщенные
-  brand-gradient акцент-блоки (карточки, неон-линии), bold-типографика, glass — язык
-  `web/src/app/dev/backdrop-filter`. violet/blue/cyan, без orange/green.
-- **Calm Editorial** (`recipe: style-calm-editorial`) — светло-доминантный, сдержанные
-  акценты, мягкие reveal, минимум декора.
-
-Общий ритм всех трёх light-стилей: **светлая основа + редкие акцентные блоки**, без
-частого чёрно-белого (anti-stripe Ф6).
-
-#### Пул DARK (тема `dark`)
-
-Тёмные темы — результат дизайн-совета (см. `.claude/designs/dark-themes/`). База —
-**тёмный shell на всю страницу** (не «зебра» light↔dark): глубина создаётся слоями
-поверхностей и glow, а не чередованием с белым. `ink`-логика anti-stripe (Ф6)
-переинтерпретируется: «дефицитный кинематографичный момент» = пик glow/nebula, а не
-переключение на light.
-
-- **Ink Refined** (`recipe: style-dark-refined`, ID `dark-refined`) — *база для
-  большинства внутренних dark-страниц.* Рафинированный тёмный shell на **уже
-  существующих токенах** elevation: `--bg-ink #000` (canvas) → `--panel #0a0a0d`
-  (рабочая поверхность секций) → `--panel-2 #121218` (карточки). Акцент — только
-  бренд-пара `--violet #6c4cf1` + `--cyan #2ec5e8`. Signature:
-  - **violet floor glow — строго 2 точки** на страницу (hero + CTA):
-    `radial-gradient(ellipse 50% 60% at 50% 110%, rgba(108,76,241,.16) 0%, transparent 70%)`
-    под контентом (`::after`), не поверх текста;
-  - **lens hairline seam** между секциями:
-    `border-image: linear-gradient(90deg, transparent, rgba(108,76,241,.4), rgba(46,197,232,.4), transparent) 1`;
-  - **glass card 6% без tint**: `rgba(255,255,255,.06)` + `0.5px solid rgba(255,255,255,.10)` + `blur(8px)`;
-  - текст: `fg-primary #f5f5f7` (`--fg-on-dark`), `fg-secondary #d0ccf4` (violet-tinted,
-    **новый токен** взамен нейтрального `--body-on-dark`), `fg-muted #a9a9b2`
-    (`--muted-on-dark`, только caption на `--panel-2`); `border-default rgba(255,255,255,.10)`,
-    `border-accent rgba(108,76,241,.28)`.
-  - **Когда:** pricing, about, methodology, blog-index, legal, плотный data/text-контент,
-    header/footer shell. Glow opacity **≤0.18** (выше — территория Nebula).
-
-- **Nebula Deep** (`recipe: style-dark-nebula`, ID `dark-nebula`) — *акцентная тёмная
-  для flagship / immersive / video-heavy.* Тёплый ultra-dark `#0a0509` (canvas) →
-  `#0f0b1c` (layer1, violet hint) → `#1a1530` (layer2). Акцент `--violet-2 #7b5cf6` +
-  `--cyan #2ec5e8`. Много видео, cinematic. Signature:
-  - **nebula blob-фон** — два radial-gradient на секции (violet слева ~0.22, cyan
-    справа ~0.14), позиции смещаются по странице; intensity нарастает по скроллу через
-    **`--pin`** (`ScrollOrchestrator`, без нового runtime):
-    `background-image: radial-gradient(ellipse 80% 55% at 18% 48%, rgba(108,76,241,.22) 0%, transparent 60%), radial-gradient(ellipse 60% 45% at 86% 58%, rgba(46,197,232,.14) 0%, transparent 55%)`;
-  - **tinted glass**: `rgba(123,92,246,.08)` + `1px solid rgba(169,155,255,.20)` +
-    `blur(16px) saturate(140%)` + `inset 0 0 0 1px rgba(123,92,246,.10)`;
-  - **двойной video overlay** (`CinemaScrim` — DS-секция): readability-слой (`::before`,
-    `linear-gradient(to bottom, rgba(10,5,9,.15), rgba(10,5,9,.80))`) **раздельно** от
-    color-leak-слоя (`::after`, `radial-gradient(ellipse at 30% 65%, rgba(123,92,246,.14) 0%, transparent 52%)`);
-    `mix-blend-mode: screen` — **только** на bloom/color-leak слое, не на readability;
-  - **gradient heading** только на H1 hero / statement:
-    `linear-gradient(118deg, #f0eeff 0%, #a99bff 45%, #2ec5e8 100%)` + `background-clip:text`;
-    не на sub-headline, не на body;
-  - текст: `fg-primary #f0eeff`, `fg-secondary #c8c4f0` (violet-tinted carrier),
-    `fg-muted #9896b8`; `border-default rgba(169,155,255,.14)`,
-    `border-accent rgba(123,92,246,.30)` + `box-shadow 0 0 16px -4px rgba(123,92,246,.35)`.
-  - **Когда:** product/overview, launch/flagship hero, methodology intro, cinematic
-    narrative. Blob opacity **≤0.32**; **не** использовать как header/footer shell и
-    **не** на страницах с плотными data-таблицами/формами (атмосфера конкурирует с
-    задачей) — там `dark-refined`.
-
-Dark anti-stripe: тёмная база сквозная, **никаких** dark↔light↔dark пробегов; «пик» =
-момент максимального glow/nebula/cinema (1–2 на страницу), не переключение surface на
-white. По умолчанию при неоднозначности темы — `dark-refined` (строгость безопаснее).
-
-**Зависимость готовности (оба пула):** стиль выносится вариантом, только если его
-примитивы/recipe `ready` в библиотеке. Не обеспечен → вариант `blocked-style`,
-примитивы уходят в `visual-layer-forge` (§7.2) до сборки. **Dark-темы зарегистрированы
-как `ready`** (2026-06-18, batch 4): токены `--fg-secondary-dark`/`--nebula-*`, recipes
-`recipe-dark-refined`/`recipe-dark-nebula`, style-anchors `style-dark-refined`/
-`style-dark-nebula`, примитивы `bg-ink-floor-glow`/`bg-nebula-layers`/`bg-nebula-blob`/
-`bg-glass-tinted`/`bg-glass-plain`/`bg-nebula-video-scrim`/`heading-lens-gradient`/
-`tr-lens-seam`/`motion-nebula-drift` — все в манифестах. Источник истины спеки —
-`.claude/designs/dark-themes/design-council.md`. Light Vivid/Cinematic ещё могут быть
-`conditional`/`pending` — их при выборе по-прежнему через forge. Стиль локально в обход
-библиотеки не лепить.
-
-### Ф7 — Gap Routing
-Если готового ассета нет — **не лепить локально**, маршрутизировать (§7 ниже).
-Собрать список component-gaps и visual-layer-gaps. Если forge нужен user-approval —
-поставить страницу в `waiting-for-gap-approval`, сохранить resume packet, стоп.
-
-### ⛔ DESIGN REVIEW GATE (user)
-Собрать план (§8) — **по одному visual-варианту на каждый выбранный стиль** (общие
-Reconstruction/content; различаются Visual composition + recipe anchor) — показать
-варианты рядом и **остановиться**. User **выбирает ОДИН стиль** (`стиль 1/2/3` или
-название) — это и есть approve. Реализуется (Ф8) только выбранный вариант; остальные
-не пишутся. Application code — только после явного выбора / `подтверждаю` / `реализуй` /
-`approved`. Состояние → `waiting-for-approval`; выбранный стиль → `page_run.selected_style`.
-
-### Ф8 — Frontend Implementation
-После approve — `multi-platform-apps-frontend-developer`: обновляет существующую
-`page.tsx`; вставляет новые тексты; импортирует готовые секции/атомы **только из
-`@/components/ds`** (чистые имена, без `Lab*`/`_kit`) + только доступные
-exports/props/slots/versions; контейнер — `<main className="section-lab ds">`;
-сохраняет полезные существующие элементы,
-если не конфликтуют; подключает утверждённые backgrounds/transitions/motion; монтирует
-`<ScrollFX/>` (после `<Footer/>`), движение через `data-*`. **Не** создаёт палитру/
-runtime/зависимости; **не** правит другие страницы; **не** редактирует manifests;
-**не** редизайнит reusable-компоненты. Невозможно без нарушения контракта → стоп с
-`design-conflict`. Состояние → `implementation`.
-
-### Ф9 — Full-page QA (+ fix loop ≤3)
-Поднять preview `web` (3005) — разрешение дано approve гейта (§8) либо использовать
-уже запущенный сервер; иначе спросить. Проверить **всю страницу целиком** на ширинах
-`1440 / 1280 / 768 / 375` (§9). Read-only параллельно: `ui-visual-validator`,
-`accessibility-expert`, `comprehensive-review-code-reviewer`. Учитывать gotcha
-(memory `section-lab-preview-scroll-gotcha`): в headless preview скролл может
-сбрасываться в 0 — mid-page блоки проверять `preview_inspect`/`preview_eval`/
-canvas-сэмплингом. Fail → fix loop тому же writer'у (только проваленное, без
-расширения scope), **≤3**; после 3 → `blocked-after-three-fix-cycles`. Состояние →
-`QA` / `fixing`.
-
-### Ф10 — Final UI/UX review
-Оркестратор снова зовёт `ui-ux-pro-max` по **реализованной** странице (цельность ·
-ритм · композиция · light/soft/ink sequence · соседство · переходы · иерархия ·
-плотность · mobile · лишний декор · conversion flow). **≤1** correction loop тому же
-writer'у. Новых секций reviewer не создаёт. Состояние → `final-review` → `completed`.
 
 ---
 
-## 6. Full-page QA — обязательные проверки (Ф9)
+## 3. Когда нужен evallense-site
 
-Ширины `1440 / 1280 / 768 / 375`. Проверить:
+Composer работает с уже существующим продуктовым брифом. Перед сборкой проверить:
 
-- route открывается; console errors = 0;
-- **весь контент брифа присутствует**; порядок обязательных секций сохранён;
-- header/footer работают; `<ScrollFX/>` смонтирован (иначе `data-reveal` → пустые секции);
-- surfaces корректны; backgrounds корректны; переходы хорошо работают в соседних парах;
-  motion не конфликтует; `prefers-reduced-motion` тих (контент виден, не спрятан за `.is-current`);
-- **anti-stripe вживую:** страница читается как одна гармоничная арка, а не «зебра»
-  light↔ink↔light↔ink; `ink` ≤2 (или recipe `cinematic-break`); нет `A·B·A·B` пробега
-  ≥4; каждый чёрно-белый переход намеренный (направленный `ready`-transition, не голый
-  hard-cut); `stripe_check.verdict: harmonious` подтверждён на скриншотах;
-- text contrast; z-index; clipping; pointer events;
-- **page-level horizontal overflow = 0** (`scrollWidth <= clientWidth` на всех ширинах);
-  intentional horizontal scroll изолирован внутри своего контейнера;
-- длинный и короткий контент; mobile rhythm; CTA и внутренние ссылки;
-- визуальная цельность; соответствие component contracts;
-- **нет незарегистрированных локальных копий library-ассетов**.
+- есть ли структура по `wiki/product/_page-template.md`;
+- указаны ли обязательные секции;
+- есть ли факты/числа/claims;
+- есть ли CTA/internal links/SEO/meta или явно сказано, что они не нужны;
+- нет ли `TODO`, `TBD`, пустых секций, противоречий route.
+
+Если бриф сырой:
+
+```text
+page-composer → evallense-site → page-composer resume
+```
+
+Не дописывать недостающую продуктовую документацию внутри composer. Можно только
+сформировать короткий handoff для `evallense-site`: route, текущий файл, что отсутствует,
+какие источники правды проверить.
 
 ---
 
-## 7. Gap Router (детали)
+## 4. Compose-mode и библиотека
 
-### 7.1 Component / primitive gap → forge (по типу)
-Отсутствует секция/архетип/slot/API — **или** атом/каркас для сборки по частям.
-Маршрутизировать **по типу**:
+Composer читает `.claude/library/component-library/manifest.json` и работает по
+фактической готовности библиотеки.
 
-- **секция / архетип / slot целой секции** → `component-forge`;
-- **атом (L3) / каркас `_layout.tsx` (L4)** → **`primitive-layer-forge`** (он же
-  переключает `compose_mode` → `atoms-and-layouts`).
+Главный принцип: **не верстать страницу с нуля**. Сначала изучить текущий
+репозиторий и собрать страницу из того, что уже есть:
+
+1. Найти и прочитать документацию проекта.
+2. Найти и прочитать документацию дизайн-системы.
+3. Найти файлы, где лежат тексты/контент для страниц.
+4. Найти уже свёрстанные страницы лендинга.
+5. Найти существующие секции, которые уже используются на других страницах.
+6. Найти компоненты hero, CTA, cards, grids, feature/comparison/report/evidence blocks,
+   header/footer.
+7. Проверить текущую структуру `routes/pages/app/components` перед изменениями.
+8. Не придумывать новые пути, если существующие уже есть.
+
+Если секция уже есть и подходит по смыслу — переиспользовать. Если подходит
+частично — адаптировать аккуратно и без breaking changes. Если нормальной секции
+нет — создать новую только после UX/UI-анализа похожих блоков текущего сайта и на
+базе текущего visual language.
+
+**Source of truth для фактического API:** сначала
+`web/src/components/ds/index.ts` и реальные TSX-контракты в `web/src/components/ds/*`,
+затем `.claude/library/component-library/*.json`, затем wiki docs. Если docs говорят,
+что компонента нет, но он экспортирован из `@/components/ds`, использовать баррель как
+актуальный источник. Если компонент есть только как `Lab*` и не экспортирован из
+барреля — это gap, а не разрешение на прямой импорт.
+
+**Visual/design reference:** дополнительно можно читать
+`.claude/designs/evallense/interface-style-guide.html` и файлы DS-бандла
+`.claude/designs/evallense/` как визуальный эталон: typography, product UI mood,
+window/chrome patterns, evidence/report motifs, lens materials, spacing, examples.
+Но это **не runtime API**. Нельзя копировать HTML из style guide в страницу как
+локальную реализацию, если паттерн не существует в `@/components/ds`. Style guide
+подсказывает “как должно выглядеть”; реализация идёт через готовые DS exports или
+через forge-gap.
+
+Канон импорта страниц:
+
+```text
+импортировать только публичный DS API: @/components/ds
+контейнер: <main className="section-lab ds">
+никаких Lab* / _kit / sections/lab/* в page.tsx
+```
+
+Режимы:
+
+| compose_mode | Значение | Поведение |
+|---|---|---|
+| `whole-sections-only` | публичны в основном готовые DS-секции | использовать целые `ready` секции из `@/components/ds`; если не хватает секции/slot/API → gap |
+| `atoms-and-layouts` | доступны DS-атомы и layout shells | можно собирать из атомов/каркасов, но только публичных exports |
+
+Gap routing:
+
+- секция / архетип / slot / prop / export → `component-forge`;
+- атом L3 / layout shell L4 → `primitive-layer-forge`;
+- background / transition / motion / recipe → `visual-layer-forge`;
+- регистрация готового → `component-library-preparer incremental`.
+
+`conditional` можно использовать только с явным fallback в плане. `blocked` нельзя.
+
+---
+
+## 5. Актуальный DS inventory для сборки страниц
+
+Composer строит страницы из **DS-секций**, **DS-атомов**, **background/transition/motion
+слоёв** и только потом просит forge. Не начинать с локальной вёрстки.
+
+Перед маппингом секций можно открыть:
+
+1. `web/src/components/ds/index.ts` — что реально импортируется.
+2. `web/src/components/ds/*.tsx` — prop contracts.
+3. `.claude/designs/evallense/interface-style-guide.html` — визуальный эталон и
+   product UI motifs.
+4. `.claude/designs/evallense/guidelines/*.card.html` — color/type/radii/elevation
+   reference.
+5. `.claude/designs/evallense/components/*/*.card.html` — атомарные visual examples
+   (`Button`, `Chip`, `Eyebrow`, `Tile`), если нужно понять стиль.
+
+При конфликте: code API wins for implementation; style guide wins only for visual
+intent/quality bar.
+
+### 4.1 Repository audit checklist before code
+
+Перед implementation composer/page-skeleton обязан собрать короткий repo audit:
+
+- project docs read;
+- design-system docs read;
+- content/source files read;
+- existing page references inspected;
+- existing DS sections/components inspected;
+- route/app/component structure checked;
+- candidate sections matched;
+- gaps listed.
+
+Минимальный обязательный источник для EvalLense:
+
+- `wiki/architecture/design-system.md`;
+- `wiki/architecture/component-library.md`;
+- `wiki/architecture/page-design-patterns.md`;
+- выбранный `wiki/product/<slug>.md` или `<slug>_new.md`;
+- `web/src/components/ds/index.ts`;
+- реальные prop contracts нужных DS-компонентов;
+- 2-4 ближайшие страницы из `web/src/app/**/page.tsx`.
+
+Тексты брать только из source/content/docs файлов, если они есть. Не писать новый
+маркетинговый copy от себя. Если copy отсутствует, допустимы только явно помеченные
+`TODO` placeholder-строки.
+
+### 5.1 DS-секции из `@/components/ds`
+
+Использовать эти компоненты как первичные строительные блоки:
+
+| DS component | Для чего подходит | Главные данные |
+|---|---|---|
+| `StatementHero` | hero / opening statement / media-backed hero | `eyebrow`, `titleLead/titleAccent/titleTrail`, `sub`, `ctas`, `surface`, `version`, `background="gradient|image|video"` |
+| `EditorialSplit` | объясняющий блок: текст + visual, методология, доказательство, use case | `titleLead/titleAccent/titleTrail`, `sub`, `media`, `points?`, `surface`, `version` |
+| `Bento` | обзор возможностей, feature grid, evidence tiles | `eyebrow`, `title`, `sub`, `items[]`, `surface`, `version` |
+| `FullStatement` | короткий editorial statement / принцип / pause | statement content, `surface`, versions |
+| `Gallery` | горизонтальная галерея/набор evidence cards/case cards | `items[]`, `laneLabel`, `surface`, versions |
+| `PinnedSteps` | workflow / step-by-step process / staged explanation | `steps[]`, `pinSteps`, `surface`, versions |
+| `Numbered` | принципы, методологические правила, numbered manifesto | `items[{num,title,body}]`, `surface`, `version` |
+| `HubMap` | hub pages и навигация в дочерние routes | `items[{tag,title,body,href,feature?}]`, `surface` |
+| `RiskControl` | trust/security: риск → контроль | `pairs[{risk,control}]`, `leftTag/rightTag`, `surface` |
+| `Faq` | статичный FAQ без accordion JS | `items[{q,a}]`, `surface` |
+| `ChipGrid` | compact status/completeness matrix, deck sections, tags | `items[{name,sev}]`, `legend?`, `columns`, `bare?` |
+| `StatBand` | крупные числа/benchmarks/proof band | `stats[{value,label,src}]`, `media?`, `surface` |
+| `RoutingMatrix` | интерактивная judge/dimension routing matrix | `dimensions[]`, `judges[{code,name,cells[]}]`, `surface` |
+| `Cinema` | cinematic media/knockout section, strong transition/close | `headline`, `lines/mobileLines`, `media`, `cta?`, `surface`, `variant` |
+| `QuietCta` | спокойный финальный CTA | `eyebrow`, `title`, `sub`, `cta`, `surface`, `className?` |
+| `CtaBand` | richer CTA with aurora/video background | `title`, `titleAccent`, `primary`, `secondary?`, `theme`, `videoSrc?`, `auroraVariant?` |
+
+Rules:
+
+- Prefer a DS-section over composing a one-off block.
+- Prefer clean DS components (`Numbered`, `EditorialSplit`, `QuietCta`, `StatBand`,
+  etc.) where available.
+- Some exports still re-export proven Lab implementations through the DS barrel
+  (`Bento`, `Gallery`, `PinnedSteps`, `FullStatement`). This is allowed **only**
+  through `@/components/ds`; direct `Lab*` imports remain forbidden.
+- Every section should use `surface="light"` or `surface="ink"` where supported.
+  Light usually maps to `.soft`; ink maps to dark section treatment.
+- Versions (`version={1|2|3}`) are layout/style variants of the same content
+  contract. Do not change facts across versions.
+
+### 5.2 DS atoms and primitives
+
+Use atoms from the barrel, not `_kit` directly:
+
+| Atom | Use |
+|---|---|
+| `Eyebrow` | mono label with lens dot; supports reveal/delay |
+| `Title` | section heading with optional single lens-accent word |
+| `Media` | ratio-locked media placeholder / media slot |
+| `Button` | canonical CTA variants: `primary`, `ghost`, `glass`, `dark`, `gradient` |
+| `AuroraBackground` | decorative positioned dark aurora layer inside a parent section |
+
+Current gaps:
+
+- No public layout-shell API yet (`Band`, `Wrap`, `SplitGrid`, `BentoGrid`,
+  `GalleryRail`, `PinnedStage` are not public components).
+- Chip/status/ring/score/counter atoms beyond existing components are not general
+  public atoms unless exported from `@/components/ds`.
+- Style-guide-only product widgets (app window, report panel, score/rubric controls,
+  slide/evidence link chrome, routing widgets beyond `RoutingMatrix`) are visual
+  references until exported from `@/components/ds`.
+- If a page needs a reusable atom/layout shell not in the barrel → `primitive-layer-forge`.
+
+### 5.3 Visual layers composer may choose
+
+Use registered visual layers when they exist:
+
+- Backgrounds: neutral light/soft/ink, ink ambient glow, cool mist, violet halo,
+  dot grid, line field, concentric rings, media scrim.
+- Transitions: `tr-hard-cut`, `tr-gradient-bridge`, `tr-pattern-dissolve`,
+  `tr-masked-divider`, `tr-glow-crossover`, `tr-tone-flip`.
+- Motion: page-level motion must be through the single `<ScrollFX/>` plus
+  `data-reveal`, `data-scrub`, `data-pin`; no new runtime.
+
+If the right background/transition/motion is not `ready` → `visual-layer-forge`.
+Do not invent inline visual systems in a page.
+
+### 5.4 EvalLense visual read
+
+Default visual system for current landing pages:
+
+- premium futuristic glassmorphism, not a generic SaaS template;
+- Apple-grade minimalism, clean composition, generous air;
+- large white/near-white and black/near-black planes;
+- soft glass surfaces, hairline borders, translucent panels, subtle reflections;
+- brand lens accents: violet/lavender/cyan/aqua, plus soft green only for trust,
+  validation, success, safe/verified signals;
+- depth through blur, transparency, subtle glow and soft shadows;
+- no heavy 3D unless already present on the site;
+- no random colors, no cyberpunk neon, no visual noise.
+
+Implementation rules:
+
+- Use project tokens and existing DS CSS variables first. Do not hardcode a new
+  palette in page-local CSS unless the token does not exist and the user approved
+  a DS change.
+- Light sections should feel clean and technological: soft gradients, subtle
+  depth, translucent cards, fine borders.
+- Dark sections should feel deep and premium: near-black surfaces, blurred
+  gradient fields, glass panels, thin borders.
+- Glass cards should use restrained transparency, backdrop blur, hairline borders,
+  soft shadows and a small hover lift. Avoid plastic gloss and aggressive hover.
+- Background blobs must be large, soft and sparse. Prefer 1-2 fields per section,
+  never a field that competes with text.
+- Animations must be calm and motivated: existing `ScrollFX`, soft reveal, slow
+  ambient movement, subtle hover. No bouncing, cartoon motion, aggressive parallax
+  or heavy JS runtime unless the project already uses that pattern.
+- Page rhythm may alternate light/dark when the current site pattern supports it,
+  but the sections must stay connected through the same gradients, glass material,
+  spacing and radius system.
+- If a section looks weak, inspect similar shipped sections and rebuild from their
+  patterns before inventing a new visual language.
+
+Forbidden visual outcomes:
+
+- flat Bootstrap-like sections;
+- stock-looking illustrations;
+- cheap neon/cyberpunk treatment;
+- muddy glass that hurts readability;
+- text sitting on active glow/blob fields;
+- badges, gradients and glass panels used as filler;
+- any new design system created inside the page.
+
+### 5.5 How to map product documentation to DS sections
+
+Use this mapping before asking forge:
+
+- Opening value proposition → `StatementHero`.
+- Product explanation with one visual → `EditorialSplit`.
+- Multiple features / report ingredients / capability overview → `Bento`.
+- Process / review flow / staged methodology → `PinnedSteps` or `Numbered`.
+- Hub route index → `HubMap`.
+- Trust/security objection handling → `RiskControl`.
+- Metrics/proof/benchmark → `StatBand`.
+- Judge routing / scoring ownership → `RoutingMatrix`.
+- Evidence types / deck completeness / status chips → `ChipGrid` inside a section or standalone.
+- Quote-like principle / strong pause → `FullStatement`.
+- Case/evidence gallery → `Gallery`.
+- FAQ → `Faq`.
+- Cinematic proof/transition/close → `Cinema`.
+- Final conversion → `QuietCta` or `CtaBand`.
+
+If none fits, mark the need precisely:
 
 ```yaml
 component_gap:
-  page: ; section: ; purpose: ; current_match:
-  missing_capability:        # archetype | slot | prop | export   → component-forge
-                             # atom | layout-shell                → primitive-layer-forge
-  required_props: ; required_slots:
-  responsive_constraints: ; motion_constraints:
+  needed_for_section:
+  why_existing_ds_fails:
+  desired_contract:
+  route_to: component-forge | primitive-layer-forge
 ```
-
-Поток (section): `component-forge → implementation → QA → forge-index →
-component-library-preparer incremental → ready library ID → вернуться`.
-Поток (atom/layout): `primitive-layer-forge → implementation (visual parity) → QA →
-component-library-preparer incremental → ready export + compose_mode flip → вернуться`.
-
-### 7.2 Visual-layer gap → `visual-layer-forge`
-Отсутствует background / transition / motion.
-
-```yaml
-visual_layer_gap:
-  page: ; type: background|transition|motion ; purpose: ; section_context:
-  from_surface: ; to_surface:
-  required_behavior: ; responsive_constraints:
-```
-
-Поток: `visual-layer-forge → design → implementation → visual QA →
-component-library-preparer incremental → ready library ID → вернуться`.
-
-**Gap должен быть reusable** — не заказывать forge под одну страницу, кроме явно
-подтверждённой уникальной сцены. Если forge требует user-approval — страница в
-`waiting-for-gap-approval`, сохранить resume packet, при resume перепроверить
-readiness новых ассетов в манифестах.
 
 ---
 
-## 8. Design Review Gate — единый план (формат)
+## 6. Default pipeline: layered
+
+```text
+Ф0 Resolve target + document
+→ Ф1 Brief readiness audit
+→ Ф2 Current page + library audit
+→ Ф3 Page build strategy
+→ ⛔ COMPOSER GATE
+→ Ф4 Run / hand off to page-skeleton
+→ Ф5 Run / hand off to page-skin
+→ Ф6 Run / hand off to page-motion
+→ Ф7 Run page-validate
+→ Final report
+```
+
+### Ф0 — Resolve
+
+По §2. Без выбранного document не идти дальше.
+
+### Ф1 — Brief readiness audit
+
+Проверить документ по §3.
+
+Если бриф годится:
+
+```yaml
+brief_readiness:
+  status: ready
+  document:
+  required_sections:
+  facts_locked: true
+  open_questions: []
+```
+
+Если нет:
+
+```yaml
+brief_readiness:
+  status: needs_evallense_site
+  missing:
+  contradictions:
+  handoff_to: evallense-site
+```
+
+### Ф2 — Current page + library audit
+
+Read-only:
+
+- текущая `page.tsx`, если есть;
+- imports/chrome/Footer/Header/ScrollFX;
+- текущие секции и tech debt;
+- DS exports from `web/src/components/ds/index.ts` (§5);
+- component-library manifests;
+- relevant docs: `wiki/architecture/page-design-patterns.md`,
+  `wiki/architecture/component-library.md`, `wiki/architecture/design-system.md`.
+- content/source docs for target page;
+- nearest shipped pages and section implementations.
+
+Формат:
+
+```yaml
+page_inventory:
+  route:
+  existing_page: true | false
+  current_sections:
+  reusable_parts:
+  tech_debt:
+library_inventory:
+  compose_mode:
+  ready_sections:
+  ready_atoms:
+  ready_visual_layers:
+  gaps:
+repo_audit:
+  docs_read:
+  design_system_docs_read:
+  content_files_read:
+  page_references:
+  components_inspected:
+  route_structure_checked: true
+```
+
+### Ф3 — Page build strategy
+
+Не писать код. Составить план, какой дальнейший проход что делает:
+
+```yaml
+page_build_strategy:
+  route:
+  document:
+  mode: layered
+  skeleton:
+    expected_sections:
+    likely_ds_components:
+    component_gaps:
+  skin:
+    style_question_required: true
+    recommended_theme:
+    style_candidates:
+    visual_layer_gaps:
+  motion:
+    transition_needs:
+    motion_needs:
+    visual_layer_gaps:
+  validation:
+    expected_validator: page-validate
+```
+
+Перед кодом обязательно показать mapping в табличном виде:
+
+```markdown
+Page section mapping:
+
+| Target block | Existing source/component | Action | Props/content | Adaptation/gap |
+|---|---|---|---|---|
+| Hero | … | reuse/adapt/create | … | … |
+| Problem | … | reuse/adapt/create | … | … |
+| How it works | … | reuse/adapt/create | … | … |
+| Features | … | reuse/adapt/create | … | … |
+| Evidence/Report | … | reuse/adapt/create | … | … |
+| CTA | … | reuse/adapt/create | … | … |
+| Footer | `Footer` | reuse | existing chrome | none |
+```
+
+Mapping rules:
+
+- Every target block must point to either an existing DS component, an existing
+  page section used as reference, or a named gap.
+- `Action=create` is allowed only after showing why existing DS/page sections do
+  not fit.
+- For custom sections, list the exact reference pages/components used for UI
+  language.
+- Do not proceed to code before the mapping is shown.
+
+### ⛔ COMPOSER GATE
+
+Показать user план и остановиться. Нужны подтверждения:
+
+- целевая страница;
+- выбранный источник контента;
+- что бриф готов;
+- какие gaps есть;
+- что запускаем layered pipeline.
+
+После approve composer не обязан вручную выполнять всю работу внутри своего файла:
+он **делегирует** дальше соответствующим project skills. Если система не умеет
+автоматически “invoke skill”, composer должен явно следовать их `SKILL.md` и вести
+работу по их правилам.
+
+### Ф4 — page-skeleton
+
+Запустить правила `page-skeleton`:
+
+- route + выбранный document;
+- структура в нейтрале;
+- Structure Gate;
+- implementation только после approve;
+- Skeleton QA;
+- `skeleton.locked = true`.
+
+Composer не добавляет цвет/переходы на этом этапе.
+
+### Ф5 — page-skin
+
+Запустить правила `page-skin`:
+
+- только если `skeleton.locked`;
+- спросить тему `light|dark` и style candidates;
+- Skin Gate;
+- implementation выбранного стиля;
+- Skin QA;
+- записать `skin.surface_sequence`.
+
+Composer не меняет структуру на этом этапе.
+
+### Ф6 — page-motion
+
+Запустить правила `page-motion`:
+
+- только если `skin.status == skin-applied`;
+- transition plan по `skin.surface_sequence`;
+- Motion Gate;
+- implementation;
+- Motion QA;
+- reduced-motion check.
+
+Composer не перекрашивает и не меняет контент на этом этапе.
+
+### Ф7 — page-validate
+
+После motion done вызвать/следовать `page-validate`:
+
+- live render QA;
+- сверка `page.tsx` с выбранным брифом;
+- таблица по секциям;
+- console/overflow/responsive/motion/content checks.
+
+---
+
+## 7. Composer Gate — формат
 
 ```markdown
 ## Page Composer Plan — <route>
 
 ### Target
-- Document: · Route: · Existing page: <existing|missing> · compose_mode: <…>
-- Brief variant conflict: <none | base+_new>
+- Page: web/src/app/<route>/page.tsx
+- Content document: wiki/product/<slug>_new.md
+- Existing page: <yes|no>
+- compose_mode: <whole-sections-only|atoms-and-layouts>
 
-### Required sections
-| # | Purpose | Content source | Current section | Proposed library section |
+### Brief readiness
+- Status: <ready|needs_evallense_site>
+- Required sections: <n>
+- Route mismatch: <none|...>
+- Open questions: <...>
 
-### Reconstruction
-| Section | Strategy | Props/slot/version | Gap |
+### Build mode
+- Mode: layered
+- Pipeline: page-skeleton → page-skin → page-motion → page-validate
 
-### Page composition
-| Section | Scale | Density | Visual role |
+### Expected structure
+| # | Section purpose | Source heading | Likely DS component | Gap? |
 
-### Visual composition  — ⟲ повторяется на КАЖДЫЙ выбранный стиль (тема Light: Cinematic Ink / Vivid Blocks / Calm Editorial — тема Dark: Ink Refined / Nebula Deep)
-- **Theme:** <light | dark>
-- **Style variant:** <cinematic-ink | vivid-blocks | calm-editorial | dark-refined | dark-nebula> (+ `blocked-style`, если примитивы не `ready`)
-- **Recipe anchor (L15):** <recipe-id | none(+reason)>
-- **Surface sequence:** light·soft·light·ink·soft·light·ink
-- **Arc:** calm-build → one cinematic peak → quiet close
-- **stripe_check:** ink_count ≤2 · longest A·B·A·B run <4 · hard-cuts intentional → `harmonious`
+### Page section mapping
+| Target block | Existing source/component | Action | Props/content | Adaptation/gap |
 
-| Section | Surface | Background (ready) | Transition (ready, directional) | Motion (ready) |
-
-### Optional visual pauses
-- …
-
-### Gaps
-- component gaps (→ component-forge): …
-- visual-layer gaps (→ visual-layer-forge): …
+### Library / visual gaps
+- Component gaps: …
+- Primitive/layout gaps: …
+- Visual-layer gaps: …
 
 ### Files expected to change
-- web/src/app/<route>/page.tsx · (+ nav/globals.css по необходимости)
+- web/src/app/<route>/page.tsx
+- related DS files only if a routed forge skill is approved
 
-### Validation plan
-- widths 1440/1280/768/375 · console=0 · overflow=0 · reduced-motion · content complete
+### Validation
+- page-skeleton QA
+- page-skin QA
+- page-motion QA
+- page-validate final audit
 ```
 
-После этого **стоп**. Не писать application code до явного
-`подтверждаю` / `реализуй` / `продолжай` / `approved`. Обязательный draft-first gate.
+После этого — стоп до явного `подтверждаю`, `approved`, `запускай`, `реализуй`.
 
 ---
 
-## 9. Режимы запуска
+## 8. Legacy one-shot mode
 
-### Одна страница / по документу
-`/page-composer <route>` | `/page-composer <document-path>` — полный pipeline §5 с
-гейтом. **Даже если route задан — на Ф0.5 всё равно спросить тему (light/dark) и стиль**
-(один/несколько/все из пула темы); по умолчанию все стили выбранной темы.
+Legacy one-shot нужен редко. Включается только явно.
 
-### Resume
-`/page-composer "resume <route>"` — для страницы в `waiting-for-gap-approval`:
-загрузить resume packet (`.claude/runs/page-composer/<run-id>/resume-packet.json`),
-перепроверить readiness новых library-ассетов, продолжить с места.
+В этом режиме composer сам делает полный план структуры+skin+motion в одном Design
+Review Gate, затем один writer реализует выбранный вариант. При этом:
 
-### Audit only
-`/page-composer "audit <route>"` — только Ф0–Ф7 (resolve → анализ → план), **без
-implementation даже после стандартного flow**. Выдать план §8 как отчёт.
+- всё равно спрашивать source document;
+- всё равно сохранять факты/секции/порядок;
+- всё равно использовать только `@/components/ds`;
+- всё равно route gaps в forge, не лепить локально;
+- всё равно QA на `1440 / 1280 / 768 / 375`;
+- всё равно `<ScrollFX/>` нужен для внутренних страниц;
+- всё равно no commit/push/PR/deploy.
 
-### Пустой вызов
-`/page-composer` — показать доступные брифы `wiki/product/*.md` (с route из
-frontmatter), спросить **какую страницу**, **тему** (light/dark) И **стиль** (Ф0.5 —
-пул зависит от темы: light → Cinematic Ink / Vivid Blocks / Calm Editorial; dark → Ink
-Refined / Nebula Deep; multiSelect, дефолт — все стили темы) одним `AskUserQuestion`-раундом.
-**Никакого batch.**
+Если пользователь не попросил one-shot, использовать layered.
 
 ---
 
-## 10. Состояние запуска
+## 9. Run state
 
-`.claude/runs/page-composer/<run-id>/` (конвенция как у `component-forge-batch`;
-новую папку не выдумывать). `<run-id>` = `<YYYYMMDD-HHMM>-<route-slug>`.
+Основной state:
 
 ```text
-state.json · events.jsonl · resume-packet.json (при gap-pause) · final-report.md
+.claude/runs/page-build/<run-id>/state.json
+.claude/runs/page-build/<run-id>/events.jsonl
+.claude/runs/page-build/<run-id>/resume-packet.json
+.claude/runs/page-build/<run-id>/final-report.md
 ```
+
+`<run-id>` = `<YYYYMMDD-HHMM>-<route-slug>`.
 
 ```yaml
-page_run:
-  route: ; document: ; page_source:
-  theme:                       # light | dark (Ф0.5)
-  styles: [ ]                  # выбранные на Ф0.5 — light: cinematic-ink|vivid-blocks|calm-editorial; dark: dark-refined|dark-nebula
-  selected_style:              # выбранный user'ом на гейте (один)
-  phase: ; status:
-  compose_mode:
-  required_sections: ; selected_components: ; selected_visual_layers:
-  pending_gaps: ; completed_gaps:
-  approval: ; implementation: ; QA:
-  updated_at:                # timestamp передаётся снаружи; не генерировать дату в скрипте
+page_build:
+  composer:
+    status: pending | audit | waiting-for-composer-approval | routed | validating | completed | blocked
+    route:
+    page_source:
+    document:
+    mode: layered | legacy-one-shot
+    compose_mode:
+    brief_readiness:
+    pending_gaps:
+    routed_skills:
+    updated_at:
+  skeleton:
+    status:
+    locked:
+  skin:
+    status:
+    theme:
+    selected_style:
+    surface_sequence:
+  motion:
+    status:
+    seams:
+    ambient:
+  validation:
+    status:
+    report:
 ```
 
-Статусы: `audit · waiting-for-approval · waiting-for-gap-approval · implementation ·
-QA · final-review · completed · blocked`. Блокеры: `design-conflict ·
-blocked-after-three-fix-cycles · blocked-design-review · gap-unapproved · blocked-style`
-(`blocked-style` — выбранный стиль не обеспечен `ready`-примитивами; вариант не
-выносится, примитивы уходят в `visual-layer-forge`).
-
----
-
-## 11. Финальный отчёт
-
-```markdown
-## Page composed — <route>
-
-### Target
-- Document: · Route: · Page: · compose_mode:
-
-### Sections (order preserved)
-| # | Purpose | Strategy | Component/local | Surface | Transition | Motion |
-
-### Content fidelity
-- all brief sections present: · facts unchanged: · open questions: …
-
-### Gaps routed
-- component-forge: … · visual-layer-forge: … · registered ready IDs: …
-
-### QA
-- widths 1440/1280/768/375: · console: 0 · overflow: 0 · reduced-motion: · a11y: · screenshots: …
-- fix cycles: <n>/3
-
-### Files changed
-- web/src/app/<route>/page.tsx · …
-
-### Actions not performed
-- no application code beyond approved plan · no page rebuild without permission
-- no manifest hand-edit · no other pages changed · no commit · no push · no PR · no deploy
-```
-
----
-
-## 12. Связь с build-pages
-
-`build-pages` остаётся **batch**-инструментом (несколько страниц, автономно, коммит на
-страницу, без пофазовых гейтов). `page-composer`:
+Resume:
 
 ```text
-одна страница · глубокая реконструкция · component library matching · visual composition
-· gap routing · resume · full-page visual QA · draft-first gate
+/page-composer "resume <route>"
 ```
 
-Общую полезную логику (продуктовый бриф `_page-template.md`, `page-design-patterns.md`,
-`<ScrollFX/>`/`data-*`, `.media-ph`) **переиспользовать ссылкой**, не дублировать и не
-переписывать `build-pages`. Циклической зависимости не вводить.
+On resume: load state, check the latest completed phase, continue from the next
+project skill. Do not restart from scratch unless state is invalid and user approves.
 
 ---
 
-## 13. Рейлы оркестратора (нерушимо)
+## 10. Audit mode
 
-- Одна страница за запуск; не batch; не запускать параллельную сборку нескольких.
-- Сохранять все обязательные секции, смысл, факты, порядок (§1); визуальная пауза ≠ секция.
-- Матчить **только `ready`**; уважать `compose_mode` (§3); недостающее → forge, не локально.
-- **Anti-stripe (нерушимо):** страница — гармоничная арка, не «зебра». Якорь на `ready`
-  recipe (L15); `ink` ≤2; нет `A·B·A·B` пробега ≥4; переходы направленные, не голый
-  black↔white cut; `ui-ux-pro-max` подписывает глобальный ритм до гейта (Ф6) и после (Ф10).
-- Манифесты руками не править — регистрация через `component-library-preparer` incremental.
-- Агенту — task packet, не весь чат; vendor-агенты `wshobson/` не менять.
-- Сервер/браузер — только Ф9; `pnpm build` — с разрешения; pnpm, порт 3005.
-- Стоп на Design Review Gate до явного решения; `.env*`/другие страницы не трогать.
-- Не commit/push/PR/deploy. Не заменять документацию chat-memory.
+```text
+/page-composer "audit <route>"
+```
 
-## 14. Связанные
-[component-library-preparer](../component-library-preparer/SKILL.md) (источник `ready`-инвентаря, регистрация) ·
-[component-forge](../component-forge/SKILL.md) (секции/каркасы/API — component gaps) ·
-[visual-layer-forge](../visual-layer-forge/SKILL.md) (фоны/переходы/motion — visual gaps) ·
-[build-pages](../build-pages/SKILL.md) (batch-сборка; не переписывать) ·
-[evallense-site](../evallense-site/SKILL.md) (брифы `wiki/product/*.md`).
-Опора: `wiki/architecture/page-design-patterns.md` · `section-types.md` ·
-`design-system.md` · `component-library.md` · `wiki/product/_page-template.md` · `sitemap.md` ·
-`.claude/designs/dark-themes/design-council.md` (источник истины dark-стилей: токены,
-recipes, signature-приёмы, anti-patterns — решение дизайн-совета).
+Audit mode performs only:
+
+- resolve;
+- brief readiness;
+- current page inventory;
+- library match;
+- gap list;
+- recommended layered plan.
+
+No implementation even if the user previously approved another run.
+
+---
+
+## 11. Final report
+
+```markdown
+## Page Composer Report — <route>
+
+### Target
+- Page:
+- Document:
+- Mode:
+
+### Pipeline result
+- Skeleton: <locked|skipped|blocked>
+- Skin: <applied|skipped|blocked>
+- Motion: <done|skipped|blocked>
+- Validation: <pass|fail|not-run>
+
+### Content fidelity
+- Required sections present:
+- Facts unchanged:
+- Open questions:
+
+### Gaps routed
+- component-forge:
+- primitive-layer-forge:
+- visual-layer-forge:
+- component-library-preparer:
+
+### Files changed
+- …
+
+### QA
+- widths:
+- console:
+- overflow:
+- reduced motion:
+- final page-validate:
+
+### Actions not performed
+- no commit
+- no push
+- no PR
+- no deploy
+- no manifest hand-edit
+```
+
+---
+
+## 12. Rails
+
+- Одна страница за запуск.
+- Default mode = `layered`.
+- `page-composer` — главный entrypoint “бриф → страница”; `build-pages` — пачка;
+  `evallense-site` — подготовка продуктового брифа.
+- Всегда спрашивать источник контента.
+- Не выдумывать факты.
+- Сохранять обязательные секции и порядок.
+- Импорт страниц — только `@/components/ds`.
+- Сначала искать решение в актуальном DS inventory (§5), потом forge.
+- Gap → профильный forge, не локальный one-off.
+- Не править manifests руками.
+- Сервер/браузер — только в QA фазах downstream skills; pnpm, порт 3005.
+- `pnpm build` — только по отдельному разрешению, если правила проекта требуют.
+- Не commit/push/PR/deploy.
+
+---
+
+## 13. Связанные skills
+
+- [evallense-site](../evallense-site/SKILL.md) — создать/обогатить продуктовый бриф.
+- [page-skeleton](../page-skeleton/SKILL.md) — структура в нейтрале.
+- [page-skin](../page-skin/SKILL.md) — тема и surface-драматургия.
+- [page-motion](../page-motion/SKILL.md) — переходы и motion.
+- [page-validate](../page-validate/SKILL.md) — финальная сверка и QA.
+- [build-pages](../build-pages/SKILL.md) — batch страниц.
+- [component-forge](../component-forge/SKILL.md) — reusable DS-секции.
+- [primitive-layer-forge](../primitive-layer-forge/SKILL.md) — DS atoms/layout shells.
+- [visual-layer-forge](../visual-layer-forge/SKILL.md) — backgrounds/transitions/motion.
+- [component-library-preparer](../component-library-preparer/SKILL.md) — manifests/readiness.
+
+Docs:
+
+- `wiki/product/_page-template.md`
+- `wiki/product/sitemap.md`
+- `wiki/architecture/page-design-patterns.md`
+- `wiki/architecture/design-system.md`
+- `wiki/architecture/component-library.md`
