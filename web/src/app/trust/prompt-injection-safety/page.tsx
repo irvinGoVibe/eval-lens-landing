@@ -95,6 +95,16 @@ const DEFENCE_TILES = [
     title: "Rubric stays outside the deck",
     body: "The rules of evaluation sit in the system, above the contents of any uploaded file. Deck text enters as evidence, never as a system command.",
     feature: true,
+    media: {
+      src: "/assets/injection/boundary-rubric-deck.webp",
+      width: 1280,
+      height: 553,
+      ratio: "1280/553",
+      label: "Glass rubric and deck pipelines",
+      hint: "Rubric and deck travel in separate sealed pipes; the deck is read-only",
+      ariaLabel:
+        "Glass illustration: the rubric pipeline sits in its own sealed tube above the deck pipeline, with the deck marked read-only",
+    },
   },
   {
     tag: "Prompts",

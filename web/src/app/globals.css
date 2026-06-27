@@ -10558,3 +10558,24 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
   .injection .pis-judges{grid-template-columns:repeat(2,1fr);}
   .injection .pis-summary{grid-template-columns:1fr;}
 }
+
+/* ── PAGE INJECTION (prompt-injection-safety §boundary): the glass Rubric/Deck
+   pipelines illustration fills the lower free area of the "Rubric stays outside
+   the deck" feature card — centred, behind the copy and clear of it. Same hard
+   layering as the methodology cards: the card is its own stacking context, the
+   copy is always z-index 2, the image an absolute z-index 1 layer independent of
+   the text. Desktop = absolute in the lower area (no bleed, sits inside); on
+   mobile it just flows under the text. ── */
+.injection #boundary .lab-bento__v--expanded .lab-bento__tile--feature{position:relative;isolation:isolate;overflow:hidden;}
+.injection #boundary .lab-bento__v--expanded .lab-bento__tile--feature > .mini-tag,
+.injection #boundary .lab-bento__v--expanded .lab-bento__tile--feature > h3,
+.injection #boundary .lab-bento__v--expanded .lab-bento__tile--feature > p{position:relative;z-index:2;}
+.injection #boundary .lab-bento__v--expanded .lab-bento__tile--feature .lab-bento__media--img{position:relative;z-index:1;}
+@media (min-width:901px){
+  .injection #boundary .lab-bento__v--expanded .lab-bento__tile--feature .lab-bento__media--img{
+    position:absolute;left:50%;right:auto;top:auto;bottom:clamp(20px,2.6vw,36px);
+    transform:translateX(-50%);
+    margin:0;width:min(94%,720px);height:auto;max-height:58%;
+    object-fit:contain;object-position:bottom center;z-index:1;
+  }
+}
