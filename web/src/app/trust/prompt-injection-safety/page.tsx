@@ -493,8 +493,8 @@ export default function PromptInjectionSafetyPage() {
                 transformOrigin: "center",
               }}
             >
-              <source src="/assets/injection/holding-layers-v4.webm" type="video/webm" />
-              <source src="/assets/injection/holding-layers-v4.mp4" type="video/mp4" />
+              <source src="/assets/injection/holding-layers-v5.webm" type="video/webm" />
+              <source src="/assets/injection/holding-layers-v5.mp4" type="video/mp4" />
             </video>
           }
         />
