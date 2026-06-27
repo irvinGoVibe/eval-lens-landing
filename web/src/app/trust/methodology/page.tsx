@@ -225,30 +225,17 @@ const DISAGREEMENT: RiskPair[] = [
 /* §8a - The scoring model (advisory). Restored per request, kept formula-free
  * (no 15% / weighted-average / 7.6->7.4 numbers per the P0 brief). The standalone
  * Disagreement tile is dropped because §8 now owns that. */
-/* Per-dimension key facts, rendered in the feature tile's `slot` (below the body)
- * to fill the empty left space with a mini-explainer instead of dead air. */
-const PER_DIMENSION_FACTS: [string, string][] = [
-  ["Inputs", "Judge score · routing weight · confidence"],
-  ["Primary judges", "Carry the strongest influence"],
-  ["Advisory judges", "Add context without dominating the score"],
-];
-
 const SCORING_TILES: BentoItem[] = [
   {
     feature: true,
     tag: "Criterion score",
     title: "Per dimension",
-    body: "Judge scores are combined using routing weights\nto produce a weighted average.",
-    slot: (
-      <ul className="ds-scoring-facts" style={{ listStyle: "none", margin: "22px 0 0", padding: 0, display: "grid", gap: "14px" }}>
-        {PER_DIMENSION_FACTS.map(([k, v]) => (
-          <li key={k} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <span className="mini-tag">{k}</span>
-            <span style={{ fontSize: "13.5px", lineHeight: 1.4 }}>{v}</span>
-          </li>
-        ))}
-      </ul>
-    ),
+    // Body + key facts in one string. `.lab-bento__tile p` is white-space:pre-line,
+    // so `\n` controls the breaks: the 2-line phrase, then the three facts right
+    // beneath it. Kept in the body (not a slot) so they render immediately after
+    // the paragraph and before the image, which we do NOT touch.
+    body:
+      "Judge scores are combined using routing weights\nto produce a weighted average.\n\nInputs\nJudge score · routing weight · confidence\n\nPrimary judges\nCarry the strongest influence\n\nAdvisory judges\nAdd context without dominating the score",
     media: {
       src: "/assets/bento/scoring-model-transparent.webp",
       ratio: "3/2",
@@ -396,16 +383,20 @@ export default function MethodologyPage() {
              Desktop only — on mobile the tile stacks normally. */
           @media (min-width: 901px){
             .ds-scoring-bento .lab-bento__tile--feature{ position: relative; justify-content: flex-start; }
-            .ds-scoring-bento .lab-bento__tile--feature > .mini-tag,
-            .ds-scoring-bento .lab-bento__tile--feature > h3,
-            .ds-scoring-bento .lab-bento__tile--feature > p,
-            .ds-scoring-bento .lab-bento__tile--feature > .lab-bento__tileslot{
+            .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > .mini-tag,
+            .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > h3,
+            .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > p{
               position: relative; z-index: 2;
             }
-            .ds-scoring-bento .lab-bento__tile--feature > p{ text-align: left; }
-            /* facts sit right under the body, kept clear of the corner image */
-            .ds-scoring-bento .lab-bento__tile--feature > .lab-bento__tileslot{ max-width: 52%; margin-top: 0; }
-            .ds-scoring-bento .lab-bento__tile--feature .lab-bento__media--img{
+            /* body + the three facts live in a left column so they never reach the
+               corner image. Text sits in the top layer (z-index 2). */
+            .ds-scoring-bento .lab-bento__tile--feature > p{ text-align: left; max-width: 50%; }
+            /* Chalice pinned to the BOTTOM-RIGHT corner, in its own layer BELOW the
+               text (z-index 1) so it can never push or overlap the copy. Selector
+               carries the extra .lab-bento__v--polish class so it outranks the
+               default globals.css rule (which otherwise leaves the image in flow
+               and lets it fall to the bottom under the taller text). */
+            .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature .lab-bento__media--img{
               position: absolute; right: 0; bottom: 0; top: auto; left: auto;
               margin: 0; width: auto; height: auto;
               max-height: clamp(270px, 32vw, 360px); transform: none;
