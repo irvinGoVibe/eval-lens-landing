@@ -83,6 +83,16 @@ const FOUNDATIONS_TILES: BentoItem[] = [
     tag: "Feeds P1 · P2",
     title: "Lean Startup",
     body: "Hypothesis and problem-solution logic - feeds Problem significance and Solution differentiation.",
+    media: {
+      src: "/assets/methodology/foundations-lean-startup.webp",
+      width: 1229,
+      height: 359,
+      ratio: "1229/359",
+      label: "Glass methods illustration",
+      hint: "Lean Startup, Hypothesis, Customer Pain, Validated",
+      ariaLabel:
+        "Glass illustration: a Lean Startup book beside Hypothesis and Customer Pain cards and a Validated check token",
+    },
   },
   {
     tag: "Feeds P1 · P2",
@@ -234,8 +244,17 @@ const SCORING_TILES: BentoItem[] = [
     // so `\n` controls the breaks: the 2-line phrase, then the three facts right
     // beneath it. Kept in the body (not a slot) so they render immediately after
     // the paragraph and before the image, which we do NOT touch.
-    body:
-      "Judge scores are combined using routing weights\nto produce a weighted average.\n\nInputs\nJudge score · routing weight · confidence\n\nPrimary judges\nCarry the strongest influence\n\nAdvisory judges\nAdd context without dominating the score",
+    body: (
+      <>
+        {"Judge scores are combined using routing weights\nto produce a weighted average.\n\n"}
+        <strong>Inputs</strong>
+        {"\nJudge score · routing weight · confidence\n\n"}
+        <strong>Primary judges</strong>
+        {"\nCarry the strongest influence\n\n"}
+        <strong>Advisory judges</strong>
+        {"\nAdd context without dominating the score"}
+      </>
+    ),
     media: {
       src: "/assets/bento/scoring-model-transparent.webp",
       ratio: "3/2",
@@ -377,30 +396,61 @@ export default function MethodologyPage() {
           }
           #routing .head{ max-width: 60ch; }
           #routing .sub{ max-width: 70ch; }
+          /* §8a Scoring · Per dimension: bold the inline sub-labels
+             (Inputs / Primary judges / Advisory judges) in the body copy.
+             Explicit 700 (UA "bolder" is relative and reads weak on light body). */
+          .ds-scoring-bento .lab-bento__tile--feature p strong{ font-weight: 700; }
           /* §7a Scoring · Per dimension feature tile: text + key-facts stack from
              the TOP (eyebrow → 2-line body → facts right beneath it); the chalice
-             image sits enlarged, flush in the BOTTOM-RIGHT corner, behind them.
-             Desktop only — on mobile the tile stacks normally. */
+             image sits enlarged, flush in the BOTTOM-RIGHT corner, behind them. */
+
+          /* HARD RULE — holds at EVERY width, not just desktop: the card is its own
+             stacking context (isolation), the copy is ALWAYS the top layer (z-index 2)
+             and the image is ALWAYS a positioned layer beneath it (z-index 1).
+             position:relative makes z-index bite even while the image is in normal
+             flow (<901px), so however the image shifts/scales on resize it can NEVER
+             cover the text. */
+          .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature{ position: relative; isolation: isolate; }
+          .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > .mini-tag,
+          .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > h3,
+          .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > p{ position: relative; z-index: 2; }
+          .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature .lab-bento__media--img{ position: relative; z-index: 1; }
+
+          /* Desktop art-direction only: copy sits in a left half-column, the chalice
+             is pinned flush in the BOTTOM-RIGHT corner (absolute, still z-index 1 →
+             below the copy). On mobile the tile just stacks (image in flow, under the
+             text). The extra .lab-bento__v--polish class outranks the default
+             globals.css image rule (which otherwise leaves the image in flow). */
           @media (min-width: 901px){
-            .ds-scoring-bento .lab-bento__tile--feature{ position: relative; justify-content: flex-start; }
-            .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > .mini-tag,
-            .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > h3,
-            .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature > p{
-              position: relative; z-index: 2;
-            }
-            /* body + the three facts live in a left column so they never reach the
-               corner image. Text sits in the top layer (z-index 2). */
+            .ds-scoring-bento .lab-bento__tile--feature{ justify-content: flex-start; }
             .ds-scoring-bento .lab-bento__tile--feature > p{ text-align: left; max-width: 50%; }
-            /* Chalice pinned to the BOTTOM-RIGHT corner, in its own layer BELOW the
-               text (z-index 1) so it can never push or overlap the copy. Selector
-               carries the extra .lab-bento__v--polish class so it outranks the
-               default globals.css rule (which otherwise leaves the image in flow
-               and lets it fall to the bottom under the taller text). */
             .ds-scoring-bento .lab-bento__v--polish .lab-bento__tile--feature .lab-bento__media--img{
               position: absolute; right: 0; bottom: 0; top: auto; left: auto;
               margin: 0; width: auto; height: auto;
               max-height: clamp(270px, 32vw, 360px); transform: none;
               object-fit: contain; object-position: bottom right; z-index: 1;
+            }
+          }
+
+          /* §4 Foundations · Lean Startup feature card: the glass "methods"
+             illustration is pinned ALONG THE BOTTOM EDGE, behind the copy. Same
+             hard layering as §7a — the card is its own stacking context, the copy
+             is z-index 2, the image is an absolute z-index 1 layer (independent of
+             the text). It bleeds a touch past the bottom and is clipped by the
+             card (overflow:hidden) so the objects sit flush into the edge and fill
+             the empty lower area. Absolute on desktop; on mobile it just flows
+             under the text. */
+          #foundations .lab-bento__v--polish .lab-bento__tile--feature{ position: relative; isolation: isolate; overflow: hidden; }
+          #foundations .lab-bento__v--polish .lab-bento__tile--feature > .mini-tag,
+          #foundations .lab-bento__v--polish .lab-bento__tile--feature > h3,
+          #foundations .lab-bento__v--polish .lab-bento__tile--feature > p{ position: relative; z-index: 2; }
+          #foundations .lab-bento__v--polish .lab-bento__tile--feature .lab-bento__media--img{ position: relative; z-index: 1; }
+          @media (min-width: 901px){
+            #foundations .lab-bento__v--polish .lab-bento__tile--feature .lab-bento__media--img{
+              position: absolute; left: 50%; right: auto; top: auto; bottom: -16px;
+              transform: translateX(-50%);
+              margin: 0; width: min(92%, 760px); height: auto; max-height: none;
+              object-fit: contain; object-position: bottom center; z-index: 1;
             }
           }
         `}</style>
