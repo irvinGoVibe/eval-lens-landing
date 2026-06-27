@@ -106,7 +106,7 @@ export default function ReviewBoardPage() {
         {/* 2 — Numbered: after the scores (light) */}
         <Numbered
           surface="ink"
-          version={3}
+          version={2}
           eyebrow="After scoring"
           title="A scored batch is not a decision"
           sub="AI can score every startup, but a stack of separate scores is not a ranked outcome. The differences, the evidence, and the progress stay scattered across reports."
@@ -265,7 +265,7 @@ export default function ReviewBoardPage() {
         <PinnedSteps
           id="hitl"
           surface="ink"
-          ariaLabel="Human in the loop — AI prepares the analysis, you make the call"
+          ariaLabel="Human in the loop — four steps from AI report to final ranking"
           eyebrow="Human in the loop"
           title={{
             line1: "Four steps from",
@@ -330,7 +330,7 @@ export default function ReviewBoardPage() {
               body: "Line up every startup against the same criteria and sort by total score or any single dimension.",
             },
             {
-              title: "From reports to one list",
+              title: "One ranked batch",
               body: "Separate reports collapse into one ranked batch you can act on, not scattered tabs.",
             },
             {
