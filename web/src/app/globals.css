@@ -10477,98 +10477,84 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
 .review-board #status .lab-gallery__card:nth-child(4){ --st:#73737d; }  /* PENDING — neutral gray */
 .review-board #status .lab-gallery__card:nth-child(5){ --st:#c47f1e; }  /* ACTION NEEDED — amber */
 
-/* ── PAGE INJECTION (prompt-injection-safety §test): clean-vs-injected proof +
-   organizer-visible security flag. Custom dark section on `.band.ink`. ── */
-.injection .pis-proof{text-align:center;}
+/* ── PAGE INJECTION (prompt-injection-safety §test): compact clean-vs-injected
+   proof bento + organizer-visible security flag. Dark `.band.ink`. ── */
+/* Lift the whole proof section into its own stacking context above the zone's
+   decorative blob layer (.ds-canvas__blobs is positioned z-index:0; section.band
+   is position:relative WITHOUT z-index so it makes no context → its in-flow cards
+   paint *below* the blobs). z-index:1 here = same fix the DS uses on .ds-hero__inner. */
+.injection .pis-proof{text-align:center;position:relative;z-index:1;}
 .injection .pis-proof .wrap{display:flex;flex-direction:column;align-items:center;}
 .injection .pis-proof__title{margin-top:14px;}
 .injection .pis-proof .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .injection .pis-proof__sub{max-width:62ch;margin:18px auto 0;}
-.injection .pis-proof__grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,28px);
-  width:100%;max-width:760px;margin:clamp(36px,5vw,56px) auto 0;text-align:left;
-}
-/* Clean deck — neutral signature card (matches `.dsx-cell.ink .dsx-card`) */
-.injection .pis-proof__card{
-  padding:24px;border-radius:var(--radius-card,18px);
+
+/* bento grid — row 1: clean · injected · flag, row 2: judges (span 2) · setup */
+.injection .pis-bento{width:100%;max-width:1040px;margin:clamp(14px,1.6vw,20px) auto 0;text-align:left;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,20px);align-items:stretch;}
+.injection .pis-bento__card{padding:22px;border-radius:var(--radius-card,18px);
   background:rgba(255,255,255,.04);border:1px solid var(--border-on-dark,rgba(255,255,255,.12));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
-}
-/* Injected deck — signature gradient "feature" card (lens violet→cyan, the
-   isolation/gradient atom look) */
-.injection .pis-proof__card--inj{
-  background:
-    linear-gradient(155deg,
-      color-mix(in oklab,var(--violet) 24%, transparent),
-      color-mix(in oklab,var(--cyan) 9%, transparent) 78%),
-    rgba(255,255,255,.02);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+.injection .pis-bento__card--inj{
+  background:linear-gradient(155deg,color-mix(in oklab,var(--violet) 24%, transparent),color-mix(in oklab,var(--cyan) 9%, transparent) 78%),rgba(255,255,255,.02);
   border-color:color-mix(in oklab,var(--lavender) 38%, transparent);
-  box-shadow:
-    0 0 44px -18px color-mix(in oklab,var(--violet) 60%, transparent),
-    inset 0 1px 0 rgba(255,255,255,.08);
-}
-.injection .pis-proof__lbl{
-  display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted-on-dark);margin-bottom:14px;
-}
-.injection .pis-proof__rows{margin:0;display:flex;flex-direction:column;gap:10px;}
-.injection .pis-proof__rows > div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
-  padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07);}
+  box-shadow:0 0 44px -18px color-mix(in oklab,var(--violet) 60%, transparent),inset 0 1px 0 rgba(255,255,255,.08);}
+.injection .pis-bento__card--flag{
+  background:linear-gradient(155deg,color-mix(in oklab,var(--cyan) 16%, transparent),transparent 72%),rgba(255,255,255,.02);
+  border-color:color-mix(in oklab,var(--cyan) 34%, transparent);
+  box-shadow:0 0 44px -20px color-mix(in oklab,var(--cyan) 55%, transparent),inset 0 1px 0 rgba(255,255,255,.06);}
+.injection .pis-bento__card--judges{grid-column:span 2;}
+
+.injection .pis-proof__lbl{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);margin-bottom:14px;}
+.injection .pis-proof__rows{margin:0;display:flex;flex-direction:column;gap:9px;}
+.injection .pis-proof__rows > div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.07);}
 .injection .pis-proof__rows > div:last-child{border-bottom:0;padding-bottom:0;}
-.injection .pis-proof__rows dt{font-size:13.5px;color:var(--muted-on-dark);}
+.injection .pis-proof__rows dt{font-size:13px;color:var(--muted-on-dark);}
 .injection .pis-proof__rows dd{margin:0;font-size:14px;font-weight:600;color:var(--fg-on-dark);}
-.injection .pis-proof__num{font-size:18px;}
+.injection .pis-proof__num{font-size:17px;}
 .injection .pis-proof__flagged{color:var(--cyan);}
-.injection .pis-proof__note{font-size:13px;color:var(--muted-on-dark);margin:20px auto 0;max-width:60ch;}
-/* organizer-visible security flag — signature card material, highlighted in a
-   DIFFERENT brand colour (cyan) so it reads apart from the violet injected card */
-.injection .pis-flag{
-  width:100%;max-width:560px;margin:clamp(28px,4vw,44px) auto 0;text-align:left;
-  padding:22px 24px;border-radius:var(--radius-card,18px);
-  background:
-    linear-gradient(155deg, color-mix(in oklab,var(--cyan) 16%, transparent), transparent 72%),
-    rgba(255,255,255,.02);
-  border:1px solid color-mix(in oklab,var(--cyan) 34%, transparent);
-  box-shadow:
-    0 0 44px -20px color-mix(in oklab,var(--cyan) 55%, transparent),
-    inset 0 1px 0 rgba(255,255,255,.06);
+
+/* summary bar — the 5-second result, above the detail bento. Same width + gap +
+   3 columns as the bento, so its cells sit flush above Clean · Injected · Flag. */
+.injection .pis-summary{width:100%;max-width:1040px;margin:clamp(28px,4vw,44px) auto 0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,20px);}
+.injection .pis-summary__cell{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 16px;
+  border-radius:var(--radius-card,18px);background:rgba(255,255,255,.03);border:1px solid var(--border-on-dark);}
+.injection .pis-summary__k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-on-dark);}
+.injection .pis-summary__v{font-family:var(--font-display);font-weight:700;font-size:clamp(26px,3vw,34px);letter-spacing:-.01em;color:var(--fg-on-dark);}
+.injection .pis-summary__v--ok{color:var(--aqua);}
+
+/* flag inner (stacked label/value so it fits a 1/3 card) */
+.injection .pis-flag__head{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;}
+.injection .pis-flag__dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px color-mix(in oklab,var(--cyan) 22%, transparent);flex:none;}
+.injection .pis-flag__rows{margin:0;display:flex;flex-direction:column;gap:10px;}
+.injection .pis-flag__rows > div{display:flex;flex-direction:column;gap:2px;}
+.injection .pis-flag__rows dt{font-size:10px;font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-on-dark);}
+.injection .pis-flag__rows dd{margin:0;font-size:13px;color:var(--fg-on-dark);}
+.injection .pis-flag__quote{font-family:var(--font-mono);font-size:12px;color:var(--cyan);}
+
+/* per-judge mini-grid inside the judges card (borderless; the card is the frame) */
+.injection .pis-bento__card--judges .pis-proof__lbl{margin-bottom:6px;}
+.injection .pis-judges__sub{margin:0 0 14px;font-size:13px;color:var(--muted-on-dark);}
+.injection .pis-judges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.injection .pis-judge{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;border-radius:12px;background:rgba(255,255,255,.03);}
+.injection .pis-judge__id{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted-on-dark);}
+.injection .pis-judge__score{font-family:var(--font-display);font-weight:700;font-size:21px;color:var(--fg-on-dark);}
+.injection .pis-judge__tag{font-family:var(--font-mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--aqua);}
+
+/* test setup — single column inside the 1/3 card */
+.injection .pis-setup{margin:0;display:flex;flex-direction:column;}
+.injection .pis-setup > div{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.injection .pis-setup > div:last-child{border-bottom:0;}
+.injection .pis-setup dt{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-on-dark);}
+.injection .pis-setup dd{margin:0;font-size:12.5px;color:var(--fg-on-dark);text-align:right;}
+
+@media (max-width:860px){
+  .injection .pis-bento{grid-template-columns:1fr 1fr;}
 }
-.injection .pis-flag__head{
-  display:flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--cyan);margin-bottom:16px;
-}
-.injection .pis-flag__dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);
-  box-shadow:0 0 0 4px color-mix(in oklab,var(--cyan) 22%, transparent);flex:none;}
-.injection .pis-flag__rows{margin:0;display:flex;flex-direction:column;gap:11px;}
-.injection .pis-flag__rows > div{display:grid;grid-template-columns:128px 1fr;gap:14px;align-items:baseline;}
-.injection .pis-flag__rows dt{font-size:11px;font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-on-dark);}
-.injection .pis-flag__rows dd{margin:0;font-size:14px;color:var(--fg-on-dark);}
-.injection .pis-flag__quote{font-family:var(--font-mono);font-size:13px;color:var(--cyan);}
-/* per-judge trace table */
-.injection .pis-trace{width:100%;max-width:560px;margin:clamp(28px,4vw,40px) auto 0;border-collapse:collapse;font-size:13.5px;}
-.injection .pis-trace th,.injection .pis-trace td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.07);text-align:right;}
-.injection .pis-trace th:first-child,.injection .pis-trace td:first-child{text-align:left;}
-.injection .pis-trace thead th{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-on-dark);font-weight:600;border-bottom-color:rgba(255,255,255,.14);}
-.injection .pis-trace tbody th{font-family:var(--font-mono);font-size:12px;color:var(--fg-on-dark);font-weight:500;}
-.injection .pis-trace td{color:var(--muted-on-dark);}
-.injection .pis-trace__zero{color:var(--aqua);font-weight:600;}
-.injection .pis-trace tr:last-child th,.injection .pis-trace tr:last-child td{border-bottom:0;}
-/* test-version metadata row */
-.injection .pis-meta{list-style:none;margin:clamp(22px,3vw,32px) auto 0;padding:0;display:flex;flex-wrap:wrap;
-  justify-content:center;gap:9px 20px;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--muted-on-dark);}
-.injection .pis-meta li{position:relative;}
-.injection .pis-meta li:not(:last-child)::after{content:"";position:absolute;right:-10px;top:50%;transform:translateY(-50%);
-  width:3px;height:3px;border-radius:50%;background:color-mix(in oklab,var(--muted-on-dark) 55%, transparent);}
-/* P2.3 — related trust-page cross-links (dark tail) */
-.injection .pis-trustlinks{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 30px;
-  max-width:var(--maxw);margin:0 auto;padding:0 var(--gutters) clamp(40px,7vw,72px);}
-.injection .pis-trustlinks a{position:relative;font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;
-  text-transform:uppercase;color:var(--lavender);text-decoration:none;transition:color .2s ease;}
-.injection .pis-trustlinks a::after{content:" →";color:color-mix(in oklab,var(--lavender) 70%, transparent);}
-.injection .pis-trustlinks a:hover{color:#fff;}
-@media (max-width:680px){
-  .injection .pis-proof__grid{grid-template-columns:1fr;}
-  .injection .pis-flag__rows > div{grid-template-columns:1fr;gap:3px;}
-  .injection .pis-trace{font-size:12.5px;}
-  .injection .pis-trace th,.injection .pis-trace td{padding:9px 8px;}
+@media (max-width:600px){
+  .injection .pis-bento{grid-template-columns:1fr;}
+  .injection .pis-bento__card--judges{grid-column:span 1;}
+  .injection .pis-judges{grid-template-columns:repeat(2,1fr);}
+  .injection .pis-summary{grid-template-columns:1fr;}
 }
