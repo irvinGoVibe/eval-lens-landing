@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties } from "react";
 import { Eyebrow, Title } from "@/components/ds";
 
 /**
@@ -37,6 +37,21 @@ export type NumberedProps = {
   marker?: string;
 };
 
+function TextWithLineBreaks({ text }: { text: string }) {
+  const lines = text.split(/\\n|\r?\n/g);
+
+  return (
+    <>
+      {lines.map((line, index) => (
+        <Fragment key={`${index}-${line}`}>
+          {index > 0 ? <br /> : null}
+          {index > 0 ? line.trimStart() : line}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 function List({ items }: { items: NumberedItem[] }) {
   return (
     <ol className="ds-numbered__list">
@@ -49,7 +64,9 @@ function List({ items }: { items: NumberedItem[] }) {
           <span>{item.num}</span>
           <div>
             <h3>{item.title}</h3>
-            <p>{item.body}</p>
+            <p>
+              <TextWithLineBreaks text={item.body} />
+            </p>
           </div>
         </li>
       ))}
@@ -82,7 +99,9 @@ export function Numbered({
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
             <Title title={title} />
-            <p className="sub">{sub}</p>
+            <p className="sub">
+              <TextWithLineBreaks text={sub} />
+            </p>
           </div>
           <List items={items} />
         </div>
@@ -94,7 +113,9 @@ export function Numbered({
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
             <Title title={title} accent="editorial" />
-            <p className="sub">{sub}</p>
+            <p className="sub">
+              <TextWithLineBreaks text={sub} />
+            </p>
           </div>
           <List items={items} />
         </div>
@@ -106,7 +127,9 @@ export function Numbered({
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
             <Title title={title} accent="Principles" />
-            <p className="sub">{sub}</p>
+            <p className="sub">
+              <TextWithLineBreaks text={sub} />
+            </p>
           </div>
           <List items={items} />
         </div>

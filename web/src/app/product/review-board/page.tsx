@@ -106,10 +106,10 @@ export default function ReviewBoardPage() {
         {/* 2 — Numbered: after the scores (light) */}
         <Numbered
           surface="ink"
-          version={2}
-          eyebrow="After scoring"
-          title="A scored batch is not a decision"
-          sub="AI can score every startup, but a stack of separate scores is not a ranked outcome. The differences, the evidence, and the progress stay scattered across reports."
+          version={3}
+          eyebrow="After the scores"
+          title="A scored batch still needs a decision"
+          sub="AI can score every startup. Your jury still needs to compare the \n  evidence, resolve disagreements, and decide what moves forward."
           items={[
             {
               num: "01",
