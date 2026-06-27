@@ -65,6 +65,12 @@ export default function RootLayout({
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: safariDetect }}
         />
+        {/* No-JS fallback: reveal/pin elements never receive `.is-in` without
+            ScrollFX, so force them visible and unanimated when JS is off. Keeps
+            all key copy readable (and indexable) without JavaScript. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}[data-pin-step]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body>
         {children}

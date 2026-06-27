@@ -4619,6 +4619,13 @@ section[id]{scroll-margin-top:72px;}
 [data-reveal="down"]{transform:translateY(-24px);}
 [data-reveal].is-in{opacity:1;transform:none;}
 
+/* grad-word robustness: every `.grad-word` clips a lens gradient to the text via
+   `color:transparent` (set per-component). iOS Safari can ignore `color:transparent`
+   with `background-clip:text` and drop the fill, so the word disappears. Setting
+   `-webkit-text-fill-color:transparent` globally is the canonical guard — supplements
+   the scoped rules without overriding their gradient. */
+.grad-word{-webkit-text-fill-color:transparent;}
+
 /* pin — tall track with a sticky stage; steps light up sequentially */
 [data-pin]{position:relative;}
 [data-pin-stage]{position:sticky;top:0;min-height:100svh;display:grid;align-content:center;}
@@ -5929,6 +5936,14 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .lab-rv__grid{display:grid;grid-template-columns:1fr clamp(320px,40vw,620px);gap:clamp(36px,5vw,84px);align-items:center;width:100%;}
 .lab-rv__copy{min-width:0;display:grid;grid-template-columns:1fr;}
 .lab-rv__media{display:grid;place-items:center;min-width:0;}
+/* opt-in custom visual (mediaNode) fills the pinned column edge-to-edge */
+.lab-rv__node{width:100%;min-width:0;}
+/* v1 tidy mediaNode slot + framed product shot (rounded, hairline, soft glow) */
+.lab-process__node{min-width:0;width:100%;display:flex;}
+.lab-process__shot{width:100%;height:auto;display:block;border-radius:var(--radius-stage,20px);
+  border:1px solid var(--border-on-dark,rgba(255,255,255,.12));
+  box-shadow:0 30px 70px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.35);}
+.lab-process.soft .lab-process__shot{border-color:var(--border);box-shadow:0 24px 60px rgba(46,48,90,.14);}
 /* head (eyebrow+title+sub) flies UP and fades over the first ~60% of the pin —
    "exit upward = back" (ui-ux §7 hierarchy-motion); transform/opacity only. */
 .lab-rv__head{grid-area:1/1;align-self:start;z-index:2;will-change:transform,opacity;pointer-events:none;
@@ -10806,3 +10821,137 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
    PinnedSteps sticky pin), so clamp the bridge's bottom to the zone instead. The
    bloom sits at the §2b→§3 seam (top), so losing the bottom overhang is invisible. */
 .injection .ds-flip-bridge{bottom:0;}
+
+/* ── PAGE INJECTION (evidence-based-reports hero): enlarge the report image 2×.
+   The image carries data-reveal="right"; inside .ds-hero, the rule
+   `.ds-hero [data-reveal]{transform:none}` (ds.css, specificity 0,2,0, loaded
+   after globals.css) silently overrode every equal-specificity transform we
+   tried. Beat it with a 3-class selector (0,3,0). Grow from the left edge so the
+   enlargement expands into the empty right space, never over the headline.
+   .ds-hero has overflow-x:clip, so anything past the viewport edge is trimmed. */
+.evidence-reports .ds-hero__v3 .ds-hero__ed-media--img{
+  transform:translateX(-20%) scale(1.65);
+  transform-origin:center;
+}
+
+/* ── PAGE INJECTION (evidence-based-reports §5 Grounded): enlarge the slide↔finding
+   image 1.5×. `#grounded` id + !important guarantees it beats both
+   `[data-reveal].is-in{transform:none}` and any reveal transition state. ── */
+.evidence-reports #grounded .ds-split__media--img{
+  transform:scale(1.25) !important;
+  transform-origin:center;
+}
+
+
+
+/* ── PAGE INJECTION (review-board §status "See the whole batch at a glance"):
+   turn each lane card's plain mono tag into a colour-coded status PILL (dot +
+   label), and lay a very faint status tint over the card. Five statuses, keyed
+   by card order. Neutral glass card + coloured pill + ≤6% tint = three levels,
+   no fully-painted cards. ── */
+.review-board #status .lab-signal{ display:none; }
+.review-board #status .lab-gallery__card{ position:relative; }
+.review-board #status .lab-gallery__card .mini-tag{
+  display:inline-flex; align-items:center; gap:7px; align-self:flex-start;
+  height:28px; padding:0 12px; border-radius:999px;
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--st,#6c4cf1);
+  background:color-mix(in oklab, var(--st,#6c4cf1) 11%, transparent);
+  border:1px solid color-mix(in oklab, var(--st,#6c4cf1) 28%, transparent);
+}
+.review-board #status .lab-gallery__card .mini-tag::before{
+  content:""; flex:none; width:6px; height:6px; border-radius:50%; background:var(--st,#6c4cf1);
+}
+/* faint status tint, top of the card (kept under ~6%); above content but inert */
+.review-board #status .lab-gallery__card::after{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:radial-gradient(120% 62% at 50% 0%, color-mix(in oklab, var(--st,#6c4cf1) 6%, transparent), transparent 72%);
+}
+/* per-status colours (slightly deepened from brand hexes for text legibility on light) */
+.review-board #status .lab-gallery__card:nth-child(1){ --st:#19b89a; }  /* READY — mint/aqua */
+.review-board #status .lab-gallery__card:nth-child(2){ --st:#6c4cf1; }  /* ACTIVE — violet */
+.review-board #status .lab-gallery__card:nth-child(3){ --st:#1aa3cf; }  /* COMPLETE — cyan-teal */
+.review-board #status .lab-gallery__card:nth-child(4){ --st:#73737d; }  /* PENDING — neutral gray */
+.review-board #status .lab-gallery__card:nth-child(5){ --st:#c47f1e; }  /* ACTION NEEDED — amber */
+
+/* ── PAGE INJECTION (prompt-injection-safety §test): compact clean-vs-injected
+   proof bento + organizer-visible security flag. Dark `.band.ink`. ── */
+/* Lift the whole proof section into its own stacking context above the zone's
+   decorative blob layer (.ds-canvas__blobs is positioned z-index:0; section.band
+   is position:relative WITHOUT z-index so it makes no context → its in-flow cards
+   paint *below* the blobs). z-index:1 here = same fix the DS uses on .ds-hero__inner. */
+.injection .pis-proof{text-align:center;position:relative;z-index:1;}
+.injection .pis-proof .wrap{display:flex;flex-direction:column;align-items:center;}
+.injection .pis-proof__title{margin-top:14px;}
+.injection .pis-proof .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.injection .pis-proof__sub{max-width:62ch;margin:18px auto 0;}
+
+/* bento grid — row 1: clean · injected · flag, row 2: judges (span 2) · setup */
+.injection .pis-bento{width:100%;max-width:1040px;margin:clamp(14px,1.6vw,20px) auto 0;text-align:left;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,20px);align-items:stretch;}
+.injection .pis-bento__card{padding:22px;border-radius:var(--radius-card,18px);
+  background:rgba(255,255,255,.04);border:1px solid var(--border-on-dark,rgba(255,255,255,.12));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+.injection .pis-bento__card--inj{
+  background:linear-gradient(155deg,color-mix(in oklab,var(--violet) 24%, transparent),color-mix(in oklab,var(--cyan) 9%, transparent) 78%),rgba(255,255,255,.02);
+  border-color:color-mix(in oklab,var(--lavender) 38%, transparent);
+  box-shadow:0 0 44px -18px color-mix(in oklab,var(--violet) 60%, transparent),inset 0 1px 0 rgba(255,255,255,.08);}
+.injection .pis-bento__card--flag{
+  background:linear-gradient(155deg,color-mix(in oklab,var(--cyan) 16%, transparent),transparent 72%),rgba(255,255,255,.02);
+  border-color:color-mix(in oklab,var(--cyan) 34%, transparent);
+  box-shadow:0 0 44px -20px color-mix(in oklab,var(--cyan) 55%, transparent),inset 0 1px 0 rgba(255,255,255,.06);}
+.injection .pis-bento__card--judges{grid-column:span 2;}
+
+.injection .pis-proof__lbl{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-on-dark);margin-bottom:14px;}
+.injection .pis-proof__rows{margin:0;display:flex;flex-direction:column;gap:9px;}
+.injection .pis-proof__rows > div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.07);}
+.injection .pis-proof__rows > div:last-child{border-bottom:0;padding-bottom:0;}
+.injection .pis-proof__rows dt{font-size:13px;color:var(--muted-on-dark);}
+.injection .pis-proof__rows dd{margin:0;font-size:14px;font-weight:600;color:var(--fg-on-dark);}
+.injection .pis-proof__num{font-size:17px;}
+.injection .pis-proof__flagged{color:var(--cyan);}
+
+/* summary bar — the 5-second result, above the detail bento. Same width + gap +
+   3 columns as the bento, so its cells sit flush above Clean · Injected · Flag. */
+.injection .pis-summary{width:100%;max-width:1040px;margin:clamp(28px,4vw,44px) auto 0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,20px);}
+.injection .pis-summary__cell{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 16px;
+  border-radius:var(--radius-card,18px);background:rgba(255,255,255,.03);border:1px solid var(--border-on-dark);}
+.injection .pis-summary__k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-on-dark);}
+.injection .pis-summary__v{font-family:var(--font-display);font-weight:700;font-size:clamp(26px,3vw,34px);letter-spacing:-.01em;color:var(--fg-on-dark);}
+.injection .pis-summary__v--ok{color:var(--aqua);}
+
+/* flag inner (stacked label/value so it fits a 1/3 card) */
+.injection .pis-flag__head{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;}
+.injection .pis-flag__dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px color-mix(in oklab,var(--cyan) 22%, transparent);flex:none;}
+.injection .pis-flag__rows{margin:0;display:flex;flex-direction:column;gap:10px;}
+.injection .pis-flag__rows > div{display:flex;flex-direction:column;gap:2px;}
+.injection .pis-flag__rows dt{font-size:10px;font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted-on-dark);}
+.injection .pis-flag__rows dd{margin:0;font-size:13px;color:var(--fg-on-dark);}
+.injection .pis-flag__quote{font-family:var(--font-mono);font-size:12px;color:var(--cyan);}
+
+/* per-judge mini-grid inside the judges card (borderless; the card is the frame) */
+.injection .pis-bento__card--judges .pis-proof__lbl{margin-bottom:6px;}
+.injection .pis-judges__sub{margin:0 0 14px;font-size:13px;color:var(--muted-on-dark);}
+.injection .pis-judges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.injection .pis-judge{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;border-radius:12px;background:rgba(255,255,255,.03);}
+.injection .pis-judge__id{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted-on-dark);}
+.injection .pis-judge__score{font-family:var(--font-display);font-weight:700;font-size:21px;color:var(--fg-on-dark);}
+.injection .pis-judge__tag{font-family:var(--font-mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--aqua);}
+
+/* test setup — single column inside the 1/3 card */
+.injection .pis-setup{margin:0;display:flex;flex-direction:column;}
+.injection .pis-setup > div{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.injection .pis-setup > div:last-child{border-bottom:0;}
+.injection .pis-setup dt{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-on-dark);}
+.injection .pis-setup dd{margin:0;font-size:12.5px;color:var(--fg-on-dark);text-align:right;}
+
+@media (max-width:860px){
+  .injection .pis-bento{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:600px){
+  .injection .pis-bento{grid-template-columns:1fr;}
+  .injection .pis-bento__card--judges{grid-column:span 1;}
+  .injection .pis-judges{grid-template-columns:repeat(2,1fr);}
+  .injection .pis-summary{grid-template-columns:1fr;}
+}

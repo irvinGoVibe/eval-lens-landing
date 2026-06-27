@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>EvalLense — Lens Decode Hero (preview)</title>
+<style>
+  html,body{margin:0;height:100%;background:#050507;}
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh;
+    background:radial-gradient(120% 110% at 50% 46%, #0b0b12 0%, #070709 60%, #030305 100%);}
+  .wrap{width:min(96vw,1100px);aspect-ratio:4/3;}
+  svg{width:100%;height:100%;display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<svg viewBox="0 0 680 510" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Flat deck decoding inside a dark lens">
+<defs>
+<linearGradient id="rim2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a99bff"/><stop offset="50%" stop-color="#6c4cf1"/><stop offset="100%" stop-color="#2ec5e8"/></linearGradient>
+<radialGradient id="dkGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#cfc4ff" stop-opacity="0.9"/><stop offset="55%" stop-color="#7f77dd" stop-opacity="0.4"/><stop offset="100%" stop-color="#2ec5e8" stop-opacity="0"/></radialGradient>
+<radialGradient id="field" cx="50%" cy="46%" r="55%"><stop offset="0%" stop-color="#13131f"/><stop offset="100%" stop-color="#06060b"/></radialGradient>
+<filter id="g6" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>
+<clipPath id="inner"><circle cx="340" cy="250" r="190"/></clipPath>
+</defs>
+
+<circle cx="340" cy="250" r="222" fill="none" stroke="#6c4cf1" stroke-width="10" stroke-dasharray="280 1120" transform="rotate(188 340 250)" filter="url(#g6)" opacity="0.55"/>
+<circle cx="340" cy="250" r="222" fill="none" stroke="#2ec5e8" stroke-width="10" stroke-dasharray="280 1120" transform="rotate(8 340 250)" filter="url(#g6)" opacity="0.55"/>
+
+<circle cx="340" cy="250" r="190" fill="url(#field)"/>
+<circle cx="340" cy="250" r="230" fill="none" stroke="url(#rim2)" stroke-width="2" opacity="0.5"/>
+<circle cx="340" cy="250" r="224" fill="none" stroke="#171720" stroke-width="7"/>
+<circle cx="340" cy="250" r="216" fill="none" stroke="url(#rim2)" stroke-width="1.5" opacity="0.8"/>
+<circle cx="340" cy="250" r="206" fill="none" stroke="#0c0c13" stroke-width="9"/>
+<circle cx="340" cy="250" r="196" fill="none" stroke="url(#rim2)" stroke-width="1" opacity="0.55"/>
+
+<g clip-path="url(#inner)">
+  <g>
+    <animateTransform attributeName="transform" type="rotate" from="0 340 250" to="360 340 250" dur="70s" repeatCount="indefinite"/>
+    <g id="evl-spokes"></g>
+  </g>
+  <ellipse cx="340" cy="250" rx="92" ry="56" fill="url(#dkGlow)" filter="url(#g6)" opacity="0.85"/>
+  <g id="evl-frags"></g>
+  <g>
+    <animate attributeName="opacity" values="0.82;1;0.82" dur="4s" repeatCount="indefinite"/>
+    <polygon points="300,224 380,224 398,280 282,280" fill="#cdc6f7" fill-opacity="0.92" stroke="#a99bff" stroke-opacity="0.8" stroke-width="0.8"/>
+    <polygon points="282,280 398,280 395,289 285,289" fill="#6c4cf1" fill-opacity="0.55"/>
+    <rect x="312" y="232" width="40" height="6" rx="2" fill="#4a3fb0" fill-opacity="0.8"/>
+    <rect x="312" y="244" width="30" height="3" rx="1.5" fill="#5b51c0" fill-opacity="0.55"/>
+    <rect x="312" y="251" width="34" height="3" rx="1.5" fill="#5b51c0" fill-opacity="0.45"/>
+    <rect x="312" y="262" width="16" height="10" rx="1.5" fill="#2ec5e8" fill-opacity="0.5"/>
+    <rect x="332" y="262" width="16" height="10" rx="1.5" fill="none" stroke="#2ec5e8" stroke-opacity="0.5" stroke-width="0.7"/>
+    <rect x="356" y="244" width="30" height="3" rx="1.5" fill="#5b51c0" fill-opacity="0.5"/>
+    <rect x="356" y="251" width="26" height="3" rx="1.5" fill="#5b51c0" fill-opacity="0.4"/>
+    <rect x="356" y="262" width="30" height="10" rx="1.5" fill="#36e0c2" fill-opacity="0.35"/>
+  </g>
+</g>
+
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg",cx=340,cy=250,dur=5.4,N=32;
+  var frags=document.getElementById('evl-frags'),spokes=document.getElementById('evl-spokes');
+  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  for(var i=0;i<N;i++){
+    var ang=(i/N)*Math.PI*2+(i%2?0.10:-0.05);
+    var band=i%3, R=[80,126,168][band]+(i%5)*3;
+    var dx=Math.cos(ang)*R, dy=Math.sin(ang)*R, right=Math.cos(ang)>0;
+    var col=right?'#2ec5e8':'#a99bff', col2=right?'#36e0c2':'#6c4cf1';
+    var deg=(ang*180/Math.PI).toFixed(1), beg=(-(i/N)*dur).toFixed(2)+'s';
+    spokes.appendChild(el('line',{x1:cx,y1:cy,x2:(cx+Math.cos(ang)*186).toFixed(1),y2:(cy+Math.sin(ang)*186).toFixed(1),stroke:col,'stroke-width':0.5,'stroke-opacity':0.12}));
+    var w=band===2?28:band===1?34:22, h=band===2?17:band===1?21:14;
+    var g=el('g',{transform:'translate('+cx+' '+cy+')',opacity:0});
+    g.appendChild(el('animateTransform',{attributeName:'transform',type:'translate',additive:'sum',values:'0 0; '+dx.toFixed(1)+' '+dy.toFixed(1)+'; '+(dx*1.16).toFixed(1)+' '+(dy*1.16).toFixed(1),keyTimes:'0;0.7;1',dur:dur+'s',begin:beg,repeatCount:'indefinite'}));
+    g.appendChild(el('animateTransform',{attributeName:'transform',type:'scale',additive:'sum',values:'0.18;1;1.04',keyTimes:'0;0.7;1',dur:dur+'s',begin:beg,repeatCount:'indefinite'}));
+    g.appendChild(el('animate',{attributeName:'opacity',values:'0;1;0.92;0',keyTimes:'0;0.14;0.7;1',dur:dur+'s',begin:beg,repeatCount:'indefinite'}));
+    var ig=el('g',{transform:'rotate('+deg+')'});
+    ig.appendChild(el('rect',{x:-w/2,y:-h/2,width:w,height:h,rx:3,fill:col,'fill-opacity':0.13,stroke:col,'stroke-opacity':0.7,'stroke-width':0.7}));
+    ig.appendChild(el('rect',{x:-w/2+4,y:-h/2+4,width:(w*0.5).toFixed(1),height:2.4,rx:1,fill:col2,'fill-opacity':0.65}));
+    if(h>15)ig.appendChild(el('rect',{x:-w/2+4,y:-h/2+9,width:(w*0.72).toFixed(1),height:1.6,rx:0.8,fill:col2,'fill-opacity':0.35}));
+    g.appendChild(ig);
+    frags.appendChild(g);
+  }
+})();
+</script>
+</svg>
+</div>
+</body>
+</html>

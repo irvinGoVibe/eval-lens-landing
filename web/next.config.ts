@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Cache Components (Next 16): enables `use cache`, `cacheTag`, `cacheLife`.
   cacheComponents: true,
+  turbopack: {
+    root: process.cwd(),
+  },
   images: {
     remotePatterns: [
       {

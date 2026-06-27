@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1340 1005" fill="none" role="img" aria-labelledby="sfTitle sfDesc">
+  <title id="sfTitle">A pitch-deck slide linked to its supporting and lowering findings</title>
+  <desc id="sfDesc">A glass card showing a Go-to-market slide under a magnifier, connected to a glass panel that lists what supports and what lowers the score, with the source slide referenced.</desc>
+
+  <defs>
+    <!-- glass fills — translucent so the light section reads through -->
+    <linearGradient id="sfGlass" x1="0" y1="0" x2="0.25" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#e7ecff" stop-opacity="0.27"/>
+    </linearGradient>
+    <linearGradient id="sfGlassPanel" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.54"/>
+      <stop offset="1" stop-color="#edf1ff" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="sfICP" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#e9edff" stop-opacity="0.4"/>
+    </linearGradient>
+    <!-- glass sheen (top light) + frosted highlight blob -->
+    <linearGradient id="sfSheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/>
+      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="sfBlob" cx="0.2" cy="0.12" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- brand colored edge for the glass rim -->
+    <linearGradient id="sfEdge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a99bff"/>
+      <stop offset="0.5" stop-color="#7ba6ee"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <clipPath id="clipCard"><rect x="92" y="178" width="600" height="540" rx="30"/></clipPath>
+    <clipPath id="clipICP"><rect x="126" y="386" width="532" height="118" rx="18"/></clipPath>
+    <clipPath id="clipPanel"><rect x="758" y="158" width="256" height="232" rx="26"/></clipPath>
+    <filter id="sfShadow" x="-25%" y="-25%" width="150%" height="155%">
+      <feDropShadow dx="0" dy="16" stdDeviation="22" flood-color="#33356b" flood-opacity="0.14"/>
+    </filter>
+    <filter id="sfShadowSm" x="-30%" y="-30%" width="160%" height="165%">
+      <feDropShadow dx="0" dy="12" stdDeviation="17" flood-color="#33356b" flood-opacity="0.13"/>
+    </filter>
+  </defs>
+
+  <style>
+    .t   { font-family: 'Inter','Helvetica Neue',system-ui,sans-serif; }
+    .mono{ font-family: ui-monospace,'SF Mono',Menlo,monospace; }
+    .dark{ fill:#23264a; } .muted{ fill:#6f7393; } .vio{ fill:#6c4cf1; }
+  </style>
+
+  <!-- connectors (behind cards, in the gap) -->
+  <g stroke="#9aa0d6" stroke-width="2.4" fill="none" opacity="0.8">
+    <path d="M690 250 C 726 250, 726 232, 760 232"/>
+    <path d="M690 300 C 726 300, 726 318, 760 318"/>
+  </g>
+  <g fill="#ffffff" stroke="#b9bdec" stroke-width="2">
+    <circle cx="690" cy="250" r="6"/><circle cx="690" cy="300" r="6"/>
+    <circle cx="760" cy="232" r="6"/><circle cx="760" cy="318" r="6"/>
+  </g>
+
+  <!-- ===================== MAIN CARD ===================== -->
+  <g filter="url(#sfShadow)">
+    <rect x="92" y="178" width="600" height="540" rx="30" fill="url(#sfGlass)"/>
+  </g>
+  <!-- glass sheen + frosted highlight, clipped to the card -->
+  <g clip-path="url(#clipCard)">
+    <rect x="92" y="178" width="600" height="300" fill="url(#sfSheen)"/>
+    <rect x="92" y="178" width="600" height="540" fill="url(#sfBlob)"/>
+  </g>
+
+  <!-- slide tag (glass pill) -->
+  <rect x="128" y="220" width="232" height="30" rx="15" fill="#ffffff" fill-opacity="0.55" stroke="#cdbffb" stroke-width="1"/>
+  <text x="146" y="240" class="mono vio" font-size="13" letter-spacing="1.5">SLIDE 07 · GO-TO-MARKET</text>
+
+  <!-- title + sub -->
+  <text x="128" y="300" class="t dark" font-size="30" font-weight="700" letter-spacing="-0.5">Go-to-market strategy</text>
+  <text x="128" y="338" class="t muted" font-size="16">Focused land-and-expand in high-value SMB</text>
+  <text x="128" y="362" class="t muted" font-size="16">segments with urgent compliance needs.</text>
+
+  <!-- ICP highlight box (glass) -->
+  <rect x="126" y="386" width="532" height="118" rx="18" fill="url(#sfICP)" stroke="#ffffff" stroke-width="1.4"/>
+  <g clip-path="url(#clipICP)"><rect x="126" y="386" width="532" height="64" fill="url(#sfSheen)"/></g>
+  <rect x="127.4" y="387.4" width="529.2" height="115.2" rx="16.6" fill="none" stroke="url(#sfEdge)" stroke-width="1" opacity="0.4"/>
+  <rect x="148" y="408" width="58" height="58" rx="15" fill="#ffffff" fill-opacity="0.55" stroke="#d8d2fb" stroke-width="1"/>
+  <g fill="#6c4cf1" transform="translate(160,420)">
+    <circle cx="17" cy="11" r="8.5"/>
+    <path d="M2 36 C2 25, 32 25, 32 36 L32 38 L2 38 Z"/>
+  </g>
+  <text x="226" y="425" class="t vio" font-size="14" font-weight="600">Ideal Customer Profile (ICP)</text>
+  <text x="226" y="456" class="t dark" font-size="19" font-weight="500">B2B SaaS companies, <tspan class="vio" font-weight="600">10–200 employees</tspan></text>
+  <text x="226" y="484" class="t dark" font-size="19" font-weight="500">in <tspan class="vio" font-weight="600">North America</tspan>, SOC 2 in scope.</text>
+
+  <!-- early traction -->
+  <g transform="translate(148,532)">
+    <rect width="40" height="40" rx="11" fill="#ffffff" fill-opacity="0.5" stroke="#dcd7f7" stroke-width="1"/>
+    <g fill="#6c4cf1"><rect x="10" y="22" width="5" height="9" rx="1.5"/><rect x="17.5" y="16" width="5" height="15" rx="1.5"/><rect x="25" y="11" width="5" height="20" rx="1.5"/></g>
+  </g>
+  <text x="204" y="546" class="t muted" font-size="13">Early traction</text>
+  <text x="204" y="568" class="t dark" font-size="16" font-weight="500">$412K ARR, 126 logo customers, 95% NRR</text>
+
+  <!-- sales motion -->
+  <g transform="translate(148,598)">
+    <rect width="40" height="40" rx="11" fill="#ffffff" fill-opacity="0.5" stroke="#dcd7f7" stroke-width="1"/>
+    <path d="M9 13 h22 a4 4 0 0 1 4 4 v8 a4 4 0 0 1 -4 4 h-12 l-7 6 v-6 h-3 a4 4 0 0 1 -4 -4 v-8 a4 4 0 0 1 4 -4 Z" fill="#6c4cf1"/>
+  </g>
+  <text x="204" y="612" class="t muted" font-size="13">Sales motion</text>
+  <text x="204" y="634" class="t dark" font-size="16" font-weight="500">PLG → inside sales → customer success</text>
+
+  <!-- main card glass rim (white inner highlight + faint colored edge), on top -->
+  <rect x="93" y="179" width="598" height="538" rx="29" fill="none" stroke="#ffffff" stroke-width="1.6" opacity="0.85"/>
+  <rect x="92.5" y="178.5" width="599" height="539" rx="29.5" fill="none" stroke="url(#sfEdge)" stroke-width="1.2" opacity="0.3"/>
+
+  <!-- ===================== SUPPORTS / LOWERS PANEL ===================== -->
+  <g filter="url(#sfShadowSm)">
+    <rect x="758" y="158" width="256" height="232" rx="26" fill="url(#sfGlassPanel)"/>
+  </g>
+  <g clip-path="url(#clipPanel)">
+    <rect x="758" y="158" width="256" height="130" fill="url(#sfSheen)"/>
+    <rect x="758" y="158" width="256" height="232" fill="url(#sfBlob)"/>
+  </g>
+
+  <!-- supports -->
+  <circle cx="794" cy="205" r="16" fill="#2fc9a8"/>
+  <path d="M787 205 l5 5 l9 -10" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="820" y="211" class="t dark" font-size="15.5" font-weight="700">Supports:<tspan class="muted" font-weight="500" dx="4">clear ICP</tspan></text>
+
+  <!-- lowers -->
+  <circle cx="794" cy="252" r="16" fill="#f0758a"/>
+  <rect x="786" y="250" width="16" height="4" rx="2" fill="#ffffff"/>
+  <text x="820" y="258" class="t dark" font-size="15.5" font-weight="700">Lowers:<tspan class="muted" font-weight="500" dx="4">no CAC detail</tspan></text>
+
+  <!-- divider + source -->
+  <line x1="786" y1="296" x2="986" y2="296" stroke="#d6d8f0" stroke-width="1.5"/>
+  <text x="786" y="328" class="t vio" font-size="13.5" font-weight="600">Source reference</text>
+  <text x="786" y="354" class="mono muted" font-size="14">Slide 07 · Go-to-market</text>
+
+  <!-- panel glass rim -->
+  <rect x="759" y="159" width="254" height="230" rx="25" fill="none" stroke="#ffffff" stroke-width="1.6" opacity="0.85"/>
+  <rect x="758.5" y="158.5" width="255" height="231" rx="25.5" fill="none" stroke="url(#sfEdge)" stroke-width="1.2" opacity="0.3"/>
+
+  <!-- MAGNIFIER: the realistic glass magnifier is composited on top of this SVG
+       at render time (sharp), over the ICP box. -->
+</svg>

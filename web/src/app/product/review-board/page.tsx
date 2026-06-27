@@ -84,12 +84,13 @@ export default function ReviewBoardPage() {
         {/* 1 — Statement hero (soft) */}
         <StatementHero
           surface="ink"
+          version={2}
           eyebrow="Review Board"
-          titleLead="Where AI analysis becomes a human"
-          titleAccent="decision"
-          sub="Bring every scored startup into one board, compare the evidence side by side, and rank your cohort in a day instead of weeks. AI prepares the analysis; the final call is yours."
+          titleLead="Compare the evidence. Make the"
+          titleAccent="final call."
+          sub="Review every scored startup in one place. Compare the evidence, set your Jury Scores, and rank the batch. AI prepares the analysis. Your jury decides what moves forward."
           ctas={[
-            { label: "Book a Demo", href: "/company/contact" },
+            { label: "Book a demo", href: "/company/contact" },
             { label: "Try live demo", href: "/#demo", variant: "ghost" },
           ]}
           media={{
@@ -104,30 +105,30 @@ export default function ReviewBoardPage() {
         {/* 2 — Numbered: after the scores (light) */}
         <Numbered
           surface="ink"
-          version={2}
+          version={3}
           eyebrow="After the scores"
-          title="A scored batch isn't a decision yet"
-          sub="Once the AI analysis is ready, the work shifts from reading single reports to making one call across the whole batch — and that's where the friction starts."
+          title="A scored batch still needs a decision"
+          sub="AI can score every startup. Your jury still needs to compare the evidence, resolve disagreements, and decide what moves forward."
           items={[
             {
               num: "01",
-              title: "Hard to compare",
-              body: "Dozens of reports in separate tabs make differences easy to miss and slow to weigh.",
+              title: "Separate reports hide differences",
+              body: "Important differences are easy to miss when every report lives in a separate tab.",
             },
             {
               num: "02",
-              title: "Numbers need context",
-              body: "A score means little without the evidence and the judge findings behind it.",
+              title: "Scores need evidence",
+              body: "A number means little unless reviewers can see the findings behind it.",
             },
             {
               num: "03",
-              title: "One shared view",
-              body: "Reviewers need the batch in a single place, not rebuilt from scattered files.",
+              title: "Batch progress is hard to track",
+              body: "Reviewers need one place to see what's ready, in review, scored, or blocked.",
             },
             {
               num: "04",
-              title: "A defensible trail",
-              body: "Final decisions have to be recorded and explainable later — not lost the moment they're made.",
+              title: "Decisions lose their context",
+              body: "Scores, notes, and reasoning need to remain visible after the shortlist is final.",
             },
           ]}
         />
@@ -138,13 +139,14 @@ export default function ReviewBoardPage() {
           surface="ink"
           className="bg-dot-grid"
           eyebrow="One workspace"
-          title="One board to decide from"
-          sub="Review Board pulls every participant into a single view — statuses, scores, summaries, comparison and the leaderboard — so the batch reads as one decision surface. Each entry opens its full evidence-based report."
+          title="One board for the whole decision"
+          titleAccent="decision"
+          sub="See every startup, status, AI Total Score, Jury Score, and finding in one place. Compare the batch, open the evidence, and build the shortlist without moving between reports and spreadsheets."
           items={[
             {
               tag: "Startup list",
-              title: "Every entry, with a live status",
-              body: "Every entry in one list, each carrying a live status, so the state of the batch is always readable.",
+              title: "Every startup and its current status",
+              body: "See the full batch and know which startups are ready, under review or waiting for a score.",
               feature: true,
               media: {
                 label: "Image · board bento · 16:9",
@@ -155,28 +157,28 @@ export default function ReviewBoardPage() {
             },
             {
               tag: "AI Total Score",
-              title: "Advisory baseline, not a verdict",
-              body: "An advisory baseline beside each entry. It informs your read and never sets the ranking.",
+              title: "A reference, not the final score",
+              body: "Use the AI score as context. Your Jury Score determines the ranking.",
             },
             {
-              tag: "Judge summaries",
-              title: "What each lens found",
-              body: "Short per-dimension findings across P1–P6 give the context behind a number, so a score is never read alone.",
+              tag: "Judge findings",
+              title: "The reasoning behind each score",
+              body: "Review the findings across your evaluation criteria and see what supports each score.",
             },
             {
               tag: "Comparison",
-              title: "Startups side by side",
-              body: "Candidates placed next to each other on the same criteria, so differences are visible instead of inferred.",
+              title: "Compare startups side by side",
+              body: "Review startups against the same criteria and see the differences directly.",
             },
             {
               tag: "Leaderboard",
               title: "Ranked by your Jury Score",
-              body: "The batch ordered by your Jury Score, weighted by the project criteria — your decision, not the AI baseline.",
+              body: "Rank the batch using your Jury Scores and project weights. The AI score stays advisory.",
             },
             {
               tag: "Shortlist",
-              title: "The strongest, set aside",
-              body: "Pull the strongest aside and keep the decision state on the board, not in side notes.",
+              title: "Build the shortlist without leaving the board",
+              body: "Shortlist the strongest startups without moving the decision into a separate spreadsheet or document.",
             },
           ]}
         />
@@ -189,75 +191,66 @@ export default function ReviewBoardPage() {
         {/* 4 — RiskControl: AI signal → human decision (light · v1) */}
         <RiskControl
           surface="light"
-          ariaLabel="AI signal to human decision — every system signal leads to a human call"
+          ariaLabel="AI signal to human decision — AI shows where to look, your jury decides what to do"
           eyebrow="AI SIGNAL → HUMAN DECISION"
-          title="Every signal leads to a human call"
-          titleAccent="human call"
-          sub="EvalLense structures the ranking, evidence, and disagreements. Your team reviews the context, builds the shortlist, and owns the final decision."
+          title="AI shows where to look. Your jury decides what to do."
+          titleAccent="decides"
+          sub="High scores, weak evidence, and judge disagreement are signals for review, not automatic decisions."
           leftTag="AI SIGNAL"
           rightTag="HUMAN DECISION"
           pairs={[
             {
-              risk: "A project ranks at the top",
+              risk: "Judges disagree",
               control:
-                "The team opens the report, checks the supporting evidence, and decides whether the project belongs in the shortlist.",
+                "Review the split, compare the reasoning, and resolve it together.",
             },
             {
-              risk: "Judges disagree on key dimensions",
+              risk: "A high score has weak evidence",
               control:
-                "Reviewers inspect the split, compare the reasoning, and resolve the disagreement together.",
+                "Open the findings and check whether the score is supported.",
             },
             {
-              risk: "A strong score has weak evidence",
+              risk: "A lower-ranked startup fits your criteria",
               control:
-                "The project is flagged for closer review before its score influences the final decision.",
-            },
-            {
-              risk: "A lower-ranked project fits the mandate",
-              control:
-                "The team can override the ranking, document the rationale, and move the project into the shortlist.",
-            },
-            {
-              risk: "The batch is ready for selection",
-              control:
-                "Reviewers confirm statuses, leave notes, and publish the final shortlist with a complete decision trail.",
+                "Move it into the shortlist and keep the reason with the decision.",
             },
           ]}
         />
 
         {/* 5 — Gallery: read the whole batch at a glance (light) */}
         <Gallery
+          id="status"
           surface="light"
-          version={4}
-          eyebrow="Always legible"
-          title="Read the whole batch at a glance"
-          sub="Every entry carries one status, so you can see what's ready, what's mid-review and what needs your attention — without opening a thing."
+          version={1}
+          eyebrow="Batch status"
+          title="See the whole batch at a glance"
+          sub="Each startup has one clear status, so you can see what's ready, in review, scored or blocked without opening every report."
           laneLabel="Participant statuses across the board"
           items={[
             {
               tag: "Ready",
               title: "AI Report Ready",
-              body: "The judges have finished; the AI analysis is ready for a human read. No live score yet.",
+              body: "The AI analysis is complete and ready for your review.",
             },
             {
               tag: "Active",
               title: "In Review",
-              body: "The report is open and human evaluation is under way.",
+              body: "The report is open and the human review is underway.",
             },
             {
-              tag: "Ready",
+              tag: "Complete",
               title: "Scored",
-              body: "A human Jury Score has been submitted across the dimensions.",
+              body: "A Jury Score has been submitted for every dimension.",
             },
             {
-              tag: "Absent",
+              tag: "Pending",
               title: "Not Scored",
-              body: "No live score yet — awaiting a human read.",
+              body: "Human scoring hasn't started yet.",
             },
             {
-              tag: "Attention",
+              tag: "Action needed",
               title: "Error",
-              body: "A judge run failed; the entry needs a rerun before it can be scored.",
+              body: "One or more judge runs failed. Rerun the entry before scoring it.",
             },
           ]}
         />
@@ -273,33 +266,44 @@ export default function ReviewBoardPage() {
           ariaLabel="Human in the loop — AI prepares the analysis, you make the call"
           eyebrow="Human in the loop"
           title={{
-            line1: "AI prepares the analysis.",
-            line2: "You make",
+            line1: "AI prepares the evidence.",
+            line2: "Your jury makes",
             line2Accent: "the call",
           }}
-          sub="AI does the slow reading — every deck, every dimension — so your time goes to the decision, not the grind. You move from the AI report to a human Jury Score and a leaderboard, each step lighting up as you scroll."
+          sub="AI reviews every deck across the same criteria. You check the evidence, ask questions, set the Jury Score and generate the final ranking."
           steps={[
             {
               num: "01",
               label: "Open the report",
-              desc: "You open a Participant Report and read the Project Summary and the AI Score Report — the advisory AI Total Score with judge findings across P1–P6.",
+              desc: "Review the startup summary, AI Total Score, and findings across your project criteria.",
             },
             {
               num: "02",
-              label: "Ask in live Q&A",
-              desc: "Questions for Participants, each linked to a P1–P6 criterion, guide the live session; answer notes are optional context, never a blocker.",
+              label: "Ask and record",
+              desc: "Use criterion-linked questions during the session and keep notes beside the evidence.",
             },
             {
               num: "03",
               label: "Set the Jury Score",
-              desc: "You score each dimension on a 0.0–10.0 scale. The AI Total Score stays read-only beside it, and you see the delta between the two.",
+              desc: "Score each criterion from 0.0 to 10.0. The AI Total Score remains read-only.",
             },
             {
               num: "04",
               label: "Generate the leaderboard",
-              desc: "When the review is done, you generate the project leaderboard — ranked on your Jury Score, on your judgment.",
+              desc: "Once every startup is scored, generate a ranking based on Jury Scores and project weights.",
             },
           ]}
+          mediaNode={
+            <img
+              className="lab-process__shot"
+              src="/assets/review-board/hitl-scores.webp"
+              alt="The advisory AI Score beside the human Jury Score, with the resulting leaderboard"
+              width={1600}
+              height={1200}
+              loading="lazy"
+              decoding="async"
+            />
+          }
           media={{
             ratio: "4/3",
             label: "Image · human-in-the-loop track · 4:3",
@@ -315,26 +319,25 @@ export default function ReviewBoardPage() {
           surface="ink"
           version={3}
           eyebrow="Compare & rank"
-          titleLead="From separate reports to one"
-          titleAccent="ranked"
-          titleTrail=" list"
-          sub="The board turns a batch into a ranked decision in a day, not weeks — candidates side by side on the same criteria, the strongest pulled into a shortlist."
+          titleLead="Turn separate reports into one"
+          titleAccent="ranked list"
+          sub="Compare every startup against the same criteria, see where the judges disagree, and build a shortlist in one place."
           points={[
             {
-              title: "Side by side",
-              body: "Compare startups across the same dimensions and sort by score or by a single measure. Every deck is read against the same scoring methodology.",
+              title: "Compare side by side",
+              body: "Compare startups using the same criteria. Sort the list by total score or any individual dimension.",
             },
             {
-              title: "Disagreement, surfaced",
-              body: "When the AI judges diverge on a dimension, the report shows the spread instead of hiding it in an average — consensus, split or conflict — so you know where a closer human read is needed.",
+              title: "See where judges disagree",
+              body: "When AI judges differ, we show the spread instead of averaging it away. You can see consensus, a split, or a conflict — and where human review matters.",
             },
             {
-              title: "Your criteria",
-              body: "Set the rubric and weights for your project. When your jury process needs more, we tailor the evaluation pipeline to it — a managed service that fits how you already judge, not a template you bend to.",
+              title: "Use your criteria",
+              body: "Set your own rubric and weights. For custom jury processes, we adapt the evaluation setup to match how you already work.",
             },
             {
-              title: "Human Jury Score ranks · AI stays advisory",
-              body: "The leaderboard ranks on your decision — your Jury Score, weighted by the project criteria. The AI context sits beside the rank as a reference, never as the ranking.",
+              title: "Human Jury Score sets the rank",
+              body: "The leaderboard is ranked by your Jury Score, weighted by your criteria. AI scores stay visible as context, but never determine the final order.",
             },
           ]}
           media={{
@@ -372,10 +375,10 @@ export default function ReviewBoardPage() {
           theme="dark"
           videoSrc="/assets/cta/cube-1.mp4"
           eyebrow="Decision trail"
-          title="The AI score and your score stay"
-          titleAccent="side by side."
-          sub="Neither overwrites the other: the AI Total Score stays an advisory baseline, your Jury Score becomes the final input. That keeps the reasoning intact and makes every decision explainable later."
-          primary={{ label: "Book a Demo", href: "/company/contact" }}
+          title="AI advises. Your Jury Score"
+          titleAccent="decides."
+          sub="The AI Total Score stays visible as context. Your Jury Scores determine the ranking, so the final order reflects your jury's decision."
+          primary={{ label: "Book a demo", href: "/company/contact" }}
         />
       </main>
       <Footer variant="dark" />

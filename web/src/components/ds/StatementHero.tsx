@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Eyebrow, Media } from "@/components/ds";
 
@@ -42,11 +43,18 @@ export type StatementHeroProps = {
   /** Poster image for the v1 `video` background. */
   backgroundPoster?: string;
   /**
-   * Back-compat with the old Lab hero (which carried a media slot for its v4
-   * photo/video version). v4 is gone — `media` is accepted but unused; new code
-   * should use `background`/`backgroundSrc` instead.
+   * Media slot for v3 editorial layout. With `src` set, renders a real `next/image`
+   * instead of the placeholder — additive, so existing consumers stay unchanged.
    */
-  media?: { ratio: string; label: string; hint: string; ariaLabel: string };
+  media?: {
+    ratio: string;
+    label: string;
+    hint: string;
+    ariaLabel: string;
+    src?: string;
+    width?: number;
+    height?: number;
+  };
   /** Lens-grid pattern behind the v1 gradient background. */
   pattern?: boolean;
   /** Which design version to display (1–3). Defaults to 1. */
@@ -213,14 +221,26 @@ export function StatementHero({
             {sub ? <p className="sub ds-hero__sub ds-hero__sub--left">{sub}</p> : null}
             {ctas.length ? <div className="cta-row cta-row--left">{ctaSet()}</div> : null}
           </div>
-          <Media
-            className="ds-hero__ed-media"
-            ratio={edMedia.ratio}
-            label={edMedia.label}
-            hint={edMedia.hint}
-            ariaLabel={edMedia.ariaLabel}
-            reveal="right"
-          />
+          {edMedia.src ? (
+            <Image
+              className="ds-hero__ed-media ds-hero__ed-media--img"
+              src={edMedia.src}
+              alt={edMedia.ariaLabel}
+              width={edMedia.width ?? 1000}
+              height={edMedia.height ?? 562}
+              sizes="(max-width:880px) 90vw, 600px"
+              data-reveal="right"
+            />
+          ) : (
+            <Media
+              className="ds-hero__ed-media"
+              ratio={edMedia.ratio}
+              label={edMedia.label}
+              hint={edMedia.hint}
+              ariaLabel={edMedia.ariaLabel}
+              reveal="right"
+            />
+          )}
         </div>
       </div>
     </section>

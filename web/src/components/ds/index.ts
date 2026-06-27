@@ -66,7 +66,7 @@ export { Faq } from "./Faq";
 export type { FaqProps, FaqItem } from "./Faq";
 
 export { ChipGrid } from "./ChipGrid";
-export type { ChipGridProps, ChipGridItem, ChipTone } from "./ChipGrid";
+export type { ChipGridProps, ChipGridItem, ChipTone, ChipStatus } from "./ChipGrid";
 
 export { StatBand } from "./StatBand";
 export type { StatBandProps, Stat, StatBandMedia } from "./StatBand";
