@@ -40,10 +40,12 @@ backups/
 *.bak
 
 # AI / agent state
+.codex/
 .claude/state/
 .claude/worktrees/
 .claude/runs/
 .bootstrap-state.json
+web/public/assets/generated/
 
 # OS
 .DS_Store
@@ -82,8 +84,19 @@ copilot/copilot-conversations/
 .db-backup/
 .vercel
 .env*
+!.env.example
+!web/.env.example
 .ds-sync/
 ds-bundle/
 .design-sync/.cache/
 .design-sync/learnings/
 .design-sync/node_modules
+
+# Stray root-level package files — the app lives in web/ (pnpm). Never commit
+# these (npm lockfile is forbidden; root package.json/pnpm-lock are accidental).
+/package.json
+/package-lock.json
+/pnpm-lock.yaml
+
+# Supabase CLI local link state (temp)
+supabase/.temp/
