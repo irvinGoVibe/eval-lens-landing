@@ -10,6 +10,7 @@ import {
   PinnedSteps,
   StatBand,
   QuietCta,
+  Eyebrow,
 } from "@/components/ds";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
@@ -38,37 +39,37 @@ const MECHANISMS = [
   {
     tag: "Dimensions",
     title: "Fixed dimensions (P1–P6)",
-    body: "Criteria don't drift between decks.",
+    body: "Every deck is scored against the same six dimensions.",
   },
   {
     tag: "Judges",
-    title: "Specialized judges (J-P1…J-P6)",
-    body: "Each lens is scored separately.",
+    title: "Specialized judges",
+    body: "Each judge evaluates one dimension using its own rubric.",
   },
   {
     tag: "Independence",
     title: "Independent outputs",
-    body: "Judges never see one another's scores, cutting group bias.",
+    body: "Judges score independently and never see one another's results.",
   },
   {
     tag: "Routing",
     title: "Routing matrix",
-    body: "Controls how much each judge contributes per dimension.",
+    body: "Defines how much each judge contributes to every dimension.",
   },
   {
     tag: "Math",
-    title: "Deterministic math",
-    body: "Aggregation is reproducible and auditable.",
+    title: "Deterministic aggregation",
+    body: "The same inputs and weights always produce the same total.",
   },
   {
     tag: "Spread",
-    title: "Spread",
-    body: "Disagreement is surfaced, not hidden.",
+    title: "Visible disagreement",
+    body: "Differences between judges are measured and shown in the report.",
   },
   {
     tag: "Human",
     title: "Human review",
-    body: "The final decision stays with a person.",
+    body: "Uncertain and contested cases are flagged for a person to review.",
   },
 ];
 
@@ -156,7 +157,7 @@ export default function ConsistencyReliabilityPage() {
           titleLead="Reliability you can "
           titleAccent="inspect"
           titleTrail=", not just trust"
-          sub="EvalLense shows where scores are stable, where judges disagree, and where a person should decide — and it measures run-to-run repeatability instead of asking you to take it on faith."
+          sub="EvalLense shows which scores stay stable, where judges disagree, and when a human decision is needed. It also tracks how results change across repeated runs."
           ctas={[{ label: "Book a Demo", href: "/company/contact" }]}
           media={{
             ratio: "16/9",
@@ -167,42 +168,126 @@ export default function ConsistencyReliabilityPage() {
           }}
         />
 
-        {/* 2. The problem with one number — EditorialSplit, light. */}
-        <EditorialSplit
-          surface="light"
-          eyebrow="The problem with one number"
-          titleLead="An average can hide a fight"
-          sub="Two decks can land on the same average score — one with broad agreement, the other with a real split. You need to know which is which."
-          points={[
-            {
-              title: "Clear cases",
-              body: "Some decks are obvious leaders or laggards; the panel agrees.",
-            },
-            {
-              title: "Contested cases",
-              body: "Others pull the judges apart, and the average buries it.",
-            },
-            {
-              title: "False precision",
-              body: "A score can look exact while sitting on real uncertainty.",
-            },
-          ]}
-          media={{
-            ratio: "4/3",
-            label: "Image · twin decks · 4:3",
-            hint: "Two decks, same average — one clustered, one scattered",
-            ariaLabel:
-              "Two decks with the same average but different judge spread",
-          }}
-        />
+        {/* 2. The problem with one number — local EditorialSplit v1 layout with a
+            real image in the media slot (page-local; shared component untouched). */}
+        <section id="one-number" className="band soft ds-split" aria-label="The problem with one number">
+          <div className="wrap ds-split__grid" data-version={1}>
+            <div className="ds-split__copy" data-reveal="left">
+              <Eyebrow>The problem with one number</Eyebrow>
+              <h2 className="title ds-split__title">
+                An average can hide <span className="grad-word">disagreement</span>
+              </h2>
+              <p className="sub">
+                Two decks can have the same average score. One may have broad agreement. The other may split the judges. The average alone won&apos;t show the difference.
+              </p>
+              <ul className="ds-split__points">
+                {[
+                  { title: "Clear cases", body: "The judges broadly agree on the result." },
+                  { title: "Contested cases", body: "The same average can hide very different opinions." },
+                  { title: "False precision", body: "A precise score can still carry real uncertainty." },
+                ].map((pt, i) => (
+                  <li key={i} className="ds-split__point">
+                    <span className="ds-split__point-dot" aria-hidden="true" />
+                    <h3 className="ds-split__point-h">{pt.title}</h3>
+                    <p className="ds-split__point-p">{pt.body}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <figure
+              className="ds-split__media ds-split__media--img"
+              role="img"
+              aria-label="Two judge panels at the same AI Score of 7.7 — one in consensus, one in conflict"
+              style={{
+                position: "relative",
+                background: "#fff",
+                borderRadius: "var(--radius-stage)",
+                overflow: "hidden",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,.7), 0 22px 50px -24px rgba(70,50,150,.25)",
+                paddingTop: "clamp(30px,3.6vw,46px)",
+                paddingBottom: 0,
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/assets/consistency/consensus-conflict-3.webp"
+                alt=""
+                width={1536}
+                height={1024}
+                style={{ display: "block", width: "100%", height: "auto" }}
+              />
+              {/* injected labels above each lens */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "clamp(12px,1.6vw,20px)",
+                  left: "25%",
+                  transform: "translateX(-50%)",
+                  textAlign: "center",
+                  lineHeight: 1.25,
+                  pointerEvents: "none",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontWeight: 700,
+                    fontSize: "clamp(13px,1.5vw,17px)",
+                    letterSpacing: ".1em",
+                    background: "var(--lens)",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  CONSENSUS
+                </div>
+                <div style={{ fontSize: "clamp(12px,1.3vw,15px)", color: "var(--muted)", marginTop: "2px" }}>
+                  Judges agree
+                </div>
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "clamp(12px,1.6vw,20px)",
+                  left: "75%",
+                  transform: "translateX(-50%)",
+                  textAlign: "center",
+                  lineHeight: 1.25,
+                  pointerEvents: "none",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontWeight: 700,
+                    fontSize: "clamp(13px,1.5vw,17px)",
+                    letterSpacing: ".1em",
+                    background: "var(--lens)",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  CONFLICT
+                </div>
+                <div style={{ fontSize: "clamp(12px,1.3vw,15px)", color: "var(--muted)", marginTop: "2px" }}>
+                  Judges are split
+                </div>
+              </div>
+            </figure>
+          </div>
+        </section>
 
         {/* 3. Reliability mechanisms — Gallery, light. */}
         <Gallery
           id="mechanisms"
           surface="light"
           eyebrow="How reliability is built"
-          title="Reliability is a process, not a hope"
-          sub="Structure is what makes scores trustworthy — fixed criteria, independent reads, deterministic aggregation, and visible disagreement."
+          title="Reliable scoring is built, not assumed"
+          accentWords={["built"]}
+          sub="Fixed criteria, independent judges, deterministic aggregation, and visible disagreement make every result easier to inspect."
           laneLabel="The seven reliability mechanisms"
           items={MECHANISMS}
         />
