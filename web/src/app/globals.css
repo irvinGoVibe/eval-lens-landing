@@ -4770,9 +4770,9 @@ section[id]{scroll-margin-top:72px;}
 }
 
 /* ---- 6. Bias controls — feature grid (light) risk → control ---- */
-.consistency .consistency-bias .head{margin-bottom:clamp(32px,5vw,56px);}
+.consistency .consistency-bias .head{margin-bottom:clamp(44px,6vw,80px);}
 .consistency .bias-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,2vw,22px);}
-.consistency .bias-row{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(12px,2vw,20px);align-items:center;background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);padding:20px 22px;box-shadow:var(--shadow-soft);min-width:0;}
+.consistency .bias-row{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(12px,2vw,20px);align-items:center;background:linear-gradient(135deg, color-mix(in oklab, var(--violet) 20%, #fff) 0%, color-mix(in oklab, var(--cyan) 14%, #fff) 52%, color-mix(in oklab, var(--violet) 18%, #fff) 100%);border:1px solid color-mix(in oklab, var(--violet) 26%, transparent);border-radius:var(--radius-card);padding:20px 22px;box-shadow:0 1px 0 #fff inset, 0 2px 10px -5px color-mix(in oklab, var(--violet) 20%, transparent), 0 26px 58px -34px color-mix(in oklab, var(--violet) 36%, transparent);min-width:0;}
 .consistency .bias-risk,.consistency .bias-control{display:flex;flex-direction:column;gap:8px;font-size:clamp(14px,1.5vw,16px);line-height:1.5;color:var(--fg);min-width:0;}
 .consistency .bias-control{color:var(--muted);}
 .consistency .bias-row .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);}
@@ -6727,6 +6727,34 @@ section.band.ink .mini-tag{color:var(--lavender);}
   box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 22px 50px -24px rgba(70,50,150,.3);
 }
 
+/* ── PAGE INJECTION (methodology §9 "Human control", #control): the media slot
+   is a play-once video. Scaled ~10%, held in a clean (non-skewed) rounded
+   rectangle, and feathered on all four edges so the white plate melts into the
+   page background instead of ending on a hard rectangle. Play-once timing is
+   driven by ScrollFX via data-play-once on the video. ── */
+#control .ds-split__media--video{
+  position:relative;
+  margin:0;border:0;background:none;min-width:0;
+  border-radius:clamp(20px,2.6vw,30px);
+  overflow:hidden;
+}
+/* edge frame — paint the page background colour (zone base #f3f1fb) along the
+   rounded contour, fading to clear toward the centre, so the white video plate
+   transitions into the background instead of ending on a hard rectangle. Four
+   stacked per-edge fades (no mask-composite, so Lightning-CSS keeps it). */
+#control .ds-split__media--video::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
+  background:
+    linear-gradient(to right,  rgb(243,241,251), rgba(243,241,251,0) 13%),
+    linear-gradient(to left,   rgb(243,241,251), rgba(243,241,251,0) 13%),
+    linear-gradient(to top,    rgb(243,241,251), rgba(243,241,251,0) 13%),
+    linear-gradient(to bottom, rgb(243,241,251), rgba(243,241,251,0) 13%);
+}
+#control .ds-split__media--video video{
+  display:block;width:100%;height:auto;position:relative;z-index:1;
+  transform:scale(1.1);transform-origin:center;
+}
+
 /* ── PAGE INJECTION (consistency-reliability): §2 media slot is a real <img>
    (local block, not the shared Media placeholder) — just frame it cleanly. ── */
 .ds-split__media--img{margin:0;min-width:0;}
@@ -7839,6 +7867,12 @@ section.band.ink .mini-tag{color:var(--lavender);}
 
 /* section spacing rhythm — generous Apple-grade breathing room */
 .review-board section.band{padding:clamp(64px,10vw,140px) var(--gutter);}
+/* …but the full-bleed pinned Cinema (§5 "Batch status") must stay edge-to-edge.
+   The rhythm rule above (specificity 0,0,2,1) otherwise beats the DS
+   `section.ds-cinema{padding:0}` (0,0,1,1) and insets the video, so the
+   transparent in-zone background shows the lobes through the gaps. Re-exempt it
+   at equal specificity, later in the cascade. */
+.review-board section.ds-cinema{padding:0;}
 
 /* ---- 1. Hero — statement-hero (light, centered, lots of air) ---- */
 .review-board .rb-hero{padding-top:clamp(132px,18vw,200px);}
@@ -8014,6 +8048,19 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .about .ab-hero__sub{max-width:62ch;margin-top:26px;}
 .about .ab-hero .cta-row{justify-content:center;}
 .about .ab-hero__media{width:min(100%,920px);margin-top:clamp(48px,7vw,88px);box-shadow:var(--shadow-soft);}
+/* real observatory image (transparent cutout) — goes LARGE: wider than the text
+   column, capped to 94vw / 1240px so it fills the hero without overflowing the
+   layout. No frame/shadow/bg (the placeholder framing doesn't apply to a PNG
+   that already floats on transparency). `.band` overflow-x:clip guards the
+   breakout from ever causing a horizontal scroll. */
+.about .ab-hero__media--img{
+  width:min(94vw,1240px);max-width:94vw;height:auto;
+  margin-inline:auto;display:block;
+  box-shadow:none;border:0;border-radius:0;background:none;
+}
+@media (max-width:880px){
+  .about .ab-hero__media--img{width:100%;max-width:100%;}
+}
 
 /* ---- 2. The problem — editorial split (light) ---- */
 .about .ab-problem__split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;}
@@ -8046,6 +8093,17 @@ section.band.ink .mini-tag{color:var(--lavender);}
 /* light the pipeline progressively with the section pin (--pin 0→1) */
 .about .ab-story__pipe-node{opacity:clamp(.34, calc(.34 + (var(--pin,0) * 7) - var(--i)), 1);}
 .about .ab-story__media{align-self:start;min-width:0;width:100%;max-width:460px;}
+/* real story image — the tall EvalLense origin-journey cutout. Sized by height
+   to go LARGE inside the pinned 100svh stage (width follows the aspect, capped
+   to the column). Transparent PNG → no frame. */
+.about .ab-story__media--img{
+  align-self:center;width:auto;height:auto;min-width:0;
+  max-width:100%;max-height:min(88svh,940px);
+  margin-inline:auto;display:block;
+}
+@media (max-width:880px){
+  .about .ab-story__media--img{max-height:none;width:min(72vw,360px);}
+}
 @media (max-width:880px){
   .about .ab-story__grid{grid-template-columns:1fr;}
   .about .ab-story__side{order:-1;}
@@ -8095,6 +8153,13 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .about .ab-member__copy .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
 .about .ab-member__name{font-size:clamp(28px,4vw,52px);letter-spacing:-.03em;font-weight:600;line-height:1.04;color:var(--fg-on-dark);}
 .about .ab-member__bio{font-size:clamp(15px,1.7vw,18px);line-height:1.6;color:var(--muted-on-dark);max-width:58ch;}
+/* optional Hobby / Dream facts (currently Yaroslav) — labelled mono rows */
+.about .ab-member__facts{margin:4px 0 0;display:flex;flex-direction:column;gap:9px;}
+.about .ab-member__fact{display:flex;gap:12px;align-items:baseline;min-width:0;}
+.about .ab-member__fact dt{flex:none;width:58px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
+.about .ab-member__fact dd{margin:0;font-size:clamp(14px,1.6vw,16px);line-height:1.5;color:var(--body-on-dark);min-width:0;}
+/* §3 story — "Read the full story" CTA under the step track */
+.about .ab-story__cta{margin-top:clamp(28px,4vw,44px);}
 
 /* reduced-motion: un-pin into a full-width editorial stack (portrait left,
    copy right). Every member visible, never hidden behind .is-current. */
@@ -8398,6 +8463,68 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-fit__gap{margin:auto 0 0;font-size:13.5px;line-height:1.5;color:var(--muted-on-dark);min-width:0;}
 .pricing .pr-fit__gap-label{display:inline-block;margin-right:8px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in oklab,var(--lavender) 75%,transparent);}
 .pricing .pr-fit__statements{margin-top:clamp(32px,5vw,56px);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,32px);}
+
+/* ── §5 feature tile — glass evaluation-toolkit table + live optical spotlights.
+   Base layer = the static PNG (light is NOT baked in). Overlay = 4 brand-colour
+   radial lights that drift via rAF (PricingToolkitCard.tsx) + one slow CSS
+   sweep — premium reflections sliding over the glass, masked to the slab, never
+   neon/laser. Portrait asset (941×1672) — the slab face-on, vertical; sized by
+   height so it stays compact in the tall feature tile, width-driven on mobile. */
+.pricing-toolkit-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  aspect-ratio:941 / 1672;height:clamp(360px,42vw,560px);width:auto;
+  max-width:100%;margin-top:auto;margin-inline:auto;
+  border-radius:24px;background:#000;
+}
+.pricing-toolkit-card__image{z-index:2;object-fit:cover;pointer-events:none;user-select:none;animation:pricingToolkitFloat 17s ease-in-out infinite;will-change:transform;}
+/* spotlights sit ABOVE the image (screen-blend lightens the glass where they
+   pass); the radial mask keeps the light on the slab and fades it at the edges. */
+.pricing-toolkit-card__spotlights{
+  position:absolute;inset:0;z-index:3;pointer-events:none;mix-blend-mode:screen;
+  -webkit-mask-image:radial-gradient(ellipse 82% 66% at 50% 50%, #000 0%, #000 54%, transparent 84%);
+          mask-image:radial-gradient(ellipse 82% 66% at 50% 50%, #000 0%, #000 54%, transparent 84%);
+}
+.pricing-toolkit-card__spotlight{
+  position:absolute;left:var(--x);top:var(--y);
+  width:var(--size);height:var(--size);
+  transform:translate(-50%,-50%);border-radius:999px;
+  opacity:var(--opacity);filter:blur(var(--blur));
+  background:radial-gradient(circle,
+    color-mix(in srgb, var(--color) 80%, #fff 20%) 0%,
+    var(--color) 30%, transparent 68%);
+  will-change:transform;
+}
+.pricing-toolkit-card__sweep{
+  position:absolute;inset:-30%;z-index:4;pointer-events:none;
+  opacity:.14;mix-blend-mode:screen;
+  background:linear-gradient(115deg,
+    transparent 38%,
+    rgba(46,197,232,.30) 49%,
+    rgba(54,224,194,.16) 53%,
+    transparent 62%);
+  animation:pricingToolkitSweep 11s ease-in-out infinite;
+}
+@keyframes pricingToolkitSweep{
+  0%{transform:translate(-30%,12%);}
+  50%{transform:translate(22%,-8%);}
+  100%{transform:translate(-30%,12%);}
+}
+/* §5 toolkit — the glass table drifts slowly inside the card (left↔right, a
+   touch of vertical + tilt), with an ~8% overfill so the sway never exposes the
+   black edge. Leisurely 17s loop. */
+@keyframes pricingToolkitFloat{
+  0%{transform:scale(1.08) translate(-1.6%,0) rotate(-0.7deg);}
+  50%{transform:scale(1.08) translate(1.6%,-0.9%) rotate(0.7deg);}
+  100%{transform:scale(1.08) translate(-1.6%,0) rotate(-0.7deg);}
+}
+@media (max-width:880px){
+  .pricing-toolkit-card{height:auto;width:min(340px,72vw);}
+}
+@media (prefers-reduced-motion:reduce){
+  .pricing-toolkit-card__sweep{animation:none;}
+  .pricing-toolkit-card__image{animation:none;transform:none;}
+}
+
 /* §4 comparison table sits on INK — re-skin .pr-table for dark (does not touch §3 light styling). */
 /* The .pr-fit z-index:3 (#46) was dead: .pr-fit lives INSIDE .ds-zone, whose
    `isolation:isolate` (ds.css) traps that z-index inside the zone's own stacking
@@ -10839,7 +10966,7 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
    image 1.5×. `#grounded` id + !important guarantees it beats both
    `[data-reveal].is-in{transform:none}` and any reveal transition state. ── */
 .evidence-reports #grounded .ds-split__media--img{
-  transform:scale(1.25) !important;
+  transform:scale(1.5) !important;
   transform-origin:center;
 }
 

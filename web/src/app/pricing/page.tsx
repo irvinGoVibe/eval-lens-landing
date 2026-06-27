@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { StatementHero, Bento, Faq, CtaBand, Cinema } from "@/components/ds";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
+import { PricingToolkitCard } from "@/components/PricingToolkitCard";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -75,8 +76,9 @@ const PLANS = [
     price: "$0",
     cadence: "3 submissions",
     validity: "lifetime · no credit card",
-    message: "Try EvalLense on your first 3 submissions.",
-    cta: "Start Free",
+    message: "Test EvalLense with 3 real submissions.",
+    bestFor: "Best for: a first look before you commit.",
+    cta: "Start free",
     href: "/company/contact",
     recommended: false,
     bullets: [
@@ -91,12 +93,13 @@ const PLANS = [
     price: "$1,500",
     cadence: "150 submissions",
     validity: "120 days · 5 projects",
-    message: "Run a full pitch competition.",
-    cta: "Get Started",
+    message: "For a full pitch competition with up to 150 submissions.",
+    bestFor: "Best for: a single full event.",
+    cta: "Start Standard",
     href: "/company/contact",
     recommended: true,
     bullets: [
-      "Everything in evaluation",
+      "Full evaluation workflow included",
       "Leaderboard + CSV / PDF export",
       "Custom criteria weights",
       "Top-up +25 / $300 ($12 each)",
@@ -108,12 +111,13 @@ const PLANS = [
     cadence: "500 submissions",
     validity: "180 days · unlimited projects",
     message: "Evaluate large cohorts and recurring programs.",
-    cta: "Get Started",
+    bestFor: "Best for: large or recurring programs.",
+    cta: "Start Pro",
     href: "/company/contact",
     recommended: false,
     bullets: [
       "Everything in Standard",
-      "Custom AI judges",
+      "Limited custom AI judges",
       "BYO LLM (add-on)",
       "Top-up +50 / $500 ($10 each)",
     ],
@@ -124,7 +128,8 @@ const PLANS = [
     cadence: "1,000+ submissions",
     validity: "contract term",
     message: "Corporate, universities, and custom judging workflows.",
-    cta: "Talk to Sales",
+    bestFor: "Best for: custom, high-volume programs.",
+    cta: "Talk to sales",
     href: "/company/contact",
     recommended: false,
     bullets: [
@@ -333,36 +338,39 @@ const CAPABILITIES = [
     body: "Collect decks (PDF, PPT, PPTX, Google Slides) by hand or via a self-upload link.",
     feature: true,
     media: {
-      label: "Image · decks entering the lens · 16:9",
-      hint: "Decks (PDF / PPT / Slides) flowing into a calm lens perimeter via hand-upload and a self-upload link — lens-gradient violet→cyan→aqua, no security theatre.",
+      label: "Image · VC evaluation toolkit · 16:9",
+      hint: "A top-down glass table with physical evaluation tools: deck cards, six judge lenses, rubric ruler, score dial, evidence pins, red flag marker, decision stamp, and pricing token.",
       ariaLabel:
-        "Pitch decks in several formats entering EvalLense by hand or via a self-upload link",
+        "A top-down glass evaluation table laid out with deck cards, six judge lenses, a rubric ruler, a score dial, evidence pins, a red-flag marker, a decision stamp, and a pricing token",
+      // Live visual: the static glass-toolkit PNG + drifting optical spotlights
+      // (overlay is React, light is NOT baked into the PNG). See PricingToolkitCard.
+      node: <PricingToolkitCard />,
     },
   },
   {
-    tag: "AI Evaluation",
+    tag: "Six-judge review",
     title: "Six independent judges",
-    body: "Six independent judges across P1–P6, each score with a confidence signal and evidence.",
+    body: "Each deck is reviewed across P1–P6, with a score, confidence signal, and evidence behind the call.",
   },
   {
-    tag: "Reports",
-    title: "Explainable reports",
-    body: "An explainable report per participant: strengths, weaknesses, and the questions to ask live.",
+    tag: "Evidence reports",
+    title: "Reports you can defend",
+    body: "Each participant gets strengths, weaknesses, evidence, and sharper questions for the live review.",
   },
   {
-    tag: "Review & Decision",
-    title: "A human makes the call",
-    body: "A Review Board and a leaderboard ranked by your Final Score.",
+    tag: "Human decision",
+    title: "The human makes the final call",
+    body: "Use the Review Board to compare teams, adjust context, and rank by your Final Score.",
   },
   {
-    tag: "Security & Trust",
-    title: "Safe and transparent",
-    body: "Prompt-injection safety, privacy, and no-black-box rationale — on every plan.",
+    tag: "Trust layer",
+    title: "Safety is part of the workflow",
+    body: "Prompt-injection checks, privacy controls, and no-black-box rationale are built in from the start.",
   },
   {
-    tag: "Admin",
-    title: "Controls by plan",
-    body: "Custom weights, reusable templates, branding, and SSO / API by plan.",
+    tag: "Plan controls",
+    title: "Controls scale by plan",
+    body: "Weights, templates, branding, SSO, and API access scale with the plan you choose.",
   },
 ];
 
@@ -403,7 +411,8 @@ const FAQ = [
     q: "Is my data safe?",
     a: (
       <>
-        Yes, on every plan. <a href="/trust/security-privacy">Security &amp; Privacy</a>.
+        Yes. Safety and privacy controls are included on every plan.{" "}
+        <a href="/trust/security-privacy">Security &amp; Privacy</a>.
       </>
     ),
   },
@@ -439,16 +448,16 @@ export default function PricingPage() {
             <span className="ds-canvas__spark ds-canvas__spark--3" />
           </div>
           <ZoneBlobs top="40%" bottom="28%" />
-        {/* 1. Hero — StatementHero (DS), soft. Lens accent on "per event". */}
+        {/* 1. Hero — StatementHero (DS), soft. Lens accent on "event". */}
         <StatementHero
           id="top"
           surface="light"
           version={1}
           eyebrow="Pricing"
-          titleLead="Pay"
-          titleAccent="per event"
-          titleTrail="not per seat"
-          sub="Every plan is a package of AI-evaluated submissions with a validity window. You pay for transparent AI evaluation — not just collecting decks. No credits, no tokens, no per-seat fees."
+          titleLead="Pay for the"
+          titleAccent="event,"
+          titleTrail="not every seat"
+          sub="Each plan gives you a fixed number of evaluated submissions for one event window. No seats, tokens, or usage surprises."
           media={{
             ratio: "16/9",
             label: "Image · an event filtered through a lens into a ranked result · 16:9",
@@ -458,7 +467,7 @@ export default function PricingPage() {
           }}
         />
 
-      
+
 
         {/* 2. Plans — 4 headline pricing cards (page-local), light. Standard recommended. */}
         <section id="plans" className="band pr-plans">
@@ -486,6 +495,9 @@ export default function PricingPage() {
                     <span className="pr-card__validity">{plan.validity}</span>
                   </p>
                   <p className="pr-card__msg">{plan.message}</p>
+                  <p className="pr-card__msg" style={{ marginTop: "6px", fontWeight: 600 }}>
+                    {plan.bestFor}
+                  </p>
                   <ul className="pr-card__bullets">
                     {plan.bullets.map((b) => (
                       <li key={b} className="pr-card__bullet">
@@ -505,8 +517,8 @@ export default function PricingPage() {
               ))}
             </ul>
             <p className="pr-smaller" data-reveal="up">
-              Smaller event? Starter — $199 / 15 submissions · Pilot — $500 / 40
-              submissions. See the full comparison below.
+              For smaller events: Starter is $199 for 15 submissions. Pilot is
+              $500 for 40. See the full comparison below.
             </p>
           </div>
         </section>
@@ -517,12 +529,12 @@ export default function PricingPage() {
             <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
-                Compare plans
+                Full comparison
               </span>
-              <h2 className="title">What&rsquo;s included, plan by plan</h2>
+              <h2 className="title">Compare <span className="grad-word">plans</span></h2>
               <p className="sub">
-                The full feature matrix across all six levels — including Starter
-                and Pilot. On mobile: horizontal scroll.
+                Compare submissions, validity, projects, exports, support, and
+                admin controls.
               </p>
             </div>
           </div>
@@ -607,13 +619,12 @@ export default function PricingPage() {
                 <span className="dot" aria-hidden="true"></span>
                 Where EvalLense fits
               </span>
-              <h2 className="title">Two half-solutions, or one that does both</h2>
+              <h2 className="title">Event workflow and AI evaluation in <span className="grad-word">one place</span></h2>
               <p className="sub">
-                Most tools cover one side. Event-workflow platforms run the
-                competition but don&rsquo;t evaluate the pitches. AI deck-analysts
-                score a single deck but have no event, no panel, no leaderboard.
-                EvalLense does both — structured AI evaluation across a whole
-                competition, with the human deciding.
+                Event platforms manage submissions and judges. AI deck tools
+                review one deck at a time. EvalLense evaluates the full cohort —
+                six independent judges, evidence-linked rationale, a leaderboard,
+                and a human-owned final decision.
               </p>
             </div>
           </div>
@@ -679,8 +690,8 @@ export default function PricingPage() {
             </div>
             <div className="pr-fit__statements">
               <p className="pr-statement" data-reveal="up">
-                They manage the competition. We help understand who should win
-                and why.
+                They manage the competition. EvalLense helps compare who is
+                strongest and why.
               </p>
               <p
                 className="pr-statement"
@@ -699,8 +710,8 @@ export default function PricingPage() {
         <Cinema
           surface="ink"
           eyebrow="How it works"
-          headline="From deck to decision"
-          sub="Every submission runs through six independent AI judges, gets an evidence-linked report, and lands in a leaderboard — ready for the human to decide."
+          headline="From submission to shortlist"
+          sub="Each submission is reviewed by six AI judges, linked to evidence, and placed in a leaderboard for human review."
           media={{ videoSrc: "/assets/cta/cube-1.mp4" }}
         />
 
@@ -716,9 +727,10 @@ export default function PricingPage() {
         <Bento
           surface="ink"
           version={2}
-          eyebrow="Everything included"
-          title="What every plan can do"
-          sub="The same evaluation engine, across six product areas."
+          eyebrow="Core toolkit included"
+          title="The full evaluation toolkit is included"
+          titleAccent="toolkit"
+          sub="Every plan includes the same evaluation core: judges, evidence, reports, review, and safety. Plans only change limits, volume, and admin control."
           items={CAPABILITIES}
         />
 
@@ -727,7 +739,8 @@ export default function PricingPage() {
           id="faq"
           surface="ink"
           eyebrow="Pricing FAQ"
-          title="Questions, answered"
+          title="Pricing questions"
+          titleAccent="questions"
           items={FAQ}
         />
 
@@ -737,10 +750,11 @@ export default function PricingPage() {
         <CtaBand
           theme="dark"
           eyebrow="Get started"
-          title="Run your next event on EvalLense"
-          sub="Start free on three submissions, or book a demo to see the whole workflow on your own decks."
-          primary={{ label: "Book a Demo", href: "/company/contact" }}
-          secondary={{ label: "Start Free", href: "/company/contact" }}
+          title="Ready to evaluate your next"
+          titleAccent="cohort?"
+          sub="Start with 3 free submissions, or book a demo using your own decks."
+          primary={{ label: "Book a demo", href: "/company/contact" }}
+          secondary={{ label: "Start free", href: "/company/contact" }}
           videoSrc="/assets/cta/neo.mp4"
         />
       </main>

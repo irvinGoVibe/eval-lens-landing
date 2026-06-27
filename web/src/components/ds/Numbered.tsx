@@ -32,6 +32,9 @@ export type NumberedProps = {
   ariaLabel?: string;
   eyebrow: string;
   title: string;
+  /** Optional word/run in `title` to lens-accent. Overrides the per-version
+   *  default (v1 none · v2 "editorial" · v3 "Principles"). Additive. */
+  titleAccent?: string;
   sub: string;
   items: NumberedItem[];
   marker?: string;
@@ -81,6 +84,7 @@ export function Numbered({
   ariaLabel,
   eyebrow,
   title,
+  titleAccent,
   sub,
   items,
   marker,
@@ -98,7 +102,7 @@ export function Numbered({
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} />
+            <Title title={title} accent={titleAccent} />
             <p className="sub">
               <TextWithLineBreaks text={sub} />
             </p>
@@ -112,7 +116,7 @@ export function Numbered({
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} accent="editorial" />
+            <Title title={title} accent={titleAccent ?? "editorial"} />
             <p className="sub">
               <TextWithLineBreaks text={sub} />
             </p>
@@ -126,7 +130,7 @@ export function Numbered({
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} accent="Principles" />
+            <Title title={title} accent={titleAccent ?? "Principles"} />
             <p className="sub">
               <TextWithLineBreaks text={sub} />
             </p>

@@ -101,7 +101,8 @@ export function StatementHero({
     <>
       {titleLead ? `${titleLead} ` : null}
       {titleAccent ? <span className="grad-word">{titleAccent}</span> : null}
-      {titleTrail ? ` ${titleTrail}` : null}
+      {/* no leading space when the trail starts with punctuation (e.g. ", not just trust") */}
+      {titleTrail ? (/^[,.;:!?]/.test(titleTrail) ? titleTrail : ` ${titleTrail}`) : null}
     </>
   ) : null;
 

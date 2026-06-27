@@ -8,7 +8,6 @@ import { ZoneBlobs } from "@/components/ZoneBlobs";
 import Image from "next/image";
 import {
   StatementHero,
-  FullStatement,
   PinnedSteps,
   Gallery,
   EditorialSplit,
@@ -237,6 +236,79 @@ export default function EvidenceBasedReportsPage() {
     <>
       <PageHeader nav={HEADER_NAV} />
       <main className="evidence-reports section-lab ds">
+        {/* page-local: hero illustration pulled OUT of the editorial grid track
+            (position:absolute, anchored to the centered .wrap) so it can grow
+            +50% and overflow freely without reflowing the copy column. Scaled
+            (--evr-hero-scale) and nudged left (--evr-hero-x, negative = left),
+            with the same gentle "floating in air" drift. The float owns the
+            transform (so size + offset are baked into every keyframe); the DS
+            reveal still owns opacity, so the fade-in is preserved. Below the
+            880px editorial breakpoint the image returns to normal in-flow size.
+            Honors prefers-reduced-motion. No shared DS / globals touched.
+            Tune: --evr-hero-x (horizontal, −left/+right), --evr-hero-scale. */}
+        <style>{`
+          .evidence-reports .ds-hero__v3 .ds-hero__editorial{ position: relative; }
+          .evidence-reports .ds-hero__ed-media--img{
+            --evr-hero-x: calc(clamp(-96px, -5vw, -32px) + 5px);
+            --evr-hero-scale: 1.5;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: min(560px, 46vw);
+            height: auto;
+            max-width: none;
+            transform-origin: center right;
+            z-index: 2;
+            will-change: transform;
+            animation: evr-hero-float 8.5s ease-in-out infinite;
+          }
+          @keyframes evr-hero-float{
+            0%   { transform: translate(var(--evr-hero-x), -50%)            scale(var(--evr-hero-scale)) rotate(-0.4deg); }
+            50%  { transform: translate(var(--evr-hero-x), calc(-50% - 9px)) scale(var(--evr-hero-scale)) rotate(0.5deg);  }
+            100% { transform: translate(var(--evr-hero-x), -50%)            scale(var(--evr-hero-scale)) rotate(-0.4deg); }
+          }
+          @media (max-width: 880px){
+            .evidence-reports .ds-hero__ed-media--img{
+              position: static; top: auto; right: auto;
+              width: 100%; transform: none; animation: none; z-index: auto;
+            }
+          }
+          @media (prefers-reduced-motion: reduce){
+            .evidence-reports .ds-hero__ed-media--img{
+              animation: none;
+              transform: translate(var(--evr-hero-x), -50%) scale(var(--evr-hero-scale)) rotate(-0.4deg);
+            }
+          }
+
+          /* §3 Anatomy ("One report. Three layers.") — the evidence-map art is
+             scaled +15% and given a buoyant "floating in air" drift with a gentle
+             sway. Applied to the inner <img> (NOT the .lab-process__media wrapper),
+             so the wrapper's scroll-pin scrub stays intact and the two transforms
+             compose. The 3D look is baked into the .webp itself — we only add the
+             float on top. Tune: --evr-anatomy-scale. */
+          .evidence-reports .lab-process__node img{
+            --evr-anatomy-scale: 1.15;
+            transform-origin: center;
+            will-change: transform;
+            animation: evr-anatomy-float 9s ease-in-out infinite;
+          }
+          @keyframes evr-anatomy-float{
+            0%   { transform: translate3d(0, 0, 0)      rotate(-1deg)   scale(var(--evr-anatomy-scale)); }
+            25%  { transform: translate3d(7px, -11px,0) rotate(0.6deg)  scale(var(--evr-anatomy-scale)); }
+            50%  { transform: translate3d(0, -17px, 0)  rotate(1.2deg)  scale(var(--evr-anatomy-scale)); }
+            75%  { transform: translate3d(-7px, -9px,0) rotate(0.2deg)  scale(var(--evr-anatomy-scale)); }
+            100% { transform: translate3d(0, 0, 0)      rotate(-1deg)   scale(var(--evr-anatomy-scale)); }
+          }
+          @media (max-width: 760px){
+            .evidence-reports .lab-process__node img{ animation: none; transform: none; }
+          }
+          @media (prefers-reduced-motion: reduce){
+            .evidence-reports .lab-process__node img{
+              animation: none;
+              transform: scale(var(--evr-anatomy-scale));
+            }
+          }
+        `}</style>
         {/* ── ONE continuous tonal zone (§1–§8): a single shared background that
             flips light→dark at the §6/§7 seam and holds dark through §7–8.
             Layer stack (z-index:-1, DOM order = back→front):
@@ -271,13 +343,14 @@ export default function EvidenceBasedReportsPage() {
             { label: "View Sample Report", href: "#" },
           ]}
           media={{
-            ratio: "16/9",
-            label: "Image · score linked to the deck · 16:9",
+            ratio: "3/2",
+            label: "Image · score linked to the deck · 3:2",
             hint: "A score with thin lines tracing back to deck slides — lens-gradient violet→cyan→aqua, calm",
-            ariaLabel: "A score with quote-lines tracing back to slides of a pitch deck",
-            src: "/assets/evidence-reports/hero-score-report.webp",
-            width: 1256,
-            height: 810,
+            ariaLabel:
+              "An overall score with a dimension radar, linked to deck slides — Market TAM and Traction MAU",
+            src: "/assets/evidence-reports/hero-score-dashboards-01.webp",
+            width: 1536,
+            height: 1024,
           }}
         />
 
@@ -298,16 +371,17 @@ export default function EvidenceBasedReportsPage() {
           </div>
         </section>
 
-        {/* 2. Beyond the number — full-bleed statement (light · v2, per inspector).
-            Default DS reveal motion. */}
-        <FullStatement
+        {/* 2. Beyond the number — Cinema (light): headline knocked out of a white
+            scrim with a glass-cubes video showing through the letters. */}
+        <Cinema
+          id="beyond"
           surface="light"
-          version={2}
-          ariaLabel="Beyond the number — if you can’t explain the score, you can’t defend the decision"
           eyebrow="Beyond the number"
-          titleLead="If you can’t explain the score, you can’t defend the"
-          titleAccent="decision."
-          sub="A number shows the result. It doesn’t show what drove it. Without the reasoning behind the score, your team can’t defend a shortlist, founders can’t act on the feedback, and reviewers can’t revisit the decision later. EvalLense shows what influenced the score and links each finding back to the deck."
+          headline="Explain the score. Defend the decision."
+          lines={["Explain the score.", "Defend the decision."]}
+          mobileLines={["Explain", "the score.", "Defend", "the decision."]}
+          sub="EvalLense shows what shaped the score and links each finding back to the deck. Your team can defend the shortlist, explain the feedback, and know what to ask next."
+          media={{ videoSrc: "/assets/evidence-reports/beyond-number-cinema.mp4" }}
         />
 
         {/* 3. Anatomy — pinned multi-screen, exactly 3 layers. */}
@@ -322,8 +396,8 @@ export default function EvidenceBasedReportsPage() {
           steps={ANATOMY.map((a) => ({ num: a.num, label: a.label, desc: a.desc }))}
           mediaNode={
             <Image
-              src="/assets/evidence-reports/layered-glass-report-stack-01.webp"
-              alt="Three report layers — Project Summary with score, AI Score Report with the dimension breakdown, and Questions for Live Q&A"
+              src="/assets/evidence-reports/report-evidence-map-01.webp"
+              alt="EvalLense report evidence map — Project Summary, AI Score Report, and Questions for Live Q&A, with findings linked back to pitch-deck slides"
               width={1448}
               height={1086}
               sizes="(max-width: 880px) 90vw, 640px"
@@ -373,10 +447,10 @@ export default function EvidenceBasedReportsPage() {
           media={{
             ratio: "4/3",
             label: "Image · slide ↔ finding · 4:3",
-            hint: "A slide quote (number · title) next to the supports/lowers it grounds, thin connector lines, calm",
+            hint: "Slide 07 and the evidence, supports, lowers and verify-live cards it grounds, thin connector lines, calm",
             ariaLabel:
-              "A slide quote with a slide reference next to the supports and lowers it grounds",
-            src: "/assets/evidence-reports/slide-finding-v4.webp",
+              "A pitch-deck slide (Slide 07) linked to the supporting and lowering evidence behind its score, with a verify-live cue",
+            src: "/assets/evidence-reports/slide-source-map-01.webp",
             width: 1600,
             height: 1200,
           }}
@@ -393,6 +467,7 @@ export default function EvidenceBasedReportsPage() {
           ariaLabel="Deck completeness — a signal, not a verdict"
           eyebrow="Deck completeness"
           title="See what the deck never covered"
+          titleAccent="covered"
           sub="The report checks which core sections are present, thin, or missing, then shows the severity and the dimension affected. It’s a review signal, not a verdict."
           items={COMPLETENESS_TILES.map((t) => ({
             tag: t.tag,
@@ -431,7 +506,7 @@ export default function EvidenceBasedReportsPage() {
           ariaLabel="One report, from first read to final record"
           eyebrow="Across the review"
           title="One report, from first read to final record"
-          titleAccent="report"
+          titleAccent="final record"
           sub="The same report supports preparation, selection, feedback, committee decisions, and the final record."
           pairs={USES.map((u) => ({
             leftTag: u.leftTag,

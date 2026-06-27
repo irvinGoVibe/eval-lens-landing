@@ -279,6 +279,10 @@ export default function EntryHubPage() {
         />
 
         {/* §5. What gets collected → Bento (light). Media on the feature tile. */}
+        {/* page-local: nudge the feature image +10% (scoped to #collect). */}
+        <style>{`
+          #collect .lab-bento__media--img{ transform: scale(1.1); transform-origin: center; }
+        `}</style>
         <Bento
           id="collect"
           surface="light"
@@ -347,12 +351,12 @@ export default function EntryHubPage() {
           ]}
           media={{
             ratio: "16/9",
-            label: "Image · glass workspace station · 16:9",
+            label: "Image · high-contrast hyperreal liquid-glass workspace · 16:9",
             hint:
-              "Futuristic glass workspace with startup signals, market analysis, pitch decks, and progress controls",
+              "High-contrast EvalLense workspace with crisp liquid-glass screens, a front-facing holographic unicorn head, world clocks, and a black RGB keyboard",
             ariaLabel:
-              "Futuristic glass workspace for tracking startup submissions, market signals, pitch decks, and review progress",
-            src: "/assets/entry-hub/evallense-glass-light-workspace-station-01.webp",
+              "High-contrast hyperrealistic EvalLense liquid-glass workspace with leaderboard, startup report, dimension matrix, world clocks, black keyboard, deck controls, and a front-facing holographic unicorn head",
+            src: "/assets/entry-hub/evallense-brandkit-workspace-unicorn-08.webp",
             width: 1672,
             height: 941,
           }}

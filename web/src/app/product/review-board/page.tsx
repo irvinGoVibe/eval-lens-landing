@@ -14,7 +14,7 @@ import {
   Numbered,
   Bento,
   RiskControl,
-  Gallery,
+  Cinema,
   PinnedSteps,
   EditorialSplit,
   CtaBand,
@@ -109,6 +109,7 @@ export default function ReviewBoardPage() {
           version={3}
           eyebrow="After the scores"
           title="A scored batch still needs a decision"
+          titleAccent="decision"
           sub="AI can score every startup. Your jury still needs to compare the \n  evidence, resolve disagreements, and decide what moves forward."
           items={[
             {
@@ -219,42 +220,17 @@ export default function ReviewBoardPage() {
           ]}
         />
 
-        {/* 5 — Gallery: read the whole batch at a glance (light) */}
-        <Gallery
+        {/* 5 — Batch status — Cinema (light): headline knocked out of a white
+            scrim with a glassmorphism video showing through the letters. */}
+        <Cinema
           id="status"
           surface="light"
-          version={1}
           eyebrow="Batch status"
-          title="See the whole batch at a glance"
+          headline="See the whole batch at a glance"
+          lines={["See the whole batch", "at a glance"]}
+          mobileLines={["See the whole", "batch at a glance"]}
           sub="Each startup has one clear status, so you can see what is ready, in review, scored, or blocked without opening every report."
-          laneLabel="Participant statuses across the board"
-          items={[
-            {
-              tag: "Ready",
-              title: "AI report ready",
-              body: "The AI analysis is complete and ready for review.",
-            },
-            {
-              tag: "Active",
-              title: "In review",
-              body: "The report is open and human review is underway.",
-            },
-            {
-              tag: "Complete",
-              title: "Scored",
-              body: "Jury Scores have been submitted for every dimension.",
-            },
-            {
-              tag: "Pending",
-              title: "Not scored",
-              body: "Human scoring has not started yet.",
-            },
-            {
-              tag: "Action needed",
-              title: "Needs rerun",
-              body: "One or more judge runs failed. Rerun the entry before scoring.",
-            },
-          ]}
+          media={{ videoSrc: "/assets/review-board/batch-status-cinema.mp4" }}
         />
 
         {/* ── tone-flip seam (§5 → §6): light→dark — fades the SECOND dark layer

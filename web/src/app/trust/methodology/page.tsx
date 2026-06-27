@@ -84,7 +84,7 @@ const FOUNDATIONS_TILES: BentoItem[] = [
     title: "Lean Startup",
     body: "Hypothesis and problem-solution logic - feeds Problem significance and Solution differentiation.",
     media: {
-      src: "/assets/methodology/foundations-lean-startup-v3.png",
+      src: "/assets/methodology/foundations-lean-startup-v8.webp",
       width: 1229,
       height: 359,
       ratio: "1229/359",
@@ -692,7 +692,7 @@ export default function MethodologyPage() {
           <section id="control" className="band soft ds-split" aria-label="Where the human decides">
             <div className="wrap ds-split__grid ds-split__grid--mirror" data-version={2}>
               <figure className="ds-split__media ds-split__media--video" data-reveal="left" aria-hidden="true">
-                <video autoPlay muted loop playsInline preload="metadata">
+                <video data-play-once data-replay-delay="7000" muted playsInline preload="metadata">
                   <source src="/assets/methodology/hitl-loop.mp4" type="video/mp4" />
                 </video>
               </figure>

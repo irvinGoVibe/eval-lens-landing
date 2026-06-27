@@ -4,11 +4,13 @@ import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
+import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About EvalLense — A Better Lens for Human Judgment",
+  title: "About EvalLense — A better lens for human judgment",
   description:
-    "Who and why builds EvalLense: the path from AI Jury to a controlled evaluation system, our principles and team. AI prepares the analysis — the person decides.",
+    "EvalLense helps startup programs, funds, and competitions review applications with structured AI analysis, evidence-backed reports, and human-controlled decisions.",
 };
 
 /*
@@ -60,83 +62,134 @@ const STORY_STEPS = [
   {
     num: "01",
     label: "AI Jury",
-    desc: "The first version was built as AI Jury during the Amazon Nova hackathon. The idea: several specialized AI judges instead of one generic model opinion.",
+    desc: "The first version was built during the Amazon Nova hackathon. It tested whether specialized AI judges could evaluate pitch decks from different angles.",
   },
   {
     num: "02",
     label: "Hundreds of runs",
-    desc: "After hundreds of internal evaluation runs, more judges did not automatically produce better results — scores changed between runs, judges repeated each other, long reports created noise over clarity.",
+    desc: "Adding more judges did not solve quality. Scores shifted, roles overlapped, and long reports created noise instead of clarity.",
   },
   {
     num: "03",
     label: "A controlled system",
-    desc: "That changed the direction: from a collection of AI agents to a controlled evaluation system.",
+    desc: "So we stopped designing an artificial jury. We started building a controlled evaluation system: fixed criteria, clear roles, structured outputs, evidence-linked reports, and human review.",
   },
-];
-
-/* 3. The pipeline nodes that light up under the story (authored chain). */
-const STORY_PIPE = [
-  "Pitch deck",
-  "structured analysis",
-  "specialized evaluation lenses",
-  "fixed criteria and rubrics",
-  "evidence-based report",
-  "human review",
-  "final decision",
 ];
 
 /* 4. Our principles — bento (brief §4, verbatim). */
 const PRINCIPLES = [
   {
-    title: "AI supports decisions. It does not own them.",
-    body: "EvalLense prepares the analysis, but the final score and ranking remain under human control.",
+    title: "AI prepares the analysis. Humans own the decision.",
+    body: "EvalLense can structure evidence, surface risks, and prepare a ranking view. The final score, context, and decision stay under human control.",
     feature: true,
   },
   {
-    title: "Every score should be explainable.",
-    body: "Reviewers should understand what influenced the result, which evidence was used and what information was missing.",
+    title: "Every score needs evidence.",
+    body: "Reviewers should be able to see what influenced the result, which slide or claim supported it, and what information was missing.",
   },
   {
-    title: "Disagreement is useful.",
-    body: "When different evaluation lenses produce different conclusions, the system highlights the conflict instead of hiding it inside an average score.",
+    title: "Disagreement should be visible.",
+    body: "When evaluation lenses disagree, EvalLense does not hide the conflict inside an average. It shows the split so reviewers know where to look.",
   },
   {
-    title: "Methodology matters more than the model.",
-    body: "Reliable evaluation requires clear criteria, controlled roles, structured outputs and consistent scoring logic.",
+    title: "Methodology beats model choice.",
+    body: "Reliable evaluation needs clear criteria, controlled roles, structured outputs, and consistent scoring logic. The model is only one part of the system.",
   },
 ];
 
-/* 5. Team — creative pinned reveal (brief §5, bios verbatim). */
-const TEAM = [
+/* 5. Team — creative pinned reveal (brief §5). `hobby`/`dream` are optional and
+   render as labelled facts only when present (currently Yaroslav). */
+type TeamMember = {
+  surname: string;
+  name: string;
+  role: string;
+  bio: string;
+  hobby?: string;
+  dream?: string;
+};
+const TEAM: TeamMember[] = [
   {
     surname: "Volovoj",
     name: "Yaroslav Volovoj",
-    role: "Product, Strategy and Methodology",
-    bio: "Yaroslav leads product vision, evaluation methodology, positioning and go-to-market. More than fourteen years of experience with startups, digital products, business development and market-entry strategy. Focus: ensuring EvalLense solves a real decision-making problem instead of simply generating AI reports.",
+    role: "Product & Sales",
+    bio: "Yaroslav drives product and go-to-market for EvalLense, and built its predecessor — AI Jury — at a hackathon. He shapes what the product evaluates and how teams put it to work.",
+    hobby: "Loves hackathons and sport games.",
+    dream: "Grow a unicorn.",
   },
   {
     surname: "Starodubov",
     name: "Vladislav Starodubov",
     role: "Engineering and Architecture",
-    bio: "Vladislav leads system architecture, engineering delivery and the AI evaluation pipeline. Background in software engineering, fintech, payment infrastructure and complex operational systems. Focus: making EvalLense reliable, secure and ready for repeated use at scale.",
+    bio: "Vladislav leads system architecture, engineering delivery, and the AI evaluation pipeline. His focus is reliability, security, and repeatable use at scale.",
   },
   {
     surname: "Arseniy",
     name: "Arseniy",
     role: "Product Experience",
-    bio: "Arseniy works on product experience and interface structure. Focus: turning complex evaluation workflows, reports and decision signals into a clear and understandable product for organizers and reviewers.",
+    bio: "Arseniy works on product experience and interface structure. His focus is turning complex reports, workflows, and decision signals into a clear product for organizers and reviewers.",
   },
 ];
 
-/* 6. Who we build for — horizontal scroll-snap gallery (brief §6, verbatim). */
-const SEGMENTS = [
-  { tag: "Accelerators", body: "Cohorts of applications, reviewed against the same lenses." },
-  { tag: "VC funds", body: "Inbound dealflow, screened faster and more consistently." },
-  { tag: "Startup competitions", body: "Many teams to compare without losing the strongest." },
-  { tag: "Hackathons", body: "Fast rounds where structure keeps the review fair." },
-  { tag: "Grant programs", body: "Unified criteria and clearer feedback for every applicant." },
-  { tag: "Corporate innovation teams", body: "Startups compared on fit, readiness and evidence." },
-  { tag: "Universities", body: "Transparent, comparable evaluation across a round." },
+/* 6. Who we build for — ICP workflow cards (content mirrored from the use-cases
+   page WORKFLOWS), rendered here as an INK bento. Each ICP carries the review
+   MOMENT, the JOB, what EvalLense gives, and an Explore link. */
+const ICP_WORKFLOWS = [
+  {
+    segment: "Pitch Competitions",
+    moment: "Before finals day",
+    job: "Move from open submissions to a ranked finalist board.",
+    gives: "One rubric, evidence-linked reports, live questions, and a leaderboard your jury owns.",
+    cta: "Explore pitch competitions",
+  },
+  {
+    segment: "Hackathons",
+    moment: "Before live judging",
+    job: "Review many teams fast and prepare the judge panel.",
+    gives: "A pitch-deck first pass today, with execution-specific hackathon review on the roadmap.",
+    cta: "Explore hackathons",
+  },
+  {
+    segment: "VC Funds",
+    moment: "Before the pipeline meeting",
+    job: "Turn inbound decks into a partner-ready first read.",
+    gives: "Market, team, GTM, feasibility signals, missing evidence, and questions for the first call.",
+    cta: "Explore VC dealflow",
+  },
+  {
+    segment: "Accelerators",
+    moment: "Before cohort selection",
+    job: "Compare applicants on one standard and defend the cohort decision.",
+    gives: "Side-by-side reports, fixed criteria, evidence gaps, risks, and selection questions.",
+    cta: "Explore accelerators",
+  },
+  {
+    segment: "Angel Investors",
+    moment: "Before diligence night",
+    job: "Know which decks deserve your time.",
+    gives: "A structured first read with strengths, weaknesses, missing evidence, and founder questions.",
+    cta: "Explore angel review",
+  },
+  {
+    segment: "Corporate Innovation",
+    moment: "Before stakeholder review",
+    job: "Separate real partnership potential from innovation theatre.",
+    gives: "Fit signals, readiness checks, business value, evidence gaps, and a shortlist for the committee.",
+    cta: "Explore corporate innovation",
+  },
+  {
+    segment: "Grant Programs",
+    moment: "Before funding decisions",
+    job: "Review applications against fixed criteria and keep the decision explainable.",
+    gives: "Comparable scores, evidence-linked reasoning, missing points, and a review trail.",
+    cta: "Explore grants",
+  },
+  {
+    segment: "Universities",
+    moment: "Before demo day or program selection",
+    job: "Compare student and research teams fairly.",
+    gives: "Transparent scoring, useful feedback, presentation questions, and a human-owned ranking.",
+    cta: "Explore universities",
+  },
 ];
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
@@ -156,6 +209,14 @@ export default function AboutPage() {
       <main className="about">
         {/* 1. Hero / mission — statement-hero, light. Visual slot via .media-ph. */}
         <section className="band soft ab-hero">
+          {/* Hero observatory PNG tuning — page-local injection (globals untouched):
+              enlarge ~10% and pull it up so the top constellation stars sit right
+              under the Book a Demo button, while the larger art drops toward the
+              section end. */}
+          <style>{`
+            .about .ab-hero__media--img{ width:min(98vw,1364px); max-width:98vw; }
+            .about .ab-hero__media{ margin-top:clamp(-20px,-1vw,-6px); }
+          `}</style>
           <div className="wrap ab-hero__inner">
             <span
               className="eyebrow"
@@ -170,17 +231,17 @@ export default function AboutPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              We built EvalLense to help people make better{" "}
-              <span className="grad-word">decisions</span>
+              We built EvalLense to make startup review clearer, faster, and
+              easier to <span className="grad-word">defend</span>
             </h1>
             <p
               className="sub ab-hero__sub"
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "180ms" }}
             >
-              EvalLense was created to make startup evaluation more structured,
-              consistent and transparent. AI analyzes the applications, surfaces
-              evidence and highlights risks. People make the final decision.
+              EvalLense turns messy startup applications into structured
+              evidence, comparable scores, and questions reviewers can actually
+              use. AI prepares the analysis. People keep the judgment.
             </p>
             <div
               className="cta-row"
@@ -189,23 +250,21 @@ export default function AboutPage() {
             >
               <Button href="/#demo">Book a Demo</Button>
             </div>
-            {/* hero visual slot — see prompt 1 in file header */}
-            <figure
-              className="media-ph ab-hero__media"
-              style={{ ["--ratio" as string]: "16/9" }}
+            {/* hero visual — the observatory lens: startup applications stream
+                in and resolve into evidence, risk signals, score cards, and
+                questions. Transparent cutout, so it sits frameless on the soft
+                hero and goes large (wider than the text column, capped to the
+                layout). */}
+            <Image
+              className="ab-hero__media ab-hero__media--img"
+              src="/assets/entry-hub/evallense-observatory-hero-01.png"
+              alt="A stream of startup applications passing through a glass lens and becoming structured evidence, risk signals, score cards, and reviewer questions"
+              width={1536}
+              height={1024}
+              sizes="(max-width: 1100px) 94vw, 1240px"
               data-reveal="scale"
-              role="img"
-              aria-label="A lens focusing a stream of applications into one clear signal"
-            >
-              <span className="media-ph__label">
-                Image · applications into a lens · 16:9
-              </span>
-              <span className="media-ph__hint">
-                A flow of applications focused into one clear signal —
-                lens-gradient violet→cyan→aqua, calm; see prompt 1 in file
-                header
-              </span>
-            </figure>
+              priority
+            />
           </div>
         </section>
 
@@ -217,21 +276,20 @@ export default function AboutPage() {
                 <span className="dot" aria-hidden="true"></span>
                 The problem
               </span>
-              <h2 className="title">Too many applications, too little time</h2>
+              <h2 className="title">Good projects get <span className="grad-word">lost</span> when review has no system</h2>
               <p className="sub">
-                Every accelerator, fund, competition and innovation program faces
-                the same problem: too many applications and too little time to
-                review them properly.
+                Accelerators, funds, competitions, and innovation teams all face
+                the same review problem: too many decks, uneven criteria, and not
+                enough time to explain the call.
               </p>
             </div>
             <div className="ab-problem__claim" data-reveal="right">
               <p className="ab-problem__claim-text">
-                Strong projects get lost in the queue. Reviewers use different
-                criteria. Scores are difficult to explain. Important signals are
-                missed.
+                The cost is not just slow review. It is missed signal, weak
+                rationale, and decisions that are hard to defend later.
               </p>
               <span className="ab-problem__claim-tag">
-                Lost signals · uneven review
+                Missed signal · uneven criteria · weak rationale
               </span>
             </div>
           </div>
@@ -251,13 +309,13 @@ export default function AboutPage() {
                 <div className="head ab-story__head">
                   <span className="eyebrow">
                     <span className="dot" aria-hidden="true"></span>
-                    From AI Jury to EvalLense
+                    From AI jury to human-controlled evaluation
                   </span>
-                  <h2 className="title">How a hackathon idea became a system</h2>
+                  <h2 className="title">What <span className="grad-word">hundreds of runs</span> taught us</h2>
                   <p className="sub">
-                    EvalLense did not start as a finished product. It grew out of
-                    AI Jury — and changed direction as the runs taught us what
-                    actually helps a decision.
+                    EvalLense started as AI Jury. The early idea was simple: use
+                    several specialized AI judges instead of one generic model
+                    opinion. Then the runs exposed the real problem.
                   </p>
                 </div>
                 <ol className="ab-story__track">
@@ -274,36 +332,28 @@ export default function AboutPage() {
                     </li>
                   ))}
                 </ol>
+                {/* link to the long-form origin story (Newsroom: founding-story) */}
+                <div className="ab-story__cta" data-reveal="up">
+                  <Button href="/blog/founding-story" variant="ghost" arrow>
+                    Read the full story
+                  </Button>
+                </div>
               </div>
               <div className="ab-story__side">
-                {/* authored pipeline — nodes light up cumulatively with the pin */}
-                <ol className="ab-story__pipe" aria-label="The controlled evaluation pipeline">
-                  {STORY_PIPE.map((node, i) => (
-                    <li
-                      key={node}
-                      className="ab-story__pipe-node"
-                      style={{ ["--i" as string]: String(i) }}
-                    >
-                      <span className="ab-story__pipe-dot" aria-hidden="true"></span>
-                      <span className="ab-story__pipe-name">{node}</span>
-                    </li>
-                  ))}
-                </ol>
-                {/* story visual slot — see prompt 2 in file header */}
-                <figure
-                  className="media-ph ab-story__media"
-                  style={{ ["--ratio" as string]: "4/3" }}
-                  role="img"
-                  aria-label="AI Jury to EvalLense shown as a chain of nodes on a lens track"
-                >
-                  <span className="media-ph__label">
-                    Image · AI Jury → EvalLense · 4:3
-                  </span>
-                  <span className="media-ph__hint">
-                    A chain AI Jury → Testing → Pipeline → EvalLense, one lit node
-                    on an ink surface — see prompt 2 in file header
-                  </span>
-                </figure>
+                {/* story visual — the full EvalLense origin journey (AI Jury →
+                    hackathon → brainstorm → lens parts → Evaluation Lens →
+                    EvalLense → unicorn). Tall transparent cutout, shown large to
+                    fill the pinned stage. The authored pipeline list above was
+                    removed in favour of this single image. */}
+                <Image
+                  className="ab-story__media ab-story__media--img"
+                  src="/assets/methodology/eval-lens-roadmap-vertical-02.png"
+                  alt="The EvalLense origin journey: from AI Jury and a hackathon, through brainstorming and lens parts, to the Evaluation Lens and EvalLense"
+                  width={781}
+                  height={1857}
+                  sizes="(max-width: 880px) 70vw, 380px"
+                  data-reveal="scale"
+                />
               </div>
             </div>
           </div>
@@ -313,8 +363,8 @@ export default function AboutPage() {
         <section className="band ink ab-story-claim">
           <div className="wrap ab-story-claim__inner">
             <p className="ab-story-claim__text" data-reveal="up">
-              AI Jury was designed to judge. EvalLense is designed to help people
-              see more clearly.
+              AI Jury tried to judge. EvalLense helps people see clearly before
+              they decide.
             </p>
           </div>
         </section>
@@ -327,10 +377,10 @@ export default function AboutPage() {
                 <span className="dot" aria-hidden="true"></span>
                 Our principles
               </span>
-              <h2 className="title">What we hold to, run after run</h2>
+              <h2 className="title">The <span className="grad-word">principles</span> behind every evaluation</h2>
               <p className="sub">
-                Four principles keep the product honest: AI supports the work,
-                every score is explainable, disagreement is surfaced, and
+                These principles keep EvalLense useful: AI supports the work,
+                scores link to evidence, disagreement stays visible, and
                 methodology comes before the model.
               </p>
             </div>
@@ -364,7 +414,7 @@ export default function AboutPage() {
                 <span className="dot" aria-hidden="true"></span>
                 The team
               </span>
-              <h2 className="title">The people behind EvalLense</h2>
+              <h2 className="title">Built by product, engineering, and <span className="grad-word">evaluation</span> people</h2>
             </div>
             <div className="wrap ab-team__scene">
               {TEAM.map((m, i) => (
@@ -374,9 +424,6 @@ export default function AboutPage() {
                   data-pin-step
                   style={{ ["--i" as string]: String(i) }}
                 >
-                  <span className="ab-member__surname" aria-hidden="true">
-                    {m.surname}
-                  </span>
                   {/* portrait slot — see prompts 3–5 in file header */}
                   <figure
                     className="media-ph ab-member__media"
@@ -409,6 +456,22 @@ export default function AboutPage() {
                     <span className="mini-tag">{m.role}</span>
                     <h3 className="ab-member__name">{m.name}</h3>
                     <p className="ab-member__bio">{m.bio}</p>
+                    {m.hobby || m.dream ? (
+                      <dl className="ab-member__facts">
+                        {m.hobby ? (
+                          <div className="ab-member__fact">
+                            <dt>Hobby</dt>
+                            <dd>{m.hobby}</dd>
+                          </div>
+                        ) : null}
+                        {m.dream ? (
+                          <div className="ab-member__fact">
+                            <dt>Dream</dt>
+                            <dd>{m.dream}</dd>
+                          </div>
+                        ) : null}
+                      </dl>
+                    ) : null}
                   </div>
                 </article>
               ))}
@@ -416,40 +479,98 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 6. Who we build for — horizontal scroll-snap gallery, light. */}
-        <section className="band ab-segments">
+        {/* 6. Who we build for — ICP workflow BENTO on INK. Page-local inject
+            (no shared component / globals touched): the old light scroll-gallery
+            is replaced by a dark bento of the full ICP set, each card carrying
+            the review MOMENT, the JOB, what EvalLense gives, and an Explore link
+            into the use-cases page. */}
+        <section className="band ink ab-segments ab-icp">
+          <style>{`
+            .ab-icp .head{ text-align:center; max-width:46rem; margin-inline:auto; }
+            .ab-icp__grid{
+              display:grid; grid-template-columns:repeat(auto-fit, minmax(264px,1fr));
+              gap:clamp(14px,1.5vw,22px); margin-top:clamp(36px,5vw,60px); align-items:stretch;
+            }
+            .ab-icp__card{
+              display:flex; flex-direction:column; min-width:0;
+              padding:clamp(22px,2vw,30px);
+              border-radius:clamp(18px,1.6vw,24px);
+              background:color-mix(in oklab, var(--panel) 84%, transparent);
+              border:1px solid var(--border-on-dark-2);
+              box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+              transition:border-color .3s var(--ease), background .3s var(--ease), transform .3s var(--ease);
+            }
+            .ab-icp__card:hover{
+              border-color:color-mix(in oklab, var(--lavender) 38%, transparent);
+              background:color-mix(in oklab, var(--panel-2) 90%, transparent);
+              transform:translateY(-2px);
+            }
+            .ab-icp__seg{
+              font-family:var(--font-display); font-size:clamp(20px,1.9vw,24px);
+              font-weight:600; letter-spacing:-.015em; color:var(--fg-on-dark);
+              margin:0 0 clamp(14px,1.4vw,18px);
+            }
+            .ab-icp__field{ margin:0 0 14px; }
+            .ab-icp__klabel{
+              display:block; font-family:var(--font-mono); font-size:10.5px;
+              letter-spacing:.16em; text-transform:uppercase; color:var(--lavender); margin-bottom:6px;
+            }
+            .ab-icp__val{ margin:0; font-size:14.5px; line-height:1.5; color:var(--body-on-dark); }
+            .ab-icp__field--gives{ margin-bottom:clamp(18px,1.8vw,22px); }
+            .ab-icp__field--gives .ab-icp__val{ color:var(--muted-on-dark); }
+            .ab-icp__cta{
+              margin-top:auto; display:inline-flex; align-items:center; gap:7px;
+              font-size:14px; font-weight:500; color:var(--lavender); text-decoration:none;
+            }
+            .ab-icp__cta svg{ width:15px; height:15px; transition:transform .25s var(--ease); }
+            .ab-icp__cta:hover{ color:#c8c4f0; }
+            .ab-icp__cta:hover svg{ transform:translateX(3px); }
+            .ab-icp .ab-segments__claim{ color:var(--fg-on-dark); text-align:center; margin-inline:auto; max-width:26ch; }
+            @media (max-width:560px){ .ab-icp__grid{ grid-template-columns:1fr; } }
+          `}</style>
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
                 Who we build for
               </span>
-              <h2 className="title">The teams that review at scale</h2>
+              <h2 className="title">Built for teams that review at <span className="grad-word">scale</span></h2>
               <p className="sub">
-                They do not need AI to choose the winner. They need a faster and
+                They do not need AI to choose the winner. They need a faster,
                 more consistent way to understand each application, compare
-                participants and focus human attention on the decisions that
+                participants, and focus human attention on the decisions that
                 matter.
               </p>
             </div>
-          </div>
-          {/* horizontal gallery — scrolls INSIDE its own overflow container,
-              never moving the page; scroll-snap like .usecases .seg-lane */}
-          <ul
-            className="seg-lane"
-            data-reveal="up"
-            tabIndex={0}
-            aria-label="Audience segments — scroll horizontally"
-          >
-            {SEGMENTS.map((s) => (
-              <li key={s.tag} className="seg-card">
-                <span className="seg-card__signal" aria-hidden="true"></span>
-                <span className="mini-tag">{s.tag}</span>
-                <p className="seg-p">{s.body}</p>
-              </li>
-            ))}
-          </ul>
-          <div className="wrap">
+            <ul
+              className="ab-icp__grid"
+              data-reveal="up"
+              aria-label="Who EvalLense is built for, by review moment"
+            >
+              {ICP_WORKFLOWS.map((w) => (
+                <li key={w.segment} className="ab-icp__card">
+                  <h3 className="ab-icp__seg">{w.segment}</h3>
+                  <div className="ab-icp__field">
+                    <span className="ab-icp__klabel">Moment</span>
+                    <p className="ab-icp__val">{w.moment}</p>
+                  </div>
+                  <div className="ab-icp__field">
+                    <span className="ab-icp__klabel">Job</span>
+                    <p className="ab-icp__val">{w.job}</p>
+                  </div>
+                  <div className="ab-icp__field ab-icp__field--gives">
+                    <span className="ab-icp__klabel">EvalLense gives</span>
+                    <p className="ab-icp__val">{w.gives}</p>
+                  </div>
+                  <Link href="/trust/use-cases" className="ab-icp__cta">
+                    {w.cta}
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+                      <path d="M3 8h9M9 5l3 3-3 3" />
+                    </svg>
+                  </Link>
+                </li>
+              ))}
+            </ul>
             <p className="ab-segments__claim" data-reveal="up">
               We are not building an artificial jury. We are building a better
               lens for human judgment.
@@ -469,15 +590,16 @@ export default function AboutPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              See the product and the team up close
+              See how EvalLense works on a <span className="grad-word">real batch</span>
             </h2>
             <p
               className="sub"
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "180ms" }}
             >
-              Book a demo to walk through EvalLense, meet the people behind it and
-              run a pilot batch on your own applications.
+              Book a demo to walk through the workflow, review example reports,
+              and see how EvalLense helps your team compare applications without
+              giving up human control.
             </p>
             <div
               className="sect-cta"

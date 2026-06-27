@@ -18,6 +18,10 @@ import { useEffect } from "react";
  *   <video data-scrub-video> inside a [data-pin] section is seeked by that
  *     section's pin progress (no autoplay). Optional data-frames="N" quantizes
  *     the scrub into N discrete frames across the clip.
+ *   <video data-play-once> plays a single time when it scrolls into view, then
+ *     stops on its last frame (no loop). Optional data-replay-delay="<ms>"
+ *     restarts it that long after each end (a paced loop). Reduced-motion never
+ *     auto-plays it — it stays on the first frame.
  *
  * Respects prefers-reduced-motion: reveals show immediately, pins settle
  * fully revealed, scrubs pin to a static end state.
@@ -66,6 +70,55 @@ export function ScrollFX() {
       }
     }
 
+    /* 1b — [data-play-once]: play a video a single time when it scrolls into
+       view. With an optional data-replay-delay="<ms>" it restarts that long
+       after each end (a paced loop); without it, it stops on its last frame.
+       Reduced-motion never auto-plays it (stays on the first frame). */
+    let playIo: IntersectionObserver | null = null;
+    const playCleanups: Array<() => void> = [];
+    if (!reduce) {
+      const playOnce = Array.from(
+        document.querySelectorAll<HTMLVideoElement>("video[data-play-once]"),
+      );
+      if (playOnce.length) {
+        playOnce.forEach((v) => {
+          const delay = parseInt(v.getAttribute("data-replay-delay") || "0", 10);
+          if (!(delay > 0)) return;
+          let timer = 0;
+          const onEnded = () => {
+            window.clearTimeout(timer);
+            timer = window.setTimeout(() => {
+              try {
+                v.currentTime = 0;
+              } catch {
+                /* not seekable — play() restarts from wherever it is */
+              }
+              void v.play().catch(() => {});
+            }, delay);
+          };
+          v.addEventListener("ended", onEnded);
+          playCleanups.push(() => {
+            window.clearTimeout(timer);
+            v.removeEventListener("ended", onEnded);
+          });
+        });
+        playIo = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (!e.isIntersecting) return;
+              const v = e.target as HTMLVideoElement;
+              void v.play().catch(() => {
+                /* autoplay blocked — leave it on the first frame */
+              });
+              playIo?.unobserve(v);
+            });
+          },
+          { threshold: 0.4 },
+        );
+        playOnce.forEach((v) => playIo!.observe(v));
+      }
+    }
+
     /* 2 + 3 — scrub & pin share one rAF loop */
     const scrubs = Array.from(document.querySelectorAll("[data-scrub]")) as HTMLElement[];
     const pins = Array.from(document.querySelectorAll("[data-pin]")) as HTMLElement[];
@@ -109,6 +162,8 @@ export function ScrollFX() {
     if (!scrubs.length && !pins.length) {
       return () => {
         io?.disconnect();
+        playIo?.disconnect();
+        playCleanups.forEach((fn) => fn());
         unlock();
       };
     }
@@ -189,6 +244,8 @@ export function ScrollFX() {
 
     return () => {
       io?.disconnect();
+      playIo?.disconnect();
+      playCleanups.forEach((fn) => fn());
       unlock();
       pinVideos.forEach((v) => v.removeEventListener("loadedmetadata", schedule));
       window.removeEventListener("scroll", schedule);

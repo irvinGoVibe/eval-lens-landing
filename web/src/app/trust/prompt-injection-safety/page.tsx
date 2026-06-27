@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
@@ -477,25 +478,20 @@ export default function PromptInjectionSafetyPage() {
               "Vertical layers where an injection signal fades from judges down to the human layer",
           }}
           mediaNode={
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              disablePictureInPicture
-              aria-label="A pitch deck flies through six labeled stage lenses — Detect, Exclude, Isolate, Aggregate, Surface, Decide — its INJECTED flag turning to CLEAN as each stage strips what deck text can reach"
+            <Image
+              src="/assets/injection/pitch-deck-lens-hidden-inject-clean-vertical-01.webp"
+              alt="A pitch deck with an INJECTED flag and a hidden injection chip falling through six glass filter layers and emerging CLEAN at the bottom"
+              width={941}
+              height={1672}
+              sizes="(max-width: 880px) 60vw, 380px"
               style={{
-                width: "100%",
-                height: "auto",
+                height: "min(72vh, 700px)",
+                width: "auto",
+                maxWidth: "100%",
                 display: "block",
-                transform: "scale(1.18)",
-                transformOrigin: "center",
+                margin: "0 auto",
               }}
-            >
-              <source src="/assets/injection/holding-layers-v5.webm" type="video/webm" />
-              <source src="/assets/injection/holding-layers-v5.mp4" type="video/mp4" />
-            </video>
+            />
           }
         />
 

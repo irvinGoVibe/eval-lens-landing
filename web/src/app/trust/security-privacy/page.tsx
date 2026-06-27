@@ -121,7 +121,7 @@ export default function SecurityPrivacyPage() {
               body: "Decks, applications, scores and reports stay inside an authorized workspace. Nothing about a batch is exposed by default — access is granted, not assumed.",
               feature: true,
               media: {
-                src: "/assets/security-privacy/controlled-workspace.webp",
+                src: "/assets/security-privacy/controlled-workspace-2.webp",
                 width: 1672,
                 height: 941,
                 ratio: "1672/941",
@@ -158,7 +158,8 @@ export default function SecurityPrivacyPage() {
           surface="ink"
           ariaLabel="How access works"
           eyebrow="Access control"
-          title="Access is enforced below the UI."
+          title="Access is enforced below the UI"
+          titleAccent="below the UI"
           sub="Access is not handled only by the interface. Sessions, roles, database policies, and server-only keys decide what each request can see."
           leftTag="Guardrail"
           rightTag="How it works"
@@ -192,7 +193,8 @@ export default function SecurityPrivacyPage() {
           version={2}
           ariaLabel="Report delivery"
           eyebrow="Report delivery"
-          titleLead="Reports are shared on purpose"
+          titleLead="Reports are shared "
+          titleAccent="on purpose"
           sub="Reports should move through the organizer's workspace, not through accidental public access. Participant-facing report sharing is post-MVP."
           media={{
             src: "/assets/security-privacy/report-delivery.webp",
