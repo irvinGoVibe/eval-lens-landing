@@ -96,34 +96,16 @@ const COLLECTED = [
     tag: "Deck",
     title: "Pitch deck",
     body: "PDF, PPT, PPTX, or Google Slides link. One deck per team, up to 50 MB.",
-    icon: {
-      src: "/assets/entry-hub/deck-cards.webp",
-      width: 1536,
-      height: 1024,
-      corner: "br" as const,
-    },
   },
   {
     tag: "Note",
     title: "Note for judges",
     body: "An optional note teams can add for context.",
-    icon: {
-      src: "/assets/entry-hub/note-cards.webp",
-      width: 1536,
-      height: 1024,
-      corner: "br" as const,
-    },
   },
   {
     tag: "Status",
     title: "Entry status",
     body: "See whether each entry is ready, incomplete, or submitted.",
-    icon: {
-      src: "/assets/entry-hub/status-cards-v2.webp",
-      width: 1536,
-      height: 1024,
-      corner: "br" as const,
-    },
   },
 ];
 
@@ -251,7 +233,7 @@ export default function EntryHubPage() {
           sub="Choose how teams enter. Add them yourself or open submissions. Every entry lands in the same workspace."
           steps={HOW_STEPS}
           videoLoop={{
-            src: "/assets/entry-hub/entry-hub-flow.mp4",
+            src: "/assets/entry-hub/entry-hub-flow-v2.mp4",
             ariaLabel:
               "The EvalLense Entry Hub interface, from project setup to start judging",
           }}
