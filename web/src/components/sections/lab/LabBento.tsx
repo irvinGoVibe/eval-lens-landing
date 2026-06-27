@@ -68,7 +68,10 @@ export type LabBentoIcon = {
 export type LabBentoItem = {
   tag: string;
   title: string;
-  body: string;
+  /** Tile copy. Usually a plain string (rendered in a `white-space:pre-line`
+   *  <p>, so `\n` controls line breaks); accepts ReactNode when a tile needs
+   *  inline emphasis (e.g. <strong> sub-labels) inside that same paragraph. */
+  body: ReactNode;
   feature?: boolean;
   media?: LabBentoMedia;
   /** Optional icon/image attached to THIS tile. Rendered only when set; no placeholder. */

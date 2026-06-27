@@ -382,7 +382,18 @@ export function DevInspector() {
         b.textContent = `v${vid}`;
         b.disabled = versionIds.length < 2;
         b.addEventListener("click", () => {
-          for (const el of versions) el.hidden = (el.dataset.version ?? "1") !== vid;
+          for (const el of versions) {
+            const show = (el.dataset.version ?? "1") === vid;
+            el.hidden = !show;
+            // Re-reveal the just-shown version: its [data-reveal] nodes were
+            // `hidden` when ScrollFX first observed them, so they never got
+            // `.is-in` and sit at opacity:0 — switching versions would blank the
+            // section. Force-reveal the shown version so it never goes invisible.
+            if (show)
+              el
+                .querySelectorAll<HTMLElement>("[data-reveal]")
+                .forEach((r) => r.classList.add("is-in"));
+          }
           for (const [v, vb] of Object.entries(verBtns))
             vb.classList.toggle("is-active", v === vid);
           safeSet(keyVersion, vid);
