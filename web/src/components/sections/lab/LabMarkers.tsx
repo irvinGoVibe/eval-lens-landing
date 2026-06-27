@@ -150,7 +150,14 @@ export function LabMarkers() {
       }
       function applyVersion(id: string) {
         for (const el of versions) {
-          el.hidden = (el.dataset.version ?? "1") !== id;
+          const show = (el.dataset.version ?? "1") === id;
+          el.hidden = !show;
+          // Re-reveal the shown version: its [data-reveal] nodes were `hidden`
+          // when ScrollFX observed them, so they never got `.is-in` (opacity:0).
+          if (show)
+            el
+              .querySelectorAll<HTMLElement>("[data-reveal]")
+              .forEach((r) => r.classList.add("is-in"));
         }
         for (const [v, b] of Object.entries(verBtns)) {
           b.classList.toggle("is-active", v === id);
