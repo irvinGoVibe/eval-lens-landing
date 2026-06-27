@@ -10,8 +10,7 @@ import {
   StatementHero,
   EditorialSplit,
   Bento,
-  Numbered,
-  PinnedSteps,
+  RiskControl,
   CtaBand,
 } from "@/components/ds";
 
@@ -56,53 +55,53 @@ export default function SecurityPrivacyPage() {
           surface="light"
           version={1}
           eyebrow="Security & Privacy"
-          titleLead="Private by design, decided by"
-          titleAccent="humans"
-          sub="Private pitch-deck handling, controlled access to the workspace and deliberate report delivery — at every step. The decision stays with a person."
-          ctas={[{ label: "Book a Demo", href: "/#demo" }]}
+          titleLead="Private pitch-deck handling."
+          titleAccent="Human decisions."
+          sub="EvalLense keeps pitch decks, workspace access, and report delivery controlled. AI prepares the review. A person decides what happens next."
+          ctas={[{ label: "Book a demo", href: "/#demo" }]}
           media={{
             ratio: "16/9",
-            label: "Image · deck in a private perimeter · 16:9",
-            hint: "A deck enters a contained lens perimeter, soft lock hint, no security theatre — lens-gradient violet→cyan→aqua, calm.",
+            label: "Visual: deck in a private perimeter",
+            hint: "Show a deck entering a contained, private perimeter with a soft lock hint.",
             ariaLabel:
               "A deck entering a private lens perimeter with a soft lock hint",
           }}
         />
 
-    
+
 
         {/* 2. Why privacy matters — editorial split, light. */}
         <EditorialSplit
           surface="light"
           version={3}
-          ariaLabel="Why privacy matters"
-          eyebrow="Why privacy matters"
-          titleLead="Decks and results are"
-          titleAccent="sensitive"
-          sub="Pitch decks and evaluation results carry information that should not move freely. Handling them carelessly puts founders, funds and outcomes at risk."
+          ariaLabel="Why this needs control"
+          eyebrow="Why this needs control"
+          titleLead="Decks and results carry"
+          titleAccent="sensitive information"
+          sub="Pitch decks often include strategy, financials, founder details, and selection outcomes. That information should not move freely or leak through open links."
           media={{
             ratio: "4/3",
-            label: "Image · what is sensitive in a deck · 4:3",
-            hint: "A quiet, calm view of a deck on an Apple-neutral surface — sensitive lines softly held in the lens, no padlocks, no alarm.",
+            label: "Visual: what's sensitive in a deck",
+            hint: "Show the sensitive information a pitch deck carries, held calmly in view.",
             ariaLabel:
               "A calm depiction of the sensitive information carried inside a pitch deck",
           }}
           points={[
             {
-              title: "Confidential strategy",
-              body: "A deck can carry confidential strategy that should not leak.",
+              title: "Strategy",
+              body: "A deck can include plans, positioning, and market strategy.",
             },
             {
-              title: "Financial data",
-              body: "Financial data needs careful, controlled handling.",
+              title: "Financials",
+              body: "Revenue, pricing, burn, or fundraising details need controlled access.",
             },
             {
-              title: "Founder information",
-              body: "Founder information has to be protected.",
+              title: "Founder details",
+              body: "Team backgrounds and founder details should stay inside the review flow.",
             },
             {
-              title: "Evaluation outcome",
-              body: "An evaluation result shapes funding, selection and reputation.",
+              title: "Review outcome",
+              body: "Scores, notes, and shortlist decisions can affect funding, selection, and reputation.",
             },
           ]}
         />
@@ -112,9 +111,9 @@ export default function SecurityPrivacyPage() {
           id="workspace"
           surface="light"
           version={2}
-          eyebrow="Private workspace"
-          title="Every batch lives in a controlled space"
-          sub="Evaluation doesn't happen in the open. Each batch runs inside a controlled workspace where access is scoped to the people who belong there."
+          eyebrow="Controlled workspace"
+          title="Each batch stays inside a controlled workspace"
+          sub="Evaluation runs inside a workspace owned by the organizer. Access is scoped to the people and roles that belong to that project."
           items={[
             {
               tag: "Controlled workspace",
@@ -122,154 +121,121 @@ export default function SecurityPrivacyPage() {
               body: "Decks, applications, scores and reports stay inside an authorized workspace. Nothing about a batch is exposed by default — access is granted, not assumed.",
               feature: true,
               media: {
-                label: "Image · a controlled, private workspace · 16:9",
-                hint: "A scoped perimeter holding decks, scores and reports — calm lens-gradient surface, access granted not assumed, no security theatre.",
+                src: "/assets/security-privacy/controlled-workspace.webp",
+                width: 1672,
+                height: 941,
+                ratio: "1672/941",
+                label: "Visual: controlled workspace",
+                hint: "Show decks, scores, and reports inside one scoped glass workspace. Access is granted deliberately, not assumed.",
                 ariaLabel:
                   "A controlled, private workspace where a batch's decks, scores and reports stay scoped to authorized people",
               },
             },
             {
-              tag: "One organizer",
-              title: "One organizer per project",
-              body: "In the MVP a project belongs to a single organizer, who owns its decks, evaluations and reports.",
+              tag: "Organizer-owned project",
+              title: "One organizer owns each project in MVP",
+              body: "In the MVP, each project belongs to one organizer. That organizer owns the decks, evaluations, and reports.",
             },
             {
-              tag: "Published-gate",
-              title: "Intake opens on purpose",
-              body: "Participants submit through the public page /e/<slug>, which is reachable only when the project is published — otherwise it returns 404.",
+              tag: "Publish gate",
+              title: "Intake opens only after publishing",
+              body: "Participants submit through /e/<slug>. The page is public only after the organizer publishes the project. Before that, it returns 404.",
             },
           ]}
         />
 
-        {/* 4. Access control — numbered, light. */}
-        <Numbered
-          surface="light"
-          version={3}
-          ariaLabel="Access control"
-          eyebrow="Access control"
-          title="Who sees what is enforced, not trusted"
-          sub="Access is decided by roles and data isolation, with secrets kept off the client and sign-in hardened against common leaks."
-          items={[
-            {
-              num: "01",
-              title: "Database-level project isolation",
-              body: "Postgres applies row-level policies on every query: an organizer sees only their own projects (organizer_id = auth.uid()). Isolation lives in the database, not just in the UI.",
-            },
-            {
-              num: "02",
-              title: "Role-based access",
-              body: "Roles user / admin / participant decide who sees what; a person can hold several, and the organizer-vs-participant context depends on the project.",
-            },
-            {
-              num: "03",
-              title: "Server-only secrets",
-              body: "Service-role and AI Gateway keys live only on the server and never reach the client bundle; admin operations run after an explicit requireAdmin() check.",
-            },
-            {
-              num: "04",
-              title: "Hardened sign-in",
-              body: "Generic login errors avoid leaking whether an email exists, an open-redirect guard sanitizes return URLs, and email verification is required.",
-            },
-            {
-              num: "05",
-              title: "Published-gate on intake",
-              body: "The public self-upload page /e/<slug> is reachable only when the project is published (is_published=true) — otherwise it returns 404.",
-            },
-          ]}
-        />
-
-        {/* ── Tone-flip seam §4→§5: ZoneToneFlip crossfades the dark bg 0→1. ── */}
+        {/* ── Tone-flip seam §3→§4: ZoneToneFlip crossfades the dark bg 0→1
+            (workspace is the last light section; access proof onward is ink). ── */}
         <ZoneToneFlip />
         {/* Flow-field: scrub-driven coloured blobs inside the dark bg layer. */}
         <CanvasFlowField />
 
-        {/* 5. Under the hood — pinned steps, ink. */}
-        <PinnedSteps
+        {/* 4. Access proof — risk/guardrail block (ds-risk), ink. The single
+            access-control section: short intro + four guardrail rows
+            (boundary → how it's enforced). Replaced the old Numbered §4. */}
+        <RiskControl
           id="flow"
           surface="ink"
-          version={1}
-          ariaLabel="How access is protected under the hood"
-          eyebrow="Under the hood"
-          title={{ line1: "How access", line2: "is protected" }}
-          sub="The authentication layer is stable: a session in httpOnly cookies hands off to Postgres, where row-level policies decide what each request can see."
-          steps={[
+          ariaLabel="How access works"
+          eyebrow="Access control"
+          title="Access is enforced below the UI."
+          sub="Access is not handled only by the interface. Sessions, roles, database policies, and server-only keys decide what each request can see."
+          leftTag="Guardrail"
+          rightTag="How it works"
+          pairs={[
             {
-              num: "01",
-              label: "Supabase Auth",
-              desc: "Authentication runs on Supabase Auth with @supabase/ssr — the proven layer that issues and validates the session.",
+              risk: "Session boundary",
+              control:
+                "Sessions live in httpOnly cookies. Client-side scripts cannot read the token directly.",
             },
             {
-              num: "02",
-              label: "httpOnly cookies",
-              desc: "The session lives in httpOnly cookies, so client-side scripts can't read the token directly.",
+              risk: "Database rules",
+              control:
+                "Postgres applies row-level security. Organizers can read and write only the projects tied to their account.",
             },
             {
-              num: "03",
-              label: "RLS auth.uid()",
-              desc: "Cookies travel to Postgres automatically; RLS reads auth.uid() and applies row-level policies on every request.",
+              risk: "Server-only keys",
+              control:
+                "Service-role and AI Gateway keys stay on the server. Admin operations run only after an explicit admin check.",
             },
             {
-              num: "04",
-              label: "Methods & middleware",
-              desc: "Email + password (verified), Google OAuth and email reset; protected routes sit behind middleware, and the service-role key is used only in admin APIs after requireAdmin().",
+              risk: "Public gate",
+              control:
+                "The public /e/<slug> page opens only after the organizer publishes the project. Before that, it returns 404.",
             },
           ]}
-          media={{
-            ratio: "4/3",
-            label: "Image · access flow · 4:3",
-            hint: "cookies → server → RLS → isolated project data; a session thread narrows into one project.",
-            ariaLabel:
-              "A chain from cookies through the server to RLS and isolated project data",
-          }}
         />
 
-        {/* 6. Report delivery — editorial split, ink. */}
+        {/* 5. Report delivery — editorial split, ink. */}
         <EditorialSplit
           surface="ink"
           version={2}
           ariaLabel="Report delivery"
           eyebrow="Report delivery"
-          titleLead="Reports are shared deliberately"
-          sub="Reports should be shared on purpose, not leak by accident. Access runs through the organizer's authorized workspace rather than an open link."
+          titleLead="Reports are shared on purpose"
+          sub="Reports should move through the organizer's workspace, not through accidental public access. Participant-facing report sharing is post-MVP."
           media={{
-            ratio: "4/3",
-            label: "Image · deliberate report delivery · 4:3",
-            hint: "A report handed off on purpose through the organizer's authorized workspace — calm lens-gradient surface, a deliberate hand-off, not an open link.",
+            src: "/assets/security-privacy/report-delivery.webp",
+            width: 1280,
+            height: 512,
+            ratio: "1280/512",
+            label: "Visual: report delivery",
+            hint: "Show a report moving through the organizer's authorized workspace, not through an open public link.",
             ariaLabel:
-              "A report shared deliberately through the organizer's authorized workspace",
+              "Glass illustration: a pitch deck flows through the organizer's authorized workspace into a locked private report",
           }}
           points={[
             {
-              title: "Deliberate, not leaked",
-              body: "A report reaches someone because the organizer chose to share it — not because it slipped out. Participant-facing sharing is a post-MVP capability.",
+              title: "Shared deliberately, not leaked",
+              body: "A report reaches someone only when the organizer chooses to share it. Participant-facing sharing comes after MVP.",
             },
           ]}
         />
 
-        {/* 7. Human in the loop — editorial split, ink. */}
+        {/* 6. Human in the loop — editorial split, ink. */}
         <EditorialSplit
           surface="ink"
           version={1}
           ariaLabel="Human in the loop"
           eyebrow="Human in the loop"
-          titleLead="Decisions stay with a"
-          titleAccent="person"
-          sub="EvalLense prepares the analysis, but the final decision and how a report is used stay with a human. AI doesn't become an invisible final judge. AI prepares, a person decides — the outcome is human-owned, not automated."
+          titleLead="The final decision stays"
+          titleAccent="human"
+          sub="EvalLense prepares the analysis. The organizer reviews it, sets the final scores, and decides how the report is used. AI does not become the final judge."
           media={{
             ratio: "4/3",
-            label: "Image · AI → human handoff · 4:3",
-            hint: "AI prepares an advisory analysis that flows to a person who owns the decision — calm lens-gradient surface, a quiet hand-off, no automated verdict.",
+            label: "Visual: AI-to-human handoff",
+            hint: "Show AI analysis handed to a human reviewer. The visual should make it clear: analysis is automated, the verdict is not.",
             ariaLabel:
               "An AI-to-human handoff where AI prepares the analysis and a person owns the decision",
           }}
           points={[
             {
-              title: "AI — advisory analysis",
-              body: "AI Total Score is advisory and does not rank participants — it is a reference, not a verdict.",
+              title: "AI analysis is advisory",
+              body: "AI Total Score is a reference. It does not rank participants by itself.",
             },
             {
-              title: "Human — owns the Final Score",
-              body: "Ranking is built from the human Final Score; the organizer decides how the report is used.",
+              title: "Human owns the final score",
+              body: "Ranking is built from the organizer's final scores. The organizer decides how the report is used.",
             },
           ]}
         />
@@ -279,7 +245,7 @@ export default function SecurityPrivacyPage() {
         </div>
         {/* ── End unified tonal zone ── */}
 
-        {/* 8. Final CTA — CtaBand on the dark (ink) theme with a looping
+        {/* 7. Final CTA — CtaBand on the dark (ink) theme with a looping
             background video and `bleed` so it spills onto the black footer:
             the page's single cinematic ink closer. `auroraVariant` is the CSS
             fallback when the video can't play. */}
@@ -289,10 +255,10 @@ export default function SecurityPrivacyPage() {
           videoSrc="/assets/cta/neo.mp4"
           auroraVariant="violet"
           eyebrow="Get started"
-          title="Run a private pilot on"
-          titleAccent="your own data"
-          sub="Book a demo and see private handling, controlled access and human-owned decisions end to end."
-          primary={{ label: "Book a Demo", href: "/#demo" }}
+          title="Run a controlled pilot on"
+          titleAccent="your own decks"
+          sub="Book a demo and see how EvalLense handles decks, access, reports, and final decisions in one controlled flow."
+          primary={{ label: "Book a demo", href: "/#demo" }}
         />
       </main>
       <Footer variant="dark" />
