@@ -6306,20 +6306,21 @@ section.band.ink .mini-tag{color:var(--lavender);}
   margin-bottom:-10px;
 }
 
-/* ── PAGE INJECTION (entry-hub §5 Bento): the "Note for judges" tile carries a
-   wide, transparent glass-cards illustration as a decorative `icon`. It is
-   absolutely positioned (so it NEVER changes the card's layout) and anchored to
-   the card's bottom-right, sized wider than the card so the leftmost note card
-   spills past the left edge and is clipped (cards 2 & 3 read in full). The tile
-   keeps its default `overflow:hidden`, so both the spill and the slightly
-   cropped bottom are clean. Scoped to .entry-hub → no other Bento is touched. ── */
+/* ── PAGE INJECTION (entry-hub §5 Bento): the deck / note / status tiles each
+   carry a transparent glass-cards illustration as a decorative `icon`. Absolute
+   (never affects the card layout), shrunk ~1.5x and driven into the BOTTOM-RIGHT
+   corner — its lower part tucked under the card's bottom edge and its right edge
+   bleeding just past the card's right side, both clipped by the tile's
+   overflow:hidden. Scoped to .entry-hub → no other Bento is touched.
+   Tuning knobs: width (size), right (horizontal bleed), bottom (how much tucks
+   under — more negative = more hidden). ── */
 .entry-hub .lab-bento__icon--br{
-  left:50%;
-  right:auto;
-  transform:translateX(-50%);
+  left:auto;
+  right:-3%;           /* driven right, just past the right edge (clipped) */
+  transform:none;
   top:auto;
-  bottom:-12%;         /* lowered: card bottoms dip just past the card edge */
-  width:88%;           /* sized to the real (wide) tile so the cards read */
+  bottom:-34%;         /* lowered so its lower part tucks under the bottom edge */
+  width:58%;           /* ≈ previous 88% reduced by ~1.5x */
   max-width:none;
   opacity:1;
 }
@@ -6328,7 +6329,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
   height:auto;
   max-height:none;
   object-fit:contain;
-  object-position:bottom;
+  object-position:bottom right;
 }
 
 /* ── PAGE INJECTION (entry-hub §7): scale the "clean workspace" dashboard image
@@ -10573,9 +10574,47 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
 .injection #boundary .lab-bento__v--expanded .lab-bento__tile--feature .lab-bento__media--img{position:relative;z-index:1;}
 @media (min-width:901px){
   .injection #boundary .lab-bento__v--expanded .lab-bento__tile--feature .lab-bento__media--img{
-    position:absolute;left:50%;right:auto;top:auto;bottom:clamp(20px,2.6vw,36px);
+    position:absolute;left:50%;top:68%;right:auto;bottom:auto;
+    transform:translate(-50%,-50%);
+    margin:0;width:min(84%,580px);height:auto;max-height:56%;
+    object-fit:contain;object-position:center;z-index:1;
+  }
+}
+
+/* ── PAGE INJECTION (prompt-injection-safety §boundary): the "Detected
+   instructions are excluded" card (3rd tile — a NON-feature tile) carries the
+   glass injected-slide illustration in its lower free area, centred, behind the
+   copy and clear of it. Same hard layering as the feature card. nth-child(3)
+   tracks DOM order = DEFENCE_TILES[2]. ── */
+.injection #boundary .lab-bento__v--expanded .lab-bento__grid > li:nth-child(3){position:relative;isolation:isolate;overflow:hidden;}
+.injection #boundary .lab-bento__v--expanded .lab-bento__grid > li:nth-child(3) > .mini-tag,
+.injection #boundary .lab-bento__v--expanded .lab-bento__grid > li:nth-child(3) > h3,
+.injection #boundary .lab-bento__v--expanded .lab-bento__grid > li:nth-child(3) > p{position:relative;z-index:2;}
+.injection #boundary .lab-bento__v--expanded .lab-bento__grid > li:nth-child(3) .lab-bento__media--img{position:relative;z-index:1;}
+@media (min-width:901px){
+  .injection #boundary .lab-bento__v--expanded .lab-bento__grid > li:nth-child(3) .lab-bento__media--img{
+    position:absolute;left:50%;right:auto;top:auto;bottom:clamp(18px,2.2vw,30px);
     transform:translateX(-50%);
-    margin:0;width:min(94%,720px);height:auto;max-height:58%;
+    margin:0;width:min(92%,600px);height:auto;max-height:58%;
     object-fit:contain;object-position:bottom center;z-index:1;
+  }
+}
+
+/* ── PAGE INJECTION (prompt-injection-safety §threat): the "Direct override"
+   feature card carries the dark glass deck-injection illustration, CENTRED in
+   the card's free area, behind the copy. Same hard layering: card = own stacking
+   context, copy z-index 2, image absolute z-index 1, independent of the text.
+   Tuning knobs: top (vertical centre), width (size). ── */
+.injection #threat .lab-bento__v--polish .lab-bento__tile--feature{position:relative;isolation:isolate;overflow:hidden;}
+.injection #threat .lab-bento__v--polish .lab-bento__tile--feature > .mini-tag,
+.injection #threat .lab-bento__v--polish .lab-bento__tile--feature > h3,
+.injection #threat .lab-bento__v--polish .lab-bento__tile--feature > p{position:relative;z-index:2;}
+.injection #threat .lab-bento__v--polish .lab-bento__tile--feature .lab-bento__media--img{position:relative;z-index:1;}
+@media (min-width:901px){
+  .injection #threat .lab-bento__v--polish .lab-bento__tile--feature .lab-bento__media--img{
+    position:absolute;left:54%;top:66%;right:auto;bottom:auto;
+    transform:translate(-50%,-50%);
+    margin:0;width:min(94%,713px);height:auto;max-height:74%;
+    object-fit:contain;object-position:center;z-index:1;
   }
 }
