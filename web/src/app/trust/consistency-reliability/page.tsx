@@ -194,88 +194,53 @@ export default function ConsistencyReliabilityPage() {
                 ))}
               </ul>
             </div>
+            {/* Two split dials (transparent, no white card): consensus | conflict,
+                spread with a gap, each label centred above its dial. */}
             <figure
-              className="ds-split__media ds-split__media--img"
-              role="img"
+              className="ds-split__media"
               aria-label="Two judge panels at the same AI Score of 7.7 — one in consensus, one in conflict"
               style={{
-                position: "relative",
-                background: "#fff",
-                borderRadius: "var(--radius-stage)",
-                overflow: "hidden",
-                boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,.7), 0 22px 50px -24px rgba(70,50,150,.25)",
-                paddingTop: "clamp(30px,3.6vw,46px)",
-                paddingBottom: 0,
+                margin: 0,
+                display: "flex",
+                gap: "clamp(20px,4vw,56px)",
+                alignItems: "flex-start",
+                justifyContent: "center",
               }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/assets/consistency/consensus-conflict-3.webp"
-                alt=""
-                width={1536}
-                height={1024}
-                style={{ display: "block", width: "100%", height: "auto" }}
-              />
-              {/* injected labels above each lens */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: "clamp(12px,1.6vw,20px)",
-                  left: "25%",
-                  transform: "translateX(-50%)",
-                  textAlign: "center",
-                  lineHeight: 1.25,
-                  pointerEvents: "none",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontWeight: 700,
-                    fontSize: "clamp(13px,1.5vw,17px)",
-                    letterSpacing: ".1em",
-                    background: "var(--lens)",
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    color: "transparent",
-                  }}
-                >
-                  CONSENSUS
+              {(
+                [
+                  { kicker: "CONSENSUS", sub: "Judges agree", src: "/assets/consistency/consensus-dial.webp", w: 680, h: 680 },
+                  { kicker: "CONFLICT", sub: "Judges are split", src: "/assets/consistency/conflict-dial.webp", w: 680, h: 681 },
+                ] as const
+              ).map((d) => (
+                <div key={d.kicker} style={{ flex: "1 1 0", minWidth: 0, textAlign: "center" }}>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontWeight: 700,
+                      fontSize: "clamp(13px,1.5vw,17px)",
+                      letterSpacing: ".1em",
+                      background: "var(--lens)",
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      color: "transparent",
+                    }}
+                  >
+                    {d.kicker}
+                  </div>
+                  <div style={{ fontSize: "clamp(12px,1.3vw,15px)", color: "var(--muted)", marginTop: "2px" }}>
+                    {d.sub}
+                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={d.src}
+                    alt=""
+                    width={d.w}
+                    height={d.h}
+                    style={{ display: "block", width: "100%", height: "auto", marginTop: "clamp(10px,1.6vw,20px)" }}
+                  />
                 </div>
-                <div style={{ fontSize: "clamp(12px,1.3vw,15px)", color: "var(--muted)", marginTop: "2px" }}>
-                  Judges agree
-                </div>
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "clamp(12px,1.6vw,20px)",
-                  left: "75%",
-                  transform: "translateX(-50%)",
-                  textAlign: "center",
-                  lineHeight: 1.25,
-                  pointerEvents: "none",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontWeight: 700,
-                    fontSize: "clamp(13px,1.5vw,17px)",
-                    letterSpacing: ".1em",
-                    background: "var(--lens)",
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    color: "transparent",
-                  }}
-                >
-                  CONFLICT
-                </div>
-                <div style={{ fontSize: "clamp(12px,1.3vw,15px)", color: "var(--muted)", marginTop: "2px" }}>
-                  Judges are split
-                </div>
-              </div>
+              ))}
             </figure>
           </div>
         </section>
