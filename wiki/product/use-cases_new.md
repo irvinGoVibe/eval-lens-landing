@@ -1,8 +1,8 @@
 ---
 title: Use Cases
-status: generated
-version: 1.0
-updated: 2026-06-27
+status: live
+version: 1.1
+updated: 2026-06-28
 route: /trust/use-cases
 section: trust
 nav_label: Use Cases
@@ -40,66 +40,90 @@ understand where EvalLense fits, and move toward a segment-specific page or demo
 - **Целевое действие:** Book a Demo → `/company/contact`; secondary action helps
   visitors choose their workflow.
 
+## Header nav (PageHeader)
+
+- **Section label:** Trust
+- **Section href:** `/trust`
+- **In-page anchor links:**
+  - Workflows → `#workflows`
+  - Engine → `#engine`
+  - Coverage → `#coverage`
+
 ## Структура секций
 
-| # | Секция | Архетип / DS direction | Движение | Поверхность | Что показываем |
+| # | Секция | DS component / custom | Поверхность | Anchor | Что показываем |
 |---|---|---|---|---|---|
-| 1 | Hero | `StatementHero` | reveal | light | Broad promise: one review system for every high-stakes shortlist |
-| 2 | Shared pressure | `RiskControl` or editorial ink statement + compact risk/response grid | reveal | ink | Common bottleneck across every segment |
-| 3 | Use-case selector | `HubMap` / `Gallery` / card grid | reveal / scrub | light | 8 ICP cards; each card includes moment, job, what EvalLense gives, CTA |
-| 4 | Primary workflows | `EditorialSplit` / three large editorial cards | reveal | light | Event hosts, VC/dealflow, Hackathons |
-| 5 | Same system underneath | `PinnedSteps` or `Numbered` | pin | ink | Entry Hub → Reports → Review Board → Jury Score → Leaderboard |
-| 6 | What every workflow gets | `Bento` / `Numbered` | reveal | light | Outcomes that apply to every segment |
-| 7 | Current coverage and roadmap | `StatBand` / compact roadmap cards | reveal | light | Available now vs next segment depth vs roadmap workflows |
-| 8 | Final CTA | `QuietCta` or `CtaBand` | reveal | ink | Bring your next batch to EvalLense |
+| 1 | Hero | `StatementHero` v1 | light | `#usecases-hero` | Broad promise: one review system for every high-stakes shortlist |
+| 2 | Workflow lens visual | `WorkflowLensScene` (custom, BlobField) | soft / blob | — | Animated deck field converging into EvalLense core, branching to 7 workflow paths |
+| 3 | Shared pressure | `NarrativeControlGrid` (custom ink statement + risk/response grid) | ink | `#shared-pressure` | Common bottleneck across every segment; 5 risk/control pairs |
+| 4 | Selection room | `SelectionRoomScene` (custom) | light | — | "Before the meeting" — turn a pile of decks into a room the jury can read; 4 output cards + video |
+| 5 | Use-case selector | `FieldedUseCaseCards` (custom card grid) | light | `#workflows` | 8 ICP cards; each card: segment, moment, job, what EvalLense gives, CTA |
+| 6 | Review packet | `ReviewPacketScene` (custom ink split) | ink | — | "Not another list of use cases. A repeatable review packet." — 3 packet items + scoring-matrix image |
+| 7 | Primary workflows | `WorkflowDossierTrio` (custom, BlobField) | soft / blob | — | Event hosts, VC/dealflow, Hackathons — three detailed editorial panels |
+| 8 | Cinema bridge | `Cinema` DS component | ink | `#workflow-cinema` | "One engine, many workflows" — cinematic video bridge between dossier and engine steps |
+| 9 | Same engine / PinnedSteps | `PinnedSteps` v3 | ink | `#engine` | Entry Hub → Reports → Judge Lenses → Review Board → Jury Score → Decision Trail; video scrub |
+| 10 | What every workflow gets | `SignalYieldScene` (custom) | light | `#workflow-value` | 5 numbered value cards; operating advantage across all segments |
+| 11 | Coverage and roadmap | `ScopeRoadmapLedger` (custom) | light | `#coverage` | Now / Next / Roadmap coverage cards + inline scope note |
+| 12 | Final CTA | `CtaBand` DS component | dark (bleed) | — | Bring your next batch to EvalLense |
 
-Recommended rhythm from source draft:
+Surface rhythm:
 
 ```text
-1 light
-2 ink
-3 light
-4 light / split
-5 ink
-6 light
-7 light compact
-8 ink
+1  light
+2  soft (blob)
+3  ink
+4  light
+5  light
+6  ink
+7  soft (blob)
+8  ink
+9  ink
+10 light
+11 light
+12 dark
 ```
 
 ## Контент по секциям
 
 ### 1. Hero
 
-- **Eyebrow:** USE CASES
-- **Heading:** One review system for every high-stakes shortlist
+- **Eyebrow:** Use Cases
+- **Title lead:** One review system for every
+- **Title accent:** high-stakes
+- **Title trail:** shortlist
 - **Subhead:** Use EvalLense anywhere a batch of pitch decks has to become a
   shortlist your team can explain — competitions, funds, accelerators,
   hackathons, universities, grants, and corporate programs.
-- **Primary CTA:** Find your workflow
-- **Secondary CTA:** Book a Demo
+- **Primary CTA:** Find your workflow → `#workflows`
+- **Secondary CTA:** Book a Demo → `/company/contact`
+- **Background:** video `/assets/hero-intro-2.mp4`, poster `/assets/hero-intro-2-poster.jpg`
+- **StatementHero version:** 1
 
-**Visual direction:** a wide field of glass pitch-deck cards converges into a
-single EvalLense lens. The lens outputs several clean workflow paths:
-Competitions, VC, Hackathons, Accelerators, Universities, Grants, and Corporate
-programs. Use glassmorphism, lens gradient violet → lavender → cyan → aqua,
-minimal labels, no logos, no fake customer names.
+### 2. Workflow Lens Visual
 
-### 2. Shared pressure
+Custom section (`WorkflowLensScene`). No heading or copy — purely visual.
 
-- **Eyebrow:** THE SHARED PRESSURE
-- **Heading:** The best teams are not always the easiest ones to notice
-- **Body:** Every selection program hits the same bottleneck. A careful review
-  takes time. A large batch takes more time than most teams have. When the pile
-  grows, reviewers skim, focus on different signals, and lose the thread across
-  submissions.
+- A field of 10 animated pitch-deck card spans converges into an EvalLense core node.
+- The core node reads: **EvalLense** / "one review engine"
+- Seven workflow paths radiate from the core: Competitions, VC, Hackathons,
+  Accelerators, Universities, Grants, Corporate.
+- BlobField background. No video asset — purely CSS/HTML animation.
 
-EvalLense gives each program a structured way to read the field: one intake, one
-evaluation method, evidence-linked reports, comparison, and a final ranking that
-stays human-owned.
+### 3. Shared Pressure
 
-Risk / response grid:
+- **Eyebrow:** Shared pressure
+- **Heading:** The best teams are not always the easiest ones to **notice** (accent word)
+- **Body (paragraph 1):** Every selection program hits the same bottleneck. A
+  careful review takes time. A large batch takes more time than most teams have.
+  When the pile grows, reviewers skim, focus on different signals, and lose the
+  thread across submissions.
+- **Body (paragraph 2):** EvalLense gives the team a structured first read
+  before the live decision. It prepares reports, evidence gaps, comparison
+  context, and questions while keeping the final ranking under human control.
 
-| Risk | EvalLense response |
+Risk / response pairs (5 items, rendered as card grid):
+
+| Pressure | EvalLense response |
 |---|---|
 | Too many decks to read carefully | Structured AI-assisted first pass |
 | Reviewers focus on different things | Fixed criteria and judge lenses |
@@ -107,58 +131,96 @@ Risk / response grid:
 | Strong teams get missed | Ranked shortlist and review board |
 | AI should not pick winners | Jury Score controls the final ranking |
 
-### 3. Use-case selector
+### 4. Selection Room
 
-- **Eyebrow:** FIND YOUR WORKFLOW
-- **Heading:** Pick the workflow that looks like yours
+- **Kicker:** Before the meeting
+- **Heading:** Turn a pile of decks into a **room the jury can read** (accent)
+- **Body:** EvalLense is strongest when the team needs to move from raw
+  submissions to a shared review surface: intake, evidence, comparison,
+  questions, and a human final call.
+- **Video (in glass card):** `/assets/section2-scroll-2.mp4` (autoPlay, muted, loop)
+- **Lens labels on video overlay:** Intake / **EvalLense** / Board
+
+Four output cards (`ROOM_OUTPUTS`):
+
+| Label | Title | Body |
+|---|---|---|
+| Entry Hub | One intake flow | Teams submit into a managed flow instead of scattering decks across inboxes and folders. |
+| Reports | Structured first read | Each deck comes back with findings, gaps, scores, and questions connected to the evidence. |
+| Review Board | A batch view | The team sees the field side by side before the live decision, not one deck at a time. |
+| Jury Score | Human-owned ranking | AI prepares the analysis. The jury keeps control of the final shortlist. |
+
+### 5. Use-Case Selector
+
+- **Heading:** Pick the workflow that **looks like yours** (accent)
 - **Subhead:** Different teams use EvalLense for different selection jobs. The
   common pattern is the same: many submissions, limited review capacity, and a
   decision that needs to be explained.
-- **UX:** grid or horizontal gallery of 8 segment cards. Every card should
-  include segment name, moment, job, what EvalLense gives, and CTA. Every card
-  should be clickable.
+- **UX:** grid of 8 segment cards + 1 media panel. Every card is an `<a>` link.
+  All cards currently route to `/company/contact?use_case=<segment>` (no
+  child pages yet).
 
-Segment cards:
+Media panel (above cards in grid):
+
+- Video: `/assets/backgrounds/bg-abstract-cinematic.mp4` (autoPlay, muted, loop), poster `/assets/section2-scroll-2-poster.jpg`
+- Overlay label: "Workflow atlas"
+- Overlay body: "One review engine, refracted into the selection moment each team actually runs."
+
+Segment cards (8 items):
 
 | Segment | Moment | Job | EvalLense gives | CTA |
 |---|---|---|---|---|
 | Pitch Competitions | Before finals day | Move from open submissions to a ranked finalist board. | One rubric, evidence-linked reports, live questions, and a leaderboard your jury owns. | Explore pitch competitions |
 | Hackathons | Before live judging | Review many teams fast and prepare the judge panel. | A pitch-deck first pass today, with execution-specific hackathon review on the roadmap. | Explore hackathons |
 | VC Funds | Before the pipeline meeting | Turn inbound decks into a partner-ready first read. | Market, team, GTM, feasibility signals, missing evidence, and questions for the first call. | Explore VC dealflow |
-| Accelerators & Incubators | Before cohort selection | Compare applicants on one standard and defend the cohort decision. | Side-by-side reports, fixed criteria, evidence gaps, risks, and selection questions. | Explore accelerators |
+| Accelerators | Before cohort selection | Compare applicants on one standard and defend the cohort decision. | Side-by-side reports, fixed criteria, evidence gaps, risks, and selection questions. | Explore accelerators |
 | Angel Investors | Before diligence night | Know which decks deserve your time. | A structured first read with strengths, weaknesses, missing evidence, and founder questions. | Explore angel review |
 | Corporate Innovation | Before stakeholder review | Separate real partnership potential from innovation theatre. | Fit signals, readiness checks, business value, evidence gaps, and a shortlist for the committee. | Explore corporate innovation |
 | Grant Programs | Before funding decisions | Review applications against fixed criteria and keep the decision explainable. | Comparable scores, evidence-linked reasoning, missing points, and a review trail. | Explore grants |
 | Universities | Before demo day or program selection | Compare student and research teams fairly. | Transparent scoring, useful feedback, presentation questions, and a human-owned ranking. | Explore universities |
 
-Disclaimer under selector:
+Disclaimer below grid:
 
 > Example scenarios are illustrative. They describe typical program workflows,
 > not customer case studies.
 
-Future route ideas:
+Note on routing: until child pages exist, all segment cards route to
+`/company/contact?use_case=<SegmentName>` (URL-encoded). No disabled or
+coming-soon states in current implementation.
 
-- `/trust/use-cases/pitch-competitions`
-- `/trust/use-cases/hackathons`
-- `/trust/use-cases/vc-funds`
-- `/trust/use-cases/accelerators`
-- `/trust/use-cases/angel-investors`
-- `/trust/use-cases/corporate-innovation`
-- `/trust/use-cases/grants`
-- `/trust/use-cases/universities`
+### 6. Review Packet
 
-Until child pages exist, route cards to `/company/contact` with segment context
-or use a disabled / coming-soon state depending on product decision.
+- **Heading:** Not another list of use cases. A repeatable **review packet** (accent).
+- **Body:** The segment changes, but the useful output is consistent. The team
+  gets a structured first read, a comparison board, and the questions that
+  should shape the live conversation.
+- **Image (in glass card):** `/assets/bento/scoring-matrix.png`, fills card, CSS
+  class `ev-drift` (float animation).
+- **Image card caption label:** Review packet
+- **Image card caption strong:** Scores, risks, gaps, and questions in one surface
 
-### 4. Primary workflows
+Three packet items (`PACKET_ITEMS`):
 
-- **Eyebrow:** PRIMARY WORKFLOWS
-- **Heading:** Start with the workflows we see most
+| Label | Title | Body |
+|---|---|---|
+| What changed | Less raw pre-reading | The team starts from structured findings instead of opening every deck cold. |
+| What stays visible | Evidence behind scores | Scores stay connected to the deck, missing evidence, risks, and useful follow-up questions. |
+| What the meeting gets | A sharper first conversation | Pipeline meetings, cohort reviews, and live judging start with better context. |
+
+### 7. Primary Workflows (Dossier Trio)
+
+- **Heading:** Start with the **workflows we see most** (accent)
 - **Subhead:** EvalLense can support many selection programs. These three are
   the clearest starting points today.
+- **Motion panel (video):** `/assets/backgrounds/bg-wires-cinematic.mp4`
+  (autoPlay, muted, loop)
+- **Motion panel overlay:** "From batch pressure" / "to a board the team can
+  read together"
+
+Three editorial panels (`PRIMARY_WORKFLOWS`):
 
 #### Event hosts
-
+- **Label (mini-tag):** Event hosts
 - **Title:** Pitch events and competitions
 - **Body:** For event hosts, the pressure starts before the stage. The jury needs
   to know which teams deserve a closer live read. EvalLense turns submissions
@@ -169,10 +231,11 @@ or use a disabled / coming-soon state depending on product decision.
   - Reports ready before live judging.
   - Questions prepared per finalist.
   - Final ranking owned by the jury.
-- **CTA:** Plan a competition workflow
+- **CTA:** Plan a competition workflow (variant: gradient)
+- **CTA href:** `/company/contact?use_case=Event%20hosts`
 
 #### VC and dealflow
-
+- **Label (mini-tag):** VC and dealflow
 - **Title:** VC and early dealflow
 - **Body:** For funds, EvalLense is not diligence and not an investment
   decision. It is a structured first read. It helps the team decide which decks
@@ -183,10 +246,11 @@ or use a disabled / coming-soon state depending on product decision.
   - Market, team, GTM, and feasibility are separated.
   - Pipeline meetings start with better context.
   - First calls start with better questions.
-- **CTA:** Plan a dealflow workflow
+- **CTA:** Plan a dealflow workflow (variant: ghost)
+- **CTA href:** `/company/contact?use_case=VC%20and%20dealflow`
 
 #### Hackathons
-
+- **Label (mini-tag):** Hackathons
 - **Title:** Hackathons and build sprints
 - **Body:** For hackathons, speed matters, but so does clarity. EvalLense helps
   structure the first pass and prepare live judging. Today this works through
@@ -197,113 +261,151 @@ or use a disabled / coming-soon state depending on product decision.
   - Questions for the live round.
   - Clearer review before judges meet.
   - Roadmap path to execution-specific scoring.
-- **CTA:** Plan a hackathon workflow
+- **CTA:** Plan a hackathon workflow (variant: ghost)
+- **CTA href:** `/company/contact?use_case=Hackathons`
 
-### 5. Same system underneath
+### 8. Cinema Bridge
 
-- **Eyebrow:** SAME ENGINE
-- **Heading:** Same system. Different selection moments.
-- **Subhead:** Each workflow has its own decision context, but the core system
-  stays the same: collect decks, structure the evidence, compare the batch, and
-  keep the final call human.
+DS component `Cinema`.
 
-System chain:
+- **Eyebrow:** One signal
+- **Headline:** One engine, many workflows
+- **Lines (large animated text):** "One engine," / "many workflows"
+- **Mobile lines:** "One" / "engine" / "many" / "workflows"
+- **Sub:** The segment changes. The operating model stays the same: intake,
+  evidence, comparison, and a human final call.
+- **Video:** `/assets/methodology/cinema.mp4`
+- **Pin steps:** 1
+- **maskId:** `usecases-workflow-engine`
+- **Surface:** ink
 
-```text
-Entry Hub -> Evidence-based Reports -> Review Board -> Jury Score -> Leaderboard
-```
+### 9. Same Engine (PinnedSteps)
 
-Tiles:
+DS component `PinnedSteps` v3.
 
-| Tile | Copy |
-|---|---|
-| Entry Hub | Collect decks in one managed flow. |
-| Evidence-based Reports | Turn each deck into structured findings, scores, gaps, and questions. |
-| Judge Lenses | Review the deck through role-specific AI perspectives. |
-| Review Board | Compare the batch side by side and build the shortlist. |
-| Human Jury Score | Keep the final ranking under human control. |
-| Decision Trail | Keep the evidence and reasoning visible after the shortlist is built. |
+- **Eyebrow:** Same engine
+- **Title line 1:** Same system.
+- **Title line 2:** Different selection **moments.** (accent)
+- **Sub:** Each workflow has its own decision context, but the core system stays
+  the same: collect decks, structure the evidence, compare the batch, and keep
+  the final call human.
+- **aria-label:** Same EvalLense system underneath every supported workflow
+- **Video scrub:** `/assets/methodology/methodology-transition.mp4` (96 frames)
+- **Media hint:** Entry Hub to reports, review board, Jury Score, leaderboard
+  and decision trail
 
-### 6. What every workflow gets
+Six steps (`ENGINE_ITEMS`):
 
-- **Eyebrow:** WHAT YOU GET
-- **Heading:** More signal before the final call
-- **Subhead:** Regardless of the segment, EvalLense gives the team the same
+| Num | Label | Description |
+|---|---|---|
+| 01 | Entry Hub | Collect decks in one managed flow. |
+| 02 | Evidence-based Reports | Turn each deck into structured findings, scores, gaps, and questions. |
+| 03 | Judge Lenses | Review the deck through role-specific AI perspectives. |
+| 04 | Review Board | Compare the batch side by side and build the shortlist. |
+| 05 | Human Jury Score | Keep the final ranking under human control. |
+| 06 | Decision Trail | Keep the evidence and reasoning visible after the shortlist is built. |
+
+### 10. What Every Workflow Gets
+
+- **Kicker:** What you get
+- **Heading:** More **signal** (accent) before the final call
+- **Body:** Regardless of the segment, EvalLense gives the team the same
   operating advantage: less raw pre-reading, more structured comparison, and a
   clearer decision trail.
 
-Values:
+Five numbered value cards (`VALUES`):
 
-| Value | Copy |
-|---|---|
-| Compare fairly | Every submission is evaluated against the same criteria. |
-| Keep evidence visible | Scores stay connected to the deck, not just a final number. |
-| Shortlist faster | The team starts from structured reports, not raw slides. |
-| Ask better questions | Live review starts with what needs to be clarified. |
-| Keep the final call human | AI prepares the analysis. The team decides. |
+| Num | Title | Body |
+|---|---|---|
+| 01 | Compare fairly | Every submission is evaluated against the same criteria. |
+| 02 | Keep evidence visible | Scores stay connected to the deck, not just a final number. |
+| 03 | Shortlist faster | The team starts from structured reports, not raw slides. |
+| 04 | Ask better questions | Live review starts with what needs to be clarified. |
+| 05 | Keep the final call human | AI prepares the analysis. The team decides. |
 
-Small note:
+### 11. Coverage and Roadmap
 
-> Time savings depend on batch size, review depth, and team process. EvalLense is
-> designed to reduce manual pre-reading, not to remove human judgment.
+- **Kicker:** Current coverage
+- **Heading:** Built around **pitch-deck evaluation** (accent) first
+- **Body:** EvalLense is strongest today where the source material is a pitch
+  deck and the job is a structured first read. More segment-specific pages and
+  workflow modes should stay clearly separated from what is already available.
 
-### 7. Current coverage and roadmap
+Three coverage cards (`COVERAGE`):
 
-- **Eyebrow:** CURRENT COVERAGE
-- **Heading:** Built around pitch-deck evaluation first
-- **Body:** EvalLense currently focuses on pitch-deck based evaluation for Pitch
-  Competition style workflows. That covers the common first pass for
-  competitions, accelerators, funds, universities, grants, and corporate
-  programs.
+| Value badge | Label | Description |
+|---|---|---|
+| Now | Available coverage | Pitch-deck based review with P1-P6 criteria, evidence reports, review questions, and human-owned ranking. |
+| Next | Segment depth | Dedicated pages for pitch competitions, VC dealflow, accelerators, hackathons, universities, grants, and corporate innovation. |
+| Roadmap | Workflow expansion | Hackathon execution review, custom rubrics, truth check, and workflow-specific scoring. |
 
-Hackathon-specific execution review, custom methodologies, external truth check,
-and deeper program-specific workflows can be expanded as separate modes and
-segment pages.
+Inline scope note (rendered inside the ledger as an `<aside>`):
 
-Coverage cards:
+- **Label:** Scope note
+- **Body:** Hackathon execution review, custom rubrics, truth check, and
+  workflow-specific scoring are roadmap areas. This page should not present them
+  as available product coverage.
+- **Boundary tags (visual chips):** Pitch Competition first · Human final call ·
+  No fake case studies
 
-| Card | Copy |
-|---|---|
-| Available now | Pitch-deck based review with P1-P6 criteria, evidence reports, review questions, and human-owned ranking. |
-| Next segment depth | Dedicated pages for pitch competitions, VC dealflow, accelerators, hackathons, universities, grants, and corporate innovation. |
-| Roadmap workflows | Hackathon execution review, custom rubrics, truth check, and workflow-specific scoring. |
+### 12. CTA Band
 
-### 8. CTA band
+DS component `CtaBand`.
 
-- **Eyebrow:** GET STARTED
-- **Heading:** Bring your next batch to EvalLense
-- **Subhead:** Tell us what kind of program you run. We will map your workflow,
+- **Eyebrow:** Get started
+- **Title:** Bring your next batch to **EvalLense** (accent)
+- **Sub:** Tell us what kind of program you run. We will map your workflow,
   show how the review would work, and walk through a pilot batch.
-- **Primary CTA:** Book a Demo
-- **Secondary CTA:** Choose your use case
+- **Primary CTA:** Book a Demo → `/company/contact`
+- **Secondary CTA:** Choose your use case → `#workflows`
+- **auroraVariant:** ocean
+- **Video:** `/assets/cta/neo.mp4`
+- **Theme:** dark, bleed
 
 ## Числа и факты
 
 | Факт | Значение | Источник |
 |---|---|---|
 | ICP segments | VC funds, accelerators, angels, corporate innovation, startup competitions, grant programs, hackathons, universities | DOCX source alignment |
+| Segment card count | 8 cards in use-case selector | Live page |
+| Segment card label for accelerators | "Accelerators" (not "Accelerators & Incubators") | Live page code |
 | Current MVP | Pitch Competition first: one organizer, one project, Pitch mode | DOCX source alignment |
 | Evaluation dimensions | P1-P6 | DOCX source alignment / product methodology |
+| PinnedSteps count | 6 steps: Entry Hub, Evidence-based Reports, Judge Lenses, Review Board, Human Jury Score, Decision Trail | Live page code |
 | Ranking | Leaderboard by Final Score / Jury Score controls final ranking | DOCX source alignment |
 | Hackathon execution review | Roadmap / future depth, not current live coverage | DOCX source alignment |
 | Custom methodologies, Truth Check, multi-organizer, export | Outside MVP / roadmap | DOCX source alignment |
+| ICP card routing | `/company/contact?use_case=<segment>` for all 8 segments | Live page code |
 
-## Изображения
+## Медиа-слоты (видео и изображения)
 
-| Слот | Где на странице | Что изображено | Промпт-набросок (стиль бренда) |
-|---|---|---|---|
-| hero | секция 1 | Many different glass deck cards flowing into one lens, then branching into workflows. | EvalLense lens gradient violet to lavender to cyan to aqua, Apple-neutral, glass pitch-deck cards, no logos, no fake customer names. |
-| use-case selector | секция 3 | Grid of 8 glass cards with small segment icon or abstract object. | Light DS surface, hairline borders, glass cards, restrained segment labels, no customer logos. |
-| primary workflows | секция 4 | Three large editorial cards: Event hosts, VC, Hackathons. | Event hosts finalist board / stage preparation; VC pipeline meeting / first-read notes; Hackathons live judging / build sprint. |
-| same engine | секция 5 | Horizontal system chain. | Entry Hub -> Reports -> Review Board -> Jury Score -> Leaderboard, dark ink section, lens signal lines. |
-| coverage | секция 7 | Compact roadmap cards. | Available now / next segment depth / roadmap workflows, calm light surface, no huge timeline. |
+| Слот | Секция | Asset path | Тип | Примечания |
+|---|---|---|---|---|
+| hero-video | 1 Hero | `/assets/hero-intro-2.mp4` | video (autoPlay, muted, loop) | poster `/assets/hero-intro-2-poster.jpg` |
+| workflow-lens | 2 Lens visual | — | CSS/HTML animation | BlobField, 10 deck spans, no external video |
+| selection-room-video | 4 Selection room | `/assets/section2-scroll-2.mp4` | video (autoPlay, muted, loop) | Inside glass card |
+| field-media-video | 5 Use-case selector | `/assets/backgrounds/bg-abstract-cinematic.mp4` | video (autoPlay, muted, loop) | poster `/assets/section2-scroll-2-poster.jpg` |
+| scoring-matrix | 6 Review packet | `/assets/bento/scoring-matrix.png` | image (next/image, fill) | CSS class `ev-drift` (float animation) |
+| dossier-motion | 7 Primary workflows | `/assets/backgrounds/bg-wires-cinematic.mp4` | video (autoPlay, muted, loop) | In glass motion panel |
+| cinema-video | 8 Cinema bridge | `/assets/methodology/cinema.mp4` | video via Cinema DS | Full-width cinematic |
+| pinned-steps-scrub | 9 PinnedSteps | `/assets/methodology/methodology-transition.mp4` | video scrub (96 frames) | Scrubbed by scroll position |
+| cta-video | 12 CtaBand | `/assets/cta/neo.mp4` | video via CtaBand | aurora ocean variant |
 
 ## Внутренние ссылки
 
 - **Header/Footer nav:** `Use Cases` → `/trust/use-cases` in footer TRUST.
 - **Primary CTA:** `Book a Demo` → `/company/contact`
-- **Future child route strategy:** route cards can later point to the use-case
-  child routes listed in section 3.
+- **Segment card routing:** all 8 ICP cards → `/company/contact?use_case=<segment>`
+  (until child pages are built)
+- **Future child route strategy:**
+  - `/trust/use-cases/pitch-competitions`
+  - `/trust/use-cases/hackathons`
+  - `/trust/use-cases/vc-funds`
+  - `/trust/use-cases/accelerators`
+  - `/trust/use-cases/angel-investors`
+  - `/trust/use-cases/corporate-innovation`
+  - `/trust/use-cases/grants`
+  - `/trust/use-cases/universities`
 - **Cross-links со страницы:**
   - [[methodology|Methodology]] — how the evaluation works
   - [[consistency-reliability|Consistency & Reliability]] — why outputs are comparable
@@ -312,17 +414,23 @@ Coverage cards:
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense Use Cases — One Review System for Every Shortlist
+- **`<title>`:** EvalLense Use Cases - One Review System for Every Shortlist
 - **meta description:** See how EvalLense supports pitch competitions, VC
   dealflow, accelerators, hackathons, grants, universities, and corporate
   innovation with evidence-linked pitch-deck review.
-- **OG-изображение:** slot `hero`
+- **OG-изображение:** slot `hero-video` poster
 
 ## Источники истины
 
 ### Source document
 
 - `/Users/vrway/Downloads/EvalLense_Use_Cases_Product_Draft.docx`
+
+### Live code
+
+- `web/src/app/trust/use-cases/page.tsx` — single-file page; all data constants
+  are inline (WORKFLOWS, PRIMARY_WORKFLOWS, ENGINE_ITEMS, VALUES, ROOM_OUTPUTS,
+  PACKET_ITEMS, COVERAGE, RISK_PAIRS). No separate section component files.
 
 ### Wiki
 
@@ -336,26 +444,29 @@ Coverage cards:
 
 ## Acceptance (что считать готовым)
 
-- [ ] Page exists at `/trust/use-cases`.
-- [ ] Hero explains broad use-case coverage.
-- [ ] Selector includes 8 ICP cards.
-- [ ] Each card has Moment / Job / EvalLense gives / CTA.
-- [ ] Event hosts, VC, and Hackathons get extra depth.
-- [ ] Hackathon is honest: pitch-deck first pass today, execution-specific review on roadmap.
-- [ ] Current coverage section clearly states Pitch Competition first.
-- [ ] No fake logos, quotes, or case studies.
-- [ ] No measured outcome claims without data.
-- [ ] Related future child pages are implied through card CTAs.
-- [ ] Page works as a hub, not as a full page for every ICP.
-- [ ] Mobile selector is readable and scannable.
-- [ ] CTA leads to demo or workflow selection.
-- [ ] Uses DS styles, DS sections, and visual-layer rules through `@/components/ds`.
-- [ ] `cd web && pnpm build` green; `prefers-reduced-motion` respected.
+- [x] Page exists at `/trust/use-cases`.
+- [x] Hero explains broad use-case coverage.
+- [x] Selector includes 8 ICP cards.
+- [x] Each card has Moment / Job / EvalLense gives / CTA.
+- [x] Event hosts, VC, and Hackathons get extra depth (WorkflowDossierTrio).
+- [x] Hackathon is honest: pitch-deck first pass today, execution-specific review on roadmap.
+- [x] Current coverage section clearly states Pitch Competition first.
+- [x] No fake logos, quotes, or case studies.
+- [x] No measured outcome claims without data.
+- [x] Related future child pages are implied through card CTAs.
+- [x] Page works as a hub, not as a full page for every ICP.
+- [x] CTA leads to demo or workflow selection.
+- [x] Uses DS styles, DS sections, and visual-layer rules through `@/components/ds`.
+- [x] Scope note inside coverage section explicitly marks roadmap items as not available.
+- [ ] Mobile selector is readable and scannable (verify).
+- [ ] `prefers-reduced-motion` respected (verify in ScrollFX / video autoplay).
+- [ ] Child pages created for highest-priority segments (pitch competitions, VC dealflow).
 
 ## Открытые вопросы
 
-- **Child route behavior:** until child pages exist, should ICP cards route to
-  `/company/contact` with segment context, or render disabled / coming-soon states?
+- **Child route behavior:** ICP cards currently route to `/company/contact?use_case=<segment>`.
+  When child pages are built, card links should update to the child route. Which
+  segments get pages first?
 - **Segment-specific pages:** which child pages should be created first:
   pitch competitions, VC dealflow, accelerators, or hackathons?
 - **Verified metrics:** no measured time-savings or customer outcome claims are

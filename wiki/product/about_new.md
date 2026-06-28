@@ -1,8 +1,8 @@
 ---
 title: About EvalLense
-status: generated
-version: 0.8
-updated: 2026-06-17
+status: live
+version: 1.0
+updated: 2026-06-28
 route: /company/about
 section: company
 nav_label: About
@@ -16,16 +16,12 @@ cta: Book a Demo
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
 Company-страница: кто стоит за EvalLense, зачем мы это строим, чему нас научили
-400+ прогонов, наши принципы и команда.
+прогоны, наши принципы и команда.
 
-> Продуктовый бриф страницы для skill `build-pages`. **Первоисточник — авторский
-> founder-нарратив user'а «From AI Jury to EvalLense: What 400+ AI Judging Runs
-> Taught Us»** (предоставлен в диалоге). Этот бриф — его **дистилляция** в Apple-grade
-> About; полная статья линкуется на блог. Факты кросс-проверены с `ai-jury-prod`
-> (`judges.md`, `scope.md`, `vision.md`) — совпадают. Тексты опираются на нарратив,
-> не выдумывать сверх него. Центр страницы — **креативный team-блок** (полноростовые
-> портреты, имя-подложка, заезд/выезд по скроллу — референс assudamal.com/about),
-> реализуется `<ScrollFX/>` + `data-pin`/`data-scrub`. Реальных фото нет → `.media-ph`.
+> Продуктовый бриф страницы. **Первоисточник — авторский founder-нарратив** (дистиллирован
+> на страницу; полная статья линкуется на блог `/blog/founding-story`). Факты кросс-проверены
+> с `ai-jury-prod` (`judges.md`, `scope.md`, `vision.md`). Бриф синхронизирован с кодом
+> `web/src/app/company/about/page.tsx` (2026-06-28).
 
 ## Роль и аудитория
 
@@ -34,201 +30,270 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
   принципы и команду.
 - **Для кого:** организаторы (фонды, акселераторы, конкурсы, хакатоны), партнёры,
   потенциальные сотрудники — те, кому важно понять, кто и зачем строит EvalLense.
-- **Ключевое сообщение:** *«We didn't need more judges. We needed a better lens.»*
-  AI структурирует и подсвечивает — решение принимает человек.
-- **Целевое действие:** Book a Demo → `/company/contact`; вторичное — Read the full
-  story → блог «From AI Jury to EvalLense».
+- **Ключевое сообщение:** AI структурирует и подсвечивает — решение принимает человек.
+- **Целевое действие:** Book a Demo → `/#demo`; вторичное — Read the full
+  story → `/blog/founding-story`.
 
 ## Структура секций
 
 | # | Секция | Архетип | Движение | Поверхность | Что показываем |
 |---|---|---|---|---|---|
-| 1 | Hero / миссия | statement-hero | reveal | light | «We didn't need more judges. We needed a better lens.» + миссия + CTA |
-| 2 | Проблема | full-bleed-statement | reveal | ink | Human review doesn't scale: 50 → 300 → 500 |
-| 3 | From AI Jury to EvalLense | pinned-multi-screen | pin | light | Журней 5 шагов + свёрнутые уроки + мост «к тебе» (поглотил бывшую секцию уроков) |
-| 4 | Принципы | editorial-numbered-list | reveal | light | 4 принципа, по одной строке |
-| 5 | Команда (креативный блок) | pinned team-reveal | pin + scrub | ink | 2 со-фаундера + Amazon Nova credibility |
-| 6 | Сегодня и куда идём | editorial-split (two columns) | reveal | light | Live today / Where we're going + для кого (слиты бывшие 7+8) |
-| 7 | Final CTA + полная история | quiet-cta | reveal | ink | «A better lens» + Book a Demo + Read the full story |
+| 1 | Hero / миссия | statement-hero | reveal | soft (light) | «clearer, faster, easier to defend» + миссия + CTA |
+| 2 | Проблема | editorial-split | reveal | light | «Good projects get lost when review has no system» |
+| 3 | From AI Jury to EvalLense | pinned-multi-screen | pin (3 шага) | ink | 3-шаговый journey + side visual + CTA «Read the full story» |
+| 3b | Story Cinema | ds-Cinema | — | ink | Closing statement + видео-фон |
+| 4 | Принципы | bento | reveal | soft (light) | 1 feature-карточка + 4 карточки = 5 принципов |
+| 5 | Команда | dossier cards | reveal | ink | 2 со-фаундера — dossier-карточки с портретами, маркерами, чипами |
+| 6 | Who we build for | IcpBento | reveal | ink | 8 ICP-сегментов в premium bento (инкапсулировано в `<IcpBento />`) |
+| 7 | Final CTA | quiet-cta | reveal | ink | «See how EvalLense works on a real batch» + видео-фон |
 
-> Ритм light↔ink (1L·2I·3L·4L·5I·6L·7I — без трёх подряд). Архетипы/классы — из
-> [[section-types|Section Types]] (`ab-*`). Движение — через `<ScrollFX/>` +
-> data-атрибуты, без сторонних библиотек. Ритм — по [[page-design-patterns|Page Design Patterns]].
+> Ритм по поверхностям: 1S·2L·3I·3bI·4S·5I·6I·7I. Движение — через `<ScrollFX/>` +
+> data-атрибуты, без per-section useEffect. Архетипы/классы — из [[section-types|Section Types]].
+> Заголовочный nav (PageHeader): Story (#story) · Principles (#principles) · Team (#team).
 
 ## Контент по секциям
 
-> Ниже — финальная английская копия, дистиллированная из авторского нарратива.
-> Русским — только редакторские пометки. `[lens]` помечает слово под градиент-акцент.
+> Ниже — копия, взятая точно из кода. `[lens]` помечает слово под градиент-акцент (`grad-word`).
 
-### 1. Hero / миссия — `light`
+### 1. Hero / миссия — `soft`
+
 - **Eyebrow:** About EvalLense
-- **Heading (lens на `lens`):** We didn't need more judges. We needed a better lens.
-  - *(альт., не используем: «Built to help people see more clearly»)*
-- **Subhead (миссия первой строкой):** Our mission is simple — help organizers make better decisions on a flood of pitch decks. EvalLense turns the pile into a structured, evidence-based review: AI surfaces the signal, the person decides.
-- **CTA:** Book a Demo
+- **H1:** We built EvalLense to make startup review clearer, faster, and easier to [lens]defend
+- **Subhead:** EvalLense turns messy startup applications into structured evidence, comparable scores, and questions reviewers can actually use. AI prepares the analysis. People keep the judgment.
+- **CTA:** Book a Demo → `/#demo`
+- **Visual:** Observatory hero PNG `/assets/entry-hub/evallense-observatory-hero-01.png` (16:9, `ev-drift` class, transparent cut-out на soft-фоне). Страница применяет page-local инъекцию стилей для увеличения и подъёма изображения под кнопку.
+- **Background:** `<BlobField />` (ambient)
 
-### 2. Проблема — `ink`
-- **Eyebrow:** Why we built it
-- **Heading:** Human review doesn't scale gracefully
-- **Body:** At 50 submissions, reviewers stay thoughtful; at 300, consistency cracks; at 500, even excellent judges cut corners. A strong team can get a careful read from one judge and a rushed skim from the next — the strongest project isn't always the easiest to notice. That gap is where we started.
+### 2. Проблема — `light` (не ink)
 
-### 3. From AI Jury to EvalLense — `light`
-- **Eyebrow:** The journey
-- **Heading:** From AI Jury to EvalLense
-- **Subhead:** We started by building AI judges. The real work was learning when *not* to trust them — each step lights up as you scroll.
-- **Steps (pinned, 5; по одной строке):**
-  1. **The first idea** — a tough AI panel before the real jury, built at the Amazon Nova hackathon as **AI Jury**.
-  2. **More agents, more noise** — after **400+ runs**, more judges meant more words, not more signal.
-  3. **The black box** — rerun the same deck and the score moved. Fine for a demo; not for ranking real submissions.
-  4. **We built a system** — we pinned down what doesn't need a model's judgment (scope, dimensions, weights, scoring math); the matrix — who scores what — became the product.
-  5. **The rebrand** — a jury *decides*, the one thing we don't want the system to do. A lens *reveals*. AI Jury became EvalLense.
-- **Closing + bridge (full-bleed акцент):** AI Jury was designed to judge; EvalLense is designed to help people see more clearly. Two lessons we keep: prompts steer a model but can't replace methodology, and not every shiny metric belongs (we cut a "Success Rate" that was just the score in a fancier costume). **What this means for you:** not a louder pile of AI opinions, but a structured, repeatable read you can stand behind — the decision still yours.
+- **Eyebrow:** The problem
+- **H2:** Good projects get [lens]lost when review has no system
+- **Subhead:** Accelerators, funds, competitions, and innovation teams all face the same review problem: too many decks, uneven criteria, and not enough time to explain the call.
+- **Visual:** Image `/assets/about/problem-wall.webp` (editorial split, медиа справа)
+- **Background:** `<BlobField variant="b" />`
 
-### 4. Принципы — `light`
-- **Eyebrow:** What we hold to
-- **Heading:** Four principles behind the product
-- **Numbered list (по одной строке):**
-  1. **AI supports the decision — it doesn't own it.**
-  2. **Every score should be explainable** — what raised it, what lowered it, what was missing.
-  3. **Disagreement is useful** — we show the conflict, not an average that hides it.
-  4. **Methodology matters more than the model.**
+> ⚠️ В брифе v0.8 эта секция помечена как `ink` — в живом коде она `band` (light). Исправлено.
 
-### 5. Команда — `ink` *(креативный блок)*
-- **Eyebrow:** Who's building it
-- **Heading:** The team behind the lens
-- **Credibility line (под заголовком):** EvalLense started as **AI Jury**, a prototype at the **Amazon Nova hackathon**, and grew through 400+ internal evaluation runs into the product it is today.
-- **Дизайн (референс assudamal.com/about):** тёмная pinned-сцена; на каждого — имя-подложка крупной типографикой, полноростовой cut-out портрет (заезд/выезд по `--scrub`/`--pin-step`), текст сбоку. Переключение — `data-pin-step` (2 шага). Reduced-motion — двое статичными editorial-блоками.
-- **Участники (2 со-фаундера, сбалансированы по объёму):**
-  - **Yaroslav Volovoj — Product, Strategy & Methodology** *(co-founder · 10+ years).* Owns EvalLense's product vision and evaluation methodology — ICP/JTBD, rubric design, positioning, and go-to-market: the "methodology matters more than the model" backbone. Background across product and fintech / Web3, including stablecoin rails, payouts, and compliance-aware flows (co-founder of ItIsPay) — a reliability-first mindset. A repeat hackathon builder (winner of NEAR MetaBUILD — $70K, best use of technology; Intema accelerator winner; TON / Hackers League finalist), and EvalLense began as **AI Jury** at the Amazon Nova hackathon. Past collaborators credit him for full ownership, delivery under tight deadlines, and turning product strategy and pitch narrative into results. *Links: [LinkedIn](https://www.linkedin.com/in/yaroslavvolovoj/) · [Devpost](https://devpost.com/yaroslav-volovoj).*
-  - **Vladyslav Starodubov — Engineering & Architecture** *(co-founder · ~10 years).* The CTO-level half of the team: owns system architecture, the AI evaluation pipeline, and end-to-end delivery — managing teams, development pipelines, reliability, observability, and CI/CD. A decade in web and software engineering with a track record of shipping hard systems: complex ERP platforms for managing investment deals, and engineering delivery on a Web3 product that reached a successful exit. Focus: making EvalLense dependable and repeatable at scale. *(LinkedIn — pending.)*
-- **Full-stack team (одной строкой):** backed by a full-stack team across frontend (React / Next.js, TS), backend (Node.js / Python), and infrastructure (CI/CD, monitoring).
+### 3. From AI Jury to EvalLense — `ink` (dark), pinned
 
-### 6. Сегодня и куда идём — `light`
-- **Eyebrow:** Today & next
-- **Heading:** Where we are, and where we're going
-- **Live today (left column):**
-  - **Structured evaluation** — Pitch is the most developed flow (six judges, P1–P6); Hackathon runs the same architecture.
-  - **A trust layer** — claim checks (Truth Check), source references back to the deck, visible judge weights, an audit trail.
-  - **Full human review** — organizers score, comment, deliberate; the person sets the final Jury Score, and the leaderboard ranks on it — not the AI.
-  - **Feedback for every team** — even those that don't advance.
-- **Where we're going (right column):**
-  - **Open orchestration** — customers define their own pipelines (dimensions, lenses, routing, rubrics, weights, report formats).
-  - **Scale & operations** — imports/exports, integrations, audit logs, leaderboard versioning.
-  - **Granular reliability** — partial reports with coverage warnings, confidence caps, per-judge retries.
-- **Who it's for (compact):** VC scouts · accelerators · hackathon organizers · competitions · grants · corporate innovation · universities.
+- **id:** `story`
+- **aria-label:** From AI Jury to EvalLense — the history in three steps
+- **data-pin / data-pin-steps:** 3
+- **Eyebrow:** From AI jury to human-controlled evaluation
+- **H2:** What [lens]hundreds of runs taught us
+- **Subhead:** EvalLense started as AI Jury. The early idea was simple: use several specialized AI judges instead of one generic model opinion. Then the runs exposed the real problem.
+- **Steps (3, не 5):**
+  1. **01 · AI Jury** — The first version was built during the Amazon Nova hackathon. It tested whether specialized AI judges could evaluate pitch decks from different angles.
+  2. **02 · Hundreds of runs** — Adding more judges did not solve quality. Scores shifted, roles overlapped, and long reports created noise instead of clarity.
+  3. **03 · A controlled system** — So we stopped designing an artificial jury. We started building a controlled evaluation system: fixed criteria, clear roles, structured outputs, evidence-linked reports, and human review.
+- **CTA:** Read the full story → `/blog/founding-story` (Button variant="gradient" + arrow)
+- **Side visual:** `<ParallaxFloat>` с `/assets/methodology/eval-lens-roadmap-vertical-02.png` (781×1857, tall transparent cut-out, floatY=8, tilt=5)
 
-### 7. Final CTA + полная история — `ink`
+> ⚠️ В брифе v0.8 секция помечена как `light` — в живом коде она `ink`. Шагов было 5 — теперь 3.
+> Закрывающий параграф «bridge» убран из шага 3 и вынесен в Cinema (3b).
+> Slug блог-статьи изменился: `/blog/from-ai-jury-to-evallense-400-ai-judging-runs` → `/blog/founding-story`.
+
+### 3b. Story Cinema — `ink`
+
+- **Компонент:** `<Cinema>` из `@/components/ds`
+- **id:** `story-claim`
+- **surface:** `ink`
+- **Headline:** AI Jury tried to judge. EvalLense helps people see clearly before they decide.
+- **Lines (desktop):**
+  - AI Jury tried to judge.
+  - EvalLense helps people see
+  - clearly before they decide.
+- **Lines (mobile):**
+  - AI Jury tried
+  - to judge.
+  - EvalLense helps
+  - people see clearly
+  - before they decide.
+- **Media:** видео `/assets/about/about-story-cinema.mp4`
+
+> Этого подраздела не было в брифе v0.8.
+
+### 4. Принципы — `soft`
+
+- **id:** `principles`
+- **Eyebrow:** Our principles
+- **H2:** The [lens]principles behind every evaluation
+- **Subhead:** These principles keep EvalLense useful: AI supports the work, scores link to evidence, disagreement stays visible, and methodology comes before the model.
+- **Layout:** bento — левая feature-карточка (тёмная, видео-фон) + правая 2×2 сетка светлых карточек
+- **Feature card (принцип 1):**
+  - Eyebrow: "Human in the loop"
+  - H3: AI prepares the analysis. [lens]Humans own the decision.
+  - Body: EvalLense can structure evidence, surface risks, and prepare a ranking view. The final score, context, and decision stay under human control.
+  - Видео: `/assets/about/principles-feature-bg.mp4` (autoplay, muted, loop; poster `/assets/about/principles-feature-poster.jpg`)
+- **Cards (принципы 2–5):**
+  | # | Заголовок | Тело |
+  |---|---|---|
+  | 01 | Every score needs evidence. | Reviewers should be able to see what influenced the result, which slide or claim supported it, and what information was missing. |
+  | 02 | Disagreement should be visible. | When evaluation lenses disagree, EvalLense does not hide the conflict inside an average. It shows the split so reviewers know where to look. |
+  | 03 | The same standard for every team. | Every application is judged against the same criteria and the same scale, so results stay comparable across the whole batch — and where repeated runs differ, that is visible too. |
+  | 04 | Methodology beats model choice. | Reliable evaluation needs clear criteria, controlled roles, structured outputs, and consistent scoring logic. The model is only one part of the system. |
+
+> ⚠️ В брифе v0.8 было 4 принципа и заголовок «Four principles behind the product».
+> В живом коде 5 принципов (1 feature + 4 cards). Layout изменился на bento.
+> Формулировки принципов полностью переписаны по сравнению с бывшим брифом.
+
+### 5. Команда — `ink`
+
+- **id:** `team`
+- **Eyebrow:** The team
+- **H2:** Built by product, engineering, and [lens]evaluation people
+- **Trust-line:** Two founders. [lens]16+ years of shared context. / From university friends to building a system for better judgment.
+- **Компоненты:** `<TeamTilt />` (ambient tilt-effect) + 2 `<article class="ab-dossier">` cards
+
+**Founder 1 — Yaroslav Volovoj**
+- Role: Product & GTM
+- Bio: Turns messy startup evaluation into a product people can actually use. Owns the review flow, GTM logic, and the bridge from AI Jury to EvalLense.
+- Marker: "Founder mode: on"
+- Off-screen: Off-screen: sharp decks, product calls, and probably a pickleball court.
+- Hobby: Hackathons & sport
+- Dream: Grow a unicorn!
+- Spec chips: Product Strategy · GTM · Review UX
+- Portrait: `/assets/about/portrait-yaroslav-2.webp` (1254×1224)
+- Link: LinkedIn → https://www.linkedin.com/in/yaroslavvolovoj/
+- Accent: violet
+
+**Founder 2 — Vladislav Starodubov** *(код: «Vladislav», не «Vladyslav»)*
+- Role: Engineering & Reliability
+- Bio: Builds the system behind EvalLense: judge orchestration, scoring infrastructure, security, and repeatable evaluation runs.
+- Marker: "Keeps it working"
+- Off-screen: Off-screen: architecture maps, edge cases, and systems that refuse to break.
+- Hobby: Hard work & good company
+- Dream: Grow a unicorn!
+- Spec chips: AI Pipeline · Reliability · Architecture
+- Portrait: `/assets/about/portrait-vladislav-2.webp` (1080×1377)
+- Link: Telegram → https://t.me/vrway
+- Accent: cyan
+
+> ⚠️ Бриф v0.8 содержал длинные резюме в стиле CV (Amazon Nova credibility line, hackathon wins,
+> 10+ лет и т.д.). В живом коде — компактный dossier-формат: одна роль, короткий bio, marker/
+> offscreen/hobby/dream, ≤3 spec-chips. Arseniy по-прежнему скрыт.
+> Ключевое изменение в именах: в коде «Vladislav» (не «Vladyslav»).
+> Портреты теперь real webp, не `.media-ph`.
+
+### 6. Who we build for — `ink` (`<IcpBento />`)
+
+- **Компонент:** `<IcpBento />` из `@/components/sections/IcpBento`
+- **Eyebrow:** Who we build for
+- **H2:** Built for teams that review at [lens]scale
+- **Subhead:** They do not need AI to choose the winner. They need a faster, more consistent way to compare applications and focus human attention on the decisions that matter.
+- **Closing claim:** "We are not building an artificial jury. We are building a [lens]better lens for human judgment."
+- **8 ICP-карточек (bento grid):**
+
+| Key | Сегмент | Момент | Job | Chips / Outputs | Размер |
+|---|---|---|---|---|---|
+| pitch | Pitch Competitions | Before finals day | Turn open submissions into a finalist board your jury can actually use. | 01 Same rubric for every team · 02 Evidence-backed finalist briefs · 03 Questions for live pitching | hero |
+| vc | VC Funds | Before the pipeline meeting | Turn inbound decks into a partner-ready first read. | Market signal · Team signal · First-call questions | hero |
+| hack | Hackathons | Before live judging | Review many teams fast and prepare the judge panel. | First pass · Execution notes · Review roadmap | tile |
+| accel | Accelerators | Before cohort selection | Compare applicants on one standard. | Side-by-side reports · Fixed criteria · Selection risks | tile |
+| grants | Grant Programs | Before funding decisions | Review applications against fixed criteria. | Comparable scores · Evidence trail · Review record | tile |
+| corp | Corporate Innovation | Before stakeholder review | Separate real partnership potential from theatre. | Fit signals · Readiness checks · Evidence gaps | tile |
+| uni | Universities | Before demo day | Compare student and research teams fairly. | Transparent scoring · Useful feedback · Human ranking | tile |
+| angel | Angel Investors | Before diligence night | Know which decks deserve your time. | Strengths · Weaknesses · Questions | tile |
+
+- **Визуалы:** Pitch и VC имеют реальные продуктовые рендеры (webp); Hackathon/Grants/Corp/Universities используют видео-фоны; Accelerators — webp-рендер; Angel — webp-рендер. Pitch и VC — hero-size; остальные — tile.
+- **Ссылки:** все CTA → `/trust/use-cases`
+
+> ⚠️ В брифе v0.8 секция 6 называлась «Сегодня и куда идём» (editorial-split с двумя колонками
+> live today / where we're going). В живом коде эта секция полностью заменена `<IcpBento />`.
+> Roadmap-контент («Open orchestration», «Scale & operations» и т.д.) с About-страницы убран.
+
+### 7. Final CTA — `ink`
+
 - **Eyebrow:** Get to know us
-- **Heading:** We're building a better lens for human judgment
-- **Subhead:** Not an artificial jury — a clearer way for people to decide. Book a demo, or read the full story of how we got here.
-- **CTA:** Book a Demo
-- **Secondary CTA:** Read the full story → блог «From AI Jury to EvalLense»
+- **H2:** See how EvalLense works on a [lens]real batch
+- **Subhead:** Book a demo to walk through the workflow, review example reports, and see how EvalLense helps your team compare applications without giving up human control.
+- **CTA:** Book a Demo → `/#demo`
+- **Visual:** Full-bleed looping video `/assets/about/about-cta-bg.mp4` + darkening scrim
+
+> ⚠️ В брифе v0.8 заголовок был «We're building a better lens for human judgment»,
+> субтекст и CTA также отличались. Вторичного CTA «Read the full story» в этой секции нет
+> (он перенесён в секцию 3).
 
 ## Числа и факты
 
 | Факт | Значение | Источник |
 |---|---|---|
-| Внутренних прогонов | **400+** | авторский нарратив; homepage-structure.md |
-| Происхождение | AI Jury · Amazon Nova hackathon prototype | нарратив; homepage-structure.md |
-| Команда | 2 со-фаундера (Yaroslav · Vladyslav) + full-stack team | pitch-deck «Team expertise», LinkedIn |
-| Опыт | Yaroslav 10+ лет (product/fintech/Web3) · Vladyslav ~10 лет (engineering/CTO-level) | pitch-deck, LinkedIn, founder |
-| Builder-трек Yaroslav | NEAR MetaBUILD winner ($70K, best use of tech) · Intema accelerator winner · TON/Hackers League finalist | Devpost, LinkedIn (provided) |
-| Трек Vladyslav | ERP для управления инвест-сделками · engineering delivery Web3-проекта с exit | founder (provided 2026-06-17) |
-| Режимы | Pitch (6 судей, P1–P6) развит; Hackathon (5 судей, H1–H6) — та же архитектура, нужна доработка | нарратив; `judges.md` |
-| Ранжирование | по human Jury Score, не по advisory AI | нарратив; `judges.md` |
-| Live сегодня (founder, шипается на неделе) | Trust Layer · Truth Check · full human review/deliberation · participant feedback | решение фаундера 2026-06-17 |
-| Куда идём | open orchestration · scale & ops · granular reliability | нарратив §What comes next |
-| Сегментов аудитории | 7 | About copy / нарратив |
+| Формулировка прогонов на странице | «hundreds of runs» | H2 секции 3, verbatim в коде |
+| Внутренних прогонов (маркетинговая цифра) | **1000+** | MEMORY.md (синхронизировать в docs, если нужно) |
+| Происхождение | AI Jury · Amazon Nova hackathon prototype | секция 3, шаг 01 |
+| Команда | 2 со-фаундера (Yaroslav · Vladislav) | код, TEAM array |
+| Совместный контекст | 16+ лет | trust-line секции 5 |
+| Режимы | Pitch (P1–P6 в визуале IcpBento) и Hackathon | IcpBento, judges.md |
+| Ранжирование | по human Jury Score, не по advisory AI | нарратив |
+| Сегментов аудитории | 8 (IcpBento) | IcpBento, ICP_CARDS |
 
-> **Honesty (из авторского нарратива):** «400+» — продуктовая история (не точная
-> метрика). Hackathon подаём как «та же архитектура, ещё дорабатывается» — это
-> снимает прежнее расхождение Pitch-only vs Hackathon. Prompt-injection и точные
-> модели — детали для полной статьи/Trust-страниц, не для About (см. «Открытые вопросы»).
+## Изображения и медиа
 
-## Изображения
-
-| Слот | Где на странице | Что изображено | Промпт-набросок (стиль бренда) |
+| Слот | Путь | Где | Формат |
 |---|---|---|---|
-| hero | секция 1 | Линза, фокусирующая поток заявок в один ясный сигнал | lens-градиент violet→cyan→aqua, Apple-нейтраль, calm; `.media-ph` 16:9 |
-| journey | секция 3 | Цепочка AI Jury → noise → black box → system → EvalLense вдоль lens-трека | ink, узлы загораются по шагам; `.media-ph` 4:3 |
-| portrait-yaroslav | секция 6 | Полноростовой cut-out портрет, нейтральный фон | портрет 3:4, мягкий фиолетовый rim-light, calm; имя-подложка за спиной |
-| portrait-vladyslav | секция 6 | Полноростовой cut-out портрет | то же, 3:4 |
-
-Портреты — `.media-ph` (3/4) до реальных фото; полные промпты в шапке `page.tsx`.
+| hero | `/assets/entry-hub/evallense-observatory-hero-01.png` | Секция 1 | PNG transparent cut-out, 1536×1024 |
+| problem | `/assets/about/problem-wall.webp` | Секция 2 | WebP, 1500×844 |
+| story roadmap | `/assets/methodology/eval-lens-roadmap-vertical-02.png` | Секция 3 side | PNG transparent, 781×1857 |
+| story cinema | `/assets/about/about-story-cinema.mp4` | Секция 3b | MP4 video |
+| principles feature | `/assets/about/principles-feature-bg.mp4` | Секция 4 feature card | MP4 video |
+| principles poster | `/assets/about/principles-feature-poster.jpg` | Секция 4 feature card | JPG poster |
+| portrait yaroslav | `/assets/about/portrait-yaroslav-2.webp` | Секция 5 | WebP, 1254×1224 |
+| portrait vladislav | `/assets/about/portrait-vladislav-2.webp` | Секция 5 | WebP, 1080×1377 |
+| icp-pitch | `/assets/about/icp-pitch.webp` | IcpBento pitch card | WebP |
+| icp-vc | `/assets/about/icp-vc.webp` | IcpBento vc card | WebP |
+| icp-accelerators | `/assets/about/icp-accelerators.webp` | IcpBento accel card | WebP |
+| icp-angel | `/assets/about/icp-angel.webp` | IcpBento angel card | WebP |
+| hackathons-bg | `/assets/about/hackathons-bg.mp4` | IcpBento hack card | MP4 |
+| grants-bg | `/assets/about/grants-bg.mp4` | IcpBento grants card | MP4 |
+| corp-datastream | `/assets/about/corp-datastream.mp4` | IcpBento corp card | MP4 |
+| universities-bg | `/assets/about/universities-bg.mp4` | IcpBento uni card | MP4 |
+| cta-bg | `/assets/about/about-cta-bg.mp4` | Секция 7 | MP4 |
 
 ## Внутренние ссылки
 
-- **Header/Footer nav:** пункт `About` → `/company/about` (footer-секция COMPANY).
+- **Footer nav:** пункт `About` → `/company/about` (секция COMPANY).
 - **Cross-links со страницы:**
-  - [[sitemap|Methodology]] — методология оценки, судьи и измерения
-  - [[sitemap|Consistency & Reliability]] — как измеряем стабильность
-  - [[sitemap|Product Overview]] — что делает продукт
-  - **блог «From AI Jury to EvalLense»** (`/blog/from-ai-jury-to-evallense-400-ai-judging-runs`) — полная builder-история (источник этой страницы)
+  - **блог «founding-story»** (`/blog/founding-story`) — полная builder-история (CTA в секции 3)
+  - **use-cases** (`/trust/use-cases`) — все 8 ICP CTA из IcpBento
+  - **demo anchor** (`/#demo`) — Hero CTA и Final CTA
 
 ## SEO / meta
 
-- **`<title>`:** About EvalLense — A Better Lens for Human Judgment
-- **meta description:** Who's building EvalLense and why: the journey from AI Jury
-  to a controlled evaluation system across 400+ runs, our principles, and the team.
-  AI prepares the analysis; people decide. *(≤155)*
-- **OG-изображение:** слот `hero`
+- **`<title>`:** About EvalLense — A better lens for human judgment
+- **meta description:** EvalLense helps startup programs, funds, and competitions review applications with structured AI analysis, evidence-backed reports, and human-controlled decisions.
+- Заданы в `export const metadata` в `page.tsx`; OG-изображение — hero-слот.
+
+## Движение и анимации
+
+- `<ScrollFX />` — монтируется один раз после `<Footer/>`; data-reveal="up|left|scale" + data-pin / data-pin-steps.
+- Секция 3 (Story): `data-pin data-pin-steps="3"` — 3 шага step-pin.
+- Секция 5 (Team): `<TeamTilt />` — ambient tilt, `data-reveal="up"` на каждой dossier-карточке + `--reveal-delay`.
+- IcpBento: `<AngelFx />` — ambient.
+- Portraits, Observatory hero: анимация `ev-drift`; VC render: `compass-fly` + `compass-float`.
+- `prefers-reduced-motion`: все анимации гасятся через CSS.
 
 ## Источники истины
 
 ### Wiki (landing)
 - [[vision|Vision]] — зачем продукт, проблема время/объективность
 - [[sitemap|Карта сайта]] — Company → About; блог featured article
-- [[design-system|Design System]] / [[section-types|Section Types]] / [[page-design-patterns|Page Design Patterns]] — pinned, bento, editorial, scrub
+- [[design-system|Design System]] / [[section-types|Section Types]] / [[page-design-patterns|Page Design Patterns]]
 
-### Авторский нарратив (provided by user)
-- «From AI Jury to EvalLense: What 400+ AI Judging Runs Taught Us» — **первоисточник**
-  истории, уроков, статуса и roadmap (дистиллирован в этот бриф; полная версия → блог)
-
-### Application (`ai-jury-prod`) — кросс-проверка 2026-06-17
+### Application (`ai-jury-prod`) — кросс-проверка
 - `wiki/product/judges.md` — режимы Pitch/Hackathon, судьи, ранжирование по human score
 - `wiki/product/vision.md` / `scope.md` — проблема, границы, сегменты
-- `wiki/product/site/homepage-structure.md` — 400+ прогонов, Amazon Nova
-
-## Acceptance (что считать готовым)
-
-- [ ] страница доступна по `/company/about`, обёрнута в `SiteHeader` + `Footer`
-- [ ] все 7 секций из «Структура секций» собраны с финальной EN-копией
-- [ ] секция 6 «Сегодня и куда идём» — две колонки (live / next); live-часть (trust layer/Truth Check/full review/participant) синхронна с реальным релизом
-- [ ] журней (3) несёт свёрнутые уроки + мост «что это значит для тебя»; Amazon Nova credibility-line в team-секции (5)
-- [ ] **креативный team-блок** (секция 6): pinned-сцена, 2 со-фаундера, портреты заезжают/выезжают, имя-подложка, био сбоку; reduced-motion — статичные блоки
-- [ ] есть pinned-multi-screen (3 журней, 5 команда) + тёмный full-bleed statement (2)
-- [ ] вторичный CTA «Read the full story» ведёт на блог-статью
-- [ ] портреты — `.media-ph` 3:4 с промптами; ссылка в footer-nav (COMPANY)
-- [ ] только токены/классы design-system; движение через `<ScrollFX/>` + data-атрибуты, без useEffect
-- [ ] `cd web && pnpm build` зелёный; `prefers-reduced-motion` уважается
 
 ## Открытые вопросы
 
-- **⚠️ «Live сегодня» vs другие доки — нужна синхронизация.** Trust Layer, Truth
-  Check, full human review/deliberation, participant feedback поданы как **работающие
-  сегодня** (решение фаундера, 2026-06-17 — шипается на этой неделе, считаем фактом).
-  Но `ai-jury-prod/scope.md` и наши брифы Trust/Product (methodology, reports,
-  consistency) пока помечают Truth Check / deliberation / participant reports / partial
-  reports как **post-MVP**. Перед публикацией About: (а) убедиться, что фичи реально
-  live, (б) синхронизировать scope.md и смежные страницы, иначе сайт сам себе противоречит.
-- **✅ Био — два со-фаундера, стандартизированы по объёму.** Yaroslav (product/
-  методология, fintech, hackathon-builder, AI Jury origin) + LinkedIn/Devpost; Vladyslav
-  (CTO-level delivery, ~10 лет, ERP для инвест-сделок, Web3-exit). Суть отзывов коллег
-  вплетена в текст Yaroslav без сырых цитат и без отдельного блока (по решению user).
-  Metaverse/esports/podcast-портфель сознательно НЕ выносим (шум для B2B-About).
-- **✅ Arseniy — скрыт пока что** (по решению user). Вернуть третью карточку, когда
-  будут его данные (фамилия, роль-детали, фото). Team-блок собран на 2 шага.
-  Осталось закрыть по команде:
-  - **Vladyslav** — LinkedIn-ссылка (бэкграунд уже норм).
-  - **Латиница имён** — подтвердить: «Volovoj» (LinkedIn) vs «Volovoy» (deck); «Vladyslav».
-  - **Опыт Yaroslav 10+ vs 14+** — взял 10+ (по свежему deck); подтвердить.
-- **Фото команды** — нужны реальные полноростовые cut-out (3:4); пока `.media-ph`.
-- **Модели per-layer (Gemini 2.5 Flash / Claude Sonnet 4.6)** — в полном нарративе
-  названы; на About **намеренно не выносим** (бренд: стек — не для внешних текстов).
-  Решение фаундера: показывать ли названия моделей на About или держать в блог-статье.
-- **Prompt-injection / Success Rate / Worry Score / Truth Check** — глубокие
-  builder-детали; на About даём только «cut Success Rate» как урок, остальное — в
-  полной статье и на Trust-страницах. Подтвердить глубину для About.
-- **Блог-статья** — нужен опубликованный маршрут `/blog/from-ai-jury-to-evallense-…`
-  для вторичного CTA «Read the full story»; до публикации — линк-заглушка.
-- **Контакт CTA** — Book a Demo → `/company/contact` (если ещё не собрана — временный якорь).
+- **Цифра прогонов:** на странице «hundreds of runs» (verbatim), в MEMORY.md — 1000+.
+  Если хотим 1000+ на About, нужно править H2 и step 02.
+- **Vladislav vs Vladyslav:** в TEAM array кода — «Vladislav». В бывшем брифе — «Vladyslav».
+  LinkedIn-ссылка у Vladislav до сих пор не указана (Telegram: t.me/vrway).
+- **Arseniy:** по-прежнему скрыт (нет данных). Вернуть третью карточку, когда будут фамилия, роль, фото.
+- **Roadmap-контент** («Open orchestration / Scale & operations / Granular reliability») убран
+  с About. Если нужен, найти ему место (отдельная страница, Methodology или Pricing).
+- **IcpBento CTA:** все 8 карточек ведут на `/trust/use-cases`. Уточнить, нужны ли
+  разные якоря или landing-страницы под сегменты.
+- **Блог-статья:** slug теперь `/blog/founding-story` — убедиться, что эта статья опубликована.
+- **«Truth Check»** (упоминался в v0.8 в live-today секции) с About убран; теперь только
+  в полной статье и на Trust-страницах.
