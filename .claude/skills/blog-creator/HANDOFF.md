@@ -1,11 +1,20 @@
 # EvalLense blog-creator — handoff (продолжение в новой сессии)
 
-Версия: blog-creator v1.0.0 · создан 2026-06-17 · язык работы: русский.
+Версия: blog-creator v1.2.0 · создан 2026-06-17 · язык работы: русский.
 
 ## Что это
-Скилл создаёт и переписывает статьи блога EvalLense (Newsroom) — брифы
+Скилл планирует, создаёт и переписывает статьи блога EvalLense (Newsroom) — брифы
 `eval-lens-landing/wiki/product/site/blog/<slug>.md`. Единый голос автора —
 `Anonymous Unicorn`; качество обеспечивает пул экспертных персон-линз.
+
+## Три режима
+- **PLAN (контент-план с ресёрчем)** — инвентаризирует, что уже есть в репо (P1) →
+  веб-ресёрч актуального (P2) → пересечение «актуальное × наше» (P3) → расписание
+  публикаций, в т.ч. **задним числом** (P4) → согласование плана в
+  `wiki/product/site/blog/_content-plan.md` (P5). Методология —
+  `references/content-plan.md`. После согласования строки идут в CREATE.
+- **CREATE / REWRITE** — как раньше; Шаг 3 теперь = product-факты из source of truth
+  **+ веб-ресёрч** (внешние факты со ссылками, не смешивать с продуктовыми).
 
 ## Два слоя персон
 - **Слой A — голос автора.** Единый автор `Anonymous Unicorn` — СОСТАВНАЯ персона.
@@ -29,6 +38,8 @@
 - `SKILL.md` — flow: вход (тема=CREATE / slug=REWRITE) + выбор режима контента →
   факты из источников правды → комбинированный прогон линз 1–7 → сведение к голосу
   Unicorn → сборка брифа → запись → отчёт.
+- `references/content-plan.md` — методология режима PLAN: инвентарь репо → веб-
+  ресёрч → пересечение → бэкдейтинг → согласование (`_content-plan.md`).
 - `references/personas.md` — 7 линз качества + привязка к режимам.
 - `references/article-format.md` — frontmatter по `cms/types.ts`
   (Category: Research|Product|Press Release; Accent: cyan|violet|aqua|orange),
