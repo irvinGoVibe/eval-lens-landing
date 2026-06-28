@@ -2220,39 +2220,54 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #workflow .up-item .bar{width:64px;height:5px;border-radius:3px;background:var(--bg-soft);overflow:hidden;flex:none;}
 #workflow .up-item .bar i{display:block;height:100%;width:0%;background:var(--lens);border-radius:3px;}
 #workflow .up-counter{font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--muted-2);text-align:center;margin-top:2px;}
-#workflow .hub{position:absolute;inset:0;padding:clamp(18px,2.4vw,28px);display:flex;flex-direction:column;}
-#workflow .hub-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px;}
-#workflow .hub-head h3{font-size:18px;letter-spacing:-.02em;}
+#workflow .hub{
+  position:absolute;inset:0;padding:clamp(24px,3vw,38px);display:flex;flex-direction:column;
+  background:
+    radial-gradient(circle at 18% 10%, color-mix(in oklab,var(--cyan) 11%, transparent), transparent 34%),
+    linear-gradient(180deg,rgba(255,255,255,.78),rgba(248,250,255,.54));
+}
+#workflow .hub-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+#workflow .hub-head h3{font-size:clamp(19px,2vw,24px);font-weight:650;letter-spacing:-.025em;color:color-mix(in oklab,var(--fg) 92%, #16375a);}
 #workflow .hub-status{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-text);font-size:11.5px;font-weight:500;
   border-radius:var(--wf-r-pill);padding:5px 12px;border:1px solid transparent;transition:all .45s var(--ease);}
 #workflow .hub-status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
 #workflow .hub-status{color:var(--muted);background:var(--bg);border-color:var(--border-2);}
 #workflow .hub-status.ready{color:var(--wf-green);background:color-mix(in oklab,var(--wf-green) 11%,#fff);border-color:color-mix(in oklab,var(--wf-green) 28%,transparent);}
 #workflow .hub-status.run{color:var(--violet);background:color-mix(in oklab,var(--violet) 9%,#fff);border-color:color-mix(in oklab,var(--violet) 26%,transparent);}
-#workflow .counters{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
-#workflow .counter{background:#fff;border:1px solid var(--border-2);border-radius:var(--wf-r-md);box-shadow:var(--wf-sh-1);padding:14px 16px;}
-#workflow .counter .cv{font-family:var(--font-mono);font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;
+#workflow .counters{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+#workflow .counter{
+  background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.48));
+  border:1px solid rgba(108,76,241,.13);border-radius:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 14px 34px -28px rgba(60,40,160,.35);
+  padding:17px 18px 15px;
+}
+#workflow .counter .cv{font-family:var(--font-mono);font-size:clamp(32px,4.3vw,46px);font-weight:650;letter-spacing:-.035em;line-height:.94;font-variant-numeric:tabular-nums;
   background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
-#workflow .counter.warn .cv{background:none;color:var(--wf-amber);-webkit-text-fill-color:var(--wf-amber);}
-#workflow .counter .cl{font-size:11.5px;color:var(--muted-2);margin-top:6px;letter-spacing:-.01em;}
-#workflow .tbl{width:100%;border-collapse:collapse;}
-#workflow .tbl thead th{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);
-  text-align:left;font-weight:400;padding:0 12px 9px;border-bottom:1px solid var(--wf-hairline);}
-#workflow .tbl tbody td{padding:11px 12px;border-bottom:1px solid var(--wf-hairline);vertical-align:middle;font-size:13.5px;}
+#workflow .counter.warn .cv{background:none;color:var(--wf-amber);-webkit-text-fill-color:var(--wf-amber);text-align:center;}
+#workflow .counter .cl{font-size:13px;line-height:1.25;color:color-mix(in oklab,var(--muted) 86%, #35577d);margin-top:9px;letter-spacing:-.01em;}
+#workflow .tbl{width:100%;border-collapse:collapse;table-layout:fixed;}
+#workflow .tbl thead th{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--muted-2) 86%, #42648b);
+  text-align:left;font-weight:500;padding:0 12px 11px;border-bottom:1px solid rgba(60,40,160,.10);}
+#workflow .tbl thead th:nth-child(1){width:31%;}
+#workflow .tbl thead th:nth-child(2){width:29%;}
+#workflow .tbl thead th:nth-child(3){width:17%;}
+#workflow .tbl thead th:nth-child(4){width:23%;}
+#workflow .tbl tbody td{padding:12px 12px;border-bottom:1px solid rgba(60,40,160,.075);vertical-align:middle;font-size:14px;}
 #workflow .tbl tbody tr{opacity:0;transform:translateY(8px);transition:background .3s var(--ease);}
 #workflow .tbl tbody tr.in{opacity:1;transform:none;}
-#workflow .tbl tbody tr:hover{background:var(--bg-soft);}
+#workflow .tbl tbody tr:hover{background:rgba(255,255,255,.48);}
 #workflow .team{display:flex;align-items:center;gap:10px;}
-#workflow .team .av{width:28px;height:28px;border-radius:8px;flex:none;display:grid;place-items:center;font-family:var(--font-display);font-weight:600;font-size:12px;color:#fff;}
-#workflow .team .tn{font-weight:550;letter-spacing:-.01em;}
-#workflow .mats{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.01em;}
-#workflow .subm{font-family:var(--font-mono);font-size:11px;color:var(--muted-2);}
-#workflow .status{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:500;border-radius:var(--wf-r-pill);padding:5px 11px;border:1px solid transparent;}
+#workflow .team .av{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;font-family:var(--font-display);font-weight:650;font-size:12px;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.28);}
+#workflow .team .tn{font-weight:650;letter-spacing:-.015em;color:color-mix(in oklab,var(--fg) 88%, #173b5e);}
+#workflow .mats{font-family:var(--font-mono);font-size:11px;color:color-mix(in oklab,var(--muted) 88%, #315578);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#workflow .subm{font-family:var(--font-mono);font-size:11px;color:color-mix(in oklab,var(--muted-2) 90%, #42648b);white-space:nowrap;}
+#workflow .status{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:84px;box-sizing:border-box;font-size:11.5px;font-weight:600;border-radius:var(--wf-r-pill);padding:6px 7px;border:1px solid transparent;white-space:nowrap;}
 #workflow .status .sd{width:6px;height:6px;border-radius:50%;}
 #workflow .status.complete{color:var(--wf-green);background:color-mix(in oklab,var(--wf-green) 11%,#fff);border-color:color-mix(in oklab,var(--wf-green) 28%,transparent);}
 #workflow .status.complete .sd{background:var(--wf-green);}
 #workflow .status.missing{color:var(--wf-amber-ink);background:color-mix(in oklab,var(--wf-amber) 13%,#fff);border-color:color-mix(in oklab,var(--wf-amber) 30%,transparent);}
 #workflow .status.missing .sd{background:var(--wf-amber);}
+#workflow .status.missing .label-done,#workflow .status .label-proc{font-size:10.5px;letter-spacing:-.03em;}
 #workflow .tbl tbody tr.processing .status{color:var(--violet);background:color-mix(in oklab,var(--violet) 9%,#fff);border-color:color-mix(in oklab,var(--violet) 26%,transparent);}
 #workflow .tbl tbody tr.processing .status .label-done{display:none;}
 #workflow .status .label-proc{display:none;}
@@ -2267,8 +2282,8 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #workflow .tbl tbody tr.scored .status{color:var(--wf-green);background:color-mix(in oklab,var(--wf-green) 11%,#fff);border-color:color-mix(in oklab,var(--wf-green) 28%,transparent);transition:color .4s var(--ease),background .4s var(--ease),border-color .4s var(--ease);}
 #workflow .tbl tbody tr.scored .status .sd{background:var(--wf-green);animation:none;}
 @keyframes wf-pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-#workflow .more-row td{color:var(--muted-2);font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;border-bottom:0;padding-top:12px;}
-#workflow .hub-foot{margin-top:auto;display:flex;align-items:center;gap:14px;padding-top:16px;}
+#workflow .more-row td{color:color-mix(in oklab,var(--muted-2) 90%, #42648b);font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;border-bottom:0;padding-top:14px;}
+#workflow .hub-foot{margin-top:auto;display:flex;align-items:center;gap:14px;padding-top:18px;}
 #workflow .batch-badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:550;color:var(--wf-green);
   background:color-mix(in oklab,var(--wf-green) 11%,#fff);border:1px solid color-mix(in oklab,var(--wf-green) 28%,transparent);
   border-radius:var(--wf-r-pill);padding:8px 14px;opacity:0;transform:translateY(6px);transition:all .45s var(--ease);}
@@ -2279,11 +2294,11 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   display:inline-flex;align-items:center;gap:9px;}
 #workflow .run-btn.ready{color:#fff;background:var(--violet);border-color:transparent;box-shadow:0 1px 2px rgba(60,40,160,.3);}
 #workflow .run-btn.pressed{box-shadow:0 0 0 4px color-mix(in oklab,var(--violet) 22%,transparent);transform:translateY(-1px);}
-#workflow .pipeline{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,#fff,#fcfcfd);
-  border-top:1px solid var(--wf-hairline);padding:16px clamp(18px,2.4vw,28px) 18px;
+#workflow .pipeline{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(250,252,255,.94));
+  border-top:1px solid rgba(60,40,160,.10);box-shadow:0 -18px 42px -36px rgba(60,40,160,.42);padding:17px clamp(22px,3vw,36px) 20px;
   transform:translateY(106%);transition:transform .55s var(--ease);}
 #workflow .pipeline.show{transform:none;}
-#workflow .pipe-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);margin-bottom:13px;display:flex;align-items:center;gap:8px;}
+#workflow .pipe-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in oklab,var(--wf-green) 90%, #1c7f96);margin-bottom:15px;display:flex;align-items:center;gap:8px;}
 #workflow .pipe-label .spin{width:11px;height:11px;border-radius:50%;border:2px solid color-mix(in oklab,var(--violet) 25%,transparent);border-top-color:var(--violet);animation:wf-spin .8s linear infinite;}
 #workflow .pipe-label .pl-check{display:none;width:13px;height:13px;border-radius:50%;background:var(--wf-green);color:#fff;font-size:8px;line-height:1;place-items:center;}
 #workflow .pipeline.done .pipe-label{color:var(--wf-green);}
@@ -2294,9 +2309,9 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #workflow .pipe-track::before{content:"";position:absolute;left:18px;right:18px;top:13px;height:2px;background:var(--border-2);border-radius:2px;}
 #workflow .pipe-fill{position:absolute;left:18px;top:13px;height:2px;width:0%;background:var(--lens);border-radius:2px;transition:width .15s linear;max-width:calc(100% - 36px);}
 #workflow .pipe-node{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:1;flex:1;}
-#workflow .pipe-node .nd{width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid var(--border-2);display:grid;place-items:center;
+#workflow .pipe-node .nd{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.82);border:2px solid rgba(108,76,241,.18);display:grid;place-items:center;
   font-size:10px;color:var(--muted-2);transition:all .35s var(--ease);}
-#workflow .pipe-node .nl{font-size:10.5px;color:var(--muted-2);font-weight:500;letter-spacing:-.01em;transition:color .35s var(--ease);}
+#workflow .pipe-node .nl{font-size:11px;color:color-mix(in oklab,var(--muted) 90%, #315578);font-weight:600;letter-spacing:-.01em;transition:color .35s var(--ease);}
 #workflow .pipe-node.on .nd{background:var(--violet);border-color:var(--violet);color:#fff;box-shadow:0 0 0 4px color-mix(in oklab,var(--violet) 14%,transparent);}
 #workflow .pipe-node.on .nl{color:var(--fg);}
 #workflow svg{display:block;}
