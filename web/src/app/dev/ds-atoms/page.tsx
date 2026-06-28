@@ -297,6 +297,47 @@ export default function DsAtomsPage() {
         </div>
       </Atom>
 
+      {/* ── Shimmer / Aqua Wave ── */}
+      <section className="dsx-shimmer-lab">
+        <div className="dsx-atom__head">
+          <span className="dsx-atom__name">Shimmer · Aqua Wave</span>
+          <span className="dsx-atom__badge">experimental</span>
+          <span className="dsx-atom__api">
+            gradient: violet → cobalt → cyan → aqua · только тёмные поверхности
+          </span>
+        </div>
+        <div className="dsx-shimmer-row">
+          {/* violet — кнопка */}
+          <div className="dsx-shimmer-cell">
+            <span className="dsx-shimmer-label">Button · violet</span>
+            <button className="btn btn-shimmer">Get started</button>
+          </div>
+          {/* violet — карточка */}
+          <div className="dsx-shimmer-cell">
+            <span className="dsx-shimmer-label">Card · violet</span>
+            <div className="ev-shimmer-card">
+              <span className="ev-shimmer-card__eyebrow">EvalLense</span>
+              <p className="ev-shimmer-card__title">AI-powered evaluation</p>
+              <p className="ev-shimmer-card__sub">Ranked in a day. No guesswork.</p>
+            </div>
+          </div>
+          {/* green — кнопка */}
+          <div className="dsx-shimmer-cell">
+            <span className="dsx-shimmer-label">Button · green</span>
+            <button className="btn btn-shimmer btn-shimmer--green">Get started</button>
+          </div>
+          {/* green — карточка */}
+          <div className="dsx-shimmer-cell">
+            <span className="dsx-shimmer-label">Card · green</span>
+            <div className="ev-shimmer-card ev-shimmer-card--green">
+              <span className="ev-shimmer-card__eyebrow">EvalLense</span>
+              <p className="ev-shimmer-card__title">AI-powered evaluation</p>
+              <p className="ev-shimmer-card__sub">Ranked in a day. No guesswork.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div className="dsx-foot">
         <p>
           keep-internal (НЕ извлекаю): splitring-bar, hero-сцены,
@@ -417,6 +458,112 @@ const DSX_CSS = `
 .dsx-cell.ink .dsx-li--split strong{color:var(--fg-on-dark);}
 .dsx-li--split p{margin:0;font-size:14px;line-height:1.5;color:var(--muted);}
 .dsx-cell.ink .dsx-li--split p{color:var(--muted-on-dark);}
+
+/* ── Shimmer lab scaffold ── */
+.dsx-shimmer-lab{margin:48px 0 0;padding-top:24px;border-top:1px solid var(--border-2);}
+.dsx-shimmer-row{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;margin-top:24px;}
+.dsx-shimmer-cell{display:flex;flex-direction:column;gap:16px;align-items:flex-start;}
+.dsx-shimmer-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);}
+
+/* ── Shimmer card — тёмная, переливы тёмными тонами (без screen-blend) ── */
+.ev-shimmer-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  width:clamp(240px,30vw,320px);
+  min-height:180px;
+  border-radius:20px;
+  /* очень тёмная основа с дрейфующим градиентом фона */
+  background:
+    radial-gradient(80% 80% at 25% 30%, rgba(40,22,90,.55)  0%, transparent 65%),
+    radial-gradient(70% 70% at 78% 72%, rgba(5, 40,55,.52)  0%, transparent 62%),
+    radial-gradient(60% 60% at 50% 90%, rgba(5, 38,35,.44)  0%, transparent 60%),
+    #05060a;
+  background-size:200% 200%, 190% 190%, 210% 210%, auto;
+  border:1px solid rgba(108,76,241,.15);
+  padding:28px 24px 32px;
+  box-shadow:
+    inset 0 1px 0 rgba(180,160,255,.08),
+    0 6px 24px -6px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;gap:8px;
+  transition:box-shadow .4s ease, border-color .4s ease, transform .3s ease;
+  animation:ev-shimmer-dark 12s ease-in-out infinite;
+}
+@keyframes ev-shimmer-dark{
+  0%  {background-position:0% 0%,   100% 100%, 50% 0%,   auto;}
+  33% {background-position:55% 35%,  30% 65%,  75% 55%,  auto;}
+  66% {background-position:20% 80%,  80% 20%,  15% 40%,  auto;}
+  100%{background-position:0% 0%,   100% 100%, 50% 0%,   auto;}
+}
+/* тонкий directional rim */
+.ev-shimmer-card::after{
+  content:"";position:absolute;inset:0;z-index:2;
+  border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,
+    rgba(160,130,255,.32) 0%,
+    rgba(108,76,241,.07)  40%,
+    rgba(46,197,232,.03)  70%,
+    rgba(11,187,176,.08)  100%
+  );
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  pointer-events:none;
+}
+.ev-shimmer-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(108,76,241,.24);
+  box-shadow:
+    inset 0 1px 0 rgba(180,160,255,.12),
+    0 8px 32px -8px rgba(0,0,0,.6),
+    0 0 24px -6px rgba(40,22,90,.5);
+}
+.ev-shimmer-card > *{position:relative;z-index:1;}
+.ev-shimmer-card__eyebrow{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(150,130,220,.7);
+}
+.ev-shimmer-card__title{
+  margin:4px 0 0;
+  font-family:var(--font-display);font-size:clamp(20px,2.4vw,24px);
+  line-height:1.18;letter-spacing:-.02em;color:rgba(230,225,255,.92);
+}
+.ev-shimmer-card__sub{
+  margin:2px 0 0;font-size:14px;line-height:1.5;color:rgba(170,165,200,.55);
+}
+
+/* ── green variant — dark green + dark cyan + dark violet ── */
+.ev-shimmer-card--green{
+  background:
+    radial-gradient(80% 80% at 25% 30%, rgba(5, 55,38,.58)  0%, transparent 65%),
+    radial-gradient(70% 70% at 78% 72%, rgba(5, 45,52,.52)  0%, transparent 62%),
+    radial-gradient(60% 60% at 50% 90%, rgba(30,12,65,.44)  0%, transparent 60%),
+    #04080a;
+  border-color:rgba(26,163,122,.14);
+  box-shadow:
+    inset 0 1px 0 rgba(100,210,170,.07),
+    0 6px 24px -6px rgba(0,0,0,.5);
+  animation-name:ev-shimmer-dark-green;
+}
+@keyframes ev-shimmer-dark-green{
+  0%  {background-position:100% 0%,   0% 100%, 50% 0%,   auto;}
+  33% {background-position:30% 60%,  70% 30%,  20% 55%,  auto;}
+  66% {background-position:85% 20%,  15% 80%,  85% 40%,  auto;}
+  100%{background-position:100% 0%,   0% 100%, 50% 0%,   auto;}
+}
+.ev-shimmer-card--green::after{
+  background:linear-gradient(135deg,
+    rgba(80,210,150,.26) 0%,
+    rgba(26,163,122,.07) 40%,
+    rgba(46,197,232,.03) 70%,
+    rgba(108,76,241,.08) 100%
+  );
+}
+.ev-shimmer-card--green:hover{
+  border-color:rgba(26,163,122,.22);
+  box-shadow:
+    inset 0 1px 0 rgba(100,210,170,.10),
+    0 8px 32px -8px rgba(0,0,0,.6),
+    0 0 24px -6px rgba(5,55,38,.5);
+}
+.ev-shimmer-card--green .ev-shimmer-card__eyebrow{ color:rgba(80,180,140,.7); }
 
 .dsx-foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--border-2);}
 .dsx-foot p{font-family:var(--font-mono);font-size:12px;color:var(--muted-2);line-height:1.7;}

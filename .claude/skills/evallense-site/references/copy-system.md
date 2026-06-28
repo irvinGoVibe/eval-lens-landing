@@ -55,6 +55,33 @@
 
 Различай строго: **AI Total Score = advisory reference**, ранжирование — по **human Jury/Final Score**.
 
+### 6a. Терминология оценщиков по ICP-сегментам
+
+**Проблема:** слово «jury» понятно только pitch competitions и частично hackathons. Для остальных 6 ICP это чужой язык — они не имеют жюри.
+
+**Универсальный термин в общем copy страницы:** `your team`
+Работает для всех 8 ICP без исключения. Примеры: «before your team meets», «your team walks in ready», «your team keeps the final call».
+
+**Сегментные термины** — использовать только внутри карточки/панели конкретного ICP:
+
+| ICP | Канонический термин | Избегать |
+|---|---|---|
+| Pitch Competitions | `judging panel` / `judges` | «jury» (европеизм, не US-стандарт) |
+| Hackathons | `judging panel` / `judges` | «jury» |
+| VC Funds | `partners` / `investment committee (IC)` | «jury», «judges» |
+| Accelerators | `selection committee` | «jury», «judges» |
+| Angel Investors | `your team` | «jury», «judges» |
+| Corporate Innovation | `committee` / `stakeholders` | «jury», «judges» |
+| Grant Programs | `review committee` | «jury», «judges» |
+| Universities | `review panel` / `selection committee` | «jury», «judges» |
+
+**Региональный контекст (ресёрч-находка):**
+- США: доминирует `judges` / `panel of judges` (TechCrunch Disrupt, SXSW, Y Combinator)
+- Европа/UK: используют и `jury`, и `judges`; `jury` — кальки с фр./нем., не универсально
+- Вывод: **не писать «jury» в общем copy сайта** — это competition-speak, отчуждающий VC/Accelerator/Grant/University ICP
+
+**Исключение — product proper nouns:** `Jury Score` и `Final Score` — названия продуктовых фич, оставлять как есть. В общем copy вокруг них писать `human-owned ranking` или `final ranking`.
+
 ## 7. Антислоп (убрать AI-штампы)
 
 Вычищай: «In today's fast-paced world», «unlock/unleash the power», «seamless», «robust», «leverage», «delve», «elevate», «supercharge», «revolutionize», парные «not only… but also», «it's not just X, it's Y» как штамп, пустые усилители (very, truly, really), тройки прилагательных ради ритма.

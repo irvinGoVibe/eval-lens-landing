@@ -94,11 +94,17 @@ subhead, тело) — **на английском** (язык сайта), ес
 ```
 
 ### Фаза 1 — Канон
-Прочитай copy-system §5 (avoid) + **§6 (канонические термины)**. Сверься с product
+Прочитай copy-system §5 (avoid) + **§6 (канонические термины)** + **§6a (терминология оценщиков по ICP)**. Сверься с product
 truth (ai-jury-prod `wiki/product/`) — какой термин **продуктово верен**. Собери
 watchlist: канон-термин + известные плохие варианты (депрекейт `Mode Score/MS`,
 внешнее «AI Jury», «AI judges/decides» как финал; число прогонов `1,000+`, не
 `400+` вне origin-story — см. [[evallense-runs-count]]).
+
+**Особый watchlist — термин оценщиков (см. copy-system §6a):**
+- `jury` в общем copy страниц → заменять на `your team` (универсально) или сегментный термин
+- `jury` допустимо только внутри competition/hackathon-специфичного блока
+- `Jury Score` / `Final Score` — product proper nouns, не трогать
+- Флажок: если `jury` встречается в hero/sub/general copy — это ошибка ICP-таргетинга
 
 ### Фаза 2 — Скан
 Грепни сайт (см. «Где живёт копия») по каждому термину watchlist **и** на

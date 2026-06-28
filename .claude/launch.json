@@ -16,6 +16,14 @@
       "autoPort": false
     },
     {
+      "name": "web-prod",
+      "cwd": "web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "next", "start", "--port", "3007"],
+      "port": 3007,
+      "autoPort": false
+    },
+    {
       "name": "web-qa",
       "cwd": "web",
       "runtimeExecutable": "pnpm",

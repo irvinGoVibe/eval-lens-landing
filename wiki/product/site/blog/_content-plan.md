@@ -99,6 +99,8 @@ cost-of-a-missed-deal, rubric templates by stage, inside Deck Vault, founding st
 | 5 | hundreds-of-decks-one-shortlist | Hundreds of decks, one ranked shortlist | Product | cyan | Ядро JTBD: поднять сильнейших из потока, не читая каждый дек час. Пошаговый batch-review | Practical playbook | #2/#6 (выигрывают high-volume) | «how to screen hundreds of pitch decks» | 2026-05-09 | пайплайн Decoder→Panel→Summarizer→Report→Human Review→Leaderboard; Jury vs AI Total Score; 400+ runs | proposed |
 | 6 | how-to-evaluate-an-ai-evaluation-tool | How to evaluate an AI evaluation tool | Research | violet | Покупатель выбирает инструмент скрининга. Дать честный чек-лист (воспроизводимость, explainability, калибровка, human-in-the-loop) | Practical playbook | #1/#3/#5 (нельзя верить lab-evals) | «how to choose an AI pitch deck screening tool» | 2026-04-25 | дифференциаторы: SourceRef/explainability, reproducibility, панель, калибровка | proposed |
 | 7 | disagreement-is-useful | Disagreement is useful: reading judge spread | Research | aqua | Организатор хочет понять, когда заявка спорная. Объяснить Spread как сигнал, а не шум | Startup observation | #6 (IRR, rubric drift) | «why do judges disagree / inter-rater reliability» | 2026-04-11 | бренд-столп #3; Spread(d)≥3.0; Jury Score финальный; калибровка | proposed |
+| 8 | how-do-you-judge-an-ai-business | How do you judge an AI business? | Research | orange | Thought-leadership: разбор Build with Gemini XPRIZE и его критериев как линза на тему «как судить AI» (ядро EvalLense). Не заявляет участие | Startup observation | XPRIZE $2M (Google I/O 19.05.2026), сдвиг demo→operated | «how do you judge an AI business / AI hackathon judging» | 2026-06-28 | критерии XPRIZE (devpost); прошлые победители; IRR; бренд human-in-the-loop | **written** |
+| 9 | building-for-the-gemini-xprize | We're building for the Build with Gemini XPRIZE | Press Release | violet | Анонс участия: входим новой AI-operated линией под существующим ИП; честно про планку (viability/AI-ops/impact). Без выдуманного трекшна | (announcement) | реальное участие команды в XPRIZE | «Build with Gemini XPRIZE participants» | 2026-06-28 | правила eligibility (новый проект через существующее юрлицо ok); критерии; стек | **written** |
 
 **Категории:** Research ×4, Product ×2 + (буфер). Press Release сознательно не
 ставил — нет подтверждённого свежего milestone (см. ниже).
@@ -106,6 +108,20 @@ cost-of-a-missed-deal, rubric templates by stage, inside Deck Vault, founding st
 **Расписание (каденция ~1–2 нед, всё в прошлом, без коллизий с занятыми датами):**
 `04-11 → 04-25 → 05-09 → 05-23 → 06-01 → 06-13 → 06-26`. Сегодня — 2026-06-28;
 будущих дат нет. Самая свежая (06-26) оседлала самый горячий тренд.
+
+---
+
+## XPRIZE — решённые вопросы (2026-06-28)
+
+- **Eligibility закрыт.** Резидентство команды вне РФ/OFAC ✓, фаундер не россиянин ✓.
+  Входим **новой бизнес-линией под существующим ИП** — правилами разрешено (можно
+  существующее юрлицо, если проект новый, создан после 19.05.2026). Гейты residence
+  и «new project» сняты.
+- **Остаточные риски — не eligibility, а скоринг:** Business Viability (реальная
+  arms-length выручка/клиенты за май–август), Gemini API + Google Cloud в контуре,
+  AI-native ops (AI ведёт операции, не нарушая human-in-the-loop), ~7 недель до
+  дедлайна 17.08.2026. Критическая оценка шанса: **низкий, но реальный** — зависит
+  от того, поднимем ли настоящую выручку новой линией в срок.
 
 ---
 

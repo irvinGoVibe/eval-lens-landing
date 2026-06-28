@@ -763,7 +763,7 @@ const ICP_BENTO_CSS = `
     top:-16%; right:-9%;
     width:68%; height:130%; object-position:right top;
     transform:scale(.9); transform-origin:center;             /* −10%: pulls in so only one element still spills */
-    animation:compass-fly 7s ease-in-out 1s infinite both;    /* every 7s: exits diagonally toward the pitch card, re-enters from the top with a banked overshoot */
+    animation:compass-fly 24s ease-in-out 1.4s infinite both; /* slow occasional flight: rises UP and back, away from neighbour cards (no dive toward accel) */
     will-change:transform,opacity;
   }
   /* compass (VC render) keeps a gentle continuous float/tilt under the fly cycle */
@@ -809,24 +809,15 @@ const ICP_BENTO_CSS = `
     50%{ transform:translate3d(1.2%,.6%,0) rotate(1.6deg); }
     75%{ transform:translate3d(-.6%,1%,0) rotate(-1.2deg); }
   }
-  /* rests at home, accelerates straight down off-screen, teleports to the
-     top-left while invisible, then decelerates back into the exact same spot */
+  /* rests at home, then makes a slow, occasional flight: lifts straight UP and a
+     touch left — above the glass cards and away from the Accelerator/Pitch
+     neighbours — hovers, then settles back into the exact home spot. */
   @keyframes compass-fly{
-    /* rest at home, then accelerate toward the corner */
-    0%,42%{ transform:scale(.9) translate(0,0) rotate(0deg); opacity:1;
-      animation-timing-function:cubic-bezier(.5,0,.85,.22); }
-    /* still fully visible, streaking down-right past the Pitch Competition card */
-    52%{ transform:scale(.86) translate(98%,86%) rotate(-3deg); opacity:1; }
-    /* vanish only at the very end, deep in the bottom-right corner */
-    57%{ transform:scale(.8) translate(172%,150%) rotate(-5deg); opacity:0; }
-    /* hidden: teleport to the top-LEFT corner, ready to swoop back in */
-    58%{ transform:scale(1) translate(-172%,-150%) rotate(9deg); opacity:0;
-      animation-timing-function:cubic-bezier(.16,.86,.28,1); }   /* fast in, then strong braking */
-    /* swoop in from the top-left and OVERSHOOT onto accel/grant, banked ~7–8° */
-    78%{ transform:scale(.98) translate(50%,24%) rotate(7deg); opacity:1;
-      animation-timing-function:cubic-bezier(.4,0,.25,1); }
-    /* ease back up-left into the exact home spot and level out */
-    90%,100%{ transform:scale(.9) translate(0,0) rotate(0deg); opacity:1; }
+    0%,62%{ transform:scale(.9) translate(0,0) rotate(0deg); opacity:1;
+      animation-timing-function:cubic-bezier(.45,0,.35,1); }
+    78%{ transform:scale(.85) translate(-8%,-52%) rotate(-5deg); opacity:1;
+      animation-timing-function:cubic-bezier(.4,0,.4,1); }
+    92%,100%{ transform:scale(.9) translate(0,0) rotate(0deg); opacity:1; }
   }
   @media (prefers-reduced-motion: reduce){
     .ab-bento__card--hero .ab-bento__bgimg,
