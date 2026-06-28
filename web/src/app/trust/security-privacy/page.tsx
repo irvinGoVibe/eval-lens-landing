@@ -113,6 +113,7 @@ export default function SecurityPrivacyPage() {
           version={2}
           eyebrow="Controlled workspace"
           title="Each batch stays inside a controlled workspace"
+          titleAccent="workspace"
           sub="Evaluation runs inside a workspace owned by the organizer. Access is scoped to the people and roles that belong to that project."
           items={[
             {
@@ -218,8 +219,8 @@ export default function SecurityPrivacyPage() {
         <EditorialSplit
           surface="ink"
           version={1}
-          ariaLabel="Human in the loop"
-          eyebrow="Human in the loop"
+          ariaLabel="Human-in-the-loop"
+          eyebrow="Human-in-the-loop"
           titleLead="The final decision stays"
           titleAccent="human"
           sub="EvalLense prepares the analysis. The organizer reviews it, sets the final scores, and decides how the report is used. AI does not become the final judge."

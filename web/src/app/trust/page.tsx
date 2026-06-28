@@ -216,7 +216,7 @@ export default function TrustHubPage() {
                 <span className="dot" aria-hidden="true"></span>
                 The section, mapped
               </span>
-              <h2 className="title">Five pages, one click away</h2>
+              <h2 className="title">Five pages, <span className="grad-word">one click away</span></h2>
               <p className="sub">
                 Each layer of trust is its own page. Open the one that answers
                 your question.
@@ -259,7 +259,7 @@ export default function TrustHubPage() {
                     <span className="dot" aria-hidden="true"></span>
                     Layers of trust
                   </span>
-                  <h2 className="title">Trust, one layer at a time</h2>
+                  <h2 className="title">Trust, <span className="grad-word">one layer at a time</span></h2>
                   <p className="sub">
                     Confidence in a score builds across four layers. Each lights
                     up as you scroll — follow it to its page.
@@ -310,7 +310,7 @@ export default function TrustHubPage() {
                 <span className="dot" aria-hidden="true"></span>
                 Where it&apos;s applied
               </span>
-              <h2 className="title">Built for high-stakes evaluation</h2>
+              <h2 className="title">Built for <span className="grad-word">high-stakes</span> evaluation</h2>
               <p className="sub">
                 The same trust layer supports decisions across very different
                 programs — scroll through, then see the full picture.
@@ -352,7 +352,8 @@ export default function TrustHubPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              See how the evaluation holds up on your own decks
+              See how the evaluation holds up on{" "}
+              <span className="grad-word">your own decks</span>
             </h2>
             <p
               className="sub hub-cta__sub"

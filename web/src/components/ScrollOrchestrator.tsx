@@ -1704,9 +1704,9 @@ function runScript() {
 
       // "Extract signals" scans the messy decks, then near its END squares
       // them into an even 2×2 grid (this used to live in stage 3).
-      const SQUARE_AT = 0.78;
+      const SQUARE_AT = 0.88;
       const sqFade =
-        stage === 2 ? Math.max(0, Math.min(1, (frac - SQUARE_AT) / 0.18)) : 0;
+        stage === 2 ? Math.max(0, Math.min(1, (frac - SQUARE_AT) / 0.10)) : 0;
       beamEl.style.opacity = stage === 2 ? (1 - sqFade).toFixed(2) : "0";
       if (stage === 2 && deckfield) {
         const h = deckfield.clientHeight || 420;
@@ -1717,8 +1717,9 @@ function runScript() {
 
       tags.forEach((t, i) => {
         const el = t as HTMLElement;
-        // signals pop in during the scan, then fade as the decks square up
-        const show = stage === 2 && frac * tags.length > i;
+        // signals pop in EARLY during the scan and linger (all up by ~40% of the
+        // stage) so they stay readable, then fade only as the decks square up
+        const show = stage === 2 && frac * tags.length * 2.3 > i;
         el.style.opacity = show ? (1 - sqFade).toFixed(2) : "0";
         el.style.transform = show ? "translateY(0) scale(1)" : "translateY(6px) scale(.96)";
       });
@@ -1915,47 +1916,118 @@ function runScript() {
      ============================================================ */
   (function initDeckCardPhysics() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const section = document.getElementById("decisions");
     const deckfield = document.querySelector("#decisions .deckfield") as HTMLElement | null;
-    if (!deckfield) return;
+    if (!section || !deckfield) return;
+    const win = document.getElementById("sd-window");
     const cards = Array.from(deckfield.querySelectorAll(".deck")) as HTMLElement[];
+    if (!cards.length) return;
 
-    cards.forEach((card) => {
-      let pressing = false;
+    // cards only float / drag in the scattered idle state (Analyzing = stage 1)
+    const idle = () => (win?.getAttribute("data-stage") ?? "1") === "1";
+    // drag is a mouse affordance only — on touch, leave scrolling intact
+    const canDrag = window.matchMedia("(pointer: fine)").matches;
+    if (canDrag) section.setAttribute("data-can-grab", "");
 
-      const reset = () => {
-        card.style.setProperty("--card-tx", "0px");
-        card.style.setProperty("--card-ty", "0px");
-        card.style.setProperty("--card-scale", "1");
-        pressing = false;
-      };
+    type DeckState = {
+      el: HTMLElement;
+      ax: number; ay: number; // float amplitude (px)
+      fx: number; fy: number; // float frequency (Hz-ish)
+      px: number; py: number; // phase offset
+      tx: number; ty: number; // applied offset
+      scale: number; targetScale: number;
+      mode: "float" | "drag" | "return";
+      baseTX: number; baseTY: number; // float offset captured at grab
+      grabX: number; grabY: number; // pointer origin
+      dragTX: number; dragTY: number; // drag target
+      maxPull: number; // magnet limit ≈ half a card length
+    };
 
-      const track = (e: MouseEvent) => {
-        const rect = card.getBoundingClientRect();
-        const dx = (e.clientX - (rect.left + rect.width * 0.5)) / (rect.width * 0.5);
-        const dy = (e.clientY - (rect.top + rect.height * 0.5)) / (rect.height * 0.5);
-        const amp = pressing ? 6 : 3;
-        card.style.setProperty("--card-tx", (-dx * amp).toFixed(1) + "px");
-        card.style.setProperty("--card-ty", (-dy * amp).toFixed(1) + "px");
-      };
+    const states: DeckState[] = cards.map((el, i) => ({
+      el,
+      ax: 8 + (i % 2) * 5,
+      ay: 10 + ((i + 1) % 2) * 5,
+      fx: 0.052 + i * 0.009,
+      fy: 0.043 + i * 0.0075,
+      px: i * 1.7,
+      py: i * 2.3,
+      tx: 0, ty: 0, scale: 1, targetScale: 1,
+      mode: "float",
+      baseTX: 0, baseTY: 0, grabX: 0, grabY: 0, dragTX: 0, dragTY: 0,
+      maxPull: 80,
+    }));
 
-      card.addEventListener("mousemove", track);
-      card.addEventListener("mousedown", (e) => {
-        pressing = true;
-        track(e);
-        card.style.setProperty("--card-scale", "0.966");
+    function release(s: DeckState, pointerId?: number) {
+      if (s.mode !== "drag") return;
+      s.mode = "return";
+      s.targetScale = 1;
+      s.el.classList.remove("dragging");
+      if (pointerId != null) {
+        try { s.el.releasePointerCapture(pointerId); } catch { /* already released */ }
+      }
+    }
+
+    if (canDrag) states.forEach((s) => {
+      s.el.addEventListener("pointerdown", (e: PointerEvent) => {
+        if (!idle() || e.button !== 0) return;
+        e.preventDefault();
+        s.mode = "drag";
+        s.baseTX = s.tx; s.baseTY = s.ty;
+        s.grabX = e.clientX; s.grabY = e.clientY;
+        s.dragTX = s.tx; s.dragTY = s.ty;
+        s.targetScale = 1.05;
+        s.maxPull = s.el.getBoundingClientRect().width * 0.5; // ~half card length
+        s.el.classList.add("dragging");
+        try { s.el.setPointerCapture(e.pointerId); } catch { /* unsupported */ }
       });
-      card.addEventListener("mouseup", () => {
-        pressing = false;
-        card.style.setProperty("--card-scale", "1");
+      s.el.addEventListener("pointermove", (e: PointerEvent) => {
+        if (s.mode !== "drag") return;
+        const rawX = e.clientX - s.grabX;
+        const rawY = e.clientY - s.grabY;
+        const dist = Math.hypot(rawX, rawY) || 1;
+        const max = s.maxPull;
+        // rubber-band: smoothly approaches the limit, never crosses it
+        const pulled = max * Math.tanh(dist / max);
+        const k = pulled / dist;
+        s.dragTX = s.baseTX + rawX * k;
+        s.dragTY = s.baseTY + rawY * k;
+        // pulled to the limit → auto-release from the cursor and spring home
+        if (dist >= max) release(s, e.pointerId);
       });
-      card.addEventListener("mouseleave", reset);
+      const up = (e: PointerEvent) => release(s, e.pointerId);
+      s.el.addEventListener("pointerup", up);
+      s.el.addEventListener("pointercancel", up);
     });
 
-    // safety: release scale if mouse-up happens outside the card
-    document.addEventListener("mouseup", () => {
-      cards.forEach((card) => {
-        card.style.setProperty("--card-scale", "1");
-      });
-    });
+    const t0 = performance.now();
+    (function frame(now: number) {
+      const t = (now - t0) / 1000;
+      const active = idle();
+      const TAU = Math.PI * 2;
+      for (const s of states) {
+        const gx = active ? Math.sin(t * s.fx * TAU + s.px) * s.ax : 0;
+        const gy = active ? Math.cos(t * s.fy * TAU + s.py) * s.ay : 0;
+        if (!active && s.mode !== "float") {
+          s.mode = "float";
+          s.el.classList.remove("dragging");
+        }
+        if (s.mode === "drag") {
+          s.tx += (s.dragTX - s.tx) * 0.4;
+          s.ty += (s.dragTY - s.ty) * 0.4;
+        } else if (s.mode === "return") {
+          // spring back to the live floating baseline, then hand back to float
+          s.tx += (gx - s.tx) * 0.12;
+          s.ty += (gy - s.ty) * 0.12;
+          if (Math.abs(s.tx - gx) < 0.5 && Math.abs(s.ty - gy) < 0.5) s.mode = "float";
+        } else {
+          s.tx = gx; s.ty = gy;
+        }
+        s.scale += (s.targetScale - s.scale) * 0.2;
+        s.el.style.setProperty("--card-tx", s.tx.toFixed(1) + "px");
+        s.el.style.setProperty("--card-ty", s.ty.toFixed(1) + "px");
+        s.el.style.setProperty("--card-scale", s.scale.toFixed(3));
+      }
+      requestAnimationFrame(frame);
+    })(t0);
   })();
 }

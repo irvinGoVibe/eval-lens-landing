@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
+import { BlobField } from "@/components/BlobField";
 import {
   Button,
   Cinema,
@@ -297,7 +298,8 @@ function WorkflowLensScene() {
   ];
 
   return (
-    <section className="band soft usecases-lens" aria-label="Workflow lens visual">
+    <section className="band soft usecases-lens blob-host" aria-label="Workflow lens visual">
+      <BlobField />
       <div className="wrap usecases-lens__stage" data-reveal="up">
         <div className="usecases-lens__deckfield" aria-hidden="true">
           {Array.from({ length: 10 }).map((_, index) => (
@@ -334,7 +336,8 @@ function NarrativeControlGrid() {
         <div className="usecases-control__copy" data-reveal="up">
           <p className="usecases-kicker">Shared pressure</p>
           <h2>
-            The best teams are not always the easiest ones to notice
+            The best teams are not always the easiest ones to{" "}
+            <span className="grad-word">notice</span>
           </h2>
           <p>
             Every selection program hits the same bottleneck. A careful review
@@ -381,7 +384,7 @@ function SelectionRoomScene() {
       <div className="wrap usecases-room__grid">
         <div className="usecases-room__statement" data-reveal="up">
           <p className="usecases-kicker">Before the meeting</p>
-          <h2>Turn a pile of decks into a room the jury can read</h2>
+          <h2>Turn a pile of decks into a <span className="grad-word">room the jury can read</span></h2>
           <p>
             EvalLense is strongest when the team needs to move from raw
             submissions to a shared review surface: intake, evidence, comparison,
@@ -425,7 +428,7 @@ function FieldedUseCaseCards() {
     >
       <div className="wrap">
         <div className="usecases-sectionhead" data-reveal="up">
-          <h2>Pick the workflow that looks like yours</h2>
+          <h2>Pick the workflow that <span className="grad-word">looks like yours</span></h2>
           <p>
             Different teams use EvalLense for different selection jobs. The
             common pattern is the same: many submissions, limited review
@@ -494,6 +497,7 @@ function ReviewPacketScene() {
       <div className="wrap usecases-packet__grid">
         <div className="usecases-packet__media uc-glass" data-reveal="up">
           <Image
+            className="ev-drift"
             src="/assets/bento/scoring-matrix.png"
             alt=""
             fill
@@ -506,7 +510,7 @@ function ReviewPacketScene() {
           </div>
         </div>
         <div className="usecases-packet__copy" data-reveal="up">
-          <h2>Not another list of use cases. A repeatable review packet.</h2>
+          <h2>Not another list of use cases. A repeatable <span className="grad-word">review packet</span>.</h2>
           <p>
             The segment changes, but the useful output is consistent. The team
             gets a structured first read, a comparison board, and the questions
@@ -534,10 +538,11 @@ function ReviewPacketScene() {
 
 function WorkflowDossierTrio() {
   return (
-    <section className="band soft usecases-dossier" aria-label="Primary workflows">
+    <section className="band soft usecases-dossier blob-host" aria-label="Primary workflows">
+      <BlobField variant="b" />
       <div className="wrap">
         <div className="usecases-sectionhead" data-reveal="up">
-          <h2>Start with the workflows we see most</h2>
+          <h2>Start with the <span className="grad-word">workflows we see most</span></h2>
           <p>
             EvalLense can support many selection programs. These three are the
             clearest starting points today.
@@ -597,7 +602,7 @@ function SignalYieldScene() {
       <div className="wrap usecases-yield__grid">
         <div className="usecases-yield__copy" data-reveal="up">
           <p className="usecases-kicker">What you get</p>
-          <h2>More signal before the final call</h2>
+          <h2>More <span className="grad-word">signal</span> before the final call</h2>
           <p>
             Regardless of the segment, EvalLense gives the team the same
             operating advantage: less raw pre-reading, more structured
@@ -635,7 +640,7 @@ function ScopeRoadmapLedger() {
       <div className="wrap usecases-ledger-layout">
         <div className="usecases-ledger__copy" data-reveal="up">
           <p className="usecases-kicker">Current coverage</p>
-          <h2>Built around pitch-deck evaluation first</h2>
+          <h2>Built around <span className="grad-word">pitch-deck evaluation</span> first</h2>
           <p>
             EvalLense is strongest today where the source material is a pitch
             deck and the job is a structured first read. More segment-specific
@@ -689,7 +694,7 @@ export default function UseCasesPage() {
           titleLead="One review system for every"
           titleAccent="high-stakes"
           titleTrail="shortlist"
-          sub="Use EvalLense anywhere a batch of pitch decks has to become a shortlist your team can explain - competitions, funds, accelerators, hackathons, universities, grants, and corporate programs."
+          sub="Use EvalLense anywhere a batch of pitch decks has to become a shortlist your team can explain — competitions, funds, accelerators, hackathons, universities, grants, and corporate programs."
           ctas={[
             { label: "Find your workflow", href: "#workflows" },
             { label: "Book a Demo", href: "/company/contact" },

@@ -35,6 +35,46 @@ export interface LoopRow {
 
 /** The three valid Newsroom rubrics (Story 03). */
 const CATEGORIES: readonly Category[] = ["Press Release", "Product", "Research"];
+const LOCAL_ARTICLE_MEDIA_SLUG = "from-ai-jury-to-evallense";
+const LOCAL_ARTICLE_MEDIA_NAMES = [
+  "cover",
+  "pipeline",
+  "modes",
+  "routing",
+  "rubric",
+  "disagreement",
+  "brand-evolution",
+] as const;
+
+type LocalArticleMediaName = (typeof LOCAL_ARTICLE_MEDIA_NAMES)[number];
+
+function localArticleMediaPath(name: LocalArticleMediaName): string {
+  return `/assets/blog/${LOCAL_ARTICLE_MEDIA_SLUG}/${name}.png`;
+}
+
+function rewriteFromAiJuryMedia(value: string): string {
+  return LOCAL_ARTICLE_MEDIA_NAMES.reduce((body, name) => {
+    const localPath = localArticleMediaPath(name);
+    const remoteUrl = new RegExp(
+      `https://[^\\s)"']+/media/(?:bento|photos)/${LOCAL_ARTICLE_MEDIA_SLUG}/${name}\\.webp(?:\\?[^\\s)"']*)?`,
+      "g",
+    );
+
+    return body.replace(remoteUrl, localPath);
+  }, value);
+}
+
+function rewriteArticleMedia(row: ArticleRow, post: Post): Post {
+  if (row.slug !== LOCAL_ARTICLE_MEDIA_SLUG) {
+    return post;
+  }
+
+  return {
+    ...post,
+    cover: localArticleMediaPath("cover"),
+    body: rewriteFromAiJuryMedia(post.body),
+  };
+}
 
 /**
  * Normalize a DB `category` string against the three-value taxonomy. The DB
@@ -50,7 +90,7 @@ function normalizeCategory(value: string): Category {
 }
 
 export function mapArticle(row: ArticleRow): Post {
-  return {
+  return rewriteArticleMedia(row, {
     slug: row.slug,
     category: normalizeCategory(row.category),
     accent: row.accent as Accent,
@@ -65,7 +105,7 @@ export function mapArticle(row: ArticleRow): Post {
     // column may still be a JSONB Block[]; coerce non-strings to "" so the
     // renderer never receives a non-string body.
     body: typeof row.body === "string" ? row.body : "",
-  };
+  });
 }
 
 export function mapLoopPost(row: LoopRow): LoopPost {

@@ -87,16 +87,26 @@ function MediaSlot({
   reveal: "left" | "right";
 }) {
   if (media.src) {
+    // reveal stays on the outer wrapper; `.ev-float` sits BETWEEN it and the
+    // <img> so the float transform composes with the reveal transform (and with
+    // any per-page scale injection on `.ds-split__media--img`) instead of
+    // fighting it.
     return (
-      <Image
-        className="ds-split__media ds-split__media--img"
-        src={media.src}
-        alt={media.ariaLabel}
-        width={media.width ?? 1672}
-        height={media.height ?? 941}
-        sizes="(max-width:880px) 90vw, 640px"
-        data-reveal={reveal}
-      />
+      <span className="ds-split__media" data-reveal={reveal}>
+        <span
+          className="ev-float"
+          style={{ display: "block", width: "100%", height: "100%" } as CSSProperties}
+        >
+          <Image
+            className="ds-split__media--img"
+            src={media.src}
+            alt={media.ariaLabel}
+            width={media.width ?? 1672}
+            height={media.height ?? 941}
+            sizes="(max-width:880px) 90vw, 640px"
+          />
+        </span>
+      </span>
     );
   }
   return (

@@ -288,14 +288,14 @@ export default function ProductOverviewPage() {
           }}
         />
 
-        {/* §2. Organizer path → LabPinnedSteps (soft / light, 7 pinned steps). */}
+        {/* §2. Organizer path → PinnedSteps (ink, 7 pinned steps) — baked to v1. */}
         <PinnedSteps
           id="path"
           surface="ink"
-          version={3}
+          version={1}
           ariaLabel="The organizer path — seven steps"
           eyebrow="How it works"
-          title={{ line1: "The organizer path,", line2: "in seven steps" }}
+          title={{ line1: "The organizer path,", line2: "in", line2Accent: "seven steps" }}
           sub="EvalLense walks you from sign-in to a ranked leaderboard. The path is fixed, and each step lights up as you scroll."
           steps={PATH_STEPS}
           media={{
@@ -313,6 +313,7 @@ export default function ProductOverviewPage() {
           version={1}
           eyebrow="Evaluation pipeline"
           title="Every deck runs the same five stages"
+          titleAccent="five stages"
           sub="Each application passes a fixed pipeline. The numeric layer is deterministic — the same findings and weights produce the same AI Total Score, an advisory reference. Ranking is built from your score, not this one."
           items={PIPELINE.map((p) => ({
             num: p.num,
@@ -333,6 +334,7 @@ export default function ProductOverviewPage() {
           version={1}
           eyebrow="Three modules"
           title="One product, three connected modules"
+          titleAccent="connected modules"
           sub="An Entry Hub for intake, Evidence-Based Reports for the analysis, and a Review Board where a person makes the call."
           items={MODULES.map((m) =>
             m.feature
@@ -355,6 +357,7 @@ export default function ProductOverviewPage() {
           version={4}
           eyebrow="AI jury"
           title="Six independent judges, six lenses"
+          titleAccent="six lenses"
           sub="Evaluation runs through a jury of six AI judges, each with its own lens across P1–P6. They work independently and never see one another's scores — and where they disagree, the report shows it."
           laneLabel="The six AI judges — horizontally scrollable"
           items={JUDGES.map((j) => ({
@@ -374,7 +377,7 @@ export default function ProductOverviewPage() {
                 <span className="dot" aria-hidden="true"></span>
                 Why it matters
               </span>
-              <h2 className="title" data-reveal="down" style={{ "--reveal-delay": "70ms" } as CSSProperties}>Less manual review, a clearer trail</h2>
+              <h2 className="title" data-reveal="down" style={{ "--reveal-delay": "70ms" } as CSSProperties}>Less manual review, a <span className="grad-word">clearer trail</span></h2>
               <p className="sub" data-reveal="down" style={{ "--reveal-delay": "140ms" } as CSSProperties}>
                 EvalLense cuts the hours spent reading decks by hand, holds every
                 evaluation to one standard, and leaves your team a decision trail
@@ -404,6 +407,7 @@ export default function ProductOverviewPage() {
           version={1}
           eyebrow="What you get"
           title="Everything a run leaves behind"
+          titleAccent="Everything"
           sub="After a batch runs, you're left with a structured set of outputs — not a folder of scattered files and threads."
           items={OUTPUTS}
         />

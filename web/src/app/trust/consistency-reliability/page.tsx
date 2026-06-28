@@ -10,10 +10,13 @@ import {
   PinnedSteps,
   Eyebrow,
 } from "@/components/ds";
-import Image from "next/image";
 import { BentoHorse } from "@/components/sections/BentoHorse";
 import { Button } from "@/components/ui/Button";
 import { DelayedLoopVideo } from "@/components/DelayedLoopVideo";
+import { SpreadLensScene } from "@/components/SpreadLensScene";
+import { FloatFx } from "@/components/FloatFx";
+import { UnicornEggBadge, UnicornSpeech } from "@/components/UnicornEgg";
+import { BlobField } from "@/components/BlobField";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -150,8 +153,10 @@ export default function ConsistencyReliabilityPage() {
 
         {/* 2. The problem with one number — local EditorialSplit v1 layout with a
             real image in the media slot (page-local; shared component untouched). */}
-        <section id="one-number" className="band soft ds-split" aria-label="The problem with one number">
+        <section id="one-number" className="band soft ds-split blob-host" aria-label="The problem with one number">
+          <BlobField />
           <div className="wrap ds-split__grid" data-version={1}>
+            <FloatFx />
             <div className="ds-split__copy" data-reveal="left">
               <Eyebrow>The problem with one number</Eyebrow>
               <h2 className="title ds-split__title">
@@ -192,7 +197,7 @@ export default function ConsistencyReliabilityPage() {
                   { kicker: "CONSENSUS", sub: "Judges agree", src: "/assets/consistency/consensus-dial.webp", w: 680, h: 680 },
                   { kicker: "CONFLICT", sub: "Judges are split", src: "/assets/consistency/conflict-dial.webp", w: 680, h: 681 },
                 ] as const
-              ).map((d) => (
+              ).map((d, i) => (
                 <div key={d.kicker} style={{ flex: "1 1 0", minWidth: 0, textAlign: "center" }}>
                   <div
                     style={{
@@ -213,6 +218,7 @@ export default function ConsistencyReliabilityPage() {
                   </div>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
+                    className={i ? "ev-float ev-float--b" : "ev-float"}
                     src={d.src}
                     alt=""
                     width={d.w}
@@ -241,7 +247,9 @@ export default function ConsistencyReliabilityPage() {
         <EditorialSplit
           surface="light"
           eyebrow="Two layers"
-          titleLead="One layer is deterministic. The other is measured."
+          titleLead="One layer is"
+          titleAccent="deterministic."
+          titleTrail=" The other is measured."
           sub="EvalLense separates the math from the judgment and holds each to its own standard."
           points={[
             {
@@ -287,9 +295,10 @@ export default function ConsistencyReliabilityPage() {
 
           /* §5 Spread — the three-target art is CUT into three separate lenses
              (assets spread-target-consensus|split|conflict, sliced from -04),
-             each enlarged ~30% and floated OPPOSITE its threshold block:
-             Consensus upper + right, Split centred, Conflict lower + right.
-             Tune per lens via --w-* (size) and the top/left values below. */
+             each enlarged ~30% and STAGGERED left/right/left so the lenses never
+             overlap: Consensus (top) far left, Split (middle) right — clearing
+             both neighbours where it overlaps them vertically — Conflict (bottom)
+             far left again. Tune per lens via --w-* (size) and top/left below. */
           #spread .lab-process__node{ position: relative; z-index: 0; overflow: visible; }
           #spread .lab-process__copy{ position: relative; z-index: 2; }
           .cr-spread-scene{ position: relative; width: 100%; min-height: clamp(440px, 48vw, 600px); }
@@ -297,9 +306,9 @@ export default function ConsistencyReliabilityPage() {
             position: absolute; height: auto; display: block;
             filter: drop-shadow(0 18px 42px rgba(60,40,160,.4));
           }
-          .cr-lens--consensus{ width: var(--w-con, clamp(150px,16vw,200px)); top: 1%;  left: 30%; z-index: 1; }
-          .cr-lens--split{     width: var(--w-spl, clamp(168px,18vw,224px)); top: 33%; left: 50%; transform: translateX(-50%); z-index: 3; }
-          .cr-lens--conflict{  width: var(--w-cnf, clamp(166px,18vw,222px)); top: 63%; left: 42%; z-index: 2; }
+          .cr-lens--consensus{ width: var(--w-con, clamp(150px,16vw,200px)); top: 1%;  left: 2%;  z-index: 1; }
+          .cr-lens--split{     width: var(--w-spl, clamp(168px,18vw,224px)); top: 33%; left: 54%; transform: none; z-index: 3; }
+          .cr-lens--conflict{  width: var(--w-cnf, clamp(166px,18vw,222px)); top: 63%; left: 2%;  z-index: 2; }
           @media (max-width: 880px){
             .cr-spread-scene{ min-height: 0; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
             .cr-spread-scene .cr-lens{ position: static; transform: none; width: min(30%, 150px); }
@@ -313,34 +322,7 @@ export default function ConsistencyReliabilityPage() {
           title={{ line1: "When judges", line1Accent: "split,", line2: "the report says so" }}
           sub="EvalLense tracks the spread between judges on each dimension and turns it into a clear label. A high spread does not lower the score automatically. It routes your attention to the decks worth a closer look. It is a signal, not a penalty."
           steps={SPREAD_STEPS}
-          mediaNode={
-            <div className="cr-spread-scene" aria-hidden="true">
-              <Image
-                className="cr-lens cr-lens--consensus"
-                src="/assets/consistency/spread-target-consensus.webp"
-                alt=""
-                width={474}
-                height={638}
-                sizes="(max-width:880px) 30vw, 200px"
-              />
-              <Image
-                className="cr-lens cr-lens--split"
-                src="/assets/consistency/spread-target-split.webp"
-                alt=""
-                width={543}
-                height={650}
-                sizes="(max-width:880px) 30vw, 224px"
-              />
-              <Image
-                className="cr-lens cr-lens--conflict"
-                src="/assets/consistency/spread-target-conflict.webp"
-                alt=""
-                width={540}
-                height={645}
-                sizes="(max-width:880px) 30vw, 222px"
-              />
-            </div>
-          }
+          mediaNode={<SpreadLensScene />}
           media={{
             ratio: "1692/930",
             label: "Image · disagreement targets · wide",
@@ -352,7 +334,14 @@ export default function ConsistencyReliabilityPage() {
 
         {/* 6. Bias controls — page-local `.bias-grid` (CSS already in
             globals.css), light. risk → control. */}
-        <section className="consistency band consistency-bias">
+        <section className="consistency band consistency-bias blob-host">
+          <BlobField variant="b" />
+          <style>{`
+            /* Tighter subheader -> grid gap (globals set an oversized
+               margin-bottom here) + slightly tighter grid gap. */
+            .consistency.consistency-bias .head{ margin-bottom:clamp(22px,3vw,38px); }
+            .consistency.consistency-bias .bias-grid{ gap:clamp(12px,1.6vw,18px); }
+          `}</style>
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -528,6 +517,7 @@ export default function ConsistencyReliabilityPage() {
                 <BenchCard s={BENCHMARK_STATS[2]} />
                 <BenchCard s={BENCHMARK_STATS[3]} />
               </div>
+              <UnicornSpeech />
             </div>
             {/* Benchmark caption — MERGED into the §7 ink section so the bento and
                 the caption are one continuous dark block (kills the white seam
@@ -551,6 +541,7 @@ export default function ConsistencyReliabilityPage() {
               <details className="bench-details">
                 <summary>Benchmark scope &amp; targets</summary>
                 <div className="bench-details__body">
+                  <UnicornEggBadge />
                   <p className="bench-scope">
                     Internal repeatability benchmark: J-P5 Team Readiness, one deck,
                     24 runs, June 2026. A multi-deck regression across the full panel
@@ -562,7 +553,7 @@ export default function ConsistencyReliabilityPage() {
                     schema-valid outputs ≥ 99% · regression pass ≥ 95%.
                   </p>
                   <p className="bench-story">
-                    EvalLense comes from 400+ internal evaluation runs, starting with
+                    EvalLense comes from 1,000+ internal evaluation runs, starting with
                     an Amazon Nova hackathon prototype and the earlier AI Jury system.
                   </p>
                 </div>
@@ -638,6 +629,17 @@ export default function ConsistencyReliabilityPage() {
         {/* 9. Final CTA — StatementHero v1 with a full-bleed muted video
             background (auto scrim + light text + glass CTA). Distinct id so it
             doesn't collide with the page-top hero's id="hero". */}
+        {/* page-local: fade the CTA video in from black at its top so it blends
+            into the §8 ink section above instead of a hard seam. The fade sits at
+            z-index 0 inside .ds-hero__v--media — above the video (-2) and scrim
+            (-1), below the text overlay (1). Shared component untouched. */}
+        <style>{`
+          #get-started .ds-hero__v--media::before{
+            content:""; position:absolute; left:0; right:0; top:0; z-index:0;
+            height:clamp(140px,20vh,260px); pointer-events:none;
+            background:linear-gradient(180deg, #05050a 0%, rgba(5,5,10,.55) 44%, transparent 100%);
+          }
+        `}</style>
         <StatementHero
           id="get-started"
           surface="light"

@@ -1,13 +1,15 @@
 import type { CSSProperties } from "react";
 import { Button } from "@/components/ui/Button";
+import { BlobField } from "@/components/BlobField";
 
 export function Decisions() {
   return (
     <section
-      className="band soft"
+      className="band soft blob-host"
       id="decisions"
       data-screen-label="04 From messy decks to faster decisions"
     >
+      <BlobField />
       <div className="wrap">
         <div className="head reveal">
           <span className="eyebrow">
@@ -169,41 +171,12 @@ export function Decisions() {
                       Scanning 4 of 123 · extracting signals
                     </div>
 
-                    <div className="deck k1">
-                      <div className="dname">NovaPay</div>
-                      <span className="meta">PDF · 19 slides</span>
-                      <div className="bars">
-                        <span style={{ width: "90%" }}></span>
-                        <span style={{ width: "70%" }}></span>
-                        <span style={{ width: "80%" }}></span>
-                      </div>
-                    </div>
-                    <div className="deck k2">
-                      <div className="dname">TutorVerse</div>
-                      <span className="meta">Keynote · 11 slides</span>
-                      <div className="bars">
-                        <span style={{ width: "80%" }}></span>
-                        <span style={{ width: "55%" }}></span>
-                      </div>
-                    </div>
-                    <div className="deck k3">
-                      <div className="dname">LedgerLoop</div>
-                      <span className="meta">PDF · 27 slides</span>
-                      <div className="bars">
-                        <span style={{ width: "85%" }}></span>
-                        <span style={{ width: "65%" }}></span>
-                        <span style={{ width: "75%" }}></span>
-                        <span style={{ width: "50%" }}></span>
-                      </div>
-                    </div>
-                    <div className="deck k4">
-                      <div className="dname">Orchestrix AI</div>
-                      <span className="meta">Docs · 8 slides</span>
-                      <div className="bars">
-                        <span style={{ width: "60%" }}></span>
-                        <span style={{ width: "80%" }}></span>
-                      </div>
-                    </div>
+                    {/* deck cards — rendered as prepared glass images via CSS
+                        background (vertical render on desktop, wide on phone) */}
+                    <div className="deck k1" role="img" aria-label="NovaPay pitch deck"></div>
+                    <div className="deck k2" role="img" aria-label="TutorVerse pitch deck"></div>
+                    <div className="deck k3" role="img" aria-label="LedgerLoop pitch deck"></div>
+                    <div className="deck k4" role="img" aria-label="Orchestrix AI pitch deck"></div>
 
                     <div className="beam" id="sd-beam"></div>
 

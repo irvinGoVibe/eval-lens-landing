@@ -10,6 +10,7 @@ import {
   NewsroomCarousel,
 } from "@/components/sections/NewsroomCarousel";
 import { getFeaturedPosts } from "@/lib/blog";
+import { BlobField } from "@/components/BlobField";
 
 export async function HomeBlogBlock() {
   const posts = await getFeaturedPosts(6);
@@ -25,7 +26,8 @@ export async function HomeBlogBlock() {
   }));
 
   return (
-    <section className="home-blog reveal" id="home-blog">
+    <section className="home-blog reveal blob-host" id="home-blog">
+      <BlobField variant="b" />
       <div className="wrap">
         <div className="home-blog__head">
           <h2 className="home-blog__title">From the Newsroom</h2>

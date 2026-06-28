@@ -9,6 +9,7 @@ import { ReviewBoardMockup } from "@/components/ReviewBoardMockup";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
+import { FloatFx } from "@/components/FloatFx";
 import {
   StatementHero,
   Numbered,
@@ -41,6 +42,7 @@ export default function ReviewBoardPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} />
+      <FloatFx />
       <main className="review-board section-lab ds ds-canvas">
         {/* ── Primary dark bg — OUTSIDE the zone, position:fixed (viewport-sized).
             Must NOT be inside .ds-zone with --contained: that forces position:absolute
@@ -241,8 +243,8 @@ export default function ReviewBoardPage() {
         <PinnedSteps
           id="hitl"
           surface="ink"
-          ariaLabel="Human in the loop — four steps from AI report to final ranking"
-          eyebrow="Human in the loop"
+          ariaLabel="Human-in-the-loop — four steps from AI report to final ranking"
+          eyebrow="Human-in-the-loop"
           title={{
             line1: "Four steps from",
             line2: "report to",
@@ -273,7 +275,7 @@ export default function ReviewBoardPage() {
           ]}
           mediaNode={
             <img
-              className="lab-process__shot"
+              className="lab-process__shot ev-float"
               src="/assets/review-board/hitl-scores.webp"
               alt="The advisory AI Score beside the human Jury Score, with the resulting leaderboard"
               width={1600}

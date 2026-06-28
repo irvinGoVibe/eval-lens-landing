@@ -23,6 +23,20 @@ export function Workflow() {
       <div className="workflow-heading-slot" aria-hidden="true"></div>
       <div className="wf-scroll" id="wf-scroll">
         <div className="wf-sticky">
+          {/* floating glass objects — behind + in front of the window mockup
+              (decorative, pointer-events:none). Reference for the homepage float
+              treatment; reduced-motion + mobile drop them. */}
+          <div className="wf-floats wf-floats--back" aria-hidden="true">
+            {/* eslint-disable @next/next/no-img-element */}
+            <img className="wf-float wf-float--a" alt="" src="/assets/backgrounds/blobs/sphere_large.png" />
+            <img className="wf-float wf-float--b" alt="" src="/assets/backgrounds/blobs/blob_four_lobes.png" />
+            <img className="wf-float wf-float--c" alt="" src="/assets/backgrounds/blobs/sphere_small.png" />
+          </div>
+          <div className="wf-floats wf-floats--front" aria-hidden="true">
+            <img className="wf-float wf-float--d" alt="" src="/assets/backgrounds/blobs/sphere_small.png" />
+            <img className="wf-float wf-float--e" alt="" src="/assets/backgrounds/blobs/blob_irregular.png" />
+            {/* eslint-enable @next/next/no-img-element */}
+          </div>
           <div className="wf-grid">
             <div className="wf-railcol">
               <div className="wf-nav" role="group" aria-label="Switch workflow step">

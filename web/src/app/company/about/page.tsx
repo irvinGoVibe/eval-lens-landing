@@ -5,7 +5,11 @@ import { Footer } from "@/components/Footer";
 import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
-import Link from "next/link";
+import { IcpBento } from "@/components/sections/IcpBento";
+import { TeamTilt } from "@/components/TeamTilt";
+import { ParallaxFloat } from "@/components/ParallaxFloat";
+import { Cinema } from "@/components/ds";
+import { BlobField } from "@/components/BlobField";
 
 export const metadata: Metadata = {
   title: "About EvalLense — A better lens for human judgment",
@@ -53,7 +57,7 @@ export const metadata: Metadata = {
  * Copy is AUTHORED by the user (wiki/product/about.md §Контент по секциям) and
  * used verbatim: mission, the problem, the AI Jury → EvalLense story (Amazon
  * Nova hackathon, hundreds of internal runs), four principles, three team bios
- * (Yaroslav Volovoj, Vladislav Starodubov, Arseniy), seven audience segments
+ * (Yaroslav Volovoj, Vladislav Starodubov), seven audience segments
  * and the closing statement. No fabricated facts, no rewritten formulations.
  */
 
@@ -101,100 +105,66 @@ const PRINCIPLES = [
   },
 ];
 
-/* 5. Team — creative pinned reveal (brief §5). `hobby`/`dream` are optional and
-   render as labelled facts only when present (currently Yaroslav). */
+/* 5. Team — founder dossier cards (brief §5). Not a CV: one role, one ownership
+   line, one light human "Off-screen" line, ≤3 chips, a handwritten marker note
+   and a Dream. Premium but human. */
 type TeamMember = {
   surname: string;
   name: string;
   role: string;
   bio: string;
-  hobby?: string;
+  /** Handwritten / marker-style note over the card. */
+  marker?: string;
+  /** One light, human "Off-screen: …" line. */
+  offscreen?: string;
   dream?: string;
+  hobby?: string;
+  /** Transparent cut-out portrait (webp) + its intrinsic size, when shipped. */
+  portrait?: string;
+  pw?: number;
+  ph?: number;
+  /** ≤3 specialization chips. */
+  spec?: readonly string[];
+  signals?: readonly string[];
+  linkedin?: string;
+  telegram?: string;
 };
 const TEAM: TeamMember[] = [
   {
     surname: "Volovoj",
     name: "Yaroslav Volovoj",
-    role: "Product & Sales",
-    bio: "Yaroslav drives product and go-to-market for EvalLense, and built its predecessor — AI Jury — at a hackathon. He shapes what the product evaluates and how teams put it to work.",
-    hobby: "Loves hackathons and sport games.",
-    dream: "Grow a unicorn.",
+    role: "Product & GTM",
+    bio: "Turns messy startup evaluation into a product people can actually use. Owns the review flow, GTM logic, and the bridge from AI Jury to EvalLense.",
+    marker: "Founder mode: on",
+    offscreen: "Off-screen: sharp decks, product calls, and probably a pickleball court.",
+    dream: "Grow a unicorn!",
+    hobby: "Hackathons & sport",
+    portrait: "/assets/about/portrait-yaroslav-2.webp",
+    pw: 1254,
+    ph: 1224,
+    spec: ["Product Strategy", "GTM", "Review UX"],
+    signals: ["Team", "P5", "Verify live"],
+    linkedin: "https://www.linkedin.com/in/yaroslavvolovoj/",
   },
   {
     surname: "Starodubov",
     name: "Vladislav Starodubov",
-    role: "Engineering and Architecture",
-    bio: "Vladislav leads system architecture, engineering delivery, and the AI evaluation pipeline. His focus is reliability, security, and repeatable use at scale.",
-  },
-  {
-    surname: "Arseniy",
-    name: "Arseniy",
-    role: "Product Experience",
-    bio: "Arseniy works on product experience and interface structure. His focus is turning complex reports, workflows, and decision signals into a clear product for organizers and reviewers.",
+    role: "Engineering & Reliability",
+    bio: "Builds the system behind EvalLense: judge orchestration, scoring infrastructure, security, and repeatable evaluation runs.",
+    marker: "Keeps it working",
+    offscreen: "Off-screen: architecture maps, edge cases, and systems that refuse to break.",
+    dream: "Grow a unicorn!",
+    hobby: "Hard work & good company",
+    portrait: "/assets/about/portrait-vladislav-2.webp",
+    pw: 1080,
+    ph: 1377,
+    spec: ["AI Pipeline", "Reliability", "Architecture"],
+    signals: ["Team", "P5", "Verify live"],
+    telegram: "https://t.me/vrway",
   },
 ];
 
-/* 6. Who we build for — ICP workflow cards (content mirrored from the use-cases
-   page WORKFLOWS), rendered here as an INK bento. Each ICP carries the review
-   MOMENT, the JOB, what EvalLense gives, and an Explore link. */
-const ICP_WORKFLOWS = [
-  {
-    segment: "Pitch Competitions",
-    moment: "Before finals day",
-    job: "Move from open submissions to a ranked finalist board.",
-    gives: "One rubric, evidence-linked reports, live questions, and a leaderboard your jury owns.",
-    cta: "Explore pitch competitions",
-  },
-  {
-    segment: "Hackathons",
-    moment: "Before live judging",
-    job: "Review many teams fast and prepare the judge panel.",
-    gives: "A pitch-deck first pass today, with execution-specific hackathon review on the roadmap.",
-    cta: "Explore hackathons",
-  },
-  {
-    segment: "VC Funds",
-    moment: "Before the pipeline meeting",
-    job: "Turn inbound decks into a partner-ready first read.",
-    gives: "Market, team, GTM, feasibility signals, missing evidence, and questions for the first call.",
-    cta: "Explore VC dealflow",
-  },
-  {
-    segment: "Accelerators",
-    moment: "Before cohort selection",
-    job: "Compare applicants on one standard and defend the cohort decision.",
-    gives: "Side-by-side reports, fixed criteria, evidence gaps, risks, and selection questions.",
-    cta: "Explore accelerators",
-  },
-  {
-    segment: "Angel Investors",
-    moment: "Before diligence night",
-    job: "Know which decks deserve your time.",
-    gives: "A structured first read with strengths, weaknesses, missing evidence, and founder questions.",
-    cta: "Explore angel review",
-  },
-  {
-    segment: "Corporate Innovation",
-    moment: "Before stakeholder review",
-    job: "Separate real partnership potential from innovation theatre.",
-    gives: "Fit signals, readiness checks, business value, evidence gaps, and a shortlist for the committee.",
-    cta: "Explore corporate innovation",
-  },
-  {
-    segment: "Grant Programs",
-    moment: "Before funding decisions",
-    job: "Review applications against fixed criteria and keep the decision explainable.",
-    gives: "Comparable scores, evidence-linked reasoning, missing points, and a review trail.",
-    cta: "Explore grants",
-  },
-  {
-    segment: "Universities",
-    moment: "Before demo day or program selection",
-    job: "Compare student and research teams fairly.",
-    gives: "Transparent scoring, useful feedback, presentation questions, and a human-owned ranking.",
-    cta: "Explore universities",
-  },
-];
+
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -212,7 +182,8 @@ export default function AboutPage() {
       <PageHeader nav={HEADER_NAV} />
       <main className="about">
         {/* 1. Hero / mission — statement-hero, light. Visual slot via .media-ph. */}
-        <section className="band soft ab-hero">
+        <section className="band soft ab-hero blob-host">
+          <BlobField />
           {/* Hero observatory PNG tuning — page-local injection (globals untouched):
               enlarge ~10% and pull it up so the top constellation stars sit right
               under the Book a Demo button, while the larger art drops toward the
@@ -260,7 +231,7 @@ export default function AboutPage() {
                 hero and goes large (wider than the text column, capped to the
                 layout). */}
             <Image
-              className="ab-hero__media ab-hero__media--img"
+              className="ab-hero__media ab-hero__media--img ev-drift"
               src="/assets/entry-hub/evallense-observatory-hero-01.png"
               alt="A stream of startup applications passing through a glass lens and becoming structured evidence, risk signals, score cards, and reviewer questions"
               width={1536}
@@ -273,7 +244,8 @@ export default function AboutPage() {
         </section>
 
         {/* 2. The problem — editorial split, light. Authored copy. */}
-        <section className="band ab-problem">
+        <section className="band ab-problem blob-host">
+          <BlobField variant="b" />
           <div className="wrap ab-problem__split">
             <div className="ab-problem__copy" data-reveal="left">
               <span className="eyebrow">
@@ -287,14 +259,14 @@ export default function AboutPage() {
                 enough time to explain the call.
               </p>
             </div>
-            <div className="ab-problem__claim" data-reveal="right">
-              <p className="ab-problem__claim-text">
-                The cost is not just slow review. It is missed signal, weak
-                rationale, and decisions that are hard to defend later.
-              </p>
-              <span className="ab-problem__claim-tag">
-                Missed signal · uneven criteria · weak rationale
-              </span>
+            <div className="ab-problem__media">
+              <Image
+                src="/assets/about/problem-wall.webp"
+                alt="A glass review bench: one pitch deck scored 8.7 with linked evidence, a panel of review pain points — too many decks, not enough time, uneven criteria, reviewer bias, scattered evidence, weak decision trail — and a queue of unscored decks waiting."
+                width={1500}
+                height={844}
+                sizes="(max-width: 980px) 90vw, 46vw"
+              />
             </div>
           </div>
         </section>
@@ -353,32 +325,46 @@ export default function AboutPage() {
                     EvalLense → unicorn). Tall transparent cutout, shown large to
                     fill the pinned stage. The authored pipeline list above was
                     removed in favour of this single image. */}
-                <Image
+                <ParallaxFloat
                   className="ab-story__media ab-story__media--img"
                   src="/assets/methodology/eval-lens-roadmap-vertical-02.png"
                   alt="The EvalLense origin journey: from AI Jury and a hackathon, through brainstorming and lens parts, to the Evaluation Lens and EvalLense"
                   width={781}
                   height={1857}
                   sizes="(max-width: 880px) 70vw, 380px"
-                  data-reveal="scale"
+                  floatY={8}
+                  tilt={5}
                 />
               </div>
             </div>
           </div>
         </section>
 
-        {/* 3b. Story closing statement — full-bleed accent, DARK. */}
-        <section className="band ink ab-story-claim">
-          <div className="wrap ab-story-claim__inner">
-            <p className="ab-story-claim__text" data-reveal="up">
-              AI Jury tried to judge. EvalLense helps people see clearly before
-              they decide.
-            </p>
-          </div>
-        </section>
+        {/* 3b. Story closing statement — now a ds-cinema (ink): the line is
+            knocked out of a black scrim with the background clip showing through
+            the letters. Same copy, cinematic treatment. */}
+        <Cinema
+          id="story-claim"
+          surface="ink"
+          headline="AI Jury tried to judge. EvalLense helps people see clearly before they decide."
+          lines={[
+            "AI Jury tried to judge.",
+            "EvalLense helps people see",
+            "clearly before they decide.",
+          ]}
+          mobileLines={[
+            "AI Jury tried",
+            "to judge.",
+            "EvalLense helps",
+            "people see clearly",
+            "before they decide.",
+          ]}
+          media={{ videoSrc: "/assets/about/about-story-cinema.mp4" }}
+        />
 
         {/* 4. Our principles — bento, light. Authored, verbatim. */}
-        <section id="principles" className="band soft ab-principles">
+        <section id="principles" className="band soft ab-principles blob-host">
+          <BlobField />
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
@@ -458,14 +444,18 @@ export default function AboutPage() {
                   muted
                   loop
                   playsInline
-                  poster="/assets/section2-scroll-2-poster.jpg"
+                  poster="/assets/about/principles-feature-poster.jpg"
                   aria-hidden="true"
                 >
-                  <source src="/assets/backgrounds/bg-abstract-cinematic.mp4" type="video/mp4" />
+                  <source src="/assets/about/principles-feature-bg.mp4" type="video/mp4" />
                 </video>
                 <div className="ab-prin-bento__feature-copy">
                   <span className="ab-prin-bento__feature-eyebrow">Human in the loop</span>
-                  <h3 className="ab-prin-bento__feature-h">{PRINCIPLES[0].title}</h3>
+                  {/* accent the "Humans own" beat with the lens gradient */}
+                  <h3 className="ab-prin-bento__feature-h">
+                    AI prepares the analysis.{" "}
+                    <span className="grad-word">Humans own</span> the decision.
+                  </h3>
                   <p className="ab-prin-bento__feature-p">{PRINCIPLES[0].body}</p>
                 </div>
               </div>
@@ -484,78 +474,114 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 5. Team — creative pinned reveal, DARK. Three members. */}
-        <section
-          id="team"
-          className="band ink ab-team"
-          data-pin
-          data-pin-steps="3"
-          aria-label="The team behind EvalLense"
-        >
-          <div className="ab-team__stage" data-pin-stage>
-            <div className="wrap ab-team__intro">
+        {/* 5. Team — founder dossier cards (Intelligence Wall), DARK. Two glass
+            cards built in code; portraits are real cut-outs, all text is HTML. */}
+        <section id="team" className="band ink ab-founders-sec" aria-label="The team behind EvalLense">
+          <div className="wrap">
+            <div className="head ab-founders__intro" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
                 The team
               </span>
               <h2 className="title">Built by product, engineering, and <span className="grad-word">evaluation</span> people</h2>
+              {/* trust-line — early-team durability: shared context, low founder-
+                  conflict risk. "16+ years" carries the lens gradient. */}
+              <p className="ab-trust">
+                <span className="ab-trust__lead">
+                  Two founders. <span className="ab-trust__years">16+ years</span> of shared context.
+                </span>
+                <span className="ab-trust__sub">
+                  From university friends to building a system for better judgment.
+                </span>
+              </p>
             </div>
-            <div className="wrap ab-team__scene">
+            <div className="ab-founders">
+              <TeamTilt />
               {TEAM.map((m, i) => (
                 <article
                   key={m.name}
-                  className="ab-member"
-                  data-pin-step
-                  style={{ ["--i" as string]: String(i) }}
+                  className="ab-dossier"
+                  data-accent={i === 0 ? "violet" : "cyan"}
+                  data-reveal="up"
+                  style={{ ["--reveal-delay" as string]: `${i * 120}ms` }}
                 >
-                  {/* portrait slot — see prompts 3–5 in file header */}
-                  <figure
-                    className="media-ph ab-member__media"
-                    style={{ ["--ratio" as string]: "3/4" }}
-                    role="img"
-                    aria-label={`Full-height portrait of ${m.name}`}
-                  >
-                    <svg
-                      className="ab-member__avatar"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <circle cx="12" cy="8.5" r="4" />
-                      <path d="M4.5 21c0-4.4 3.4-7.5 7.5-7.5s7.5 3.1 7.5 7.5" />
-                    </svg>
-                    <span className="media-ph__label">
-                      Portrait · {m.name} · 3:4
-                    </span>
-                    <span className="media-ph__hint">
-                      Full-height cut-out, soft violet rim-light, calm — see
-                      prompts 3–5 in file header
-                    </span>
-                  </figure>
-                  <div className="ab-member__copy">
-                    <span className="mini-tag">{m.role}</span>
-                    <h3 className="ab-member__name">{m.name}</h3>
-                    <p className="ab-member__bio">{m.bio}</p>
-                    {m.hobby || m.dream ? (
-                      <dl className="ab-member__facts">
+                  {/* moving brand-colour lamps (on hover) + always-on sheen */}
+                  <span className="ab-dossier__lamps" aria-hidden="true">
+                    <span className="ab-dossier__lamp ab-dossier__lamp--1" />
+                    <span className="ab-dossier__lamp ab-dossier__lamp--2" />
+                    <span className="ab-dossier__lamp ab-dossier__lamp--3" />
+                  </span>
+                  <span className="ab-dossier__sheen" aria-hidden="true" />
+
+                  <div className="ab-dossier__portrait">
+                    <span className="ab-dossier__tag">Founder</span>
+                    {m.spec ? (
+                      <ul className="ab-dossier__specs" aria-label="Focus areas">
+                        {m.spec.map((s) => (
+                          <li key={s} className="ab-spec chip-pulse">{s}</li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    {m.portrait ? (
+                      <Image
+                        className="ab-dossier__photo"
+                        src={m.portrait}
+                        alt={`Portrait of ${m.name}`}
+                        width={m.pw ?? 1200}
+                        height={m.ph ?? 1500}
+                        sizes="(max-width:880px) 90vw, 500px"
+                      />
+                    ) : (
+                      <span className="ab-dossier__photo-ph" aria-hidden="true" />
+                    )}
+                    {m.marker ? (
+                      <span className="ab-dossier__marker">{m.marker}</span>
+                    ) : null}
+                  </div>
+
+                  <div className="ab-dossier__body">
+                    <span className="ab-dossier__role">{m.role}</span>
+                    <h3 className="ab-dossier__name">{m.name}</h3>
+                    <p className="ab-dossier__bio">{m.bio}</p>
+                    {m.offscreen ? (
+                      <p className="ab-dossier__offscreen">{m.offscreen}</p>
+                    ) : null}
+                    <div className="ab-dossier__foot">
+                      <ul className="ab-dossier__pills">
                         {m.hobby ? (
-                          <div className="ab-member__fact">
-                            <dt>Hobby</dt>
-                            <dd>{m.hobby}</dd>
-                          </div>
+                          <li className="ab-pill">
+                            <span className="ab-pill__k">Hobby:</span>
+                            {m.hobby}
+                          </li>
                         ) : null}
                         {m.dream ? (
-                          <div className="ab-member__fact">
-                            <dt>Dream</dt>
-                            <dd>{m.dream}</dd>
-                          </div>
+                          <li className="ab-pill">
+                            <span className="ab-pill__k">Dream:</span>
+                            {m.dream}
+                            <span className="ab-pill__logo" aria-hidden="true" />
+                          </li>
                         ) : null}
-                      </dl>
-                    ) : null}
+                      </ul>
+                      {m.telegram ? (
+                        <a
+                          className="ab-dossier__link"
+                          href={m.telegram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Telegram<span aria-hidden="true"> ↗</span>
+                        </a>
+                      ) : m.linkedin ? (
+                        <a
+                          className="ab-dossier__link"
+                          href={m.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          LinkedIn<span aria-hidden="true"> ↗</span>
+                        </a>
+                      ) : null}
+                    </div>
                   </div>
                 </article>
               ))}
@@ -563,107 +589,25 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 6. Who we build for — ICP workflow BENTO on INK. Page-local inject
-            (no shared component / globals touched): the old light scroll-gallery
-            is replaced by a dark bento of the full ICP set, each card carrying
-            the review MOMENT, the JOB, what EvalLense gives, and an Explore link
-            into the use-cases page. */}
-        <section className="band ink ab-segments ab-icp">
-          <style>{`
-            .ab-icp .head{ text-align:center; max-width:46rem; margin-inline:auto; }
-            .ab-icp__grid{
-              display:grid; grid-template-columns:repeat(auto-fit, minmax(264px,1fr));
-              gap:clamp(14px,1.5vw,22px); margin-top:clamp(36px,5vw,60px); align-items:stretch;
-            }
-            .ab-icp__card{
-              display:flex; flex-direction:column; min-width:0;
-              padding:clamp(22px,2vw,30px);
-              border-radius:clamp(18px,1.6vw,24px);
-              background:color-mix(in oklab, var(--panel) 84%, transparent);
-              border:1px solid var(--border-on-dark-2);
-              box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
-              transition:border-color .3s var(--ease), background .3s var(--ease), transform .3s var(--ease);
-            }
-            .ab-icp__card:hover{
-              border-color:color-mix(in oklab, var(--lavender) 38%, transparent);
-              background:color-mix(in oklab, var(--panel-2) 90%, transparent);
-              transform:translateY(-2px);
-            }
-            .ab-icp__seg{
-              font-family:var(--font-display); font-size:clamp(20px,1.9vw,24px);
-              font-weight:600; letter-spacing:-.015em; color:var(--fg-on-dark);
-              margin:0 0 clamp(14px,1.4vw,18px);
-            }
-            .ab-icp__field{ margin:0 0 14px; }
-            .ab-icp__klabel{
-              display:block; font-family:var(--font-mono); font-size:10.5px;
-              letter-spacing:.16em; text-transform:uppercase; color:var(--lavender); margin-bottom:6px;
-            }
-            .ab-icp__val{ margin:0; font-size:14.5px; line-height:1.5; color:var(--body-on-dark); }
-            .ab-icp__field--gives{ margin-bottom:clamp(18px,1.8vw,22px); }
-            .ab-icp__field--gives .ab-icp__val{ color:var(--muted-on-dark); }
-            .ab-icp__cta{
-              margin-top:auto; display:inline-flex; align-items:center; gap:7px;
-              font-size:14px; font-weight:500; color:var(--lavender); text-decoration:none;
-            }
-            .ab-icp__cta svg{ width:15px; height:15px; transition:transform .25s var(--ease); }
-            .ab-icp__cta:hover{ color:#c8c4f0; }
-            .ab-icp__cta:hover svg{ transform:translateX(3px); }
-            .ab-icp .ab-segments__claim{ color:var(--fg-on-dark); text-align:center; margin-inline:auto; max-width:26ch; }
-            @media (max-width:560px){ .ab-icp__grid{ grid-template-columns:1fr; } }
-          `}</style>
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <span className="eyebrow">
-                <span className="dot" aria-hidden="true"></span>
-                Who we build for
-              </span>
-              <h2 className="title">Built for teams that review at <span className="grad-word">scale</span></h2>
-              <p className="sub">
-                They do not need AI to choose the winner. They need a faster,
-                more consistent way to understand each application, compare
-                participants, and focus human attention on the decisions that
-                matter.
-              </p>
-            </div>
-            <ul
-              className="ab-icp__grid"
-              data-reveal="up"
-              aria-label="Who EvalLense is built for, by review moment"
-            >
-              {ICP_WORKFLOWS.map((w) => (
-                <li key={w.segment} className="ab-icp__card">
-                  <h3 className="ab-icp__seg">{w.segment}</h3>
-                  <div className="ab-icp__field">
-                    <span className="ab-icp__klabel">Moment</span>
-                    <p className="ab-icp__val">{w.moment}</p>
-                  </div>
-                  <div className="ab-icp__field">
-                    <span className="ab-icp__klabel">Job</span>
-                    <p className="ab-icp__val">{w.job}</p>
-                  </div>
-                  <div className="ab-icp__field ab-icp__field--gives">
-                    <span className="ab-icp__klabel">EvalLense gives</span>
-                    <p className="ab-icp__val">{w.gives}</p>
-                  </div>
-                  <Link href="/trust/use-cases" className="ab-icp__cta">
-                    {w.cta}
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
-                      <path d="M3 8h9M9 5l3 3-3 3" />
-                    </svg>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <p className="ab-segments__claim" data-reveal="up">
-              We are not building an artificial jury. We are building a better
-              lens for human judgment.
-            </p>
-          </div>
-        </section>
+                {/* 6. Who we build for - ICP premium bento (encapsulated section). */}
+        <IcpBento />
 
-        {/* 7. Final CTA — quiet CTA, DARK. */}
+{/* 7. Final CTA — quiet CTA, DARK. */}
         <section className="band ink ab-cta">
+          {/* full-bleed looping video background + darkening scrim (same
+              treatment as the other video sections). */}
+          <video
+            className="ab-cta__bg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          >
+            <source src="/assets/about/about-cta-bg.mp4" type="video/mp4" />
+          </video>
+          <div className="ab-cta__scrim" aria-hidden="true" />
           <div className="wrap head">
             <span className="eyebrow" data-reveal="up">
               <span className="dot" aria-hidden="true"></span>

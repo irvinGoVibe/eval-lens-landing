@@ -8,6 +8,7 @@ import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { StatementHero, FullStatement, PinnedSteps, EditorialSplit, Bento, Gallery, CtaBand } from "@/components/ds";
 import { CanvasFlowField } from "@/components/CanvasFlowField";
+import { DelayedLoopVideo } from "@/components/DelayedLoopVideo";
 
 /** Header nav for this page — anchor links to its own sections (see the
  *  matching `id`s on the DS sections below). Each page declares its own. */
@@ -232,11 +233,29 @@ export default function EntryHubPage() {
           }}
           sub="Choose how teams enter. Add them yourself or open submissions. Every entry lands in the same workspace."
           steps={HOW_STEPS}
-          videoLoop={{
-            src: "/assets/entry-hub/entry-hub-flow-v2.mp4",
-            ariaLabel:
-              "The EvalLense Entry Hub interface, from project setup to start judging",
-          }}
+          mediaNode={
+            <>
+              {/* Delayed loop: play once, hold last frame, replay after 7s.
+                  Reuses the v3 square frame classes so all global styling +
+                  mobile pinned-strip behaviour is inherited; only the video
+                  swaps to DelayedLoopVideo. Page-local; shared component
+                  untouched. The node-height rule keeps the square sized on the
+                  mobile strip (the extra .lab-rv__node wrapper has no height). */}
+              <style>{`.entry-hub .lab-rv__node{height:100%;display:grid;place-items:center;}`}</style>
+              <div
+                className="lab-rv__square lab-rv__square--video"
+                role="img"
+                aria-label="The EvalLense Entry Hub interface, from project setup to start judging"
+              >
+                <DelayedLoopVideo
+                  className="lab-rv__slide"
+                  src="/assets/entry-hub/entry-hub-flow-v2.mp4"
+                  gap={7}
+                  ariaHidden
+                />
+              </div>
+            </>
+          }
           media={{
             ratio: "4/3",
             label: "EvalLense · workflow",

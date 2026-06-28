@@ -99,7 +99,7 @@ export const GLOBAL_NAV: GlobalNavEntry[] = [
     icon: "layers",
     desc: "The evaluation platform",
     links: [
-      { label: "Overview", href: "/product/overview", icon: "overview" },
+      { label: "One Pager", href: "/one-pager", icon: "overview" },
       { label: "Entry Hub", href: "/product/entry-hub", icon: "hub" },
       {
         label: "Reports",
@@ -185,7 +185,7 @@ export const MOBILE_NAV: GlobalNavEntry[] = [
     icon: "layers",
     desc: "The evaluation platform",
     links: [
-      { label: "Overview", href: "/product/overview" },
+      { label: "One Pager", href: "/one-pager" },
       { label: "Entry Hub", href: "/product/entry-hub" },
       {
         label: "Evidence-Based Reports",

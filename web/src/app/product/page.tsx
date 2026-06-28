@@ -217,7 +217,7 @@ export default function ProductHubPage() {
                 <span className="dot" aria-hidden="true"></span>
                 The section, mapped
               </span>
-              <h2 className="title">Four pages, one click away</h2>
+              <h2 className="title"><span className="grad-word">Four pages</span>, one click away</h2>
               <p className="sub">
                 Start with the Overview for the whole picture, or jump straight
                 to the module you need.
@@ -260,7 +260,7 @@ export default function ProductHubPage() {
                     <span className="dot" aria-hidden="true"></span>
                     How it fits together
                   </span>
-                  <h2 className="title">Three modules, one workflow</h2>
+                  <h2 className="title">Three modules, <span className="grad-word">one workflow</span></h2>
                   <p className="sub">
                     The section&apos;s pages are stages of a single path. Each
                     step lights up as you scroll — follow it to its page.
@@ -311,7 +311,7 @@ export default function ProductHubPage() {
                 <span className="dot" aria-hidden="true"></span>
                 Look inside
               </span>
-              <h2 className="title">A peek into each page</h2>
+              <h2 className="title">A peek into <span className="grad-word">each page</span></h2>
               <p className="sub">
                 What you&apos;ll find behind every page in the section — scroll
                 across and open the one you need.
@@ -356,7 +356,7 @@ export default function ProductHubPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              See the whole workflow on your own decks
+              See the whole workflow on <span className="grad-word">your own decks</span>
             </h2>
             <p
               className="sub hub-cta__sub"

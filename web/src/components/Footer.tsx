@@ -61,8 +61,8 @@ export function Footer({ variant = "light" }: FooterProps) {
                 <Link href="/product">Product</Link>
               </h5>
               <nav>
-                <Link href="/product/overview">Overview</Link>
-                <Link href="/product/entry-hub">Entry hub</Link>
+                <Link href="/one-pager">One Pager</Link>
+                <Link href="/product/entry-hub">Entry Hub</Link>
                 <Link href="/product/evidence-based-reports">Reports</Link>
                 <Link href="/product/review-board">Review board</Link>
                 <Link href="/pricing">Pricing</Link>

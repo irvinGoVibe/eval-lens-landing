@@ -82,7 +82,7 @@ const FOUNDATIONS_TILES: BentoItem[] = [
     feature: true,
     tag: "Feeds P1 · P2",
     title: "Lean Startup",
-    body: "Hypothesis and problem-solution logic - feeds Problem significance and Solution differentiation.",
+    body: "Hypothesis and problem-solution logic — feeds Problem significance and Solution differentiation.",
     media: {
       src: "/assets/methodology/foundations-lean-startup-v8.webp",
       width: 1229,
@@ -97,12 +97,12 @@ const FOUNDATIONS_TILES: BentoItem[] = [
   {
     tag: "Feeds P1 · P2",
     title: "Customer Development",
-    body: "Customer, pain, and validation evidence - feeds Problem significance and Solution differentiation.",
+    body: "Customer, pain, and validation evidence — feeds Problem significance and Solution differentiation.",
   },
   {
     tag: "Feeds P3 · P5 · P6",
     title: "VC Due Diligence",
-    body: "Market, business model, team, and feasibility - feeds Market, Team, and Feasibility.",
+    body: "Market, business model, team, and feasibility — feeds Market, Team, and Feasibility.",
   },
 ];
 
@@ -112,7 +112,7 @@ const PIPELINE_STEPS = [
   {
     num: "01",
     label: "Decoder",
-    desc: "PDF, PPTX, or Google Slides - every deck is converted into the same structured, slide-by-slide format for the judges.",
+    desc: "PDF, PPTX, or Google Slides — every deck is converted into the same structured, slide-by-slide format for the judges.",
   },
   {
     num: "02",
@@ -293,7 +293,7 @@ const SCORING_TILES: BentoItem[] = [
   {
     tag: "Review signal",
     title: "Disagreement",
-    body: "Spread flags consensus, split, or conflict between primary and secondary judges. It does not change the score - it tells reviewers where to look closer.",
+    body: "Spread flags consensus, split, or conflict between primary and secondary judges. It does not change the score — it tells reviewers where to look closer.",
   },
   {
     tag: "Reproducible math",
@@ -306,7 +306,7 @@ const SCORING_TILES: BentoItem[] = [
 const HITL_POINTS = [
   {
     title: "Review the evidence",
-    body: "AI suggests a score for each dimension and shows the evidence behind it - a read-only reference.",
+    body: "AI suggests a score for each dimension and shows the evidence behind it — a read-only reference.",
   },
   {
     title: "Add live context",
@@ -314,7 +314,7 @@ const HITL_POINTS = [
   },
   {
     title: "Set the Jury Score",
-    body: "You set your own Jury Score per dimension. It stays a separate value from the AI Criterion Score - the AI baseline for one dimension.",
+    body: "You set your own Jury Score per dimension. It stays a separate value from the AI Criterion Score — the AI baseline for one dimension.",
   },
   {
     title: "Submit the decision",
@@ -327,7 +327,7 @@ const HITL_POINTS = [
 const LIMIT_PAIRS: RiskPair[] = [
   {
     risk: "An external truth check",
-    control: "Evaluates what the deck presents and flags what is missing - it does not verify claims against the outside world.",
+    control: "Evaluates what the deck presents and flags what is missing — it does not verify claims against the outside world.",
   },
   {
     risk: "Investment advice",
@@ -335,7 +335,7 @@ const LIMIT_PAIRS: RiskPair[] = [
   },
   {
     risk: "Automatic winner selection",
-    control: "Never ranks the batch - the human Jury Score owns the leaderboard.",
+    control: "Never ranks the batch — the human Jury Score owns the leaderboard.",
   },
   {
     risk: "A prediction of success",
@@ -571,7 +571,7 @@ export default function MethodologyPage() {
             eyebrow="Method foundations"
             title="Built from startup evaluation methods, not prompt tricks"
             titleAccent="evaluation"
-            sub="The Pitch Competition dimension matrix combines three established startup-evaluation lenses. It is thesis-first: a polished deck should not score high if the problem is vague, the customer is unclear, and the business logic is thin. Presentation quality matters, but it is not the whole method - a polished deck should not outrank weak problem, market, team, or feasibility evidence."
+            sub="The Pitch Competition dimension matrix combines three established startup-evaluation lenses. It is thesis-first: a polished deck should not score high if the problem is vague, the customer is unclear, and the business logic is thin. Presentation quality matters, but it is not the whole method — a polished deck should not outrank weak problem, market, team, or feasibility evidence."
             items={FOUNDATIONS_TILES}
           />
           {/* ── tone-flip seam (§4 → §5): transparent light→dark flip of the
@@ -601,7 +601,7 @@ export default function MethodologyPage() {
               src: "/assets/methodology/methodology-transition.mp4",
               frames: 0,
               ariaLabel:
-                "Methodology transition - scrubbed by scroll through the stages",
+                "Methodology transition — scrubbed by scroll through the stages",
             }}
           />
 
@@ -648,7 +648,7 @@ export default function MethodologyPage() {
             titleLead=""
             titleAccent="Evidence"
             titleTrail=" before score"
-            sub="A number is useful only when you can inspect the evidence behind it. The rubric forces evidence, strengths, weaknesses, and missing information before a score - never the other way around. Worked example, P3 Market: evidence on slides 6 and 8, strength a clear target segment, weakness an unsourced TAM, missing buyer validation, confidence medium - which lands the score in the band, not above it."
+            sub="A number is useful only when you can inspect the evidence behind it. The rubric forces evidence, strengths, weaknesses, and missing information before a score — never the other way around. Worked example, P3 Market: evidence on slides 6 and 8, strength a clear target segment, weakness an unsourced TAM, missing buyer validation, confidence medium — which lands the score in the band, not above it."
             points={RUBRIC_PROCEDURE}
             media={{
               ratio: "4/3",
@@ -727,7 +727,7 @@ export default function MethodologyPage() {
               <div className="wrap">
                 <div className="head" data-reveal="up">
                   <Eyebrow>Clear boundaries</Eyebrow>
-                  <Title title="It prepares the review. It does not replace your judgment" accent="judgment" />
+                  <Title title="Prepares the review, never your judgment" accent="judgment" />
                   <p className="sub">EvalLense evaluates what is present in the deck, highlights missing evidence, and prepares the review. It does not prove that every claim is true.</p>
                 </div>
                 <div className="ds-risk__grid" data-reveal="up">

@@ -15,6 +15,7 @@ import {
   CtaBand,
   Eyebrow,
 } from "@/components/ds";
+import { FloatFx } from "@/components/FloatFx";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -182,6 +183,7 @@ export default function PromptInjectionSafetyPage() {
   return (
     <>
       <PageHeader nav={HEADER_NAV} theme="dark" />
+      <FloatFx />
       <main className="section-lab ds injection">
         {/* ── ONE continuous tonal zone (§1–§7): dark→light→dark on the shared
             through-background. Layer stack (z-index:-1, DOM order = back→front):
@@ -451,7 +453,7 @@ export default function PromptInjectionSafetyPage() {
           surface="light"
           version={3}
           eyebrow="System boundary"
-          title="The deck is evaluated. It does not control the evaluation"
+          title="The deck is evaluated, never in control"
           titleAccent="control"
           sub="Rubric, judge prompts, scoring logic, and final ranking all live outside the deck. Scoring context — the evidence a judge can use when assigning a score — never includes a detected instruction."
           items={DEFENCE_TILES}
@@ -495,6 +497,7 @@ export default function PromptInjectionSafetyPage() {
               "Vertical layers where an injection signal fades from judges down to the human layer",
           }}
           mediaNode={
+            <span className="ev-float" style={{ display: "block", width: "100%" }}>
             <Image
               src="/assets/injection/pitch-deck-lens-hidden-inject-clean-vertical-01.webp"
               alt="A pitch deck with an INJECTED flag and a hidden injection chip falling through six glass filter layers and emerging CLEAN at the bottom"
@@ -507,8 +510,12 @@ export default function PromptInjectionSafetyPage() {
                 maxWidth: "100%",
                 display: "block",
                 margin: "0 auto",
+                // drop ~22% of its own height + 10% larger (per request)
+                transform: "translateY(22%) scale(1.1)",
+                transformOrigin: "center",
               }}
             />
+            </span>
           }
         />
 

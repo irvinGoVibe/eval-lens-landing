@@ -233,8 +233,8 @@ a{color:inherit;text-decoration:none;}
 
 /* ---------- brand (footer) ---------- */
 .brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:600;font-size:19px;letter-spacing:-.02em;}
-.brand .mark{width:22px;height:22px;border-radius:50%;background:var(--lens);position:relative;box-shadow:0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 14px -4px var(--violet);}
-.brand .mark::after{content:"";position:absolute;inset:5px;border-radius:50%;background:radial-gradient(circle at 34% 30%, rgba(255,255,255,.95), rgba(255,255,255,.1) 55%, transparent 70%);}
+.brand .mark{width:24px;height:26px;border-radius:0;background:url(/assets/brand/evallense-logo.webp) center/contain no-repeat;position:relative;box-shadow:none;}
+.brand .mark::after{content:none;}
 
 /* ---------- site header ---------- */
 .site-header{
@@ -291,7 +291,7 @@ body.hero-ready .site-header.is-hidden{
   flex:none;font-size:18px;color:var(--fg-on-dark);
   transition:color .35s var(--ease);
 }
-.site-header .brand .mark{box-shadow:0 0 0 1px rgba(255,255,255,.45) inset, 0 4px 14px -4px var(--violet);}
+.site-header .brand .mark{box-shadow:none;}
 .site-header__nav{
   display:flex;align-items:center;gap:clamp(18px,2.6vw,36px);
   margin-left:auto;margin-right:clamp(12px,2vw,28px);
@@ -326,7 +326,7 @@ body.hero-ready .site-header.is-hidden{
 .site-header__link:hover .site-header__accent::after{transform:scaleX(1);}
 /* past hero — readable on light sections, still transparent */
 .site-header.is-light .brand{color:var(--fg);}
-.site-header.is-light .brand .mark{box-shadow:0 0 0 1px rgba(255,255,255,.6) inset, 0 4px 14px -4px var(--violet);}
+.site-header.is-light .brand .mark{box-shadow:none;}
 .site-header.is-light .site-header__link{color:var(--violet);}
 .site-header.is-light .site-header__link:hover{color:var(--fg);}
 @media (max-width:900px){
@@ -2030,7 +2030,29 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #workflow .wf-scroll{position:relative;z-index:1;height:200vh;}
 #workflow .wf-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;}
 #workflow .wf-grid{display:grid;grid-template-columns:300px 1fr;gap:clamp(24px,3.5vw,56px);width:100%;
-  max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);align-items:center;}
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);align-items:center;position:relative;z-index:2;}
+/* ── floating glass objects around the window mockup ───────────────────────
+   back layer sits BEHIND the grid (z<2), front layer IN FRONT (z>2); both are
+   pointer-events:none and idle-float on their own timing. Decorative only. */
+#workflow .wf-floats{position:absolute;inset:0;pointer-events:none;overflow:visible;}
+#workflow .wf-floats--back{z-index:1;}
+#workflow .wf-floats--front{z-index:5;}
+#workflow .wf-float{position:absolute;display:block;height:auto;will-change:transform;
+  filter:drop-shadow(0 24px 48px rgba(60,40,160,.32));animation:wf-float-a 13s ease-in-out infinite;}
+#workflow .wf-floats--back .wf-float{opacity:.7;}
+#workflow .wf-floats--front .wf-float{opacity:.5;}
+/* Two large orbs tucked BEHIND the grid (z:1 < grid z:2). One sits half-hidden
+   behind the window's BOTTOM-RIGHT corner, the other behind the rail's TOP-LEFT
+   corner — they peek out diagonally. The small scattered floats are retired. */
+#workflow .wf-float--a{right:8%;bottom:-3%;width:clamp(360px,34vw,600px);}
+#workflow .wf-float--b{left:7%;top:-2%;width:clamp(300px,27vw,470px);animation-name:wf-float-b;animation-duration:16s;animation-delay:-3s;}
+#workflow .wf-float--c,
+#workflow .wf-float--d,
+#workflow .wf-float--e{display:none;}
+@keyframes wf-float-a{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(10px,-16px) rotate(3deg);}}
+@keyframes wf-float-b{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(-14px,13px) rotate(-4deg);}}
+@media (prefers-reduced-motion:reduce){ #workflow .wf-float{animation:none;} }
+@media (max-width:880px){ #workflow .wf-floats{display:none;} }
 #workflow .wf-railcol{display:flex;flex-direction:row;align-items:center;gap:16px;}
 #workflow .wf-rail{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0;}
 #workflow .wf-rail .step{position:relative;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;
@@ -2376,43 +2398,69 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 /* decks animate smoothly when Extract signals squares them into a 2×2 grid;
    translate/scale are standalone so they compose with transform:rotate() cleanly */
 #decisions .deckfield .deck{transition:left .55s var(--ease),top .55s var(--ease),
-  width .55s var(--ease),height .55s var(--ease),transform .55s var(--ease),
-  translate .38s cubic-bezier(.34,1.56,.64,1),scale .18s ease!important;}
+  width .55s var(--ease),height .55s var(--ease),transform .55s var(--ease)!important;}
+/* idle float + magnet-drag are driven per-frame in JS via --card-tx/ty/scale,
+   so translate/scale must NOT carry a CSS transition (would double-smooth) */
+#decisions[data-can-grab] .deckfield .deck{cursor:grab;touch-action:none;}
+#decisions[data-can-grab] .deckfield .deck.dragging{cursor:grabbing;z-index:30!important;
+  filter:drop-shadow(0 26px 42px rgba(40,30,90,.42));}
 #decisions .deckfield{position:absolute;inset:0;padding:clamp(20px,3vw,40px);}
+/* ── Ambient glass blob field — reusable page-local inject (<BlobField/>). Orbs
+   sit at z-index:-1 inside a `.blob-host` (position:relative;isolation), so they
+   paint above the section fill but BELOW content — sticky/pin scrolls stay intact
+   (the host adds no overflow). Drift is CSS-only; reduced-motion disables it. ── */
+.blob-host{position:relative;isolation:isolate;}
+.blob-field{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;}
+.blob-field img{position:absolute;height:auto;opacity:.55;will-change:transform;}
+.blob-field .bo-a{width:min(32vw,420px);left:-6%;top:4%;animation:blobdrift-a 18s ease-in-out infinite;}
+.blob-field .bo-b{width:min(26vw,340px);right:-7%;top:20%;animation:blobdrift-b 22s ease-in-out infinite;}
+.blob-field .bo-c{width:min(13vw,160px);left:8%;bottom:10%;animation:blobdrift-c 15s ease-in-out infinite;}
+.blob-field .bo-d{width:min(22vw,290px);right:5%;bottom:-4%;animation:blobdrift-d 25s ease-in-out infinite;}
+.blob-field--b .bo-a{left:auto;right:-6%;}
+.blob-field--b .bo-b{right:auto;left:-7%;}
+.blob-field--b .bo-c{left:auto;right:9%;}
+.blob-field--b .bo-d{right:auto;left:5%;}
+@keyframes blobdrift-a{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(26px,-22px) rotate(6deg)}}
+@keyframes blobdrift-b{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(-30px,24px) rotate(-7deg)}}
+@keyframes blobdrift-c{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(22px,26px) rotate(9deg)}}
+@keyframes blobdrift-d{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(-24px,-18px) rotate(-5deg)}}
+@media (prefers-reduced-motion:reduce){.blob-field img{animation:none;}}
 #decisions .deckfield .scan-title{position:absolute;top:18px;left:50%;transform:translateX(-50%);
   font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
   opacity:0;}
-#decisions .deckfield .deck{position:absolute;background:#fff;border:1px solid var(--border-2);box-shadow:var(--sd-sh-2);
-  border-radius:var(--sd-r-md);padding:16px;display:flex;flex-direction:column;gap:9px;
+#decisions .deckfield .deck{position:absolute;background-color:transparent;border:none;box-shadow:none;
+  border-radius:0;padding:0;
+  background-size:contain;background-position:center;background-repeat:no-repeat;
   min-width:0;min-height:0;
   translate:var(--card-tx,0px) var(--card-ty,0px);scale:var(--card-scale,1);
   will-change:translate,scale;}
-#decisions .deckfield .deck .dname{font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-.01em;}
-#decisions .deckfield .deck .meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);}
-#decisions .deckfield .deck .bars{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
-#decisions .deckfield .deck .bars span{height:7px;border-radius:4px;background:var(--bg-soft);}
-#decisions .deckfield .deck.k1{width:33%;height:62%;left:6%;top:16%;transform:rotate(-6deg);}
-#decisions .deckfield .deck.k2{width:30%;height:54%;left:34%;top:9%;transform:rotate(3.5deg);z-index:3;}
-#decisions .deckfield .deck.k3{width:31%;height:58%;left:60%;top:21%;transform:rotate(-2.5deg);}
-#decisions .deckfield .deck.k4{width:27%;height:46%;left:43%;top:44%;transform:rotate(7deg);z-index:4;}
-#decisions .deckfield .deck.k2{background:#0f0f14;border-color:rgba(255,255,255,.1);}
-#decisions .deckfield .deck.k2 .dname{color:#f5f5f7;}
-#decisions .deckfield .deck.k2 .meta{color:#9a9aa2;}
-#decisions .deckfield .deck.k2 .bars span{background:rgba(255,255,255,.1);}
-#decisions .deckfield .deck.k3{background:#fbf8ff;}
-#decisions .deckfield .deck.k4{padding:13px;}
+#decisions .deckfield .deck.k1{width:38%;height:71%;left:4%;top:13%;transform:rotate(-6deg);background-image:url(/assets/decisions/novapay-deck.webp);}
+#decisions .deckfield .deck.k2{width:34.5%;height:62%;left:33%;top:6%;transform:rotate(3.5deg);z-index:3;background-image:url(/assets/decisions/tutorverse-deck.webp);}
+#decisions .deckfield .deck.k3{width:35.5%;height:67%;left:59%;top:18%;transform:rotate(-2.5deg);background-image:url(/assets/decisions/ledgerloop-deck.webp);}
+#decisions .deckfield .deck.k4{width:31%;height:53%;left:41%;top:41%;transform:rotate(7deg);z-index:4;background-image:url(/assets/decisions/orchestrix-deck.webp);}
 #decisions .beam{position:absolute;left:0;right:0;height:120px;pointer-events:none;opacity:0;z-index:8;
   background:linear-gradient(180deg,transparent,color-mix(in oklab,var(--cyan) 16%,transparent) 45%,
             color-mix(in oklab,var(--violet) 14%,transparent) 55%,transparent);
   border-top:1px solid color-mix(in oklab,var(--cyan) 60%,transparent);
   border-bottom:1px solid color-mix(in oklab,var(--violet) 50%,transparent);
   filter:blur(.2px);}
-#decisions .tag{position:absolute;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-text);
-  font-size:11.5px;font-weight:500;color:var(--fg);background:#fff;border:1px solid var(--border-2);
-  border-radius:var(--sd-r-pill);padding:5px 11px;box-shadow:var(--sd-sh-1);z-index:9;
+/* scan signal tags — brand lens-gradient fill, glassmorphism (blur + inset
+   highlight + soft glow), white legible text */
+#decisions .tag{position:absolute;display:inline-flex;align-items:center;gap:7px;font-family:var(--font-text);
+  font-size:11.5px;font-weight:600;letter-spacing:-.01em;color:#fff;
+  background:linear-gradient(96deg, rgba(169,155,255,.92), rgba(46,197,232,.86) 55%, rgba(54,224,194,.9));
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:var(--sd-r-pill);padding:5px 12px;z-index:9;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 8px 22px -10px rgba(108,76,241,.55), 0 0 16px rgba(46,197,232,.22);
+  backdrop-filter:blur(9px) saturate(1.3);-webkit-backdrop-filter:blur(9px) saturate(1.3);
+  text-shadow:0 1px 2px rgba(20,12,60,.35);
   opacity:0;transform:translateY(6px) scale(.96);}
-#decisions .tag .d{width:6px;height:6px;border-radius:50%;background:var(--violet);}
-#decisions .tag.warn .d{background:var(--sd-amber);}
+/* light, smoothed appear/disappear so the scan signals stay readable even on a
+   fast scroll — overrides the section-wide transition:none */
+#decisions .deckfield .tag{transition:opacity .5s ease, transform .5s ease !important;}
+#decisions .tag .d{width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.85);}
+#decisions .tag.warn{background:linear-gradient(96deg, rgba(169,155,255,.95), rgba(124,77,255,.9));}
+#decisions .tag.warn .d{background:#fff;}
 #decisions .tag.t1{left:10%;top:30%;}
 #decisions .tag.t2{left:38%;top:14%;}
 #decisions .tag.t3{left:66%;top:26%;}
@@ -2641,11 +2689,11 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
     color:var(--muted-2);min-width:84px;text-align:center;}
 
   /* ── Layer A — retune the scattered decks + tags for portrait ── */
-  #decisions .deckfield .deck.k1{width:46%;height:30%;left:5%;top:10%;transform:rotate(-5deg);}
-  #decisions .deckfield .deck.k2{width:44%;height:28%;left:48%;top:16%;transform:rotate(4deg);}
-  #decisions .deckfield .deck.k3{width:46%;height:30%;left:7%;top:44%;transform:rotate(-3deg);}
-  #decisions .deckfield .deck.k4{width:42%;height:26%;left:48%;top:52%;transform:rotate(6deg);}
-  #decisions .deckfield .deck{padding:12px;}
+  #decisions .deckfield .deck.k1{width:46%;height:30%;left:5%;top:10%;transform:rotate(-5deg);background-image:url(/assets/decisions/novapay-deck-wide.webp);}
+  #decisions .deckfield .deck.k2{width:44%;height:28%;left:48%;top:16%;transform:rotate(4deg);background-image:url(/assets/decisions/tutorverse-deck-wide.webp);}
+  #decisions .deckfield .deck.k3{width:46%;height:30%;left:7%;top:44%;transform:rotate(-3deg);background-image:url(/assets/decisions/ledgerloop-deck-wide.webp);}
+  #decisions .deckfield .deck.k4{width:42%;height:26%;left:48%;top:52%;transform:rotate(6deg);background-image:url(/assets/decisions/orchestrix-deck-wide.webp);}
+  #decisions .deckfield .deck{padding:0;}
   #decisions .deckfield .scan-title{top:10px;font-size:10px;}
   /* 4 floating tags only, anchored in the gutters between cards */
   #decisions .tag.t5,#decisions .tag.t6{display:none;}
@@ -6753,6 +6801,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 #control .ds-split__media--video video{
   display:block;width:100%;height:auto;position:relative;z-index:1;
   transform:scale(1.1);transform-origin:center;
+  mix-blend-mode:lighten;
 }
 
 /* ── PAGE INJECTION (consistency-reliability): §2 media slot is a real <img>
@@ -8068,6 +8117,12 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .about .ab-problem__claim{background:var(--lens-soft);border:1px solid color-mix(in oklab,var(--violet) 28%, transparent);border-radius:var(--radius-card);padding:clamp(26px,4vw,40px);display:flex;flex-direction:column;gap:18px;min-width:0;}
 .about .ab-problem__claim-text{font-size:clamp(20px,2.6vw,30px);line-height:1.22;letter-spacing:-.02em;font-weight:600;color:var(--fg);}
 .about .ab-problem__claim-tag{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);}
+/* problem section right column — generated glass "review bench" render replaces
+   the old quote card; transparent PNG→webp, allowed a small right bleed */
+.about .ab-problem__media{min-width:0;}
+/* ~1.5× the render, static (no float / no reveal); grows LEFT into the empty
+   gap so the enlargement is actually visible, right edge stays near the column */
+.about .ab-problem__media img{display:block;width:150%;max-width:none;height:auto;margin-left:-44%;margin-right:-6%;}
 @media (max-width:820px){
   .about .ab-problem__split{grid-template-columns:1fr;}
 }
@@ -8085,7 +8140,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .about .ab-story__label{font-family:var(--font-mono);font-size:clamp(13px,1.6vw,16px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-on-dark);}
 .about .ab-story__desc{grid-column:2;font-size:clamp(14px,1.6vw,17px);line-height:1.5;color:var(--muted-on-dark);max-height:0;overflow:hidden;opacity:0;transition:max-height .55s var(--ease),opacity .45s var(--ease);}
 .about .ab-story__step.is-current .ab-story__desc{max-height:16em;opacity:1;}
-.about .ab-story__side{min-width:0;display:flex;flex-direction:column;gap:clamp(24px,4vw,40px);}
+.about .ab-story__side{min-width:0;display:flex;flex-direction:column;gap:clamp(24px,4vw,40px);perspective:1500px;}
 .about .ab-story__pipe{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(8px,1.4vw,12px);min-width:0;}
 .about .ab-story__pipe-node{display:flex;align-items:center;gap:14px;opacity:.34;transition:opacity .5s var(--ease);min-width:0;}
 .about .ab-story__pipe-dot{flex:none;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.22);transition:background .5s var(--ease),box-shadow .5s var(--ease);}
@@ -8147,19 +8202,145 @@ section.band.ink .mini-tag{color:var(--lavender);}
 /* surname backdrop — large type behind the portrait, lens-tinted */
 .about .ab-member__surname{position:absolute;left:0;bottom:4%;z-index:0;font-family:var(--font-mono);font-weight:600;font-size:clamp(72px,13vw,176px);line-height:.84;letter-spacing:-.04em;color:transparent;background:var(--lens);-webkit-background-clip:text;background-clip:text;opacity:.14;white-space:nowrap;pointer-events:none;max-width:100%;overflow:hidden;}
 .about .ab-member__media{position:relative;z-index:1;min-width:0;width:100%;max-width:clamp(240px,28vw,340px);justify-self:center;align-self:end;}
+/* real founder cut-out (transparent webp) — fills the media box width, natural
+   height, bottom-aligned via the shared .ab-member__media rule. */
+.about .ab-member__photo{height:auto;display:block;object-fit:contain;}
 /* portrait placeholder reads as a person-photo slot */
 .about .ab-member__avatar{position:absolute;top:46%;left:50%;width:42%;height:auto;transform:translate(-50%,-50%);color:var(--violet);opacity:.45;z-index:0;}
 .about .ab-member__copy{position:relative;z-index:1;min-width:0;display:flex;flex-direction:column;gap:14px;}
 .about .ab-member__copy .mini-tag{position:static;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
 .about .ab-member__name{font-size:clamp(28px,4vw,52px);letter-spacing:-.03em;font-weight:600;line-height:1.04;color:var(--fg-on-dark);}
 .about .ab-member__bio{font-size:clamp(15px,1.7vw,18px);line-height:1.6;color:var(--muted-on-dark);max-width:58ch;}
-/* optional Hobby / Dream facts (currently Yaroslav) — labelled mono rows */
+/* optional Hobby / Dream facts — labelled mono rows */
 .about .ab-member__facts{margin:4px 0 0;display:flex;flex-direction:column;gap:9px;}
 .about .ab-member__fact{display:flex;gap:12px;align-items:baseline;min-width:0;}
 .about .ab-member__fact dt{flex:none;width:58px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender);}
 .about .ab-member__fact dd{margin:0;font-size:clamp(14px,1.6vw,16px);line-height:1.5;color:var(--body-on-dark);min-width:0;}
+
+/* ── §5 Team — founder dossier cards (Intelligence Wall), ink ──────────────
+   Two premium glass cards built in code (portraits are real cut-outs, every
+   label is HTML). Replaces the old pinned single-member reveal. ── */
+.about .ab-founders-sec{padding:clamp(64px,9vh,128px) 0;}
+.about .ab-founders__intro{margin-bottom:clamp(40px,6vw,72px);}
+/* team trust-line — sits under the heading, before the founder cards; centred,
+   muted second line, "16+ years" clipped to the lens gradient with a soft glow. */
+.about .ab-trust{display:flex;flex-direction:column;gap:6px;max-width:720px;margin:clamp(16px,1.6vw,20px) auto 0;text-align:center;}
+.about .ab-trust__lead{font-size:clamp(18px,2.2vw,27px);line-height:1.4;letter-spacing:-.01em;color:#f5f5f7;}
+.about .ab-trust__years{font-weight:800;background:var(--lens);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;filter:drop-shadow(0 0 10px color-mix(in oklab,var(--cyan) 38%, transparent));}
+.about .ab-trust__sub{font-size:clamp(14px,1.4vw,16.5px);line-height:1.45;color:rgba(245,245,247,.62);}
+.about .ab-founders__intro .title{color:var(--fg-on-dark);}
+.about .ab-founders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,40px);align-items:stretch;}
+.about .ab-dossier{
+  --acc:var(--lavender);
+  position:relative;display:flex;flex-direction:column;gap:clamp(16px,1.8vw,24px);
+  padding:clamp(18px,2.2vw,28px);border-radius:26px;overflow:visible;isolation:isolate;
+  border:1px solid color-mix(in oklab, var(--acc) 46%, transparent);
+  background:
+    radial-gradient(132% 82% at 6% -6%, color-mix(in oklab,var(--acc) 30%, transparent), transparent 56%),
+    radial-gradient(124% 88% at 106% 108%, color-mix(in oklab,var(--cyan) 24%, transparent), transparent 60%),
+    linear-gradient(150deg, color-mix(in oklab,var(--violet) 14%, transparent), color-mix(in oklab,var(--cyan) 10%, transparent)),
+    rgba(16,14,38,.42);
+  backdrop-filter:blur(26px) saturate(1.4);-webkit-backdrop-filter:blur(26px) saturate(1.4);
+  box-shadow:0 1px 0 rgba(255,255,255,.18) inset, 0 0 0 1px rgba(255,255,255,.04) inset, 0 34px 74px -42px rgba(0,0,0,.7), 0 0 70px -34px color-mix(in oklab,var(--acc) 65%, transparent);
+  transition:transform .4s var(--ease), border-color .4s, box-shadow .4s;
+}
+.about .ab-dossier[data-accent="cyan"]{ --acc:var(--cyan); }
+.about .ab-dossier:hover{transform:translateY(-5px);border-color:color-mix(in oklab, var(--acc) 72%, transparent);box-shadow:0 1px 0 rgba(255,255,255,.2) inset, 0 0 0 1px rgba(255,255,255,.05) inset, 0 54px 96px -46px rgba(0,0,0,.75), 0 0 90px -30px color-mix(in oklab,var(--acc) 85%, transparent);}
+/* founder cards emerge from the darkness on scroll-in: dark + blurred + low +
+   small → bright, sharp, settled. Staggered via --reveal-delay; `backwards`
+   fill holds them hidden through the stagger and adds NO forwards fill, so the
+   :hover transform still works after the reveal. */
+.about .ab-dossier[data-reveal]{opacity:0;}
+.about .ab-dossier[data-reveal].is-in{opacity:1;animation:ab-dossier-emerge 1.05s var(--ease) var(--reveal-delay,0ms) backwards;}
+@keyframes ab-dossier-emerge{
+  0%{opacity:0;transform:translateY(64px) scale(.93);filter:brightness(.28) saturate(.55) blur(9px);}
+  62%{filter:brightness(1.05) saturate(1.12) blur(0);}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:brightness(1) saturate(1);}
+}
+@media (prefers-reduced-motion:reduce){
+  .about .ab-dossier[data-reveal]{opacity:1;}
+  .about .ab-dossier[data-reveal].is-in{animation:none;}
+}
+/* ── moving brand-colour lamps (behind the frosted glass) + always-on sheen ── */
+.about .ab-dossier__lamps{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;border-radius:inherit;}
+.about .ab-dossier__lamp{position:absolute;left:50%;top:50%;width:54%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;filter:blur(48px);opacity:0;mix-blend-mode:screen;transition:opacity .55s ease;will-change:left,top;}
+.about .ab-dossier__lamp--1{background:radial-gradient(circle,#6c4cf1,transparent 66%);}
+.about .ab-dossier__lamp--2{background:radial-gradient(circle,#2ec5e8,transparent 66%);}
+.about .ab-dossier__lamp--3{background:radial-gradient(circle,#36e0c2,transparent 66%);}
+.about .ab-dossier:hover .ab-dossier__lamp{opacity:.55;}
+.about .ab-dossier:hover .ab-dossier__lamp--1{animation:ab-lampA 6.5s ease-in-out infinite;}
+.about .ab-dossier:hover .ab-dossier__lamp--2{animation:ab-lampB 8s ease-in-out infinite;}
+.about .ab-dossier:hover .ab-dossier__lamp--3{animation:ab-lampC 7.2s ease-in-out infinite;}
+@keyframes ab-lampA{0%,100%{left:16%;top:16%}25%{left:84%;top:22%}50%{left:78%;top:82%}75%{left:22%;top:74%}}
+@keyframes ab-lampB{0%,100%{left:88%;top:84%}33%{left:18%;top:56%}66%{left:62%;top:12%}}
+@keyframes ab-lampC{0%,100%{left:50%;top:104%}50%{left:50%;top:-4%}}
+.about .ab-dossier__sheen{position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit;overflow:hidden;}
+.about .ab-dossier__sheen::before{content:"";position:absolute;top:-30%;left:-60%;width:55%;height:160%;transform:skewX(-12deg);filter:blur(16px);
+  background:linear-gradient(100deg, transparent, color-mix(in oklab,var(--acc) 24%, transparent), transparent);
+  animation:ab-sheen 7s linear infinite;}
+@keyframes ab-sheen{0%{left:-60%}100%{left:165%}}
+
+/* ── portrait — bigger, person centred; focus chips float on the right, behind the cut-out ── */
+.about .ab-dossier__portrait{
+  position:relative;z-index:2;border-radius:18px;overflow:visible;height:clamp(300px,34vw,408px);
+  display:flex;align-items:flex-end;justify-content:center;border:1px solid rgba(255,255,255,.09);
+  background:
+    radial-gradient(80% 72% at 30% 18%, color-mix(in oklab,var(--cyan) 22%, transparent), transparent 64%),
+    radial-gradient(82% 78% at 78% 30%, color-mix(in oklab,var(--violet) 26%, transparent), transparent 66%),
+    linear-gradient(180deg, rgba(6,8,20,.5), rgba(4,5,14,.82));
+}
+.about .ab-dossier__photo{height:119%;width:auto;max-width:none;display:block;object-fit:contain;object-position:bottom center;filter:drop-shadow(0 22px 44px rgba(0,0,0,.6));}
+.about .ab-dossier__photo-ph{position:absolute;inset:0;}
+.about .ab-dossier__tag{position:absolute;top:12px;left:12px;z-index:3;font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-on-dark);padding:5px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(8,8,18,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+.about .ab-dossier__specs{position:absolute;top:15%;right:12px;z-index:-1;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:56%;}
+.about .ab-spec{font-size:11px;line-height:1;padding:6px 11px;border-radius:999px;color:var(--body-on-dark);white-space:nowrap;
+  border:1px solid color-mix(in oklab,var(--acc) 32%, rgba(255,255,255,.12));background:rgba(8,8,18,.44);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 6px 18px -10px rgba(0,0,0,.6);}
+/* handwritten marker — bottom-left of the photo */
+.about .ab-dossier__marker{position:absolute;left:16px;bottom:12px;z-index:3;pointer-events:none;white-space:nowrap;
+  font-family:"Bradley Hand","Segoe Print","Comic Sans MS",cursive;font-style:italic;font-size:16px;line-height:1;color:var(--acc);
+  transform:rotate(-4deg);transform-origin:left center;text-shadow:0 0 14px color-mix(in oklab,var(--acc) 45%, transparent);}
+
+/* ── body ── */
+.about .ab-dossier__body{position:relative;z-index:2;display:flex;flex-direction:column;gap:10px;flex:1;}
+.about .ab-dossier__role{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);}
+.about .ab-dossier__name{font-size:clamp(23px,2.5vw,32px);letter-spacing:-.02em;font-weight:600;line-height:1.05;color:var(--fg-on-dark);}
+.about .ab-dossier__bio{font-size:clamp(14px,1.4vw,15.5px);line-height:1.55;color:var(--muted-on-dark);}
+.about .ab-dossier__offscreen{margin:2px 0 0;font-size:13.5px;line-height:1.5;font-style:italic;color:color-mix(in oklab,var(--acc) 56%, var(--muted-on-dark));}
+
+/* ── foot: green hobby/dream pills + quiet LinkedIn ── */
+.about .ab-dossier__foot{margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding-top:clamp(12px,1.6vw,18px);border-top:1px solid rgba(255,255,255,.1);}
+.about .ab-dossier__pills{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+.about .ab-pill{display:inline-flex;align-items:baseline;gap:8px;padding:7px 13px;border-radius:999px;font-size:12.5px;line-height:1.1;color:var(--green-on-dark);
+  border:1px solid color-mix(in oklab,var(--green-on-dark) 40%, transparent);background:color-mix(in oklab,var(--green-on-dark) 13%, transparent);}
+.about .ab-pill__k{flex:none;font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--green-on-dark) 72%, #fff);opacity:.85;}
+/* tiny EvalLense logo after the "Grow a unicorn!" dream */
+.about .ab-pill__logo{flex:none;width:14px;height:16px;align-self:center;margin-left:-2px;background:url(/assets/brand/evallense-logo.webp) center/contain no-repeat;}
+.about .ab-dossier__link{display:inline-flex;align-items:center;gap:2px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-on-dark);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s, border-color .2s;}
+.about .ab-dossier__link:hover{color:var(--acc);border-color:color-mix(in oklab,var(--acc) 50%, transparent);}
+
+@media (prefers-reduced-motion:reduce){
+  .about .ab-dossier__sheen::before{animation:none;}
+  .about .ab-dossier:hover .ab-dossier__lamp{animation:none;opacity:.4;}
+}
+@media (max-width:880px){
+  .about .ab-founders{grid-template-columns:1fr;gap:clamp(18px,4vw,28px);}
+  .about .ab-dossier__portrait{height:clamp(300px,72vw,420px);}
+}
 /* §3 story — "Read the full story" CTA under the step track */
-.about .ab-story__cta{margin-top:clamp(28px,4vw,44px);}
+/* "Read the full story" CTA — pulled out of the left column and pinned to the
+   bottom-centre of the sticky stage, so it sits LOW and centred on the SCREEN
+   (anchors to .ab-story__stage, the sticky pin = nearest positioned ancestor). */
+.about .ab-story__cta{
+  position:absolute; left:50%; bottom:clamp(40px,7vh,96px);
+  transform:translateX(-50%); margin-top:0; z-index:3;
+}
+@media (max-width:880px){
+  .about .ab-story__cta{
+    position:static; left:auto; bottom:auto; transform:none;
+    margin-top:clamp(24px,5vw,36px); display:flex; justify-content:center;
+  }
+}
 
 /* reduced-motion: un-pin into a full-width editorial stack (portrait left,
    copy right). Every member visible, never hidden behind .is-current. */
@@ -8202,6 +8383,12 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .about .ab-segments__claim{margin-top:clamp(40px,6vw,72px);max-width:24ch;font-size:clamp(26px,4.4vw,48px);line-height:1.1;letter-spacing:-.025em;font-weight:600;color:var(--fg);}
 
 /* ---- 7. Final CTA — quiet CTA (DARK) ---- */
+/* §7 final CTA — full-bleed looping video bg + darkening scrim (text stays above). */
+.about .ab-cta{position:relative;isolation:isolate;overflow:hidden;}
+.about .ab-cta__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;}
+.about .ab-cta__scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(6,5,14,.66), rgba(6,5,14,.72)), radial-gradient(120% 130% at 50% 28%, transparent 0%, rgba(6,5,14,.55) 80%);}
+.about .ab-cta .head{position:relative;z-index:2;}
+@media (prefers-reduced-motion:reduce){ .about .ab-cta__bg{display:none;} }
 .about .ab-cta .sect-cta{margin-top:34px;}
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -8222,7 +8409,8 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .contact .ct-hero__title{font-size:clamp(48px,9vw,108px);line-height:1.0;letter-spacing:-.03em;font-weight:600;max-width:14ch;}
 .contact .ct-hero__sub{max-width:58ch;margin-top:26px;}
 .contact .ct-hero .cta-row{justify-content:center;}
-.contact .ct-hero__media{width:min(100%,920px);margin-top:clamp(48px,7vw,88px);box-shadow:var(--shadow-soft);}
+.contact .ct-hero__media{width:min(100%,920px);margin-top:clamp(48px,7vw,88px);box-shadow:var(--shadow-soft);border-radius:var(--radius-stage);overflow:hidden;border:1px solid color-mix(in oklab,var(--violet) 14%, var(--border));background:var(--lens-soft);}
+.contact .ct-hero__media img{display:block;width:100%;height:auto;}
 
 /* ---- 2. Ways to reach us — bento / feature-grid (light) ---- */
 .contact .ct-channels .head{margin-bottom:clamp(32px,5vw,56px);}
@@ -8235,8 +8423,10 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .contact .ct-tile__actions{margin-top:auto;padding-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;min-width:0;}
 .contact .ct-tile__mail{font-family:var(--font-mono);font-size:14px;letter-spacing:-.01em;color:var(--violet);text-decoration:none;word-break:break-word;min-width:0;}
 .contact .ct-tile__mail:hover{text-decoration:underline;}
-.contact .ct-tile__link{font-size:13px;letter-spacing:.01em;color:var(--muted);text-decoration:none;}
-.contact .ct-tile__link:hover{color:var(--fg);}
+.contact .ct-tile__link{margin-left:auto;font-size:12.5px;letter-spacing:.01em;color:var(--muted);text-decoration:none;opacity:.9;}
+.contact .ct-tile__link:hover{color:var(--fg);opacity:1;}
+.contact .ct-tile__call{margin-left:auto;}
+.contact .ct-channels__demo{display:flex;justify-content:center;margin-top:clamp(28px,4vw,44px);}
 @media (max-width:900px){
   .contact .ct-grid{grid-template-columns:repeat(2,1fr);}
   .contact .ct-tile{grid-column:span 1;}
@@ -8252,7 +8442,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .contact .ct-docs__split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:center;}
 .contact .ct-docs__copy{min-width:0;}
 .contact .ct-docs__cta{margin-top:clamp(22px,3vw,30px);display:flex;flex-wrap:wrap;gap:14px;}
-.contact .ct-docs__media{min-width:0;width:100%;max-width:520px;justify-self:center;}
+.contact .ct-docs__media{min-width:0;width:100%;max-width:572px;justify-self:center;}
 @media (max-width:820px){
   .contact .ct-docs__split{grid-template-columns:1fr;}
   .contact .ct-docs__media{order:-1;max-width:none;}
@@ -11141,4 +11331,54 @@ section.lab-cinema{padding:0;min-height:320vh;background:#000;}
     margin:0;width:min(94%,713px);height:auto;max-height:74%;
     object-fit:contain;object-position:center;z-index:1;
   }
+}
+
+/* ── FloatFx (global): gentle "floating in air" motion for standalone SECTION
+   images. Moved verbatim out of src/components/FloatFx.tsx so the `.ev-float*`
+   classes are available site-wide without per-page mounting. Tag a media element
+   (or a wrapper between the reveal element and the <img>) with `ev-float`
+   (+ `--b` / `--c` to desync neighbours). Reduced-motion safe. ── */
+@keyframes ev-float-a{
+  0%,100%{ transform:translate(0,0) rotate(0deg); }
+  25%{ transform:translate(-10px,-5px) rotate(-.6deg); }
+  50%{ transform:translate(0,-9px) rotate(0deg); }
+  75%{ transform:translate(10px,-4px) rotate(.6deg); }
+}
+@keyframes ev-float-b{
+  0%,100%{ transform:translate(0,0) rotate(0deg); }
+  25%{ transform:translate(12px,-4px) rotate(.7deg); }
+  50%{ transform:translate(0,-12px) rotate(0deg); }
+  75%{ transform:translate(-11px,-6px) rotate(-.7deg); }
+}
+.ev-float{ animation:ev-float-a 11s ease-in-out infinite; will-change:transform; }
+.ev-float--b{ animation-name:ev-float-b; animation-duration:13s; animation-delay:-3.2s; }
+.ev-float--c{ animation-duration:12s; animation-delay:-5.5s; }
+@media (prefers-reduced-motion:reduce){
+  .ev-float,.ev-float--b,.ev-float--c{ animation:none !important; }
+}
+
+/* ── ev-drift: same gentle left/right drift, but animates the INDIVIDUAL
+   `translate` property instead of `transform`. Because `translate` composes on
+   top of any `transform` (static `translateY(-50%) scale()` bleeds, data-reveal,
+   parallax), this can be applied DIRECTLY to an <img> that already carries its
+   own transform — no wrapper, no clobbering. Use for page-local bleed renders.
+   (Do NOT use on elements that drive the `translate` property themselves, e.g.
+   the homepage deck cards' --card-tx.) Reduced-motion safe. ── */
+@keyframes ev-drift-a{
+  0%,100%{ translate:0 0; }
+  25%{ translate:-10px -5px; }
+  50%{ translate:0 -9px; }
+  75%{ translate:10px -4px; }
+}
+@keyframes ev-drift-b{
+  0%,100%{ translate:0 0; }
+  25%{ translate:12px -4px; }
+  50%{ translate:0 -12px; }
+  75%{ translate:-11px -6px; }
+}
+.ev-drift{ animation:ev-drift-a 11s ease-in-out infinite; will-change:translate; }
+.ev-drift--b{ animation-name:ev-drift-b; animation-duration:13s; animation-delay:-3.2s; }
+.ev-drift--c{ animation-duration:12s; animation-delay:-5.5s; }
+@media (prefers-reduced-motion:reduce){
+  .ev-drift,.ev-drift--b,.ev-drift--c{ animation:none !important; }
 }
