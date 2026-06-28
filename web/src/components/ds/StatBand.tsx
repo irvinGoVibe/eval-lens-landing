@@ -36,6 +36,9 @@ export type StatBandProps = {
   ariaLabel?: string;
   eyebrow: string;
   title: string;
+  /** Optional gradient accent word/run forwarded to the v1 heading (additive —
+      omit to keep the plain title, as every existing consumer does). */
+  accent?: string;
   stats: Stat[];
   /** Wide media slot under the figures (visible placeholder until a real asset). */
   media?: StatBandMedia;
@@ -76,6 +79,7 @@ export function StatBand({
   ariaLabel,
   eyebrow,
   title,
+  accent,
   stats,
   media,
   marker,
@@ -93,7 +97,7 @@ export function StatBand({
         <div className="wrap">
           <div className="head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} />
+            <Title title={title} accent={accent} />
           </div>
           <Stats stats={stats} />
           <Band media={media} />

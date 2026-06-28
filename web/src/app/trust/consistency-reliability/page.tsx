@@ -334,13 +334,18 @@ export default function ConsistencyReliabilityPage() {
 
         {/* 6. Bias controls — page-local `.bias-grid` (CSS already in
             globals.css), light. risk → control. */}
-        <section className="consistency band consistency-bias blob-host">
+        <section className="consistency band ink consistency-bias blob-host">
           <BlobField variant="b" />
           <style>{`
             /* Tighter subheader -> grid gap (globals set an oversized
                margin-bottom here) + slightly tighter grid gap. */
             .consistency.consistency-bias .head{ margin-bottom:clamp(22px,3vw,38px); }
             .consistency.consistency-bias .bias-grid{ gap:clamp(12px,1.6vw,18px); }
+            /* dark (ink) treatment of the risk -> control cards */
+            .consistency-bias.ink .bias-row{ background:linear-gradient(135deg, rgba(124,92,255,.12) 0%, rgba(46,197,232,.06) 55%, rgba(124,92,255,.10) 100%); border:1px solid rgba(255,255,255,.10); box-shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 26px 58px -34px rgba(0,0,0,.6); }
+            .consistency-bias.ink .bias-risk{ color:var(--fg-on-dark); }
+            .consistency-bias.ink .bias-control{ color:rgba(255,255,255,.6); }
+            .consistency-bias.ink .sub{ color:rgba(255,255,255,.62); }
           `}</style>
           <div className="wrap">
             <div className="head" data-reveal="up">
@@ -642,7 +647,7 @@ export default function ConsistencyReliabilityPage() {
         `}</style>
         <StatementHero
           id="get-started"
-          surface="light"
+          surface="ink"
           version={1}
           background="video"
           backgroundSrc="/assets/consistency/consistency-cta-bg-2.mp4"

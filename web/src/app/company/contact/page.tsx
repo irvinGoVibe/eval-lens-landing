@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
+import { CtaBand } from "@/components/ds";
 import { ScrollFX } from "@/components/ScrollFX";
 import { FloatFx } from "@/components/FloatFx";
 import { BlobField } from "@/components/BlobField";
@@ -392,52 +393,17 @@ export default async function ContactPage() {
         </section>
 
         {/* 6. Final CTA — quiet CTA, DARK. */}
-        <section className="band ink ct-cta">
-          {/* full-bleed looping video background + darkening scrim
-              (same treatment as the About final-CTA). */}
-          <style>{`
-            .contact .ct-cta{ position:relative; isolation:isolate; overflow:hidden; }
-            .contact .ct-cta__bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; pointer-events:none; }
-            .contact .ct-cta__scrim{ position:absolute; inset:0; z-index:1; pointer-events:none;
-              background:linear-gradient(180deg, rgba(248,244,237,.42) 0%, rgba(242,236,227,.56) 100%); }
-            .contact .ct-cta .head{ position:relative; z-index:2; }
-            @media (prefers-reduced-motion:reduce){ .contact .ct-cta__bg{ display:none; } }
-          `}</style>
-          <video className="ct-cta__bg" autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
-            <source src="/assets/contact/get-started-bg.mp4" type="video/mp4" />
-          </video>
-          <div className="ct-cta__scrim" aria-hidden="true" />
-          <div className="wrap head">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              Get started
-            </span>
-            <h2
-              className="title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              See EvalLense run on <span className="grad-word">your own applications</span>
-            </h2>
-            <p
-              className="sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              Book a demo to walk through the product and run a pilot batch on
-              your own decks.
-            </p>
-            <div
-              className="sect-cta"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
-            </div>
-          </div>
-        </section>
+        <CtaBand
+          theme="dark"
+          videoSrc="/assets/contact/get-started-bg.mp4"
+          eyebrow="Get started"
+          title="See EvalLense run on"
+          titleAccent="your own applications"
+          sub="Book a demo to walk through the product and run a pilot batch on your own decks."
+          primary={{ label: "Book a Demo", href: "/#demo" }}
+        />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );

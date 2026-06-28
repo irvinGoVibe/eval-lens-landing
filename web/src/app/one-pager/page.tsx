@@ -305,6 +305,7 @@ export default function OnePagerPage() {
           ariaLabel="What a first pilot looks like, in numbers"
           eyebrow="BY THE NUMBERS"
           title="What a first pilot looks like"
+          accent="pilot"
           stats={STATS.map((s) => ({ value: s.value, label: s.label, src: s.src }))}
         />
         <style>{PILOT_NUMBERS_CSS}</style>
