@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ds";
 import { PitchReportMock } from "./PitchReportMock";
 
 export function SampleOutputSection() {
@@ -28,12 +27,6 @@ export function SampleOutputSection() {
             aria-hidden="true"
           />
 
-          {/* Window chrome strip (right of the baked dots) */}
-          <div className="uc2-panel-topbar">
-            <span className="uc2-topbar-brand">EvalLense</span>
-            <span className="uc2-topbar-exit" aria-hidden="true">⤢ Exit full screen</span>
-          </div>
-
           {/* 4. Internal report tabs + 5. default Project Summary view */}
           <div className="uc2-panel-body">
             <PitchReportMock />
@@ -44,15 +37,6 @@ export function SampleOutputSection() {
         <p className="uc2-sample-note" data-reveal="up">
           Built first for pitch-deck review. The same first-read logic can support VC dealflow and hackathon application screening — shown in the workflow section below.
         </p>
-
-        <div className="uc2-sample__cta" data-reveal="up">
-          <p>Want this for your batch?</p>
-          <p className="uc2-cta-support">Bring one real batch. We will show what EvalLense would produce from it.</p>
-          <div className="uc2-cta-row">
-            <Button href="/company/contact" variant="gradient">Book a workflow call</Button>
-            <Button href="/try-live-demo" variant="glass">Try sample workspace</Button>
-          </div>
-        </div>
       </div>
     </section>
   );

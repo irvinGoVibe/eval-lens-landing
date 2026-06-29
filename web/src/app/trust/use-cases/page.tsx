@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
-import { Button, CtaBand, Cinema, Eyebrow, PinnedSteps } from "@/components/ds";
+import { Button, CtaBand, Eyebrow, PinnedSteps } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
 import { SampleOutputSection } from "./SampleOutputSection";
 
@@ -526,6 +526,18 @@ export default function UseCasesPage() {
         {/* §2 Sample Output Preview */}
         <SampleOutputSection />
 
+        {/* §2b CTA — tied to the sample report above (cube video) */}
+        <CtaBand
+          theme="dark"
+          title="Want this for"
+          titleAccent="your batch?"
+          sub="You just saw a real report. Send us one batch and we will produce the same from your own decks."
+          primary={{ label: "Book a workflow call", href: "/company/contact" }}
+          secondary={{ label: "Try sample workspace", href: "/try-live-demo" }}
+          videoSrc="/assets/cta/cube-1.mp4"
+          auroraVariant="violet"
+        />
+
         {/* §3 Where Review Breaks */}
         <WhereReviewBreaks />
 
@@ -588,20 +600,17 @@ export default function UseCasesPage() {
         {/* §7 Honest Scope */}
         <HonestScope />
 
-        {/* §8 Final CTA — Cinema ink, chess video */}
-        <Cinema
-          id="cta"
-          surface="ink"
+        {/* §8 Final CTA — original distinct close (program → pilot) */}
+        <CtaBand
+          theme="dark"
+          bleed
           eyebrow="Get started"
-          headline="Review your next batch."
-          lines={["Review your", "next batch."]}
-          mobileLines={["Review your", "next batch."]}
-          sub="Bring one real batch. We will show what EvalLense would produce from it: evidence, risks, questions, and a comparison view your team can use."
-          cta={{ label: "Book a workflow call", href: "/company/contact" }}
-          media={{
-            videoSrc: "/videos/cinema-chess.mp4",
-            poster: "/videos/cinema-chess-poster.jpg",
-          }}
+          title="Bring your next batch to"
+          titleAccent="EvalLense"
+          sub="Tell us what kind of program you run. We will map your workflow, show how the review would work, and walk through a pilot batch."
+          primary={{ label: "Book a Demo", href: "/company/contact" }}
+          secondary={{ label: "Choose your use case", href: "#workflows" }}
+          auroraVariant="ocean"
         />
       </main>
       <Footer />
