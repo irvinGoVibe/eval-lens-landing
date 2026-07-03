@@ -786,6 +786,30 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
   flex:initial;width:auto;scroll-snap-align:none;
 }
 
+/* mobile: full-width rectangular cards, with the signal dot + eyebrow on one
+   row (h3 / p break to their own full-width rows). Desktop + other gallery
+   versions untouched. */
+@media (max-width:620px){
+  .ds .lab-gallery__v--grid .lab-gallery__grid{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .ds .lab-gallery__v--grid .lab-gallery__card{
+    min-height:0;
+    padding:20px 22px;
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:center;
+    column-gap:9px;
+    row-gap:9px;
+  }
+  .ds .lab-gallery__v--grid .lab-gallery__card > h3,
+  .ds .lab-gallery__v--grid .lab-gallery__card > p{
+    flex:0 0 100%;
+    margin-top:0;
+  }
+}
+
 /* ============================================================
    Full-bleed statement (archetype 02 — heading + sub, 3 versions)
    weight hierarchy: eyebrow=label · heading=display 600 · sub=400 muted
