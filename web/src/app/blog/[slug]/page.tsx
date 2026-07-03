@@ -49,8 +49,24 @@ export default async function ArticlePage({
 
   const related = await getRelatedPosts(slug);
 
+  // Article JSON-LD — every field already lives on the post record.
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    image: post.cover ? [post.cover] : undefined,
+    datePublished: post.date,
+    author: { "@type": "Person", name: post.author },
+    publisher: { "@type": "Organization", name: "EvalLense" },
+  };
+
   return (
     <article className="article">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <div className="wrap blog-wrap">
         <Link href="/blog" className="article-back">
           <span aria-hidden="true">←</span> Newsroom

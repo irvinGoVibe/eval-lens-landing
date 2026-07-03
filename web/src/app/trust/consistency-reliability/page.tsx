@@ -609,9 +609,10 @@ export default function ConsistencyReliabilityPage() {
             <div className="wrap ds-hero__editorial">
               <div className="ds-hero__ed-copy">
                 <Eyebrow>What we do not claim</Eyebrow>
-                <h1 className="ds-hero__title ds-hero__title--left">
+                {/* h2: the page's one h1 is the top StatementHero */}
+                <h2 className="ds-hero__title ds-hero__title--left">
                   <span className="grad-word">Reliability</span> has an honest edge
-                </h1>
+                </h2>
                 <p className="sub ds-hero__sub ds-hero__sub--left">
                   EvalLense does not promise to predict startup success. It raises
                   the quality of evaluation by making it structured,
@@ -651,6 +652,7 @@ export default function ConsistencyReliabilityPage() {
           id="get-started"
           surface="ink"
           version={1}
+          headingLevel="h2"
           background="video"
           backgroundSrc="/assets/consistency/consistency-cta-bg-2.mp4"
           eyebrow="Get started"

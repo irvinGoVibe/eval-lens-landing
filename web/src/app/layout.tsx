@@ -3,11 +3,29 @@ import Script from "next/script";
 import "./globals.css";
 import "@/components/ds/ds.css";
 import { DevInspector } from "@/components/DevInspector";
+import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
+  // Absolute base for OG/Twitter images and canonical URLs on Vercel.
+  metadataBase: new URL(SITE_URL),
   title: "EvalLense — Lens Your Next Unicorn",
   description:
     "Batch-review pitch decks, rank the strongest startups, and give every team a clear report.",
+};
+
+/** Organization JSON-LD — sitewide, rendered once in the root layout. */
+const ORG_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "EvalLense",
+  url: SITE_URL,
+  logo: `${SITE_URL}/assets/brand/evallense-logo.webp`,
+  sameAs: [
+    "https://x.com/evallense",
+    "https://www.instagram.com/evallense/",
+    "https://t.me/evallense",
+    "https://medium.com/@evallense",
+  ],
 };
 
 export const viewport: Viewport = {
@@ -73,6 +91,10 @@ export default function RootLayout({
         </noscript>
       </head>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSON_LD) }}
+        />
         {children}
         {process.env.NODE_ENV !== "production" && <DevInspector />}
       </body>
