@@ -67,6 +67,41 @@ export type CinemaProps = {
   variant?: "lens-end";
 };
 
+/* ── Mobile knockout auto-fit ─────────────────────────────────────────────
+ * The mobile knockout draws the headline as fixed-size SVG <text> inside a
+ * 440-unit-wide portrait viewBox with `preserveAspectRatio="…slice"`, so any
+ * line wider than the viewBox is CROPPED at the screen edges. `mobileLines`
+ * only helps if the author guesses good breaks — a long line still overflows.
+ *
+ * Safety net: estimate each mobile line's rendered width (a weighted glyph
+ * model — spaces narrow, caps / W / M wide, i·l·t narrow — that slightly
+ * OVER-estimates, i.e. errs toward catching overflow). If the WIDEST line would
+ * exceed the safe width, scale the WHOLE headline down by one uniform ratio so
+ * every line keeps identical glyph proportions (no per-line condensing, which
+ * reads as one line stretched next to another). Short headlines stay at full
+ * size. Needs no client JS — it stays a pure Server Component. */
+const MOBILE_FS = 66; // base .ds-cinema__masktext--m font-size in ds.css
+const MOBILE_DY = 84; // base line advance (tspan dy) in ds.css / Cinema markup
+const MOBILE_SAFE = 400; // widest line fits this (of the 440 viewBox → ~20u margin/side)
+
+function estLineWidth(line: string, fs: number): number {
+  let em = 0;
+  for (const ch of line) {
+    if (ch === " ") em += 0.28;
+    else if (ch === "W" || ch === "M" || ch === "m" || ch === "w") em += 0.85;
+    else if ("iIljtf.,'!:;|".includes(ch)) em += 0.3;
+    else if (ch >= "A" && ch <= "Z") em += 0.72;
+    else em += 0.52;
+  }
+  return em * fs;
+}
+
+/** Uniform shrink ratio so the widest mobile line fits MOBILE_SAFE (≤1). */
+function mobileFitRatio(lines: string[]): number {
+  const widest = Math.max(...lines.map((l) => estLineWidth(l, MOBILE_FS)));
+  return widest > MOBILE_SAFE ? MOBILE_SAFE / widest : 1;
+}
+
 /** Deterministic slug → unique-enough mask id when none is supplied. */
 function slugify(input: string): string {
   return (
@@ -99,6 +134,9 @@ export function Cinema({
   const desktopLines = lines && lines.length ? lines : [headline];
   const mobileWrapped =
     mobileLines && mobileLines.length ? mobileLines : [headline];
+  const mobileRatio = mobileFitRatio(mobileWrapped);
+  const mobileFontSize = MOBILE_FS * mobileRatio;
+  const mobileDy = Math.round(MOBILE_DY * mobileRatio);
   const isMultiline = desktopLines.length > 1;
   const className = [
     "band",
@@ -205,9 +243,14 @@ export function Cinema({
                 y="404"
                 textAnchor="middle"
                 className="ds-cinema__masktext ds-cinema__masktext--m"
+                style={
+                  mobileRatio < 1
+                    ? { fontSize: `${mobileFontSize.toFixed(1)}px` }
+                    : undefined
+                }
               >
                 {mobileWrapped.map((line, i) => (
-                  <tspan key={i} x="220" dy={i === 0 ? 0 : 84}>
+                  <tspan key={i} x="220" dy={i === 0 ? 0 : mobileDy}>
                     {line}
                   </tspan>
                 ))}
