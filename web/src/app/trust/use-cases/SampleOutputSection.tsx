@@ -25,6 +25,8 @@ export function SampleOutputSection() {
             src="/assets/use-cases/panel-frame.png"
             alt=""
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
           />
 
           {/* 4. Internal report tabs + 5. default Project Summary view */}

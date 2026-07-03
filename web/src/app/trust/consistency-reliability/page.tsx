@@ -221,6 +221,8 @@ export default function ConsistencyReliabilityPage() {
                     className={i ? "ev-float ev-float--b" : "ev-float"}
                     src={d.src}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     width={d.w}
                     height={d.h}
                     style={{ display: "block", width: "100%", height: "auto", marginTop: "clamp(10px,1.6vw,20px)" }}
@@ -505,7 +507,7 @@ export default function ConsistencyReliabilityPage() {
             </div>
             <div className="cr-bench-grid">
               <div className="cr-bench-video" aria-hidden="true">
-                <video autoPlay muted loop playsInline preload="auto">
+                <video autoPlay muted loop playsInline preload="metadata">
                   <source src="/assets/consistency/benchmark-bg.mp4" type="video/mp4" />
                 </video>
               </div>
