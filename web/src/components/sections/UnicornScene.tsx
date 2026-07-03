@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float, useGLTF } from "@react-three/drei";
@@ -871,16 +871,44 @@ export default function UnicornScene({ isMobile, active, zoom = 1, noBackdrop }:
           <UnicornModel isMobile={isMobile} />
         </Float>
       </Suspense>
-      <EffectComposer>
-        <Bloom
-          mipmapBlur
-          intensity={isMobile ? 0.3 : 0.5}
-          luminanceThreshold={0.42}
-          luminanceSmoothing={0.25}
-          radius={0.75}
-        />
-      </EffectComposer>
+      <BloomLayer isMobile={isMobile} />
     </Canvas>
+  );
+}
+
+/* EffectComposer's setRenderer reads gl.getContext().getContextAttributes().alpha
+   on mount — getContextAttributes() returns null on a LOST context, so mounting
+   the bloom pass against a dead context throws "reading 'alpha'" and takes down
+   the whole scene. Gate it on a live context (and drop it if the context is lost
+   at runtime) so a lost GL context degrades to no-bloom instead of crashing. */
+function BloomLayer({ isMobile }: { isMobile: boolean }) {
+  const gl = useThree((s) => s.gl);
+  const [healthy, setHealthy] = useState(
+    () => gl.getContext()?.getContextAttributes() != null,
+  );
+  useEffect(() => {
+    const canvas = gl.domElement;
+    const onLost = () => setHealthy(false);
+    const onRestored = () =>
+      setHealthy(gl.getContext()?.getContextAttributes() != null);
+    canvas.addEventListener("webglcontextlost", onLost);
+    canvas.addEventListener("webglcontextrestored", onRestored);
+    return () => {
+      canvas.removeEventListener("webglcontextlost", onLost);
+      canvas.removeEventListener("webglcontextrestored", onRestored);
+    };
+  }, [gl]);
+  if (!healthy) return null;
+  return (
+    <EffectComposer>
+      <Bloom
+        mipmapBlur
+        intensity={isMobile ? 0.3 : 0.5}
+        luminanceThreshold={0.42}
+        luminanceSmoothing={0.25}
+        radius={0.75}
+      />
+    </EffectComposer>
   );
 }
 

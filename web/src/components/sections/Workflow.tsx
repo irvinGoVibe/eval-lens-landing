@@ -143,24 +143,25 @@ export function Workflow() {
             </div>
             </div>
 
-            <div className="wf-window" id="wf-window" data-stage="1">
-              <div className="chrome">
-                <div className="dots">
-                  <i></i>
-                  <i></i>
-                  <i></i>
+            <div className="wf-window-shell">
+              <div className="wf-window" id="wf-window" data-stage="1">
+                <div className="chrome">
+                  <div className="dots">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                  </div>
+                  <div className="brand">
+                    <span className="glyph"></span>EvalLense
+                  </div>
+                  <div className="crumb" id="wf-crumb">
+                    New entry point
+                  </div>
+                  <div className="spacer"></div>
+                  <div className="pill" id="wf-stagepill">
+                    Setup
+                  </div>
                 </div>
-                <div className="brand">
-                  <span className="glyph"></span>EvalLense
-                </div>
-                <div className="crumb" id="wf-crumb">
-                  New entry point
-                </div>
-                <div className="spacer"></div>
-                <div className="pill" id="wf-stagepill">
-                  Setup
-                </div>
-              </div>
 
               <div className="canvas">
                 <div className="layer on" id="wf-layerA">
@@ -571,6 +572,7 @@ export function Workflow() {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>

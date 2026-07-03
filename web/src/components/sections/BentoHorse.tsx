@@ -28,7 +28,14 @@ class SceneErrorBoundary extends Component<
 function canUseWebGL(): boolean {
   try {
     const canvas = document.createElement("canvas");
-    return Boolean(canvas.getContext("webgl2") ?? canvas.getContext("webgl"));
+    const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+    if (!gl) return false;
+    // Release the probe context immediately — browsers cap live WebGL
+    // contexts (~16) and force-lose the oldest once exceeded. Leaking this
+    // one (doubled under Strict Mode, stacked across HMR) is enough to get
+    // the real scene a lost context, which crashes EffectComposer's init.
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    return true;
   } catch {
     return false;
   }
