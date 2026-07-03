@@ -57,9 +57,9 @@ export function Footer({ variant = "light" }: FooterProps) {
           </div>
           <div className="nav-cluster">
             <div className="col">
-              <h5>
+              <p className="col-h">
                 <Link href="/product">Product</Link>
-              </h5>
+              </p>
               <nav>
                 <Link href="/one-pager">One Pager</Link>
                 <Link href="/product/entry-hub">Entry Hub</Link>
@@ -70,9 +70,9 @@ export function Footer({ variant = "light" }: FooterProps) {
               </nav>
             </div>
             <div className="col">
-              <h5>
+              <p className="col-h">
                 <Link href="/trust">Trust</Link>
-              </h5>
+              </p>
               <nav>
                 <Link href="/trust/methodology">Methodology</Link>
                 <Link href="/trust/consistency-reliability">
@@ -86,7 +86,7 @@ export function Footer({ variant = "light" }: FooterProps) {
               </nav>
             </div>
             <div className="col">
-              <h5>Company</h5>
+              <p className="col-h">Company</p>
               <nav>
                 <Link href="/company/about">About</Link>
                 <Link href="/blog">Newsroom</Link>

@@ -1967,10 +1967,10 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #workflow .wf-nav-btn:active:not(:disabled){transform:scale(.92);}
 #workflow .wf-nav-btn:disabled{opacity:.3;cursor:default;box-shadow:none;}
 #workflow .wf-rail .step .idx{font-family:var(--font-mono);font-size:12px;font-variant-numeric:tabular-nums;width:26px;height:26px;border-radius:50%;
-  display:grid;place-items:center;flex:none;color:var(--muted-2);background:var(--bg);border:1px solid var(--border-2);transition:all .45s var(--ease);}
+  display:grid;place-items:center;flex:none;color:var(--muted);/* a11y: muted-2 is 4.1:1 on the tinted band */background:var(--bg);border:1px solid var(--border-2);transition:all .45s var(--ease);}
 #workflow .wf-rail .step .body{min-width:0;}
 #workflow .wf-rail .step .name{font-size:15px;font-weight:500;letter-spacing:-.01em;color:var(--muted);transition:color .45s var(--ease);}
-#workflow .wf-rail .step .desc{font-size:12.5px;line-height:1.4;color:var(--muted-2);margin-top:2px;max-height:0;opacity:0;overflow:hidden;transition:all .5s var(--ease);}
+#workflow .wf-rail .step .desc{font-size:12.5px;line-height:1.4;color:var(--muted);/* a11y: ↑contrast */margin-top:2px;max-height:0;opacity:0;overflow:hidden;transition:all .5s var(--ease);}
 #workflow .wf-rail .step .track{grid-column:2;height:2px;border-radius:2px;background:var(--border-2);margin-top:11px;overflow:hidden;max-height:0;opacity:0;transition:opacity .4s var(--ease);}
 #workflow .wf-rail .step .track i{display:block;height:100%;width:var(--p,0%);background:var(--lens);border-radius:2px;}
 #workflow .wf-rail .step.done .idx{color:#fff;background:var(--violet);border-color:transparent;}
@@ -3090,7 +3090,7 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
 .foot .nav-cluster{display:grid;grid-template-columns:repeat(3,max-content);gap:76px;}
 .foot .col--brand p{max-width:300px;line-height:1.55;margin:0 0 18px;}
 .foot .ctas{display:flex;gap:10px;flex-wrap:wrap;}
-.foot h5{font-family:var(--foot-head-font);font-size:12px;text-transform:uppercase;letter-spacing:var(--foot-head-tracking);color:var(--fg);font-weight:500;margin:0 0 16px;}
+.foot h5,.foot .col-h{font-family:var(--foot-head-font);font-size:12px;text-transform:uppercase;letter-spacing:var(--foot-head-tracking);color:var(--fg);font-weight:500;margin:0 0 16px;}
 .foot .col nav{display:flex;flex-direction:column;gap:11px;}
 .foot .col nav a{display:block;width:max-content;color:var(--muted);transition:color .2s;}
 .foot .col nav a:hover{color:var(--violet);}
@@ -3176,7 +3176,7 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
   .foot.is-dark::before{animation:none;transform:translateX(-50%);}
 }
 .foot.is-dark .brand{color:var(--fg-on-dark);}
-.foot.is-dark h5{color:var(--fg-on-dark);}
+.foot.is-dark h5,.foot.is-dark .col-h{color:var(--fg-on-dark);}
 .foot.is-dark .col nav a,
 .foot.is-dark .foot-legal__meta a{color:var(--muted-on-dark);}
 .foot.is-dark .col nav a:hover,
@@ -7456,8 +7456,8 @@ section.band.ink .mini-tag{color:var(--lavender);}
 /* ---- 5. Final CTA — quiet CTA (DARK) ---- */
 
 /* footer column heading that links to its section hub (Product / Trust) */
-.foot .col h5 a{color:inherit;text-decoration:none;transition:color .3s var(--ease);}
-.foot .col h5 a:hover{color:var(--violet);}
+.foot .col h5 a,.foot .col .col-h a{color:inherit;text-decoration:none;transition:color .3s var(--ease);}
+.foot .col h5 a:hover,.foot .col .col-h a:hover{color:var(--violet);}
 
 /* ============================================================
    /pricing — dense conversion utility (Story 18)

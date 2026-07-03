@@ -217,6 +217,7 @@ export function InTheLoop({ posts }: { posts: LoopPost[] }) {
     const id = new URLSearchParams(window.location.search).get("loop");
     if (!id) return;
     const idx = posts.findIndex((p) => p.id === id);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional URL→state sync on mount (deep link into a loop card)
     if (idx >= 0) setActiveIndex(idx);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [posts]);
