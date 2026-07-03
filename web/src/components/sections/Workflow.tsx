@@ -447,31 +447,6 @@ export function Workflow() {
                             </span>
                           </td>
                         </tr>
-                        <tr data-row="3">
-                          <td>
-                            <div className="team">
-                              <span
-                                className="av"
-                                style={{
-                                  background: "linear-gradient(135deg,#2ec5e8,#36e0c2)",
-                                }}
-                              >
-                                L
-                              </span>
-                              <span className="tn">LedgerLoop</span>
-                            </div>
-                          </td>
-                          <td className="mats">PDF</td>
-                          <td className="subm">1d ago</td>
-                          <td>
-                            <span className="status complete">
-                              <span className="sd"></span>
-                              <span className="label-done">Ready</span>
-                              <span className="label-proc">Processing</span>
-                              <span className="label-score">Scored</span>
-                            </span>
-                          </td>
-                        </tr>
                         <tr data-row="4">
                           <td>
                             <div className="team">
