@@ -517,8 +517,24 @@
 /* mobile */
 @media (max-width:620px){
   .ds-hero__title{max-width:11ch;}
-  .ds-hero .cta-row{flex-direction:column;align-items:center;gap:12px;}
-  .ds-hero .btn{width:min(100%,240px);justify-content:center;}
+  .ds-hero .cta-row{
+    flex-direction:row;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:min(100%,270px);
+    margin-inline:auto;
+  }
+  .ds-hero .btn{
+    flex:1 1 0;
+    min-width:0;
+    width:auto;
+    justify-content:center;
+    padding-inline:10px;
+    font-size:13.5px;
+    white-space:nowrap;
+  }
   .ds-hero__editorial{grid-template-columns:1fr;}
 }
 
