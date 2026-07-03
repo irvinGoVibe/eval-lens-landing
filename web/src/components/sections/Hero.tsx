@@ -33,6 +33,7 @@ export function Hero() {
             playsInline
             preload="auto"
             disablePictureInPicture
+            poster="/assets/hero-intro-transed-poster.webp"
           >
             <source
               src="/assets/hero-intro-transed-test.mov?v=6"

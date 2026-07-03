@@ -27,6 +27,8 @@ export function SampleOutputSection() {
             aria-hidden="true"
             loading="lazy"
             decoding="async"
+            width={2800}
+            height={1700}
           />
 
           {/* 4. Internal report tabs + 5. default Project Summary view */}

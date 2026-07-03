@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LazyVideo } from "@/components/LazyVideo";
 import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
@@ -507,9 +508,8 @@ export default function ConsistencyReliabilityPage() {
             </div>
             <div className="cr-bench-grid">
               <div className="cr-bench-video" aria-hidden="true">
-                <video autoPlay muted loop playsInline preload="metadata">
-                  <source src="/assets/consistency/benchmark-bg.mp4" type="video/mp4" />
-                </video>
+                {/* deep below the fold — viewport-gated fetch */}
+                <LazyVideo src="/assets/consistency/benchmark-bg.mp4" ariaHidden />
               </div>
               <div className="cr-bench-col">
                 <BenchCard s={BENCHMARK_STATS[0]} />

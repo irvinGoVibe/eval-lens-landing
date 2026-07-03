@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
+import { LazyVideo } from "@/components/LazyVideo";
 import { LabEyebrow, MediaPlaceholder } from "./_kit";
 
 /**
@@ -222,18 +223,12 @@ export function LabPinnedSteps({
                 role="img"
                 aria-label={videoLoop.ariaLabel}
               >
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  disablePictureInPicture
+                {/* below-fold on every consumer page → viewport-gated fetch */}
+                <LazyVideo
+                  src={videoLoop.src}
                   poster={videoLoop.poster}
-                  aria-label={videoLoop.ariaLabel}
-                >
-                  <source src={videoLoop.src} type="video/mp4" />
-                </video>
+                  ariaLabel={videoLoop.ariaLabel}
+                />
               </div>
             </div>
           </div>
@@ -376,35 +371,25 @@ export function LabPinnedSteps({
               >
                 {videoLoop ? (
                   /* opt-in autoplaying loop; the frame takes the video's
-                     native aspect so the walkthrough isn't cropped. */
-                  <video
+                     native aspect so the walkthrough isn't cropped.
+                     Viewport-gated: zero bytes until the pin approaches. */
+                  <LazyVideo
                     className="lab-rv__slide"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    disablePictureInPicture
+                    src={videoLoop.src}
                     poster={videoLoop.poster}
-                    aria-label={videoLoop.ariaLabel}
-                  >
-                    <source src={videoLoop.src} type="video/mp4" />
-                  </video>
+                    ariaLabel={videoLoop.ariaLabel}
+                  />
                 ) : videoScrub ? (
-                  /* No autoPlay: ScrollFX seeks currentTime from the pin. */
-                  <video
+                  /* No autoplay: ScrollFX seeks currentTime from the pin.
+                     Buffer starts fetching only near the viewport. */
+                  <LazyVideo
                     className="lab-rv__slide"
-                    data-scrub-video
-                    data-frames={videoScrub.frames}
-                    muted
-                    playsInline
-                    preload="auto"
-                    disablePictureInPicture
+                    mode="scrub"
+                    src={videoScrub.src}
+                    frames={videoScrub.frames}
                     poster={videoScrub.poster}
-                    aria-label={videoScrub.ariaLabel}
-                  >
-                    <source src={videoScrub.src} type="video/mp4" />
-                  </video>
+                    ariaLabel={videoScrub.ariaLabel}
+                  />
                 ) : (
                   <>
                     <div className="lab-rv__slide lab-rv__slide--ph" aria-hidden="true" />

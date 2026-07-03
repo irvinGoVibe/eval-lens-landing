@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
+import { LazyVideo } from "@/components/LazyVideo";
 
 export type CtaLink = {
   label: string;
@@ -95,16 +96,13 @@ export function CtaBand({
     <section className={className}>
       <div className={auroraClassName} aria-hidden="true">
         {showVideo ? (
-          <video
+          /* CTA band sits at the very bottom of its pages — viewport-gated */
+          <LazyVideo
             className="cta-band__video"
-            autoPlay
-            muted
-            loop
-            playsInline
+            src={videoSrc}
             poster={videoPoster}
-          >
-            <source src={videoSrc} type="video/mp4" />
-          </video>
+            ariaHidden
+          />
         ) : (
           <>
             <span className="cta-band__bloom cta-band__bloom--core" />
