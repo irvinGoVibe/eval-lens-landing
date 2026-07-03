@@ -92,36 +92,14 @@ export function StatBand({
       data-marker={marker}
       aria-label={ariaLabel}
     >
-      {/* ── v1 — Polish: head, 3-col stat grid, 21:9 band ── */}
+      {/* ── v1 — Polish: head, 3-col stat grid, 21:9 band. (The hidden v2/v3
+          copies were baked out during the tech-optimization pass — only the
+          shipped version renders; see archive/pre-optimization for them.) ── */}
       <div className="ds-statband__v ds-statband__v--polish" data-version="1">
         <div className="wrap">
           <div className="head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
             <Title title={title} accent={accent} />
-          </div>
-          <Stats stats={stats} />
-          <Band media={media} />
-        </div>
-      </div>
-
-      {/* ── v2 — Modern Recomposition: tighter rule-divided figure row ── */}
-      <div className="ds-statband__v ds-statband__v--recomp" data-version="2" hidden>
-        <div className="wrap">
-          <div className="head" data-reveal="up">
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} accent="checked" />
-          </div>
-          <Stats stats={stats} />
-          <Band media={media} />
-        </div>
-      </div>
-
-      {/* ── v3 — Expanded Expressive: large display head, oversized figures ── */}
-      <div className="ds-statband__v ds-statband__v--expanded" data-version="3" hidden>
-        <div className="wrap">
-          <div className="head" data-reveal="up">
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} accent="Every" />
           </div>
           <Stats stats={stats} />
           <Band media={media} />

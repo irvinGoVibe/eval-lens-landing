@@ -117,34 +117,10 @@ export function HubMap({
       data-marker={marker}
       aria-label={ariaLabel}
     >
-      {/* ── v1 — Polish (original): flat 3-col grid, feature spans 2 cols ── */}
+      {/* ── v1 — Polish (original): flat 3-col grid, feature spans 2 cols.
+          (Hidden v2/v3 copies baked out in the tech-optimization pass; see
+          archive/pre-optimization.) ── */}
       <div className="ds-hubmap__v ds-hubmap__v--polish" data-version="1">
-        <div className="wrap">
-          <div className="head" data-reveal="up">
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} accent={titleAccent} />
-            <p className="sub">{sub}</p>
-          </div>
-          <Layout items={items} />
-          <Note note={note} />
-        </div>
-      </div>
-
-      {/* ── v2 — Modern Recomposition: full-width feature banner + even 3-col row ── */}
-      <div className="ds-hubmap__v ds-hubmap__v--recomp" data-version="2" hidden>
-        <div className="wrap">
-          <div className="head" data-reveal="up">
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} accent={titleAccent} />
-            <p className="sub">{sub}</p>
-          </div>
-          <Layout items={items} />
-          <Note note={note} />
-        </div>
-      </div>
-
-      {/* ── v3 — Expanded Expressive: mirrored — routes left, tall feature hero right ── */}
-      <div className="ds-hubmap__v ds-hubmap__v--expanded" data-version="3" hidden>
         <div className="wrap">
           <div className="head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>

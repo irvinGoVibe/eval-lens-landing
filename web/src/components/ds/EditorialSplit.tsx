@@ -160,8 +160,11 @@ export function EditorialSplit({
       data-marker={marker}
       aria-label={ariaLabel}
     >
+      {/* NB: only the selected version renders (baked in the tech-optimization
+          pass — the hidden copies used to ship as dead DOM). */}
       {/* ── v1 — split (base): two columns, copy + media placeholder ── */}
-      <div className="wrap ds-split__grid" data-version="1" hidden={version !== 1}>
+      {version === 1 && (
+      <div className="wrap ds-split__grid" data-version="1">
         <div className="ds-split__copy" data-reveal="left">
           <Eyebrow>{eyebrow}</Eyebrow>
           <Title {...titleParts} />
@@ -170,9 +173,11 @@ export function EditorialSplit({
         </div>
         <MediaSlot media={media} reveal="right" />
       </div>
+      )}
 
       {/* ── v2 — mirror: clean swap of v1 — media left, copy right ── */}
-      <div className="wrap ds-split__grid ds-split__grid--mirror" data-version="2" hidden={version !== 2}>
+      {version === 2 && (
+      <div className="wrap ds-split__grid ds-split__grid--mirror" data-version="2">
         <MediaSlot media={media} reveal="left" />
         <div className="ds-split__copy" data-reveal="right">
           <Eyebrow>{eyebrow}</Eyebrow>
@@ -181,9 +186,11 @@ export function EditorialSplit({
           <Points points={points} />
         </div>
       </div>
+      )}
 
       {/* ── v3 — cinematic (bold): scene fills the band, copy over a scrim ── */}
-      <div className="ds-split__cine" data-version="3" hidden={version !== 3}>
+      {version === 3 && (
+      <div className="ds-split__cine" data-version="3">
         <div
           className="ds-split__cine-scene"
           role="img"
@@ -212,6 +219,7 @@ export function EditorialSplit({
           ) : null}
         </div>
       </div>
+      )}
     </section>
   );
 }

@@ -125,11 +125,15 @@ export function StatementHero({
       className={`band ${surf} ds-hero${className ? ` ${className}` : ""}`}
       data-marker={marker}
     >
+      {/* NB: only the selected version renders (baked in the tech-optimization
+          pass). Before the bake the hidden v1 copy still shipped its <video>
+          element, which browsers preload even when [hidden] — dead bytes on
+          every page that used v2/v3. */}
       {/* ── v1 — quiet centered statement; switchable background ── */}
+      {version === 1 && (
       <div
         className={`ds-hero__v${overMedia ? " ds-hero__v--media" : ""}`}
         data-version="1"
-        hidden={version !== 1}
       >
         {overMedia ? (
           <>
@@ -194,9 +198,11 @@ export function StatementHero({
           ) : null}
         </div>
       </div>
+      )}
 
       {/* ── v2 — near-full-bleed cinematic gradient stage; content over it ── */}
-      <div className="ds-hero__v ds-hero__v2" data-version="2" hidden={version !== 2}>
+      {version === 2 && (
+      <div className="ds-hero__v ds-hero__v2" data-version="2">
         {/* colourful backdrop BEHIND the glass stage — the frosted stage refracts it */}
         <div className="ds-hero__bg" aria-hidden="true" />
         <div className="ds-hero__stage ds-hero__stage--wide">
@@ -210,9 +216,11 @@ export function StatementHero({
           </div>
         </div>
       </div>
+      )}
 
       {/* ── v3 — editorial: text left, lens orb right ── */}
-      <div className="ds-hero__v ds-hero__v3" data-version="3" hidden={version !== 3}>
+      {version === 3 && (
+      <div className="ds-hero__v ds-hero__v3" data-version="3">
         <div className="wrap ds-hero__editorial">
           <div className="ds-hero__ed-copy">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -244,6 +252,7 @@ export function StatementHero({
           )}
         </div>
       </div>
+      )}
     </section>
   );
 }

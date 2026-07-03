@@ -96,32 +96,9 @@ export function RiskControl({
       data-marker={marker}
       aria-label={ariaLabel}
     >
-      {/* ── v1 — Polish: hairline-ruled .85/1.15 rows ── */}
+      {/* ── v1 — Polish: hairline-ruled .85/1.15 rows. (Hidden v2/v3 copies
+          baked out in the tech-optimization pass; see archive/pre-optimization.) ── */}
       <div className="ds-risk__v ds-risk__v--polish" data-version="1">
-        <div className="wrap">
-          <div className="head" data-reveal="up">
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} accent={titleAccent} />
-            <p className="sub">{sub}</p>
-          </div>
-          <Grid pairs={pairs} leftTag={leftTag} rightTag={rightTag} />
-        </div>
-      </div>
-
-      {/* ── v2 — Modern Recomposition: bordered pair-cards, two per row ── */}
-      <div className="ds-risk__v ds-risk__v--recomp" data-version="2" hidden>
-        <div className="wrap">
-          <div className="head" data-reveal="up">
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <Title title={title} accent={titleAccent} />
-            <p className="sub">{sub}</p>
-          </div>
-          <Grid pairs={pairs} leftTag={leftTag} rightTag={rightTag} />
-        </div>
-      </div>
-
-      {/* ── v3 — Expanded Expressive: large display head, oversized risk titles ── */}
-      <div className="ds-risk__v ds-risk__v--expanded" data-version="3" hidden>
         <div className="wrap">
           <div className="head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>

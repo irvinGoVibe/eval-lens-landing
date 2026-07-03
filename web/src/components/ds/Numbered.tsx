@@ -97,8 +97,11 @@ export function Numbered({
       data-marker={marker}
       aria-label={ariaLabel}
     >
+      {/* NB: only the selected version renders (baked in the tech-optimization
+          pass — the hidden copies used to ship as dead DOM). */}
       {/* ── v1 — Polish: hairline-ruled rows, narrow numeral column ── */}
-      <div className="ds-numbered__v ds-numbered__v--polish" data-version="1" hidden={version !== 1}>
+      {version === 1 && (
+      <div className="ds-numbered__v ds-numbered__v--polish" data-version="1">
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -110,9 +113,11 @@ export function Numbered({
           <List items={items} />
         </div>
       </div>
+      )}
 
       {/* ── v2 — Modern Recomposition: narrower numeral column, denser rhythm ── */}
-      <div className="ds-numbered__v ds-numbered__v--recomp" data-version="2" hidden={version !== 2}>
+      {version === 2 && (
+      <div className="ds-numbered__v ds-numbered__v--recomp" data-version="2">
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -124,9 +129,11 @@ export function Numbered({
           <List items={items} />
         </div>
       </div>
+      )}
 
       {/* ── v3 — Expanded Expressive: large display head, oversized numerals ── */}
-      <div className="ds-numbered__v ds-numbered__v--expanded" data-version="3" hidden={version !== 3}>
+      {version === 3 && (
+      <div className="ds-numbered__v ds-numbered__v--expanded" data-version="3">
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -138,6 +145,7 @@ export function Numbered({
           <List items={items} />
         </div>
       </div>
+      )}
     </section>
   );
 }
