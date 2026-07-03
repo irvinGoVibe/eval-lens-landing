@@ -107,7 +107,6 @@ export default function ReviewBoardPage() {
 
         {/* 2 — Numbered: after the scores (light) */}
         <Numbered
-          surface="ink"
           version={3}
           eyebrow="After the scores"
           title="A scored batch still needs a decision"

@@ -308,7 +308,6 @@ export default function OnePagerPage() {
         {/* 1b. Practical numbers — StatBand (soft). */}
         <StatBand
           id="pilot-numbers"
-          surface="light"
           ariaLabel="What a first pilot looks like, in numbers"
           eyebrow="BY THE NUMBERS"
           title="What a first pilot looks like"

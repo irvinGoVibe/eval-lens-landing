@@ -543,7 +543,6 @@ export default function PromptInjectionSafetyPage() {
         {/* §6 — Limits (INK, the peak) — FullStatement. */}
         <FullStatement
           id="limits"
-          surface="ink"
           version={1}
           eyebrow="Tested, honestly"
           titleLead="Prompt injection safety is not the same as "

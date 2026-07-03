@@ -31,8 +31,6 @@ export type StatBandMedia = {
 };
 export type StatBandProps = {
   id?: string;
-  /** `.band` surface — `ink` (dark) is the default for this archetype. */
-  surface?: "light" | "ink";
   ariaLabel?: string;
   eyebrow: string;
   title: string;
@@ -75,7 +73,6 @@ function Band({ media }: { media?: StatBandMedia }) {
 
 export function StatBand({
   id,
-  surface = "ink",
   ariaLabel,
   eyebrow,
   title,
@@ -84,7 +81,7 @@ export function StatBand({
   media,
   marker,
 }: StatBandProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
+  const surf = "soft"; // surface baked: every live call-site is light (tech-optimization)
   return (
     <section
       id={id}

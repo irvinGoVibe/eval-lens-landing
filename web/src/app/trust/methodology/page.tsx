@@ -628,7 +628,6 @@ export default function MethodologyPage() {
               framed in the title/sub above it. */}
           <RoutingMatrix
             id="routing"
-            surface="light"
             eyebrow="Controlled influence"
             title="Not every judge influences every score"
             accentWords={["influences"]}

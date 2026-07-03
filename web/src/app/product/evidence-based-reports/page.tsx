@@ -479,7 +479,6 @@ export default function EvidenceBasedReportsPage() {
               "feature" in t && t.feature ? (
                 <ChipGrid
                   bare
-                  surface="ink"
                   columns={2}
                   ariaLabel="Sample deck completeness — each section present, thin, or missing, with severity and the affected dimension"
                   items={COMPLETENESS.map((c) => ({

@@ -17,8 +17,6 @@ import { LabEyebrow } from "./_kit";
  */
 export type LabFullStatementProps = {
   id?: string;
-  /** `.band` surface — `ink` (dark) is the default for this archetype. */
-  surface?: "light" | "ink";
   /** Which saved layout version renders (1 centered · 2 left · 3 split). Default 1. */
   version?: 1 | 2 | 3;
   ariaLabel?: string;
@@ -34,7 +32,6 @@ export type LabFullStatementProps = {
 
 export function LabFullStatement({
   id,
-  surface = "ink",
   version = 1,
   ariaLabel,
   eyebrow,
@@ -44,7 +41,7 @@ export function LabFullStatement({
   sub,
   marker,
 }: LabFullStatementProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
+  const surf = "ink"; // surface baked: every live call-site is ink (tech-optimization)
   const heading = (
     <h2 className="lab-fullstmt__h">
       {titleLead}

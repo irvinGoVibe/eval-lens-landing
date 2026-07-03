@@ -309,7 +309,6 @@ export default function ProductOverviewPage() {
 
         {/* §3. Evaluation pipeline → LabNumbered (light → .band.soft). PIPELINE.name → title. */}
         <Numbered
-          surface="ink"
           version={1}
           eyebrow="Evaluation pipeline"
           title="Every deck runs the same five stages"

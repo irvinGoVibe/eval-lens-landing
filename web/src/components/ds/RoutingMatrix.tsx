@@ -32,8 +32,6 @@ export type RoutingJudge = {
 
 export type RoutingMatrixProps = {
   id?: string;
-  /** `.band` surface — `light` (`.soft`) is the default for this archetype. */
-  surface?: "light" | "ink";
   eyebrow: string;
   /** Section heading. `titleAccent` is appended in the lens gradient. */
   title: string;
@@ -103,7 +101,6 @@ function TitleText({ title, accentWords }: { title: string; accentWords?: string
 
 export function RoutingMatrix({
   id,
-  surface = "light",
   eyebrow,
   title,
   titleAccent,
@@ -114,7 +111,7 @@ export function RoutingMatrix({
   judges,
   marker,
 }: RoutingMatrixProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
+  const surf = "soft"; // surface baked: every live call-site is light (tech-optimization)
   const [active, setActive] = useState<number | null>(null);
   const fullNames = dimensionsFull ?? dimensions;
 

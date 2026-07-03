@@ -209,7 +209,6 @@ export default function EntryHubPage() {
         {/* §2. The intake problem → FullStatement (ink) — cinematic peak #1. */}
         <FullStatement
           id="problem"
-          surface="ink"
           version={2}
           ariaLabel="The intake problem"
           eyebrow="The intake problem"

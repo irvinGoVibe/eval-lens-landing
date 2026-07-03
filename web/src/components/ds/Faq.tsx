@@ -24,8 +24,6 @@ import { Eyebrow, Title } from "@/components/ds";
 export type FaqItem = { q: string; a: ReactNode };
 export type FaqProps = {
   id?: string;
-  /** `.band` surface — `light` (default → `soft`) or `ink`. */
-  surface?: "light" | "ink";
   ariaLabel?: string;
   eyebrow: string;
   title: string;
@@ -51,7 +49,6 @@ function Grid({ items }: { items: FaqItem[] }) {
 
 export function Faq({
   id = "faq",
-  surface = "light",
   ariaLabel,
   eyebrow,
   title,
@@ -59,7 +56,7 @@ export function Faq({
   items,
   marker,
 }: FaqProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
+  const surf = "ink"; // surface baked: every live call-site is ink (tech-optimization)
   return (
     <section
       id={id}

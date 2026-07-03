@@ -25,8 +25,6 @@ import { Eyebrow, Title } from "@/components/ds";
 export type NumberedItem = { num: string; title: string; body: string };
 export type NumberedProps = {
   id?: string;
-  /** `.band` surface — `light` (default → `soft`) or `ink`. */
-  surface?: "light" | "ink";
   /** Which saved version renders (1 Polish · 2 Recomposition · 3 Expanded). Default 1. */
   version?: 1 | 2 | 3;
   ariaLabel?: string;
@@ -79,7 +77,6 @@ function List({ items }: { items: NumberedItem[] }) {
 
 export function Numbered({
   id,
-  surface = "light",
   version = 1,
   ariaLabel,
   eyebrow,
@@ -89,7 +86,7 @@ export function Numbered({
   items,
   marker,
 }: NumberedProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
+  const surf = "ink"; // surface baked: every live call-site is ink (tech-optimization)
   return (
     <section
       id={id}

@@ -1754,28 +1754,6 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
 .ds-routing__detail-item--muted{color:var(--muted-2);}
 
 /* ── ink surface ── */
-.ds-routing.ink .ds-routing__colhead,
-.ds-routing.ink .ds-routing__judge-code,
-.ds-routing.ink .ds-routing__legend-label,
-.ds-routing.ink .ds-routing__detail-code{color:var(--muted-on-dark);}
-.ds-routing.ink .ds-routing__judge-name,
-.ds-routing.ink .ds-routing__legend-value{color:var(--fg-on-dark);}
-.ds-routing.ink .ds-routing__row.is-active > *{
-  background:rgba(198,220,255,.08);
-  box-shadow:inset 0 1px 0 rgba(214,234,255,.14);
-}
-.ds-routing.ink .ds-routing__grid,
-.ds-routing.ink .ds-routing__aside{
-  background:linear-gradient(145deg, rgba(198,220,255,.06) 0%, rgba(176,204,240,.02) 100%);
-  border-color:rgba(165,195,238,.14);
-  box-shadow:inset 0 1px 0 rgba(214,234,255,.16),0 24px 60px -34px rgba(0,0,0,.5);
-}
-.ds-routing.ink .ds-routing__rowhead,
-.ds-routing.ink .ds-routing__cell,
-.ds-routing.ink .ds-routing__detail{border-top-color:var(--border-on-dark);}
-.ds-routing.ink .ds-routing__mark--advisory{background:var(--lavender);opacity:.5;}
-.ds-routing.ink .ds-routing__mark--none{background:var(--border-on-dark);}
-.ds-routing.ink .ds-routing__detail-item{color:var(--fg-on-dark);}
 
 /* ── responsive ── */
 @media (max-width:900px){

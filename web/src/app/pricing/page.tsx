@@ -739,7 +739,6 @@ export default function PricingPage() {
         {/* 6. FAQ — Faq (DS), light. Static Q/A, NOT a JS accordion. */}
         <Faq
           id="faq"
-          surface="ink"
           eyebrow="Pricing FAQ"
           title="Pricing questions"
           titleAccent="questions"
