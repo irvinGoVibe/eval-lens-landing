@@ -71,6 +71,13 @@ const OUTPUTS_CSS = `
   .op-outputs__list{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; justify-content:center; gap:clamp(10px,1.1vw,14px); }
   .op-outputs__list li{ position:relative; padding:11px 20px 11px 38px; border-radius:999px; background:rgba(255,255,255,.72); border:1px solid rgba(20,18,45,.10); font-size:clamp(14px,1.2vw,16px); font-weight:500; color:#1b1830; }
   .op-outputs__list li::before{ content:""; position:absolute; left:17px; top:50%; transform:translateY(-50%); width:9px; height:9px; border-radius:50%; background:var(--lens); }
+  /* mobile: shrink the pills so they PACK into a horizontal cloud instead of a
+     centred one-per-row staircase */
+  @media (max-width:560px){
+    .op-outputs__list{ gap:9px; }
+    .op-outputs__list li{ font-size:13px; padding:9px 15px 9px 30px; }
+    .op-outputs__list li::before{ left:13px; width:8px; height:8px; }
+  }
 `;
 
 /* 2. Problem — Bento: one feature tile + supporting tiles. */
@@ -143,7 +150,7 @@ const WORKFLOW_STEPS = [
 /* 3. Guided workflow — page-local dark inject. Own bg (not `.band.ink`, which goes
    transparent under this page's canvas). No backticks inside the literal. */
 const FLOW_CSS = `
-  .op-flow{ position:relative; isolation:isolate; z-index:1; overflow:hidden; padding:clamp(76px,9vw,140px) 0; color:#f5f5f7; background-color:#060510; background-image:radial-gradient(130% 90% at 82% 0%, rgba(124,92,255,.18), transparent 60%); }
+  .op-flow{ position:relative; isolation:isolate; z-index:1; overflow:hidden; padding:clamp(76px,9vw,140px) var(--gutter); color:#f5f5f7; background-color:#060510; background-image:radial-gradient(130% 90% at 82% 0%, rgba(124,92,255,.18), transparent 60%); }
   .op-flow__grid{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.82fr); gap:clamp(34px,6vw,96px); align-items:start; }
   .op-flow__copy{ position:sticky; top:110px; }
   .op-flow__eyebrow{ font-family:var(--font-mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#9aa0ff; margin:0 0 18px; }
@@ -315,11 +322,11 @@ export default function OnePagerPage() {
           <div className="wrap">
             <p className="op-outputs__lead" data-reveal="up">After a run, you get</p>
             <ul className="op-outputs__list" data-reveal="up">
-              <li>A report for every participant</li>
-              <li>A ranked scoring table</li>
-              <li>Risks and missing data</li>
-              <li>Questions for the jury</li>
-              <li>One shared scoring scale</li>
+              <li>Per-participant reports</li>
+              <li>Ranked table</li>
+              <li>Risks &amp; gaps</li>
+              <li>Jury questions</li>
+              <li>Shared scale</li>
             </ul>
           </div>
           <style>{OUTPUTS_CSS}</style>

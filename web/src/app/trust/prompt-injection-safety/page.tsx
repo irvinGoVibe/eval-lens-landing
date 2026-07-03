@@ -460,21 +460,49 @@ export default function PromptInjectionSafetyPage() {
         />
 
         {/* §5 — Holding layers (soft) — PinnedSteps; visual slot 3. */}
-        {/* page-local: the funnel art goes "gigantism" — scaled +30% and nudged
-            down + left from its centered position. transform (not box size) so the
-            grid never reflows; the sticky stage clips any overflow. Tune --pis-*.
-            Mobile resets to the in-flow size. */}
+        {/* page-local: the funnel art goes "gigantism" — a tall image nudged down
+            so it bleeds past the pinned stage (which clips the overflow). The
+            sizing/transform live HERE (not inline on <Image>) so the mobile query
+            can actually override them — inline styles would beat the stylesheet
+            and keep the oversized/shifted art on narrow screens, where it collides
+            with the heading. Mobile resets to a modest in-flow size, no shift. */}
         <style>{`
           #protection .lab-process__node img{
-            --pis-scale: 1.3;
-            --pis-x: -11%;
-            --pis-y: 5%;
-            transform: translate(var(--pis-x), var(--pis-y)) scale(var(--pis-scale));
+            height: min(72vh, 700px);
+            width: auto;
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+            transform: translateY(22%) scale(1.1);
             transform-origin: center;
             will-change: transform;
           }
-          @media (max-width: 880px){
-            #protection .lab-process__node img{ transform: none; }
+          @media (max-width: 900px){
+            #protection .lab-process__node img{
+              height: auto;
+              width: 72%;
+              max-width: 300px;
+              transform: none;
+            }
+            /* Mobile-only: this block reads DARK (desktop stays light). The zone's
+               through-background is LIGHT here (the re-light layer), so the section
+               paints its OWN ink tonal base over it and flips its text/steps to
+               on-dark colours. Desktop is untouched — the zone rhythm keeps §5 light.
+               #protection.band out-specifies the zone's transparent-fill rule. */
+            .injection #protection.band{
+              background:
+                radial-gradient(90% 70% at 80% 8%, color-mix(in oklab, var(--violet) 30%, transparent), transparent 60%),
+                radial-gradient(72% 60% at 8% 34%, color-mix(in oklab, var(--cyan) 16%, transparent), transparent 62%),
+                var(--ink-grad);
+              color: var(--fg-on-dark);
+            }
+            .injection #protection .eyebrow{ color: var(--lavender); }
+            .injection #protection .lab-process__title{ color: var(--fg-on-dark); }
+            .injection #protection .sub{ color: var(--muted-on-dark); }
+            .injection #protection .lab-step{ border-top-color: var(--border-on-dark); }
+            .injection #protection .lab-step__num,
+            .injection #protection .lab-step__desc{ color: var(--muted-on-dark); }
+            .injection #protection .lab-step__label{ color: var(--fg-on-dark); }
           }
         `}</style>
         <PinnedSteps
@@ -503,17 +531,7 @@ export default function PromptInjectionSafetyPage() {
               alt="A pitch deck with an INJECTED flag and a hidden injection chip falling through six glass filter layers and emerging CLEAN at the bottom"
               width={941}
               height={1672}
-              sizes="(max-width: 880px) 60vw, 380px"
-              style={{
-                height: "min(72vh, 700px)",
-                width: "auto",
-                maxWidth: "100%",
-                display: "block",
-                margin: "0 auto",
-                // drop ~22% of its own height + 10% larger (per request)
-                transform: "translateY(22%) scale(1.1)",
-                transformOrigin: "center",
-              }}
+              sizes="(max-width: 880px) 72vw, 380px"
             />
             </span>
           }

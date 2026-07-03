@@ -661,23 +661,6 @@ export function Decisions() {
       </div>
 
       <div className="wrap">
-        <div className="labels reveal d2">
-          <span className="chip">
-            <span className="tick"></span>Structured reports
-          </span>
-          <span className="chip">
-            <span className="tick"></span>Comparable criteria
-          </span>
-          <span className="chip">
-            <span className="tick"></span>Live report preview
-          </span>
-          <span className="chip">
-            <span className="tick"></span>Human final decision
-          </span>
-          <span className="chip">
-            <span className="tick"></span>Saved reviewer-hours
-          </span>
-        </div>
         <div className="sect-cta reveal d2">
           <Button variant="ghost" arrow>
             View live report demo

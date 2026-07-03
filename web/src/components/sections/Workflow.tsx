@@ -143,24 +143,25 @@ export function Workflow() {
             </div>
             </div>
 
-            <div className="wf-window" id="wf-window" data-stage="1">
-              <div className="chrome">
-                <div className="dots">
-                  <i></i>
-                  <i></i>
-                  <i></i>
+            <div className="wf-window-shell">
+              <div className="wf-window" id="wf-window" data-stage="1">
+                <div className="chrome">
+                  <div className="dots">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                  </div>
+                  <div className="brand">
+                    <span className="glyph"></span>EvalLense
+                  </div>
+                  <div className="crumb" id="wf-crumb">
+                    New entry point
+                  </div>
+                  <div className="spacer"></div>
+                  <div className="pill" id="wf-stagepill">
+                    Setup
+                  </div>
                 </div>
-                <div className="brand">
-                  <span className="glyph"></span>EvalLense
-                </div>
-                <div className="crumb" id="wf-crumb">
-                  New entry point
-                </div>
-                <div className="spacer"></div>
-                <div className="pill" id="wf-stagepill">
-                  Setup
-                </div>
-              </div>
 
               <div className="canvas">
                 <div className="layer on" id="wf-layerA">
@@ -446,31 +447,6 @@ export function Workflow() {
                             </span>
                           </td>
                         </tr>
-                        <tr data-row="3">
-                          <td>
-                            <div className="team">
-                              <span
-                                className="av"
-                                style={{
-                                  background: "linear-gradient(135deg,#2ec5e8,#36e0c2)",
-                                }}
-                              >
-                                L
-                              </span>
-                              <span className="tn">LedgerLoop</span>
-                            </div>
-                          </td>
-                          <td className="mats">PDF</td>
-                          <td className="subm">1d ago</td>
-                          <td>
-                            <span className="status complete">
-                              <span className="sd"></span>
-                              <span className="label-done">Ready</span>
-                              <span className="label-proc">Processing</span>
-                              <span className="label-score">Scored</span>
-                            </span>
-                          </td>
-                        </tr>
                         <tr data-row="4">
                           <td>
                             <div className="team">
@@ -571,6 +547,7 @@ export function Workflow() {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>

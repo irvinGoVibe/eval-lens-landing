@@ -198,17 +198,47 @@ export function ScrollFX() {
         });
         section.style.setProperty("--pin-step", String(activeIdx));
       }
-      const video = section.querySelector<HTMLVideoElement>(
-        "video[data-scrub-video]",
-      );
+      // A section can carry several hidden version copies (display:none), and
+      // `mediaNode` renders into both the v1 and v3 blocks — so more than one
+      // scrub video can exist. Seek only the VISIBLE one (offsetParent != null),
+      // mirroring the step filter above; a plain querySelector would grab the
+      // hidden v1 copy and the on-screen video would never move.
+      const video =
+        Array.from(
+          section.querySelectorAll<HTMLVideoElement>("video[data-scrub-video]"),
+        ).find((v) => v.offsetParent !== null) ?? null;
       if (video && video.duration && Number.isFinite(video.duration)) {
-        // Smooth scrub by overall scroll progress (quantized into data-frames
-        // steps across the clip) so the video turns as you scroll past.
+        // Scrub the clip from the pin progress, quantized into `data-frames`
+        // whole frames. Each pin step owns a segment of the clip: a step's
+        // optional [data-frame] anchor is the frame shown the moment it turns
+        // active, and the video eases smoothly from one step's anchor to the
+        // next across that step's scroll span (piecewise-linear through the
+        // anchors). Missing anchors fall back to an even split, which lands
+        // exactly on the plain linear scrub — so unanchored clips are
+        // unchanged. The clip always finishes on its last frame as the pin
+        // completes.
         const frames = parseInt(video.getAttribute("data-frames") || "0", 10);
-        const t =
-          frames > 1
-            ? (Math.round(p * (frames - 1)) / (frames - 1)) * video.duration
-            : p * video.duration;
+        let t: number;
+        if (frames > 1) {
+          const lastFrame = frames - 1;
+          const anchorAt = (k: number) => {
+            if (k >= n) return lastFrame; // implicit end control point
+            const raw = items[k]?.getAttribute("data-frame");
+            const v = raw != null ? parseInt(raw, 10) : NaN;
+            return Number.isFinite(v)
+              ? Math.max(0, Math.min(lastFrame, v))
+              : Math.round((k / n) * lastFrame);
+          };
+          const scaled = clamp01(p) * n; // 0 → n across the pin
+          const seg = Math.min(Math.floor(scaled), n - 1);
+          const local = scaled - seg; // 0 → 1 within the current step
+          const f0 = anchorAt(seg);
+          const f1 = anchorAt(seg + 1);
+          const frame = Math.round(f0 + local * (f1 - f0));
+          t = (frame / lastFrame) * video.duration;
+        } else {
+          t = p * video.duration;
+        }
         if (Math.abs(video.currentTime - t) > 0.015) {
           try {
             video.currentTime = t;
@@ -233,9 +263,9 @@ export function ScrollFX() {
 
     // Re-seek scrub videos once their metadata (and thus duration) is ready, so
     // the first paint lands on the right frame without waiting for a scroll.
-    const pinVideos = pins
-      .map((s) => s.querySelector<HTMLVideoElement>("video[data-scrub-video]"))
-      .filter((v): v is HTMLVideoElement => v != null);
+    const pinVideos = pins.flatMap((s) =>
+      Array.from(s.querySelectorAll<HTMLVideoElement>("video[data-scrub-video]")),
+    );
     pinVideos.forEach((v) => v.addEventListener("loadedmetadata", schedule));
 
     window.addEventListener("scroll", schedule, { passive: true });

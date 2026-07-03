@@ -1183,6 +1183,7 @@ function runScript() {
     const crumb = document.getElementById("wf-crumb");
     const pill = document.getElementById("wf-stagepill");
     const steps = Array.from(section.querySelectorAll(".wf-rail .step"));
+    const rail = section.querySelector(".wf-rail") as HTMLElement | null;
     if (!scroll || !layerA || !layerB || !layerC || !crumb || !pill || !steps.length) return;
 
     const scrollEl = scroll;
@@ -1431,6 +1432,13 @@ function runScript() {
       if (navDown) navDown.disabled = current >= STAGES;
     }
 
+    function syncActiveStepIntoView(stage: number, behavior: ScrollBehavior) {
+      const step = steps[stage - 1] as HTMLElement | undefined;
+      if (!rail || !step || window.innerWidth > 880) return;
+      const left = step.offsetLeft - (rail.clientWidth - step.offsetWidth) / 2;
+      rail.scrollTo({ left: Math.max(0, left), behavior });
+    }
+
     // Dedicated "run" sweep for the bottom pipeline: the fill runs left→right
     // and the Decoder→…→Reports sectors light up in turn. Fired every time the
     // user lands on stage 6 (incl. re-clicking the card), so it always plays.
@@ -1486,6 +1494,7 @@ function runScript() {
       const tok = ++animTok; // cancels any in-flight tween
       current = next;
       syncNav();
+      syncActiveStepIntoView(next, animate && !reduceMotion ? "smooth" : "auto");
       if (!animate || reduceMotion) {
         setStage(next, 1);
         if (next === STAGES) playPipeline(false);
@@ -1512,7 +1521,10 @@ function runScript() {
       (s as HTMLElement).addEventListener("click", () => goTo(i + 1));
     });
     // layout-only re-paint; keeps the current stage settled on resize
-    window.addEventListener("resize", () => setStage(current, 1));
+    window.addEventListener("resize", () => {
+      setStage(current, 1);
+      syncActiveStepIntoView(current, "auto");
+    });
 
     goTo(1, false);
   })();
@@ -1535,6 +1547,7 @@ function runScript() {
     const crumb = document.getElementById("sd-crumb");
     const pill = document.getElementById("sd-stagepill");
     const steps = Array.from(section.querySelectorAll(".sd-rail .step"));
+    const rail = section.querySelector(".sd-rail") as HTMLElement | null;
     if (
       !scroll ||
       !windowEl ||
@@ -1841,19 +1854,22 @@ function runScript() {
       }
     }
 
+    function syncActiveStepIntoView(stage: number, behavior: ScrollBehavior) {
+      const step = steps[stage - 1] as HTMLElement | undefined;
+      if (!rail || !step || window.innerWidth > 640) return;
+      const left = step.offsetLeft - (rail.clientWidth - step.offsetWidth) / 2;
+      rail.scrollTo({ left: Math.max(0, left), behavior });
+    }
+
     function goTo(stage: number, animate = true) {
       const next = Math.min(STAGES, Math.max(1, stage));
       const tok = ++animTok; // cancels any in-flight tween
       current = next;
       syncNav();
-      // keep the active rail chip in view on phone (horizontal scroll-snap);
+      // keep the active rail card in view on phone (horizontal scroll-snap);
       // skip during the initial call so it can't yank the page to the section
       if (inited && isPhone()) {
-        (steps[next - 1] as HTMLElement | undefined)?.scrollIntoView({
-          inline: "center",
-          block: "nearest",
-          behavior: reduceMotion ? "auto" : "smooth",
-        });
+        syncActiveStepIntoView(next, animate && !reduceMotion ? "smooth" : "auto");
       }
       if (!animate || reduceMotion) {
         setStage(next, 1);

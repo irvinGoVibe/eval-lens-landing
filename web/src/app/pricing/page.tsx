@@ -584,6 +584,7 @@ export default function PricingPage() {
                       {row.cells.map((cell, i) => (
                         <td
                           key={`${row.label}-${COMPARE_COLS[i]}`}
+                          data-label={COMPARE_COLS[i]}
                           className={
                             COMPARE_COLS[i] === "Standard"
                               ? `${row.num ? "pr-cell pr-cell--num" : cellClass(cell)} pr-td--reco`
@@ -668,6 +669,7 @@ export default function PricingPage() {
                       {row.cells.map((cell, i) => (
                         <td
                           key={`${row.label}-${FIT_TABLE_COLS[i]}`}
+                          data-label={FIT_TABLE_COLS[i]}
                           className={
                             FIT_TABLE_COLS[i] === "EvalLense"
                               ? `${cellClass(cell)} pr-td--us`

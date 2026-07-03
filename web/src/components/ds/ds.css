@@ -517,8 +517,24 @@
 /* mobile */
 @media (max-width:620px){
   .ds-hero__title{max-width:11ch;}
-  .ds-hero .cta-row{flex-direction:column;align-items:center;gap:12px;}
-  .ds-hero .btn{width:min(100%,240px);justify-content:center;}
+  .ds-hero .cta-row{
+    flex-direction:row;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:min(100%,270px);
+    margin-inline:auto;
+  }
+  .ds-hero .btn{
+    flex:1 1 0;
+    min-width:0;
+    width:auto;
+    justify-content:center;
+    padding-inline:10px;
+    font-size:13.5px;
+    white-space:nowrap;
+  }
   .ds-hero__editorial{grid-template-columns:1fr;}
 }
 
@@ -768,6 +784,30 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
    scroll-snap so it fills its column and stretches to the row height. */
 .ds .lab-gallery__v--grid .lab-gallery__card{
   flex:initial;width:auto;scroll-snap-align:none;
+}
+
+/* mobile: full-width rectangular cards, with the signal dot + eyebrow on one
+   row (h3 / p break to their own full-width rows). Desktop + other gallery
+   versions untouched. */
+@media (max-width:620px){
+  .ds .lab-gallery__v--grid .lab-gallery__grid{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .ds .lab-gallery__v--grid .lab-gallery__card{
+    min-height:0;
+    padding:20px 22px;
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:center;
+    column-gap:9px;
+    row-gap:9px;
+  }
+  .ds .lab-gallery__v--grid .lab-gallery__card > h3,
+  .ds .lab-gallery__v--grid .lab-gallery__card > p{
+    flex:0 0 100%;
+    margin-top:0;
+  }
 }
 
 /* ============================================================
@@ -1448,6 +1488,22 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
 .ds-chipgrid--bare .ds-chip{animation:ds-chip-float 5.5s ease-in-out infinite var(--float-delay,0s);will-change:transform;}
 @media (prefers-reduced-motion:reduce){.ds-chipgrid--bare .ds-chip{animation:none;}}
 @media (max-width:900px){ .ds-chipgrid__grid{grid-template-columns:repeat(2,1fr);} }
+/* mobile: one column, and the grid becomes an internal scroll-zone so the full
+   list stays inside the card instead of stretching it into a tall column. A
+   bottom fade hints there is more to scroll. */
+@media (max-width:620px){
+  .ds-chipgrid__grid{
+    grid-template-columns:1fr;
+    max-height:clamp(264px,46vh,344px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    padding-right:6px;
+    scrollbar-width:thin;
+    -webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 22px),transparent);
+    mask-image:linear-gradient(to bottom,#000 calc(100% - 22px),transparent);
+  }
+}
 
 /* 8. disabled "View Sample Report" — open item under the ink final CTA */
 .evidence-reports .evr-ctaextra{padding-top:0;}

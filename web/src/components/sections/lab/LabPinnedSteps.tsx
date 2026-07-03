@@ -32,6 +32,15 @@ export type LabPinnedStep = {
   label: string;
   /** Description shown under the label. */
   desc: string;
+  /**
+   * v3 video-scrub anchor: the frame index (0-based, into `videoScrub.frames`)
+   * the clip sits on the moment this step becomes active. The video scrubs
+   * smoothly from this step's frame to the next step's frame across the step's
+   * scroll span, so each bullet owns a segment of the clip. Omit to fall back
+   * to an even split of the frame count across the steps. Only meaningful when
+   * `videoScrub` is set.
+   */
+  frame?: number;
 };
 
 export type LabPinnedStepsProps = {
@@ -136,6 +145,9 @@ function Steps({
           className="lab-step"
           style={{ "--i": i } as CSSProperties}
           {...(pinned ? { "data-pin-step": "" } : {})}
+          {...(pinned && step.frame != null
+            ? { "data-frame": String(step.frame) }
+            : {})}
         >
           <span className="lab-step__num">{step.num}</span>
           <span className="lab-step__label">{step.label}</span>

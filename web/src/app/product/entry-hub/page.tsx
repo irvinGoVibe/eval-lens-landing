@@ -8,7 +8,6 @@ import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { StatementHero, FullStatement, PinnedSteps, EditorialSplit, Bento, Gallery, CtaBand } from "@/components/ds";
 import { CanvasFlowField } from "@/components/CanvasFlowField";
-import { DelayedLoopVideo } from "@/components/DelayedLoopVideo";
 
 /** Header nav for this page — anchor links to its own sections (see the
  *  matching `id`s on the DS sections below). Each page declares its own. */
@@ -235,24 +234,37 @@ export default function EntryHubPage() {
           steps={HOW_STEPS}
           mediaNode={
             <>
-              {/* Delayed loop: play once, hold last frame, replay after 7s.
+              {/* Scroll-scrubbed walkthrough: ScrollFX seeks currentTime from
+                  the pin, so the clip advances as the six steps light up (each
+                  step owns a frame segment; see HOW_STEPS `frame` anchors).
                   Reuses the v3 square frame classes so all global styling +
-                  mobile pinned-strip behaviour is inherited; only the video
-                  swaps to DelayedLoopVideo. Page-local; shared component
-                  untouched. The node-height rule keeps the square sized on the
-                  mobile strip (the extra .lab-rv__node wrapper has no height). */}
+                  mobile pinned-strip behaviour is inherited; the video carries
+                  the scrub markers instead of autoplaying. Page-local; shared
+                  component untouched. The node-height rule keeps the square
+                  sized on the mobile strip (the extra .lab-rv__node wrapper has
+                  no height). */}
               <style>{`.entry-hub .lab-rv__node{height:100%;display:grid;place-items:center;}`}</style>
               <div
                 className="lab-rv__square lab-rv__square--video"
                 role="img"
                 aria-label="The EvalLense Entry Hub interface, from project setup to start judging"
               >
-                <DelayedLoopVideo
+                <video
                   className="lab-rv__slide"
-                  src="/assets/entry-hub/entry-hub-flow-v2.mp4"
-                  gap={7}
-                  ariaHidden
-                />
+                  data-scrub-video
+                  data-frames={290}
+                  muted
+                  playsInline
+                  preload="auto"
+                  disablePictureInPicture
+                  poster="/assets/entry-hub/entry-hub-flow-v2-poster.jpg"
+                  aria-hidden
+                >
+                  <source
+                    src="/assets/entry-hub/entry-hub-flow-v2.mp4"
+                    type="video/mp4"
+                  />
+                </video>
               </div>
             </>
           }
