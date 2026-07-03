@@ -100,3 +100,7 @@ ds-bundle/
 
 # Supabase CLI local link state (temp)
 supabase/.temp/
+
+# playwright
+web/playwright-report/
+web/test-results/
