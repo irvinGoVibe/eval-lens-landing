@@ -8,7 +8,7 @@ import Image from "next/image";
 import { IcpBento } from "@/components/sections/IcpBento";
 import { TeamTilt } from "@/components/TeamTilt";
 import { ParallaxFloat } from "@/components/ParallaxFloat";
-import { Cinema } from "@/components/ds";
+import { Cinema, CtaBand } from "@/components/ds";
 import { BlobField } from "@/components/BlobField";
 
 export const metadata: Metadata = {
@@ -569,7 +569,7 @@ export default function AboutPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Telegram<span aria-hidden="true"> ↗</span>
+                          TG<span aria-hidden="true"> ↗</span>
                         </a>
                       ) : m.linkedin ? (
                         <a
@@ -592,54 +592,18 @@ export default function AboutPage() {
                 {/* 6. Who we build for - ICP premium bento (encapsulated section). */}
         <IcpBento />
 
-{/* 7. Final CTA — quiet CTA, DARK. */}
-        <section className="band ink ab-cta">
-          {/* full-bleed looping video background + darkening scrim (same
-              treatment as the other video sections). */}
-          <video
-            className="ab-cta__bg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          >
-            <source src="/assets/about/about-cta-bg.mp4" type="video/mp4" />
-          </video>
-          <div className="ab-cta__scrim" aria-hidden="true" />
-          <div className="wrap head">
-            <span className="eyebrow" data-reveal="up">
-              <span className="dot" aria-hidden="true"></span>
-              Get to know us
-            </span>
-            <h2
-              className="title"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "90ms" }}
-            >
-              See how EvalLense works on a <span className="grad-word">real batch</span>
-            </h2>
-            <p
-              className="sub"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "180ms" }}
-            >
-              Book a demo to walk through the workflow, review example reports,
-              and see how EvalLense helps your team compare applications without
-              giving up human control.
-            </p>
-            <div
-              className="sect-cta"
-              data-reveal="up"
-              style={{ ["--reveal-delay" as string]: "270ms" }}
-            >
-              <Button href="/#demo">Book a Demo</Button>
-            </div>
-          </div>
-        </section>
+{/* 7. Final CTA — DS CtaBand, DARK, with the original CTA video. */}
+        <CtaBand
+          theme="dark"
+          eyebrow="Get to know us"
+          title="See how EvalLense works on a"
+          titleAccent="real batch"
+          sub="Book a demo to walk through the workflow, review example reports, and see how EvalLense helps your team compare applications without giving up human control."
+          primary={{ label: "Book a Demo", href: "/#demo" }}
+          videoSrc="/assets/about/about-cta-bg.mp4"
+        />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );
