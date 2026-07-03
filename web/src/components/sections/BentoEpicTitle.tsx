@@ -163,12 +163,22 @@ export function BentoScrollHeading({
       className="bento-heading text-center"
       style={{ "--nchars": plain.length } as CSSProperties}
     >
-      <h2 className="font-[family-name:var(--font-display)] text-[clamp(23px,2.3vw,33px)] font-semibold leading-[1.12] tracking-tight text-[var(--fg-on-dark)]">
+      <h2 className="bento-heading-animated font-[family-name:var(--font-display)] text-[clamp(23px,2.3vw,33px)] font-semibold leading-[1.12] tracking-tight text-[var(--fg-on-dark)]">
         {splitChars(plain)}
         <br />
         <span className="bgrad">{grad}</span>
         <span className="bchar" style={{ "--ci": plain.length + 6 } as CSSProperties}>
           .
+        </span>
+      </h2>
+      <h2 className="bento-heading-static font-[family-name:var(--font-display)] font-semibold leading-[1.05] tracking-tight text-[var(--fg-on-dark)]">
+        {plain.trim().split(/\s+/).map((word) => (
+          <span key={word} className="bento-static-line">
+            {word}
+          </span>
+        ))}
+        <span className="bento-static-line">
+          <span className="bgrad">{grad}</span>.
         </span>
       </h2>
     </div>

@@ -2098,8 +2098,8 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   .scroll-scrub .scrub-track{height:320vh;}
   .scroll-scrub .scrub-bottom-fade{height:clamp(120px,20vh,200px);}
   .section-orange-glow{
-    margin-top:calc(-1 * clamp(60px,12vh,140px));
-    height:clamp(180px,28vh,260px);}
+    display:none;}
+  .section-orange-glow::after{display:none;}
   .section-mist-bridge{
     margin-top:calc(-1 * clamp(60px,12vh,140px));
     height:clamp(200px,30vh,280px);}
@@ -3094,6 +3094,61 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
    200vh sticky costs nothing — every stage stays reachable via the rail chips
    or the prev/next bar. ── */
 @media (max-width:640px){
+  #workflow{
+    padding-top:clamp(42px,12vw,68px);
+    overflow-x:clip;
+  }
+  #workflow .workflow-heading-slot{
+    min-height:auto;
+    padding-top:0;
+  }
+  #workflow .workflow-heading{
+    position:relative;
+    left:auto;
+    top:auto;
+    display:block;
+    width:min(100%,680px);
+    max-width:none;
+    margin:0 auto clamp(28px,7vw,42px);
+    padding:0 24px;
+    transform:none;
+    pointer-events:auto;
+    opacity:1;
+  }
+  #workflow .workflow-heading .title{
+    font-size:clamp(46px,14.5vw,64px);
+    line-height:1.02;
+    letter-spacing:-.026em;
+    color:var(--fg);
+    text-shadow:none;
+  }
+  #workflow .workflow-heading .epic-line.l1,
+  #workflow .workflow-heading .epic-line.l2 .epic-char{
+    text-shadow:none;
+  }
+  #workflow .workflow-heading .epic-line.l2 .epic-char{
+    color:var(--fg);
+  }
+  #workflow .workflow-heading .epic-char{
+    opacity:1!important;
+    transform:none!important;
+    animation:none!important;
+  }
+  #workflow .workflow-heading .title .grad{
+    background-size:100% 100%!important;
+    animation:none!important;
+  }
+  #workflow .workflow-heading .workflow-sub{
+    opacity:1;
+    transform:none;
+    margin-top:18px;
+    max-width:31ch;
+    font-size:clamp(20px,6vw,28px);
+    line-height:1.42;
+    color:var(--muted);
+    text-shadow:none;
+  }
+  #workflow .wf-scroll{margin-top:0;}
   /* sticky → static: no more "stuck page" feel on a phone */
   #decisions{
     padding-top:clamp(58px,14vw,84px);padding-bottom:clamp(68px,16vw,96px);overflow-x:clip;
@@ -3541,6 +3596,7 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
   transform-origin:center center;
   pointer-events:none;opacity:0;will-change:transform,top;}
 .bento-heading.is-shown{opacity:1;}
+.bento-heading-static{display:none;}
 /* reserved space in the card where the heading docks */
 .bento-hslot{width:100%;min-height:clamp(120px,16vh,170px);pointer-events:none;}
 /* summary card under the flying heading — no fill, only the dock slot */
@@ -3570,6 +3626,56 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
 /* sub opacity is driven by scroll progress (--sub-op) so it fades in as the
    heading docks, matching the site's scrub/workflow sub behavior */
 .bento-heading .bsub{opacity:var(--sub-op,0);transform:translateY(calc((1 - var(--sub-op,0)) * 12px));}
+
+@media (max-width:1023px){
+  #system{
+    padding-top:clamp(70px,18vw,108px);
+    overflow:hidden;
+  }
+  #system .bento-heading{
+    position:relative;
+    left:auto;
+    top:auto;
+    z-index:35;
+    width:100%;
+    max-width:620px;
+    margin:0 auto clamp(28px,7vw,44px);
+    padding:0 8px;
+    opacity:1;
+    transform:none;
+    will-change:auto;
+  }
+  #system .bento-heading-animated{
+    display:none;
+  }
+  #system .bento-heading-static{
+    display:block;
+    font-size:clamp(34px,9.7vw,50px);
+    line-height:1.05;
+    letter-spacing:-.024em;
+    text-wrap:balance;
+  }
+  #system .bento-static-line{
+    display:block;
+    white-space:nowrap;
+  }
+  #system .bento-heading .bchar,
+  #system .bento-heading .bdot{
+    opacity:1!important;
+    transform:none!important;
+    animation:none!important;
+  }
+  #system .bento-heading .bgrad{
+    clip-path:none!important;
+  }
+  #system .bento-hslot{
+    display:none;
+    min-height:0;
+  }
+  #system .bento-summary-tile{
+    display:none;
+  }
+}
 
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;scroll-behavior:auto !important;}
