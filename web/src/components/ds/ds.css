@@ -1488,6 +1488,22 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
 .ds-chipgrid--bare .ds-chip{animation:ds-chip-float 5.5s ease-in-out infinite var(--float-delay,0s);will-change:transform;}
 @media (prefers-reduced-motion:reduce){.ds-chipgrid--bare .ds-chip{animation:none;}}
 @media (max-width:900px){ .ds-chipgrid__grid{grid-template-columns:repeat(2,1fr);} }
+/* mobile: one column, and the grid becomes an internal scroll-zone so the full
+   list stays inside the card instead of stretching it into a tall column. A
+   bottom fade hints there is more to scroll. */
+@media (max-width:620px){
+  .ds-chipgrid__grid{
+    grid-template-columns:1fr;
+    max-height:clamp(264px,46vh,344px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    padding-right:6px;
+    scrollbar-width:thin;
+    -webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 22px),transparent);
+    mask-image:linear-gradient(to bottom,#000 calc(100% - 22px),transparent);
+  }
+}
 
 /* 8. disabled "View Sample Report" — open item under the ink final CTA */
 .evidence-reports .evr-ctaextra{padding-top:0;}
