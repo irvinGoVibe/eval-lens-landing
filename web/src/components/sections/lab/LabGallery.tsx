@@ -160,8 +160,11 @@ export function LabGallery({
       data-marker={marker}
       aria-label={ariaLabel}
     >
+      {/* NB: only the selected version renders (baked in the tech-optimization
+          pass — the hidden copies used to ship as dead DOM). */}
       {/* ── v1 — Polish: the original composition, token-clean ── */}
-      <div className="lab-gallery__v lab-gallery__v--polish" data-version="1" hidden={version !== 1}>
+      {version === 1 && (
+      <div className="lab-gallery__v lab-gallery__v--polish" data-version="1">
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
@@ -180,16 +183,17 @@ export function LabGallery({
           ))}
         </ol>
       </div>
+      )}
 
       {/* ── v4 — Grid rows: the SAME glass cards as v1 (`--polish` is kept so the
           frosted-glass card material is inherited verbatim), but laid out in a
           contained grid instead of the full-bleed scroll lane. No horizontal
           scroll — cards wrap into as many rows as the item count needs (2, 3, …).
           Only the container layout differs (`--grid`); content is the invariant. ── */}
+      {version === 4 && (
       <div
         className="lab-gallery__v lab-gallery__v--polish lab-gallery__v--grid"
         data-version="4"
-        hidden={version !== 4}
       >
         <div className="wrap">
           <div className="head" data-reveal="up">
@@ -204,13 +208,14 @@ export function LabGallery({
           </ul>
         </div>
       </div>
+      )}
 
       {/* ── v3 — Expanded Expressive: ambient backdrop + parallax + glass ── */}
+      {version === 3 && (
       <div
         className="lab-gallery__v lab-gallery__v--expr"
         data-version="3"
         data-scrub
-        hidden={version !== 3}
       >
         {/* full-bleed photo backdrop (parallax) under a generated-CSS scrim */}
         <div className="lab-gallery__backdrop" aria-hidden="true" />
@@ -244,6 +249,7 @@ export function LabGallery({
           </ol>
         </div>
       </div>
+      )}
     </section>
   );
 }
