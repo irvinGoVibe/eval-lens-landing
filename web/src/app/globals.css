@@ -7064,6 +7064,11 @@ section.band.ink .mini-tag{color:var(--lavender);}
 
 /* shared rhythm */
 .about section.band{padding:clamp(64px,10vw,140px) var(--gutter);}
+/* …but the full-bleed pinned Cinema (§3 story-claim) must stay edge-to-edge.
+   The rhythm rule above (0,0,2,1) otherwise beats the DS
+   `section.ds-cinema{padding:0}` (0,0,1,1) and insets the video. Re-exempt it
+   at equal specificity, later in the cascade — same fix as `.review-board`. */
+.about section.ds-cinema{padding:0;}
 
 /* ---- 1. Hero / mission — statement-hero (light, centered) ---- */
 .about .ab-hero{padding-top:clamp(132px,18vw,200px);}
