@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+// type-only (erased at runtime) — gsap itself is dynamic-imported inside the
+// effect so it stays out of the initial JS chunk.
+import type { ScrollTrigger as ScrollTriggerInstance } from "gsap/ScrollTrigger";
 
 /**
  * Rich "flow mode" for the dark canvas background.
@@ -158,6 +157,18 @@ function toVars(b: Blob) {
 /** `blue` → adds the `.ds-flow--blue` palette modifier to this instance only. */
 export function CanvasFlowField({ blue = false }: { blue?: boolean } = {}) {
   useEffect(() => {
+    // gsap loads lazily; the component may unmount before the import resolves —
+    // `cancelled` guards the async body, `dispose` holds the real teardown once
+    // everything is built.
+    let cancelled = false;
+    let dispose: (() => void) | null = null;
+
+    (async () => {
+    const { gsap } = await import("gsap");
+    const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+    gsap.registerPlugin(ScrollTrigger);
+    if (cancelled) return;
+
     const host = document.querySelector<HTMLElement>(".ds-canvas__bg--lobes-dark");
     if (!host) return;
     const main = host.closest("main");
@@ -183,7 +194,7 @@ export function CanvasFlowField({ blue = false }: { blue?: boolean } = {}) {
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let st: ScrollTrigger | null = null;
+    let st: ScrollTriggerInstance | null = null;
     let tl: gsap.core.Timeline | null = null;
 
     const build = () => {
@@ -264,7 +275,7 @@ export function CanvasFlowField({ blue = false }: { blue?: boolean } = {}) {
     };
     (window as unknown as { __canvasFlow?: typeof controller }).__canvasFlow = controller;
 
-    return () => {
+    dispose = () => {
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
       st?.kill();
@@ -272,6 +283,12 @@ export function CanvasFlowField({ blue = false }: { blue?: boolean } = {}) {
       host.classList.remove("has-flow-field");
       field.remove();
       delete (window as unknown as { __canvasFlow?: typeof controller }).__canvasFlow;
+    };
+    })();
+
+    return () => {
+      cancelled = true;
+      dispose?.();
     };
   }, [blue]);
 

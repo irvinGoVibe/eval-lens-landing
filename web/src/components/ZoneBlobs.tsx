@@ -1,10 +1,16 @@
 "use client";
 
-import { useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { type BlobCfg, BLOB_DIR, LETTERS, initBlobLayer, nextZoneId } from "@/components/ds/blobKit";
-import { BlobInspector } from "@/components/ds/BlobInspector";
+
+/** Dev-only tuning panel — loaded as a separate chunk, and ONLY when the URL
+ *  actually carries `?blobs` (see the gate below), so it never ships to normal
+ *  visitors. */
+const BlobInspector = dynamic(
+  () => import("@/components/ds/BlobInspector").then((m) => m.BlobInspector),
+  { ssr: false },
+);
 
 /**
  * Floating background blobs for a `.ds-zone` — the production-grade driver for the
@@ -17,13 +23,16 @@ import { BlobInspector } from "@/components/ds/BlobInspector";
  * Two motion layers compose: idle drift (autonomous) + scroll parallax scoped to
  * **this zone** (parallax `mode: "zone"` → trigger = the nearest `.ds-zone`), so
  * a mid-page zone parallaxes as it passes through the viewport. Decorative
- * (aria-hidden), behind content, above the gradient. useGSAP cleans up.
+ * (aria-hidden), behind content, above the gradient. gsap is dynamic-imported
+ * inside the effect (kept out of the initial JS chunk); everything created is
+ * wrapped in a gsap.context and reverted on unmount.
  *
  * A trimmed 6-orb set (hero cluster + two side peekers) — sized for a few-section
  * zone; the full 10-orb page layout would scatter orbs far below a short zone.
  *
  * Registers with the blobKit registry, so adding `?blobs` to any page URL surfaces
- * the shared `BlobInspector` (mounted here, self-gated) to tune these orbs live.
+ * the shared `BlobInspector` (mounted here, gated on the query param) to tune
+ * these orbs live.
  */
 const BLOBS: BlobCfg[] = [
   { src: BLOB_DIR + "blob_four_lobes.png", anchor: "left", ax: -38, top: 42, w: 114, cap: 1560, op: 0.72, d: { x: 28, y: 24, r: 7, dur: 11 }, px: 30, py: 120 },
@@ -46,23 +55,48 @@ const BLOBS: BlobCfg[] = [
  */
 export function ZoneBlobs({ top, bottom, label }: { top?: string; bottom?: string; label?: string } = {}) {
   const root = useRef<HTMLDivElement>(null);
+  // ?blobs gate for the dev inspector — read client-side so the dynamic chunk
+  // isn't even requested on normal visits.
+  const [inspect, setInspect] = useState(false);
 
-  useGSAP(
-    () => {
-      const zone = root.current?.closest<HTMLElement>(".ds-zone") ?? root.current;
-      const els = gsap.utils.toArray<HTMLElement>(".ds-blob", root.current);
-      const unregister = initBlobLayer({
-        id: nextZoneId("zone"),
-        label: label ?? "zone",
-        els,
-        blobs: BLOBS,
-        trigger: zone ?? document.body,
-        mode: "zone",
-      });
-      return unregister;
-    },
-    { scope: root },
-  );
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("blobs")) setInspect(true);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    let ctx: gsap.Context | null = null;
+    let unregister: (() => void) | null = null;
+
+    (async () => {
+      const { gsap } = await import("gsap");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      gsap.registerPlugin(ScrollTrigger);
+      if (cancelled || !root.current) return;
+
+      ctx = gsap.context(() => {
+        const zone = root.current?.closest<HTMLElement>(".ds-zone") ?? root.current;
+        const els = gsap.utils.toArray<HTMLElement>(".ds-blob", root.current);
+        unregister = initBlobLayer(
+          { gsap, ScrollTrigger },
+          {
+            id: nextZoneId("zone"),
+            label: label ?? "zone",
+            els,
+            blobs: BLOBS,
+            trigger: zone ?? document.body,
+            mode: "zone",
+          },
+        );
+      }, root);
+    })();
+
+    return () => {
+      cancelled = true;
+      unregister?.();
+      ctx?.revert();
+    };
+  }, [label]);
 
   return (
     <>
@@ -77,8 +111,8 @@ export function ZoneBlobs({ top, bottom, label }: { top?: string; bottom?: strin
           <img key={i} src={b.src} alt="" className={`ds-blob ds-blob--${LETTERS[i]}`} />
         ))}
       </div>
-      {/* self-gated: invisible unless the URL carries ?blobs */}
-      <BlobInspector />
+      {/* gated: the inspector chunk only loads when the URL carries ?blobs */}
+      {inspect ? <BlobInspector /> : null}
     </>
   );
 }

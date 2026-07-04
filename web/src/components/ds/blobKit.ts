@@ -1,7 +1,12 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+/** Type-only handles to the lazily-imported gsap modules (erased at runtime —
+ *  keeps gsap OUT of the initial JS chunk; callers dynamic-import gsap inside
+ *  their effects and pass it in via {@link GsapBundle}). */
+type Gsap = typeof import("gsap")["gsap"];
+type ScrollTriggerStatic = typeof import("gsap/ScrollTrigger")["ScrollTrigger"];
 
-gsap.registerPlugin(ScrollTrigger);
+/** The lazily-loaded gsap pair every motion helper needs. Obtain it in a client
+ *  effect via `await import("gsap")` + `await import("gsap/ScrollTrigger")`. */
+export type GsapBundle = { gsap: Gsap; ScrollTrigger: ScrollTriggerStatic };
 
 /**
  * Shared kit for the floating PNG orb layers (dev `CanvasBlobs` + prod
@@ -100,7 +105,8 @@ export function applyGeom(el: HTMLElement, c: BlobCfg) {
 type MotionOpts = { idPrefix: string; trigger: Element; start: string; end: string };
 
 /** Build the two motion layers (idle drift + scroll parallax) for one element. */
-export function buildMotion(el: HTMLElement, c: BlobCfg, i: number, o: MotionOpts) {
+export function buildMotion(g: GsapBundle, el: HTMLElement, c: BlobCfg, i: number, o: MotionOpts) {
+  const { gsap } = g;
   // 1) autonomous idle drift — forever, no scroll needed
   gsap.to(el, {
     x: c.d.x,
@@ -135,7 +141,8 @@ export function parallaxRange(mode: ParallaxMode): { start: string; end: string 
 
 /** Kill ONLY this layer's tweens + scrollTriggers (matched by `<idPrefix>-blob-<i>`,
  *  so other page triggers are untouched) and reset transforms to base. */
-export function killMotion(els: HTMLElement[], idPrefix: string) {
+export function killMotion(g: GsapBundle, els: HTMLElement[], idPrefix: string) {
+  const { gsap, ScrollTrigger } = g;
   els.forEach((el, i) => {
     gsap.killTweensOf(el);
     ScrollTrigger.getById(`${idPrefix}-blob-${i}`)?.kill();
@@ -144,8 +151,9 @@ export function killMotion(els: HTMLElement[], idPrefix: string) {
 }
 
 /** Wire a freshly-mounted blob layer: seat geometry, build motion, expose a
- *  controller, register it, and return an unregister/cleanup fn. */
-export function initBlobLayer(args: {
+ *  controller, register it, and return an unregister/cleanup fn.
+ *  Takes the caller's lazily-imported gsap pair (see {@link GsapBundle}). */
+export function initBlobLayer(g: GsapBundle, args: {
   id: string;
   label: string;
   els: HTMLElement[];
@@ -153,6 +161,7 @@ export function initBlobLayer(args: {
   trigger: Element;
   mode: ParallaxMode;
 }): () => void {
+  g.gsap.registerPlugin(g.ScrollTrigger); // idempotent — safe if the caller already did
   const { id, label, els, blobs, trigger, mode } = args;
   const { start, end } = parallaxRange(mode);
   const seat = (i: number) => {
@@ -162,7 +171,7 @@ export function initBlobLayer(args: {
   els.forEach((el, i) => {
     if (!blobs[i]) return;
     applyGeom(el, blobs[i]);
-    buildMotion(el, blobs[i], i, { idPrefix: id, trigger, start, end });
+    buildMotion(g, el, blobs[i], i, { idPrefix: id, trigger, start, end });
   });
   const ctl: BlobController = {
     id,
@@ -170,10 +179,10 @@ export function initBlobLayer(args: {
     els,
     blobs,
     geom: seat,
-    pause: () => killMotion(els, id),
+    pause: () => killMotion(g, els, id),
     resume: () => {
-      killMotion(els, id);
-      els.forEach((el, i) => blobs[i] && buildMotion(el, blobs[i], i, { idPrefix: id, trigger, start, end }));
+      killMotion(g, els, id);
+      els.forEach((el, i) => blobs[i] && buildMotion(g, el, blobs[i], i, { idPrefix: id, trigger, start, end }));
     },
   };
   return registerZone(ctl);

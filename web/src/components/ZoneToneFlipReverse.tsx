@@ -1,11 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useEffect, useRef } from "react";
 
 /**
  * Reverse through-background tone-flip seam — flips a `.ds-zone` from DARK back to
@@ -21,70 +16,88 @@ gsap.registerPlugin(ScrollTrigger);
  * the zone ends light — while the bridge + glow BLOOM up and recede at the midpoint
  * (dark → brand colour → light, no grey). Because the two flips drive DIFFERENT
  * layers, they never fight over one opacity, and one continuous zone means no gap
- * or leftover strip between them. Client-side, scoped, cleaned, reduced-motion aware.
+ * or leftover strip between them. Client-side, scoped, cleaned, reduced-motion
+ * aware. gsap is dynamic-imported inside the effect (kept out of the initial JS
+ * chunk); everything created runs inside a gsap.context reverted on unmount.
  */
 export function ZoneToneFlipReverse() {
   const ref = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const seam = ref.current;
-      const zone = seam?.closest<HTMLElement>(".ds-zone");
-      if (!seam || !zone) return;
-      const relight = zone.querySelector<HTMLElement>(".ds-relight");
-      const bridge = zone.querySelector<HTMLElement>(".ds-flip-bridge");
-      const glow = zone.querySelector<HTMLElement>(".ds-flip-bridge__glow");
-      if (!relight) return;
+  useEffect(() => {
+    let cancelled = false;
+    let ctx: gsap.Context | null = null;
+    let innerCleanup: (() => void) | null = null;
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        // settle straight into the LIGHT end state — light sections stay legible
-        gsap.set(relight, { opacity: 1 });
-        if (bridge) gsap.set(bridge, { opacity: 0 });
-        if (glow) gsap.set(glow, { opacity: 0 });
-        return;
-      }
+    (async () => {
+      const { gsap } = await import("gsap");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      gsap.registerPlugin(ScrollTrigger);
+      if (cancelled) return;
 
-      // Switch the light IN PLACE — not tied to scroll position, no auto-scroll.
-      // The dark→light crossfade (with the brand bloom) is a timed timeline that
-      // plays when the seam crosses the viewport line: cross down → re-light over
-      // ~1s while the page barely moves; cross back up → reverse. No scrub, so no
-      // extra travel is needed to "finish" the flip.
-      const tl = gsap.timeline({
-        defaults: { ease: "power2.inOut" },
-        scrollTrigger: {
-          trigger: seam,
-          start: "top 50%", // single line at the viewport centre
-          toggleActions: "play none none reverse",
-        },
-      });
+      ctx = gsap.context(() => {
+        const seam = ref.current;
+        const zone = seam?.closest<HTMLElement>(".ds-zone");
+        if (!seam || !zone) return;
+        const relight = zone.querySelector<HTMLElement>(".ds-relight");
+        const bridge = zone.querySelector<HTMLElement>(".ds-flip-bridge");
+        const glow = zone.querySelector<HTMLElement>(".ds-flip-bridge__glow");
+        if (!relight) return;
 
-      // dark → light: the re-light layer rises across the whole window
-      tl.fromTo(relight, { opacity: 0 }, { opacity: 1, duration: 1 }, 0);
-      // brand BRIDGE blooms up then recedes → colour, no grey. Quick in, quick
-      // out, but HOLD the violet peak through the centre (in ends ~0.36, out
-      // starts ~0.64 → ~0.28 of full-colour dwell).
-      if (bridge) {
-        tl.fromTo(bridge, { opacity: 0 }, { opacity: 1, duration: 0.18 }, 0.18)
-          .to(bridge, { opacity: 0, duration: 0.18 }, 0.64);
-      }
-      if (glow) {
-        tl.fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.18 }, 0.18)
-          .to(glow, { opacity: 0, duration: 0.18 }, 0.64);
-      }
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          // settle straight into the LIGHT end state — light sections stay legible
+          gsap.set(relight, { opacity: 1 });
+          if (bridge) gsap.set(bridge, { opacity: 0 });
+          if (glow) gsap.set(glow, { opacity: 0 });
+          return;
+        }
 
-      // Whole re-light + bloom plays in ~0.3s (timeline totals ~1s → ×3.3).
-      tl.timeScale(3.3);
-
-      return () => {
-        tl.scrollTrigger?.kill();
-        tl.kill();
-        gsap.set([relight, bridge, glow].filter(Boolean) as HTMLElement[], {
-          clearProps: "opacity",
+        // Switch the light IN PLACE — not tied to scroll position, no auto-scroll.
+        // The dark→light crossfade (with the brand bloom) is a timed timeline that
+        // plays when the seam crosses the viewport line: cross down → re-light over
+        // ~1s while the page barely moves; cross back up → reverse. No scrub, so no
+        // extra travel is needed to "finish" the flip.
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.inOut" },
+          scrollTrigger: {
+            trigger: seam,
+            start: "top 50%", // single line at the viewport centre
+            toggleActions: "play none none reverse",
+          },
         });
-      };
-    },
-    { scope: ref },
-  );
+
+        // dark → light: the re-light layer rises across the whole window
+        tl.fromTo(relight, { opacity: 0 }, { opacity: 1, duration: 1 }, 0);
+        // brand BRIDGE blooms up then recedes → colour, no grey. Quick in, quick
+        // out, but HOLD the violet peak through the centre (in ends ~0.36, out
+        // starts ~0.64 → ~0.28 of full-colour dwell).
+        if (bridge) {
+          tl.fromTo(bridge, { opacity: 0 }, { opacity: 1, duration: 0.18 }, 0.18)
+            .to(bridge, { opacity: 0, duration: 0.18 }, 0.64);
+        }
+        if (glow) {
+          tl.fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.18 }, 0.18)
+            .to(glow, { opacity: 0, duration: 0.18 }, 0.64);
+        }
+
+        // Whole re-light + bloom plays in ~0.3s (timeline totals ~1s → ×3.3).
+        tl.timeScale(3.3);
+
+        innerCleanup = () => {
+          tl.scrollTrigger?.kill();
+          tl.kill();
+          gsap.set([relight, bridge, glow].filter(Boolean) as HTMLElement[], {
+            clearProps: "opacity",
+          });
+        };
+      }, ref);
+    })();
+
+    return () => {
+      cancelled = true;
+      innerCleanup?.();
+      ctx?.revert();
+    };
+  }, []);
 
   return <div ref={ref} className="ds-zone__flip-seam" aria-hidden="true" />;
 }
