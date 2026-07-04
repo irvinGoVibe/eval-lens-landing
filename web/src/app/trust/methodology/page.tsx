@@ -598,7 +598,7 @@ export default function MethodologyPage() {
                 "Horizontal track of the five pipeline stages, Decoder to Report",
             }}
             videoScrub={{
-              src: "/assets/methodology/methodology-transition.mp4",
+              src: "/assets/methodology/methodology-transition.mp4?v=2",
               poster: "/assets/methodology/methodology-transition-poster.webp",
               frames: 0,
               ariaLabel:
@@ -807,7 +807,7 @@ export default function MethodologyPage() {
           sub="Open a sample evaluation and trace one score from slide evidence to rubric band, judge output, AI Total Score, and final Jury Score."
           cta={{ label: "Book a Demo", href: "/company/contact" }}
           media={{
-            videoSrc: "/assets/methodology/methodology-transition.mp4",
+            videoSrc: "/assets/methodology/methodology-transition.mp4?v=2",
             poster: "/assets/methodology/methodology-transition-poster.webp",
           }}
           maskId="methodology-final-cta"

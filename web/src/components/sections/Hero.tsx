@@ -18,7 +18,7 @@ export function Hero() {
             disablePictureInPicture
             poster="/assets/hero-intro-2-poster.webp"
           >
-            <source src="/assets/hero-intro-2.mp4" type="video/mp4" />
+            <source src="/assets/hero-intro-2.mp4?v=2" type="video/mp4" />
           </video>
         </div>
       </div>

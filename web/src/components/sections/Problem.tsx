@@ -63,7 +63,7 @@ export function Problem() {
               aria-hidden="true"
               poster="/assets/section2-scroll-2-poster.jpg"
             >
-              <source src="/assets/section2-scroll-2.mp4" type="video/mp4" />
+              <source src="/assets/section2-scroll-2.mp4?v=2" type="video/mp4" />
             </video>
             <div className="scrub-veil" aria-hidden="true"></div>
 
