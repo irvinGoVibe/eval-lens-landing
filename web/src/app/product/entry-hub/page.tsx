@@ -402,6 +402,7 @@ export default function EntryHubPage() {
           theme="dark"
           bleed
           videoSrc="/assets/cta/neo.mp4"
+          videoPoster="/assets/cta/neo-poster.webp"
           auroraVariant="violet"
           eyebrow="See it in action"
           title="See your submission flow"

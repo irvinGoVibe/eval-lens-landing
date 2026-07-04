@@ -243,7 +243,10 @@ export default function ConsistencyReliabilityPage() {
           lines={["Reliable scoring is", "built, not assumed"]}
           mobileLines={["Reliable scoring", "is built,", "not assumed"]}
           sub="Fixed criteria, independent judges, deterministic aggregation, and visible disagreement make every result easier to inspect — reliability is engineered into the pipeline, not taken on faith."
-          media={{ videoSrc: "/assets/consistency/consistency-cta-bg.mp4" }}
+          media={{
+            videoSrc: "/assets/consistency/consistency-cta-bg.mp4",
+            poster: "/assets/consistency/consistency-cta-bg-poster.webp",
+          }}
         />
 
         {/* 4. Two layers — EditorialSplit, soft. */}
@@ -509,7 +512,11 @@ export default function ConsistencyReliabilityPage() {
             <div className="cr-bench-grid">
               <div className="cr-bench-video" aria-hidden="true">
                 {/* deep below the fold — viewport-gated fetch */}
-                <LazyVideo src="/assets/consistency/benchmark-bg.mp4" ariaHidden />
+                <LazyVideo
+                  src="/assets/consistency/benchmark-bg.mp4"
+                  poster="/assets/consistency/benchmark-bg-poster.webp"
+                  ariaHidden
+                />
               </div>
               <div className="cr-bench-col">
                 <BenchCard s={BENCHMARK_STATS[0]} />
@@ -627,6 +634,7 @@ export default function ConsistencyReliabilityPage() {
                     (not a continuous native loop) — see DelayedLoopVideo. */}
                 <DelayedLoopVideo
                   src="/assets/consistency/honest-edge-bg.mp4"
+                  poster="/assets/consistency/honest-edge-bg-poster.webp"
                   gap={7}
                 />
               </div>
@@ -655,6 +663,7 @@ export default function ConsistencyReliabilityPage() {
           headingLevel="h2"
           background="video"
           backgroundSrc="/assets/consistency/consistency-cta-bg-2.mp4"
+          backgroundPoster="/assets/consistency/consistency-cta-bg-2-poster.webp"
           eyebrow="Get started"
           titleLead="See how stable the scores are on"
           titleAccent="your own decks"

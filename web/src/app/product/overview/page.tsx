@@ -421,6 +421,7 @@ export default function ProductOverviewPage() {
           theme="dark"
           bleed
           videoSrc="/assets/cta/neo.mp4"
+          videoPoster="/assets/cta/neo-poster.webp"
           auroraVariant="violet"
           eyebrow="Get started"
           title="See the whole workflow on"

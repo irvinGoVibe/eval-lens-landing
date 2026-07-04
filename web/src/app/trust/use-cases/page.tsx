@@ -537,6 +537,7 @@ export default function UseCasesPage() {
           primary={{ label: "Book a workflow call", href: "/company/contact" }}
           secondary={{ label: "Try sample workspace", href: "/try-live-demo" }}
           videoSrc="/assets/cta/cube-1.mp4"
+          videoPoster="/assets/cta/cube-1-poster.webp"
           auroraVariant="violet"
         />
 

@@ -566,6 +566,7 @@ export default function PromptInjectionSafetyPage() {
           theme="dark"
           bleed
           videoSrc="/assets/cta/uniqorn-1.mp4"
+          videoPoster="/assets/cta/uniqorn-1-poster.webp"
           eyebrow="Get started"
           title="Test the evaluation"
           titleAccent="boundary"

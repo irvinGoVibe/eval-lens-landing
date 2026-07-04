@@ -467,6 +467,7 @@ export default function OnePagerPage() {
           <CtaBand
             theme="dark"
             videoSrc="/assets/cta/cube-1.mp4"
+            videoPoster="/assets/cta/cube-1-poster.webp"
             eyebrow="START"
             title="Run a pilot on a real application"
             titleAccent="stream"

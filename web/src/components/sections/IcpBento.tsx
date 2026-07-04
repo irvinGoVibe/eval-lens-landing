@@ -43,6 +43,8 @@ type IcpCard = {
   titleAccent?: string;
   outputs?: readonly string[];
   video?: string;
+  /* Still frame shown while the background video loads. */
+  videoPoster?: string;
   /* When set, a transparent product render replaces the SVG/CSS abstract. */
   image?: string;
 };
@@ -106,6 +108,7 @@ const ICP_CARDS: readonly IcpCard[] = [
     size: "tile",
     visual: "arena",
     video: "/assets/about/hackathons-bg.mp4",
+    videoPoster: "/assets/about/hackathons-bg-poster.webp",
   },
   {
     key: "accel",
@@ -134,6 +137,7 @@ const ICP_CARDS: readonly IcpCard[] = [
     size: "tile",
     visual: "scale",
     video: "/assets/about/grants-bg.mp4",
+    videoPoster: "/assets/about/grants-bg-poster.webp",
   },
   {
     key: "corp",
@@ -148,6 +152,7 @@ const ICP_CARDS: readonly IcpCard[] = [
     size: "tile",
     visual: "filter",
     video: "/assets/about/corp-datastream.mp4",
+    videoPoster: "/assets/about/corp-datastream-poster.webp",
   },
   {
     key: "uni",
@@ -162,6 +167,7 @@ const ICP_CARDS: readonly IcpCard[] = [
     size: "tile",
     visual: "constellation",
     video: "/assets/about/universities-bg.mp4",
+    videoPoster: "/assets/about/universities-bg-poster.webp",
   },
   {
     key: "angel",
@@ -597,6 +603,7 @@ export function IcpBento(): ReactElement {
                   muted
                   loop
                   playsInline
+                  poster={c.videoPoster}
                   aria-hidden="true"
                 >
                   <source src={c.video} type="video/mp4" />

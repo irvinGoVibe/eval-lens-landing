@@ -231,7 +231,10 @@ export default function ReviewBoardPage() {
           lines={["See the whole batch", "at a glance"]}
           mobileLines={["See the whole", "batch at a glance"]}
           sub="Each startup has one clear status, so you can see what is ready, in review, scored, or blocked without opening every report."
-          media={{ videoSrc: "/assets/review-board/batch-status-cinema.mp4" }}
+          media={{
+            videoSrc: "/assets/review-board/batch-status-cinema.mp4",
+            poster: "/assets/review-board/batch-status-cinema-poster.webp",
+          }}
         />
 
         {/* ── tone-flip seam (§5 → §6): light→dark — fades the SECOND dark layer
@@ -353,6 +356,7 @@ export default function ReviewBoardPage() {
         <CtaBand
           theme="dark"
           videoSrc="/assets/cta/cube-1.mp4"
+          videoPoster="/assets/cta/cube-1-poster.webp"
           eyebrow="Decision trail"
           title="AI advises. Your Jury Scores"
           titleAccent="decide."
