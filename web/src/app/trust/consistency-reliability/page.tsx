@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LazyVideo } from "@/components/LazyVideo";
 import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
@@ -221,6 +222,8 @@ export default function ConsistencyReliabilityPage() {
                     className={i ? "ev-float ev-float--b" : "ev-float"}
                     src={d.src}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     width={d.w}
                     height={d.h}
                     style={{ display: "block", width: "100%", height: "auto", marginTop: "clamp(10px,1.6vw,20px)" }}
@@ -240,7 +243,10 @@ export default function ConsistencyReliabilityPage() {
           lines={["Reliable scoring is", "built, not assumed"]}
           mobileLines={["Reliable scoring", "is built,", "not assumed"]}
           sub="Fixed criteria, independent judges, deterministic aggregation, and visible disagreement make every result easier to inspect — reliability is engineered into the pipeline, not taken on faith."
-          media={{ videoSrc: "/assets/consistency/consistency-cta-bg.mp4" }}
+          media={{
+            videoSrc: "/assets/consistency/consistency-cta-bg.mp4",
+            poster: "/assets/consistency/consistency-cta-bg-poster.webp",
+          }}
         />
 
         {/* 4. Two layers — EditorialSplit, soft. */}
@@ -505,9 +511,12 @@ export default function ConsistencyReliabilityPage() {
             </div>
             <div className="cr-bench-grid">
               <div className="cr-bench-video" aria-hidden="true">
-                <video autoPlay muted loop playsInline preload="auto">
-                  <source src="/assets/consistency/benchmark-bg.mp4" type="video/mp4" />
-                </video>
+                {/* deep below the fold — viewport-gated fetch */}
+                <LazyVideo
+                  src="/assets/consistency/benchmark-bg.mp4"
+                  poster="/assets/consistency/benchmark-bg-poster.webp"
+                  ariaHidden
+                />
               </div>
               <div className="cr-bench-col">
                 <BenchCard s={BENCHMARK_STATS[0]} />
@@ -607,9 +616,10 @@ export default function ConsistencyReliabilityPage() {
             <div className="wrap ds-hero__editorial">
               <div className="ds-hero__ed-copy">
                 <Eyebrow>What we do not claim</Eyebrow>
-                <h1 className="ds-hero__title ds-hero__title--left">
+                {/* h2: the page's one h1 is the top StatementHero */}
+                <h2 className="ds-hero__title ds-hero__title--left">
                   <span className="grad-word">Reliability</span> has an honest edge
-                </h1>
+                </h2>
                 <p className="sub ds-hero__sub ds-hero__sub--left">
                   EvalLense does not promise to predict startup success. It raises
                   the quality of evaluation by making it structured,
@@ -624,6 +634,7 @@ export default function ConsistencyReliabilityPage() {
                     (not a continuous native loop) — see DelayedLoopVideo. */}
                 <DelayedLoopVideo
                   src="/assets/consistency/honest-edge-bg.mp4"
+                  poster="/assets/consistency/honest-edge-bg-poster.webp"
                   gap={7}
                 />
               </div>
@@ -649,8 +660,10 @@ export default function ConsistencyReliabilityPage() {
           id="get-started"
           surface="ink"
           version={1}
+          headingLevel="h2"
           background="video"
           backgroundSrc="/assets/consistency/consistency-cta-bg-2.mp4"
+          backgroundPoster="/assets/consistency/consistency-cta-bg-2-poster.webp"
           eyebrow="Get started"
           titleLead="See how stable the scores are on"
           titleAccent="your own decks"

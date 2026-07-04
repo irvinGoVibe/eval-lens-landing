@@ -543,7 +543,6 @@ export default function PromptInjectionSafetyPage() {
         {/* §6 — Limits (INK, the peak) — FullStatement. */}
         <FullStatement
           id="limits"
-          surface="ink"
           version={1}
           eyebrow="Tested, honestly"
           titleLead="Prompt injection safety is not the same as "
@@ -567,6 +566,7 @@ export default function PromptInjectionSafetyPage() {
           theme="dark"
           bleed
           videoSrc="/assets/cta/uniqorn-1.mp4"
+          videoPoster="/assets/cta/uniqorn-1-poster.webp"
           eyebrow="Get started"
           title="Test the evaluation"
           titleAccent="boundary"

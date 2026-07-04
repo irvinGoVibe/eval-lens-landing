@@ -251,8 +251,11 @@ export function LabBento({
       data-marker={marker}
       aria-label={ariaLabel}
     >
+      {/* NB: only the selected version renders (baked in the tech-optimization
+          pass — the hidden copies used to ship as dead DOM). */}
       {/* ── v1 — Polish: original composition, 3-col, feature spans 2×2 ── */}
-      <div className="lab-bento__v lab-bento__v--polish" data-version="1" hidden={version !== 1}>
+      {version === 1 && (
+      <div className="lab-bento__v lab-bento__v--polish" data-version="1">
         <div className="wrap">
           <div className="head" data-reveal="up">
             <LabEyebrow>{eyebrow}</LabEyebrow>
@@ -269,12 +272,13 @@ export function LabBento({
             ))}
           </ul>        </div>
       </div>
+      )}
 
       {/* ── v2 — Modern Recomposition: 1.2fr/1fr split, in-tile head ── */}
+      {version === 2 && (
       <div
         className="lab-bento__v lab-bento__v--recomp"
         data-version="2"
-        hidden={version !== 2}
       >
         <div className="wrap">
           <div className="lab-bento__grid">
@@ -306,12 +310,13 @@ export function LabBento({
             </ul>
           </div>        </div>
       </div>
+      )}
 
       {/* ── v3 — Expanded Expressive: large display head + irregular grid ── */}
+      {version === 3 && (
       <div
         className="lab-bento__v lab-bento__v--expanded"
         data-version="3"
-        hidden={version !== 3}
       >
         <div className="wrap">
           <div className="head" data-reveal="up">
@@ -349,6 +354,7 @@ export function LabBento({
             ))}
           </ul>        </div>
       </div>
+      )}
 
       {/* ink (glass) bento → the under-glass travelling spot; inert elsewhere */}
       {surface === "ink" ? <BentoGlassSpot /> : null}

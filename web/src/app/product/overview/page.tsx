@@ -309,7 +309,6 @@ export default function ProductOverviewPage() {
 
         {/* §3. Evaluation pipeline → LabNumbered (light → .band.soft). PIPELINE.name → title. */}
         <Numbered
-          surface="ink"
           version={1}
           eyebrow="Evaluation pipeline"
           title="Every deck runs the same five stages"
@@ -422,6 +421,7 @@ export default function ProductOverviewPage() {
           theme="dark"
           bleed
           videoSrc="/assets/cta/neo.mp4"
+          videoPoster="/assets/cta/neo-poster.webp"
           auroraVariant="violet"
           eyebrow="Get started"
           title="See the whole workflow on"

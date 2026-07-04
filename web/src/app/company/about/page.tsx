@@ -232,7 +232,7 @@ export default function AboutPage() {
                 layout). */}
             <Image
               className="ab-hero__media ab-hero__media--img ev-drift"
-              src="/assets/entry-hub/evallense-observatory-hero-01.png"
+              src="/assets/entry-hub/evallense-observatory-hero-01.webp"
               alt="A stream of startup applications passing through a glass lens and becoming structured evidence, risk signals, score cards, and reviewer questions"
               width={1536}
               height={1024}
@@ -327,7 +327,7 @@ export default function AboutPage() {
                     removed in favour of this single image. */}
                 <ParallaxFloat
                   className="ab-story__media ab-story__media--img"
-                  src="/assets/methodology/eval-lens-roadmap-vertical-02.png"
+                  src="/assets/methodology/eval-lens-roadmap-vertical-02.webp"
                   alt="The EvalLense origin journey: from AI Jury and a hackathon, through brainstorming and lens parts, to the Evaluation Lens and EvalLense"
                   width={781}
                   height={1857}
@@ -359,7 +359,10 @@ export default function AboutPage() {
             "people see clearly",
             "before they decide.",
           ]}
-          media={{ videoSrc: "/assets/about/about-story-cinema.mp4" }}
+          media={{
+            videoSrc: "/assets/about/about-story-cinema.mp4",
+            poster: "/assets/about/about-story-cinema-poster.webp",
+          }}
         />
 
         {/* 4. Our principles — bento, light. Authored, verbatim. */}
@@ -601,6 +604,7 @@ export default function AboutPage() {
           sub="Book a demo to walk through the workflow, review example reports, and see how EvalLense helps your team compare applications without giving up human control."
           primary={{ label: "Book a Demo", href: "/#demo" }}
           videoSrc="/assets/about/about-cta-bg.mp4"
+          videoPoster="/assets/about/about-cta-bg-poster.webp"
         />
       </main>
       <Footer variant="dark" />

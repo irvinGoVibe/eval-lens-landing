@@ -171,6 +171,7 @@ export function MarkdownEditor({
       saved = null;
     }
     if (saved != null && saved !== defaultValue) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional mount-time draft restore from localStorage (client-only)
       setDraftPreview(saved);
     }
     // Only on first mount per key.
@@ -188,6 +189,7 @@ export function MarkdownEditor({
 
   // If we drop below the split breakpoint while in Split, fall back to Write.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional responsive fallback: split view is impossible below the breakpoint
     if (!canSplit && mode === "split") setMode("write");
   }, [canSplit, mode]);
 
@@ -398,7 +400,8 @@ export function MarkdownEditor({
 
   const slashQuery =
     slash.open && slash.slashAt >= 0
-      ? value.slice(slash.slashAt + 1, lastCaret.current)
+      ? // eslint-disable-next-line react-hooks/refs -- caret pos is stable within this render; slash menu re-renders on every keystroke anyway
+        value.slice(slash.slashAt + 1, lastCaret.current)
       : "";
   const filteredSlash = useMemo(() => {
     const q = slashQuery.trim().toLowerCase();

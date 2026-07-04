@@ -25,8 +25,6 @@ import { Eyebrow, Title } from "@/components/ds";
 export type NumberedItem = { num: string; title: string; body: string };
 export type NumberedProps = {
   id?: string;
-  /** `.band` surface — `light` (default → `soft`) or `ink`. */
-  surface?: "light" | "ink";
   /** Which saved version renders (1 Polish · 2 Recomposition · 3 Expanded). Default 1. */
   version?: 1 | 2 | 3;
   ariaLabel?: string;
@@ -79,7 +77,6 @@ function List({ items }: { items: NumberedItem[] }) {
 
 export function Numbered({
   id,
-  surface = "light",
   version = 1,
   ariaLabel,
   eyebrow,
@@ -89,7 +86,7 @@ export function Numbered({
   items,
   marker,
 }: NumberedProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
+  const surf = "ink"; // surface baked: every live call-site is ink (tech-optimization)
   return (
     <section
       id={id}
@@ -97,8 +94,11 @@ export function Numbered({
       data-marker={marker}
       aria-label={ariaLabel}
     >
+      {/* NB: only the selected version renders (baked in the tech-optimization
+          pass — the hidden copies used to ship as dead DOM). */}
       {/* ── v1 — Polish: hairline-ruled rows, narrow numeral column ── */}
-      <div className="ds-numbered__v ds-numbered__v--polish" data-version="1" hidden={version !== 1}>
+      {version === 1 && (
+      <div className="ds-numbered__v ds-numbered__v--polish" data-version="1">
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -110,9 +110,11 @@ export function Numbered({
           <List items={items} />
         </div>
       </div>
+      )}
 
       {/* ── v2 — Modern Recomposition: narrower numeral column, denser rhythm ── */}
-      <div className="ds-numbered__v ds-numbered__v--recomp" data-version="2" hidden={version !== 2}>
+      {version === 2 && (
+      <div className="ds-numbered__v ds-numbered__v--recomp" data-version="2">
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -124,9 +126,11 @@ export function Numbered({
           <List items={items} />
         </div>
       </div>
+      )}
 
       {/* ── v3 — Expanded Expressive: large display head, oversized numerals ── */}
-      <div className="ds-numbered__v ds-numbered__v--expanded" data-version="3" hidden={version !== 3}>
+      {version === 3 && (
+      <div className="ds-numbered__v ds-numbered__v--expanded" data-version="3">
         <div className="wrap">
           <div className="ds-numbered__head" data-reveal="up">
             <Eyebrow>{eyebrow}</Eyebrow>
@@ -138,6 +142,7 @@ export function Numbered({
           <List items={items} />
         </div>
       </div>
+      )}
     </section>
   );
 }

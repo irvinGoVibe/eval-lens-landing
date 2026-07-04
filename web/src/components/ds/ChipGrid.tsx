@@ -31,8 +31,6 @@ const STATUS_LABEL: Record<ChipStatus, string> = {
 };
 export type ChipGridProps = {
   id?: string;
-  /** `.band` surface — `light` (→ `soft`) or `ink`. Default light. */
-  surface?: "light" | "ink";
   ariaLabel: string;
   items: ChipGridItem[];
   /** Optional tone legend rendered under the grid. */
@@ -49,7 +47,6 @@ export type ChipGridProps = {
 
 export function ChipGrid({
   id,
-  surface = "light",
   ariaLabel,
   items,
   legend,
@@ -58,7 +55,7 @@ export function ChipGrid({
   bare = false,
   marker,
 }: ChipGridProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
+  const surf = "ink"; // surface baked: every live call-site is ink (tech-optimization)
   const inner = (
     <>
       <ul
@@ -99,7 +96,7 @@ export function ChipGrid({
   if (bare) {
     return (
       <div
-        className={`ds-chipgrid ds-chipgrid--bare${surface === "ink" ? " ink" : ""}`}
+        className="ds-chipgrid ds-chipgrid--bare ink"
         aria-label={ariaLabel}
       >
         {inner}

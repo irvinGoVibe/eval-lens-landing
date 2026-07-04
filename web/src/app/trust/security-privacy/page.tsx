@@ -259,6 +259,7 @@ export default function SecurityPrivacyPage() {
           theme="dark"
           bleed
           videoSrc="/assets/cta/neo.mp4"
+          videoPoster="/assets/cta/neo-poster.webp"
           auroraVariant="violet"
           eyebrow="Get started"
           title="Run a controlled pilot on"

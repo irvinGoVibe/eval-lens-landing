@@ -29,6 +29,7 @@ export default function HomePage() {
           theme="dark"
           bleed
           videoSrc="/assets/cta/cube-1.mp4"
+          videoPoster="/assets/cta/cube-1-poster.webp"
           auroraVariant="violet"
           title="See your next cohort"
           titleAccent="ranked in a day"

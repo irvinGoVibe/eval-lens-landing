@@ -87,12 +87,14 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
   // Portal target only exists after mount (the drawer is rendered to <body> so
   // the header's `transform` ancestor doesn't trap the fixed overlay).
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional mount flag: portal target exists only on the client
     setMounted(true);
   }, []);
 
   // Close on route change. (Don't refocus the trigger here — navigation moves
   // focus; refocusing would yank it back to the header.)
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional route-change reset: close the panel on navigation
     setOpen(false);
   }, [pathname]);
 

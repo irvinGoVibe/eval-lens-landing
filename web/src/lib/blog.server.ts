@@ -21,7 +21,7 @@ import {
 } from "./cms/queries";
 import type { LoopPost, Post } from "./cms/types";
 
-function useStaticSource(): boolean {
+function isStaticSource(): boolean {
   return process.env.BLOG_SOURCE === "static";
 }
 
@@ -34,14 +34,14 @@ function sortByDateDesc(posts: Post[]): Post[] {
 }
 
 export async function getAllPosts(): Promise<Post[]> {
-  if (useStaticSource()) {
+  if (isStaticSource()) {
     return sortByDateDesc(POSTS);
   }
   return fetchAllPosts();
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | undefined> {
-  if (useStaticSource()) {
+  if (isStaticSource()) {
     return sortByDateDesc(POSTS).find((p) => p.slug === slug);
   }
   return (await fetchPostBySlug(slug)) ?? undefined;
@@ -54,7 +54,7 @@ export async function getRelatedPosts(slug: string, limit = 3): Promise<Post[]> 
 }
 
 export async function getLoopPosts(): Promise<LoopPost[]> {
-  if (useStaticSource()) {
+  if (isStaticSource()) {
     return LOOP_POSTS;
   }
   return fetchLoopPosts();
@@ -65,7 +65,7 @@ export async function getLoopPosts(): Promise<LoopPost[]> {
  * order, falling back to the newest published articles when nothing is chosen.
  */
 export async function getFeaturedPosts(limit = 3): Promise<Post[]> {
-  if (useStaticSource()) {
+  if (isStaticSource()) {
     return sortByDateDesc(POSTS).slice(0, limit);
   }
   return fetchFeaturedPosts(limit);

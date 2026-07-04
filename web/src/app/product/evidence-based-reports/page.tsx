@@ -381,7 +381,10 @@ export default function EvidenceBasedReportsPage() {
           lines={["Explain the score.", "Defend the decision."]}
           mobileLines={["Explain", "the score.", "Defend", "the decision."]}
           sub="EvalLense shows what shaped the score and links each finding back to the deck. Your team can defend the shortlist, explain the feedback, and know what to ask next."
-          media={{ videoSrc: "/assets/evidence-reports/beyond-number-cinema.mp4" }}
+          media={{
+            videoSrc: "/assets/evidence-reports/beyond-number-cinema.mp4",
+            poster: "/assets/evidence-reports/beyond-number-cinema-poster.webp",
+          }}
         />
 
         {/* 3. Anatomy — pinned multi-screen, exactly 3 layers. */}
@@ -479,7 +482,6 @@ export default function EvidenceBasedReportsPage() {
               "feature" in t && t.feature ? (
                 <ChipGrid
                   bare
-                  surface="ink"
                   columns={2}
                   ariaLabel="Sample deck completeness — each section present, thin, or missing, with severity and the affected dimension"
                   items={COMPLETENESS.map((c) => ({
@@ -528,7 +530,10 @@ export default function EvidenceBasedReportsPage() {
           mobileLines={["AI prepares.", "You decide."]}
           sub="See a real report on your own deck — book a demo and walk through a full evaluation report: summary, reasoning, and the questions to ask live."
           cta={{ label: "Book a Demo", href: "/#demo" }}
-          media={{ videoSrc: "/assets/methodology/cinema.mp4" }}
+          media={{
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
+          }}
         />
       </main>
       <Footer variant="dark" />

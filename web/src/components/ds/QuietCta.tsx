@@ -87,19 +87,11 @@ export function QuietCta({
       data-marker={marker}
       aria-label={ariaLabel}
     >
-      {/* ── v1 — Polish: centered, staggered, plain title ── */}
+      {/* ── v1 — Polish: centered, staggered, plain title. (Hidden v2/v3
+          copies baked out in the tech-optimization pass; see
+          archive/pre-optimization.) ── */}
       <div className="ds-quiet-cta__v ds-quiet-cta__v--polish" data-version="1">
         <Inner eyebrow={eyebrow} title={title} sub={sub} cta={cta} />
-      </div>
-
-      {/* ── v2 — Modern Recomposition: tighter lockup, lens accent "calm" ── */}
-      <div className="ds-quiet-cta__v ds-quiet-cta__v--recomp" data-version="2" hidden>
-        <Inner eyebrow={eyebrow} title={title} sub={sub} cta={cta} accent="calm" />
-      </div>
-
-      {/* ── v3 — Expanded Expressive: large display title, lens accent "next" ── */}
-      <div className="ds-quiet-cta__v ds-quiet-cta__v--expanded" data-version="3" hidden>
-        <Inner eyebrow={eyebrow} title={title} sub={sub} cta={cta} accent="next" />
       </div>
     </section>
   );

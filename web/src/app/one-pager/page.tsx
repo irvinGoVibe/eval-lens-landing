@@ -308,7 +308,6 @@ export default function OnePagerPage() {
         {/* 1b. Practical numbers — StatBand (soft). */}
         <StatBand
           id="pilot-numbers"
-          surface="light"
           ariaLabel="What a first pilot looks like, in numbers"
           eyebrow="BY THE NUMBERS"
           title="What a first pilot looks like"
@@ -468,6 +467,7 @@ export default function OnePagerPage() {
           <CtaBand
             theme="dark"
             videoSrc="/assets/cta/cube-1.mp4"
+            videoPoster="/assets/cta/cube-1-poster.webp"
             eyebrow="START"
             title="Run a pilot on a real application"
             titleAccent="stream"

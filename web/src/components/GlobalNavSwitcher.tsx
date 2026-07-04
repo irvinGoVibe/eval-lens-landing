@@ -47,6 +47,7 @@ export function GlobalNavSwitcher({ label }: { label: string }) {
 
   // Close whenever the route changes (covers in-panel selections too).
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional route-change reset: close the switcher on navigation
     setOpen(false);
   }, [pathname]);
 

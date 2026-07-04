@@ -61,6 +61,10 @@ export type StatementHeroProps = {
   version?: 1 | 2 | 3;
   /** Dev-stand corner tag (Section Lab `[data-marker]`); inert elsewhere. */
   marker?: string;
+  /** Heading element for the statement. Default `h1` — pass `h2` when the
+   *  component is reused as a closing/CTA section on a page that already has
+   *  its real h1 hero (one h1 per page). */
+  headingLevel?: "h1" | "h2";
   /** Extra classes on the outer `section.band` (atmosphere layers). */
   className?: string;
 };
@@ -81,8 +85,10 @@ export function StatementHero({
   pattern = true,
   version = 1,
   marker,
+  headingLevel = "h1",
   className,
 }: StatementHeroProps) {
+  const H = headingLevel;
   const overMedia = background === "image" || background === "video";
   // A media-backed hero reads as a dark surface (scrim + light text + glass CTAs).
   const surf = surface === "ink" || overMedia ? "ink" : "soft";
@@ -125,11 +131,15 @@ export function StatementHero({
       className={`band ${surf} ds-hero${className ? ` ${className}` : ""}`}
       data-marker={marker}
     >
+      {/* NB: only the selected version renders (baked in the tech-optimization
+          pass). Before the bake the hidden v1 copy still shipped its <video>
+          element, which browsers preload even when [hidden] — dead bytes on
+          every page that used v2/v3. */}
       {/* ── v1 — quiet centered statement; switchable background ── */}
+      {version === 1 && (
       <div
         className={`ds-hero__v${overMedia ? " ds-hero__v--media" : ""}`}
         data-version="1"
-        hidden={version !== 1}
       >
         {overMedia ? (
           <>
@@ -166,13 +176,13 @@ export function StatementHero({
             {eyebrow}
           </Eyebrow>
           {Heading ? (
-            <h1
+            <H
               className="ds-hero__title"
               data-reveal="up"
               style={{ "--reveal-delay": "90ms" } as CSSProperties}
             >
               {Heading}
-            </h1>
+            </H>
           ) : null}
           {sub ? (
             <p
@@ -194,30 +204,34 @@ export function StatementHero({
           ) : null}
         </div>
       </div>
+      )}
 
       {/* ── v2 — near-full-bleed cinematic gradient stage; content over it ── */}
-      <div className="ds-hero__v ds-hero__v2" data-version="2" hidden={version !== 2}>
+      {version === 2 && (
+      <div className="ds-hero__v ds-hero__v2" data-version="2">
         {/* colourful backdrop BEHIND the glass stage — the frosted stage refracts it */}
         <div className="ds-hero__bg" aria-hidden="true" />
         <div className="ds-hero__stage ds-hero__stage--wide">
           <div className="ds-hero__overlay">
             <Eyebrow>{eyebrow}</Eyebrow>
             {Heading ? (
-              <h1 className="ds-hero__title ds-hero__title--over">{Heading}</h1>
+              <H className="ds-hero__title ds-hero__title--over">{Heading}</H>
             ) : null}
             {sub ? <p className="sub ds-hero__sub ds-hero__sub--over">{sub}</p> : null}
             {ctas.length ? <div className="cta-row">{ctaSet()}</div> : null}
           </div>
         </div>
       </div>
+      )}
 
       {/* ── v3 — editorial: text left, lens orb right ── */}
-      <div className="ds-hero__v ds-hero__v3" data-version="3" hidden={version !== 3}>
+      {version === 3 && (
+      <div className="ds-hero__v ds-hero__v3" data-version="3">
         <div className="wrap ds-hero__editorial">
           <div className="ds-hero__ed-copy">
             <Eyebrow>{eyebrow}</Eyebrow>
             {Heading ? (
-              <h1 className="ds-hero__title ds-hero__title--left">{Heading}</h1>
+              <H className="ds-hero__title ds-hero__title--left">{Heading}</H>
             ) : null}
             {sub ? <p className="sub ds-hero__sub ds-hero__sub--left">{sub}</p> : null}
             {ctas.length ? <div className="cta-row cta-row--left">{ctaSet()}</div> : null}
@@ -244,6 +258,7 @@ export function StatementHero({
           )}
         </div>
       </div>
+      )}
     </section>
   );
 }

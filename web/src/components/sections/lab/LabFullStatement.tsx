@@ -17,8 +17,6 @@ import { LabEyebrow } from "./_kit";
  */
 export type LabFullStatementProps = {
   id?: string;
-  /** `.band` surface — `ink` (dark) is the default for this archetype. */
-  surface?: "light" | "ink";
   /** Which saved layout version renders (1 centered · 2 left · 3 split). Default 1. */
   version?: 1 | 2 | 3;
   ariaLabel?: string;
@@ -31,11 +29,9 @@ export type LabFullStatementProps = {
   marker?: string;
 };
 
-const VERSIONS = [1, 2, 3] as const;
 
 export function LabFullStatement({
   id,
-  surface = "ink",
   version = 1,
   ariaLabel,
   eyebrow,
@@ -45,7 +41,7 @@ export function LabFullStatement({
   sub,
   marker,
 }: LabFullStatementProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
+  const surf = "ink"; // surface baked: every live call-site is ink (tech-optimization)
   const heading = (
     <h2 className="lab-fullstmt__h">
       {titleLead}
@@ -66,21 +62,19 @@ export function LabFullStatement({
       data-marker={marker}
       aria-label={ariaLabel}
     >
-      {VERSIONS.map((v) => (
-        <div
-          key={v}
-          className={`wrap lab-fullstmt__v lab-fullstmt__v--${v}`}
-          data-version={v}
-          data-reveal="up"
-          hidden={v !== version}
-        >
-          <div className="lab-fullstmt__lead">
-            <LabEyebrow>{eyebrow}</LabEyebrow>
-            {heading}
-          </div>
-          <p className="lab-fullstmt__sub">{sub}</p>
+      {/* NB: only the selected version renders (baked in the tech-optimization
+          pass — the hidden copies used to ship as dead DOM). */}
+      <div
+        className={`wrap lab-fullstmt__v lab-fullstmt__v--${version}`}
+        data-version={version}
+        data-reveal="up"
+      >
+        <div className="lab-fullstmt__lead">
+          <LabEyebrow>{eyebrow}</LabEyebrow>
+          {heading}
         </div>
-      ))}
+        <p className="lab-fullstmt__sub">{sub}</p>
+      </div>
     </section>
   );
 }

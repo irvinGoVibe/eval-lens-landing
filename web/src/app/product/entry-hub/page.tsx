@@ -8,6 +8,7 @@ import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { StatementHero, FullStatement, PinnedSteps, EditorialSplit, Bento, Gallery, CtaBand } from "@/components/ds";
 import { CanvasFlowField } from "@/components/CanvasFlowField";
+import { LazyVideo } from "@/components/LazyVideo";
 
 /** Header nav for this page — anchor links to its own sections (see the
  *  matching `id`s on the DS sections below). Each page declares its own. */
@@ -209,7 +210,6 @@ export default function EntryHubPage() {
         {/* §2. The intake problem → FullStatement (ink) — cinematic peak #1. */}
         <FullStatement
           id="problem"
-          surface="ink"
           version={2}
           ariaLabel="The intake problem"
           eyebrow="The intake problem"
@@ -249,22 +249,15 @@ export default function EntryHubPage() {
                 role="img"
                 aria-label="The EvalLense Entry Hub interface, from project setup to start judging"
               >
-                <video
+                {/* below-fold pinned scrub — viewport-gated fetch */}
+                <LazyVideo
                   className="lab-rv__slide"
-                  data-scrub-video
-                  data-frames={290}
-                  muted
-                  playsInline
-                  preload="auto"
-                  disablePictureInPicture
+                  mode="scrub"
+                  frames={147}
+                  src="/assets/entry-hub/entry-hub-flow-v2.mp4?v=2"
                   poster="/assets/entry-hub/entry-hub-flow-v2-poster.jpg"
-                  aria-hidden
-                >
-                  <source
-                    src="/assets/entry-hub/entry-hub-flow-v2.mp4"
-                    type="video/mp4"
-                  />
-                </video>
+                  ariaHidden
+                />
               </div>
             </>
           }
@@ -409,6 +402,7 @@ export default function EntryHubPage() {
           theme="dark"
           bleed
           videoSrc="/assets/cta/neo.mp4"
+          videoPoster="/assets/cta/neo-poster.webp"
           auroraVariant="violet"
           eyebrow="See it in action"
           title="See your submission flow"

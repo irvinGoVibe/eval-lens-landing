@@ -396,6 +396,7 @@ export default async function ContactPage() {
         <CtaBand
           theme="dark"
           videoSrc="/assets/contact/get-started-bg.mp4"
+          videoPoster="/assets/contact/get-started-bg-poster.webp"
           eyebrow="Get started"
           title="See EvalLense run on"
           titleAccent="your own applications"

@@ -35,6 +35,8 @@ updated: 2026-06-15
 - **Stories** (`stories/`) — story-спеки для разработки; шаблон — `stories/_template.md`
 - **[[decisions/_template|Decisions]]** (`decisions/`) — ADR; шаблон — `decisions/_template.md`
 - **Processes** (`processes/`) — [[process|Process]], [[agent-workflow|Agent Workflow]], [[linear-workflow|Linear Workflow]]
+- **Reports** (`reports/`) — отчёты о проведённых работах (аудиты, оптимизации, крупные прогоны)
+  - [[reports/2026-07-04-optimization-audit|Техническая оптимизация (2026-07-04)]] — ночная чистка (мусор/медиа/версии/CSS) + ECC-аудит + Фаза 1 (perf/SEO/lint/тесты) + Фаза 2 perf (кэш/видео/ScrollOrchestrator/постеры/lazy JS), контрольные замеры до→после
 
 ## Команды
 

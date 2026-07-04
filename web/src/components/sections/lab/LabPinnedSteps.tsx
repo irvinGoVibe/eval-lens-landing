@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
+import { LazyVideo } from "@/components/LazyVideo";
 import { LabEyebrow, MediaPlaceholder } from "./_kit";
 
 /**
@@ -195,16 +196,19 @@ export function LabPinnedSteps({
       style={{ "--steps": steps.length } as CSSProperties}
     >
       <div className="lab-process__stage" data-pin-stage>
+        {/* NB: only the selected version renders (baked in the tech-optimization
+            pass). The hidden copies used to ship as dead DOM — including
+            preload="auto" videos that browsers fetched even when [hidden]. */}
         {/* ── v1 — with `photos`: the ORIGINAL tidy layout (static heading +
             hairline-grid texture, copy left / media right), but the media slot is
             a cross-fading PHOTO stack (active photo follows --pin-step) and the
             steps carry data-pin-step so scrolling drives the photo switch.
             Without `photos`: the plain static "tidy" layout. ── */}
-        {videoLoop ? (
+        {version === 1 && (videoLoop ? (
           /* ── v1 — video mode: the tidy layout (copy left / media right), but
               the media slot holds a single autoplaying, muted, looping video.
               Opt-in via `videoLoop`; unset = original behaviour. ── */
-          <div className="lab-pv lab-pv--tidy lab-pv--video" data-version="1" hidden={version !== 1}>
+          <div className="lab-pv lab-pv--tidy lab-pv--video" data-version="1">
             <div className="lab-pattern" aria-hidden="true" />
             <div className="wrap lab-pv__grid">
               <div className="lab-process__copy">
@@ -219,23 +223,17 @@ export function LabPinnedSteps({
                 role="img"
                 aria-label={videoLoop.ariaLabel}
               >
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  disablePictureInPicture
+                {/* below-fold on every consumer page → viewport-gated fetch */}
+                <LazyVideo
+                  src={videoLoop.src}
                   poster={videoLoop.poster}
-                  aria-label={videoLoop.ariaLabel}
-                >
-                  <source src={videoLoop.src} type="video/mp4" />
-                </video>
+                  ariaLabel={videoLoop.ariaLabel}
+                />
               </div>
             </div>
           </div>
         ) : photos && photos.length ? (
-          <div className="lab-pv lab-pv--tidy lab-pv--photos" data-version="1" hidden={version !== 1}>
+          <div className="lab-pv lab-pv--tidy lab-pv--photos" data-version="1">
             <div className="lab-pattern" aria-hidden="true" />
             <div className="wrap lab-pv__grid">
               <div className="lab-process__copy">
@@ -269,7 +267,7 @@ export function LabPinnedSteps({
             </div>
           </div>
         ) : (
-          <div className="lab-pv lab-pv--tidy" data-version="1" hidden={version !== 1}>
+          <div className="lab-pv lab-pv--tidy" data-version="1">
             <div className="lab-pattern" aria-hidden="true" />
             <div className="wrap lab-pv__grid">
               <div className="lab-process__copy">
@@ -295,10 +293,11 @@ export function LabPinnedSteps({
               )}
             </div>
           </div>
-        )}
+        ))}
 
         {/* ── v2 — Guideline window: pipeline in a product window ── */}
-        <div className="lab-pv lab-pv--window" data-version="2" hidden={version !== 2}>
+        {version === 2 && (
+        <div className="lab-pv lab-pv--window" data-version="2">
           <div className="wrap lab-pv__grid">
             <div className="lab-process__copy">
               <LabEyebrow>{eyebrow}</LabEyebrow>
@@ -332,12 +331,14 @@ export function LabPinnedSteps({
             </div>
           </div>
         </div>
+        )}
 
         {/* ── v3 — Reveal: a centered square media stays pinned in the viewport
             while the numbered steps reveal one-by-one on scroll. Base layout =
             v1 (copy + steps), driven by --pin. The square holds the scroll-
             scrubbed video when `videoScrub` is set; placeholder otherwise. ── */}
-        <div className="lab-pv lab-pv--reveal" data-version="3" hidden={version !== 3}>
+        {version === 3 && (
+        <div className="lab-pv lab-pv--reveal" data-version="3">
           <div className="wrap lab-rv__grid">
             <div className="lab-process__copy lab-rv__copy">
               {/* head flies UP and fades as --pin advances (exit-upward = "back") */}
@@ -370,35 +371,25 @@ export function LabPinnedSteps({
               >
                 {videoLoop ? (
                   /* opt-in autoplaying loop; the frame takes the video's
-                     native aspect so the walkthrough isn't cropped. */
-                  <video
+                     native aspect so the walkthrough isn't cropped.
+                     Viewport-gated: zero bytes until the pin approaches. */
+                  <LazyVideo
                     className="lab-rv__slide"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    disablePictureInPicture
+                    src={videoLoop.src}
                     poster={videoLoop.poster}
-                    aria-label={videoLoop.ariaLabel}
-                  >
-                    <source src={videoLoop.src} type="video/mp4" />
-                  </video>
+                    ariaLabel={videoLoop.ariaLabel}
+                  />
                 ) : videoScrub ? (
-                  /* No autoPlay: ScrollFX seeks currentTime from the pin. */
-                  <video
+                  /* No autoplay: ScrollFX seeks currentTime from the pin.
+                     Buffer starts fetching only near the viewport. */
+                  <LazyVideo
                     className="lab-rv__slide"
-                    data-scrub-video
-                    data-frames={videoScrub.frames}
-                    muted
-                    playsInline
-                    preload="auto"
-                    disablePictureInPicture
+                    mode="scrub"
+                    src={videoScrub.src}
+                    frames={videoScrub.frames}
                     poster={videoScrub.poster}
-                    aria-label={videoScrub.ariaLabel}
-                  >
-                    <source src={videoScrub.src} type="video/mp4" />
-                  </video>
+                    ariaLabel={videoScrub.ariaLabel}
+                  />
                 ) : (
                   <>
                     <div className="lab-rv__slide lab-rv__slide--ph" aria-hidden="true" />
@@ -410,6 +401,7 @@ export function LabPinnedSteps({
             </div>
           </div>
         </div>
+        )}
       </div>
     </section>
   );

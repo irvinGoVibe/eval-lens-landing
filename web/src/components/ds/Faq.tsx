@@ -24,8 +24,6 @@ import { Eyebrow, Title } from "@/components/ds";
 export type FaqItem = { q: string; a: ReactNode };
 export type FaqProps = {
   id?: string;
-  /** `.band` surface — `light` (default → `soft`) or `ink`. */
-  surface?: "light" | "ink";
   ariaLabel?: string;
   eyebrow: string;
   title: string;
@@ -51,7 +49,6 @@ function Grid({ items }: { items: FaqItem[] }) {
 
 export function Faq({
   id = "faq",
-  surface = "light",
   ariaLabel,
   eyebrow,
   title,
@@ -59,8 +56,7 @@ export function Faq({
   items,
   marker,
 }: FaqProps) {
-  const surf = surface === "ink" ? "ink" : "soft";
-  const versions = ["polish", "recomp", "expanded"] as const;
+  const surf = "ink"; // surface baked: every live call-site is ink (tech-optimization)
   return (
     <section
       id={id}
@@ -68,22 +64,17 @@ export function Faq({
       data-marker={marker}
       aria-label={ariaLabel}
     >
-      {versions.map((key, index) => (
-        <div
-          key={key}
-          className={`ds-faq__v ds-faq__v--${key}`}
-          data-version={index + 1}
-          hidden={index > 0}
-        >
-          <div className="wrap">
-            <div className="head" data-reveal="up">
-              <Eyebrow>{eyebrow}</Eyebrow>
-              <Title title={title} accent={titleAccent} />
-            </div>
-            <Grid items={items} />
+      {/* v1 — Polish. (Hidden v2/v3 copies baked out in the tech-optimization
+          pass; see archive/pre-optimization.) */}
+      <div className="ds-faq__v ds-faq__v--polish" data-version="1">
+        <div className="wrap">
+          <div className="head" data-reveal="up">
+            <Eyebrow>{eyebrow}</Eyebrow>
+            <Title title={title} accent={titleAccent} />
           </div>
+          <Grid items={items} />
         </div>
-      ))}
+      </div>
     </section>
   );
 }

@@ -598,7 +598,8 @@ export default function MethodologyPage() {
                 "Horizontal track of the five pipeline stages, Decoder to Report",
             }}
             videoScrub={{
-              src: "/assets/methodology/methodology-transition.mp4",
+              src: "/assets/methodology/methodology-transition.mp4?v=3",
+              poster: "/assets/methodology/methodology-transition-poster.webp",
               frames: 0,
               ariaLabel:
                 "Methodology transition — scrubbed by scroll through the stages",
@@ -628,7 +629,6 @@ export default function MethodologyPage() {
               framed in the title/sub above it. */}
           <RoutingMatrix
             id="routing"
-            surface="light"
             eyebrow="Controlled influence"
             title="Not every judge influences every score"
             accentWords={["influences"]}
@@ -692,7 +692,14 @@ export default function MethodologyPage() {
           <section id="control" className="band soft ds-split" aria-label="Where the human decides">
             <div className="wrap ds-split__grid ds-split__grid--mirror" data-version={2}>
               <figure className="ds-split__media ds-split__media--video" data-reveal="left" aria-hidden="true">
-                <video data-play-once data-replay-delay="7000" muted playsInline preload="metadata">
+                <video
+                  data-play-once
+                  data-replay-delay="7000"
+                  muted
+                  playsInline
+                  preload="metadata"
+                  poster="/assets/methodology/hitl-loop-poster.webp"
+                >
                   <source src="/assets/methodology/hitl-loop.mp4" type="video/mp4" />
                 </video>
               </figure>
@@ -799,7 +806,10 @@ export default function MethodologyPage() {
           mobileLines={["Follow one score", "from slide to final call"]}
           sub="Open a sample evaluation and trace one score from slide evidence to rubric band, judge output, AI Total Score, and final Jury Score."
           cta={{ label: "Book a Demo", href: "/company/contact" }}
-          media={{ videoSrc: "/assets/methodology/methodology-transition.mp4" }}
+          media={{
+            videoSrc: "/assets/methodology/methodology-transition.mp4?v=3",
+            poster: "/assets/methodology/methodology-transition-poster.webp",
+          }}
           maskId="methodology-final-cta"
         />
       </main>

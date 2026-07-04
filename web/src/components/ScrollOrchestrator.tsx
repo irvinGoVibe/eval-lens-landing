@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 /**
  * Verbatim port of the original landing-page <script> block.
@@ -12,27 +12,15 @@ import { useEffect, useRef } from "react";
  * mount so they see the section markup rendered by the server.
  */
 export function ScrollOrchestrator() {
-  const ranRef = useRef(false);
-
   useEffect(() => {
-    // StrictMode in dev double-invokes effects. The original script mutates
-    // global DOM state and adds window listeners — running it twice
-    // double-registers everything. Guard so the body only runs once.
-    if (ranRef.current) return;
-    ranRef.current = true;
-
-    // Survive Fast Refresh / HMR too: a hot reload remounts this component
-    // with a fresh ranRef, which would re-run runScript() and stack a SECOND
-    // set of scroll/stage drivers on top of the old ones. Two competing
-    // stage tweens leave the demo stuck mid-frame (e.g. the report panel
-    // resting half-revealed). A window-level flag keeps it strictly once.
-    const w = window as unknown as { __evlOrchRan?: boolean };
-    if (w.__evlOrchRan) return;
-    w.__evlOrchRan = true;
-
-    runScript();
-    // Intentionally no cleanup: the landing page never unmounts this in
-    // practice, and the original script also installed permanent listeners.
+    // runScript() registers every listener / observer / rAF loop / timer it
+    // creates and returns a full teardown. That makes StrictMode's dev
+    // double-invoke safe (init → teardown → init), lets Fast Refresh remount
+    // cleanly, and — critically — a SPA navigation away from the home page
+    // tears everything down instead of leaving listeners running against
+    // detached nodes. Returning to the home page re-initialises from scratch
+    // (no window/module once-flags).
+    return runScript();
   }, []);
 
   return null;
@@ -41,7 +29,25 @@ export function ScrollOrchestrator() {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
-function runScript() {
+function runScript(): () => void {
+  /* teardown registry — every listener / observer / rAF loop / timeout below
+     registers its undo here; the effect cleanup runs them all. */
+  const cleanups: Array<() => void> = [];
+  let disposed = false;
+  cleanups.push(() => {
+    disposed = true;
+  });
+  /** addEventListener + auto-registered removeEventListener. */
+  const on = (
+    target: EventTarget,
+    type: string,
+    handler: any,
+    options?: boolean | AddEventListenerOptions,
+  ) => {
+    target.addEventListener(type, handler, options);
+    cleanups.push(() => target.removeEventListener(type, handler, options));
+  };
+
   /* scroll progress */
   const prog = document.getElementById("progress");
   const onScroll = () => {
@@ -49,7 +55,7 @@ function runScript() {
     const max = h.scrollHeight - h.clientHeight;
     if (prog) prog.style.setProperty("--p", (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%");
   };
-  document.addEventListener("scroll", onScroll, { passive: true });
+  on(document, "scroll", onScroll, { passive: true });
   onScroll();
 
   /* site header — flip text colour to contrast whatever section sits under the
@@ -115,10 +121,27 @@ function runScript() {
         header.classList.add("is-hidden");
       }
     };
+    // rAF-throttle: scroll/resize can fire several times per frame, and sync()
+    // does elementsFromPoint + getBoundingClientRect. Listeners only schedule;
+    // sync runs at most once per frame (same schedule pattern as the scrub).
+    let syncRaf = 0;
+    const scheduleSync = () => {
+      if (syncRaf) return;
+      syncRaf = requestAnimationFrame(() => {
+        syncRaf = 0;
+        sync();
+      });
+    };
+    cleanups.push(() => {
+      if (syncRaf) cancelAnimationFrame(syncRaf);
+    });
     sync();
-    window.addEventListener("scroll", sync, { passive: true });
-    window.addEventListener("resize", sync, { passive: true });
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    on(window, "scroll", scheduleSync, { passive: true });
+    on(window, "resize", scheduleSync, { passive: true });
+    // onPointerMove itself does no layout reads (class toggles only) — kept
+    // direct so header reveal stays immediate; sync() is no longer called
+    // from any per-event path.
+    on(window, "pointermove", onPointerMove, { passive: true });
   })();
 
   /* orange-glow scroll-driven phase — writes --glow-p / --glow-zarya on
@@ -129,6 +152,7 @@ function runScript() {
     const glow = document.querySelector(".section-orange-glow") as HTMLElement | null;
     if (!glow) return;
     let ticking = false;
+    let glowRaf = 0;
     const compute = () => {
       ticking = false;
       const rect = glow.getBoundingClientRect();
@@ -144,11 +168,12 @@ function runScript() {
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(compute);
+      glowRaf = requestAnimationFrame(compute);
     };
+    cleanups.push(() => cancelAnimationFrame(glowRaf));
     compute();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    on(window, "scroll", onScroll, { passive: true });
+    on(window, "resize", onScroll, { passive: true });
   })();
 
   /* reveal on scroll — drives every `.reveal` element, including the home-page
@@ -166,6 +191,7 @@ function runScript() {
     },
     { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
   );
+  cleanups.push(() => io.disconnect());
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
   /* Newsroom carousel — springy bounce-in / bounce-out for the cards
@@ -190,6 +216,7 @@ function runScript() {
       },
       { threshold: 0.22, rootMargin: "0px 0px -12% 0px" }
     );
+    cleanups.push(() => nio.disconnect());
     // #home-blog is an async Server Component, so it can stream in AFTER this
     // orchestrator mounts. Attach immediately if present, otherwise watch for it.
     const attach = () => {
@@ -200,9 +227,19 @@ function runScript() {
     };
     if (attach()) return;
     const mo = new MutationObserver(() => {
-      if (attach()) mo.disconnect();
+      if (attach()) {
+        mo.disconnect();
+        clearTimeout(moGuard);
+      }
     });
     mo.observe(document.body, { childList: true, subtree: true });
+    // guard: if #home-blog never streams in (blog block absent / failed),
+    // stop observing the whole body instead of watching mutations forever.
+    const moGuard = setTimeout(() => mo.disconnect(), 15000);
+    cleanups.push(() => {
+      mo.disconnect();
+      clearTimeout(moGuard);
+    });
   })();
 
   /* hero intro: synced dual-video play + copy reveal */
@@ -257,6 +294,12 @@ function runScript() {
     let copyTimer: ReturnType<typeof setTimeout> | null = null;
     const ready = new Set<HTMLVideoElement>();
 
+    cleanups.push(() => {
+      done = true; // late finish()/timers become no-ops
+      if (maxWait) clearTimeout(maxWait);
+      if (copyTimer) clearTimeout(copyTimer);
+    });
+
     layers.forEach((el) => {
       el.loop = false;
       el.muted = true;
@@ -303,6 +346,10 @@ function runScript() {
       await new Promise<void>((r) =>
         requestAnimationFrame(() => requestAnimationFrame(() => r()))
       );
+      if (disposed) {
+        starting = false;
+        return;
+      }
 
       try {
         await Promise.all(layers.map((el) => el.play()));
@@ -335,7 +382,8 @@ function runScript() {
       ) {
         heroHead.classList.add("hero-smash");
         smashFired = true;
-        setTimeout(() => heroHead.classList.remove("hero-smash"), 900);
+        const smashT = setTimeout(() => heroHead.classList.remove("hero-smash"), 900);
+        cleanups.push(() => clearTimeout(smashT));
       }
       if (!overlayWrap) return;
       if (!overlayShown && video.currentTime >= OVERLAY_REVEAL_SEC) {
@@ -353,36 +401,47 @@ function runScript() {
       }
     };
 
-    video.addEventListener("playing", scheduleCopyReveal, { once: true });
-    video.addEventListener("timeupdate", () => {
+    on(video, "playing", scheduleCopyReveal, { once: true });
+    on(video, "timeupdate", () => {
       keepInSync();
       maybeRevealOverlay();
       if (video.currentTime * 1000 >= COPY_REVEAL_MS) finish();
     });
 
     /* fade overlay to opacity 0 the moment it finishes playing */
-    overlay?.addEventListener(
-      "ended",
-      () => {
-        overlayWrap?.classList.remove("is-visible");
-        overlayHidden = true;
-      },
-      { once: true }
-    );
+    if (overlay)
+      on(
+        overlay,
+        "ended",
+        () => {
+          overlayWrap?.classList.remove("is-visible");
+          overlayHidden = true;
+        },
+        { once: true }
+      );
 
     layers.forEach((el) => {
       const onReady = () => markReady(el);
       if (el.readyState >= 2) onReady();
-      el.addEventListener("loadeddata", onReady, { once: true });
-      el.addEventListener("canplay", onReady);
-      el.addEventListener(
+      on(el, "loadeddata", onReady, { once: true });
+      on(el, "canplay", onReady);
+      on(
+        el,
         "loadedmetadata",
         () => {
           if (video.duration) armFallback(video.duration);
         },
         { once: true }
       );
-      el.addEventListener("error", () => setTimeout(finish, 500), { once: true });
+      on(
+        el,
+        "error",
+        () => {
+          const errT = setTimeout(finish, 500);
+          cleanups.push(() => clearTimeout(errT));
+        },
+        { once: true }
+      );
     });
 
     armFallback(3);
@@ -390,8 +449,8 @@ function runScript() {
     const prime = () => {
       if (!playing) beginPlayback();
     };
-    window.addEventListener("touchstart", prime, { passive: true, once: true });
-    window.addEventListener("click", prime, { once: true });
+    on(window, "touchstart", prime, { passive: true, once: true });
+    on(window, "click", prime, { once: true });
   })();
 
   /* hero edge splashes — scroll parallax vs background video */
@@ -439,9 +498,12 @@ function runScript() {
         raf = requestAnimationFrame(paint);
       }
     };
+    cleanups.push(() => {
+      if (raf) cancelAnimationFrame(raf);
+    });
 
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    on(window, "scroll", schedule, { passive: true });
+    on(window, "resize", schedule);
     schedule();
   })();
 
@@ -470,6 +532,10 @@ function runScript() {
       const scrubCells = scene
         ? (Array.from(scene.querySelectorAll(".scrub-cell")) as HTMLElement[])
         : ([] as HTMLElement[]);
+      // cached once — updateSceneCells runs per frame and must not re-query
+      const cellBars = scrubCells.map(
+        (cell) => cell.querySelector(".bar i") as HTMLElement | null
+      );
       if (!track || !pin) return;
 
       function splitEpicLines() {
@@ -522,7 +588,19 @@ function runScript() {
       let lastSetTime = -1;
       let progress = 0;
       let rafPending = false;
+      let rafHandle = 0;
       let ready = false;
+
+      // Per-frame layout-read cache: tick() gathers EVERY layout read up
+      // front, then the update* writers below consume these instead of
+      // re-reading layout between style writes (read → write phases).
+      let fVh = 0;
+      let fTrackTop = 0;
+      let fTrackHeight = 0;
+      let fScrollY = 0;
+      let fPinActive = false;
+      let fSlotTop = 0;
+      let fHeadingH = 120;
 
       function markHasVideo() {
         if (hasVideo) return;
@@ -556,17 +634,17 @@ function runScript() {
         if (video.readyState >= 1 && video.duration > 0) {
           onMetadata();
         } else {
-          video.addEventListener("loadedmetadata", onMetadata, { once: true });
+          on(video, "loadedmetadata", onMetadata, { once: true });
           // Some browsers expose duration on `durationchange` rather than
           // `loadedmetadata` when the value transitions from NaN to a number.
-          video.addEventListener("durationchange", onMetadata, { once: true });
+          on(video, "durationchange", onMetadata, { once: true });
         }
-        video.addEventListener("error", () => {
+        on(video, "error", () => {
           ready = false;
         }, { once: true });
         // If the browser kicks off playback anyway (autoplay heuristics,
         // metadata events), kill it on each play attempt.
-        video.addEventListener("play", () => {
+        on(video, "play", () => {
           try { video.pause(); } catch (_) {}
         });
         // iOS Safari historically needed a play+pause to unlock seek. Keep
@@ -580,16 +658,38 @@ function runScript() {
           window.removeEventListener("touchstart", primeOnce);
           window.removeEventListener("click", primeOnce);
         };
-        window.addEventListener("touchstart", primeOnce, { passive: true, once: true });
-        window.addEventListener("click", primeOnce, { once: true });
+        on(window, "touchstart", primeOnce, { passive: true, once: true });
+        on(window, "click", primeOnce, { once: true });
+
+        // Lazy scrub-video bytes: the <video> ships preload="metadata" (see
+        // Problem.tsx), so the ~1.8 MB mp4 no longer downloads on first
+        // paint. Flip to preload="auto" + load() once the section approaches
+        // the viewport (two screens out either way) so the frames are
+        // buffered by the time the pin starts scrubbing.
+        let warmed = video.preload === "auto";
+        const warmIO = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (!e.isIntersecting || warmed) return;
+              warmed = true;
+              video.preload = "auto";
+              try {
+                video.load();
+              } catch (_) {}
+              warmIO.disconnect();
+            });
+          },
+          { rootMargin: "200% 0px 200% 0px" }
+        );
+        warmIO.observe(section);
+        cleanups.push(() => warmIO.disconnect());
       }
 
       function computeProgress() {
-        const rect = track!.getBoundingClientRect();
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        const scrollable = track!.offsetHeight - vh;
+        // consumes the per-frame read cache captured at the top of tick()
+        const scrollable = fTrackHeight - fVh;
         if (scrollable <= 0) return 0;
-        const scrolled = Math.min(Math.max(-rect.top, 0), scrollable);
+        const scrolled = Math.min(Math.max(-fTrackTop, 0), scrollable);
         return scrolled / scrollable;
       }
 
@@ -628,10 +728,10 @@ function runScript() {
 
       function updateHeading(trackP: number) {
         if (!heading || reduce) return;
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        const vh = fVh;
+        const scrollY = fScrollY;
         const start = vh * 0.5;
-        const pinActive = track!.getBoundingClientRect().top <= 2;
+        const pinActive = fPinActive;
         const centerY = vh * 0.5;
 
         if (scrollY < start * 0.88) {
@@ -652,9 +752,7 @@ function runScript() {
         const headingTopInset = Math.min(64, Math.max(32, vh * 0.055));
         let slotY = centerY;
         if (headingSlot) {
-          const sr = headingSlot.getBoundingClientRect();
-          const blockH = heading ? heading.offsetHeight : 120;
-          slotY = sr.top + headingTopInset + blockH * 0.38;
+          slotY = fSlotTop + headingTopInset + fHeadingH * 0.38;
         }
 
         let targetTop = centerY;
@@ -693,7 +791,7 @@ function runScript() {
       }
 
       function updateReveal(p: number) {
-        const pinActive = track!.getBoundingClientRect().top <= 2;
+        const pinActive = fPinActive;
         if (stageArea)
           stageArea.classList.toggle("is-visible", pinActive && p >= PHASE.VIDEO_START);
         if (scene) scene.classList.toggle("is-visible", pinActive && p >= PHASE.SCENE_START);
@@ -761,7 +859,7 @@ function runScript() {
 
       function updateFileSuck(p: number) {
         if (!scene || !scrubFiles.length || reduce) return;
-        const pinActive = track!.getBoundingClientRect().top <= 2;
+        const pinActive = fPinActive;
         const sceneOn = pinActive && p >= PHASE.SCENE_START;
         const t = sceneOn ? suckProgress(p) : 0;
 
@@ -806,11 +904,11 @@ function runScript() {
         if (scene) {
           scene.classList.remove("is-files-gone", "is-cells-active");
         }
-        scrubCells.forEach((cell) => {
+        scrubCells.forEach((cell, i) => {
           cell.style.opacity = "";
           cell.style.transform = "";
           cell.style.filter = "";
-          const barI = cell.querySelector(".bar i") as HTMLElement | null;
+          const barI = cellBars[i];
           if (barI) barI.style.transform = "";
         });
       }
@@ -839,11 +937,11 @@ function runScript() {
         if (!scene || !scrubCells.length) return;
         if (reduce) {
           scene.classList.add("is-files-gone", "is-cells-active");
-          scrubCells.forEach((cell) => {
+          scrubCells.forEach((cell, i) => {
             cell.style.opacity = "1";
             cell.style.transform = "none";
             cell.style.filter = "none";
-            const barI = cell.querySelector(".bar i") as HTMLElement | null;
+            const barI = cellBars[i];
             if (barI) {
               const w = parseFloat(barI.style.getPropertyValue("--w") || "0.8");
               barI.style.transform = `scaleX(${w})`;
@@ -852,7 +950,7 @@ function runScript() {
           return;
         }
 
-        const pinActive = track!.getBoundingClientRect().top <= 2;
+        const pinActive = fPinActive;
         const sceneOn = pinActive && p >= PHASE.SCENE_START;
         const suckT = sceneOn ? suckProgress(p) : 0;
         const pull = Math.pow(suckT, 1.12);
@@ -907,7 +1005,7 @@ function runScript() {
           cell.style.opacity = t > 0.02 ? String(e) : "0";
           cell.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
           cell.style.filter = blur > 0.5 ? `blur(${blur.toFixed(1)}px)` : "none";
-          const barI = cell.querySelector(".bar i") as HTMLElement | null;
+          const barI = cellBars[idx];
           if (barI) {
             const w = parseFloat(barI.style.getPropertyValue("--w") || "0.8");
             barI.style.transform = `scaleX(${e * w})`;
@@ -937,7 +1035,20 @@ function runScript() {
       }
 
       function tick() {
+        if (disposed) return;
         rafPending = false;
+        // ── read phase: every layout read for this frame, before any write ──
+        const trackRect = track!.getBoundingClientRect();
+        fVh = window.innerHeight || document.documentElement.clientHeight;
+        fTrackTop = trackRect.top;
+        fTrackHeight = track!.offsetHeight;
+        fPinActive = trackRect.top <= 2;
+        fScrollY = window.scrollY || document.documentElement.scrollTop;
+        if (headingSlot) fSlotTop = headingSlot.getBoundingClientRect().top;
+        // heading is display:none until .is-shown — keep the last real height
+        // (falling back to the original 120px estimate) while it's hidden
+        if (heading && heading.offsetHeight > 0) fHeadingH = heading.offsetHeight;
+        // ── write phase ──
         progress = computeProgress();
         updateHeading(progress);
         updateReveal(progress);
@@ -969,7 +1080,7 @@ function runScript() {
       function schedule() {
         if (rafPending) return;
         rafPending = true;
-        requestAnimationFrame(tick);
+        rafHandle = requestAnimationFrame(tick);
       }
 
       const visibleIO = new IntersectionObserver(
@@ -981,9 +1092,13 @@ function runScript() {
         { threshold: 0 }
       );
       visibleIO.observe(pin);
+      cleanups.push(() => {
+        visibleIO.disconnect();
+        cancelAnimationFrame(rafHandle);
+      });
 
-      window.addEventListener("scroll", schedule, { passive: true });
-      window.addEventListener("resize", schedule);
+      on(window, "scroll", schedule, { passive: true });
+      on(window, "resize", schedule);
       schedule();
     });
   })();
@@ -1137,19 +1252,21 @@ function runScript() {
       heading!.style.opacity = "";
     }
 
+    let rafHandle = 0;
+
     function loop() {
-      if (!visible) {
+      if (!visible || disposed) {
         rafActive = false;
         return;
       }
       update();
-      requestAnimationFrame(loop);
+      rafHandle = requestAnimationFrame(loop);
     }
 
     function startLoop() {
       if (rafActive) return;
       rafActive = true;
-      requestAnimationFrame(loop);
+      rafHandle = requestAnimationFrame(loop);
     }
 
     const visibleIO = new IntersectionObserver(
@@ -1164,8 +1281,13 @@ function runScript() {
       { threshold: 0, rootMargin: "100% 0px 100% 0px" }
     );
     visibleIO.observe(section);
+    cleanups.push(() => {
+      visibleIO.disconnect();
+      visible = false;
+      cancelAnimationFrame(rafHandle);
+    });
 
-    window.addEventListener("resize", update);
+    on(window, "resize", update);
     update();
   })();
 
@@ -1412,6 +1534,14 @@ function runScript() {
     let pipeTok = 0;
     let evalDone = false;
 
+    // teardown: bumping the tokens invalidates any in-flight rAF tween
+    // (stage tween / pipeline sweep / counter count-up all check their token)
+    cleanups.push(() => {
+      animTok++;
+      pipeTok++;
+      countTok++;
+    });
+
     const pipeLabelText = pipeline?.querySelector(".pl-text") ?? null;
 
     // final header badges once the evaluation sweep reaches Reports
@@ -1513,15 +1643,15 @@ function runScript() {
       if (next === STAGES) playPipeline(true);
     }
 
-    navUp?.addEventListener("click", () => goTo(current - 1));
-    navDown?.addEventListener("click", () => goTo(current + 1));
+    if (navUp) on(navUp, "click", () => goTo(current - 1));
+    if (navDown) on(navDown, "click", () => goTo(current + 1));
     // the "Run evaluation" button on the Batch-ready card launches stage 6
-    runBtn?.addEventListener("click", () => goTo(STAGES));
+    if (runBtn) on(runBtn, "click", () => goTo(STAGES));
     steps.forEach((s, i) => {
-      (s as HTMLElement).addEventListener("click", () => goTo(i + 1));
+      on(s as HTMLElement, "click", () => goTo(i + 1));
     });
     // layout-only re-paint; keeps the current stage settled on resize
-    window.addEventListener("resize", () => {
+    on(window, "resize", () => {
       setStage(current, 1);
       syncActiveStepIntoView(current, "auto");
     });
@@ -1640,6 +1770,7 @@ function runScript() {
       let start: number | null = null;
       const dur = 600;
       function tick(ts: number) {
+        if (disposed) return;
         if (!start) start = ts;
         const p = Math.min(1, (ts - start) / dur);
         el.textContent = (target * (0.5 + 0.5 * p)).toFixed(1);
@@ -1839,6 +1970,9 @@ function runScript() {
     let current = 0;
     let animTok = 0;
     let inited = false; // gate chip auto-scroll so the init call can't jump the page
+    cleanups.push(() => {
+      animTok++; // invalidates any in-flight stage tween rAF
+    });
     const easeInOut = (t: number) =>
       t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
@@ -1887,30 +2021,32 @@ function runScript() {
       requestAnimationFrame(frame);
     }
 
-    navUp?.addEventListener("click", () => goTo(current - 1));
-    navDown?.addEventListener("click", () => goTo(current + 1));
-    mPrev?.addEventListener("click", () => goTo(current - 1));
-    mNext?.addEventListener("click", () => goTo(current >= STAGES ? 1 : current + 1));
+    if (navUp) on(navUp, "click", () => goTo(current - 1));
+    if (navDown) on(navDown, "click", () => goTo(current + 1));
+    if (mPrev) on(mPrev, "click", () => goTo(current - 1));
+    if (mNext) on(mNext, "click", () => goTo(current >= STAGES ? 1 : current + 1));
     steps.forEach((s, i) => {
-      (s as HTMLElement).addEventListener("click", () => goTo(i + 1));
+      on(s as HTMLElement, "click", () => goTo(i + 1));
     });
 
     // phone: horizontal swipe on the window steps through stages (the dx>dy
     // guard leaves vertical scrolling of the report panel/grid untouched)
     let tsx = 0;
     let tsy = 0;
-    windowElRef.addEventListener(
+    on(
+      windowElRef,
       "touchstart",
-      (e) => {
+      (e: TouchEvent) => {
         const t = e.changedTouches[0];
         tsx = t.clientX;
         tsy = t.clientY;
       },
       { passive: true },
     );
-    windowElRef.addEventListener(
+    on(
+      windowElRef,
       "touchend",
-      (e) => {
+      (e: TouchEvent) => {
         const t = e.changedTouches[0];
         const dx = t.clientX - tsx;
         const dy = t.clientY - tsy;
@@ -1921,7 +2057,7 @@ function runScript() {
       { passive: true },
     );
 
-    window.addEventListener("resize", () => setStage(current, 1));
+    on(window, "resize", () => setStage(current, 1));
 
     goTo(1, false);
     inited = true;
@@ -1984,7 +2120,7 @@ function runScript() {
     }
 
     if (canDrag) states.forEach((s) => {
-      s.el.addEventListener("pointerdown", (e: PointerEvent) => {
+      on(s.el, "pointerdown", (e: PointerEvent) => {
         if (!idle() || e.button !== 0) return;
         e.preventDefault();
         s.mode = "drag";
@@ -1996,7 +2132,7 @@ function runScript() {
         s.el.classList.add("dragging");
         try { s.el.setPointerCapture(e.pointerId); } catch { /* unsupported */ }
       });
-      s.el.addEventListener("pointermove", (e: PointerEvent) => {
+      on(s.el, "pointermove", (e: PointerEvent) => {
         if (s.mode !== "drag") return;
         const rawX = e.clientX - s.grabX;
         const rawY = e.clientY - s.grabY;
@@ -2011,12 +2147,26 @@ function runScript() {
         if (dist >= max) release(s, e.pointerId);
       });
       const up = (e: PointerEvent) => release(s, e.pointerId);
-      s.el.addEventListener("pointerup", up);
-      s.el.addEventListener("pointercancel", up);
+      on(s.el, "pointerup", up);
+      on(s.el, "pointercancel", up);
     });
 
+    // The float loop is gated by section visibility (same pattern as the
+    // workflow-heading gate): it only runs while #decisions is within a
+    // viewport of the screen. Motion is a pure function of absolute time
+    // (t0-anchored sinusoids), so pausing and resuming stays on the same
+    // trajectory; on re-entry, "return" mode springs tx/ty smoothly back
+    // onto the live float path instead of snapping.
+    let visible = false;
+    let rafActive = false;
+    let rafHandle = 0;
     const t0 = performance.now();
-    (function frame(now: number) {
+
+    function frame(now: number) {
+      if (!visible || disposed) {
+        rafActive = false;
+        return;
+      }
       const t = (now - t0) / 1000;
       const active = idle();
       const TAU = Math.PI * 2;
@@ -2043,7 +2193,38 @@ function runScript() {
         s.el.style.setProperty("--card-ty", s.ty.toFixed(1) + "px");
         s.el.style.setProperty("--card-scale", s.scale.toFixed(3));
       }
-      requestAnimationFrame(frame);
-    })(t0);
+      rafHandle = requestAnimationFrame(frame);
+    }
+
+    function startLoop() {
+      if (rafActive) return;
+      rafActive = true;
+      // ease from the frozen offsets back onto the live float trajectory
+      for (const s of states) if (s.mode === "float") s.mode = "return";
+      rafHandle = requestAnimationFrame(frame);
+    }
+
+    const visibleIO = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          visible = e.isIntersecting;
+          if (visible) {
+            startLoop();
+          } else if (rafActive) {
+            cancelAnimationFrame(rafHandle);
+            rafActive = false;
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "100% 0px 100% 0px" }
+    );
+    visibleIO.observe(section);
+    cleanups.push(() => {
+      visibleIO.disconnect();
+      visible = false;
+      cancelAnimationFrame(rafHandle);
+    });
   })();
+
+  return () => cleanups.forEach((f) => f());
 }

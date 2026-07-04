@@ -50,17 +50,20 @@ export function Problem() {
             <div className="scrub-fallback" aria-hidden="true"></div>
             {/* No autoPlay: this video is purely scrubbed by scroll position
                 via ScrollOrchestrator. Autoplay would fight the seek-back
-                logic and make scrolling up feel like it doesn't rewind. */}
+                logic and make scrolling up feel like it doesn't rewind.
+                preload="metadata": the ~1.8 MB mp4 is NOT fetched up-front —
+                ScrollOrchestrator flips preload to "auto" + calls load() when
+                #problem gets within two viewports (IO, rootMargin 200%). */}
             <video
               className="scrub-video"
               muted
               playsInline
-              preload="auto"
+              preload="metadata"
               disablePictureInPicture
               aria-hidden="true"
               poster="/assets/section2-scroll-2-poster.jpg"
             >
-              <source src="/assets/section2-scroll-2.mp4" type="video/mp4" />
+              <source src="/assets/section2-scroll-2.mp4?v=3" type="video/mp4" />
             </video>
             <div className="scrub-veil" aria-hidden="true"></div>
 

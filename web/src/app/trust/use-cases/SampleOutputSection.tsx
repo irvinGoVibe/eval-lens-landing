@@ -22,9 +22,13 @@ export function SampleOutputSection() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="uc2-panel-frame"
-            src="/assets/use-cases/panel-frame.png"
+            src="/assets/use-cases/panel-frame.webp"
             alt=""
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            width={1920}
+            height={1166}
           />
 
           {/* 4. Internal report tabs + 5. default Project Summary view */}

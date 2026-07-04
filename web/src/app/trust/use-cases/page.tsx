@@ -495,6 +495,8 @@ export default function UseCasesPage() {
                   muted
                   loop
                   playsInline
+                  preload="auto"
+                  poster="/assets/use-cases/hero-demo-poster.webp"
                   aria-hidden="true"
                 >
                   <source src="/assets/use-cases/hero-demo.mp4" type="video/mp4" />
@@ -535,6 +537,7 @@ export default function UseCasesPage() {
           primary={{ label: "Book a workflow call", href: "/company/contact" }}
           secondary={{ label: "Try sample workspace", href: "/try-live-demo" }}
           videoSrc="/assets/cta/cube-1.mp4"
+          videoPoster="/assets/cta/cube-1-poster.webp"
           auroraVariant="violet"
         />
 

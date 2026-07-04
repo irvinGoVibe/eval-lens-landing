@@ -714,7 +714,10 @@ export default function PricingPage() {
           eyebrow="How it works"
           headline="From submission to shortlist"
           sub="Each submission is reviewed by six AI judges, linked to evidence, and placed in a leaderboard for human review."
-          media={{ videoSrc: "/assets/cta/cube-1.mp4" }}
+          media={{
+            videoSrc: "/assets/cta/cube-1.mp4",
+            poster: "/assets/cta/cube-1-poster.webp",
+          }}
         />
 
         {/* ink → ink after Cinema (§5 Bento is ink — no tonal flip). */}
@@ -739,7 +742,6 @@ export default function PricingPage() {
         {/* 6. FAQ — Faq (DS), light. Static Q/A, NOT a JS accordion. */}
         <Faq
           id="faq"
-          surface="ink"
           eyebrow="Pricing FAQ"
           title="Pricing questions"
           titleAccent="questions"
@@ -758,6 +760,7 @@ export default function PricingPage() {
           primary={{ label: "Book a demo", href: "/company/contact" }}
           secondary={{ label: "Start free", href: "/company/contact" }}
           videoSrc="/assets/cta/neo.mp4"
+          videoPoster="/assets/cta/neo-poster.webp"
         />
       </main>
       <Footer variant="dark" />

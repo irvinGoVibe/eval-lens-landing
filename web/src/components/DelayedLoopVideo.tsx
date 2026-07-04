@@ -53,9 +53,23 @@ export function DelayedLoopVideo({
     };
 
     v.addEventListener("ended", onEnded);
-    play(); // kick off the first play once mounted
+
+    // Viewport-gated: fetch + first play only when the section approaches
+    // (same pattern as LazyVideo/BentoHorse) — the clip may sit below the fold.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        v.preload = "auto";
+        v.load();
+        play();
+      },
+      { rootMargin: "600px 0px" },
+    );
+    io.observe(v);
 
     return () => {
+      io.disconnect();
       v.removeEventListener("ended", onEnded);
       if (timer) clearTimeout(timer);
     };
@@ -67,7 +81,7 @@ export function DelayedLoopVideo({
       className={className}
       muted
       playsInline
-      preload="auto"
+      preload="none"
       poster={poster}
       aria-hidden={ariaHidden}
     >
