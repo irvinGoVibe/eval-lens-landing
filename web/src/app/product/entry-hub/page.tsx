@@ -253,8 +253,8 @@ export default function EntryHubPage() {
                 <LazyVideo
                   className="lab-rv__slide"
                   mode="scrub"
-                  frames={290}
-                  src="/assets/entry-hub/entry-hub-flow-v2.mp4"
+                  frames={147}
+                  src="/assets/entry-hub/entry-hub-flow-v2.mp4?v=2"
                   poster="/assets/entry-hub/entry-hub-flow-v2-poster.jpg"
                   ariaHidden
                 />
