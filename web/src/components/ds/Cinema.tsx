@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import { LazyVideo } from "@/components/LazyVideo";
 
 /**
  * Cinema — the cinematic close / transition section (clean DS).
@@ -158,17 +159,14 @@ export function Cinema({
     >
       <div className="ds-cinema__stage" data-pin-stage>
         {useVideo ? (
-          <video
+          /* Cinema is always below the fold — viewport-gate the video bytes
+             (SSR markup stays a plain <video> with the poster). */
+          <LazyVideo
             className="ds-cinema__vid"
-            autoPlay
-            muted
-            loop
-            playsInline
+            src={media.videoSrc!}
             poster={media.poster}
-            aria-hidden="true"
-          >
-            <source src={media.videoSrc} type="video/mp4" />
-          </video>
+            ariaHidden
+          />
         ) : (
           <div
             className="ds-cinema__vid ds-cinema__vid--img"
