@@ -38,10 +38,10 @@ export const metadata: Metadata = {
 /* 1b. Practical numbers — four stats (StatBand `Stat` needs a `src` line; the
    brief gives none, so it stays empty). */
 const STATS = [
-  { value: "100s", label: "decks per screening batch", src: "" },
+  { value: "1", label: "bar — no drift between decks", src: "" },
+  { value: "100%", label: "of inbound gets a real read, not a skim", src: "" },
+  { value: "0", label: "decks taken at face value", src: "" },
   { value: "4–5 min", label: "machine first-read per deck", src: "" },
-  { value: "6", label: "scoring dimensions per deck", src: "" },
-  { value: "10", label: "checks for missing deck evidence", src: "" },
 ] as const;
 
 /* page-local: 4-up stat grid (DS default is 3-col) + outputs panel. No backticks inside. */
@@ -65,21 +65,6 @@ const PILOT_NUMBERS_CSS = `
      so the black-bg report image merges seamlessly into the section */
   .one-pager #output{ background:#000; }
 `;
-const OUTPUTS_CSS = `
-  .op-outputs .wrap{ max-width:980px; margin:0 auto; text-align:center; }
-  .op-outputs__lead{ font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 clamp(20px,2.2vw,30px); }
-  .op-outputs__list{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; justify-content:center; gap:clamp(10px,1.1vw,14px); }
-  .op-outputs__list li{ position:relative; padding:11px 20px 11px 38px; border-radius:999px; background:rgba(255,255,255,.72); border:1px solid rgba(20,18,45,.10); font-size:clamp(14px,1.2vw,16px); font-weight:500; color:#1b1830; }
-  .op-outputs__list li::before{ content:""; position:absolute; left:17px; top:50%; transform:translateY(-50%); width:9px; height:9px; border-radius:50%; background:var(--lens); }
-  /* mobile: shrink the pills so they PACK into a horizontal cloud instead of a
-     centred one-per-row staircase */
-  @media (max-width:560px){
-    .op-outputs__list{ gap:9px; }
-    .op-outputs__list li{ font-size:13px; padding:9px 15px 9px 30px; }
-    .op-outputs__list li::before{ left:13px; width:8px; height:8px; }
-  }
-`;
-
 /* 2. Problem — Bento: one feature tile + supporting tiles. */
 const PROBLEM_TILES = [
   {
@@ -137,13 +122,13 @@ const WORKFLOW_STEPS = [
   },
   {
     num: "04",
-    label: "Hand partners the shortlist",
-    desc: "Every memo carries strengths, risks, gaps, and the questions to ask.",
+    label: "See the leaderboard",
+    desc: "The whole batch ranked on your bar in one leaderboard — the field at a glance, top to bottom.",
   },
   {
     num: "05",
-    label: "You make the call",
-    desc: "Partners verify, compare, and decide. A human sets the final score — the ranking runs on it.",
+    label: "Share the memos with partners",
+    desc: "Hand each deck's one-page screening memo — thesis, risks, gaps, and a recommendation to dig or pass. Partners verify and set the final score; the call stays human.",
   },
 ] as const;
 
@@ -206,14 +191,9 @@ const TRUST_TILES = [
     body: "Scores trace to evidence in the deck — defensible to your IC and your LPs, not a gut call.",
   },
   {
-    tag: "Risks",
-    title: "Risks and gaps",
-    body: "Each memo flags what to verify before the partner meeting.",
-  },
-  {
-    tag: "Questions",
-    title: "Questions for the IC",
-    body: "The memo sharpens the partner discussion — it doesn't replace it.",
+    tag: "Proven",
+    title: "Refined across hundreds of runs",
+    body: "The scoring logic isn't a v0 experiment — it's been tuned on real dealflow, run after run.",
   },
   {
     tag: "Human",
@@ -227,7 +207,7 @@ const USE_CASES = [
   {
     tag: "Inbound screening",
     title: "Inbound screening",
-    body: "Turn a full inbox into a ranked shortlist — every deck on the same bar. Looks at problem, market, team, traction, gaps.",
+    body: "Every inbound deck gets the same real first read — so the breakout in the pile doesn't get skimmed while the team is buried.",
   },
   {
     tag: "Thesis-fit filtering",
@@ -237,12 +217,12 @@ const USE_CASES = [
   {
     tag: "IC preparation",
     title: "IC preparation",
-    body: "Walk into the partner meeting with a memo and the sharp questions per deck — strengths, risks, and what to verify.",
+    body: "Every deck that clears the screen arrives with strengths, risks, and what to verify — so IC prep starts from substance, not a blank page. The full IC memo stays yours.",
   },
   {
     tag: "Demo-day & batch review",
     title: "Demo-day & batch review",
-    body: "Screen a whole cohort fast after the pitches. Compare every startup side by side on one consistent bar.",
+    body: "Screen a whole cohort in one pass right after the pitches — every startup compared on equal footing.",
   },
 ] as const;
 
@@ -268,10 +248,10 @@ export default function OnePagerPage() {
           surface="light"
           version={1}
           eyebrow="VC DEALFLOW SCREENING"
-          titleLead="Screen your inbound dealflow"
-          titleAccent="faster"
-          titleTrail=" — without missing the breakout"
-          sub="EvalLense gives every deck a structured first read — score, strengths, risks, missing data, and the questions to ask — on one consistent bar. Screen hundreds of decks in an afternoon and hand partners a ranked shortlist. Refined across hundreds of runs; the final call is always yours."
+          titleLead="Screen your inbound dealflow faster — without missing the"
+          titleAccent="unicorn"
+          titleTrail=""
+          sub="EvalLense gives every inbound deck the same structured first read — on one consistent bar — so the breakout doesn't get skimmed. Screen a full batch in an afternoon; the final call is always yours."
           ctas={[
             { label: "Start a pilot", href: "/company/contact" },
             { label: "Book a demo", href: "/company/contact#demo" },
@@ -295,21 +275,6 @@ export default function OnePagerPage() {
           stats={STATS.map((s) => ({ value: s.value, label: s.label, src: s.src }))}
         />
         <style>{PILOT_NUMBERS_CSS}</style>
-
-        {/* 1c. Outputs — what each run produces (page-local; not metrics). */}
-        <section className="band soft op-outputs" aria-label="What each screening batch produces">
-          <div className="wrap">
-            <p className="op-outputs__lead" data-reveal="up">After a batch, you get</p>
-            <ul className="op-outputs__list" data-reveal="up">
-              <li>Partner-ready memos</li>
-              <li>Ranked shortlist</li>
-              <li>Risks &amp; gaps</li>
-              <li>IC questions</li>
-              <li>One screening bar</li>
-            </ul>
-          </div>
-          <style>{OUTPUTS_CSS}</style>
-        </section>
 
         {/* 2. Problem — Bento (light): feature wall + four supporting tiles. */}
         <Bento
@@ -364,7 +329,7 @@ export default function OnePagerPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/assets/one-pager/guided-selection-roadmap.webp"
-                  alt="The whole screening as one rail: collect the dealflow, set your thesis bar, run the first read through the lens, hand partners the shortlist, and a human sets the final score."
+                  alt="The whole screening as one rail: collect the dealflow, set your thesis bar, run the first read through the lens, rank the batch into a leaderboard, share the memos with partners, and a human sets the final score."
                   width={1040}
                   height={2080}
                   loading="lazy"
@@ -386,7 +351,7 @@ export default function OnePagerPage() {
           titleLead="What the"
           titleAccent="fund"
           titleTrail=" gets"
-          sub="By the IC meeting, you have a working picture of every deck. Each memo is built the same way, so startups compare side by side."
+          sub="By the first screen, you have a working picture of every deck — before anyone commits diligence time. Each screening memo is built the same way, so startups compare side by side."
           points={OUTPUT_POINTS.map((p) => ({ title: p.title, body: p.body }))}
           media={{
             ratio: "4/3",
