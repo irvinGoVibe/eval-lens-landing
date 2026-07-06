@@ -14,9 +14,9 @@ import {
 } from "@/components/ds";
 
 export const metadata: Metadata = {
-  title: "EvalLense — One review standard for every application (one-pager)",
+  title: "EvalLense — Screen your VC dealflow, without missing the breakout (one-pager)",
   description:
-    "A practical one-page explainer: what you upload, what EvalLense does, how long it takes, what the jury gets, who sets the final score, and how to start a pilot.",
+    "A practical one-page explainer for VC funds: how EvalLense screens inbound decks on one consistent bar, ranks a partner-ready shortlist with evidence-cited memos, and leaves the final call to you.",
 };
 
 /*
@@ -38,8 +38,8 @@ export const metadata: Metadata = {
 /* 1b. Practical numbers — four stats (StatBand `Stat` needs a `src` line; the
    brief gives none, so it stays empty). */
 const STATS = [
-  { value: "20–40", label: "applications in a first pilot", src: "" },
-  { value: "4–5 min", label: "machine processing per application", src: "" },
+  { value: "100s", label: "decks per screening batch", src: "" },
+  { value: "4–5 min", label: "machine first-read per deck", src: "" },
   { value: "6", label: "scoring dimensions per deck", src: "" },
   { value: "10", label: "checks for missing deck evidence", src: "" },
 ] as const;
@@ -53,7 +53,7 @@ const PILOT_NUMBERS_CSS = `
   @media (max-width:980px){ #pilot-numbers .ds-statband__grid{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:620px){ #pilot-numbers .ds-statband__grid{ grid-template-columns:1fr; } }
   #problem .lab-bento__media--img{ border-radius:16px; box-shadow:0 24px 60px -34px rgba(30,26,70,.30); max-height:clamp(240px,28vw,380px); }
-  /* DS Title accents only ONE word; accent the whole 2nd sentence "Too little structure." (title words 4-6) page-local */
+  /* DS Title accents only ONE word; accent the whole 2nd sentence "Too little time to read it." (title words 4+) page-local */
   #problem .title > span:nth-child(n+4){ background:var(--lens); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
   /* unified, tighter vertical rhythm between sections — one value for the whole
      page (cards keep their own inner padding). Hero keeps a larger top so it
@@ -84,8 +84,8 @@ const OUTPUTS_CSS = `
 const PROBLEM_TILES = [
   {
     tag: "The wall",
-    title: "Strong projects stall in unstructured review",
-    body: "Materials arrive as decks, links, tables, and notes. A strong project stalls before anyone reads it closely.",
+    title: "Breakouts get skimmed in an inbox that never empties",
+    body: "Decks arrive as links, files, and forwards faster than the team can read them closely. The one that matters gets a skim before anyone looks hard.",
     feature: true,
     media: {
       src: "/assets/one-pager/problem-wall-broken.webp",
@@ -98,23 +98,23 @@ const PROBLEM_TILES = [
   },
   {
     tag: "Volume",
-    title: "Too many applications",
-    body: "A hundred applications is rarely a hundred careful reviews.",
+    title: "Inbound never stops",
+    body: "More decks arrive each week than the team can read closely.",
   },
   {
-    tag: "Time",
-    title: "Not enough time",
-    body: "The first decks get a deep read; later ones get a skim.",
+    tag: "Partner time",
+    title: "Partner time is the bottleneck",
+    body: "The first decks get a real read; the rest get a skim — and the breakout might be in the rest.",
   },
   {
-    tag: "Criteria",
-    title: "Different criteria",
-    body: "One reviewer weighs the market, another the team, another execution.",
+    tag: "The bar",
+    title: "The bar drifts",
+    body: "One analyst weighs traction, another the team — the screen isn't the same twice.",
   },
   {
-    tag: "Trail",
-    title: "Weak decision trail",
-    body: "Months later, it's hard to explain why a team advanced or didn't.",
+    tag: "Defensibility",
+    title: "Hard to defend the call",
+    body: "Months later, you can't reconstruct why a deck advanced — or died — for the IC or your LPs.",
   },
 ] as const;
 
@@ -122,28 +122,28 @@ const PROBLEM_TILES = [
 const WORKFLOW_STEPS = [
   {
     num: "01",
-    label: "Collect applications",
-    desc: "Participants submit decks, project descriptions, or other materials.",
+    label: "Collect the dealflow",
+    desc: "Founders submit decks and you drop in inbound — everything lands in one place.",
   },
   {
     num: "02",
-    label: "Set the criteria",
-    desc: "Choose the scale, weights, and scoring format for your selection.",
+    label: "Set your thesis bar",
+    desc: "Choose the scale, weights, and dimensions that match your fund's thesis.",
   },
   {
     num: "03",
     label: "Run the machine pass",
-    desc: "EvalLense prepares a structured first read of each application — about 4–5 minutes per application after upload.",
+    desc: "EvalLense prepares a structured first read of every deck — about 4–5 minutes per deck after upload.",
   },
   {
     num: "04",
-    label: "Hand the reports to the jury",
-    desc: "Every report carries strengths, risks, gaps, and questions to raise.",
+    label: "Hand partners the shortlist",
+    desc: "Every memo carries strengths, risks, gaps, and the questions to ask.",
   },
   {
     num: "05",
-    label: "The human sets the final score",
-    desc: "The jury verifies, compares, and decides. A person sets the final score.",
+    label: "You make the call",
+    desc: "Partners verify, compare, and decide. A human sets the final score — the ranking runs on it.",
   },
 ] as const;
 
@@ -171,11 +171,11 @@ const FLOW_CSS = `
 
 /* 4. Output — EditorialSplit points list ("After a run you get"). */
 const OUTPUT_POINTS = [
-  { title: "A report for every participant", body: "" },
-  { title: "A ranked scoring table", body: "" },
-  { title: "Questions for the jury", body: "" },
+  { title: "A memo for every deck", body: "" },
+  { title: "A ranked shortlist", body: "" },
+  { title: "Questions for the IC", body: "" },
   { title: "Risks and missing data", body: "" },
-  { title: "One shared scoring scale", body: "" },
+  { title: "One screening bar", body: "" },
 ] as const;
 
 /* 5. Trust — Bento (INK peak #1): one feature tile + five trust tiles. */
@@ -183,7 +183,7 @@ const TRUST_TILES = [
   {
     tag: "AI prepares",
     title: "AI prepares the analysis",
-    body: "EvalLense lays out the evidence, the risks, and the questions — then hands them to the people who decide.",
+    body: "EvalLense lays out the evidence, the risks, and the questions — then hands them to the partners who decide.",
     feature: true,
     media: {
       ratio: "4/3",
@@ -196,73 +196,53 @@ const TRUST_TILES = [
     },
   },
   {
-    tag: "Standard",
-    title: "One standard",
-    body: "Every application runs through the same scoring logic.",
+    tag: "One bar",
+    title: "One bar for every deck",
+    body: "Every deck runs through the same scoring logic — the outlier gets the same first read as the warm intro.",
   },
   {
-    tag: "Explained",
-    title: "Every score is explained",
-    body: "You see the reasons, not just a number.",
+    tag: "Defensible",
+    title: "Every score is cited",
+    body: "Scores trace to evidence in the deck — defensible to your IC and your LPs, not a gut call.",
   },
   {
     tag: "Risks",
     title: "Risks and gaps",
-    body: "Each report flags what to verify before you decide.",
+    body: "Each memo flags what to verify before the partner meeting.",
   },
   {
     tag: "Questions",
-    title: "Questions for the jury",
-    body: "The report frames the discussion — it doesn't replace it.",
+    title: "Questions for the IC",
+    body: "The memo sharpens the partner discussion — it doesn't replace it.",
   },
   {
     tag: "Human",
-    title: "The human sets the final score",
-    body: "Control stays with the organizer and the jury.",
+    title: "You set the final score",
+    body: "Control stays with the partners. The ranking runs on your call, not the AI's.",
   },
 ] as const;
 
 /* 6. Use cases — Gallery cards (Goal + Looks-at combined). */
 const USE_CASES = [
   {
-    tag: "Pitch competition",
-    title: "Pitch competition",
-    body: "Pick a shortlist and prep the jury for discussion. Looks at problem, solution, market, team, feasibility.",
+    tag: "Inbound screening",
+    title: "Inbound screening",
+    body: "Turn a full inbox into a ranked shortlist — every deck on the same bar. Looks at problem, market, team, traction, gaps.",
   },
   {
-    tag: "Hackathon",
-    title: "Hackathon",
-    body: "Get through every submission fast after the deadline. Looks at product, technical depth, value, readiness.",
+    tag: "Thesis-fit filtering",
+    title: "Thesis-fit filtering",
+    body: "Score decks against your fund's thesis, not a generic rubric. Weight the dimensions that decide your investments.",
   },
   {
-    tag: "Accelerator",
-    title: "Accelerator",
-    body: "Compare a stream of startups against program criteria. Looks at problem, market, team, traction, risks.",
+    tag: "IC preparation",
+    title: "IC preparation",
+    body: "Walk into the partner meeting with a memo and the sharp questions per deck — strengths, risks, and what to verify.",
   },
   {
-    tag: "Grants / innovation programs",
-    title: "Grants / innovation programs",
-    body: "Keep the decision transparent and defensible. Looks at criteria fit, evidence, impact, gaps.",
-  },
-  {
-    tag: "VC fund",
-    title: "VC fund",
-    body: "Turn inbound decks into a partner-ready first read. Looks at problem, market, team, traction, gaps.",
-  },
-  {
-    tag: "Corporate innovation",
-    title: "Corporate innovation",
-    body: "Tell real partnership potential from theatre. Looks at strategic fit, market, team, feasibility.",
-  },
-  {
-    tag: "Angel investors",
-    title: "Angel investors",
-    body: "See which decks are worth your time. Looks at problem, traction, team, risks.",
-  },
-  {
-    tag: "Universities",
-    title: "Universities",
-    body: "Compare student and research teams fairly. Looks at problem, solution, team, feasibility.",
+    tag: "Demo-day & batch review",
+    title: "Demo-day & batch review",
+    body: "Screen a whole cohort fast after the pitches. Compare every startup side by side on one consistent bar.",
   },
 ] as const;
 
@@ -287,45 +267,45 @@ export default function OnePagerPage() {
           id="top"
           surface="light"
           version={1}
-          eyebrow="ONE REVIEW STANDARD"
-          titleLead="Get through your application stream"
+          eyebrow="VC DEALFLOW SCREENING"
+          titleLead="Screen your inbound dealflow"
           titleAccent="faster"
-          titleTrail=" — without losing the strong projects"
-          sub="EvalLense prepares a structured first read of every application — scores, strengths, risks, missing data, and questions for the jury. One application takes 4–5 minutes of machine processing. The human sets the final score."
+          titleTrail=" — without missing the breakout"
+          sub="EvalLense gives every deck a structured first read — score, strengths, risks, missing data, and the questions to ask — on one consistent bar. Screen hundreds of decks in an afternoon and hand partners a ranked shortlist. Refined across hundreds of runs; the final call is always yours."
           ctas={[
             { label: "Start a pilot", href: "/company/contact" },
-            { label: "Book a demo", href: "/#demo" },
+            { label: "Book a demo", href: "/company/contact#demo" },
           ]}
           media={{
             ratio: "16/9",
             label: "Image · decks → lens → reports · 16:9",
             hint: "A stack of pitch decks on the left, a glass evaluation lens in the centre, report cards (score, risk, question, evidence) on the right. The final score must not read as an AI verdict.",
             ariaLabel:
-              "Pitch decks passing through an evaluation lens and becoming structured reports for the jury",
+              "Pitch decks passing through an evaluation lens and becoming structured memos for the partners",
           }}
         />
 
         {/* 1b. Practical numbers — StatBand (soft). */}
         <StatBand
           id="pilot-numbers"
-          ariaLabel="What a first pilot looks like, in numbers"
+          ariaLabel="What a screening batch looks like, in numbers"
           eyebrow="BY THE NUMBERS"
-          title="What a first pilot looks like"
+          title="What a screening batch looks like"
           accent="pilot"
           stats={STATS.map((s) => ({ value: s.value, label: s.label, src: s.src }))}
         />
         <style>{PILOT_NUMBERS_CSS}</style>
 
         {/* 1c. Outputs — what each run produces (page-local; not metrics). */}
-        <section className="band soft op-outputs" aria-label="What each run produces">
+        <section className="band soft op-outputs" aria-label="What each screening batch produces">
           <div className="wrap">
-            <p className="op-outputs__lead" data-reveal="up">After a run, you get</p>
+            <p className="op-outputs__lead" data-reveal="up">After a batch, you get</p>
             <ul className="op-outputs__list" data-reveal="up">
-              <li>Per-participant reports</li>
-              <li>Ranked table</li>
+              <li>Partner-ready memos</li>
+              <li>Ranked shortlist</li>
               <li>Risks &amp; gaps</li>
-              <li>Jury questions</li>
-              <li>Shared scale</li>
+              <li>IC questions</li>
+              <li>One screening bar</li>
             </ul>
           </div>
           <style>{OUTPUTS_CSS}</style>
@@ -336,11 +316,11 @@ export default function OnePagerPage() {
           id="problem"
           surface="light"
           version={2}
-          ariaLabel="Why manual review breaks at volume"
-          eyebrow="WHY MANUAL REVIEW BREAKS"
-          title="Too many applications. Too little structure."
-          titleAccent="Too little structure"
-          sub="At volume, strong teams get skimmed. Criteria drift between reviewers, notes scatter, and the final call gets harder to defend."
+          ariaLabel="Why manual dealflow screening breaks at volume"
+          eyebrow="WHY MANUAL SCREENING BREAKS"
+          title="Too much dealflow. Too little time to read it."
+          titleAccent="Too little time"
+          sub="At volume, breakout decks get skimmed. The bar drifts between analysts, notes scatter, and the screen gets harder to defend to your IC and LPs."
           items={PROBLEM_TILES.map((t) => ({
             tag: t.tag,
             title: t.title,
@@ -354,19 +334,19 @@ export default function OnePagerPage() {
         <section
           id="how-it-works"
           className="op-flow"
-          aria-label="How a single selection runs, step by step"
+          aria-label="How a single screening runs, step by step"
         >
           <div className="wrap">
             <div className="op-flow__grid">
               <div className="op-flow__copy">
                 <p className="op-flow__eyebrow">THE WHOLE LOOP, END TO END</p>
                 <h2 className="op-flow__title">
-                  How a single<br />selection{" "}
+                  How a single<br />screening{" "}
                   <span className="op-flow__accent">runs</span>
                 </h2>
                 <p className="op-flow__sub">
-                  Set the standard once. EvalLense applies it to every
-                  application and prepares what the jury needs to decide faster.
+                  Set your bar once. EvalLense applies it to every deck and
+                  prepares what partners need to decide faster.
                 </p>
                 <ol className="op-flow__steps">
                   {WORKFLOW_STEPS.map((s) => (
@@ -384,7 +364,7 @@ export default function OnePagerPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/assets/one-pager/guided-selection-roadmap.webp"
-                  alt="The whole selection as one rail: collect applications, set the criteria, run the first read through the lens, hand the jury the reports, and a human sets the final score."
+                  alt="The whole screening as one rail: collect the dealflow, set your thesis bar, run the first read through the lens, hand partners the shortlist, and a human sets the final score."
                   width={1040}
                   height={2080}
                   loading="lazy"
@@ -401,22 +381,22 @@ export default function OnePagerPage() {
           id="output"
           surface="ink"
           version={2}
-          ariaLabel="What the organizer gets after a run"
+          ariaLabel="What the fund gets after a screening batch"
           eyebrow="WHAT YOU GET"
           titleLead="What the"
-          titleAccent="organizer"
+          titleAccent="fund"
           titleTrail=" gets"
-          sub="By the jury meeting, you have a working picture of every participant. Each report is built the same way, so projects compare side by side."
+          sub="By the IC meeting, you have a working picture of every deck. Each memo is built the same way, so startups compare side by side."
           points={OUTPUT_POINTS.map((p) => ({ title: p.title, body: p.body }))}
           media={{
             ratio: "4/3",
             src: "/assets/one-pager/organizer-report.webp",
             width: 1400,
             height: 1050,
-            label: "Image · per-participant report card · 4:3",
+            label: "Image · per-deck memo card · 4:3",
             hint: "A large report card: project name, system score, per-criterion scores, strengths, risks, missing data, jury questions, a ‘verify in discussion’ status, and a ‘final score is the jury’s’ note. The report is the hero, not the AI score.",
             ariaLabel:
-              "The organizer review kit: a per-participant report card (project, system score, per-criterion scores, strengths, risks, missing data, jury questions, final score), plus a final scoring table and a shared 1–10 scale.",
+              "The fund review kit: a per-deck memo card (startup, system score, per-criterion scores, strengths, risks, missing data, IC questions, final score), plus a ranked shortlist and a shared 1–10 bar.",
           }}
         />
 
@@ -429,11 +409,11 @@ export default function OnePagerPage() {
           id="trust"
           surface="ink"
           version={1}
-          ariaLabel="AI prepares the analysis; the human decides"
-          eyebrow="AI PREPARES, THE HUMAN DECIDES"
-          title="Not a black box. Not a jury replacement."
-          titleAccent="jury"
-          sub="EvalLense prepares the analysis; it never makes the final call. It helps the jury see evidence, risks, and questions faster."
+          ariaLabel="AI prepares the analysis; the partners decide"
+          eyebrow="AI PREPARES, THE PARTNERS DECIDE"
+          title="Not a black box. Not a partner replacement."
+          titleAccent="partner"
+          sub="EvalLense prepares the analysis; it never makes the final call. It widens what your team can read closely — so the breakout gets the same first read as every warm intro."
           items={TRUST_TILES.map((t) => ({
             tag: t.tag,
             title: t.title,
@@ -443,17 +423,17 @@ export default function OnePagerPage() {
           }))}
         />
 
-        {/* 6. Use cases — Gallery (light), v4 grid: 4 selection formats. */}
+        {/* 6. Use cases — Gallery (light), v4 grid: 4 VC screening use cases. */}
         <Gallery
           id="use-cases"
           surface="light"
           version={4}
-          ariaLabel="Selection formats EvalLense fits"
+          ariaLabel="How EvalLense fits into a fund's screening"
           eyebrow="WHERE IT FITS"
-          title="Fits different selection formats"
-          accentWords={["formats"]}
-          sub="EvalLense fits wherever you review many applications fast and compare projects on one standard."
-          laneLabel="Selection formats — pitch competition, hackathon, accelerator, grants"
+          title="Built for how a fund screens"
+          accentWords={["fund"]}
+          sub="From the first inbound read to the IC meeting — one consistent bar across your whole dealflow."
+          laneLabel="Fund screening — inbound screening, thesis-fit filtering, IC preparation, demo-day review"
           items={USE_CASES.map((u) => ({
             tag: u.tag,
             title: u.title,
@@ -469,11 +449,11 @@ export default function OnePagerPage() {
             videoSrc="/assets/cta/cube-1.mp4"
             videoPoster="/assets/cta/cube-1-poster.webp"
             eyebrow="START"
-            title="Run a pilot on a real application"
-            titleAccent="stream"
-            sub="We process the participants' materials, prepare reports for the jury, and show how EvalLense works on your selection — while control over the decision stays with you. One application takes 4–5 minutes of machine processing after upload."
+            title="Run a pilot on your real"
+            titleAccent="dealflow"
+            sub="We screen a real batch of your inbound, prepare partner-ready memos, and show how EvalLense ranks your dealflow — while the call stays yours. About 4–5 minutes of machine first-read per deck after upload. Refined across hundreds of runs."
             primary={{ label: "Start a pilot", href: "/company/contact" }}
-            secondary={{ label: "Book a demo", href: "/#demo" }}
+            secondary={{ label: "Book a demo", href: "/company/contact#demo" }}
           />
         </div>
       </main>
