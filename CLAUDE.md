@@ -68,9 +68,14 @@ When the user does ask:
 - **Стили:** Tailwind v4 (`@tailwindcss/postcss`) + legacy CSS в `globals.css`
   (токены через `@theme inline`).
 - **3D:** `three` + `@react-three/fiber` / `drei` / `postprocessing`.
-- **Данные:** статический контент блога в `web/src/lib/blog.ts` — БД/CMS нет.
-- **Backend / auth:** нет. Сайт — чистая статика (ни одного `process.env`
-  в `web/src`).
+- **Данные:** блог — Supabase CMS (проект `evallense-site`, таблица `articles`,
+  bucket `media`). Источник переключается флагом `BLOG_SOURCE`: `supabase`
+  (прод, live) или `static` (in-repo фоллбэк `web/src/lib/blog-static.ts`).
+  Геттеры — `web/src/lib/blog.server.ts`; запросы — `web/src/lib/cms/`.
+- **Админка:** `/admin` (в т.ч. `/admin/blog/articles`, `/admin/home/featured`)
+  — тонкий CRUD над `articles` через `service_role` в обход RLS.
+- **Backend / auth:** серверные env-переменные для Supabase (URL + ключи) в
+  `web/.env.local`; в клиентский бандл секреты не попадают.
 - **Деплой:** Vercel (целевая платформа).
 
 Полное устройство — `wiki/architecture/system.md`. Продукт и scope —
@@ -91,4 +96,5 @@ When the user does ask:
 - Не дробить скролл/анимации на per-section `useEffect` — всё в
   `ScrollOrchestrator.tsx` (единый rAF-цикл).
 - Не менять порт dev-сервера (3005) без согласования.
-- Контент блога добавляется записью в `posts` (`lib/blog.ts`), без внешней CMS.
+- Контент блога — записи в таблице `articles` (Supabase CMS) через `/admin`
+  или REST-upsert; статический фоллбэк `blog-static.ts` не re-seed'ить.
