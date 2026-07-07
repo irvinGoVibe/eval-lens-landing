@@ -34,7 +34,7 @@ export default function HomePage() {
           title="See your next cohort"
           titleAccent="ranked in a day"
           sub="Batch-review every pitch deck, surface the strongest startups, and hand each team an evidence-based report — with the final call always yours."
-          primary={{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }}
+          primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "Try live demo", href: "/try-live-demo" }}
         />
       </main>

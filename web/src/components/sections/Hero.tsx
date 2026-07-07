@@ -215,7 +215,7 @@ export function Hero() {
             team a clear report.
           </p>
           <div className="cta-row hero-fade d4">
-            <Button href="https://calendly.com/evellens/30min">Book a demo</Button>
+            <Button href="https://calendly.com/evallens/30min">Book a demo</Button>
             <Button variant="glass" arrow>
               Try live demo
             </Button>

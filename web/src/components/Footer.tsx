@@ -47,7 +47,7 @@ export function Footer({ variant = "light" }: FooterProps) {
               Final decisions stay human-controlled.
             </p>
             <div className="ctas">
-              <Button variant={isDark ? "gradient" : "primary"} size="sm" href="https://calendly.com/evellens/30min">
+              <Button variant={isDark ? "gradient" : "primary"} size="sm" href="https://calendly.com/evallens/30min">
                 Book a call
               </Button>
               <Button variant={isDark ? "glass" : "ghost"} size="sm">

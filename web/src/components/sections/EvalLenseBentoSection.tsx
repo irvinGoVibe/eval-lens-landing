@@ -220,7 +220,7 @@ export function EvalLenseBentoSection() {
                 authored there. The wrapper only toggles pointer-events; on
                 touch (no hover) both buttons stay visible. */}
             <div className="horse-ctas relative z-40 flex flex-wrap items-center justify-center gap-3 pb-4 pt-3 lg:pointer-events-none lg:group-hover/horse:pointer-events-auto lg:group-focus-within/horse:pointer-events-auto">
-              <Button variant="gradient" size="sm" href="https://calendly.com/evellens/30min">
+              <Button variant="gradient" size="sm" href="https://calendly.com/evallens/30min">
                 Book a call
               </Button>
               <Button variant="glass" size="sm" href="/try-live-demo">

@@ -166,7 +166,7 @@ export default function ProductHubPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              <Button href="https://calendly.com/evellens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
             </div>
             {/* hero visual slot — see prompt 1 in file header */}
             <figure
@@ -371,7 +371,7 @@ export default function ProductHubPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              <Button href="https://calendly.com/evellens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
             </div>
           </div>
         </section>

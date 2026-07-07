@@ -197,7 +197,7 @@ export default function EntryHubPage() {
           titleLead="One place for"
           titleAccent="every pitch deck"
           sub="Add teams yourself or share a submission link. Every deck and detail lands in one batch, ready for review."
-          ctas={[{ label: "Book a Demo", href: "https://calendly.com/evellens/30min" }]}
+          ctas={[{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }]}
           media={{
             ratio: "16/9",
             label: "Image · intake channels into one lens · 16:9",
@@ -408,7 +408,7 @@ export default function EntryHubPage() {
           title="See your submission flow"
           titleAccent="in action"
           sub="Book a demo and walk through the full journey from public link to structured review workspace."
-          primary={{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }}
+          primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
         />
       </main>
       <Footer variant="dark" />

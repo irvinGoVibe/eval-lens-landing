@@ -339,7 +339,7 @@ export default function EvidenceBasedReportsPage() {
           titleTrail="you can check."
           sub="See how each team scored, what drove the result, and what to ask next. You make the final call."
           ctas={[
-            { label: "Book a Demo", href: "https://calendly.com/evellens/30min" },
+            { label: "Book a Demo", href: "https://calendly.com/evallens/30min" },
             { label: "View Sample Report", href: "#" },
           ]}
           media={{
@@ -529,7 +529,7 @@ export default function EvidenceBasedReportsPage() {
           headline="AI prepares. You decide."
           mobileLines={["AI prepares.", "You decide."]}
           sub="See a real report on your own deck — book a demo and walk through a full evaluation report: summary, reasoning, and the questions to ask live."
-          cta={{ label: "Book a Demo", href: "https://calendly.com/evellens/30min" }}
+          cta={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
           media={{
             videoSrc: "/assets/methodology/cinema.mp4",
             poster: "/assets/methodology/cinema-poster.webp",

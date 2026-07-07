@@ -79,7 +79,7 @@ const CHANNELS: Channel[] = [
     body: "Questions about the product, a partnership or a pilot batch.",
     // hello@ is a placeholder per the brief — confirm before launch.
     cta: { label: "hello@evallense.com", href: "mailto:hello@evallense.com" },
-    call: { label: "Book a Call", href: "https://calendly.com/evellens/30min" },
+    call: { label: "Book a Call", href: "https://calendly.com/evallens/30min" },
   },
   {
     tag: "Careers",
@@ -205,7 +205,7 @@ export default async function ContactPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "360ms" }}
             >
-              <Button href="https://calendly.com/evellens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
               <Button variant="ghost" href="mailto:hello@evallense.com">
                 Email us
               </Button>
@@ -257,7 +257,7 @@ export default async function ContactPage() {
             </ul>
             {/* Book a Demo — moved below the four channel cards */}
             <div className="ct-channels__demo" data-reveal="up">
-              <Button href="https://calendly.com/evellens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
             </div>
           </div>
         </section>
@@ -401,7 +401,7 @@ export default async function ContactPage() {
           title="See EvalLense run on"
           titleAccent="your own applications"
           sub="Book a demo to walk through the product and run a pilot batch on your own decks."
-          primary={{ label: "Book a Demo", href: "https://calendly.com/evellens/30min" }}
+          primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
         />
       </main>
       <Footer variant="dark" />

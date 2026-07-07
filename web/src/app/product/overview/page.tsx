@@ -278,7 +278,7 @@ export default function ProductOverviewPage() {
           titleLead="The operating layer for structured pitch "
           titleAccent="evaluation"
           sub="Collect every deck in one place, evaluate it against one rubric, and compare evidence-based reports in a single review. The final call always yours."
-          ctas={[{ label: "Book a Demo", href: "https://calendly.com/evellens/30min" }]}
+          ctas={[{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }]}
           media={{
             ratio: "16/9",
             label: "Image · decks into a lens · 16:9",
@@ -427,7 +427,7 @@ export default function ProductOverviewPage() {
           title="See the whole workflow on"
           titleAccent="your own decks"
           sub="Book a demo and watch intake, evaluation, and human review play out end to end."
-          primary={{ label: "Book a Demo", href: "https://calendly.com/evellens/30min" }}
+          primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
         />
       </main>
       <Footer variant="dark" />
