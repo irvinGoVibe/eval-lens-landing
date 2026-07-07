@@ -40,6 +40,21 @@ const SECTIONS: LegalSection[] = [
     ),
   },
   {
+    id: "illustrative-content",
+    heading: "Illustrative content and sample data",
+    body: (
+      <p>
+        All interface previews, product screenshots, sample reports, scores,
+        pitch&#8209;deck titles, company and project names, and other
+        demonstration material shown on this website are{" "}
+        <strong>fictitious and for illustration only</strong>. They are created
+        to showcase how EvalLens works and do <strong>not</strong> represent
+        real submissions, real companies, real evaluations, or actual results.
+        Any resemblance to a real project, company, or person is coincidental.
+      </p>
+    ),
+  },
+  {
     id: "accounts",
     heading: "Eligibility and accounts",
     body: (
