@@ -4,7 +4,7 @@ import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 export const metadata: Metadata = {
   title: "Privacy Policy — EvalLens",
   description:
-    "How EvalLens collects, uses, shares and protects personal information, and the privacy rights available to California residents under the CCPA/CPRA.",
+    "How EvalLens collects, uses, shares and protects personal information, and the privacy rights available under the GDPR, Georgian data-protection law, and the California CCPA/CPRA.",
 };
 
 const UPDATED = "June 16, 2026";
@@ -16,7 +16,8 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          This Privacy Policy explains how <strong>[Legal entity name]</strong>{" "}
+          This Privacy Policy explains how <strong>[Operator name]</strong>, an
+          individual entrepreneur registered in Georgia
           (&ldquo;EvalLens,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) handles
           personal information in connection with the EvalLens website and the
           EvalLens pitch&#8209;deck evaluation service (the
@@ -24,9 +25,12 @@ const SECTIONS: LegalSection[] = [
           and to participants whose materials are submitted to it.
         </p>
         <p>
-          EvalLens is a United States&#8211;based service. By using the
-          Service, you understand that your information will be processed in the
-          United States.
+          EvalLens is operated from <strong>Georgia</strong> and serves business
+          customers internationally. By using the Service, you understand that
+          your information may be processed in Georgia and in other countries
+          where our service providers operate (see &ldquo;How we share
+          information&rdquo;). Where we transfer personal data internationally, we
+          rely on appropriate safeguards, such as standard contractual clauses.
         </p>
       </>
     ),
@@ -196,9 +200,21 @@ const SECTIONS: LegalSection[] = [
   },
   {
     id: "rights",
-    heading: "Your privacy rights (California)",
+    heading: "Your privacy rights",
     body: (
       <>
+        <p>
+          Depending on where you are located, you may have rights under laws such
+          as the EU and UK General Data Protection Regulation (GDPR) and the Law
+          of Georgia on Personal Data Protection, including the right to access,
+          correct, delete, restrict, or object to processing, the right to data
+          portability, and the right to withdraw consent at any time. Where we
+          rely on your consent we process on that basis; otherwise we process to
+          perform our contract with you, to comply with legal obligations, or for
+          our legitimate business interests. You may lodge a complaint with your
+          local data&#8209;protection authority &mdash; in Georgia, the Personal
+          Data Protection Service.
+        </p>
         <p>
           If you are a California resident, the California Consumer Privacy Act,
           as amended by the CPRA, gives you the right to:
@@ -268,7 +284,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Questions about this policy or your information? Contact{" "}
-        <strong>[Legal entity name]</strong> at{" "}
+        <strong>[Operator name]</strong> at{" "}
         <a href="mailto:privacy@evallens.io">privacy@evallens.io</a> or at{" "}
         <strong>[mailing address]</strong>.
       </p>

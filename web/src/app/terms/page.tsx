@@ -4,7 +4,7 @@ import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 export const metadata: Metadata = {
   title: "Terms of Service — EvalLens",
   description:
-    "The terms governing use of the EvalLens pitch-deck evaluation service, including acceptable use, AI-output disclaimers, liability limits, and California governing law.",
+    "The terms governing business use of the EvalLens pitch-deck evaluation service, including acceptable use, AI-output disclaimers, liability limits, VAT reverse-charge, and Georgia governing law.",
 };
 
 const UPDATED = "June 16, 2026";
@@ -16,13 +16,15 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         These Terms of Service (&ldquo;Terms&rdquo;) are a legal agreement
-        between you and <strong>[Legal entity name]</strong>
+        between you and <strong>[Operator name]</strong>, an individual
+        entrepreneur registered in Georgia
         (&ldquo;EvalLens,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) governing
         your access to and use of the EvalLens website and service (the
-        &ldquo;Service&rdquo;). By creating an account or using the Service, you
-        agree to these Terms. If you are using the Service on behalf of an
-        organization, you represent that you have authority to bind that
-        organization.
+        &ldquo;Service&rdquo;). The Service is provided to businesses and
+        organizations only. By creating an account or using the Service, you
+        represent that you are acting on behalf of a business or organization
+        (and not as a consumer) and that you have authority to bind that
+        organization to these Terms.
       </p>
     ),
   },
@@ -31,7 +33,9 @@ const SECTIONS: LegalSection[] = [
     heading: "The Service",
     body: (
       <p>
-        EvalLens is a decision&#8209;support tool for evaluating pitch decks. It
+        EvalLens is a business software and development service for evaluating
+        pitch decks. For each client we configure and adapt the evaluation
+        workflow to the client&rsquo;s program and requirements; the Service
         collects submissions, runs AI&#8209;assisted evaluation, and produces
         structured, advisory reports to help human reviewers compare and decide.
         EvalLens does not make funding, selection, or hiring decisions; those
@@ -59,10 +63,13 @@ const SECTIONS: LegalSection[] = [
     heading: "Eligibility and accounts",
     body: (
       <p>
-        You must be at least 18 years old and able to form a binding contract to
-        use the Service. You agree to provide accurate account information, to
-        keep your credentials confidential, and to be responsible for activity
-        under your account. Notify us promptly of any unauthorized use.
+        The Service is offered to businesses and organizations only and is not
+        intended for consumers. By using it, you represent that you are acting in
+        a business or professional capacity and not as a consumer. You must be at
+        least 18 years old and able to form a binding contract to use the
+        Service. You agree to provide accurate account information, to keep your
+        credentials confidential, and to be responsible for activity under your
+        account. Notify us promptly of any unauthorized use.
       </p>
     ),
   },
@@ -168,9 +175,18 @@ const SECTIONS: LegalSection[] = [
     heading: "Fees",
     body: (
       <p>
-        Paid plans are <strong>[not currently offered / to be defined]</strong>.
-        If we introduce fees, we will present pricing and payment terms before
-        you incur a charge, and those terms will form part of this agreement.
+        Fees for the Service and for any development or configuration work are
+        set out in the applicable order, statement of work, or plan presented
+        before you incur a charge, and those terms form part of this agreement.
+        Unless stated otherwise, all fees are <strong>exclusive of
+        value&#8209;added tax (VAT) and any other taxes</strong>. Because the
+        Service is supplied to business customers, where the reverse&#8209;charge
+        mechanism applies <strong>you are responsible for self&#8209;accounting
+        for VAT in your own jurisdiction</strong>, and you agree to provide a
+        valid VAT or tax registration number on request. You are responsible for
+        all taxes arising from your use of the Service other than taxes on our
+        income. <strong>[Payment processor / merchant&#8209;of&#8209;record and
+        refund terms to be confirmed.]</strong>
       </p>
     ),
   },
@@ -236,12 +252,13 @@ const SECTIONS: LegalSection[] = [
     heading: "Governing law and disputes",
     body: (
       <p>
-        These Terms are governed by the laws of the State of California, without
-        regard to its conflict&#8209;of&#8209;laws rules. You and EvalLens agree
-        to the exclusive jurisdiction of the state and federal courts located in
-        California for any dispute not subject to an alternative
-        dispute&#8209;resolution process that the parties separately agree to in
-        writing. <strong>[Arbitration / venue specifics to be confirmed.]</strong>
+        These Terms are governed by the laws of <strong>Georgia</strong>, without
+        regard to its conflict&#8209;of&#8209;laws rules. You and{" "}
+        <strong>[Operator name]</strong> agree to the exclusive jurisdiction of
+        the competent courts located in Georgia for any dispute not subject to an
+        alternative dispute&#8209;resolution process that the parties separately
+        agree to in writing.{" "}
+        <strong>[Arbitration / venue specifics to be confirmed.]</strong>
       </p>
     ),
   },
@@ -263,7 +280,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Questions about these Terms? Contact{" "}
-        <strong>[Legal entity name]</strong> at{" "}
+        <strong>[Operator name]</strong> at{" "}
         <a href="mailto:legal@evallens.io">legal@evallens.io</a>.
       </p>
     ),
