@@ -299,7 +299,7 @@ export function EvalLenseBentoSection() {
               </Link>
             ))}
           </div>
-          <Link href="/use-cases" className={`${LNK} mt-auto w-fit pt-4`}>
+          <Link href="/trust/use-cases" className={`${LNK} mt-auto w-fit pt-4`}>
             Explore use cases
             <Arrow />
           </Link>
