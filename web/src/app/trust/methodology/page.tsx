@@ -374,7 +374,7 @@ const RELATED: HubLink[] = [
     tag: "Story",
     title: "The builder story",
     body: "What 400+ runs taught us about scoring pitch decks.",
-    href: "/blog",
+    href: "/blog/from-ai-jury-to-evallense",
   },
 ];
 
