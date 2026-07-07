@@ -9,7 +9,7 @@ export default function BlogLayout({
     <>
       {/* Newsroom keeps "Book a demo" — it pre-dates the "Launch App" internal CTA
           and stays as the reference surface other internal pages mirror. */}
-      <PageHeader nav={NEWSROOM_NAV} cta={{ label: "Book a demo", href: "/#demo" }} />
+      <PageHeader nav={NEWSROOM_NAV} cta={{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }} />
       <main className="blog">{children}</main>
       <Footer />
     </>

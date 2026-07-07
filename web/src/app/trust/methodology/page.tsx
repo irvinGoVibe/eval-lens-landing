@@ -495,7 +495,7 @@ export default function MethodologyPage() {
             sub="EvalLense does not ask one model for a final verdict. It turns each deck into evidence, routes that evidence through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control."
             ctas={[
               { label: "See a sample score trace", href: "#evidence" },
-              { label: "Book a Demo", href: "/company/contact" },
+              { label: "Book a Demo", href: "https://calendly.com/evellens/30min" },
             ]}
             media={{
               ratio: "16/9",
@@ -805,7 +805,7 @@ export default function MethodologyPage() {
           lines={["Follow one score", "from slide to final call"]}
           mobileLines={["Follow one score", "from slide to final call"]}
           sub="Open a sample evaluation and trace one score from slide evidence to rubric band, judge output, AI Total Score, and final Jury Score."
-          cta={{ label: "Book a Demo", href: "/company/contact" }}
+          cta={{ label: "Book a Demo", href: "https://calendly.com/evellens/30min" }}
           media={{
             videoSrc: "/assets/methodology/methodology-transition.mp4?v=3",
             poster: "/assets/methodology/methodology-transition-poster.webp",

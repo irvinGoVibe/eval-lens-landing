@@ -236,7 +236,7 @@ export default function PromptInjectionSafetyPage() {
             { label: "Run a safety test", href: "/#demo" },
             {
               label: "Book a demo",
-              href: "/company/contact",
+              href: "https://calendly.com/evellens/30min",
               variant: "ghost",
             },
           ]}
@@ -572,7 +572,7 @@ export default function PromptInjectionSafetyPage() {
           titleAccent="boundary"
           sub="Run a clean and injected version through the same setup. Compare every judge score, inspect the security flag, and verify that the final ranking remains under human control."
           primary={{ label: "Run a safety test", href: "/#demo" }}
-          secondary={{ label: "Book a demo", href: "/company/contact" }}
+          secondary={{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }}
         />
       </main>
       <Footer variant="dark" />

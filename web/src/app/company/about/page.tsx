@@ -223,7 +223,7 @@ export default function AboutPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              <Button href="/#demo">Book a Demo</Button>
+              <Button href="https://calendly.com/evellens/30min">Book a Demo</Button>
             </div>
             {/* hero visual — the observatory lens: startup applications stream
                 in and resolve into evidence, risk signals, score cards, and
@@ -602,7 +602,7 @@ export default function AboutPage() {
           title="See how EvalLense works on a"
           titleAccent="real batch"
           sub="Book a demo to walk through the workflow, review example reports, and see how EvalLense helps your team compare applications without giving up human control."
-          primary={{ label: "Book a Demo", href: "/#demo" }}
+          primary={{ label: "Book a Demo", href: "https://calendly.com/evellens/30min" }}
           videoSrc="/assets/about/about-cta-bg.mp4"
           videoPoster="/assets/about/about-cta-bg-poster.webp"
         />

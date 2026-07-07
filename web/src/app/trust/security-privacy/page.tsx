@@ -58,7 +58,7 @@ export default function SecurityPrivacyPage() {
           titleLead="Private pitch-deck handling."
           titleAccent="Human decisions."
           sub="EvalLense keeps pitch decks, workspace access, and report delivery controlled. AI prepares the review. A person decides what happens next."
-          ctas={[{ label: "Book a demo", href: "/#demo" }]}
+          ctas={[{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }]}
           media={{
             ratio: "16/9",
             label: "Visual: deck in a private perimeter",
@@ -265,7 +265,7 @@ export default function SecurityPrivacyPage() {
           title="Run a controlled pilot on"
           titleAccent="your own decks"
           sub="Book a demo and see how EvalLense handles decks, access, reports, and final decisions in one controlled flow."
-          primary={{ label: "Book a demo", href: "/#demo" }}
+          primary={{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }}
         />
       </main>
       <Footer variant="dark" />

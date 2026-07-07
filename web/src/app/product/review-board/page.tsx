@@ -93,7 +93,7 @@ export default function ReviewBoardPage() {
           titleAccent="final call."
           sub="Review Board turns AI-scored reports into a human-ranked batch decision. Compare every startup on the same criteria, set your Jury Scores, and build the final ranking — the call stays yours."
           ctas={[
-            { label: "Book a demo", href: "/company/contact" },
+            { label: "Book a demo", href: "https://calendly.com/evellens/30min" },
             { label: "Try live demo", href: "/#demo", variant: "ghost" },
           ]}
           media={{
@@ -362,7 +362,7 @@ export default function ReviewBoardPage() {
           titleAccent="decide."
           sub="Every decision keeps its trail — AI Total Score as context, Jury Scores as the verdict, and a ranking your jury can defend."
           primary={{ label: "Review one batch", href: "/#demo" }}
-          secondary={{ label: "Book a demo", href: "/company/contact" }}
+          secondary={{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }}
         />
       </main>
       <Footer variant="dark" />

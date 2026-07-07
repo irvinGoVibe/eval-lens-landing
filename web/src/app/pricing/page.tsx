@@ -130,7 +130,7 @@ const PLANS = [
     message: "Corporate, universities, and custom judging workflows.",
     bestFor: "Best for: custom, high-volume programs.",
     cta: "Talk to sales",
-    href: "/company/contact",
+    href: "https://calendly.com/evellens/30min",
     recommended: false,
     bullets: [
       "Everything in Pro",
@@ -757,7 +757,7 @@ export default function PricingPage() {
           title="Ready to evaluate your next"
           titleAccent="cohort?"
           sub="Start with 3 free submissions, or book a demo using your own decks."
-          primary={{ label: "Book a demo", href: "/company/contact" }}
+          primary={{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }}
           secondary={{ label: "Start free", href: "/company/contact" }}
           videoSrc="/assets/cta/neo.mp4"
           videoPoster="/assets/cta/neo-poster.webp"

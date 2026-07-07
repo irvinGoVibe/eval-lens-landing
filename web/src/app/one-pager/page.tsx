@@ -254,7 +254,7 @@ export default function OnePagerPage() {
           sub="EvalLense gives every inbound deck the same structured first read — on one consistent bar — so the breakout doesn't get skimmed. Screen a full batch in an afternoon; the final call is always yours."
           ctas={[
             { label: "Start a pilot", href: "/company/contact" },
-            { label: "Book a demo", href: "/company/contact#demo" },
+            { label: "Book a demo", href: "https://calendly.com/evellens/30min" },
           ]}
           media={{
             ratio: "16/9",
@@ -418,7 +418,7 @@ export default function OnePagerPage() {
             titleAccent="dealflow"
             sub="We screen a real batch of your inbound, prepare partner-ready memos, and show how EvalLense ranks your dealflow — while the call stays yours. About 4–5 minutes of machine first-read per deck after upload. Refined across hundreds of runs."
             primary={{ label: "Start a pilot", href: "/company/contact" }}
-            secondary={{ label: "Book a demo", href: "/company/contact#demo" }}
+            secondary={{ label: "Book a demo", href: "https://calendly.com/evellens/30min" }}
           />
         </div>
       </main>
