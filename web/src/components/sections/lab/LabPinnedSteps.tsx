@@ -310,7 +310,7 @@ export function LabPinnedSteps({
                 <span className="lab-window__dot" />
                 <span className="lab-window__dot" />
                 <span className="lab-window__dot" />
-                <span className="lab-window__title">EvalLense · pipeline</span>
+                <span className="lab-window__title">EvalLens · pipeline</span>
               </div>
               <ol className="lab-window__rows">
                 {steps.map((step, i) => (

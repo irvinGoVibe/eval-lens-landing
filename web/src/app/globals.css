@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Expose EvalLense design tokens to Tailwind v4 so utilities like
+/* Expose EvalLens design tokens to Tailwind v4 so utilities like
    bg-lens, text-violet, font-display work alongside the legacy CSS below. */
 @theme inline {
   --color-bg: var(--bg);
@@ -24,13 +24,13 @@
 }
 
 /* ============================================================
-   EvalLense homepage wireframe
-   Apple structural grammar + EvalLense lens palette
+   EvalLens homepage wireframe
+   Apple structural grammar + EvalLens lens palette
    Tokens bound from active design system (Apple) with the
    product's brand accents (violet / lavender / cyan / aqua).
    ============================================================ */
 :root{
-  /* ---- Font families (EvalLense type system) ---- */
+  /* ---- Font families (EvalLens type system) ---- */
   --font-mono:    Menlo, "SF Mono", ui-monospace, "JetBrains Mono", monospace;
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-ui:      -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -68,7 +68,7 @@
   --nebula-fg-2:   #c8c4f0;
   --nebula-fg-muted: #9896b8;
 
-  /* EvalLense lens accents */
+  /* EvalLens lens accents */
   --violet:    #6c4cf1;
   --violet-2:  #7b5cf6;
   --lavender:  #a99bff;
@@ -176,7 +176,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0;letter-spac
 p{margin:0;text-wrap:pretty;}
 a{color:inherit;text-decoration:none;}
 
-/* ---- Type roles (EvalLense — apply class or mirror in component CSS) ---- */
+/* ---- Type roles (EvalLens — apply class or mirror in component CSS) ---- */
 .t-eyebrow{
   font-family:var(--font-mono);
   font-size:12px;font-weight:400;
@@ -318,7 +318,7 @@ body.hero-ready .site-header.is-hidden{
 .btn .arr{transition:transform .25s var(--ease);}
 .btn:hover .arr{transform:translateX(3px);}
 
-/* ── Shimmer button + card — bento glass mechanic, EvalLense brand spectrum ──
+/* ── Shimmer button + card — bento glass mechanic, EvalLens brand spectrum ──
    Violet #6c4cf1 → cobalt #145cdd → cyan #2ec5e8 → teal #0bbbb0.
    Mechanic: dark glass base · 3 drifting blobs (mix-blend-mode:screen, blur:26px)
    on ::before · directional gradient rim on ::after (mask-composite trick).
@@ -3398,7 +3398,7 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
 }
 
 /* ============================================================
-   EvalLense Newsroom (blog) — light, Apple-newsroom grammar
+   EvalLens Newsroom (blog) — light, Apple-newsroom grammar
    Surfaces: /blog hub + /blog/[slug] article.
    Light theme by default; lens palette used for category accents.
    ============================================================ */
@@ -6013,7 +6013,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
    ink (the base `.ink .title` rule is larger, which made the surface toggle
    jump). The cinematic copy scales it up again on its own. */
 
-/* Confidence ring — from the EvalLense interface style guide: conic from
+/* Confidence ring — from the EvalLens interface style guide: conic from
    -90deg, semantic colour (green = high confidence), soft glow, and a centre
    disc the colour of the surface so the numeric readout sits inside. The arc
    and the readout fill toward --ring-target as --scrub (set on an ancestor by
@@ -7104,7 +7104,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .about .ab-problem__split{grid-template-columns:1fr;}
 }
 
-/* ---- 3. From AI Jury to EvalLense — pinned multi-screen (DARK) ---- */
+/* ---- 3. From AI Jury to EvalLens — pinned multi-screen (DARK) ---- */
 .about .ab-story{padding:0;min-height:280vh;}
 .about .ab-story__stage{min-height:100svh;padding:clamp(36px,6vh,72px) var(--gutter);display:grid;align-content:center;box-sizing:border-box;}
 .about .ab-story__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,6vw,80px);align-items:center;}
@@ -7120,7 +7120,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .about .ab-story__side{min-width:0;display:flex;flex-direction:column;gap:clamp(24px,4vw,40px);perspective:1500px;}
 /* light the pipeline progressively with the section pin (--pin 0→1) */
 .about .ab-story__media{align-self:start;min-width:0;width:100%;max-width:460px;}
-/* real story image — the tall EvalLense origin-journey cutout. Sized by height
+/* real story image — the tall EvalLens origin-journey cutout. Sized by height
    to go LARGE inside the pinned 100svh stage (width follows the aspect, capped
    to the column). Transparent PNG → no frame. */
 .about .ab-story__media--img{
@@ -7255,7 +7255,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .about .ab-pill{display:inline-flex;align-items:baseline;gap:8px;padding:7px 13px;border-radius:999px;font-size:12.5px;line-height:1.1;color:var(--green-on-dark);
   border:1px solid color-mix(in oklab,var(--green-on-dark) 40%, transparent);background:color-mix(in oklab,var(--green-on-dark) 13%, transparent);}
 .about .ab-pill__k{flex:none;font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--green-on-dark) 72%, #fff);opacity:.85;}
-/* tiny EvalLense logo after the "Grow a unicorn!" dream */
+/* tiny EvalLens logo after the "Grow a unicorn!" dream */
 .about .ab-pill__logo{flex:none;width:14px;height:16px;align-self:center;margin-left:-2px;background:url(/assets/brand/evallense-logo.webp) center/contain no-repeat;}
 .about .ab-dossier__link{display:inline-flex;align-items:center;gap:2px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-on-dark);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s, border-color .2s;}
 .about .ab-dossier__link:hover{color:var(--acc);border-color:color-mix(in oklab,var(--acc) 50%, transparent);}
@@ -7552,7 +7552,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
   .pricing .pr-td--reco::before{color:var(--violet);}
 }
 
-/* ---- 4. Where EvalLense fits — UNNAMED category framing, INK ---- */
+/* ---- 4. Where EvalLens fits — UNNAMED category framing, INK ---- */
 .pricing .pr-fit .head{margin-bottom:clamp(36px,5vw,60px);}
 .pricing .pr-fit .head .sub{font-size:clamp(14px,1.7vw,19px);}
 .pricing .pr-fit__statements{margin-top:clamp(32px,5vw,56px);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,32px);}
@@ -7658,7 +7658,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .pricing .pr-fit .pr-td--row{color:var(--muted-on-dark);}
 .pricing .pr-fit .pr-cell--num{color:var(--fg-on-dark);}
 .pricing .pr-fit .pr-cell--no{color:var(--muted-on-dark);}
-/* EvalLense column highlight — blue-forward lens accent, kept below content. */
+/* EvalLens column highlight — blue-forward lens accent, kept below content. */
 .pricing .pr-fit .pr-th--us{
   position:relative;
   color:#eaf3ff;
@@ -7677,7 +7677,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 }
 .pricing .pr-fit .pr-th--us,
 .pricing .pr-fit .pr-td--us{border-bottom-color:rgba(46,197,232,.18);width:132px;}
-/* One continuous lens gradient laid over the whole EvalLense column (rightmost),
+/* One continuous lens gradient laid over the whole EvalLens column (rightmost),
    not re-started per cell. Pinned to the right edge; width matches the column
    width set above. Sits ABOVE the flat-blue cell fill (z:1) but BELOW the
    checkmarks (.pr-cell--yes td is z:10) and the header label (z:11), so the
@@ -7714,7 +7714,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 @media (max-width:720px){
   .pricing .pr-fit__statements{grid-template-columns:1fr;}
 }
-/* §4 stacked cards on INK — dark row/label colours, EvalLense value highlighted,
+/* §4 stacked cards on INK — dark row/label colours, EvalLens value highlighted,
    and the pinned right-edge lens gradient (::after, sized for a wide column) is
    dropped since there's no column to sit over. */
 @media (max-width:640px){
@@ -8456,7 +8456,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
 
 
 /* ============================================================
-   EvalLense DESIGN SYSTEM — `.ds` scope (promoted from /dev showcases).
+   EvalLens DESIGN SYSTEM — `.ds` scope (promoted from /dev showcases).
    The single source of truth for the LIGHT visual language used across the
    reusable design-system components (components/ds). Put `ds` on the page
    container ALONGSIDE `section-lab` (the base .lab-* rules still require the

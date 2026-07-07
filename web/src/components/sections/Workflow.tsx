@@ -14,7 +14,7 @@ export function Workflow() {
             </span>
           </h2>
           <p className="workflow-sub">
-            Create one place where teams submit their pitch decks. EvalLense
+            Create one place where teams submit their pitch decks. EvalLens
             collects every application, organizes the full batch, and lets you
             run evaluation when you&apos;re ready.
           </p>
@@ -152,7 +152,7 @@ export function Workflow() {
                     <i></i>
                   </div>
                   <div className="brand">
-                    <span className="glyph"></span>EvalLense
+                    <span className="glyph"></span>EvalLens
                   </div>
                   <div className="crumb" id="wf-crumb">
                     New entry point
@@ -296,7 +296,7 @@ export function Workflow() {
                         </div>
                         <div className="pv-cta">
                           <span className="lbl">
-                            Submissions close in <b>12 days</b> · Powered by EvalLense
+                            Submissions close in <b>12 days</b> · Powered by EvalLens
                           </span>
                           <button type="button" className="pv-submit">
                             Submit your entry

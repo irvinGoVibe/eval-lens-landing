@@ -1,4 +1,4 @@
-// EvalLense Newsroom — shared editorial content model.
+// EvalLens Newsroom — shared editorial content model.
 //
 // These types are the single source of truth for the blog domain model.
 // They were extracted from `lib/blog.ts` so the CMS data layer (`client.ts`,

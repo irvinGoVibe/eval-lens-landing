@@ -13,7 +13,7 @@ import { LogoutButton } from "@/components/admin/LogoutButton";
 import "./admin.css";
 
 export const metadata: Metadata = {
-  title: "EvalLense CMS",
+  title: "EvalLens CMS",
   robots: { index: false, follow: false },
 };
 
@@ -32,7 +32,7 @@ async function AdminChrome({ children }: { children: React.ReactNode }) {
         <div className="admin-brand">
           <Link href="/admin">
             <span className="admin-brand__mark" aria-hidden="true" />
-            EvalLense CMS
+            EvalLens CMS
           </Link>
         </div>
         <AdminNav />

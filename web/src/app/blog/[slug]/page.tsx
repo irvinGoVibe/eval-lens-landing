@@ -24,10 +24,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post) return { title: "Story not found — EvalLense Newsroom" };
+  if (!post) return { title: "Story not found — EvalLens Newsroom" };
 
   return {
-    title: `${post.title} — EvalLense Newsroom`,
+    title: `${post.title} — EvalLens Newsroom`,
     description: post.excerpt,
     openGraph: {
       title: post.title,
@@ -58,7 +58,7 @@ export default async function ArticlePage({
     image: post.cover ? [post.cover] : undefined,
     datePublished: post.date,
     author: { "@type": "Person", name: post.author },
-    publisher: { "@type": "Organization", name: "EvalLense" },
+    publisher: { "@type": "Organization", name: "EvalLens" },
   };
 
   return (

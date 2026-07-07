@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Security — EvalLense",
+  title: "Security — EvalLens",
   description:
-    "How EvalLense protects pitch decks and account data: encryption in transit, access controls, workspace isolation, server-side secrets, and responsible disclosure.",
+    "How EvalLens protects pitch decks and account data: encryption in transit, access controls, workspace isolation, server-side secrets, and responsible disclosure.",
 };
 
 const UPDATED = "June 16, 2026";
@@ -16,7 +16,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Pitch decks and evaluation results are sensitive, so security is built
-        into how EvalLense works rather than bolted on. We aim for private
+        into how EvalLens works rather than bolted on. We aim for private
         handling of submitted materials, controlled access to workspaces, and
         decisions that stay under human control. This page summarizes the
         technical and organizational measures we use; it is informational and
@@ -110,7 +110,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Certifications and audits",
     body: (
       <p>
-        EvalLense does not currently hold formal third&#8209;party security
+        EvalLens does not currently hold formal third&#8209;party security
         certifications (such as SOC&nbsp;2 or ISO&nbsp;27001). As the product
         matures, we expect to formalize additional controls and will update this
         page accordingly. <strong>[Status to be confirmed.]</strong>
@@ -163,7 +163,7 @@ export default function SecurityPage() {
       updated={UPDATED}
       intro={
         <p>
-          An overview of the technical and organizational measures EvalLense uses
+          An overview of the technical and organizational measures EvalLens uses
           to protect pitch decks, account data, and evaluation results &mdash;
           and how to report a vulnerability.
         </p>

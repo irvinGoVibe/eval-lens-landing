@@ -23,7 +23,7 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense Entry Hub — One Intake Flow for Pitch Decks",
+  title: "EvalLens Entry Hub — One Intake Flow for Pitch Decks",
   description:
     "Entry Hub replaces scattered intake with one controlled flow: a private submission page, deck collection by link or by hand, and a clean batch-workspace before evaluation starts.",
 };
@@ -247,7 +247,7 @@ export default function EntryHubPage() {
               <div
                 className="lab-rv__square lab-rv__square--video"
                 role="img"
-                aria-label="The EvalLense Entry Hub interface, from project setup to start judging"
+                aria-label="The EvalLens Entry Hub interface, from project setup to start judging"
               >
                 {/* below-fold pinned scrub — viewport-gated fetch */}
                 <LazyVideo
@@ -263,10 +263,10 @@ export default function EntryHubPage() {
           }
           media={{
             ratio: "4/3",
-            label: "EvalLense · workflow",
-            hint: "The EvalLense Entry Hub interface, from project setup to start judging",
+            label: "EvalLens · workflow",
+            hint: "The EvalLens Entry Hub interface, from project setup to start judging",
             ariaLabel:
-              "The EvalLense Entry Hub interface, from project setup to start judging",
+              "The EvalLens Entry Hub interface, from project setup to start judging",
           }}
         />
 
@@ -377,9 +377,9 @@ export default function EntryHubPage() {
             ratio: "16/9",
             label: "Image · high-contrast hyperreal liquid-glass workspace · 16:9",
             hint:
-              "High-contrast EvalLense workspace with crisp liquid-glass screens, a front-facing holographic unicorn head, world clocks, and a black RGB keyboard",
+              "High-contrast EvalLens workspace with crisp liquid-glass screens, a front-facing holographic unicorn head, world clocks, and a black RGB keyboard",
             ariaLabel:
-              "High-contrast hyperrealistic EvalLense liquid-glass workspace with leaderboard, startup report, dimension matrix, world clocks, black keyboard, deck controls, and a front-facing holographic unicorn head",
+              "High-contrast hyperrealistic EvalLens liquid-glass workspace with leaderboard, startup report, dimension matrix, world clocks, black keyboard, deck controls, and a front-facing holographic unicorn head",
             src: "/assets/entry-hub/evallense-brandkit-workspace-unicorn-08.webp",
             width: 1672,
             height: 941,

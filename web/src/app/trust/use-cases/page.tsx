@@ -8,7 +8,7 @@ import type { SectionNav } from "@/lib/site-nav";
 import { SampleOutputSection } from "./SampleOutputSection";
 
 export const metadata: Metadata = {
-  title: "EvalLense Use Cases - Structured First Read for Every Shortlist",
+  title: "EvalLens Use Cases - Structured First Read for Every Shortlist",
   description:
     "Turn decks and structured application materials into an explainable shortlist before the final call. Pitch competitions, VC dealflow, hackathons, and more.",
 };
@@ -38,7 +38,7 @@ const BATCH_STEPS = [
   {
     num: "03",
     label: "Run the structured first read",
-    desc: "EvalLense evaluates every submission against the same criteria.",
+    desc: "EvalLens evaluates every submission against the same criteria.",
   },
   {
     num: "04",
@@ -85,7 +85,7 @@ const FEATURED_ICPS = [
     tag: "Hackathons",
     headline: "Review applications before teams start building.",
     moment: "Applications close tonight. The team needs a shortlist before anyone starts building.",
-    body: "EvalLense reviews what teams submit: project clarity, proposed solution, feasibility, evidence, execution plan, and risks.",
+    body: "EvalLens reviews what teams submit: project clarity, proposed solution, feasibility, evidence, execution plan, and risks.",
     scopeLine: "Live demos, code execution, and build quality can be reviewed as separate layers.",
     output: "Application summaries, feasibility signals, execution-plan risks, missing proof, and selection questions.",
     cta: "See hackathon workflow",
@@ -509,7 +509,7 @@ export default function UseCasesPage() {
                 data-reveal="up"
                 style={{ "--reveal-delay": "190ms" } as CSSProperties}
               >
-                EvalLense turns decks and application materials into evidence,
+                EvalLens turns decks and application materials into evidence,
                 risks, gaps, and questions your team can use before the meeting.
                 AI prepares the read. Your team decides.
               </p>
@@ -576,14 +576,14 @@ export default function UseCasesPage() {
           id="how-batch-moves"
           surface="ink"
           version={1}
-          ariaLabel="How one batch moves through EvalLense"
+          ariaLabel="How one batch moves through EvalLens"
           eyebrow="How it works"
           title={{
             line1: "How one batch moves",
             line2: "through",
-            line2Accent: "EvalLense.",
+            line2Accent: "EvalLens.",
           }}
-          sub="EvalLense prepares the structured first read. Your team makes the final call."
+          sub="EvalLens prepares the structured first read. Your team makes the final call."
           steps={BATCH_STEPS}
           media={{
             ratio: "16/9",
@@ -609,7 +609,7 @@ export default function UseCasesPage() {
           bleed
           eyebrow="Get started"
           title="Bring your next batch to"
-          titleAccent="EvalLense"
+          titleAccent="EvalLens"
           sub="Tell us what kind of program you run. We will map your workflow, show how the review would work, and walk through a pilot batch."
           primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "Choose your use case", href: "#workflows" }}

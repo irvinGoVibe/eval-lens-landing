@@ -14,9 +14,9 @@ import { getAllPosts } from "@/lib/blog";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 
 export const metadata: Metadata = {
-  title: "Contact EvalLense — Book a Demo & Talk to Us",
+  title: "Contact EvalLens — Book a Demo & Talk to Us",
   description:
-    "Get in touch with EvalLense: book a demo, reach us for sales, careers or security, and open the product documentation for organizers.",
+    "Get in touch with EvalLens: book a demo, reach us for sales, careers or security, and open the product documentation for organizers.",
 };
 
 /*
@@ -185,7 +185,7 @@ export default async function ContactPage() {
               <Image
                 className="ev-float"
                 src="/assets/contact/contact-hero-demo-calendar.webp"
-                alt="A booked Demo Call on a glass weekly calendar — EvalLense converging signals into one slot"
+                alt="A booked Demo Call on a glass weekly calendar — EvalLens converging signals into one slot"
                 width={1678}
                 height={944}
                 sizes="(max-width: 980px) 100vw, 920px"
@@ -270,7 +270,7 @@ export default async function ContactPage() {
                 <span className="dot" aria-hidden="true"></span>
                 Documentation
               </span>
-              <h2 className="title">Already using EvalLense? Read the <span className="grad-word">docs</span></h2>
+              <h2 className="title">Already using EvalLens? Read the <span className="grad-word">docs</span></h2>
               <p className="sub">
                 Guides for organizers — how to set up a program, run an
                 evaluation and manage your workspace. The documentation lives on
@@ -340,7 +340,7 @@ export default async function ContactPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              Follow <span className="grad-word">EvalLense</span>
+              Follow <span className="grad-word">EvalLens</span>
             </h2>
             <p
               className="sub"
@@ -398,7 +398,7 @@ export default async function ContactPage() {
           videoSrc="/assets/contact/get-started-bg.mp4"
           videoPoster="/assets/contact/get-started-bg-poster.webp"
           eyebrow="Get started"
-          title="See EvalLense run on"
+          title="See EvalLens run on"
           titleAccent="your own applications"
           sub="Book a demo to walk through the product and run a pilot batch on your own decks."
           primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}

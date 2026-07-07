@@ -111,7 +111,7 @@ export function GlobalNavSwitcher({ label }: { label: string }) {
         data-open={open}
         aria-label="Site pages"
       >
-        <p className="gnav__heading">Explore EvalLense</p>
+        <p className="gnav__heading">Explore EvalLens</p>
         <ul className="gnav__list">
           {GLOBAL_NAV.map((entry) => {
             const sectionActive = pathname.startsWith(entry.match);

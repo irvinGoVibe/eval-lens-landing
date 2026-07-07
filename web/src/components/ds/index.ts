@@ -1,5 +1,5 @@
 /**
- * EvalLense Design System — public barrel.
+ * EvalLens Design System — public barrel.
  *
  * The reusable, prefix-free component API for composing site pages. These are
  * the canonical names to import across the project:

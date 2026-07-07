@@ -5,9 +5,9 @@ import { PageHeader } from "@/components/PageHeader";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Site Map — EvalLense",
+  title: "Site Map — EvalLens",
   description:
-    "The full page tree of EvalLense, mirrored from the product sitemap. Live pages are clickable links; pages that are not built yet are shown as inactive.",
+    "The full page tree of EvalLens, mirrored from the product sitemap. Live pages are clickable links; pages that are not built yet are shown as inactive.",
 };
 
 /*
@@ -35,7 +35,7 @@ type TreeNode = {
 };
 
 const TREE: TreeNode = {
-  label: "EvalLense",
+  label: "EvalLens",
   path: "/",
   status: "ready",
   children: [
@@ -204,7 +204,7 @@ export default function SiteMapPage() {
             </span>
             <h1 className="title">All pages, one tree</h1>
             <p className="sub">
-              The full structure of the EvalLense site, mirrored from the product
+              The full structure of the EvalLens site, mirrored from the product
               sitemap. Live pages are clickable; pages that aren&apos;t built yet
               are shown as inactive.
             </p>

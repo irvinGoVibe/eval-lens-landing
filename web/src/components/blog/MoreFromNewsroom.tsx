@@ -3,7 +3,7 @@ import Link from "next/link";
 const MORE_LINKS = [
   {
     title: "Press Releases",
-    desc: "Official announcements from EvalLense.",
+    desc: "Official announcements from EvalLens.",
     href: "/blog/all?press-release",
     accent: "violet",
   },
@@ -21,13 +21,13 @@ const MORE_LINKS = [
   },
 ] as const;
 
-/** "More from EvalLense Newsroom" — shared between the hub and All News. */
+/** "More from EvalLens Newsroom" — shared between the hub and All News. */
 export function MoreFromNewsroom() {
   return (
     <section className="blog-section blog-section--more" id="more">
       <div className="wrap blog-wrap">
         <div className="blog-section-head">
-          <h2>More from EvalLense Newsroom</h2>
+          <h2>More from EvalLens Newsroom</h2>
         </div>
         <div className="blog-more-grid">
           {MORE_LINKS.map((link) => (

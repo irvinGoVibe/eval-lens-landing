@@ -40,7 +40,7 @@ export function Footer({ variant = "light" }: FooterProps) {
         <div className="wrap">
           <div className="col col--brand">
             <Link className="brand" href="/#top" style={{ marginBottom: 14 }}>
-              <span className="mark"></span>EvalLense
+              <span className="mark"></span>EvalLens
             </Link>
             <p>
               Batch-review pitch decks.<br />
@@ -112,7 +112,7 @@ export function Footer({ variant = "light" }: FooterProps) {
           ))}
         </span>
         <div className="foot-legal">
-          <span className="foot-legal__copy">EvalLense © 2026</span>
+          <span className="foot-legal__copy">EvalLens © 2026</span>
           <span className="foot-legal__meta">
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>

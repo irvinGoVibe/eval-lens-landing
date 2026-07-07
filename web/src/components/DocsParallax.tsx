@@ -46,7 +46,7 @@ export function DocsParallax(): ReactElement {
       <Image
         className="ct-docs-fx__img"
         src="/assets/contact/documentation-guide.webp"
-        alt="EvalLense documentation guide — API reference, architecture, data model, security, changelog and the evaluation flow on a glass blueprint"
+        alt="EvalLens documentation guide — API reference, architecture, data model, security, changelog and the evaluation flow on a glass blueprint"
         width={1508}
         height={1024}
         sizes="(max-width: 980px) 92vw, 520px"

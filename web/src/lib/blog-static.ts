@@ -1,4 +1,4 @@
-// EvalLense Newsroom — static fallback content (behind BLOG_SOURCE=static).
+// EvalLens Newsroom — static fallback content (behind BLOG_SOURCE=static).
 //
 // Prod reads the live Supabase CMS (BLOG_SOURCE=supabase). This module is only
 // the in-repo fallback read by the server-only getters in `blog.server.ts`
@@ -19,7 +19,7 @@ export const LOOP_POSTS: LoopPost[] = [
   {
     id: "jury-in-60-seconds",
     kind: "video",
-    author: "EvalLense",
+    author: "EvalLens",
     initials: "EL",
     accent: "violet",
     caption: "Everything you need to know about the AI Jury — in 60 seconds.",
@@ -72,7 +72,7 @@ export const LOOP_POSTS: LoopPost[] = [
   {
     id: "deck-vault-tour",
     kind: "video",
-    author: "EvalLense",
+    author: "EvalLens",
     initials: "EL",
     accent: "violet",
     caption: "A 30-second tour of Deck Vault — encrypted from upload to archive.",
@@ -84,11 +84,11 @@ export const LOOP_POSTS: LoopPost[] = [
   {
     id: "studio-gallery",
     kind: "photo",
-    author: "EvalLense",
+    author: "EvalLens",
     initials: "EL",
     accent: "violet",
     caption:
-      "A few frames from the studio — the design studies behind the EvalLense lens. Swipe through. 📷",
+      "A few frames from the studio — the design studies behind the EvalLens lens. Swipe through. 📷",
     cover: "/assets/bento/deck-vault-art.png",
     photos: [
       "/assets/bento/deck-vault-art.png",

@@ -48,7 +48,7 @@ const CARDS = [
 export default function AdminHome() {
   return (
     <div>
-      <p className="admin-eyebrow">EvalLense CMS</p>
+      <p className="admin-eyebrow">EvalLens CMS</p>
       <h1 className="admin-h1">Dashboard</h1>
       <p className="admin-sub">
         Manage blog content and the blog block on the home page.

@@ -1,4 +1,4 @@
-// EvalLense Newsroom — blog data facade (single `@/lib/blog` import surface).
+// EvalLens Newsroom — blog data facade (single `@/lib/blog` import surface).
 //
 // Content lives in Supabase (Postgres + Storage), not in this repo. This module
 // preserves the original public contract so the consumer files don't change:

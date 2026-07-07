@@ -11,7 +11,7 @@ export function SampleOutputSection() {
         <div className="uc2-sample__head" data-reveal="up">
           <h2 id="uc2-sample-h2">See what one run can produce.</h2>
           <p>
-            This is the output EvalLense gives your team before the decision meeting — one real pitch report, from deck review to the human vote.
+            This is the output EvalLens gives your team before the decision meeting — one real pitch report, from deck review to the human vote.
           </p>
         </div>
 

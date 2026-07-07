@@ -31,9 +31,9 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense — Consistency & Reliability of Pitch Evaluation",
+  title: "EvalLens — Consistency & Reliability of Pitch Evaluation",
   description:
-    "How EvalLense makes score stability measurable: deterministic aggregation, benchmarked judge repeatability, judge spread, and bias controls — inspectable, not just promised.",
+    "How EvalLens makes score stability measurable: deterministic aggregation, benchmarked judge repeatability, judge spread, and bias controls — inspectable, not just promised.",
 };
 
 /* ── Content (verbatim from the page-composer brief). No invented
@@ -141,7 +141,7 @@ export default function ConsistencyReliabilityPage() {
           titleLead="Reliability you can "
           titleAccent="inspect"
           titleTrail=", not just trust"
-          sub="EvalLense shows which scores stay stable, where judges disagree, and when human review is needed. It also tracks how results change across repeated runs."
+          sub="EvalLens shows which scores stay stable, where judges disagree, and when human review is needed. It also tracks how results change across repeated runs."
           ctas={[{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }]}
           media={{
             ratio: "16/9",
@@ -256,7 +256,7 @@ export default function ConsistencyReliabilityPage() {
           titleLead="One layer is"
           titleAccent="deterministic."
           titleTrail=" The other is measured."
-          sub="EvalLense separates the math from the judgment and holds each to its own standard."
+          sub="EvalLens separates the math from the judgment and holds each to its own standard."
           points={[
             {
               title: "Aggregation is deterministic.",
@@ -326,7 +326,7 @@ export default function ConsistencyReliabilityPage() {
           ariaLabel="Spread — judge disagreement thresholds"
           eyebrow="Disagreement in the open"
           title={{ line1: "When judges", line1Accent: "split,", line2: "the report says so" }}
-          sub="EvalLense tracks the spread between judges on each dimension and turns it into a clear label. A high spread does not lower the score automatically. It routes your attention to the decks worth a closer look. It is a signal, not a penalty."
+          sub="EvalLens tracks the spread between judges on each dimension and turns it into a clear label. A high spread does not lower the score automatically. It routes your attention to the decks worth a closer look. It is a signal, not a penalty."
           steps={SPREAD_STEPS}
           mediaNode={<SpreadLensScene />}
           media={{
@@ -567,7 +567,7 @@ export default function ConsistencyReliabilityPage() {
                     schema-valid outputs ≥ 99% · regression pass ≥ 95%.
                   </p>
                   <p className="bench-story">
-                    EvalLense comes from 1,000+ internal evaluation runs, starting with
+                    EvalLens comes from 1,000+ internal evaluation runs, starting with
                     an Amazon Nova hackathon prototype and the earlier AI Jury system.
                   </p>
                 </div>
@@ -621,7 +621,7 @@ export default function ConsistencyReliabilityPage() {
                   <span className="grad-word">Reliability</span> has an honest edge
                 </h2>
                 <p className="sub ds-hero__sub ds-hero__sub--left">
-                  EvalLense does not promise to predict startup success. It raises
+                  EvalLens does not promise to predict startup success. It raises
                   the quality of evaluation by making it structured,
                   evidence-linked, and checkable. It points you to the decisions
                   that need human attention most — and because absolute calibration

@@ -19,9 +19,9 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense — Product: AI Pitch Deck Evaluation Workflow",
+  title: "EvalLens — Product: AI Pitch Deck Evaluation Workflow",
   description:
-    "The Product section of EvalLense — workflow overview, Entry Hub, evidence-based reports and the Review Board. Pick a page and see how the evaluation works.",
+    "The Product section of EvalLens — workflow overview, Entry Hub, evidence-based reports and the Review Board. Pick a page and see how the evaluation works.",
 };
 
 /*
@@ -51,7 +51,7 @@ const TILES = [
   {
     tag: "Overview",
     title: "Start with the whole picture",
-    body: "The full EvalLense workflow in one place — the organizer path, the evaluation pipeline, the AI jury and what a run produces.",
+    body: "The full EvalLens workflow in one place — the organizer path, the evaluation pipeline, the AI jury and what a run produces.",
     href: "/product/overview",
     feature: true,
   },
@@ -149,7 +149,7 @@ export default function ProductHubPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              Everything EvalLense does, in{" "}
+              Everything EvalLens does, in{" "}
               <span className="grad-word">one place</span>
             </h1>
             <p

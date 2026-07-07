@@ -8,7 +8,7 @@ import { SITE_URL } from "@/lib/site-url";
 export const metadata: Metadata = {
   // Absolute base for OG/Twitter images and canonical URLs on Vercel.
   metadataBase: new URL(SITE_URL),
-  title: "EvalLense — Lens Your Next Unicorn",
+  title: "EvalLens — Lens Your Next Unicorn",
   description:
     "Batch-review pitch decks, rank the strongest startups, and give every team a clear report.",
 };
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const ORG_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "EvalLense",
+  name: "EvalLens",
   url: SITE_URL,
   logo: `${SITE_URL}/assets/brand/evallense-logo.webp`,
   sameAs: [

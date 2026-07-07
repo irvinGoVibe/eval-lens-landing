@@ -35,9 +35,9 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "Evidence-Based Pitch Evaluation Methodology - EvalLense",
+  title: "Evidence-Based Pitch Evaluation Methodology - EvalLens",
   description:
-    "EvalLense does not ask one model for a final verdict. It turns each deck into evidence, routes it through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control.",
+    "EvalLens does not ask one model for a final verdict. It turns each deck into evidence, routes it through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control.",
 };
 
 /* ── Content. Public-facing copy: qualitative labels + "reproducible". No
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
  * P5 Team Readiness, P6 Feasibility (source of truth: ai-jury-prod). ── */
 
 /* §2 - Why methodology was needed: the operational pain, framed as
- * risk → EvalLense response. */
+ * risk → EvalLens response. */
 const WHY_PAIRS: RiskPair[] = [
   { risk: "Reviewers focus on different signals", control: "Fixed P1-P6 dimensions" },
   { risk: "Scores are hard to defend", control: "Score trace" },
@@ -492,7 +492,7 @@ export default function MethodologyPage() {
             titleLead="A score you can"
             titleAccent="inspect, compare, and defend"
             titleTrail="."
-            sub="EvalLense does not ask one model for a final verdict. It turns each deck into evidence, routes that evidence through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control."
+            sub="EvalLens does not ask one model for a final verdict. It turns each deck into evidence, routes that evidence through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control."
             ctas={[
               { label: "See a sample score trace", href: "#evidence" },
               { label: "Book a Demo", href: "https://calendly.com/evallens/30min" },
@@ -515,7 +515,7 @@ export default function MethodologyPage() {
                 <div className="head" data-reveal="up">
                   <Eyebrow>Review at scale</Eyebrow>
                   <Title title="Human review does not scale cleanly" accent="scale" />
-                  <p className="sub">At small volume, reviewers can still read carefully. At large volume, consistency starts to crack. Different reviewers anchor on different signals, and strong submissions disappear in the pile. EvalLense keeps review structured when the batch is too large for unaided human review.</p>
+                  <p className="sub">At small volume, reviewers can still read carefully. At large volume, consistency starts to crack. Different reviewers anchor on different signals, and strong submissions disappear in the pile. EvalLens keeps review structured when the batch is too large for unaided human review.</p>
                 </div>
                 <div className="ds-risk__grid" data-reveal="up">
                   {WHY_PAIRS.map((pair, i) => (
@@ -681,7 +681,7 @@ export default function MethodologyPage() {
             eyebrow="Review signals"
             title="Averages can hide the case that needs review"
             titleAccent="hide"
-            sub="When judges disagree, EvalLense shows the spread instead of burying it in an average. Spread does not change the score. It points reviewers to the cases that need a closer look. The numeric tests live in Consistency & Reliability."
+            sub="When judges disagree, EvalLens shows the spread instead of burying it in an average. Spread does not change the score. It points reviewers to the cases that need a closer look. The numeric tests live in Consistency & Reliability."
             leftTag="Signal"
             rightTag="Meaning"
             pairs={DISAGREEMENT}
@@ -735,7 +735,7 @@ export default function MethodologyPage() {
                 <div className="head" data-reveal="up">
                   <Eyebrow>Clear boundaries</Eyebrow>
                   <Title title="Prepares the review, never your judgment" accent="judgment" />
-                  <p className="sub">EvalLense evaluates what is present in the deck, highlights missing evidence, and prepares the review. It does not prove that every claim is true.</p>
+                  <p className="sub">EvalLens evaluates what is present in the deck, highlights missing evidence, and prepares the review. It does not prove that every claim is true.</p>
                 </div>
                 <div className="ds-risk__grid" data-reveal="up">
                   {LIMIT_PAIRS.map((pair, i) => (

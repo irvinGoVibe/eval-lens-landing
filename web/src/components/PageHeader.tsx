@@ -52,10 +52,10 @@ export function PageHeader({
         <Link
           href="/"
           className="brand page-header__brand"
-          aria-label="EvalLense home"
+          aria-label="EvalLens home"
         >
           <span className="mark" aria-hidden="true"></span>
-          EvalLense
+          EvalLens
         </Link>
 
         {nav && (

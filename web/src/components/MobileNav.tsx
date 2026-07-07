@@ -165,7 +165,7 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         <div className="mnav__top">
           <span className="mnav__brand">
             <span className="mnav__mark" aria-hidden="true" />
-            EvalLense
+            EvalLens
           </span>
           <button
             type="button"
@@ -193,7 +193,7 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         </div>
 
         <div className="mnav__scroll">
-          <p className="mnav__heading">Explore EvalLense</p>
+          <p className="mnav__heading">Explore EvalLens</p>
           <ul className="mnav__list">
             {MOBILE_NAV.map((entry) => {
               const isActive = entry.match === activeMatch;

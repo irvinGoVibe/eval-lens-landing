@@ -83,7 +83,7 @@ export function Decisions() {
                 <div className="body">
                   <div className="name">Extract signals</div>
                   <div className="desc">
-                    EvalLense reads each deck and pulls the signals that matter.
+                    EvalLens reads each deck and pulls the signals that matter.
                   </div>
                   <div className="track">
                     <i></i>
@@ -153,7 +153,7 @@ export function Decisions() {
                   <i></i>
                 </div>
                 <div className="brand">
-                  <span className="glyph"></span>EvalLense
+                  <span className="glyph"></span>EvalLens
                 </div>
                 <div className="crumb" id="sd-crumb">
                   Batch #A24 · 123 decks
@@ -479,7 +479,7 @@ export function Decisions() {
                             <div className="p-score" id="sd-panelScore">
                               8.4
                             </div>
-                            <div className="p-scorel">EvalLense score</div>
+                            <div className="p-scorel">EvalLens score</div>
                           </div>
                         </div>
                       </div>
@@ -558,7 +558,7 @@ export function Decisions() {
                       <div className="decision">
                         <div className="ai-rec">
                           <span className="ai-badge">
-                            <span className="g"></span>EvalLense AI
+                            <span className="g"></span>EvalLens AI
                           </span>
                           <span className="ai-rec-text">
                             Analysis ready · suggests <b>Shortlist</b>

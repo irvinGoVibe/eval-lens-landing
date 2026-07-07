@@ -18,9 +18,9 @@ import {
 } from "@/components/ds";
 
 export const metadata: Metadata = {
-  title: "EvalLense — Evidence-Based Reports for Pitch Evaluation",
+  title: "EvalLens — Evidence-Based Reports for Pitch Evaluation",
   description:
-    "Explainable reports from EvalLense: scores across every dimension with reasoning, a judge matrix, findings grounded in the deck, and deck-completeness signals — not a black box.",
+    "Explainable reports from EvalLens: scores across every dimension with reasoning, a judge matrix, findings grounded in the deck, and deck-completeness signals — not a black box.",
 };
 
 /*
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
  * ScrollOrchestrator.
  *
  * ── CONTENT CONSTRAINTS (brief) ──────────────────────────────────────────
- * Product name is always "EvalLense". Human-in-the-loop: "the final call always
+ * Product name is always "EvalLens". Human-in-the-loop: "the final call always
  * yours". Exact formulas / the 0.15 constant are INTERNAL — not rendered here;
  * score formation is described qualitatively and cross-linked to Methodology.
  * Deck completeness is a SIGNAL about a missing/thin section, never a
@@ -380,7 +380,7 @@ export default function EvidenceBasedReportsPage() {
           headline="Explain the score. Defend the decision."
           lines={["Explain the score.", "Defend the decision."]}
           mobileLines={["Explain", "the score.", "Defend", "the decision."]}
-          sub="EvalLense shows what shaped the score and links each finding back to the deck. Your team can defend the shortlist, explain the feedback, and know what to ask next."
+          sub="EvalLens shows what shaped the score and links each finding back to the deck. Your team can defend the shortlist, explain the feedback, and know what to ask next."
           media={{
             videoSrc: "/assets/evidence-reports/beyond-number-cinema.mp4",
             poster: "/assets/evidence-reports/beyond-number-cinema-poster.webp",
@@ -400,7 +400,7 @@ export default function EvidenceBasedReportsPage() {
           mediaNode={
             <Image
               src="/assets/evidence-reports/report-evidence-map-01.webp"
-              alt="EvalLense report evidence map — Project Summary, AI Score Report, and Questions for Live Q&A, with findings linked back to pitch-deck slides"
+              alt="EvalLens report evidence map — Project Summary, AI Score Report, and Questions for Live Q&A, with findings linked back to pitch-deck slides"
               width={1448}
               height={1086}
               sizes="(max-width: 880px) 90vw, 640px"

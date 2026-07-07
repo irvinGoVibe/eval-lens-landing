@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
-  title: "Page not found — EvalLense",
+  title: "Page not found — EvalLens",
   description:
     "The page you are looking for does not exist or has moved. Head back to the homepage or browse the full site map.",
 };

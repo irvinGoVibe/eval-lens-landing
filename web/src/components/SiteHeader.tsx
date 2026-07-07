@@ -22,9 +22,9 @@ export function SiteHeader() {
         style={glassStyle}
       ></div>
       <div className="site-header__inner">
-        <a className="brand" href="#top" aria-label="EvalLense home">
+        <a className="brand" href="#top" aria-label="EvalLens home">
           <span className="mark" aria-hidden="true"></span>
-          EvalLense
+          EvalLens
         </a>
         <nav className="site-header__nav" aria-label="Primary">
           <Link className="site-header__link" href="/product/overview">

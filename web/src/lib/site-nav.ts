@@ -158,9 +158,9 @@ export const GLOBAL_NAV: GlobalNavEntry[] = [
     href: "/company/about",
     match: "/company",
     icon: "about",
-    desc: "The team behind EvalLense",
+    desc: "The team behind EvalLens",
     links: [
-      { label: "About EvalLense", href: "/company/about", icon: "aboutCo" },
+      { label: "About EvalLens", href: "/company/about", icon: "aboutCo" },
       { label: "Contact", href: "/company/contact", icon: "contact" },
     ],
   },
@@ -242,9 +242,9 @@ export const MOBILE_NAV: GlobalNavEntry[] = [
     href: "/company/about",
     match: "/company",
     icon: "about",
-    desc: "The team behind EvalLense",
+    desc: "The team behind EvalLens",
     links: [
-      { label: "About EvalLense", href: "/company/about" },
+      { label: "About EvalLens", href: "/company/about" },
       { label: "Contact", href: "/company/contact" },
     ],
   },

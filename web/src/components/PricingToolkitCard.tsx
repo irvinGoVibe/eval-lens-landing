@@ -101,7 +101,7 @@ export function PricingToolkitCard() {
       <Image
         className="pricing-toolkit-card__image"
         src="/assets/pricing/glass-evaluation-toolkit-flatlay-portrait-01.webp"
-        alt="Glass table laid out with startup-evaluation tools: pitch-deck cards, six judge lenses (P1–P6), the EvalLense scoring lens, score and confidence dials, a criteria ruler, a compare caliper, evidence pins, a red-flag marker, a final-decision stamp, and a pay-per-event token"
+        alt="Glass table laid out with startup-evaluation tools: pitch-deck cards, six judge lenses (P1–P6), the EvalLens scoring lens, score and confidence dials, a criteria ruler, a compare caliper, evidence pins, a red-flag marker, a final-decision stamp, and a pay-per-event token"
         fill
         sizes="(max-width:880px) 80vw, 360px"
       />

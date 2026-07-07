@@ -19,9 +19,9 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense — Trust: Methodology, Reliability & Security",
+  title: "EvalLens — Trust: Methodology, Reliability & Security",
   description:
-    "Why you can trust EvalLense results — methodology, consistency, prompt-injection safety and data security. Pick a page in the Trust section.",
+    "Why you can trust EvalLens results — methodology, consistency, prompt-injection safety and data security. Pick a page in the Trust section.",
 };
 
 /*
@@ -76,7 +76,7 @@ const TILES = [
   },
   {
     tag: "Use Cases",
-    title: "Where EvalLense applies",
+    title: "Where EvalLens applies",
     body: "The decisions and programs the evaluation supports, from VC funds to universities.",
     href: "/trust/use-cases",
   },
@@ -193,7 +193,7 @@ export default function TrustHubPage() {
               What the trust layer is
             </span>
             <p className="hub-statement__text" data-reveal="up">
-              EvalLense scores by{" "}
+              EvalLens scores by{" "}
               <span className="grad-word">structured rules</span> — judge roles,
               rubrics and weights — not by an AI&apos;s general impression.
             </p>

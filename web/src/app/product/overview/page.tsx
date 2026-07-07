@@ -29,9 +29,9 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense — Product Overview: Batch Pitch Deck Evaluation",
+  title: "EvalLens — Product Overview: Batch Pitch Deck Evaluation",
   description:
-    "How EvalLense works: collect decks in the Entry Hub, evaluate with 6 AI judges, get evidence-based reports and a Review Board with a leaderboard — the human decides.",
+    "How EvalLens works: collect decks in the Entry Hub, evaluate with 6 AI judges, get evidence-based reports and a Review Board with a leaderboard — the human decides.",
 };
 
 /*
@@ -296,7 +296,7 @@ export default function ProductOverviewPage() {
           ariaLabel="The organizer path — seven steps"
           eyebrow="How it works"
           title={{ line1: "The organizer path,", line2: "in", line2Accent: "seven steps" }}
-          sub="EvalLense walks you from sign-in to a ranked leaderboard. The path is fixed, and each step lights up as you scroll."
+          sub="EvalLens walks you from sign-in to a ranked leaderboard. The path is fixed, and each step lights up as you scroll."
           steps={PATH_STEPS}
           media={{
             ratio: "4/3",
@@ -378,7 +378,7 @@ export default function ProductOverviewPage() {
               </span>
               <h2 className="title" data-reveal="down" style={{ "--reveal-delay": "70ms" } as CSSProperties}>Less manual review, a <span className="grad-word">clearer trail</span></h2>
               <p className="sub" data-reveal="down" style={{ "--reveal-delay": "140ms" } as CSSProperties}>
-                EvalLense cuts the hours spent reading decks by hand, holds every
+                EvalLens cuts the hours spent reading decks by hand, holds every
                 evaluation to one standard, and leaves your team a decision trail
                 it can defend.
               </p>

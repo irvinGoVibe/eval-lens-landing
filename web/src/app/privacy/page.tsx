@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — EvalLense",
+  title: "Privacy Policy — EvalLens",
   description:
-    "How EvalLense collects, uses, shares and protects personal information, and the privacy rights available to California residents under the CCPA/CPRA.",
+    "How EvalLens collects, uses, shares and protects personal information, and the privacy rights available to California residents under the CCPA/CPRA.",
 };
 
 const UPDATED = "June 16, 2026";
@@ -17,14 +17,14 @@ const SECTIONS: LegalSection[] = [
       <>
         <p>
           This Privacy Policy explains how <strong>[Legal entity name]</strong>{" "}
-          (&ldquo;EvalLense,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) handles
-          personal information in connection with the EvalLense website and the
-          EvalLense pitch&#8209;deck evaluation service (the
+          (&ldquo;EvalLens,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) handles
+          personal information in connection with the EvalLens website and the
+          EvalLens pitch&#8209;deck evaluation service (the
           &ldquo;Service&rdquo;). It applies to organizers who use the Service
           and to participants whose materials are submitted to it.
         </p>
         <p>
-          EvalLense is a United States&#8211;based service. By using the
+          EvalLens is a United States&#8211;based service. By using the
           Service, you understand that your information will be processed in the
           United States.
         </p>
@@ -284,7 +284,7 @@ export default function PrivacyPage() {
       updated={UPDATED}
       intro={
         <p>
-          This policy describes what personal information EvalLense collects, how
+          This policy describes what personal information EvalLens collects, how
           we use and share it, how long we keep it, and the choices and rights
           you have &mdash; including rights for California residents.
         </p>

@@ -6,7 +6,7 @@ import { AngelFx } from "@/components/AngelFx";
  * "Who we build for" — premium ICP bento (About §6).
  *
  * A varied-size dark bento that replaces the previous 8-equal-card grid. Each
- * card carries the review MOMENT (chip), a one-line JOB, what EvalLense gives
+ * card carries the review MOMENT (chip), a one-line JOB, what EvalLens gives
  * (chips), an optional data fragment, and an Explore link — over a per-segment
  * abstract SVG visual. Page-local: scoped <style> + inline SVG only; no shared
  * DS component or globals are touched.
@@ -569,7 +569,7 @@ function Visual({ mode }: { mode: IcpVisual }): ReactElement {
 
 export function IcpBento(): ReactElement {
   return (
-    <section className="band ink ab-segments ab-bento" aria-label="Who EvalLense is built for">
+    <section className="band ink ab-segments ab-bento" aria-label="Who EvalLens is built for">
       <style>{ICP_BENTO_CSS}</style>
       <AngelFx />
       <div className="wrap">
@@ -588,7 +588,7 @@ export function IcpBento(): ReactElement {
           </p>
         </div>
 
-        <ul className="ab-bento__grid" data-reveal="up" aria-label="EvalLense use cases by review moment">
+        <ul className="ab-bento__grid" data-reveal="up" aria-label="EvalLens use cases by review moment">
           {ICP_CARDS.map((c) => (
             <li key={c.key} data-key={c.key} className={`ab-bento__card ab-bento__card--${c.size}`}>
               {c.image ? (

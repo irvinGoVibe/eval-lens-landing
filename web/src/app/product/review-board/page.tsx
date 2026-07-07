@@ -22,9 +22,9 @@ import {
 } from "@/components/ds";
 
 export const metadata: Metadata = {
-  title: "EvalLense Review Board — Compare, Shortlist, Decide",
+  title: "EvalLens Review Board — Compare, Shortlist, Decide",
   description:
-    "Review Board is the EvalLense decision workspace: compare scored startups, set human Jury Scores, rank by your decision and keep an audit trail — the final call always yours.",
+    "Review Board is the EvalLens decision workspace: compare scored startups, set human Jury Scores, rank by your decision and keep an audit trail — the final call always yours.",
 };
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */

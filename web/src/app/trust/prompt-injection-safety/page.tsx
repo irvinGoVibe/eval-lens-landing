@@ -31,7 +31,7 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense — Prompt Injection Safety for Pitch Evaluation",
+  title: "EvalLens — Prompt Injection Safety for Pitch Evaluation",
   description:
     "Deck content is evidence, not a command: independent judges, deterministic math, advisory AI and a human in the loop keep evaluation under control.",
 };
@@ -231,7 +231,7 @@ export default function PromptInjectionSafetyPage() {
           titleLead="Your deck is "
           titleAccent="evidence,"
           titleTrail=" not an instruction."
-          sub="EvalLense detects hidden and model-directed instructions, excludes them from scoring context, and flags them for review. In our safety test, judge scores stayed unchanged and the final ranking remained human-controlled."
+          sub="EvalLens detects hidden and model-directed instructions, excludes them from scoring context, and flags them for review. In our safety test, judge scores stayed unchanged and the final ranking remained human-controlled."
           ctas={[
             { label: "Run a safety test", href: "/#demo" },
             {
@@ -548,7 +548,7 @@ export default function PromptInjectionSafetyPage() {
           titleLead="Prompt injection safety is not the same as "
           titleAccent="fact checking"
           titleTrail="."
-          sub="EvalLense prevents instructions inside the deck from controlling the evaluation. It does not prove that every claim in the deck is true. False, incomplete, or unsupported claims still require evidence review and, where needed, external validation."
+          sub="EvalLens prevents instructions inside the deck from controlling the evaluation. It does not prove that every claim in the deck is true. False, incomplete, or unsupported claims still require evidence review and, where needed, external validation."
         />
 
         {/* seam §6→§8 — gradient bridge into the CtaBand: transparent (top) → black (bottom). */}

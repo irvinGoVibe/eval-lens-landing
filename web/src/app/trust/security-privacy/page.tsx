@@ -25,9 +25,9 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense — Security & Privacy for Pitch Deck Evaluation",
+  title: "EvalLens — Security & Privacy for Pitch Deck Evaluation",
   description:
-    "Private deck handling, database-level project isolation, server-only secrets and human-owned decisions — security as the trust layer of EvalLense.",
+    "Private deck handling, database-level project isolation, server-only secrets and human-owned decisions — security as the trust layer of EvalLens.",
 };
 
 export default function SecurityPrivacyPage() {
@@ -57,7 +57,7 @@ export default function SecurityPrivacyPage() {
           eyebrow="Security & Privacy"
           titleLead="Private pitch-deck handling."
           titleAccent="Human decisions."
-          sub="EvalLense keeps pitch decks, workspace access, and report delivery controlled. AI prepares the review. A person decides what happens next."
+          sub="EvalLens keeps pitch decks, workspace access, and report delivery controlled. AI prepares the review. A person decides what happens next."
           ctas={[{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }]}
           media={{
             ratio: "16/9",
@@ -223,7 +223,7 @@ export default function SecurityPrivacyPage() {
           eyebrow="Human-in-the-loop"
           titleLead="The final decision stays"
           titleAccent="human"
-          sub="EvalLense prepares the analysis. The organizer reviews it, sets the final scores, and decides how the report is used. AI does not become the final judge."
+          sub="EvalLens prepares the analysis. The organizer reviews it, sets the final scores, and decides how the report is used. AI does not become the final judge."
           media={{
             ratio: "4/3",
             label: "Visual: AI-to-human handoff",
@@ -264,7 +264,7 @@ export default function SecurityPrivacyPage() {
           eyebrow="Get started"
           title="Run a controlled pilot on"
           titleAccent="your own decks"
-          sub="Book a demo and see how EvalLense handles decks, access, reports, and final decisions in one controlled flow."
+          sub="Book a demo and see how EvalLens handles decks, access, reports, and final decisions in one controlled flow."
           primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
         />
       </main>

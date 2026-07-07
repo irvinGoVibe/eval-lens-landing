@@ -32,7 +32,7 @@ export type AuroraBackgroundProps = {
 };
 
 /**
- * AuroraBackground — premium dark gradient backdrop for EvalLense surfaces.
+ * AuroraBackground — premium dark gradient backdrop for EvalLens surfaces.
  *
  * A drop-in, decorative layer (`aria-hidden`, `pointer-events-none`) that fills
  * its positioned parent — it does NOT change a section's structure. Usage:

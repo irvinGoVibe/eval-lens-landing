@@ -41,7 +41,7 @@ export function Problem() {
               </span>
             </h2>
             <p className="scrub-sub">
-              EvalLense batch-analyzes every deck, compares applications in one
+              EvalLens batch-analyzes every deck, compares applications in one
               format, and brings the strongest candidates to the top.
             </p>
           </div>

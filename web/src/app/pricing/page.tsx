@@ -21,9 +21,9 @@ const HEADER_NAV: SectionNav = {
 };
 
 export const metadata: Metadata = {
-  title: "EvalLense — Pricing: Pay-per-Event Pitch Evaluation",
+  title: "EvalLens — Pricing: Pay-per-Event Pitch Evaluation",
   description:
-    "Transparent EvalLense pricing: pay per event, not per seat. Plans are packages of AI-evaluated submissions; six AI judges on every plan, the human decides.",
+    "Transparent EvalLens pricing: pay per event, not per seat. Plans are packages of AI-evaluated submissions; six AI judges on every plan, the human decides.",
 };
 
 /*
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
  *   ($12/sub); Pro +50/$500 ($10/sub); Enterprise custom.
  *
  * ── CONTENT NOTE (competitor framing) ────────────────────────────────────
- * Section 4 ("Where EvalLense fits") deliberately shows NO named competitors.
+ * Section 4 ("Where EvalLens fits") deliberately shows NO named competitors.
  * Per user decision (2026-06-17) the former named versus-table was removed in
  * favour of an UNNAMED category framing — two half-solution categories
- * (event-workflow platforms · AI deck-analysts) plus EvalLense. Rationale:
+ * (event-workflow platforms · AI deck-analysts) plus EvalLens. Rationale:
  * competitor features are stale/unverifiable (research draft v0.2) and a named
  * table reads defensively. If a named comparison is ever needed, it belongs on
- * a separate "Why EvalLense" page with verified, dated facts — not on pricing.
+ * a separate "Why EvalLens" page with verified, dated facts — not on pricing.
  *
  * ── IMAGE / VISUAL SLOTS ─────────────────────────────────────────────────
  * The image generator is NOT wired up. StatementHero renders its own labeled
@@ -76,7 +76,7 @@ const PLANS = [
     price: "$0",
     cadence: "3 submissions",
     validity: "lifetime · no credit card",
-    message: "Test EvalLense with 3 real submissions.",
+    message: "Test EvalLens with 3 real submissions.",
     bestFor: "Best for: a first look before you commit.",
     cta: "Start free",
     href: "/company/contact",
@@ -265,7 +265,7 @@ const COMPARE_ROWS = [
   },
 ];
 
-/* 4. Where EvalLense fits — UNNAMED category framing. NO competitor names. */
+/* 4. Where EvalLens fits — UNNAMED category framing. NO competitor names. */
 const FIT_BLOCKS = [
   {
     tag: "Event-workflow platforms",
@@ -280,19 +280,19 @@ const FIT_BLOCKS = [
     us: false,
   },
   {
-    tag: "EvalLense",
+    tag: "EvalLens",
     body: "Both, plus what neither has: six independent judges (P1–P6), transparent evidence-linked rationale, a leaderboard, and human-in-the-loop final scoring.",
     gap: null,
     us: true,
   },
 ];
 
-/* 4b. Where EvalLense fits — UNNAMED comparison table. NO competitor names.
- * Columns: workflow-platforms · deck-analysts · EvalLense (highlighted). */
+/* 4b. Where EvalLens fits — UNNAMED comparison table. NO competitor names.
+ * Columns: workflow-platforms · deck-analysts · EvalLens (highlighted). */
 const FIT_TABLE_COLS = [
   "Event-workflow platforms",
   "AI deck-analysts",
-  "EvalLense",
+  "EvalLens",
 ];
 
 const FIT_TABLE_ROWS: { label: string; cells: string[] }[] = [
@@ -612,18 +612,18 @@ export default function PricingPage() {
         {/* light→ink flip seam: light zone (§1–§3) crossfades into INK §4. */}
         <ZoneToneFlip />
 
-        {/* 4. Where EvalLense fits — UNNAMED category framing (page-local), INK peak. */}
+        {/* 4. Where EvalLens fits — UNNAMED category framing (page-local), INK peak. */}
         <section className="band ink pr-fit">
           <div className="wrap">
             <div className="head" data-reveal="up">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
-                Where EvalLense fits
+                Where EvalLens fits
               </span>
               <h2 className="title">Event workflow and AI evaluation in <span className="grad-word">one place</span></h2>
               <p className="sub">
                 Event platforms manage submissions and judges. AI deck tools
-                review one deck at a time. EvalLense evaluates the full cohort —
+                review one deck at a time. EvalLens evaluates the full cohort —
                 six independent judges, evidence-linked rationale, a leaderboard,
                 and a human-owned final decision.
               </p>
@@ -635,12 +635,12 @@ export default function PricingPage() {
               data-reveal="up"
               tabIndex={0}
               role="region"
-              aria-label="Where EvalLense fits — capabilities compared across two half-solution categories and EvalLense; scroll horizontally on small screens"
+              aria-label="Where EvalLens fits — capabilities compared across two half-solution categories and EvalLens; scroll horizontally on small screens"
             >
               <table className="pr-table">
                 <caption className="pr-table__caption">
                   Capabilities compared across two half-solution categories and
-                  EvalLense.
+                  EvalLens.
                 </caption>
                 <thead>
                   <tr>
@@ -652,7 +652,7 @@ export default function PricingPage() {
                         key={col}
                         scope="col"
                         className={
-                          col === "EvalLense" ? "pr-th pr-th--us" : "pr-th"
+                          col === "EvalLens" ? "pr-th pr-th--us" : "pr-th"
                         }
                       >
                         {col}
@@ -671,7 +671,7 @@ export default function PricingPage() {
                           key={`${row.label}-${FIT_TABLE_COLS[i]}`}
                           data-label={FIT_TABLE_COLS[i]}
                           className={
-                            FIT_TABLE_COLS[i] === "EvalLense"
+                            FIT_TABLE_COLS[i] === "EvalLens"
                               ? `${cellClass(cell)} pr-td--us`
                               : cellClass(cell)
                           }
@@ -692,7 +692,7 @@ export default function PricingPage() {
             </div>
             <div className="pr-fit__statements">
               <p className="pr-statement" data-reveal="up">
-                They manage the competition. EvalLense helps compare who is
+                They manage the competition. EvalLens helps compare who is
                 strongest and why.
               </p>
               <p

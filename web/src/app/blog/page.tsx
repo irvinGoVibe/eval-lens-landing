@@ -7,9 +7,9 @@ import { MoreFromNewsroom } from "@/components/blog/MoreFromNewsroom";
 import { getAllPosts, getLoopPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "EvalLense Newsroom — Latest News",
+  title: "EvalLens Newsroom — Latest News",
   description:
-    "Product updates, research, and stories from the team building EvalLense — structured pitch-deck evaluation with explainable, human-controlled decisions.",
+    "Product updates, research, and stories from the team building EvalLens — structured pitch-deck evaluation with explainable, human-controlled decisions.",
 };
 
 export default async function BlogHubPage() {
@@ -24,7 +24,7 @@ export default async function BlogHubPage() {
       <section className="blog-section blog-section--hero" id="latest">
         <div className="wrap blog-wrap">
           <header className="blog-masthead">
-            <p className="t-eyebrow">EvalLense Newsroom</p>
+            <p className="t-eyebrow">EvalLens Newsroom</p>
             <h1 className="blog-masthead__title">
               Latest <span className="grad">News</span>
             </h1>

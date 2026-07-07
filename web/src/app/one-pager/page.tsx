@@ -14,9 +14,9 @@ import {
 } from "@/components/ds";
 
 export const metadata: Metadata = {
-  title: "EvalLense — Screen your VC dealflow, without missing the breakout (one-pager)",
+  title: "EvalLens — Screen your VC dealflow, without missing the breakout (one-pager)",
   description:
-    "A practical one-page explainer for VC funds: how EvalLense screens inbound decks on one consistent bar, ranks a partner-ready shortlist with evidence-cited memos, and leaves the final call to you.",
+    "A practical one-page explainer for VC funds: how EvalLens screens inbound decks on one consistent bar, ranks a partner-ready shortlist with evidence-cited memos, and leaves the final call to you.",
 };
 
 /*
@@ -118,7 +118,7 @@ const WORKFLOW_STEPS = [
   {
     num: "03",
     label: "Run the machine pass",
-    desc: "EvalLense prepares a structured first read of every deck — about 4–5 minutes per deck after upload.",
+    desc: "EvalLens prepares a structured first read of every deck — about 4–5 minutes per deck after upload.",
   },
   {
     num: "04",
@@ -168,7 +168,7 @@ const TRUST_TILES = [
   {
     tag: "AI prepares",
     title: "AI prepares the analysis",
-    body: "EvalLense lays out the evidence, the risks, and the questions — then hands them to the partners who decide.",
+    body: "EvalLens lays out the evidence, the risks, and the questions — then hands them to the partners who decide.",
     feature: true,
     media: {
       ratio: "4/3",
@@ -251,7 +251,7 @@ export default function OnePagerPage() {
           titleLead="Screen your inbound dealflow faster — without missing the"
           titleAccent="unicorn"
           titleTrail=""
-          sub="EvalLense gives every inbound deck the same structured first read — on one consistent bar — so the breakout doesn't get skimmed. Screen a full batch in an afternoon; the final call is always yours."
+          sub="EvalLens gives every inbound deck the same structured first read — on one consistent bar — so the breakout doesn't get skimmed. Screen a full batch in an afternoon; the final call is always yours."
           ctas={[
             { label: "Start a pilot", href: "/company/contact" },
             { label: "Book a demo", href: "https://calendly.com/evallens/30min" },
@@ -310,7 +310,7 @@ export default function OnePagerPage() {
                   <span className="op-flow__accent">runs</span>
                 </h2>
                 <p className="op-flow__sub">
-                  Set your bar once. EvalLense applies it to every deck and
+                  Set your bar once. EvalLens applies it to every deck and
                   prepares what partners need to decide faster.
                 </p>
                 <ol className="op-flow__steps">
@@ -378,7 +378,7 @@ export default function OnePagerPage() {
           eyebrow="AI PREPARES, THE PARTNERS DECIDE"
           title="Not a black box. Not a partner replacement."
           titleAccent="partner"
-          sub="EvalLense prepares the analysis; it never makes the final call. It widens what your team can read closely — so the breakout gets the same first read as every warm intro."
+          sub="EvalLens prepares the analysis; it never makes the final call. It widens what your team can read closely — so the breakout gets the same first read as every warm intro."
           items={TRUST_TILES.map((t) => ({
             tag: t.tag,
             title: t.title,
@@ -393,7 +393,7 @@ export default function OnePagerPage() {
           id="use-cases"
           surface="light"
           version={4}
-          ariaLabel="How EvalLense fits into a fund's screening"
+          ariaLabel="How EvalLens fits into a fund's screening"
           eyebrow="WHERE IT FITS"
           title="Built for how a fund screens"
           accentWords={["fund"]}
@@ -416,7 +416,7 @@ export default function OnePagerPage() {
             eyebrow="START"
             title="Run a pilot on your real"
             titleAccent="dealflow"
-            sub="We screen a real batch of your inbound, prepare partner-ready memos, and show how EvalLense ranks your dealflow — while the call stays yours. About 4–5 minutes of machine first-read per deck after upload. Refined across hundreds of runs."
+            sub="We screen a real batch of your inbound, prepare partner-ready memos, and show how EvalLens ranks your dealflow — while the call stays yours. About 4–5 minutes of machine first-read per deck after upload. Refined across hundreds of runs."
             primary={{ label: "Start a pilot", href: "/company/contact" }}
             secondary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
           />

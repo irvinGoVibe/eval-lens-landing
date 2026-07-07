@@ -1,4 +1,4 @@
-/* EvalLense DS — section + atom styles (components/ds).
+/* EvalLens DS — section + atom styles (components/ds).
    Loaded AFTER globals.css (see app/layout.tsx), so it can extend the global
    tokens and the surface-aware base classes (.band / .wrap / .eyebrow / .title
    / .sub). Theme-agnostic: colours come only from tokens, surfaces flip via

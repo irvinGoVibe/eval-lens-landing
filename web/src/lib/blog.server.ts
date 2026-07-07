@@ -1,4 +1,4 @@
-// EvalLense Newsroom — server-only blog data getters.
+// EvalLens Newsroom — server-only blog data getters.
 //
 // These functions read editorial content from Supabase (via the cached,
 // `server-only` `cms/queries` module) and are therefore server-only too.

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — EvalLense",
+  title: "Terms of Service — EvalLens",
   description:
-    "The terms governing use of the EvalLense pitch-deck evaluation service, including acceptable use, AI-output disclaimers, liability limits, and California governing law.",
+    "The terms governing use of the EvalLens pitch-deck evaluation service, including acceptable use, AI-output disclaimers, liability limits, and California governing law.",
 };
 
 const UPDATED = "June 16, 2026";
@@ -17,8 +17,8 @@ const SECTIONS: LegalSection[] = [
       <p>
         These Terms of Service (&ldquo;Terms&rdquo;) are a legal agreement
         between you and <strong>[Legal entity name]</strong>
-        (&ldquo;EvalLense,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) governing
-        your access to and use of the EvalLense website and service (the
+        (&ldquo;EvalLens,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) governing
+        your access to and use of the EvalLens website and service (the
         &ldquo;Service&rdquo;). By creating an account or using the Service, you
         agree to these Terms. If you are using the Service on behalf of an
         organization, you represent that you have authority to bind that
@@ -31,10 +31,10 @@ const SECTIONS: LegalSection[] = [
     heading: "The Service",
     body: (
       <p>
-        EvalLense is a decision&#8209;support tool for evaluating pitch decks. It
+        EvalLens is a decision&#8209;support tool for evaluating pitch decks. It
         collects submissions, runs AI&#8209;assisted evaluation, and produces
         structured, advisory reports to help human reviewers compare and decide.
-        EvalLense does not make funding, selection, or hiring decisions; those
+        EvalLens does not make funding, selection, or hiring decisions; those
         decisions remain with you.
       </p>
     ),
@@ -128,7 +128,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         The Service, including its software, design, and content (excluding
-        Customer Content), is owned by EvalLense and its licensors and is
+        Customer Content), is owned by EvalLens and its licensors and is
         protected by intellectual&#8209;property laws. We grant you a limited,
         non&#8209;exclusive, non&#8209;transferable right to use the Service per
         these Terms. If you send us feedback, you grant us a perpetual,
@@ -180,7 +180,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Limitation of liability",
     body: (
       <p>
-        To the maximum extent permitted by law, EvalLense and its suppliers will
+        To the maximum extent permitted by law, EvalLens and its suppliers will
         not be liable for any indirect, incidental, special, consequential, or
         punitive damages, or any loss of profits, data, or goodwill, arising from
         or related to the Service. Our total liability for any claim relating to
@@ -196,7 +196,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Indemnification",
     body: (
       <p>
-        You agree to indemnify and hold harmless EvalLense from claims, damages,
+        You agree to indemnify and hold harmless EvalLens from claims, damages,
         and expenses (including reasonable legal fees) arising from your Customer
         Content, your use of the Service, or your breach of these Terms or of
         applicable law.
@@ -222,7 +222,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         These Terms are governed by the laws of the State of California, without
-        regard to its conflict&#8209;of&#8209;laws rules. You and EvalLense agree
+        regard to its conflict&#8209;of&#8209;laws rules. You and EvalLens agree
         to the exclusive jurisdiction of the state and federal courts located in
         California for any dispute not subject to an alternative
         dispute&#8209;resolution process that the parties separately agree to in
@@ -263,7 +263,7 @@ export default function TermsPage() {
       updated={UPDATED}
       intro={
         <p>
-          These terms govern your use of EvalLense. Please read them carefully
+          These terms govern your use of EvalLens. Please read them carefully
           &mdash; they cover acceptable use, the advisory nature of AI outputs,
           warranties and liability, and how disputes are handled.
         </p>

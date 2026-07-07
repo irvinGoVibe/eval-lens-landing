@@ -69,7 +69,7 @@ export function UnicornEggBadge(): ReactElement {
     <button
       type="button"
       className="cr-egg-badge"
-      aria-label="EvalLense"
+      aria-label="EvalLens"
       onClick={onClick}
     />
   );

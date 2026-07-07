@@ -12,9 +12,9 @@ import { Cinema, CtaBand } from "@/components/ds";
 import { BlobField } from "@/components/BlobField";
 
 export const metadata: Metadata = {
-  title: "About EvalLense — A better lens for human judgment",
+  title: "About EvalLens — A better lens for human judgment",
   description:
-    "EvalLense helps startup programs, funds, and competitions review applications with structured AI analysis, evidence-backed reports, and human-controlled decisions.",
+    "EvalLens helps startup programs, funds, and competitions review applications with structured AI analysis, evidence-backed reports, and human-controlled decisions.",
 };
 
 /*
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
  *    soft violet depth, hairline structure, calm; no security theatre.
  *
  * 2. story (section 3, beside the pinned history) — 4:3
- *    AI Jury → Testing → Pipeline → EvalLense as a chain of nodes on a lens
+ *    AI Jury → Testing → Pipeline → EvalLens as a chain of nodes on a lens
  *    track. Prompt: ink surface, thin node-lines, one lit node, minimal.
  *
  * 3–5. team portraits (section 5) — 3:4 each
@@ -55,13 +55,13 @@ export const metadata: Metadata = {
  *
  * ── CONTENT ──────────────────────────────────────────────────────────────
  * Copy is AUTHORED by the user (wiki/product/about.md §Контент по секциям) and
- * used verbatim: mission, the problem, the AI Jury → EvalLense story (Amazon
+ * used verbatim: mission, the problem, the AI Jury → EvalLens story (Amazon
  * Nova hackathon, hundreds of internal runs), four principles, three team bios
  * (Yaroslav Volovoj, Vladislav Starodubov), seven audience segments
  * and the closing statement. No fabricated facts, no rewritten formulations.
  */
 
-/* 3. From AI Jury to EvalLense — history steps revealed through the pin. */
+/* 3. From AI Jury to EvalLens — history steps revealed through the pin. */
 const STORY_STEPS = [
   {
     num: "01",
@@ -84,7 +84,7 @@ const STORY_STEPS = [
 const PRINCIPLES = [
   {
     title: "AI prepares the analysis. Humans own the decision.",
-    body: "EvalLense can structure evidence, surface risks, and prepare a ranking view. The final score, context, and decision stay under human control.",
+    body: "EvalLens can structure evidence, surface risks, and prepare a ranking view. The final score, context, and decision stay under human control.",
     feature: true,
   },
   {
@@ -93,7 +93,7 @@ const PRINCIPLES = [
   },
   {
     title: "Disagreement should be visible.",
-    body: "When evaluation lenses disagree, EvalLense does not hide the conflict inside an average. It shows the split so reviewers know where to look.",
+    body: "When evaluation lenses disagree, EvalLens does not hide the conflict inside an average. It shows the split so reviewers know where to look.",
   },
   {
     title: "The same standard for every team.",
@@ -134,7 +134,7 @@ const TEAM: TeamMember[] = [
     surname: "Volovoj",
     name: "Yaroslav Volovoj",
     role: "Product & GTM",
-    bio: "Turns messy startup evaluation into a product people can actually use. Owns the review flow, GTM logic, and the bridge from AI Jury to EvalLense.",
+    bio: "Turns messy startup evaluation into a product people can actually use. Owns the review flow, GTM logic, and the bridge from AI Jury to EvalLens.",
     marker: "Founder mode: on",
     offscreen: "Off-screen: sharp decks, product calls, and probably a pickleball court.",
     dream: "Grow a unicorn!",
@@ -150,7 +150,7 @@ const TEAM: TeamMember[] = [
     surname: "Starodubov",
     name: "Vladislav Starodubov",
     role: "Engineering & Reliability",
-    bio: "Builds the system behind EvalLense: judge orchestration, scoring infrastructure, security, and repeatable evaluation runs.",
+    bio: "Builds the system behind EvalLens: judge orchestration, scoring infrastructure, security, and repeatable evaluation runs.",
     marker: "Keeps it working",
     offscreen: "Off-screen: architecture maps, edge cases, and systems that refuse to break.",
     dream: "Grow a unicorn!",
@@ -199,14 +199,14 @@ export default function AboutPage() {
               style={{ ["--reveal-delay" as string]: "0ms" }}
             >
               <span className="dot" aria-hidden="true"></span>
-              About EvalLense
+              About EvalLens
             </span>
             <h1
               className="ab-hero__title"
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "90ms" }}
             >
-              We built EvalLense to make startup review clearer, faster, and
+              We built EvalLens to make startup review clearer, faster, and
               easier to <span className="grad-word">defend</span>
             </h1>
             <p
@@ -214,7 +214,7 @@ export default function AboutPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "180ms" }}
             >
-              EvalLense turns messy startup applications into structured
+              EvalLens turns messy startup applications into structured
               evidence, comparable scores, and questions reviewers can actually
               use. AI prepares the analysis. People keep the judgment.
             </p>
@@ -271,13 +271,13 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 3. From AI Jury to EvalLense — pinned multi-screen, DARK. */}
+        {/* 3. From AI Jury to EvalLens — pinned multi-screen, DARK. */}
         <section
           id="story"
           className="band ink ab-story"
           data-pin
           data-pin-steps="3"
-          aria-label="From AI Jury to EvalLense — the history in three steps"
+          aria-label="From AI Jury to EvalLens — the history in three steps"
         >
           <div className="ab-story__stage" data-pin-stage>
             <div className="wrap ab-story__grid">
@@ -289,7 +289,7 @@ export default function AboutPage() {
                   </span>
                   <h2 className="title">What <span className="grad-word">hundreds of runs</span> taught us</h2>
                   <p className="sub">
-                    EvalLense started as AI Jury. The early idea was simple: use
+                    EvalLens started as AI Jury. The early idea was simple: use
                     several specialized AI judges instead of one generic model
                     opinion. Then the runs exposed the real problem.
                   </p>
@@ -320,15 +320,15 @@ export default function AboutPage() {
                 </div>
               </div>
               <div className="ab-story__side">
-                {/* story visual — the full EvalLense origin journey (AI Jury →
+                {/* story visual — the full EvalLens origin journey (AI Jury →
                     hackathon → brainstorm → lens parts → Evaluation Lens →
-                    EvalLense → unicorn). Tall transparent cutout, shown large to
+                    EvalLens → unicorn). Tall transparent cutout, shown large to
                     fill the pinned stage. The authored pipeline list above was
                     removed in favour of this single image. */}
                 <ParallaxFloat
                   className="ab-story__media ab-story__media--img"
                   src="/assets/methodology/eval-lens-roadmap-vertical-02.webp"
-                  alt="The EvalLense origin journey: from AI Jury and a hackathon, through brainstorming and lens parts, to the Evaluation Lens and EvalLense"
+                  alt="The EvalLens origin journey: from AI Jury and a hackathon, through brainstorming and lens parts, to the Evaluation Lens and EvalLens"
                   width={781}
                   height={1857}
                   sizes="(max-width: 880px) 70vw, 380px"
@@ -346,16 +346,16 @@ export default function AboutPage() {
         <Cinema
           id="story-claim"
           surface="ink"
-          headline="AI Jury tried to judge. EvalLense helps people see clearly before they decide."
+          headline="AI Jury tried to judge. EvalLens helps people see clearly before they decide."
           lines={[
             "AI Jury tried to judge.",
-            "EvalLense helps people see",
+            "EvalLens helps people see",
             "clearly before they decide.",
           ]}
           mobileLines={[
             "AI Jury tried",
             "to judge.",
-            "EvalLense helps",
+            "EvalLens helps",
             "people see clearly",
             "before they decide.",
           ]}
@@ -376,7 +376,7 @@ export default function AboutPage() {
               </span>
               <h2 className="title">The <span className="grad-word">principles</span> behind every evaluation</h2>
               <p className="sub">
-                These principles keep EvalLense useful: AI supports the work,
+                These principles keep EvalLens useful: AI supports the work,
                 scores link to evidence, disagreement stays visible, and
                 methodology comes before the model.
               </p>
@@ -479,7 +479,7 @@ export default function AboutPage() {
 
         {/* 5. Team — founder dossier cards (Intelligence Wall), DARK. Two glass
             cards built in code; portraits are real cut-outs, all text is HTML. */}
-        <section id="team" className="band ink ab-founders-sec" aria-label="The team behind EvalLense">
+        <section id="team" className="band ink ab-founders-sec" aria-label="The team behind EvalLens">
           <div className="wrap">
             <div className="head ab-founders__intro" data-reveal="up">
               <span className="eyebrow">
@@ -599,9 +599,9 @@ export default function AboutPage() {
         <CtaBand
           theme="dark"
           eyebrow="Get to know us"
-          title="See how EvalLense works on a"
+          title="See how EvalLens works on a"
           titleAccent="real batch"
-          sub="Book a demo to walk through the workflow, review example reports, and see how EvalLense helps your team compare applications without giving up human control."
+          sub="Book a demo to walk through the workflow, review example reports, and see how EvalLens helps your team compare applications without giving up human control."
           primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
           videoSrc="/assets/about/about-cta-bg.mp4"
           videoPoster="/assets/about/about-cta-bg-poster.webp"

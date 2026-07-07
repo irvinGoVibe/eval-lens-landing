@@ -53,9 +53,9 @@ export async function generateMetadata({
   const activeCategory = resolveCategory(await searchParams);
   const label = activeCategory ? CATEGORY_HEADING[activeCategory] : "All News";
   return {
-    title: `${label} — EvalLense Newsroom`,
+    title: `${label} — EvalLens Newsroom`,
     description:
-      "Every story from EvalLense Newsroom — press releases, product updates, research, and more.",
+      "Every story from EvalLens Newsroom — press releases, product updates, research, and more.",
   };
 }
 
@@ -77,7 +77,7 @@ function Masthead({ activeCategory }: { activeCategory: Category | null }) {
           All News
         </Link>
       ) : (
-        <p className="t-eyebrow">EvalLense Newsroom</p>
+        <p className="t-eyebrow">EvalLens Newsroom</p>
       )}
       <h1 className="blog-masthead__title">
         {rest.length > 0 ? (
