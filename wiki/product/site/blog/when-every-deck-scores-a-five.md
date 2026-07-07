@@ -1,7 +1,7 @@
 ---
 slug: when-every-deck-scores-a-five
-category: Research
-accent: aqua
+category: Product
+accent: violet
 title: When every deck scores a five
 excerpt: A score that lands every deck in the same narrow range isn't ranking anything. Here is the calibration problem we found in EvalLense, why the middle is a magnet, and how we widened the gap between strong and weak — without touching the math or the human's final call.
 date: 2026-07-07
