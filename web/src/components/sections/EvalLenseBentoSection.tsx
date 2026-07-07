@@ -63,7 +63,7 @@ const artTiles = {
     cta: "View sample report",
   },
   humanLoop: {
-    href: "/methodology/human-in-the-loop",
+    href: "/trust/methodology#control",
     src: "/assets/bento/jury-decision.png",
     alt: "A person weighing scores, risks and evidence into the final decision",
     tPlain: "Human in the ",
@@ -71,7 +71,7 @@ const artTiles = {
     cta: "How decisions stay human",
   },
   methodology: {
-    href: "/trust/methodology#control",
+    href: "/trust/methodology",
     src: "/assets/bento/scoring-matrix.png",
     alt: "A lens splitting a pitch deck into a judge-by-criterion scoring matrix",
     tPlain: "",
