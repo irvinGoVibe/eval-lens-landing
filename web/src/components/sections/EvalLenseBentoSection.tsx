@@ -89,12 +89,12 @@ const artTiles = {
 } as const;
 
 const caseChips = [
-  { label: "VC Funds", href: "/use-cases/vc-funds" },
-  { label: "Accelerators", href: "/use-cases/accelerators" },
-  { label: "Hackathons", href: "/use-cases/hackathons" },
-  { label: "Grant Programs", href: "/use-cases/grant-programs" },
-  { label: "Universities", href: "/use-cases/universities" },
-  { label: "Research", href: "/resources/research" },
+  { label: "VC Funds", href: "/trust/use-cases" },
+  { label: "Accelerators", href: "/trust/use-cases" },
+  { label: "Hackathons", href: "/trust/use-cases" },
+  { label: "Grant Programs", href: "/trust/use-cases" },
+  { label: "Universities", href: "/trust/use-cases" },
+  { label: "Research", href: "/trust/use-cases" },
 ];
 
 /** Full-bleed art tile: image under the whole card, a big display-font
