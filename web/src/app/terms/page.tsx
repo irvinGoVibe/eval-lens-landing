@@ -249,7 +249,7 @@ const SECTIONS: LegalSection[] = [
       <p>
         Questions about these Terms? Contact{" "}
         <strong>[Legal entity name]</strong> at{" "}
-        <a href="mailto:legal@evallense.com">legal@evallense.com</a>.
+        <a href="mailto:legal@evallens.io">legal@evallens.io</a>.
       </p>
     ),
   },

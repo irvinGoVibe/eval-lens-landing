@@ -227,7 +227,7 @@ const SECTIONS: LegalSection[] = [
         </ul>
         <p>
           To exercise these rights, email{" "}
-          <a href="mailto:privacy@evallense.com">privacy@evallense.com</a>. We
+          <a href="mailto:privacy@evallens.io">privacy@evallens.io</a>. We
           will verify your request before responding. You may use an authorized
           agent where permitted by law.
         </p>
@@ -269,7 +269,7 @@ const SECTIONS: LegalSection[] = [
       <p>
         Questions about this policy or your information? Contact{" "}
         <strong>[Legal entity name]</strong> at{" "}
-        <a href="mailto:privacy@evallense.com">privacy@evallense.com</a> or at{" "}
+        <a href="mailto:privacy@evallens.io">privacy@evallens.io</a> or at{" "}
         <strong>[mailing address]</strong>.
       </p>
     ),

@@ -91,7 +91,7 @@ export function Footer({ variant = "light" }: FooterProps) {
                 <Link href="/company/about">About</Link>
                 <Link href="/blog">Newsroom</Link>
                 <Link href="/company/contact">Contact</Link>
-                <a href="#">careers@evallense.com</a>
+                <a href="#">careers@evallens.io</a>
               </nav>
             </div>
           </div>

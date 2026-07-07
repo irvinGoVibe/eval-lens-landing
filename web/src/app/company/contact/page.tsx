@@ -45,19 +45,19 @@ export const metadata: Metadata = {
  * ── CONTENT ──────────────────────────────────────────────────────────────
  * The site is STATIC (no backend) — channels are mailto: / external links,
  * no server-side form. Email addresses and the demo/docs URLs are
- * PLACEHOLDERS per the brief (see Open Questions) — only careers@evallense.com
- * and security@evallense.com are real and already used on the site. Latest
+ * PLACEHOLDERS per the brief (see Open Questions) — only careers@evallens.io
+ * and security@evallens.io are real and already used on the site. Latest
  * news is read at build time via getAllPosts() — exactly like /blog.
  *
  * ── PLACEHOLDERS (brief §Open Questions) ──────────────────────────────────
  *   - demo channel: Book a Demo → /#demo (until a real scheduler/mailto)
- *   - hello@evallense.com  — general & sales (placeholder, confirm)
- *   - press@evallense.com  — press & media (placeholder, confirm)
+ *   - hello@evallens.io  — general & sales (placeholder, confirm)
+ *   - press@evallens.io  — press & media (placeholder, confirm)
  *   - DOCS_URL below       — external user-documentation site (placeholder)
  */
 
 /* TODO: real user-docs URL — [user documentation URL] */
-const DOCS_URL = "https://docs.evallense.com";
+const DOCS_URL = "https://docs.evallens.io";
 
 /* 2. Ways to reach us — channel grid (brief §2). The four direct lines sit at
    the top; "Book a Demo" moves below the grid as a single button. The sales
@@ -78,20 +78,20 @@ const CHANNELS: Channel[] = [
     title: "Product, partnership, pilot",
     body: "Questions about the product, a partnership or a pilot batch.",
     // hello@ is a placeholder per the brief — confirm before launch.
-    cta: { label: "hello@evallense.com", href: "mailto:hello@evallense.com" },
+    cta: { label: "hello@evallens.io", href: "mailto:hello@evallens.io" },
     call: { label: "Book a Call", href: "https://calendly.com/evallens/30min" },
   },
   {
     tag: "Careers",
     title: "Join the team",
     body: "We are building a better lens for human judgment — come help.",
-    cta: { label: "careers@evallense.com", href: "mailto:careers@evallense.com" },
+    cta: { label: "careers@evallens.io", href: "mailto:careers@evallens.io" },
   },
   {
     tag: "Security",
     title: "Report a vulnerability",
     body: "Responsible disclosure for security researchers.",
-    cta: { label: "security@evallense.com", href: "mailto:security@evallense.com" },
+    cta: { label: "security@evallens.io", href: "mailto:security@evallens.io" },
     link: { label: "Security & privacy", href: "/security" },
   },
   {
@@ -99,7 +99,7 @@ const CHANNELS: Channel[] = [
     title: "Publications & announcements",
     body: "Press enquiries, coverage and announcements.",
     // press@ is a placeholder per the brief — confirm before launch.
-    cta: { label: "press@evallense.com", href: "mailto:press@evallense.com" },
+    cta: { label: "press@evallens.io", href: "mailto:press@evallens.io" },
     link: { label: "Visit the Newsroom", href: "/blog" },
   },
 ];
@@ -206,7 +206,7 @@ export default async function ContactPage() {
               style={{ ["--reveal-delay" as string]: "360ms" }}
             >
               <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
-              <Button variant="ghost" href="mailto:hello@evallense.com">
+              <Button variant="ghost" href="mailto:hello@evallens.io">
                 Email us
               </Button>
             </div>

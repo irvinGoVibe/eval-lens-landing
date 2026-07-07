@@ -123,7 +123,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         If you believe you have found a security vulnerability, please report it
-        to <a href="mailto:security@evallense.com">security@evallense.com</a>{" "}
+        to <a href="mailto:security@evallens.io">security@evallens.io</a>{" "}
         with enough detail to reproduce the issue. Please give us reasonable time
         to investigate and remediate before public disclosure, and avoid
         accessing or modifying data that is not yours. We appreciate good&#8209;faith
