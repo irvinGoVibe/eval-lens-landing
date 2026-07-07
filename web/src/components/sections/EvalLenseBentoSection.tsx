@@ -55,7 +55,7 @@ function CardLink({ children }: { children: ReactNode }) {
 
 const artTiles = {
   evidence: {
-    href: "/product/sample-report",
+    href: "/trust/consistency-reliability",
     src: "/assets/bento/deck-scan.png",
     alt: "A raw pitch deck distilled into an evidence score of 8.7 with high confidence",
     tPlain: "Evidence-based ",
