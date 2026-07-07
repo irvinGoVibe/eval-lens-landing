@@ -71,7 +71,7 @@ const artTiles = {
     cta: "How decisions stay human",
   },
   methodology: {
-    href: "/methodology",
+    href: "/trust/methodology#control",
     src: "/assets/bento/scoring-matrix.png",
     alt: "A lens splitting a pitch deck into a judge-by-criterion scoring matrix",
     tPlain: "",
