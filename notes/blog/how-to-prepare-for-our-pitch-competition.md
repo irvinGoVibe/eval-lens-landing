@@ -5,7 +5,7 @@ accent: aqua
 title: How to prepare for our pitch competition
 excerpt: A practical checklist for getting the highest, fairest score when your deck is read through a structured evaluation — what to show, where to put it, and how to prepare for the questions that follow.
 date: 2026-07-09
-readMinutes: 7
+readMinutes: 9
 cover: /assets/blog/high-scoring-pitch/cover.png
 author: Anonymous Unicorn
 status: published
@@ -35,20 +35,41 @@ The fastest way to lose points is to answer a question nobody asked. Before you 
 
 Ask the organizers directly how entries are scored, and what a strong submission looks like to them. This isn't cheating; it's basic preparation, and experienced judges tell founders to do exactly this — *"ask questions of the organizers about how the pitch competition is going to be scored, and know before you go on stage the specific aspects that the organizers are looking for"* ([SCORE](https://scorejudge.com/blog/posts/how-to-judge-a-startup-pitch-competition/)). A deck aimed at the wrong target is a good deck with the wrong score.
 
+## Pitch to your stage, not past it
+
+Here's a mistake that quietly sinks strong teams: pitching like a company two stages ahead of the one you are. A serious read judges you against the stage you're actually at — idea, prototype, early traction, growth — not against some universal ideal. And that's good news, because it means you're not penalized for what your stage hasn't reached yet.
+
+The trap is trying to borrow the credibility of a later stage. A pre-revenue team that shows five-year revenue projections instead of evidence of customer learning doesn't look ahead of the curve — it looks like it's papering over the proof it should have. Missing revenue at the idea stage is normal. Missing any sign that you've talked to a real user is not.
+
+So state your stage plainly, and bring the proof that stage can actually produce. Idea stage: sharp problem evidence and customer discovery. Prototype: the core mechanism working, even roughly. Early traction: real usage, with dates. Whatever you claim, you'll be read as that stage — say you're at $150K in recurring revenue and you'll be judged by a growth-stage bar, so be sure you can stand on it.
+
 ## Make every claim checkable
 
 This is the single highest-leverage habit, so slow down here.
 
-For every claim on your deck, ask one question: *could a stranger confirm this without me?* If the answer is no, you have a claim that reads as a hope, not a fact — and a careful reader discounts hopes.
+For every claim on your deck, ask one question: *could a stranger confirm this without me?* An assertion isn't evidence. "Strong retention" is an assertion. "94% net revenue retention over the last two quarters" is a fact — specific, current, measurable, and tied to a source. The closer your claims sit to that second form, the higher a careful reader can score them.
 
-Turning a hope into a fact is usually small work:
+Turning an assertion into evidence is usually small work:
 
 - **Name names.** "A large enterprise customer" is a hope. "Acme, live since March" is a fact. Real logos, real segments, real people.
-- **Put the number next to the claim.** Don't say "strong retention" on slide four and hide the number on slide nineteen. The reader shouldn't have to assemble your case for you.
-- **Cite where facts came from.** Market size, a benchmark, a survey stat — a line of attribution turns an assertion into something checkable. An unsourced number is a number the rubric quietly ignores.
-- **Show, don't assert.** A quote from a real user, a screenshot of the product doing the thing, one line of how it actually works. Evidence you can point at beats an adjective every time.
+- **Put the number next to the claim.** Don't say "strong growth" on slide four and hide the number on slide nineteen. The reader shouldn't have to assemble your case for you.
+- **Give every metric a denominator and a timeframe.** "10× better" than what? "Growing fast" over what period? A number with nothing to divide by or measure against reads as decoration. If you say 10×, show the two figures behind it.
+- **Date anything that can go stale.** Team, customers, revenue, pipeline, partnerships, roadmap — time-sensitive claims lose weight when they're old and unconfirmed. "Partnered with X" from eighteen months ago, with no update, reads weaker than a smaller thing that's current. Put the date on it.
+- **Don't make one proof carry the whole deck.** A single pilot can support your problem, your demand, and your team's execution — but only if you explain what it proves in each place. Leaning the entire case on one logo is fragile; a reader discounts a signal doing too many jobs at once.
 
 The test isn't whether the claim is true. It's whether a skeptical stranger can *see* that it's true. Ambition without evidence rounds down; a modest claim you prove rounds up.
+
+## The five gaps that cap you no matter what
+
+Most weak slides just cost you a little. A few gaps are different: they're structural holes that hold the whole entry down, however good the rest looks. Think of them as the load-bearing walls of a pitch. Check that each one is unmistakably present:
+
+1. **A real user in pain.** Someone specific who suffers the problem — not "the market," a person or role.
+2. **A mechanism.** How the product actually relieves that pain, stated plainly. Not "AI-powered." *How.*
+3. **Someone who pays.** A named buyer or payer. A big audience that never opens its wallet isn't a business.
+4. **A technical owner** — if you're building something technical, a person on the team who can actually build it.
+5. **An owner for your next milestone.** Not just a roadmap, but who is accountable for the next thing that has to happen.
+
+None of these is exotic. That's the point — they're so basic that founders assume they're obvious and leave them implied. A structured read doesn't fill gaps in your favor. If it can't find the payer, there is no payer. Make all five impossible to miss.
 
 ## Cover the whole story, not just the exciting part
 
@@ -66,15 +87,22 @@ Walk your deck against the standard set and make sure each one is genuinely pres
 - **Financials** — the unit economics, runway, and projections that make the plan add up.
 - **The ask** — specific, and tied to what it unlocks.
 
-You don't need a beautiful slide for each. You need each one to exist and to carry evidence. Judges care more about the problem and the market than your feature list — *"judges care more about the problem you're solving and the market potential"* than the product details founders love to dwell on ([Qubit Capital](https://qubit.capital/blog/win-startup-pitch-competitions)). Balance the deck accordingly.
+You don't need a beautiful slide for each. You need each one to exist and to carry evidence. One habit worth stealing: a slide that reviewers spend *too long* on is usually a slide that failed to make its point, not one that impressed them. And don't quietly drop the financials — an unglamorous slide is still a slide the reader looks for, and its absence is loud.
 
-## Put your strongest facts where they'll be found
+## Make it read fast
 
-Findable beats thorough. Your best evidence helps you only if the reader actually reaches it — and readers, human or otherwise, don't read patiently. The average investor spends under four minutes on a first pass at a deck ([DocSend](https://www.dropbox.com/resources/docsend-pitch-deck-research)), and much of that goes to a few slides.
+Findable beats thorough. Your best evidence helps you only if the reader actually reaches it — and readers, human or otherwise, don't read patiently. Investors spend roughly three minutes on a first pass at a deck, and only about 58% make it to the last slide ([DocSend](https://www.dropbox.com/resources/docsend-pitch-deck-research)). If your best number is on slide nineteen, assume it was never seen.
 
-Two things follow. First, lead with your strongest proof; don't bury it. Second, invest in the slides that get the most attention. In 2024, funds spent markedly *more* time on the team slide than the year before, as they "prioritized people" in an AI-heavy landscape ([Dropbox DocSend](https://www.prnewswire.com/news-releases/vcs-prioritize-people-in-an-ai-heavy-landscape-according-to-new-dropbox-docsend-report-302334444.html)). Your team slide is not a formality. Say why *this* team builds *this* thing, and back it with something you've done.
+A few craft habits do most of the work here:
 
-And cut the clutter. Too much text on a slide doesn't read as thorough — it reads as noise, and it hides the one number you wanted seen. One idea per slide, proof next to it.
+- **Let each headline state the conclusion.** Not "Market" — *"A $2B wedge we can reach through one channel."* The slide title should carry the point even if someone reads nothing else.
+- **One message per slide.** If a slide makes three arguments, it makes none. If it takes more than about thirty seconds to parse, it's too dense.
+- **Cut decorative junk.** Stock imagery, 3D chart effects, and background textures don't read as thorough — they bury the one thing you wanted seen. Anything on the slide that isn't carrying meaning is working against you.
+- **Make charts honest and legible.** Label the axes, give units, show the timeframe, name the source, and don't truncate an axis to flatter a trend. A chart should answer one question at a glance.
+
+And resist the instinct that a dense, busy slide looks more "complete." It doesn't score better — it reads worse. A sparse slide that lands one clear point beats a full one every time, even though the full one *feels* more impressive to build.
+
+One place to spend your effort: the team slide. Funds keep spending more time there, prioritizing people in an AI-heavy landscape ([Dropbox DocSend](https://www.prnewswire.com/news-releases/vcs-prioritize-people-in-an-ai-heavy-landscape-according-to-new-dropbox-docsend-report-302334444.html)). Say why *this* team builds *this* thing — from lived experience, hard-won insight, or direct access to the customer, not just titles and logos. Pedigree is not fit.
 
 ## Then prepare for the questions
 
@@ -87,15 +115,17 @@ So your deck earns the shortlist, and the room earns the win. That means two job
 Run this against your deck before you upload it:
 
 - Every claim has evidence a stranger could verify without me.
-- My best number sits next to the claim it supports, not three slides away.
-- Every external stat has a source on the slide.
-- Every area of that arc is present — including financials — not just the product.
-- My strongest proof is early, not buried.
+- My best number sits next to the claim it supports, and every metric has a denominator and a timeframe.
+- Every time-sensitive claim is dated; nothing important is stale and unconfirmed.
+- All five load-bearing walls are unmistakable: a real user, a mechanism, a payer, a technical owner, a next-milestone owner.
+- Every area of the arc is present — including financials — not just the product.
+- My strongest proof is early, not buried; no slide takes thirty seconds to parse.
+- Every headline states a conclusion, and every chart has units, dates, and a source.
 - The team slide says why *this* team, with proof.
-- No slide is a wall of text hiding its one point.
+- I'm pitching the stage I'm actually at, with proof that stage can produce.
 - I can answer the three hardest questions my deck invites.
 
-None of this is about gaming a score. It's the opposite. Because the read is consistent, there's no lucky day and no reviewer to charm — the only way up is to put more on the slide. That's good news. It means preparation, not persuasion, is what wins.
+None of this is about gaming a score. It's the opposite. Because the read is consistent, there's no lucky day and no reviewer to charm — you can't win on polish, logos, a famous category, or a big TAM. The only way up is to put more on the slide. That's good news. It means preparation, not persuasion, is what wins.
 
 Reviewers forgive an ugly slide. They rarely forgive a number they can't check.
 
