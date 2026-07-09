@@ -42,6 +42,8 @@ AI prepares the evaluation. A person makes the final call. Everything below is h
 ![](/assets/blog/from-ai-jury-to-evallense/pipeline.png)
 :::
 
+*AI prepares the evaluation; a person makes the final call. One line, seven stages.*
+
 ## More judges looked smarter than they were
 
 We started with the instinct most multi-agent teams start with: add more agents. The logic seemed airtight. More judges, more perspectives. More perspectives, deeper evaluation. So we added a problem judge, a market judge, a business model judge, a team judge, a pitch judge, a feasibility judge.
@@ -116,6 +118,8 @@ Here H1 and H2 are protected. A beautiful pitch cannot cover for an absent build
 ![](/assets/blog/from-ai-jury-to-evallense/modes.png)
 :::
 
+*Two modes, two questions. A pitch competition asks whether the thesis is strong; a hackathon asks what the team actually built.*
+
 ## Why the routing matrix became the backbone
 
 The routing matrix solved what prompts could not. Before it, a judge had a role and still read that role too broadly. After it, every judge had a defined level of influence over every dimension:
@@ -132,6 +136,8 @@ The payoff showed up fast: less duplication, less noise, lower cost, cleaner agg
 :::gallery
 ![](/assets/blog/from-ai-jury-to-evallense/routing.png)
 :::
+
+*The routing matrix gives every judge a defined level of influence over every dimension — primary, secondary, advisory, or none. That's what prompts alone couldn't fix.*
 
 ## Why we chose fail-fast for the MVP
 
@@ -160,6 +166,8 @@ A model can rationalize. It can write a convincing case for a number that never 
 :::gallery
 ![](/assets/blog/from-ai-jury-to-evallense/rubric.png)
 :::
+
+*The rubric as an execution contract: read the evidence, then choose the score — never a number first with the explanation invented after.*
 
 ## We cut a metric because it looked too smart
 
@@ -196,6 +204,8 @@ Today the system tracks that gap as a disagreement signal between judges. After 
 ![](/assets/blog/from-ai-jury-to-evallense/disagreement.png)
 :::
 
+*Disagreement isn't noise. When two lenses split on the same deck, that's a flag for human review — not something to average away.*
+
 ## Why AI Jury became EvalLense
 
 The name AI Jury did its job for version one. It was simple and people got it instantly: AI judges evaluate a pitch. As the product matured, "jury" started to feel wrong, because a jury decides — and deciding is the one thing we do not want the system to do.
@@ -205,6 +215,8 @@ We do not replace human judgment. We help people see structure, risk, strengths,
 :::gallery
 ![](/assets/blog/from-ai-jury-to-evallense/brand-evolution.png)
 :::
+
+*A jury decides. A lens reveals. That one distinction is why AI Jury became EvalLense.*
 
 ## What exists today
 
