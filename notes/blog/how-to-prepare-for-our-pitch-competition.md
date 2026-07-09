@@ -63,6 +63,7 @@ Walk your deck against the standard set and make sure each one is genuinely pres
 - **Traction** — what actually happened, with dates and figures.
 - **Team** — each founder's link to *this* problem, and something you've shipped.
 - **Roadmap** — sequenced milestones, matched resources, and the risks named out loud.
+- **Financials** — the unit economics, runway, and projections that make the plan add up.
 - **The ask** — specific, and tied to what it unlocks.
 
 You don't need a beautiful slide for each. You need each one to exist and to carry evidence. Judges care more about the problem and the market than your feature list — *"judges care more about the problem you're solving and the market potential"* than the product details founders love to dwell on ([Qubit Capital](https://qubit.capital/blog/win-startup-pitch-competitions)). Balance the deck accordingly.
@@ -88,7 +89,7 @@ Run this against your deck before you upload it:
 - Every claim has evidence a stranger could verify without me.
 - My best number sits next to the claim it supports, not three slides away.
 - Every external stat has a source on the slide.
-- All eight areas above are present, not just the product.
+- Every area of that arc is present — including financials — not just the product.
 - My strongest proof is early, not buried.
 - The team slide says why *this* team, with proof.
 - No slide is a wall of text hiding its one point.
