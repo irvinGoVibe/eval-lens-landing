@@ -6,7 +6,7 @@ title: How to prepare for our pitch competition
 excerpt: A practical checklist for getting the highest, fairest score when your deck is read through a structured evaluation — what to show, where to put it, and how to prepare for the questions that follow.
 date: 2026-07-09
 readMinutes: 9
-cover: /assets/blog/high-scoring-pitch/cover.png
+cover: /assets/blog/pitch-prep/cover.png
 author: Anonymous Unicorn
 status: published
 ---
@@ -59,6 +59,12 @@ Turning an assertion into evidence is usually small work:
 
 The test isn't whether the claim is true. It's whether a skeptical stranger can *see* that it's true. Ambition without evidence rounds down; a modest claim you prove rounds up.
 
+:::gallery
+![](/assets/blog/pitch-prep/evidence-ladder.png)
+:::
+
+*An assertion is an empty outline. Evidence is the same claim made solid — specific, current, checkable.*
+
 ## The five gaps that cap you no matter what
 
 Most weak slides just cost you a little. A few gaps are different: they're structural holes that hold the whole entry down, however good the rest looks. Think of them as the load-bearing walls of a pitch. Check that each one is unmistakably present:
@@ -70,6 +76,12 @@ Most weak slides just cost you a little. A few gaps are different: they're struc
 5. **An owner for your next milestone.** Not just a roadmap, but who is accountable for the next thing that has to happen.
 
 None of these is exotic. That's the point — they're so basic that founders assume they're obvious and leave them implied. A structured read doesn't fill gaps in your favor. If it can't find the payer, there is no payer. Make all five impossible to miss.
+
+:::gallery
+![](/assets/blog/pitch-prep/load-bearing-walls.png)
+:::
+
+*Five load-bearing walls — a real user, a mechanism, a payer, a technical owner, a next-milestone owner. Pull one and the whole pitch sags.*
 
 ## Cover the whole story, not just the exciting part
 
@@ -104,11 +116,23 @@ And resist the instinct that a dense, busy slide looks more "complete." It doesn
 
 One place to spend your effort: the team slide. Funds keep spending more time there, prioritizing people in an AI-heavy landscape ([Dropbox DocSend](https://www.prnewswire.com/news-releases/vcs-prioritize-people-in-an-ai-heavy-landscape-according-to-new-dropbox-docsend-report-302334444.html)). Say why *this* team builds *this* thing — from lived experience, hard-won insight, or direct access to the customer, not just titles and logos. Pedigree is not fit.
 
+:::gallery
+![](/assets/blog/pitch-prep/read-fast.png)
+:::
+
+*A slide reviewers linger on is usually one that failed to make its point — not one that impressed them.*
+
 ## Then prepare for the questions
 
 Here's the part founders miss, and it's the most reassuring part. The structured read doesn't hand down a verdict. It prepares the analysis — scores each area, shows the evidence behind it, and surfaces the questions a reviewer should ask you. Then a *person* makes the call, and the final ranking is built from human judgment, not a machine's number. AI prepares the analysis; the final call is always human.
 
 So your deck earns the shortlist, and the room earns the win. That means two jobs, not one. Write the deck to survive a cold, literal read — that's what gets you considered. Then prepare for the conversation that read will raise, because judges weigh how well you handle it: *"judges look to see how well they've prepared for the questions... and if they are responding to the questions directly"* ([SCORE](https://scorejudge.com/blog/posts/how-to-judge-a-startup-pitch-competition/)). Rehearse the hard questions, especially the ones your own weakest slide invites. Answer the question asked, not the one you wish they'd asked.
+
+:::gallery
+![](/assets/blog/pitch-prep/human-in-the-loop.png)
+:::
+
+*The evaluation structures every option and shows its evidence. A person still picks the winner.*
 
 ## The pre-submission checklist
 
