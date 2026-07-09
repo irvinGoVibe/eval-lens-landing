@@ -7567,7 +7567,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
   position:relative;isolation:isolate;overflow:hidden;
   aspect-ratio:941 / 1672;height:clamp(360px,42vw,560px);width:auto;
   max-width:100%;margin-top:auto;margin-inline:auto;
-  border-radius:24px;background:#000;
+  border-radius:24px;
 }
 .pricing-toolkit-card__image{z-index:2;object-fit:cover;pointer-events:none;user-select:none;animation:pricingToolkitFloat 17s ease-in-out infinite;will-change:transform;}
 /* spotlights sit ABOVE the image (screen-blend lightens the glass where they
