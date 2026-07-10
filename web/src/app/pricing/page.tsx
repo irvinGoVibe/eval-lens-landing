@@ -69,25 +69,8 @@ export const metadata: Metadata = {
  * reduced-motion is handled by the engine.
  */
 
-/* 2. Headline pricing cards — 4 public plans (brief §2, financial model v0.4). */
+/* 2. Headline pricing cards — 3 public plans (brief §2, financial model v0.4). */
 const PLANS = [
-  {
-    name: "Free Trial",
-    price: "$0",
-    cadence: "3 submissions",
-    validity: "lifetime · no credit card",
-    message: "Test EvalLens with 3 real submissions.",
-    bestFor: "Best for: a first look before you commit.",
-    cta: "Start free",
-    href: "/company/contact",
-    recommended: false,
-    bullets: [
-      "3 submissions (lifetime)",
-      "All 6 AI judges (preview)",
-      "Evidence-linked reports",
-      "Human-in-the-loop scoring",
-    ],
-  },
   {
     name: "Standard",
     price: "$1,500",
@@ -141,9 +124,8 @@ const PLANS = [
   },
 ];
 
-/* 3. Full comparison — all 6 levels (brief §3, pricing-model.en.md v0.4). */
+/* 3. Full comparison — all 5 paid levels (brief §3, pricing-model.en.md v0.4). */
 const COMPARE_COLS = [
-  "Free",
   "Starter",
   "Pilot",
   "Standard",
@@ -154,18 +136,17 @@ const COMPARE_COLS = [
 const COMPARE_ROWS = [
   {
     label: "Price",
-    cells: ["$0", "$199", "$500", "$1,500", "$3,900", "from $15,000"],
+    cells: ["$199", "$500", "$1,500", "$3,900", "from $15,000"],
     num: true,
   },
   {
     label: "Submissions included",
-    cells: ["3", "15", "40", "150", "500", "custom"],
+    cells: ["15", "40", "150", "500", "custom"],
     num: true,
   },
   {
     label: "Validity",
     cells: [
-      "lifetime trial",
       "90 days",
       "90 days",
       "120 days",
@@ -176,85 +157,84 @@ const COMPARE_ROWS = [
   },
   {
     label: "Projects",
-    cells: ["1", "1", "2", "5", "unlimited", "custom"],
+    cells: ["1", "2", "5", "unlimited", "custom"],
     num: true,
   },
   {
     label: "Top-up package",
-    cells: ["—", "+10 / $150", "+10 / $150", "+25 / $300", "+50 / $500", "custom"],
+    cells: ["+10 / $150", "+10 / $150", "+25 / $300", "+50 / $500", "custom"],
     num: true,
   },
   {
     label: "Effective price per submission",
-    cells: ["—", "$15", "$15", "$12", "$10", "custom"],
+    cells: ["$15", "$15", "$12", "$10", "custom"],
     num: true,
   },
   {
     label: "6 AI judges (P1–P6)",
-    cells: ["✓", "✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓", "✓", "✓"],
   },
   {
     label: "Evidence-linked rationale",
-    cells: ["✓", "✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓", "✓", "✓"],
   },
   {
     label: "Human-in-the-loop scoring",
-    cells: ["✓", "✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓", "✓", "✓"],
   },
   {
     label: "Review Board + leaderboard",
-    cells: ["✓", "✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓", "✓", "✓"],
   },
   {
     label: "Prompt-injection safety & privacy",
-    cells: ["✓", "✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓", "✓", "✓"],
   },
   {
     label: "Self-upload page",
-    cells: ["—", "✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓", "✓", "✓"],
   },
   {
     label: "CSV export",
-    cells: ["—", "✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓", "✓", "✓"],
   },
   {
     label: "PDF export",
-    cells: ["—", "—", "✓", "✓", "✓", "✓"],
+    cells: ["—", "✓", "✓", "✓", "✓"],
   },
   {
     label: "Remove watermark",
-    cells: ["—", "—", "✓", "✓", "✓", "✓"],
+    cells: ["—", "✓", "✓", "✓", "✓"],
   },
   {
     label: "Custom AI judges",
-    cells: ["—", "—", "—", "add-on", "limited", "✓"],
+    cells: ["—", "—", "add-on", "limited", "✓"],
   },
   {
     label: "BYO LLM",
-    cells: ["—", "—", "—", "—", "add-on", "✓"],
+    cells: ["—", "—", "—", "add-on", "✓"],
   },
   {
     label: "White-label branding",
-    cells: ["—", "—", "—", "—", "—", "✓"],
+    cells: ["—", "—", "—", "—", "✓"],
   },
   {
     label: "SLA + security review",
-    cells: ["—", "—", "—", "—", "—", "✓"],
+    cells: ["—", "—", "—", "—", "✓"],
   },
   {
     label: "Admin seats",
-    cells: ["1", "1", "2", "5", "10", "custom"],
+    cells: ["1", "2", "5", "10", "custom"],
     num: true,
   },
   {
     label: "Human judges",
-    cells: ["0", "2", "5", "10", "25", "custom"],
+    cells: ["2", "5", "10", "25", "custom"],
     num: true,
   },
   {
     label: "Support",
     cells: [
-      "—",
       "—",
       "Async setup",
       "Setup call + priority",
@@ -523,7 +503,7 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* 3. Comparison matrix — all 6 levels (page-local), soft. Scrolls inside wrapper. */}
+        {/* 3. Comparison matrix — all 5 paid levels (page-local), soft. Scrolls inside wrapper. */}
         <section id="compare" className="band soft pr-compare">
           <div className="wrap">
             <div className="head" data-reveal="up">
@@ -756,9 +736,9 @@ export default function PricingPage() {
           eyebrow="Get started"
           title="Ready to evaluate your next"
           titleAccent="cohort?"
-          sub="Start with 3 free submissions, or book a demo using your own decks."
+          sub="Book a demo with your own decks, or get started with your first event."
           primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "Start free", href: "/company/contact" }}
+          secondary={{ label: "Get started", href: "/company/contact" }}
           videoSrc="/assets/cta/neo.mp4"
           videoPoster="/assets/cta/neo-poster.webp"
         />

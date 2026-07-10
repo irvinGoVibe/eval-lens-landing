@@ -7480,7 +7480,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
    .pr-smaller. */
 .pricing .pr-plans{padding-top:clamp(32px,5vw,70px);margin-top:-250px;}
 .pricing .pr-plans .head{margin-bottom:clamp(36px,5vw,60px);}
-.pricing .pr-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,22px);align-items:stretch;}
+.pricing .pr-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);align-items:stretch;}
 .pricing .pr-card{position:relative;min-width:0;display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,0.55);backdrop-filter:saturate(160%) blur(14px);border:1px solid rgba(255,255,255,0.65);border-radius:var(--radius-card);padding:clamp(22px,2.4vw,30px);box-shadow:0 4px 24px rgba(0,0,0,.10);}
 .pricing .pr-card--recommended{background:color-mix(in srgb,var(--lens-soft) 70%,transparent);border-color:color-mix(in oklab,var(--violet) 32%,transparent);}
 .pricing .pr-card__badge{position:absolute;top:-14px;left:clamp(22px,2.4vw,30px);background:#fff;}
