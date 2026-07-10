@@ -10,6 +10,7 @@ import { Bento, PinnedSteps, Cinema, Gallery, RoutingMatrix, StatementHero, Eyeb
 import { DelayedLoopVideo } from "@/components/DelayedLoopVideo";
 import type { RoutingJudge } from "@/components/ds";
 import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
+import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 // DS blocks are added here as we compose the page, e.g.:
 // import { StatementHero, Bento, Numbered, CtaBand } from "@/components/ds";
@@ -190,6 +191,13 @@ export default function DemoDayPage() {
         <style>{`
           .demoday{ background: var(--bg-ink); }
           .demoday.ds::before{ display:none; }
+          /* ZoneBlobs ships six drifting PNGs; six of them animating over the
+             zone's stacked gradient layers drops frames on this page. Keep the
+             three that carry the composition (left/right/left) and drop the
+             rest — local to the deck, the shared component is untouched. */
+          .demoday .ds-blob--d,
+          .demoday .ds-blob--e,
+          .demoday .ds-blob--f{ display:none; }
         `}</style>
         <Hero />
         {/* Next blocks go here, in presentation order. */}
@@ -563,6 +571,13 @@ export default function DemoDayPage() {
             className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes ds-relight"
             aria-hidden="true"
           />
+          {/* SECOND dark layer, opacity:0. Sits above .ds-relight so it can
+              cover the light again, and is driven by the forward <ZoneToneFlip/>
+              via `targetSelector` — the two flips never fight over one opacity. */}
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark ds-redark"
+            aria-hidden="true"
+          />
           <div className="ds-flip-bridge" aria-hidden="true" />
           <div className="ds-flip-bridge__glow" aria-hidden="true" />
 
@@ -654,14 +669,20 @@ export default function DemoDayPage() {
               </div>
             </section>
           </div>
-        </div>
 
-        {/* Slide 10 — After the scores (Numbered, DS, v3). Ported verbatim from
-            product/review-board §2. Its surface is baked to `ink` in the
-            component, so it lands dark on the deck's black page — it sits
-            OUTSIDE the light zone above. The `\n` in `sub` is intentional: the
-            component turns it into a <br/>, matching the source line break. */}
-        <Numbered
+          {/* Forward tone-flip seam (slide 9 → 10): light→dark back through the
+              same brand bloom, so the seam is a colour transition, not a cut.
+              It drives `.ds-redark` — the SECOND dark layer — leaving the first
+              one (which held the dark head of the zone) alone. */}
+          <ZoneToneFlip targetSelector=".ds-redark" />
+
+          {/* Slide 10 — After the scores (Numbered, DS, v3). Ported verbatim from
+              product/review-board §2. Its surface is baked to `ink` in the
+              component, but INSIDE the zone `.band` goes transparent (ds.css
+              scopes that under `.ds-zone`), so the zone's dark layer shows
+              through and the flip stays visible. The `\n` in `sub` is
+              intentional: the component turns it into a <br/>. */}
+          <Numbered
           id="decision"
           version={3}
           eyebrow="After the scores"
@@ -689,8 +710,9 @@ export default function DemoDayPage() {
               title: "Decisions lose context",
               body: "Scores, notes, and reasoning should stay visible after the shortlist is final.",
             },
-          ]}
-        />
+            ]}
+          />
+        </div>
 
         {/* Slide 11 — HITL / "what we do not claim" (ink). Lifted whole from
             trust/consistency-reliability §8: a page-local replica of the
