@@ -6,7 +6,7 @@ import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
 import { TeamTilt } from "@/components/TeamTilt";
 import { ParallaxFloat } from "@/components/ParallaxFloat";
-import { Bento, PinnedSteps, Cinema, Gallery, RoutingMatrix, StatementHero, Eyebrow } from "@/components/ds";
+import { Bento, PinnedSteps, Cinema, Gallery, RoutingMatrix, StatementHero, Eyebrow, Numbered } from "@/components/ds";
 import { DelayedLoopVideo } from "@/components/DelayedLoopVideo";
 import type { RoutingJudge } from "@/components/ds";
 import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
@@ -310,6 +310,34 @@ export default function DemoDayPage() {
           </div>
         </section>
 
+        {/* Story opener — Cinema (ink). Bridges the team into the AI Jury
+            history that follows: the headline is knocked out of the scrim and
+            the unicorn reel plays through the letters. */}
+        <Cinema
+          id="origin"
+          surface="ink"
+          eyebrow="How we got here"
+          headline="It started as a hackathon project"
+          lines={["It started as", "a hackathon project"]}
+          mobileLines={["It started as", "a hackathon", "project"]}
+          sub="Two founders, one Amazon Nova hackathon, and a question — can a panel of specialized AI judges read a pitch deck better than one generic model?"
+          media={{
+            videoSrc: "/assets/cta/uniqorn-1.mp4",
+            poster: "/assets/cta/uniqorn-1-poster.webp",
+          }}
+          maskId="demoday-origin"
+        />
+
+        {/* Dark spacer — Cinema above and #story below are BOTH [data-pin]
+            sections. Two adjacent sticky pin stages fight each other's scroll
+            math (it broke the pipeline stepper once already); a plain
+            non-pinned black band between them is the fix. */}
+        <section
+          aria-hidden="true"
+          className="band ink"
+          style={{ minHeight: "40vh", background: "var(--bg-ink)" }}
+        />
+
         {/* Block B — Hundreds of runs (ported verbatim from company/about
             #story). From AI Jury to EvalLens — pinned multi-screen, DARK.
             The #story-claim Cinema block that follows it on About is a separate
@@ -427,8 +455,8 @@ export default function DemoDayPage() {
           mobileLines={["Our flow is", "one straight", "line"]}
           sub="From the first upload to the final report — one path, no detours."
           media={{
-            videoSrc: "/assets/methodology/methodology-transition.mp4?v=3",
-            poster: "/assets/methodology/methodology-transition-poster.webp",
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
           }}
           maskId="demoday-flow"
         />
@@ -628,7 +656,43 @@ export default function DemoDayPage() {
           </div>
         </div>
 
-        {/* Slide 10 — HITL / "what we do not claim" (ink). Lifted whole from
+        {/* Slide 10 — After the scores (Numbered, DS, v3). Ported verbatim from
+            product/review-board §2. Its surface is baked to `ink` in the
+            component, so it lands dark on the deck's black page — it sits
+            OUTSIDE the light zone above. The `\n` in `sub` is intentional: the
+            component turns it into a <br/>, matching the source line break. */}
+        <Numbered
+          id="decision"
+          version={3}
+          eyebrow="After the scores"
+          title="A scored batch still needs a decision"
+          titleAccent="decision"
+          sub="AI can score every startup. Your jury still needs to compare the \n  evidence, resolve disagreements, and decide what moves forward."
+          items={[
+            {
+              num: "01",
+              title: "Separate reports hide the differences",
+              body: "Important differences are easy to miss when every report lives in a separate tab.",
+            },
+            {
+              num: "02",
+              title: "Scores need evidence",
+              body: "A score means little unless reviewers can see what supports it.",
+            },
+            {
+              num: "03",
+              title: "Batch progress is hard to track",
+              body: "Reviewers need one place to see what is ready, in review, scored, or blocked.",
+            },
+            {
+              num: "04",
+              title: "Decisions lose context",
+              body: "Scores, notes, and reasoning should stay visible after the shortlist is final.",
+            },
+          ]}
+        />
+
+        {/* Slide 11 — HITL / "what we do not claim" (ink). Lifted whole from
             trust/consistency-reliability §8: a page-local replica of the
             StatementHero v3 editorial layout, reusing the global `ds-hero`
             classes, with a delayed-loop video in the media slot. Its `<style>`
@@ -696,7 +760,20 @@ export default function DemoDayPage() {
           </div>
         </section>
 
-        {/* Slide 11 — the closer. StatementHero (ink, v1) with a full-bleed
+        {/* page-local: fade the closer's video in from black at its top so it
+            blends into the ink HITL section above instead of a hard seam. The
+            fade sits at z-index 0 inside .ds-hero__v--media — above the video
+            (-2) and the scrim (-1), below the text overlay (1). Shared component
+            untouched. Ported from trust/consistency-reliability §9. */}
+        <style>{`
+          #live-demo .ds-hero__v--media::before{
+            content:""; position:absolute; left:0; right:0; top:0; z-index:0;
+            height:clamp(140px,20vh,260px); pointer-events:none;
+            background:linear-gradient(180deg, #05050a 0%, rgba(5,5,10,.55) 44%, transparent 100%);
+          }
+        `}</style>
+
+        {/* Slide 12 — the closer. StatementHero (ink, v1) with a full-bleed
             video background, lifted from trust/consistency-reliability
             §get-started. It owns its own background, so it stays OUTSIDE the
             tonal zone above. Copy is rewritten for the demo day: the deck ends
