@@ -6,7 +6,11 @@ import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
 import { TeamTilt } from "@/components/TeamTilt";
 import { ParallaxFloat } from "@/components/ParallaxFloat";
-import { Bento, PinnedSteps, Cinema, Gallery } from "@/components/ds";
+import { Bento, PinnedSteps, Cinema, Gallery, RoutingMatrix, StatementHero, Eyebrow } from "@/components/ds";
+import { DelayedLoopVideo } from "@/components/DelayedLoopVideo";
+import type { RoutingJudge } from "@/components/ds";
+import { ZoneToneFlipReverse } from "@/components/ZoneToneFlipReverse";
+import { ZoneBlobs } from "@/components/ZoneBlobs";
 // DS blocks are added here as we compose the page, e.g.:
 // import { StatementHero, Bento, Numbered, CtaBand } from "@/components/ds";
 
@@ -74,6 +78,48 @@ const PIPELINE_STEPS = [
     desc: "An explainable report is assembled for every participant.",
   },
 ];
+
+/* Slide 7 — the six Pitch Competition dimensions (P1–P6), read as questions.
+   These are the scored dimensions, NOT the judge lenses (J-P1…J-P6), which live
+   only in the Routing Matrix below. Ported verbatim from trust/methodology §5. */
+const DIMENSIONS = [
+  { tag: "P1", title: "Problem significance", body: ["Is the pain real, urgent, and specific?"] },
+  { tag: "P2", title: "Solution differentiation", body: ["Is the solution clear and meaningfully different?"] },
+  { tag: "P3", title: "Market attractiveness", body: ["Is the opportunity credible and worth pursuing?"] },
+  { tag: "P4", title: "Business model / GTM", body: ["Is there a plausible path to revenue and distribution?"] },
+  { tag: "P5", title: "Team / founder fit", body: ["Can this team credibly execute?"] },
+  { tag: "P6", title: "Feasibility / readiness", body: ["Is the plan realistic given resources, time, and dependencies?"] },
+];
+
+/* Slide 8 — the real Judge Routing Matrix (Pitch preset). Each judge has one
+   primary dimension (J-P3 owns two; J-P4 Pitch Quality reads everything as
+   advisory). Weights: primary 1.00 · secondary 0.50 · advisory 0.25 · none 0.
+   Ported verbatim from trust/methodology §6. */
+const ROUTING_DIMENSIONS = ["Problem", "Solution", "Market", "GTM", "Team", "Feasibility"];
+const ROUTING_DIMENSIONS_FULL = [
+  "Problem significance",
+  "Solution differentiation",
+  "Market attractiveness",
+  "Business model / GTM",
+  "Team / founder fit",
+  "Feasibility / readiness",
+];
+const ROUTING_JUDGES: RoutingJudge[] = [
+  { code: "J-P1", name: "Problem", cells: ["primary", "advisory", "advisory", "none", "none", "advisory"] },
+  { code: "J-P2", name: "Solution Logic", cells: ["secondary", "primary", "advisory", "advisory", "none", "secondary"] },
+  { code: "J-P3", name: "Business Value / Market", cells: ["advisory", "advisory", "primary", "primary", "none", "advisory"] },
+  { code: "J-P4", name: "Pitch Quality", cells: ["advisory", "advisory", "advisory", "advisory", "advisory", "advisory"] },
+  { code: "J-P5", name: "Team Readiness", cells: ["none", "none", "advisory", "advisory", "primary", "secondary"] },
+  { code: "J-P6", name: "Feasibility", cells: ["advisory", "secondary", "secondary", "secondary", "secondary", "primary"] },
+];
+
+/* Slide 9 — hero outcome stat-row (illustrative, framed as a 20–30 min manual
+   read). Page-local markup, ported verbatim from product/evidence-based-reports. */
+const HERO_STATS = [
+  { v: "Skip the first read", k: "Start with the report, not the raw deck." },
+  { v: "Up to 40 hours saved", k: "Across 100 decks, that can save a full week of reading." },
+  { v: "Review all decks at once", k: "Decks are processed in parallel, not one by one." },
+] as const;
 
 /* Team — founder dossier cards. Ported verbatim from company/about. */
 type TeamMember = {
@@ -458,6 +504,217 @@ export default function DemoDayPage() {
               body: "EvalLens produces an advisory total. The final decision and ranking stay under human control.",
             },
           ]}
+        />
+
+        {/* ── ONE continuous tonal zone (slides 7–9) ───────────────────────
+            The zone must BRACKET the seam, not start after it: slide 7 is the
+            dark side of the flip, slides 8–9 the light side. Layer stack
+            (z-index:-1, DOM order = back→front):
+              1) --lobes                 light BASE
+              2) --lobes-dark + sparks   dark layer. Forced on with
+                 `ds-zone__bg--on` because no forward <ZoneToneFlip/> precedes
+                 it here — the deck is already dark when the zone opens.
+              3) --lobes + .ds-relight   RE-LIGHT layer, opacity:0
+              4) .ds-flip-bridge + __glow  the brand bloom, opacity:0
+            <ZoneToneFlipReverse/> scrubs 3) in and flashes 4) across the seam —
+            that's the colour-to-colour blink, no grey mid-tone. ── */}
+        <div className="ds-zone">
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes"
+            aria-hidden="true"
+          />
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes-dark ds-zone__bg--on"
+            aria-hidden="true"
+          >
+            <span className="ds-canvas__spark ds-canvas__spark--1" />
+            <span className="ds-canvas__spark ds-canvas__spark--2" />
+            <span className="ds-canvas__spark ds-canvas__spark--3" />
+          </div>
+          <div
+            className="ds-zone__bg ds-zone__bg--contained ds-canvas__bg--lobes ds-relight"
+            aria-hidden="true"
+          />
+          <div className="ds-flip-bridge" aria-hidden="true" />
+          <div className="ds-flip-bridge__glow" aria-hidden="true" />
+
+          {/* Blobs belong to the light tail only — clipped off the dark head
+              (slide 7). Tune the % if section heights change. */}
+          <ZoneBlobs top="30%" />
+
+          {/* Slide 7 — Dimension Matrix (Gallery, DS, ink). The six scored
+              dimensions read as questions. Ported verbatim from methodology §5.
+              This is the DARK side of the flip. */}
+          <Gallery
+            id="matrix"
+            surface="ink"
+            version={4}
+            eyebrow="Dimension matrix"
+            title="Six questions, one rubric"
+            accentWords={["questions", "rubric"]}
+            sub="Each deck is scored across six Pitch Competition dimensions. The dimensions are fixed, so every startup is compared against the same core questions."
+            laneLabel="The six Pitch Competition dimensions, P1 through P6"
+            items={DIMENSIONS}
+          />
+
+          {/* Reverse tone-flip seam (slide 7 → 8): dark→light through the brand
+              bridge, no grey. */}
+          <ZoneToneFlipReverse />
+
+          {/* Slide 8 — Routing matrix (RoutingMatrix, DS, light). Full judge ×
+              dimension table. Ported verbatim from methodology §6. */}
+          <RoutingMatrix
+            id="routing"
+            eyebrow="Controlled influence"
+            title="Not every judge influences every score"
+            accentWords={["influences"]}
+            sub="The matrix shows how much each judge lens (J-P1...J-P6) contributes to each dimension (P1-P6). Primary judges drive the score. Secondary judges add important support. Advisory judges provide context. None means no scoring influence."
+            dimensions={ROUTING_DIMENSIONS}
+            dimensionsFull={ROUTING_DIMENSIONS_FULL}
+            judges={ROUTING_JUDGES}
+          />
+
+          {/* Slide 9 — "A score you can explain", lifted whole from
+              product/evidence-based-reports §1: the StatementHero plus its
+              page-local stat-row. Both need the `.evidence-reports` scope (it
+              owns `.evr-*` and the v3 hero-image rule), so the class rides a
+              local wrapper — putting it on <main> would drag that page's
+              Cinema/Bento overrides onto our other slides.
+
+              `id` is NOT "hero": the home Hero owns that, and a second #hero
+              re-arms the global scroll-lock. `headingLevel="h2"` keeps one h1. */}
+          <div className="evidence-reports">
+            <StatementHero
+              id="score"
+              surface="light"
+              version={3}
+              headingLevel="h2"
+              eyebrow="Evidence-Based Reports"
+              titleLead="A score you can explain."
+              titleAccent="Evidence"
+              titleTrail="you can check."
+              sub="See how each team scored, what drove the result, and what to ask next. You make the final call."
+              ctas={[
+                { label: "Book a Demo", href: "https://calendly.com/evallens/30min" },
+                { label: "View Sample Report", href: "#" },
+              ]}
+              media={{
+                ratio: "3/2",
+                label: "Image · score linked to the deck · 3:2",
+                hint: "A score with thin lines tracing back to deck slides — lens-gradient violet→cyan→aqua, calm",
+                ariaLabel:
+                  "An overall score with a dimension radar, linked to deck slides — Market TAM and Traction MAU",
+                src: "/assets/evidence-reports/hero-score-dashboards-01.webp",
+                width: 1536,
+                height: 1024,
+              }}
+            />
+
+            <section
+              className="band soft evr-statband"
+              aria-label="Illustrative outcomes, based on a 20–30 minute manual read per deck"
+            >
+              <div className="wrap">
+                <ul className="evr-stats" data-reveal="up">
+                  {HERO_STATS.map((s) => (
+                    <li key={s.v} className="evr-stat">
+                      <span className="evr-stat__v">{s.v}</span>
+                      <span className="evr-stat__k">{s.k}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        {/* Slide 10 — HITL / "what we do not claim" (ink). Lifted whole from
+            trust/consistency-reliability §8: a page-local replica of the
+            StatementHero v3 editorial layout, reusing the global `ds-hero`
+            classes, with a delayed-loop video in the media slot. Its `<style>`
+            is scoped by the section's own `.consistency-honest-edge` class, so
+            nothing leaks onto the rest of the deck. Copy is placeholder — the
+            user will rewrite it. It sits OUTSIDE the light zone above (ink). */}
+        <section className="band ink ds-hero consistency-honest-edge">
+          <style>{`
+            .consistency-honest-edge{ overflow:hidden; }
+            .consistency-honest-edge .cr-honest-media{
+              position:relative; width:100%; aspect-ratio:16/9; overflow:hidden;
+              border-radius:clamp(22px,2.2vw,30px);
+            }
+            /* media ~1.5x, anchored at its LEFT edge so it grows into the empty
+               right gutter (bleeds off the edge, clipped by the section) and
+               never reaches the copy or heading. Desktop only; 1x when stacked. */
+            @media (min-width:621px){
+              .consistency-honest-edge .cr-honest-media{
+                transform:scale(1.5); transform-origin:left center;
+              }
+            }
+            .consistency-honest-edge .cr-honest-media video{
+              position:absolute; inset:0; width:100%; height:100%;
+              object-fit:cover; transform:scale(1.08); transform-origin:center;
+              -webkit-mask-image:
+                linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+                linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+              -webkit-mask-composite:source-in;
+              mask-image:
+                linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+                linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+              mask-composite:intersect;
+            }
+            .consistency-honest-edge .cr-honest-media::after{
+              content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+              background:radial-gradient(122% 100% at 50% 50%, transparent 50%, rgba(5,4,12,.55) 82%, rgba(5,4,12,.92) 100%);
+            }
+          `}</style>
+          <div className="ds-hero__v ds-hero__v3" data-version="3">
+            <div className="wrap ds-hero__editorial">
+              <div className="ds-hero__ed-copy">
+                <Eyebrow>What we do not claim</Eyebrow>
+                {/* h2: the page's one h1 lives in the home Hero */}
+                <h2 className="ds-hero__title ds-hero__title--left">
+                  <span className="grad-word">Reliability</span> has an honest edge
+                </h2>
+                <p className="sub ds-hero__sub ds-hero__sub--left">
+                  EvalLens does not promise to predict startup success. It raises
+                  the quality of evaluation by making it structured,
+                  evidence-linked, and checkable. It points you to the decisions
+                  that need human attention most — and because absolute calibration
+                  across every deck type is still being proven, the human makes the
+                  final call.
+                </p>
+              </div>
+              <div className="ds-hero__ed-media cr-honest-media" aria-hidden="true">
+                {/* plays once, holds the last frame, then replays after a 7s gap */}
+                <DelayedLoopVideo
+                  src="/assets/consistency/honest-edge-bg.mp4"
+                  poster="/assets/consistency/honest-edge-bg-poster.webp"
+                  gap={7}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Slide 11 — the closer. StatementHero (ink, v1) with a full-bleed
+            video background, lifted from trust/consistency-reliability
+            §get-started. It owns its own background, so it stays OUTSIDE the
+            tonal zone above. Copy is rewritten for the demo day: the deck ends
+            here and we switch to the live product.
+            `headingLevel="h2"` keeps the page at one h1 (the home Hero). */}
+        <StatementHero
+          id="live-demo"
+          surface="ink"
+          version={1}
+          headingLevel="h2"
+          background="video"
+          backgroundSrc="/assets/consistency/consistency-cta-bg-2.mp4"
+          backgroundPoster="/assets/consistency/consistency-cta-bg-2-poster.webp"
+          eyebrow="Live demo"
+          titleLead="From here, we show it"
+          titleAccent="live"
+          sub="The slides end here. We'll run a real batch of decks on stage — evidence, scores, and the final report, end to end."
+          ctas={[{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }]}
         />
       </main>
       {/* Two scroll engines coexist on this page (the only page that does).

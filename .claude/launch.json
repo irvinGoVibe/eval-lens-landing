@@ -10,8 +10,8 @@
     {
       "name": "web",
       "cwd": "web",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev"],
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": ["-lc", "exec pnpm dev"],
       "port": 3005,
       "autoPort": false
     },
