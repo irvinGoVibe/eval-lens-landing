@@ -698,23 +698,23 @@ export default function DemoDayPage() {
           items={[
             {
               num: "01",
-              title: "Separate reports hide the differences",
-              body: "Important differences are easy to miss when every report lives in a separate tab.",
+              title: "Отдельные отчёты скрывают различия",
+              body: "Важные различия легко упустить, когда каждый отчёт находится в отдельной вкладке.",
             },
             {
               num: "02",
-              title: "Scores need evidence",
-              body: "A score means little unless reviewers can see what supports it.",
+              title: "Оценки должны быть подтверждены доказательствами",
+              body: "Оценка ничего не значит, если нельзя увидеть, на чём она основана.",
             },
             {
               num: "03",
-              title: "Batch progress is hard to track",
-              body: "Reviewers need one place to see what is ready, in review, scored, or blocked.",
+              title: "За прогрессом оценки сложно следить",
+              body: "Ревьюерам нужен единый экран, где видно, что уже готово, что находится на проверке, что оценено, а что заблокировано.",
             },
             {
               num: "04",
-              title: "Decisions lose context",
-              body: "Scores, notes, and reasoning should stay visible after the shortlist is final.",
+              title: "Решения теряют контекст",
+              body: "Оценки, комментарии и обоснования должны оставаться доступными даже после того, как финальный шорт-лист уже сформирован.",
             },
             ]}
           />
