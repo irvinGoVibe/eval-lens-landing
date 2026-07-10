@@ -38,8 +38,25 @@ export function ScrollFX() {
      * this the body stays an overflow:hidden clip container and every
      * `position:sticky` pin stage (data-pin) silently fails to stick. ScrollFX
      * is mounted once on every internal page, so this is the canonical place
-     * to lift it (mirrors web/src/app/bento/ScrollUnlock.tsx). */
-    const bodyWasLocked = !document.body.classList.contains("hero-ready");
+     * to lift it (mirrors web/src/app/bento/ScrollUnlock.tsx).
+     *
+     * EXCEPTION — /demoday mounts BOTH engines: the home Hero (with its intro
+     * choreography in ScrollOrchestrator) plus this ScrollFX for the ported DS
+     * pins/reveals. On that page ScrollOrchestrator is the sole owner of
+     * `hero-ready` — it sets the class after the intro and deliberately never
+     * removes it. If ScrollFX also toggled the class, its cleanup (dev Strict
+     * Mode mount→cleanup→mount, and the async race with the Hero video) would
+     * strip `hero-ready`, re-lock the body (overflow:hidden) and silently kill
+     * every sticky pin stage. So when the real home Hero is present
+     * (`#hero .hero-video` — internal StatementHero uses id="hero" but has no
+     * .hero-video), ScrollFX does NOT manage the lock at all and leaves it to
+     * ScrollOrchestrator. Internal pages have no such element, so their
+     * behaviour is unchanged. */
+    const homeHeroPresent = Boolean(
+      document.querySelector("#hero .hero-video"),
+    );
+    const bodyWasLocked =
+      !homeHeroPresent && !document.body.classList.contains("hero-ready");
     if (bodyWasLocked) document.body.classList.add("hero-ready");
     const unlock = () => {
       if (bodyWasLocked) document.body.classList.remove("hero-ready");
