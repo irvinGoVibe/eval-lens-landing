@@ -102,7 +102,7 @@ function Title({
   }
   const words = title.split(" ");
   const parts = words.map((word, i) => {
-    const bare = word.replace(/[^a-zA-Z]/g, "");
+    const bare = word.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase();
     const shouldAccent = accentWords ? accentWords.has(bare) : i === 0;
     return shouldAccent ? (
       <span key={i} className="grad-word">{(i > 0 ? " " : "") + word}</span>
@@ -150,7 +150,7 @@ export function LabGallery({
   items,
   marker,
 }: LabGalleryProps) {
-  const accentSet = accentWords ? new Set(accentWords) : undefined;
+  const accentSet = accentWords ? new Set(accentWords.map((w) => w.toLowerCase())) : undefined;
   const surf = surface === "ink" ? "ink" : "soft";
 
   return (

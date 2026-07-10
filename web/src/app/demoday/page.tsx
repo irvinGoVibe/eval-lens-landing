@@ -37,59 +37,59 @@ const STORY_STEPS = [
   {
     num: "01",
     label: "AI Jury",
-    desc: "The first version was built during the Amazon Nova hackathon. It tested whether specialized AI judges could evaluate pitch decks from different angles.",
+    desc: "Первая версия появилась на Amazon Nova Hackathon. Мы проверяли, могут ли специализированные AI-судьи оценивать питчи с разных сторон.",
   },
   {
     num: "02",
     label: "Hundreds of runs",
-    desc: "Adding more judges did not solve quality. Scores shifted, roles overlapped, and long reports created noise instead of clarity.",
+    desc: "Больше судей не решили проблему качества. Оценки плавали, роли пересекались, а длинные отчёты создавали шум вместо ясности.",
   },
   {
     num: "03",
     label: "A controlled system",
-    desc: "So we stopped designing an artificial jury. We started building a controlled evaluation system: fixed criteria, clear roles, structured outputs, evidence-linked reports, and human review.",
+    desc: "Поэтому мы перестали проектировать искусственное жюри и начали строить контролируемую систему оценки: фиксированные критерии, ясные роли, структурированные выводы, отчёты с привязкой к evidence и human review.",
   },
 ];
 
-/* Pipeline — the five fixed stages. Ported verbatim from trust/methodology. */
+/* Pipeline — the five fixed stages. Adapted for the demoday process narrative. */
 const PIPELINE_STEPS = [
   {
     num: "01",
-    label: "Decoder",
-    desc: "PDF, PPTX, or Google Slides — every deck is converted into the same structured, slide-by-slide format for the judges.",
+    label: "Декодирование",
+    desc: "PDF, PPTX или Google Slides приводятся к единому структурированному формату для дальнейшего анализа.",
   },
   {
     num: "02",
-    label: "AI Judges",
-    desc: "Six judges review the deck independently against the same criteria. They don't see one another's scores.",
+    label: "Панель AI-судей",
+    desc: "Шесть специализированных судей независимо оценивают проект по одним и тем же критериям, не влияя друг на друга.",
   },
   {
     num: "03",
-    label: "Aggregate",
-    desc: "The scoring layer aggregates judge scores with fixed math. A separate summary layer prepares the narrative and follow-up questions.",
+    label: "Агрегация результатов",
+    desc: "Все оценки, выводы и доказательства объединяются в единую структуру по фиксированным правилам.",
   },
   {
     num: "04",
-    label: "Scoring",
-    desc: "Your criterion weights are applied to the Human Jury Score to produce the Final Score.",
+    label: "Итоговая оценка",
+    desc: "Система рассчитывает итоговый балл с учётом ваших критериев и весов. Финальное решение принимает человек.",
   },
   {
     num: "05",
-    label: "Report",
-    desc: "An explainable report is assembled for every participant.",
+    label: "Отчёт",
+    desc: "Для каждого проекта формируется понятный отчёт с баллами, доказательствами, рисками и рекомендациями.",
   },
 ];
 
-/* Slide 7 — the six Pitch Competition dimensions (P1–P6), read as questions.
+/* Slide 7 — the six Pitch Competition dimensions (P1–P6), framed as criteria.
    These are the scored dimensions, NOT the judge lenses (J-P1…J-P6), which live
-   only in the Routing Matrix below. Ported verbatim from trust/methodology §5. */
+   only in the Routing Matrix below. */
 const DIMENSIONS = [
-  { tag: "P1", title: "Problem significance", body: ["Is the pain real, urgent, and specific?"] },
-  { tag: "P2", title: "Solution differentiation", body: ["Is the solution clear and meaningfully different?"] },
-  { tag: "P3", title: "Market attractiveness", body: ["Is the opportunity credible and worth pursuing?"] },
-  { tag: "P4", title: "Business model / GTM", body: ["Is there a plausible path to revenue and distribution?"] },
-  { tag: "P5", title: "Team / founder fit", body: ["Can this team credibly execute?"] },
-  { tag: "P6", title: "Feasibility / readiness", body: ["Is the plan realistic given resources, time, and dependencies?"] },
+  { tag: "P1", title: "Значимость проблемы", body: ["Насколько проблема реальна, важна и требует решения?"] },
+  { tag: "P2", title: "Отличие решения", body: ["Насколько решение убедительно и отличается от существующих альтернатив?"] },
+  { tag: "P3", title: "Привлекательность рынка", body: ["Достаточно ли велик рынок и есть ли потенциал для роста?"] },
+  { tag: "P4", title: "Бизнес-модель", body: ["Понятно ли, как продукт будет привлекать клиентов и зарабатывать?"] },
+  { tag: "P5", title: "Команда", body: ["Способна ли команда реализовать этот проект?"] },
+  { tag: "P6", title: "Реализуемость", body: ["Реалистичен ли план с учётом ресурсов, сроков и рисков?"] },
 ];
 
 /* Slide 8 — the real Judge Routing Matrix (Pitch preset). Each judge has one
@@ -117,9 +117,9 @@ const ROUTING_JUDGES: RoutingJudge[] = [
 /* Slide 9 — hero outcome stat-row (illustrative, framed as a 20–30 min manual
    read). Page-local markup, ported verbatim from product/evidence-based-reports. */
 const HERO_STATS = [
-  { v: "Skip the first read", k: "Start with the report, not the raw deck." },
-  { v: "Up to 40 hours saved", k: "Across 100 decks, that can save a full week of reading." },
-  { v: "Review all decks at once", k: "Decks are processed in parallel, not one by one." },
+  { v: "Начинайте с отчёта", k: "Сначала ключевые выводы, затем исходный дек." },
+  { v: "До 40 часов экономии", k: "Массовая оценка десятков проектов вместо ручного разбора каждого." },
+  { v: "Вся когорта в одном месте", k: "Сравнивайте все проекты по единому стандарту оценки." },
 ] as const;
 
 /* Team — founder dossier cards. Ported verbatim from company/about. */
@@ -127,7 +127,7 @@ type TeamMember = {
   surname: string;
   name: string;
   role: string;
-  bio: string;
+  bio?: string;
   /** Handwritten / marker-style note over the card. */
   marker?: string;
   /** One light, human "Off-screen: …" line. */
@@ -149,7 +149,6 @@ const TEAM: TeamMember[] = [
     surname: "Volovoj",
     name: "Yaroslav Volovoj",
     role: "Product & GTM",
-    bio: "Turns messy startup evaluation into a product people can actually use. Owns the review flow, GTM logic, and the bridge from AI Jury to EvalLens.",
     marker: "Founder mode: on",
     offscreen: "Off-screen: sharp decks, product calls, and probably a pickleball court.",
     dream: "Grow a unicorn!",
@@ -165,7 +164,6 @@ const TEAM: TeamMember[] = [
     surname: "Starodubov",
     name: "Vladislav Starodubov",
     role: "Engineering & Reliability",
-    bio: "Builds the system behind EvalLens: judge orchestration, scoring infrastructure, security, and repeatable evaluation runs.",
     marker: "Keeps it working",
     offscreen: "Off-screen: architecture maps, edge cases, and systems that refuse to break.",
     dream: "Grow a unicorn!",
@@ -198,8 +196,28 @@ export default function DemoDayPage() {
           .demoday .ds-blob--d,
           .demoday .ds-blob--e,
           .demoday .ds-blob--f{ display:none; }
+          .demoday #origin .ds-cinema__fill{
+            background:
+              linear-gradient(
+                180deg,
+                #f8fbff 0%,
+                #f8fbff 47%,
+                #8d8bff 47%,
+                #48b9f4 58%,
+                #36e0c2 100%
+              );
+          }
+          .demoday #deck-bento .lab-bento__tile h3{
+            font-size:clamp(36px,4.4vw,50px);
+            line-height:1.04;
+          }
         `}</style>
-        <Hero />
+        <Hero
+          primaryAction="restart-unicorn"
+          primaryLabel="Start Demo"
+          showSecondary={false}
+          showSub={false}
+        />
         {/* Next blocks go here, in presentation order. */}
 
         {/* Block A — Team (ported verbatim from company/about #team). Founder
@@ -212,15 +230,15 @@ export default function DemoDayPage() {
                 <span className="dot" aria-hidden="true"></span>
                 The team
               </span>
-              <h2 className="title">Built by product, engineering, and <span className="grad-word">evaluation</span> people</h2>
+              <h2 className="title">Мы знаем эту проблему с <span className="grad-word">обеих сторон</span></h2>
               {/* trust-line — early-team durability: shared context, low founder-
                   conflict risk. "16+ years" carries the lens gradient. */}
               <p className="ab-trust">
                 <span className="ab-trust__lead">
-                  Two founders. <span className="ab-trust__years">16+ years</span> of shared context.
+                  Два основателя. <span className="ab-trust__years">16+ лет</span> общего контекста.
                 </span>
                 <span className="ab-trust__sub">
-                  From university friends to building a system for better judgment.
+                  От университетской дружбы до системы для более точной оценки.
                 </span>
               </p>
             </div>
@@ -271,7 +289,9 @@ export default function DemoDayPage() {
                   <div className="ab-dossier__body">
                     <span className="ab-dossier__role">{m.role}</span>
                     <h3 className="ab-dossier__name">{m.name}</h3>
-                    <p className="ab-dossier__bio">{m.bio}</p>
+                    {m.bio ? (
+                      <p className="ab-dossier__bio">{m.bio}</p>
+                    ) : null}
                     {m.offscreen ? (
                       <p className="ab-dossier__offscreen">{m.offscreen}</p>
                     ) : null}
@@ -324,11 +344,11 @@ export default function DemoDayPage() {
         <Cinema
           id="origin"
           surface="ink"
-          eyebrow="How we got here"
-          headline="It started as a hackathon project"
-          lines={["It started as", "a hackathon project"]}
-          mobileLines={["It started as", "a hackathon", "project"]}
-          sub="Two founders, one Amazon Nova hackathon, and a question — can a panel of specialized AI judges read a pitch deck better than one generic model?"
+          eyebrow="Как мы пришли к этому"
+          headline="Все началось с хакатона"
+          lines={["Все началось с", "хакатона"]}
+          mobileLines={["Все началось с", "хакатона"]}
+          sub="Amazon Nova Hackathon. Один вопрос: может ли команда специализированных AI-судей оценивать питчи лучше, чем одна универсальная модель?"
           media={{
             videoSrc: "/assets/cta/uniqorn-1.mp4",
             poster: "/assets/cta/uniqorn-1-poster.webp",
@@ -365,11 +385,12 @@ export default function DemoDayPage() {
                     <span className="dot" aria-hidden="true"></span>
                     From AI jury to human-controlled evaluation
                   </span>
-                  <h2 className="title">What <span className="grad-word">hundreds of runs</span> taught us</h2>
+                  <h2 className="title">Чему нас научили <span className="grad-word">сотни пробегов</span>?</h2>
                   <p className="sub">
-                    EvalLens started as AI Jury. The early idea was simple: use
-                    several specialized AI judges instead of one generic model
-                    opinion. Then the runs exposed the real problem.
+                    EvalLens начинался как AI Jury. Первая идея была простой:
+                    использовать несколько специализированных AI-судей вместо
+                    мнения одной универсальной модели. Но прогоны быстро
+                    показали настоящую проблему.
                   </p>
                 </div>
                 <ol className="ab-story__track">
@@ -386,16 +407,6 @@ export default function DemoDayPage() {
                     </li>
                   ))}
                 </ol>
-                {/* link to the long-form origin story (Newsroom: founding-story) */}
-                <div
-                  className="ab-story__cta"
-                  data-reveal="up"
-                  style={{ display: "flex", justifyContent: "center" }}
-                >
-                  <Button href="/blog/founding-story" variant="gradient" arrow>
-                    Read the full story
-                  </Button>
-                </div>
               </div>
               <div className="ab-story__side">
                 {/* story visual — the full EvalLens origin journey (AI Jury →
@@ -424,30 +435,30 @@ export default function DemoDayPage() {
         <Bento
           id="deck-bento"
           eyebrow="The problem"
-          title="Evaluation breaks on both sides"
-          titleAccent="both sides"
-          sub="Organizers drown in decks. Founders get no real read. Same broken evaluation, two victims."
+          title="Оценка ломается с обеих сторон"
+          titleAccent="обеих сторон"
+          sub="Организаторы не успевают оценивать. Фаундеры не понимают, почему проиграли. Причина одна и та же."
           items={[
             {
               tag: "Organizer",
-              title: "Too many decks, too little time",
-              body: "The submission flow outpaces the panel — review turns into the bottleneck, and strong startups get lost in the pile.",
+              title: "Деков больше\nчем времени",
+              body: "Поток заявок превышает возможности жюри, поэтому глубина оценки зависит от места проекта в очереди.",
               feature: true,
             },
             {
               tag: "Organizer",
-              title: "The bar drifts",
-              body: "As fatigue sets in, the same deck is scored differently. Standards slip from one review to the next.",
+              title: "Планка оценки дрейфует",
+              body: "Один и тот же дек получает разные баллы в зависимости от судьи, усталости и порядка просмотра.",
             },
             {
               tag: "Founder",
-              title: "Read on the diagonal",
-              body: "Your deck gets skimmed. The strongest parts never register, and the verdict is a coin flip.",
+              title: "Дек читают по диагонали",
+              body: "Сильные аргументы остаются незамеченными, а решение зависит от первого впечатления.",
             },
             {
               tag: "Founder",
-              title: "No feedback",
-              body: "A rejection with no reasons — nothing to act on, nothing to improve for the next round.",
+              title: "Нет понятной обратной связи",
+              body: "Фаундер получает итоговый балл, но не понимает, что именно нужно исправить.",
             },
           ]}
         />
@@ -458,10 +469,10 @@ export default function DemoDayPage() {
         <Cinema
           id="deck-flow"
           surface="ink"
-          headline="Our flow is one straight line"
-          lines={["Our flow is", "one straight line"]}
-          mobileLines={["Our flow is", "one straight", "line"]}
-          sub="From the first upload to the final report — one path, no detours."
+          headline="Один процесс. Один стандарт оценки."
+          lines={["Один процесс.", "Один стандарт оценки."]}
+          mobileLines={["Один процесс.", "Один стандарт", "оценки."]}
+          sub="От загрузки заявки до итогового отчёта каждый проект проходит один и тот же путь."
           media={{
             videoSrc: "/assets/methodology/cinema.mp4",
             poster: "/assets/methodology/cinema-poster.webp",
@@ -485,17 +496,17 @@ export default function DemoDayPage() {
           id="pipeline"
           surface="ink"
           version={3}
-          ariaLabel="Every deck runs the same five stages"
-          eyebrow="One fixed path"
-          title={{ line1: "", line1Accent: "Every deck", line2: "follows the same path" }}
-          sub="The process stays fixed, so every deck is reviewed the same way."
+          ariaLabel="Каждый проект проходит пять одинаковых этапов"
+          eyebrow="Один стандарт оценки"
+          title={{ line1: "", line1Accent: "Каждый проект", line2: "проходит один и тот же путь" }}
+          sub="Процесс остаётся неизменным, поэтому каждый проект оценивается по одному стандарту."
           steps={PIPELINE_STEPS}
           media={{
             ratio: "4/3",
             label: "Diagram · pipeline · 4:3",
-            hint: "Decoder → AI Judges → Summarizer → Scoring → Report, nodes lit along a track",
+            hint: "Декодирование → AI-судьи → Агрегация → Итоговая оценка → Отчёт, узлы подсвечены вдоль трека",
             ariaLabel:
-              "Horizontal track of the five pipeline stages, Decoder to Report",
+              "Горизонтальный трек из пяти этапов процесса, от декодирования до отчёта",
           }}
           videoScrub={{
             src: "/assets/methodology/methodology-transition.mp4?v=3",
@@ -513,31 +524,31 @@ export default function DemoDayPage() {
           id="not-a-wrapper"
           surface="ink"
           version={3}
-          eyebrow="Not ChatGPT-with-a-prompt"
-          title="Not a wrapper over GPT"
+          eyebrow="Не один универсальный промпт"
+          title="Не обёртка над GPT"
           accentWords={["GPT"]}
-          sub="Four things separate EvalLens from a single model call over a pretty deck."
-          laneLabel="Four ways EvalLens differs from a single GPT prompt"
+          sub="Четыре вещи отличают EvalLens от одного вызова универсальной модели."
+          laneLabel="Четыре отличия EvalLens от одного вызова универсальной модели"
           items={[
             {
-              tag: "Panel, not a prompt",
-              title: "Six role-based judges",
-              body: "Each judge sees only its own dimension. One call blends everything and falls for slick deck design — we remove that structurally.",
+              tag: "Панель, а не промпт",
+              title: "Шесть ролевых судей",
+              body: "Каждый судья отвечает только за своё измерение. Это устраняет эффект ореола и смешение критериев.",
             },
             {
-              tag: "Contract, not an essay",
-              title: "One fixed schema per run",
-              body: "Every run follows the same structured contract, where each score is tied to a specific quote from the deck.",
+              tag: "Контракт, а не сочинение",
+              title: "Единый контракт оценки",
+              body: "Каждый прогон проходит по одной структуре. Каждый балл подтверждается конкретным фрагментом дека.",
             },
             {
-              tag: "Calibration, not vibes",
-              title: "400+ runs against evidence",
-              body: "Measured against score drift, judge bias, and score compression. One deck, one reproducible analysis.",
+              tag: "Калибровка, а не ощущения",
+              title: "400+ калибровочных прогонов",
+              body: "Мы измеряем дрейф оценок, bias судей и стабильность результатов, чтобы оценка была воспроизводимой.",
             },
             {
-              tag: "Advisor, not a verdict",
-              title: "The human sets the score",
-              body: "EvalLens produces an advisory total. The final decision and ranking stay under human control.",
+              tag: "Советник, а не приговор",
+              title: "Человек принимает решение",
+              body: "EvalLens готовит структурированный разбор. Финальный балл и решение всегда остаются за человеком.",
             },
           ]}
         />
@@ -586,17 +597,16 @@ export default function DemoDayPage() {
           <ZoneBlobs top="30%" />
 
           {/* Slide 7 — Dimension Matrix (Gallery, DS, ink). The six scored
-              dimensions read as questions. Ported verbatim from methodology §5.
-              This is the DARK side of the flip. */}
+              dimensions are framed as criteria. This is the DARK side of the flip. */}
           <Gallery
             id="matrix"
             surface="ink"
             version={4}
-            eyebrow="Dimension matrix"
-            title="Six questions, one rubric"
-            accentWords={["questions", "rubric"]}
-            sub="Each deck is scored across six Pitch Competition dimensions. The dimensions are fixed, so every startup is compared against the same core questions."
-            laneLabel="The six Pitch Competition dimensions, P1 through P6"
+            eyebrow="Шесть критериев оценки"
+            title="Шесть критериев. Один стандарт оценки."
+            accentWords={["Один", "стандарт"]}
+            sub="Каждый проект оценивается по одним и тем же критериям, поэтому результаты остаются сопоставимыми."
+            laneLabel="Шесть критериев оценки, P1-P6"
             items={DIMENSIONS}
           />
 
@@ -608,10 +618,10 @@ export default function DemoDayPage() {
               dimension table. Ported verbatim from methodology §6. */}
           <RoutingMatrix
             id="routing"
-            eyebrow="Controlled influence"
-            title="Not every judge influences every score"
-            accentWords={["influences"]}
-            sub="The matrix shows how much each judge lens (J-P1...J-P6) contributes to each dimension (P1-P6). Primary judges drive the score. Secondary judges add important support. Advisory judges provide context. None means no scoring influence."
+            eyebrow="Контролируемое влияние"
+            title="Каждый судья влияет на свой балл"
+            accentWords={["влияет"]}
+            sub="Каждый судья влияет только на свои критерии оценки."
             dimensions={ROUTING_DIMENSIONS}
             dimensionsFull={ROUTING_DIMENSIONS_FULL}
             judges={ROUTING_JUDGES}
@@ -632,15 +642,11 @@ export default function DemoDayPage() {
               surface="light"
               version={3}
               headingLevel="h2"
-              eyebrow="Evidence-Based Reports"
-              titleLead="A score you can explain."
-              titleAccent="Evidence"
-              titleTrail="you can check."
-              sub="See how each team scored, what drove the result, and what to ask next. You make the final call."
-              ctas={[
-                { label: "Book a Demo", href: "https://calendly.com/evallens/30min" },
-                { label: "View Sample Report", href: "#" },
-              ]}
+              eyebrow="Отчёт с доказательствами"
+              titleLead="Балл, который можно объяснить."
+              titleAccent="Доказательства"
+              titleTrail="которые можно проверить."
+              sub="Каждый вывод связан с конкретными слайдами дека, поэтому вы понимаете не только итоговую оценку, но и причины, которые к ней привели."
               media={{
                 ratio: "3/2",
                 label: "Image · score linked to the deck · 3:2",
@@ -685,10 +691,10 @@ export default function DemoDayPage() {
           <Numbered
           id="decision"
           version={3}
-          eyebrow="After the scores"
-          title="A scored batch still needs a decision"
-          titleAccent="decision"
-          sub="AI can score every startup. Your jury still needs to compare the \n  evidence, resolve disagreements, and decide what moves forward."
+          eyebrow="После оценки"
+          title="Оценённая когорта всё ещё требует решения"
+          titleAccent="решения"
+          sub="AI может оценить каждый проект. Но жюри всё равно должно сравнить доказательства, разобрать расхождения и решить, кто проходит дальше."
           items={[
             {
               num: "01",
@@ -756,18 +762,15 @@ export default function DemoDayPage() {
           <div className="ds-hero__v ds-hero__v3" data-version="3">
             <div className="wrap ds-hero__editorial">
               <div className="ds-hero__ed-copy">
-                <Eyebrow>What we do not claim</Eyebrow>
+                <Eyebrow>Что остаётся за человеком</Eyebrow>
                 {/* h2: the page's one h1 lives in the home Hero */}
                 <h2 className="ds-hero__title ds-hero__title--left">
-                  <span className="grad-word">Reliability</span> has an honest edge
+                  Система анализирует. Человек оценивает.
                 </h2>
                 <p className="sub ds-hero__sub ds-hero__sub--left">
-                  EvalLens does not promise to predict startup success. It raises
-                  the quality of evaluation by making it structured,
-                  evidence-linked, and checkable. It points you to the decisions
-                  that need human attention most — and because absolute calibration
-                  across every deck type is still being proven, the human makes the
-                  final call.
+                  EvalLens структурирует разбор, собирает доказательства и
+                  подсвечивает риски. Финальный балл, сравнение команд и решение
+                  всегда остаются за жюри.
                 </p>
               </div>
               <div className="ds-hero__ed-media cr-honest-media" aria-hidden="true">
@@ -812,8 +815,12 @@ export default function DemoDayPage() {
           eyebrow="Live demo"
           titleLead="From here, we show it"
           titleAccent="live"
-          sub="The slides end here. We'll run a real batch of decks on stage — evidence, scores, and the final report, end to end."
-          ctas={[{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }]}
+          sub="Сейчас мы покажем вам живой пайплайн, как работает наша система."
+          ctas={[{
+            label: "Погнали!",
+            href: "https://ai-jury-prod.vercel.app/dashboard",
+            target: "_blank",
+          }]}
         />
       </main>
       {/* Two scroll engines coexist on this page (the only page that does).

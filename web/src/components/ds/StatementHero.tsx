@@ -23,6 +23,8 @@ import { Eyebrow, Media } from "@/components/ds";
 export type StatementHeroCta = {
   label: string;
   href: string;
+  target?: "_blank" | "_self" | "_parent" | "_top";
+  rel?: string;
   /** Accepted for back-compat with the old Lab API; the rail picks the variant. */
   variant?: "primary" | "ghost" | "glass" | "gradient" | "dark";
 };
@@ -119,6 +121,8 @@ export function StatementHero({
       <Button
         key={i}
         href={c.href}
+        target={c.target}
+        rel={c.rel ?? (c.target === "_blank" ? "noopener noreferrer" : undefined)}
         variant={glass ? "glass" : i === 0 ? "gradient" : "ghost"}
       >
         {c.label}

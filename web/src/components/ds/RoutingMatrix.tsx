@@ -80,7 +80,7 @@ function TitleText({ title, accentWords }: { title: string; accentWords?: string
   const set = new Set(accentWords.map((w) => w.toLowerCase()));
   const segments: { accent: boolean; words: string[] }[] = [];
   title.split(" ").forEach((word) => {
-    const accent = set.has(word.replace(/[^a-zA-Z]/g, "").toLowerCase());
+    const accent = set.has(word.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase());
     const last = segments[segments.length - 1];
     if (last && last.accent === accent) last.words.push(word);
     else segments.push({ accent, words: [word] });

@@ -1,6 +1,20 @@
-import { Button } from "@/components/ui/Button";
+import { HeroActions } from "@/components/sections/HeroActions";
 
-export function Hero() {
+type HeroProps = {
+  showSub?: boolean;
+  showSecondary?: boolean;
+  primaryLabel?: string;
+  primaryHref?: string;
+  primaryAction?: "restart-unicorn";
+};
+
+export function Hero({
+  showSub = true,
+  showSecondary = true,
+  primaryLabel = "Book a demo",
+  primaryHref = "https://calendly.com/evallens/30min",
+  primaryAction,
+}: HeroProps) {
   return (
     <section
       className="band hero"
@@ -210,16 +224,18 @@ export function Hero() {
           <h1 className="title hero-fade d2">
             Lens Your <span className="grad-word">Next Unicorn</span>
           </h1>
-          <p className="sub hero-fade d3">
-            Batch-review pitch decks, rank the strongest startups, and give every
-            team a clear report.
-          </p>
-          <div className="cta-row hero-fade d4">
-            <Button href="https://calendly.com/evallens/30min">Book a demo</Button>
-            <Button variant="glass" arrow>
-              Try live demo
-            </Button>
-          </div>
+          {showSub ? (
+            <p className="sub hero-fade d3">
+              Batch-review pitch decks, rank the strongest startups, and give every
+              team a clear report.
+            </p>
+          ) : null}
+          <HeroActions
+            primaryAction={primaryAction}
+            primaryHref={primaryHref}
+            primaryLabel={primaryLabel}
+            showSecondary={showSecondary}
+          />
         </div>
       </div>
     </section>
