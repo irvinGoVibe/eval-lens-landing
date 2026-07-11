@@ -26,7 +26,7 @@ export const LOOP_POSTS: LoopPost[] = [
     cover: "/assets/bento/jury-decision.png",
     video: "/assets/hero-intro-2.mp4",
     date: "2026-06-10",
-    href: "https://www.tiktok.com/@evallense",
+    href: "https://www.tiktok.com/@evallens",
   },
   {
     id: "earth-day-team",
@@ -43,7 +43,7 @@ export const LOOP_POSTS: LoopPost[] = [
       "/assets/bento/deck-vault-art.png",
     ],
     date: "2026-06-04",
-    href: "https://www.instagram.com/evallense/",
+    href: "https://www.instagram.com/evallens/",
   },
   {
     id: "prompt-injection-caught",
@@ -55,7 +55,7 @@ export const LOOP_POSTS: LoopPost[] = [
     cover: "/assets/bento/injection-blocked.png",
     video: "/assets/hero-intro-2.mp4",
     date: "2026-05-28",
-    href: "https://www.youtube.com/@evallense/shorts",
+    href: "https://www.youtube.com/@evallens/shorts",
   },
   {
     id: "inside-a-report",
@@ -67,7 +67,7 @@ export const LOOP_POSTS: LoopPost[] = [
       "Every score traced back to the exact slide that earned it. This is the report view we've been refining all quarter — and I'm really proud of where it landed.",
     cover: "/assets/bento/scoring-matrix.png",
     date: "2026-05-19",
-    href: "https://www.instagram.com/evallense/",
+    href: "https://www.instagram.com/evallens/",
   },
   {
     id: "deck-vault-tour",
@@ -79,7 +79,7 @@ export const LOOP_POSTS: LoopPost[] = [
     cover: "/assets/bento/deck-vault.png",
     video: "/assets/section2-scroll-2.mp4",
     date: "2026-05-12",
-    href: "https://www.instagram.com/evallense/reels/",
+    href: "https://www.instagram.com/evallens/reels/",
   },
   {
     id: "studio-gallery",
@@ -96,6 +96,6 @@ export const LOOP_POSTS: LoopPost[] = [
       "/assets/bento/jury-decision.png",
     ],
     date: "2026-05-05",
-    href: "https://www.instagram.com/evallense/",
+    href: "https://www.instagram.com/evallens/",
   },
 ];

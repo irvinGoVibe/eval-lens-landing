@@ -328,7 +328,7 @@ values
     'https://wlnkmhxeuwvnyojiksfu.supabase.co/storage/v1/object/public/media/video/hero-intro-2.mp4',
     null,
     '2026-06-10',
-    'https://www.tiktok.com/@evallense',
+    'https://www.tiktok.com/@evallens',
     'published',
     now() + interval '1 second'
   ),
@@ -347,7 +347,7 @@ values
       "https://wlnkmhxeuwvnyojiksfu.supabase.co/storage/v1/object/public/media/bento/deck-vault-art.png"
     ]'::jsonb,
     '2026-06-04',
-    'https://www.instagram.com/evallense/',
+    'https://www.instagram.com/evallens/',
     'published',
     now() + interval '2 second'
   ),
@@ -362,7 +362,7 @@ values
     'https://wlnkmhxeuwvnyojiksfu.supabase.co/storage/v1/object/public/media/video/hero-intro-2.mp4',
     null,
     '2026-05-28',
-    'https://www.youtube.com/@evallense/shorts',
+    'https://www.youtube.com/@evallens/shorts',
     'published',
     now() + interval '3 second'
   ),
@@ -377,7 +377,7 @@ values
     null,
     null,
     '2026-05-19',
-    'https://www.instagram.com/evallense/',
+    'https://www.instagram.com/evallens/',
     'published',
     now() + interval '4 second'
   ),
@@ -392,7 +392,7 @@ values
     'https://wlnkmhxeuwvnyojiksfu.supabase.co/storage/v1/object/public/media/video/section2-scroll-2.mp4',
     null,
     '2026-05-12',
-    'https://www.instagram.com/evallense/reels/',
+    'https://www.instagram.com/evallens/reels/',
     'published',
     now() + interval '5 second'
   ),
@@ -411,7 +411,7 @@ values
       "https://wlnkmhxeuwvnyojiksfu.supabase.co/storage/v1/object/public/media/bento/jury-decision.png"
     ]'::jsonb,
     '2026-05-05',
-    'https://www.instagram.com/evallense/',
+    'https://www.instagram.com/evallens/',
     'published',
     now() + interval '6 second'
   )

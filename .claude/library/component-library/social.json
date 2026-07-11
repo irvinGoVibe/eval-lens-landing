@@ -6,7 +6,7 @@
     {
       "name": "Footer SOCIALS", "source": "web/src/components/Footer.tsx (SOCIALS const, rendered .foot-social)",
       "purpose": "footer follow icons", "data_shape": "{name, href, svgPath}[]",
-      "external_links": ["x.com/evallense", "instagram.com/evallense/", "t.me/evallense", "medium.com/@evallense"],
+      "external_links": ["x.com/evallens", "instagram.com/evallens/", "t.me/evallens", "medium.com/@evallens"],
       "accessibility": "<a target=_blank rel=noopener noreferrer aria-label={name}>, <svg aria-hidden>",
       "media_support": "inline simple-icons SVG", "variants": "icon-only",
       "classification": "candidate-for-extraction (duplicated with contact)"

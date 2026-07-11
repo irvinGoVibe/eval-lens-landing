@@ -21,10 +21,10 @@ const ORG_JSON_LD = {
   url: SITE_URL,
   logo: `${SITE_URL}/assets/brand/evallense-logo.webp`,
   sameAs: [
-    "https://x.com/evallense",
-    "https://www.instagram.com/evallense/",
-    "https://t.me/evallense",
-    "https://medium.com/@evallense",
+    "https://x.com/evallens",
+    "https://www.instagram.com/evallens/",
+    "https://t.me/evallens",
+    "https://medium.com/@evallens",
   ],
 };
 
