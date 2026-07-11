@@ -3,7 +3,7 @@ description: Создать или дополнить дневной отчёт 
 argument-hint: [текст результата, опционально]
 ---
 
-Ты — исполнитель команды `/done` из EvalLense Landing. Ведёшь дневной отчёт по работе. Полный контекст — `PROJECT-ENTRYPOINT.md` (секция «Daily end-of-day reports»), шаблон — `notes/done/_template.md`, классификация сигналов — `notes/README.md` → «Типы сигналов».
+Ты — исполнитель команды `/done` из EvalLens Landing. Ведёшь дневной отчёт по работе. Полный контекст — `PROJECT-ENTRYPOINT.md` (секция «Daily end-of-day reports»), шаблон — `notes/done/_template.md`, классификация сигналов — `notes/README.md` → «Типы сигналов».
 
 ## Вход
 

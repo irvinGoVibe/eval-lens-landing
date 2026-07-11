@@ -8,7 +8,7 @@ sources: VC-мемо веб-ресёрч × source of truth ai-jury-prod
 
 # Memo — «A memo for every deck»
 
-> **TL;DR.** Каждая строка лидерборда EvalLense уже стоит на evidence-based report.
+> **TL;DR.** Каждая строка лидерборда EvalLens уже стоит на evidence-based report.
 > Фича превращает его в **одностраничное screening memo на дек** и даёт организатору
 > **собрать шортлист в Memo Pack** — документ, который он реально пересылает
 > партнёрам / IC / судьям. Инвариант: **AI собирает анализ — решает и подписывает
@@ -40,7 +40,7 @@ thesis/recommendation · market · team · product · traction · **risks & miti
 **IC = Investment Committee** — группа старших партнёров фонда, которая голосует по
 сделке; IC memo = обращение deal lead → этому комитету.
 
-**EvalLense делает screening memo, НЕ IC.** Осознанно: deal terms / financials /
+**EvalLens делает screening memo, НЕ IC.** Осознанно: deal terms / financials /
 return-math — зона человека дальше по воронке, на единичной сделке. Поэтому «memo на
 каждый дек» реалистично на масштабе батча.
 
@@ -59,13 +59,13 @@ return-math — зона человека дальше по воронке, на
   CRM; **>⅔ планируют внедрять «investment memo creation»**.
 
 **Дифференциатор — острый.** Провал таких генераторов — **галлюцинированные цифры**.
-Memo EvalLense: каждое утверждение → слайд (**SourceRef**), воспроизводимо (same
+Memo EvalLens: каждое утверждение → слайд (**SourceRef**), воспроизводимо (same
 deck → same score), **подписано человеком** (Jury Score). Не «правдоподобный
 черновик», а **защитимое мемо + audit trail**.
 
 ---
 
-## 3. Структура screening memo EvalLense (v1)
+## 3. Структура screening memo EvalLens (v1)
 
 **Принципы (из research):** одна страница · рекомендация сверху · bull+bear · каждое
 утверждение → слайд (`SourceRef`) · решает и подписывает человек.

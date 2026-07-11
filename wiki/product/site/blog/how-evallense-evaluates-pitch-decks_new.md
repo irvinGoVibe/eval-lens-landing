@@ -2,7 +2,7 @@
 slug: how-evallense-evaluates-pitch-decks
 category: Research
 accent: cyan
-title: How EvalLense evaluates pitch decks
+title: How EvalLens evaluates pitch decks
 excerpt: A look inside the methodology — how a deck becomes a structured, evidence-backed score you can reproduce, and why the final ranking stays yours.
 date: 2026-06-15
 readMinutes: 6
@@ -15,7 +15,7 @@ From the outside, judging a stack of pitch decks looks rigorous. A panel reads e
 
 The weak part is the part you can't see. Why did this deck score a 7 and that one a 6? What in the deck actually backed it? Where did the judges disagree? And the ranking that came out — did an AI decide it, or did you?
 
-Most tools answer none of those. They hand you a number and hope you don't ask. EvalLense is built to answer all four, on every deck in the batch. That is what lets you screen a hundred decks in an afternoon and still defend every call.
+Most tools answer none of those. They hand you a number and hope you don't ask. EvalLens is built to answer all four, on every deck in the batch. That is what lets you screen a hundred decks in an afternoon and still defend every call.
 
 ## The short version
 
@@ -95,7 +95,7 @@ That order — math first, prose second — is the difference between an evidenc
 
 Averages hide conflict. A dimension where every judge gives 7.5 is not the same as one where one gives 5 and another gives 10 — but the average is identical.
 
-So EvalLense measures the spread between judges on each dimension and labels it:
+So EvalLens measures the spread between judges on each dimension and labels it:
 
 | Spread | Status | What it means |
 |---|---|---|
@@ -126,7 +126,7 @@ You read the AI report, add live Q&A and the context only you have, then submit 
 
 ## Why this matters
 
-EvalLense isn't trying to make pitch judging sound more scientific with heavier language. It solves a plain problem: evaluating startups at volume needs structure, traceability, and a result you can stand behind.
+EvalLens isn't trying to make pitch judging sound more scientific with heavier language. It solves a plain problem: evaluating startups at volume needs structure, traceability, and a result you can stand behind.
 
 A score becomes credible when it's expensive to fake — when you can see what was measured, what evidence backed it, where the judges split, and who signed off. Across 1,000+ evaluation runs, that's the line that separates a ranking you can defend from a number you have to trust on faith.
 
@@ -138,6 +138,6 @@ A good evaluation system should show:
 - where the judges disagreed;
 - who made the final decision.
 
-That is the core of how EvalLense works — and why the lens stays in your hands.
+That is the core of how EvalLens works — and why the lens stays in your hands.
 
 Want to see it run on your own batch? **Book a demo.**

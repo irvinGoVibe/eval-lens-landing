@@ -1,10 +1,10 @@
 ---
 name: component-library-preparer
-description: "Служебный skill: инспектирует ЖИВУЮ UI-библиотеку сайта EvalLense и готовит из неё нормализованный source of truth для page-composer / build-pages. Сверяет docs ↔ Section Lab ↔ фактический код, классифицирует ассеты по слоям (tokens · atoms · layouts · lab-sections · production-sections · chrome · newsroom · social · backgrounds · transitions · motion), формирует строгие consumption contracts и machine-readable manifests, фиксирует docs/code-конфликты и readiness. САМ не собирает страницы, не редизайнит, не извлекает компоненты, не коммитит — только анализ, валидация, contracts/manifests/docs. Режимы: full и incremental single-target — принимает указатель на ОДИН объект (имя компонента / путь к файлу / «ссылку» на объект / описание места) и добавляет/обновляет только его в библиотеке, не прогоняя всё заново. Триггеры — /component-library-preparer, «подготовь библиотеку компонентов», «добавь в библиотеку <объект>», «обнови consumption contract <Component>», «вот ссылка на новый блок — внеси в библиотеку», «проинспектируй section-lab для page-composer», «library preparer full»."
+description: "Служебный skill: инспектирует ЖИВУЮ UI-библиотеку сайта EvalLens и готовит из неё нормализованный source of truth для page-composer / build-pages. Сверяет docs ↔ Section Lab ↔ фактический код, классифицирует ассеты по слоям (tokens · atoms · layouts · lab-sections · production-sections · chrome · newsroom · social · backgrounds · transitions · motion), формирует строгие consumption contracts и machine-readable manifests, фиксирует docs/code-конфликты и readiness. САМ не собирает страницы, не редизайнит, не извлекает компоненты, не коммитит — только анализ, валидация, contracts/manifests/docs. Режимы: full и incremental single-target — принимает указатель на ОДИН объект (имя компонента / путь к файлу / «ссылку» на объект / описание места) и добавляет/обновляет только его в библиотеке, не прогоняя всё заново. Триггеры — /component-library-preparer, «подготовь библиотеку компонентов», «добавь в библиотеку <объект>», «обнови consumption contract <Component>», «вот ссылка на новый блок — внеси в библиотеку», «проинспектируй section-lab для page-composer», «library preparer full»."
 metadata:
   package: component-library
   role: service
-  product: EvalLense
+  product: EvalLens
   consumers: [page-composer, build-pages, component-forge, forge-index]
 ---
 
@@ -65,7 +65,7 @@ Skill только анализирует и пишет contracts/manifests/docs
 > целиком (см. [[design-system]] §«Дизайн-система — `@/components/ds`»).
 
 Нельзя считать библиотекой только `web/src/components/sections/lab/Lab*.tsx`.
-Фактическая библиотека EvalLense включает все слои ниже. Skill обязан найти их
+Фактическая библиотека EvalLens включает все слои ниже. Skill обязан найти их
 **по фактическому коду** и **не выдумывать** отсутствующие компоненты. Колонка
 «Где искать» — это физический source (в т.ч. deprecated субстрат); manifest-имя/ID
 всегда DS-публичное.

@@ -3,7 +3,7 @@ description: Из задачи / сигнала собрать черновик 
 argument-hint: <текст задачи или ссылка на источник>
 ---
 
-Ты — исполнитель команды `/story-draft` из EvalLense Landing. Готовишь story-черновик из сырого сигнала. Полный контекст — `PROJECT-ENTRYPOINT.md`. Связанные процессы — `wiki/processes/process.md`, `wiki/processes/linear-workflow.md`, `wiki/processes/agent-workflow.md`.
+Ты — исполнитель команды `/story-draft` из EvalLens Landing. Готовишь story-черновик из сырого сигнала. Полный контекст — `PROJECT-ENTRYPOINT.md`. Связанные процессы — `wiki/processes/process.md`, `wiki/processes/linear-workflow.md`, `wiki/processes/agent-workflow.md`.
 
 **Linear-guard:** если в `PROJECT-ENTRYPOINT.md` секция Linear помечена как «не подключён» — пропусти шаг 7 (Linear-переходы), выполни остальную логику и сообщи об этом пользователю.
 

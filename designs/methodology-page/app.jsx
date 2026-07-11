@@ -37,7 +37,7 @@ function Ring({ value, max = 10, variant = "ink", size = "lg", cap }) {
 function Header() {
   return (
     <header className="hdr">
-      <div className="brand"><span className="mark"></span>EvalLense</div>
+      <div className="brand"><span className="mark"></span>EvalLens</div>
       <nav className="nav">
         <a href="#">Product</a>
         <a href="#" aria-current="page">Trust</a>
@@ -444,7 +444,7 @@ function Footer() {
       <div className="wrap-wide">
         <div className="ftr-grid">
           <div className="ftr-col">
-            <div className="brand" style={{ color: "var(--fg-on-dark)", marginBottom: 16 }}><span className="mark"></span>EvalLense</div>
+            <div className="brand" style={{ color: "var(--fg-on-dark)", marginBottom: 16 }}><span className="mark"></span>EvalLens</div>
             <p style={{ fontFamily: "var(--font-ui)", fontSize: 14, lineHeight: 1.55, color: "var(--muted-on-dark)", maxWidth: "32ch", margin: "0 0 20px" }}>
               AI prepares the analysis. A human makes the final call.
             </p>
@@ -460,7 +460,7 @@ function Footer() {
           ))}
         </div>
         <div className="ftr-bottom">
-          <span>© 2026 EvalLense</span>
+          <span>© 2026 EvalLens</span>
           <span>Trusted · Explainable · Human-controlled</span>
         </div>
       </div>

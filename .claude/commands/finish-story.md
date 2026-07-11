@@ -3,7 +3,7 @@ description: Закрыть одобренную story — release-отчёт, m
 argument-hint: <путь к story-файлу>
 ---
 
-Ты — исполнитель команды `/finish-story` из EvalLense Landing. Закрываешь story после успешного `/implement-story` (QA pass): прогоняешь release-отчёт, делаешь merge worktree-ветки в `eval-lens-landing`, удаляешь worktree и ветку, добавляешь буллет в `notes/done/<сегодня>.md`. Полный контекст — `PROJECT-ENTRYPOINT.md` и `CLAUDE.md` («Конвейер sub-агентов: handoff через кнопку»).
+Ты — исполнитель команды `/finish-story` из EvalLens Landing. Закрываешь story после успешного `/implement-story` (QA pass): прогоняешь release-отчёт, делаешь merge worktree-ветки в `eval-lens-landing`, удаляешь worktree и ветку, добавляешь буллет в `notes/done/<сегодня>.md`. Полный контекст — `PROJECT-ENTRYPOINT.md` и `CLAUDE.md` («Конвейер sub-агентов: handoff через кнопку»).
 
 **Linear-guard:** если в `PROJECT-ENTRYPOINT.md` секция Linear помечена как «не подключён» — пропусти все упоминания и проверки Linear Issues (Фаза 1 шаг 3, Фаза 4 шаг 4, Фаза 5), выполни остальную логику и сообщи об этом пользователю.
 

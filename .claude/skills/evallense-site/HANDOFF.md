@@ -1,9 +1,9 @@
-# EvalLense — handoff (продолжение в новой сессии)
+# EvalLens — handoff (продолжение в новой сессии)
 
 Версия: evallense-site v2.0.0 · обновлено 2026-06-16 · язык работы: русский.
 
 ## Что уже сделано
-1. **Контекст-файл** `.agents/product-marketing.md` (корень репо) — полный профиль EvalLense + блок 0 «Нарратив и нейминг». Это центральный источник, его читают скиллы.
+1. **Контекст-файл** `.agents/product-marketing.md` (корень репо) — полный профиль EvalLens + блок 0 «Нарратив и нейминг». Это центральный источник, его читают скиллы.
 2. **Скилл** `skills/evallense-site/`:
    - `SKILL.md` — **v2.0.0:** flow редактуры продуктовых брифов (slug → читаю бриф → факты из ai-jury-prod → архетипы из живых design-доков → `<slug>_new.md`).
    - `references/copy-system.md` — войс, паттерны заголовков/CTA, термины, use/avoid, антислоп, CRO/психология (всё ещё применяется к копии внутри брифа).
@@ -12,14 +12,14 @@
 3. Память сессии записана: `evallense-product`, `evallense-conventions` (подхватятся в новом чате).
 
 ## Нарративные инварианты (не нарушать)
-- Имя продукта — **EvalLense** (не «AI Jury» — это origin-story, только на /company/about).
+- Имя продукта — **EvalLens** (не «AI Jury» — это origin-story, только на /company/about).
 - Ядро: **AI готовит доказательный анализ — решает человек** (human-in-the-loop; «the final call always yours»). Никаких «AI judges/decides/verdict».
 - CTA: основной «Book a demo», вторичный «Try live demo».
 - Термины: Entry Hub · evidence-based report · Review Board · AI judges P1–P6 · AI Total Score (advisory) vs Jury Score / Final Score (human).
 - Диалог — рус., продакшен-копия — англ. Tone: Apple-минимализм, statement-first, без гиперболы.
 
 ## Как продолжить в новой сессии
-Открой этот репозиторий и скажи, например: «продолжаем EvalLense, давай перепишем Hero» или «/evallense-site текст для секции Trust». Скилл сам подтянет `.agents/product-marketing.md`.
+Открой этот репозиторий и скажи, например: «продолжаем EvalLens, давай перепишем Hero» или «/evallense-site текст для секции Trust». Скилл сам подтянет `.agents/product-marketing.md`.
 
 ## Открытые вопросы (для фаундера)
 - Ссылка на статью про AI Jury (origin).

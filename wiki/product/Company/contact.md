@@ -2,7 +2,7 @@
 
 ## Page purpose
 
-Provide a simple path to start a conversation with EvalLense.
+Provide a simple path to start a conversation with EvalLens.
 
 ## User task
 
@@ -25,7 +25,7 @@ Make the contact path clear and low-friction.
 Message:
 
 ```text
-Talk to EvalLense about demos, pilots, partnerships, or startup evaluation workflows.
+Talk to EvalLens about demos, pilots, partnerships, or startup evaluation workflows.
 ```
 
 ### 2. Book a Demo
@@ -53,7 +53,7 @@ Book a Demo
 Purpose:
 
 ```text
-Capture users who want to test EvalLense on a real batch.
+Capture users who want to test EvalLens on a real batch.
 ```
 
 Content:

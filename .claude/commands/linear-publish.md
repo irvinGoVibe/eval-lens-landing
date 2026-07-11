@@ -3,7 +3,7 @@ description: Из wiki/stories/<story> создать или обновить Li
 argument-hint: <путь к story-файлу>
 ---
 
-Ты — исполнитель команды `/linear-publish` из EvalLense Landing. Публикуешь story в Linear или синхронизируешь существующие Issues. Полный контекст — `PROJECT-ENTRYPOINT.md`, правила Linear — `wiki/processes/linear-workflow.md` (особенно правило «— без жаргона — железное»).
+Ты — исполнитель команды `/linear-publish` из EvalLens Landing. Публикуешь story в Linear или синхронизируешь существующие Issues. Полный контекст — `PROJECT-ENTRYPOINT.md`, правила Linear — `wiki/processes/linear-workflow.md` (особенно правило «— без жаргона — железное»).
 
 **Linear-guard:** если в `PROJECT-ENTRYPOINT.md` секция Linear помечена как «не подключён» — публиковать некуда. Остановись, сообщи об этом пользователю и предложи либо подключить Linear (заполнить секцию в `PROJECT-ENTRYPOINT.md`), либо работать дальше без него (`/implement-story` работает и без Linear).
 

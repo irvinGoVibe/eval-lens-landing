@@ -6,7 +6,7 @@ short: how-evallense-evaluates
 updated: 2026-06-17
 ---
 
-# Media brief — How EvalLense evaluates pitch decks
+# Media brief — How EvalLens evaluates pitch decks
 
 Бюджет: **cover + 4 inline** (≈6 мин чтения). Выбраны варианты **A**.
 Стиль для всех картинок: lens-градиент `118° violet #6c4cf1 → lavender #a99bff →

@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * Display heading — the EvalLense statement headline. Renders in the SF Pro
+ * Display heading — the EvalLens statement headline. Renders in the SF Pro
  * Display stack at weight 600 with tight tracking and balanced wrapping. An
  * optional `accent` phrase is painted with the brand lens gradient (use it on
  * ONE phrase per heading, never the whole line). Pick the semantic level with

@@ -1,11 +1,11 @@
 ---
 name: page-skeleton
-description: "ПРОХОД 1 из 3 расслоённой сборки страницы EvalLense (skeleton → skin → motion). Собирает СТРУКТУРУ одной страницы в нейтрале: route + продуктовый бриф → обязательные секции, порядок, готовые (`ready`) DS-компоненты, ОДНА светлая нейтральная поверхность (light/soft), БЕЗ бренд-цвета и БЕЗ переходов между секциями. Монтирует <ScrollFX/> (видимость DS-компонентов завязана на движок — без него data-reveal остаётся opacity:0 и страница пустая/не скроллится), но сам extra-motion и tr-* НЕ добавляет — встроенные reveal/pin компонентов это норма. На выходе — рабочая читаемая страница, которую легко проверить и итерировать. После Structure Gate структура ЗАМОРАЖИВАЕТСЯ (locked) — раскраску делает page-skin, переходы page-motion. Сам application-код пишет назначенный инженер после user-гейта. Не batch (это build-pages), не раскрашивает, не делает переходы между секциями. Триггеры — /page-skeleton, «собери структуру <route>», «собери страницу в нейтрале», «skeleton <route>», «resume skeleton <route>»."
+description: "ПРОХОД 1 из 3 расслоённой сборки страницы EvalLens (skeleton → skin → motion). Собирает СТРУКТУРУ одной страницы в нейтрале: route + продуктовый бриф → обязательные секции, порядок, готовые (`ready`) DS-компоненты, ОДНА светлая нейтральная поверхность (light/soft), БЕЗ бренд-цвета и БЕЗ переходов между секциями. Монтирует <ScrollFX/> (видимость DS-компонентов завязана на движок — без него data-reveal остаётся opacity:0 и страница пустая/не скроллится), но сам extra-motion и tr-* НЕ добавляет — встроенные reveal/pin компонентов это норма. На выходе — рабочая читаемая страница, которую легко проверить и итерировать. После Structure Gate структура ЗАМОРАЖИВАЕТСЯ (locked) — раскраску делает page-skin, переходы page-motion. Сам application-код пишет назначенный инженер после user-гейта. Не batch (это build-pages), не раскрашивает, не делает переходы между секциями. Триггеры — /page-skeleton, «собери структуру <route>», «собери страницу в нейтрале», «skeleton <route>», «resume skeleton <route>»."
 metadata:
   package: page-build
   role: orchestrator
   pass: 1
-  product: EvalLense
+  product: EvalLens
   pipeline: [page-skeleton, page-skin, page-motion]
   consumes: [component-library-preparer manifests]
   routes_to: [component-forge, primitive-layer-forge, component-library-preparer]

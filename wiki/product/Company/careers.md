@@ -2,7 +2,7 @@
 
 ## Page purpose
 
-Explain who EvalLense wants to work with and what kind of company is being built.
+Explain who EvalLens wants to work with and what kind of company is being built.
 
 ## User task
 
@@ -10,7 +10,7 @@ Help potential team members understand the mission, culture, and future hiring d
 
 ## Main idea to communicate
 
-EvalLense is building serious infrastructure for AI-assisted, human-controlled startup evaluation.
+EvalLens is building serious infrastructure for AI-assisted, human-controlled startup evaluation.
 
 ## Section structure
 

@@ -1,11 +1,11 @@
 ---
 name: page-skin
-description: "ПРОХОД 2 из 3 расслоённой сборки страницы EvalLense (skeleton → skin → motion). РАСКРАШИВАЕТ уже собранную нейтральную страницу: спрашивает тему (light/dark) и стиль, накладывает surface-драматургию (light/soft/ink-пики) + бренд-цвет + recipe-anchor поверх ЗАМОРОЖЕННОЙ структуры. НЕ меняет секции/порядок/контент (skeleton.locked), НЕ делает переходы и анимацию (это page-motion). Каждый выбранный стиль = отдельный визуальный вариант на гейте; user выбирает ОДИН. Геометрия surface-invariant — раскраска не двигает раскладку. Записывает surface_sequence для page-motion. Сам код пишет инженер после user-гейта. Триггеры — /page-skin, «раскрась <route>», «примени тему/стиль к <route>», «сделай dark-версию <route>», «skin <route>», «resume skin <route>»."
+description: "ПРОХОД 2 из 3 расслоённой сборки страницы EvalLens (skeleton → skin → motion). РАСКРАШИВАЕТ уже собранную нейтральную страницу: спрашивает тему (light/dark) и стиль, накладывает surface-драматургию (light/soft/ink-пики) + бренд-цвет + recipe-anchor поверх ЗАМОРОЖЕННОЙ структуры. НЕ меняет секции/порядок/контент (skeleton.locked), НЕ делает переходы и анимацию (это page-motion). Каждый выбранный стиль = отдельный визуальный вариант на гейте; user выбирает ОДИН. Геометрия surface-invariant — раскраска не двигает раскладку. Записывает surface_sequence для page-motion. Сам код пишет инженер после user-гейта. Триггеры — /page-skin, «раскрась <route>», «примени тему/стиль к <route>», «сделай dark-версию <route>», «skin <route>», «resume skin <route>»."
 metadata:
   package: page-build
   role: orchestrator
   pass: 2
-  product: EvalLense
+  product: EvalLens
   pipeline: [page-skeleton, page-skin, page-motion]
   depends_on: page-skeleton
   routes_to: [visual-layer-forge, component-forge, component-library-preparer]

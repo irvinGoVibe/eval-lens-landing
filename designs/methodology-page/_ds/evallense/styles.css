@@ -1,4 +1,4 @@
-/* EvalLense design system — global CSS entry point.
+/* EvalLens design system — global CSS entry point.
    Consumers link THIS one file. Keep it a list of @import lines only;
    every token/role/helper lives in the imported files. No webfonts to ship —
    the type system is the platform Apple stack (see tokens/typography.css). */

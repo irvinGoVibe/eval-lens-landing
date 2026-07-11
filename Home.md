@@ -5,7 +5,7 @@ version: 1.0
 updated: 2026-06-15
 ---
 
-# EvalLense Landing — Knowledge Vault
+# EvalLens Landing — Knowledge Vault
 
 Главный вход в документацию проекта.
 

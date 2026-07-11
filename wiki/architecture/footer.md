@@ -67,7 +67,7 @@ source: фактический код — web/src/components/Footer.tsx + web/sr
 
 ## Нижний ряд (`.legal`)
 
-- Слева: `EvalLense © 2026` + технические страницы Privacy / Terms / Security.
+- Слева: `EvalLens © 2026` + технические страницы Privacy / Terms / Security.
   Копирайт и ссылки — **один тип** (тот же размер/цвет, `13px`, `--muted`).
 - Справа: иконки соцсетей.
 

@@ -1,7 +1,7 @@
 import type { ReactNode, CSSProperties } from "react";
 
 /**
- * Display heading — the EvalLense statement headline, with an optional
+ * Display heading — the EvalLens statement headline, with an optional
  * lens-gradient accent phrase.
  * @startingPoint section="Typography" subtitle="Statement heading with lens accent" viewport="760x220"
  */

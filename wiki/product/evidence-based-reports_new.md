@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Product-страница: объясняет главный output EvalLense — структурированные отчёты,
+Product-страница: объясняет главный output EvalLens — структурированные отчёты,
 где scores и выводы привязаны к содержимому дека.
 
 > Продуктовый бриф страницы для skill `build-pages`. Факты сверены с источником
@@ -34,7 +34,7 @@ Product-страница: объясняет главный output EvalLense —
 - **Для кого:** review-команды, program owners, инвесткомитеты — те, кому отчёт
   нужен для ревью, shortlist и решения.
 - **Ключевое сообщение:** каждый score должен быть объясним, каждый важный вывод —
-  связан с содержимым питч-дека. EvalLense выдаёт не число, а обоснование.
+  связан с содержимым питч-дека. EvalLens выдаёт не число, а обоснование.
 - **Целевое действие:** Book a Demo → `/#demo`; вторичный путь —
   View Sample Report (пока disabled `href: "#"`).
 
@@ -98,7 +98,7 @@ links:
 - **Eyebrow:** Beyond the number
 - **Headline:** Explain the score. Defend the decision.
   *(lines: ["Explain the score.", "Defend the decision."]; mobileLines: ["Explain", "the score.", "Defend", "the decision."])*
-- **Sub:** EvalLense shows what shaped the score and links each finding back to the deck. Your team can defend the shortlist, explain the feedback, and know what to ask next.
+- **Sub:** EvalLens shows what shaped the score and links each finding back to the deck. Your team can defend the shortlist, explain the feedback, and know what to ask next.
 - **Media:** `/assets/evidence-reports/beyond-number-cinema.mp4`
 
 ### 3. Anatomy of the report — PinnedSteps v1, `light`
@@ -111,7 +111,7 @@ links:
   2. **02 · AI Score Report** — See what shaped the score, how each judge contributed, and how every dimension affected the result.
   3. **03 · Questions for Live Q&A** — Ready-to-use questions, ranked by priority and linked to the dimension each one tests.
 - **Media (mediaNode — actual image):** `/assets/evidence-reports/report-evidence-map-01.webp` — 1448×1086, ratio 4:3.
-  Alt: "EvalLense report evidence map — Project Summary, AI Score Report, and Questions for Live Q&A, with findings linked back to pitch-deck slides"
+  Alt: "EvalLens report evidence map — Project Summary, AI Score Report, and Questions for Live Q&A, with findings linked back to pitch-deck slides"
   *(Применяется page-local float: scale 1.15 + buoyant drift; motion отключается при prefers-reduced-motion.)*
 
 ### 4. Inside the AI Score Report — Gallery v4, `light`
@@ -261,8 +261,8 @@ links:
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Evidence-Based Reports for Pitch Evaluation
-- **meta description:** Explainable reports from EvalLense: scores across every
+- **`<title>`:** EvalLens — Evidence-Based Reports for Pitch Evaluation
+- **meta description:** Explainable reports from EvalLens: scores across every
   dimension with reasoning, a judge matrix, findings grounded in the deck, and
   deck-completeness signals — not a black box. *(≤155)*
 - **OG-изображение:** слот `hero` (`/assets/evidence-reports/hero-score-dashboards-01.webp`)

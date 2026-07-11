@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Product-страница: объясняет весь рабочий процесс EvalLense в одном месте —
+Product-страница: объясняет весь рабочий процесс EvalLens в одном месте —
 что делает продукт, как устроен workflow и какие модули задействованы при оценке.
 
 > Продуктовый бриф страницы. Факты сверены с источником правды `ai-jury-prod`
@@ -32,12 +32,12 @@ Product-страница: объясняет весь рабочий проце�
 
 ## Роль и аудитория
 
-- **Роль страницы:** показать EvalLense как **operating layer для структурированной
+- **Роль страницы:** показать EvalLens как **operating layer для структурированной
   пакетной оценки питч-деков** — не разовый AI-анализ, а сквозной workflow от сбора
   заявок до решения человека.
 - **Для кого:** организаторы — VC-фонды, акселераторы, конкурсы, хакатоны; те, кто
   решает, стоит ли внедрять продукт, и хочет понять картину целиком.
-- **Ключевое сообщение:** EvalLense собирает деки, оценивает их консистентно,
+- **Ключевое сообщение:** EvalLens собирает деки, оценивает их консистентно,
   даёт evidence-отчёты и сводит результаты в один review-процесс — а финальное
   решение остаётся за человеком (*the final call always yours*).
 - **Целевое действие:** Book a Demo → `/#demo`.
@@ -95,7 +95,7 @@ Product-страница: объясняет весь рабочий проце�
 
 - **Eyebrow:** How it works
 - **Heading:** The organizer path, in [seven steps]
-- **Subhead:** EvalLense walks you from sign-in to a ranked leaderboard. The path is fixed, and each step lights up as you scroll.
+- **Subhead:** EvalLens walks you from sign-in to a ranked leaderboard. The path is fixed, and each step lights up as you scroll.
 - **Steps:**
   1. **Sign in** — Email and password, or Google OAuth. You land in your own workspace.
   2. **Dashboard** — Your projects and their status, with a place to start a new one.
@@ -151,7 +151,7 @@ Product-страница: объясняет весь рабочий проце�
 
 - **Eyebrow:** Why it matters
 - **Heading:** Less manual review, a [clearer trail]
-- **Subhead:** EvalLense cuts the hours spent reading decks by hand, holds every evaluation to one standard, and leaves your team a decision trail it can defend.
+- **Subhead:** EvalLens cuts the hours spent reading decks by hand, holds every evaluation to one standard, and leaves your team a decision trail it can defend.
 - **Pull-quote (right column):** Six AI lenses do the reading. You make the decision — with the evidence in front of you.
 - **Quote tag:** Pitch Competition · P1–P6
 
@@ -219,8 +219,8 @@ Product-страница: объясняет весь рабочий проце�
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Product Overview: Batch Pitch Deck Evaluation
-- **meta description:** How EvalLense works: collect decks in the Entry Hub,
+- **`<title>`:** EvalLens — Product Overview: Batch Pitch Deck Evaluation
+- **meta description:** How EvalLens works: collect decks in the Entry Hub,
   evaluate with 6 AI judges, get evidence-based reports and a Review Board with a
   leaderboard — the human decides. *(≤155)*
 - **OG-изображение:** слот `hero`

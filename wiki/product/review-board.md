@@ -113,7 +113,7 @@ AI-оценки человек сравнивает разобранные ст�
 ### 5. Human-in-the-loop — `light`
 - **Eyebrow:** Human in the loop
 - **Heading (lens на `the call`):** AI prepares the analysis. You make `[lens:the call]`.
-- **Subhead:** EvalLense never finalizes a result on its own. You move from the AI report to a human Jury Score and a leaderboard — each step lights up as you scroll.
+- **Subhead:** EvalLens never finalizes a result on its own. You move from the AI report to a human Jury Score and a leaderboard — each step lights up as you scroll.
 - **Steps (pinned, 4):**
   1. **Open the report** — You open a Participant Report and read the Project Summary and the AI Score Report — the advisory AI Total Score with judge findings across P1–P6.
   2. **Ask in live Q&A** — Questions for Participants, each linked to a P1–P6 criterion, guide the live session; answer notes are optional context, never a blocker.
@@ -194,8 +194,8 @@ AI-оценки человек сравнивает разобранные ст�
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense Review Board — Compare, Shortlist, Decide
-- **meta description:** Review Board is the EvalLense decision workspace: compare
+- **`<title>`:** EvalLens Review Board — Compare, Shortlist, Decide
+- **meta description:** Review Board is the EvalLens decision workspace: compare
   scored startups, set human Jury Scores, rank by your decision and keep an audit
   trail — the final call always yours. *(≤155)*
 - **OG-изображение:** слот `hero`
@@ -227,7 +227,7 @@ AI-оценки человек сравнивает разобранные ст�
       Jury Score; 5 статусов; AI Total Score advisory; spread CONSENSUS/SPLIT/CONFLICT;
       Single Mode 1 organizer) — без выдуманных цифр
 - [ ] human-in-the-loop держится в каждом утверждении про оценку; нет «AI judges/
-      decides/verdict»; имя EvalLense; CTA — Book a Demo / Try live demo
+      decides/verdict»; имя EvalLens; CTA — Book a Demo / Try live demo
 - [ ] НЕ обещаны multi-organizer / blind voting / deliberation; нет WINNER /
       RUNNER_UP / TOP_3 / compare-with-#1 бейджей; разлочка leaderboard и публичные
       ссылки на отчёты — не как готовые

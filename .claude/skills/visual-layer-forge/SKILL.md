@@ -1,10 +1,10 @@
 ---
 name: visual-layer-forge
-description: "ОРКЕСТРАТОР-дирижёр системной visual-layer библиотеки EvalLense (backgrounds · section transitions · ambient motion · composition recipes) — готовит ограниченный, согласованный, переиспользуемый набор визуальных слоёв ДО запуска Page Orchestrator. Сам application-код не пишет: аудитит существующую библиотеку (манифесты component-library-preparer + фактический код), фиксирует контракты, назначает дизайнеров/инженера/QA через task packets, держит фазы и user-гейт, ведёт fix loop (≤3), регистрирует готовое через component-library-preparer incremental. Не делает фон под одну страницу — строит систему, из которой Page Orchestrator выбирает. Режимы: full / targeted / gap. Триггеры — /visual-layer-forge, «собери visual layer library», «сделай фон/переход/ambient motion <…>», «нужен переход light→ink», приём visual_layer_gap от Page Orchestrator."
+description: "ОРКЕСТРАТОР-дирижёр системной visual-layer библиотеки EvalLens (backgrounds · section transitions · ambient motion · composition recipes) — готовит ограниченный, согласованный, переиспользуемый набор визуальных слоёв ДО запуска Page Orchestrator. Сам application-код не пишет: аудитит существующую библиотеку (манифесты component-library-preparer + фактический код), фиксирует контракты, назначает дизайнеров/инженера/QA через task packets, держит фазы и user-гейт, ведёт fix loop (≤3), регистрирует готовое через component-library-preparer incremental. Не делает фон под одну страницу — строит систему, из которой Page Orchestrator выбирает. Режимы: full / targeted / gap. Триггеры — /visual-layer-forge, «собери visual layer library», «сделай фон/переход/ambient motion <…>», «нужен переход light→ink», приём visual_layer_gap от Page Orchestrator."
 metadata:
   package: component-library
   role: orchestrator
-  product: EvalLense
+  product: EvalLens
   consumers: [page-composer, build-pages]
 ---
 
@@ -229,7 +229,7 @@ visual_library_audit:
 публичных DS-секций (`@/components/ds`), deprecated Section Lab субстрата, brand
 tokens вывести визуальный язык системы: какие поверхности/
 геометрии/атмосферные фоны нужны, какие переходы между light/soft/ink, уровни
-интенсивности, **запрещённые сочетания**. Сохранять текущий стиль EvalLense, новую
+интенсивности, **запрещённые сочетания**. Сохранять текущий стиль EvalLens, новую
 DS не создавать. Выход: `## Visual language` + surface-to-action ограничения.
 
 ### Фаза 3 — Background Designer (`ui-designer`)

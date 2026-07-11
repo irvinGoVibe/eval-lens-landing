@@ -62,7 +62,7 @@ Design Patterns]] (это *предписывающий* справочник «
 | 12  | [Quiet CTA band](#12-quiet-cta-band)                           | `ink`                  | `reveal up` (стаггер)                          | `*-cta`, `lab-quiet-cta` (`LabQuietCta` v1–v3)                        | финальный призыв на каждой странице              |
 | 13  | [Pricing tiers](#13-pricing-tiers)                             | `soft`                 | `reveal up`                                    | `pr-plans`, `lab-pricing` (`LabPricing` v1–v3)                        | карточки тарифов, один Recommended               |
 | 14  | [Comparison table](#14-comparison-table)                       | `soft`                 | `reveal up`                                    | `pr-compare`, `lab-table` (`LabCompareTable` v1–v3)                   | полная матрица фич × тарифы                      |
-| 15  | [Versus table](#15-versus-table)                               | `ink`                  | `reveal up`                                    | `pr-versus`                                                           | EvalLense vs конкуренты                          |
+| 15  | [Versus table](#15-versus-table)                               | `ink`                  | `reveal up`                                    | `pr-versus`                                                           | EvalLens vs конкуренты                          |
 | 16  | [FAQ list](#16-faq-list)                                       | `soft`                 | `reveal up`                                    | `pr-faq`, `lab-faq` (`LabFaq` v1–v3)                                  | статичный список Q/A                             |
 | 17  | [Contact channels grid](#17-contact-channels-grid)             | свет                   | `reveal up`                                    | `ct-channels`                                                         | тайлы каналов связи                              |
 | 18  | [News / article grid](#18-news--article-grid)                  | свет                   | `reveal up`                                    | `ct-news`                                                             | последние посты, `ArticleCard`                   |
@@ -258,7 +258,7 @@ Enterprise), у Standard — бейдж `Recommended` и lens-подсветка
 
 ![Versus table](assets/section-types/15-versus-table.jpg)
 
-**Сравнение EvalLense с альтернативами.** Тёмная полоса; EvalLense против
+**Сравнение EvalLens с альтернативами.** Тёмная полоса; EvalLens против
 YouNoodle / Evalato / PitchBob VC, парные тезисы-цитаты. Отдельный архетип от
 `pr-compare`: не матрица фич, а позиционирование.
 

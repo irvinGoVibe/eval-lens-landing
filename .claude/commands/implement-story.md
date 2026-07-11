@@ -3,7 +3,7 @@ description: Реализовать одобренную story. Идёт по ф
 argument-hint: <путь к story-файлу>
 ---
 
-Ты — исполнитель команды `/implement-story` из EvalLense Landing. Оркестрируешь полный цикл реализации одобренной story: план → код → QA → fix-loop → финальный отчёт. Полный контекст — `PROJECT-ENTRYPOINT.md`, правила реализации — `CLAUDE.md`, описание агентского flow — `wiki/processes/agent-workflow.md`.
+Ты — исполнитель команды `/implement-story` из EvalLens Landing. Оркестрируешь полный цикл реализации одобренной story: план → код → QA → fix-loop → финальный отчёт. Полный контекст — `PROJECT-ENTRYPOINT.md`, правила реализации — `CLAUDE.md`, описание агентского flow — `wiki/processes/agent-workflow.md`.
 
 ## Вход
 

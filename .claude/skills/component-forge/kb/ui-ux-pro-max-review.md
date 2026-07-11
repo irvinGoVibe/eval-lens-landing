@@ -28,7 +28,7 @@ typography|style|color|ux|chart|landing`. Для типографики — `--d
 ## Это ADVISORY reviewer, НЕ дизайнер
 
 Он **не** заменяет `ui-ux-designer` / `ui-designer` / `design-system-architect` и
-**не** создаёт дизайн. **EvalLense DS остаётся единственным source of truth.**
+**не** создаёт дизайн. **EvalLens DS остаётся единственным source of truth.**
 
 ### Разрешено использовать его для
 typography review · layout/composition review · responsive review · media-placement
@@ -38,7 +38,7 @@ review · pre-delivery quality review.
 ### Запрещено использовать его для
 new brand/design-system generation · new font-family selection · new color palette ·
 new spacing scale · new radius system · new button variants · new component library ·
-new motion architecture · замена EvalLense-токенов · **`--design-system` /
+new motion architecture · замена EvalLens-токенов · **`--design-system` /
 `--persist` / создание `design-system/MASTER.md` / page-override design systems**.
 
 ## Обязательный формат findings (reviewer → оркестратор)

@@ -4,7 +4,7 @@ description: "ВЕРХНЕУРОВНЕВЫЙ автономный batch-орке
 metadata:
   package: component-forge
   role: batch-orchestrator
-  product: EvalLense
+  product: EvalLens
 ---
 
 # Component Forge Batch — автономный batch-оркестратор
@@ -69,7 +69,7 @@ cycle. Все решения — **детерминированные**.
 ### Порядок приоритетов при любом решении
 ```
 1. repository rules (CLAUDE.md, рейлы оркестратора)
-2. EvalLense design system (единственный source of truth)
+2. EvalLens design system (единственный source of truth)
 3. Contract Lock (semantic/functional/theme инвариант)
 4. child-run review status (forge-validate / ui-ux-pro-max / reviewers)
 5. lowest-risk reversible solution

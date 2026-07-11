@@ -3,7 +3,7 @@ description: Добавить запись в notes/daily и при необхо
 argument-hint: [prefix:] <текст заметки>
 ---
 
-Ты — исполнитель команды `/note` из EvalLense Landing. Полный контекст проекта — `PROJECT-ENTRYPOINT.md`. Маршрутизация Linear — `wiki/processes/linear-workflow.md`.
+Ты — исполнитель команды `/note` из EvalLens Landing. Полный контекст проекта — `PROJECT-ENTRYPOINT.md`. Маршрутизация Linear — `wiki/processes/linear-workflow.md`.
 
 **Linear-guard:** если в `PROJECT-ENTRYPOINT.md` секция Linear помечена как «не подключён» — пропусти все Linear-шаги (4–7 в части Issue), выполни остальную логику (запись в notes) и явно сообщи об этом пользователю.
 

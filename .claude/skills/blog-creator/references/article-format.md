@@ -1,4 +1,4 @@
-# Формат статьи блога EvalLense
+# Формат статьи блога EvalLens
 
 Канон — типы в `web/src/lib/cms/types.ts` (`Post`, `Category`, `Accent`) и две
 эталонные статьи в `wiki/product/site/blog/`. Бриф статьи = YAML-frontmatter +
@@ -13,7 +13,7 @@ Markdown-тело.
 slug: how-evallense-evaluates-pitch-decks   # kebab-case, = имя файла
 category: Research                           # Research | Product | Press Release
 accent: cyan                                 # cyan | violet | aqua | orange
-title: How EvalLense evaluates pitch decks   # statement-заголовок (паттерны copy-system)
+title: How EvalLens evaluates pitch decks   # statement-заголовок (паттерны copy-system)
 excerpt: A look inside the methodology — how a deck becomes a structured, evidence-backed score, and why the final ranking stays yours.
 date: 2026-06-15                             # YYYY-MM-DD
 readMinutes: 5                               # честная оценка по объёму тела
@@ -84,7 +84,7 @@ In the Loop (репосты соцсетей, не статьи) + More from New
 
 ## Инварианты копии (коротко; полный канон — copy-system.md)
 
-- Имя продукта — **EvalLense**; «AI Jury» — только origin story (/company/about).
+- Имя продукта — **EvalLens**; «AI Jury» — только origin story (/company/about).
 - **human-in-the-loop**: AI scores/prepares/structures — **people decide**.
   Запрещено «AI judges/decides/verdict» в смысле «AI решает».
 - Trust-сигналы: **1,000+ runs**, evidence-based, audit trail.

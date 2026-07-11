@@ -1,5 +1,5 @@
 ---
-title: About EvalLense
+title: About EvalLens
 status: draft
 version: 0.1
 updated: 2026-06-16
@@ -11,11 +11,11 @@ in_footer_nav: true
 cta: Book a Demo
 ---
 
-# About EvalLense
+# About EvalLens
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Company-страница: кто стоит за EvalLense, зачем мы это строим, наши принципы и
+Company-страница: кто стоит за EvalLens, зачем мы это строим, наши принципы и
 команда. Контент предоставлен user'ом; story о пути от AI Jury согласуется с
 homepage-structure / продуктовой историей.
 
@@ -31,7 +31,7 @@ homepage-structure / продуктовой историей.
 - **Роль страницы:** показать людей, миссию и принципы за продуктом — снять
   «безличность» AI-инструмента и усилить доверие через историю и команду.
 - **Для кого:** организаторы (фонды, акселераторы, конкурсы), партнёры,
-  потенциальные сотрудники — те, кому важно понять, кто и зачем строит EvalLense.
+  потенциальные сотрудники — те, кому важно понять, кто и зачем строит EvalLens.
 - **Ключевое сообщение:** «We are not building an artificial jury. We are
   building a better lens for human judgment.» AI готовит анализ — решение за
   человеком.
@@ -41,9 +41,9 @@ homepage-structure / продуктовой историей.
 
 | # | Секция | Архетип | Движение | Поверхность | Что показываем |
 |---|---|---|---|---|---|
-| 1 | Hero / миссия | statement-hero | reveal | light | «We built EvalLense to help people make better decisions» + CTA |
+| 1 | Hero / миссия | statement-hero | reveal | light | «We built EvalLens to help people make better decisions» + CTA |
 | 2 | Проблема | editorial-split | reveal | light | Слишком много заявок, мало времени; AI анализирует, человек решает |
-| 3 | From AI Jury to EvalLense | pinned-multi-screen | pin | ink | История + конвейер deck→…→final decision; «designed to help people see more clearly» |
+| 3 | From AI Jury to EvalLens | pinned-multi-screen | pin | ink | История + конвейер deck→…→final decision; «designed to help people see more clearly» |
 | 4 | Наши принципы | bento / feature-grid | reveal | light | 4 принципа (AI supports · explainable · disagreement useful · methodology > model) |
 | 5 | Команда (креативный блок) | pinned team-reveal | pin + scrub | ink | Полноростовые портреты, имя-подложка, заезд/выезд, био сбоку — 3 человека |
 | 6 | Для кого мы строим | horizontal-gallery | scrub | light | 7 сегментов + «a better lens for human judgment» |
@@ -52,8 +52,8 @@ homepage-structure / продуктовой историей.
 ## Контент по секциям
 
 ### 1. Hero / миссия
-- **Заголовок:** We built EvalLense to help people make better decisions
-- **Подзаголовок (из абзаца ниже):** EvalLense was created to make startup
+- **Заголовок:** We built EvalLens to help people make better decisions
+- **Подзаголовок (из абзаца ниже):** EvalLens was created to make startup
   evaluation more structured, consistent and transparent. AI analyzes the
   applications, surfaces evidence and highlights risks. People make the final
   decision.
@@ -69,7 +69,7 @@ Editorial-split, авторский текст:
 
 Акцент справа/визуал: поток заявок → потерянные сильные проекты.
 
-### 3. From AI Jury to EvalLense
+### 3. From AI Jury to EvalLens
 Pinned-multi-screen (тёмный), история по шагам:
 - The first version was built as **AI Jury** during the **Amazon Nova
   hackathon**. The idea: several specialized AI judges instead of one generic
@@ -91,12 +91,12 @@ Pitch deck
 ```
 
 Финальный тезис секции (full-bleed акцент):
-> AI Jury was designed to judge. EvalLense is designed to help people see more
+> AI Jury was designed to judge. EvalLens is designed to help people see more
 > clearly.
 
 ### 4. Наши принципы
 Bento / feature-grid, 4 принципа (заголовок + текст):
-- **AI supports decisions. It does not own them.** EvalLense prepares the
+- **AI supports decisions. It does not own them.** EvalLens prepares the
   analysis, but the final score and ranking remain under human control.
 - **Every score should be explainable.** Reviewers should understand what
   influenced the result, which evidence was used and what information was missing.
@@ -128,13 +128,13 @@ Bento / feature-grid, 4 принципа (заголовок + текст):
 Yaroslav leads product vision, evaluation methodology, positioning and
 go-to-market. More than fourteen years of experience with startups, digital
 products, business development and market-entry strategy. Focus: ensuring
-EvalLense solves a real decision-making problem instead of simply generating AI
+EvalLens solves a real decision-making problem instead of simply generating AI
 reports.
 
 **2. Vladislav Starodubov — Engineering and Architecture.**
 Vladislav leads system architecture, engineering delivery and the AI evaluation
 pipeline. Background in software engineering, fintech, payment infrastructure and
-complex operational systems. Focus: making EvalLense reliable, secure and ready
+complex operational systems. Focus: making EvalLens reliable, secure and ready
 for repeated use at scale.
 
 **3. Arseniy — Product Experience.**
@@ -176,7 +176,7 @@ corporate innovation teams · universities.
 | Слот | Где на странице | Что изображено | Промпт-набросок (стиль бренда) |
 |---|---|---|---|
 | hero | секция 1 | Линза, фокусирующая поток заявок в ясный сигнал | lens-градиент violet→cyan→aqua, Apple-нейтраль, calm |
-| story | секция 3 | Цепочка AI Jury → Testing → Pipeline → EvalLense / конвейер | ink-поверхность, узлы вдоль lens-трека |
+| story | секция 3 | Цепочка AI Jury → Testing → Pipeline → EvalLens / конвейер | ink-поверхность, узлы вдоль lens-трека |
 | portrait-yaroslav | секция 5 | Полноростовой cut-out портрет, нейтральный фон | портрет 3:4, мягкий фиолетовый rim-light, calm; имя-подложка за спиной |
 | portrait-vladislav | секция 5 | Полноростовой cut-out портрет | то же, ratio 3:4 |
 | portrait-arseniy | секция 5 | Полноростовой cut-out портрет | то же, ratio 3:4 |
@@ -192,12 +192,12 @@ corporate innovation teams · universities.
 - **Cross-links со страницы:**
   - [[sitemap|Methodology]] — научная методология оценки
   - [[sitemap|Product Overview]] — что делает продукт
-  - блог-статья «From AI Jury to EvalLense» (`/blog`) — расширенная история
+  - блог-статья «From AI Jury to EvalLens» (`/blog`) — расширенная история
 
 ## SEO / meta
 
-- **`<title>`:** About EvalLense — A Better Lens for Human Judgment
-- **meta description:** Кто и зачем строит EvalLense: путь от AI Jury к
+- **`<title>`:** About EvalLens — A Better Lens for Human Judgment
+- **meta description:** Кто и зачем строит EvalLens: путь от AI Jury к
   controlled evaluation system, наши принципы и команда. AI готовит анализ —
   решение принимает человек. *(≤155)*
 - **OG-изображение:** слот `hero`

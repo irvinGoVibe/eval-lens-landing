@@ -2,7 +2,7 @@
 slug: how-evallense-evaluates-pitch-decks
 category: Research
 accent: cyan
-title: How EvalLense evaluates pitch decks
+title: How EvalLens evaluates pitch decks
 excerpt: A look inside the methodology — how a deck becomes a structured, evidence-backed score, and why the final ranking stays yours.
 date: 2026-06-15
 readMinutes: 5
@@ -13,7 +13,7 @@ status: draft
 
 Reviewing a stack of pitch decks looks structured from the outside: a panel reads each deck, assigns scores, publishes a leaderboard. The weak point hides inside the process. Why did a deck get that score? What evidence backed it? Where did reviewers disagree? And when the ranking comes out — did an AI decide it, or did you?
 
-EvalLense is built to answer all four, on every deck in the batch. That is what lets you review a hundred decks in an afternoon and still defend every call.
+EvalLens is built to answer all four, on every deck in the batch. That is what lets you review a hundred decks in an afternoon and still defend every call.
 
 ## The short version
 
@@ -67,7 +67,7 @@ This keeps the review from collapsing into one vague impression. A startup can b
 
 ## Step 3 — Six specialized judges
 
-EvalLense runs six Pitch judges, each reading the deck through a different lens:
+EvalLens runs six Pitch judges, each reading the deck through a different lens:
 
 - Problem;
 - Solution Logic;
@@ -115,7 +115,7 @@ You read the AI report, bring in live Q&A and your own context, then submit the 
 
 ## Why this matters
 
-EvalLense isn't trying to make pitch judging sound more scientific with heavier language. It solves a practical problem: evaluating startups needs structure, traceability, and a review you can stand behind.
+EvalLens isn't trying to make pitch judging sound more scientific with heavier language. It solves a practical problem: evaluating startups needs structure, traceability, and a review you can stand behind.
 
 A good evaluation system should show:
 
@@ -125,6 +125,6 @@ A good evaluation system should show:
 - where the judges disagreed;
 - who made the final decision.
 
-That is the core of how EvalLense works — and why the lens stays in your hands.
+That is the core of how EvalLens works — and why the lens stays in your hands.
 
 Want to see it run on your own batch? **Book a demo.**

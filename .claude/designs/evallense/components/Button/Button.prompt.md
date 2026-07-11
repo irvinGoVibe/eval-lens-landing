@@ -1,4 +1,4 @@
-The EvalLense pill CTA — use for every call to action. On the site the only two
+The EvalLens pill CTA — use for every call to action. On the site the only two
 labels are "Book a demo" (primary) and "Try live demo" (secondary).
 
 ```jsx

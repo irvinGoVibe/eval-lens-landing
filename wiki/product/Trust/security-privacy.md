@@ -2,7 +2,7 @@
 
 ## Page purpose
 
-Explain how EvalLense treats pitch decks, submissions, reports, and review data as sensitive information.
+Explain how EvalLens treats pitch decks, submissions, reports, and review data as sensitive information.
 
 ## User task
 
@@ -10,7 +10,7 @@ Help the user feel safe uploading confidential startup materials and running pri
 
 ## Main idea to communicate
 
-Pitch decks and evaluation outputs are sensitive. EvalLense is designed around private handling, controlled access, and human-owned decisions.
+Pitch decks and evaluation outputs are sensitive. EvalLens is designed around private handling, controlled access, and human-owned decisions.
 
 ## What the page should prove
 
@@ -107,7 +107,7 @@ Connect privacy and governance.
 Message:
 
 ```text
-EvalLense prepares analysis, but final decisions and report usage remain under human control.
+EvalLens prepares analysis, but final decisions and report usage remain under human control.
 ```
 
 ### 7. CTA

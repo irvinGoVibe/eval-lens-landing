@@ -13,7 +13,7 @@ status: draft
 
 AI businesses are easy to demo and hard to judge. A working prototype can look like a company. A polished deck can look like traction. An AI-generated answer can sound more certain than the evidence beneath it. So when a $2,000,000 prize sets out to find the best AI business in the world, the interesting question isn't who ships the flashiest model. It's the question every organizer, investor, and grant committee is quietly failing at right now: *how do you actually judge?*
 
-We don't have a horse to cheer for here. We care about the judging — evaluating things at scale, fairly, with a trail you can defend, is the entire reason EvalLense exists. So when Google publishes its rubric in the open, we read it the way a chef reads another kitchen's menu.
+We don't have a horse to cheer for here. We care about the judging — evaluating things at scale, fairly, with a trail you can defend, is the entire reason EvalLens exists. So when Google publishes its rubric in the open, we read it the way a chef reads another kitchen's menu.
 
 ```
 The bar, in three moves:
@@ -56,9 +56,9 @@ That is not an argument against judgment. It's an argument for evidence discipli
 
 So the real picture isn't "AI judge versus human judge." Both are unstable: the companies are changing weekly, and the judges — silicon or carbon — bring their own bias. The answer is not to crown one of them. It's to change what the decision is made *from*.
 
-That's the bet EvalLense is built on. It isn't an AI judge; it's an evidence engine for human judgment. Independent reviewers read every submission against **one shared rubric**, so two startups are never measured by two different yardsticks. Every score is tied back to the **exact claim in the deck** that produced it. Where reviewers disagree, the **spread is surfaced**, not smoothed over. The AI total stays advisory; the human's score is the one that ranks the field. The AI prepares the case. The human owns the verdict. Methodology over model, with the final call always yours.
+That's the bet EvalLens is built on. It isn't an AI judge; it's an evidence engine for human judgment. Independent reviewers read every submission against **one shared rubric**, so two startups are never measured by two different yardsticks. Every score is tied back to the **exact claim in the deck** that produced it. Where reviewers disagree, the **spread is surfaced**, not smoothed over. The AI total stays advisory; the human's score is the one that ranks the field. The AI prepares the case. The human owns the verdict. Methodology over model, with the final call always yours.
 
-This isn't theory for us. Across **500+ internal pitch-deck review runs**, the property we've worked hardest to earn is repeatability. In one controlled benchmark — the same deck scored **24 times** — our latest scoring iteration returned the identical dimension profile in **12 of 14 runs (85.7%)** and cut run-to-run score variance by roughly **59%** against the previous version. We're deliberate about what that does and doesn't mean: **this is not a claim that EvalLense predicts startup success.** It's a claim that pitch evaluation can be made more structured, evidence-linked, repeatable, and human-reviewable. Given everything above, that's the goal worth chasing.
+This isn't theory for us. Across **500+ internal pitch-deck review runs**, the property we've worked hardest to earn is repeatability. In one controlled benchmark — the same deck scored **24 times** — our latest scoring iteration returned the identical dimension profile in **12 of 14 runs (85.7%)** and cut run-to-run score variance by roughly **59%** against the previous version. We're deliberate about what that does and doesn't mean: **this is not a claim that EvalLens predicts startup success.** It's a claim that pitch evaluation can be made more structured, evidence-linked, repeatable, and human-reviewable. Given everything above, that's the goal worth chasing.
 
 ## Why now
 
@@ -80,4 +80,4 @@ A $2M prize had to publish its rubric, require a paper trail, and grade operatio
 8. CB Insights, *Y Combinator's 2025 Spring batch reveals the future of agentic AI* — https://www.cbinsights.com/research/y-combinator-spring25-agentic-ai/
 9. Build with Gemini XPRIZE — official rules — https://xprize.devpost.com/rules
 10. Gemini API Developer Competition 2024 — winners — https://ai.google.dev/competition
-11. EvalLense internal repeatability benchmark (single-deck, 24 runs), June 2026 — internal data
+11. EvalLens internal repeatability benchmark (single-deck, 24 runs), June 2026 — internal data

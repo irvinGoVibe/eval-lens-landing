@@ -13,7 +13,7 @@ status: draft
 
 We're entering the [Build with Gemini XPRIZE](https://xprize.devpost.com/rules) — the $2,000,000, 90-day competition run by XPRIZE with Google and Devpost that launched at Google I/O on May 19, 2026 and closes for submissions on August 17.
 
-This is not a "we made an AI demo" announcement. The contest doesn't reward demos. It rewards a real business that *operates* with AI — real users, real revenue, and proof that AI is doing real work inside the operation. That's a high bar, and we're saying so out loud on purpose. EvalLense exists to make evaluation honest; it would be strange to be dishonest about our own.
+This is not a "we made an AI demo" announcement. The contest doesn't reward demos. It rewards a real business that *operates* with AI — real users, real revenue, and proof that AI is doing real work inside the operation. That's a high bar, and we're saying so out loud on purpose. EvalLens exists to make evaluation honest; it would be strange to be dishonest about our own.
 
 ## What we're building
 

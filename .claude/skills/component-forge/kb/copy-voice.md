@@ -1,11 +1,11 @@
-# Rule: copy-voice (голос EvalLense, human-in-the-loop, antislop)
+# Rule: copy-voice (голос EvalLens, human-in-the-loop, antislop)
 
 **Источник правды:** `evallense-site` (copy-system / product-marketing),
 `.claude/designs/evallense/readme.md` (бренд-голос).
 
 ## Правило
 
-UI-копия — на английском (язык сайта), в голосе EvalLense. Контент — **инвариант**:
+UI-копия — на английском (язык сайта), в голосе EvalLens. Контент — **инвариант**:
 текст/слоты из брифа не выдумываем и не теряем. Этот rule про **тон и формулировки**,
 когда копия уже есть или её надо причесать.
 

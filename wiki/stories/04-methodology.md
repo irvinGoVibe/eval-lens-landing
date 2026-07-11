@@ -26,7 +26,7 @@ Linear Mapping: Project by default
 ## Summary
 
 Коротко:
-- что меняем — добавляем новую внутреннюю trust-страницу `/trust/methodology` из 8 секций, которая объясняет научную методологию оценки EvalLense (criteria-based evaluation, роли AI-судей, scoring model, rubric, human-in-the-loop), и правим одну footer-ссылку.
+- что меняем — добавляем новую внутреннюю trust-страницу `/trust/methodology` из 8 секций, которая объясняет научную методологию оценки EvalLens (criteria-based evaluation, роли AI-судей, scoring model, rubric, human-in-the-loop), и правим одну footer-ссылку.
 - зачем меняем — у раздела Trust в footer ссылка «Methodology» сейчас ведёт на якорь `/#trust` на главной; отдельной страницы методологии нет, хотя бриф её требует. Аудитории (инвесторы / фонды / акселераторы) важно понимать *как* получается оценка, а не только число.
 - ожидаемый эффект — появляется отдельный URL `/trust/methodology` с цельным изложением методологии; footer ведёт на него; страница построена только на канонических токенах/классах дизайн-системы и собирается зелёным `pnpm build`.
 
@@ -161,7 +161,7 @@ Linear Mapping: Project by default
 - [ ] Не-drop-in блоки (секция 3 pipeline, секция 5 scoring+ring, секция 7 human-in-the-loop) реализованы СВОИМИ страничными классами под обёрткой `.methodology`; scoped-CSS `#workflow`/`#decisions` не копировался и эти секции не правились (diff не затрагивает селекторы `#workflow`/`#decisions`).
 - [ ] Drop-in секции используют существующие глобальные классы (`.band`/`.wrap`/`.head`/`.title`/`.sub`/`.eyebrow`/`.chip`/`.tcard`/`.trust-grid`/`.mini-tag`/`.btn*`/`.sect-cta`/`.grad-word`/`.cta-row`) без дублирования их CSS.
 - [ ] Оба слота изображений (hero-линза, pipeline-диаграмма) реализованы как плейсхолдер в канонических токенах; промпты из брифа §Изображения зафиксированы рядом (комментарий/доступное место).
-- [ ] `export const metadata` содержит `title` = «EvalLense Methodology — How AI Jury Evaluates Pitch Decks» и `description` из брифа (≤155 символов).
+- [ ] `export const metadata` содержит `title` = «EvalLens Methodology — How AI Jury Evaluates Pitch Decks» и `description` из брифа (≤155 символов).
 - [ ] При `prefers-reduced-motion: reduce` анимации (зажигание узлов pipeline, confidence ring) отключены/статичны; контент отображается в финальном состоянии.
 - [ ] `cd web && pnpm build` завершается без ошибок (зелёный).
 - [ ] Незафиксированный контент (формула scoring, расшифровка P1–P6, уровни rubric, описания шагов конвейера, публичные цифры, hero tagline) не выдуман: использованы черновые формулировки брифа, числовые слоты не содержат вымышленных значений.

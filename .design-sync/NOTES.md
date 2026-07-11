@@ -1,4 +1,4 @@
-# design-sync notes — EvalLense Design System
+# design-sync notes — EvalLens Design System
 
 ## What this sync is
 This repo is a Next.js landing app (`web/`), NOT a publishable component package, and has no Storybook or component `dist/`. The standard converter path can't consume it directly, so the sync source is a **synthetic, committed source package at `ds-src/`** assembled by hand from the live design system:

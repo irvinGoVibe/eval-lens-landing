@@ -14,7 +14,7 @@ function _extends() { return _extends = Object.assign ? Object.assign.bind() : f
 const React = window.React;
 
 /**
- * EvalLense pill button — the single CTA primitive across the site.
+ * EvalLens pill button — the single CTA primitive across the site.
  * Variants: primary (solid violet), ghost (violet hairline), glass (the shared
  * liquid-glass material — for hero/dark/cinematic surfaces), dark (solid ink),
  * gradient (purple→blue filled, for in-app / footer CTAs). Sizes md|sm.

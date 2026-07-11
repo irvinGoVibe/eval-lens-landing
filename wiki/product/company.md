@@ -16,7 +16,7 @@ cta: Book a Demo
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
 Разводящая страница раздела **Company**: открыл — и сразу понял, кто стоит за
-EvalLense и как связаться, и за один клик попал на любую страницу раздела
+EvalLens и как связаться, и за один клик попал на любую страницу раздела
 (About, Newsroom, Careers, Contact).
 
 > Это **продуктовый бриф страницы** — первичный источник для skill `build-pages`.
@@ -27,11 +27,11 @@ EvalLense и как связаться, и за один клик попал н�
 ## Роль и аудитория
 
 - **Роль страницы:** точка входа в раздел Company. Одним экраном дать понять, кто
-  и зачем строит EvalLense, и развести по страницам About / Newsroom / Careers /
+  и зачем строит EvalLens, и развести по страницам About / Newsroom / Careers /
   Contact.
 - **Для кого:** организаторы, партнёры, пресса, кандидаты — все, кому нужна
   корпоративная информация или контакт.
-- **Ключевое сообщение:** за EvalLense стоит команда с ясной миссией —
+- **Ключевое сообщение:** за EvalLens стоит команда с ясной миссией —
   сделать оценку стартапов структурной, объяснимой и управляемой человеком.
 - **Целевое действие:** Book a Demo / Contact → `/company/contact`; вторично —
   переход на About, Newsroom или Careers.
@@ -40,7 +40,7 @@ EvalLense и как связаться, и за один клик попал н�
 
 | # | Секция | Архетип | Движение | Поверхность | Что показываем |
 |---|---|---|---|---|---|
-| 1 | Hero | statement-hero | reveal | light | «The team behind EvalLense» + lens-акцент + CTA |
+| 1 | Hero | statement-hero | reveal | light | «The team behind EvalLens» + lens-акцент + CTA |
 | 2 | Миссия одной строкой | full-bleed-statement | reveal | ink | Зачем существует продукт (из About) |
 | 3 | Карта раздела | bento | reveal | light | 4 тайла-ссылки: About · Newsroom · Careers (soon) · Contact |
 | 4 | Как с нами связаться | editorial-split | reveal | light | Demo request / общий контакт → ведёт на Contact |
@@ -49,19 +49,19 @@ EvalLense и как связаться, и за один клик попал н�
 ## Контент по секциям
 
 ### 1. Hero
-- **Заголовок:** The team behind EvalLense
+- **Заголовок:** The team behind EvalLens
 - **Подзаголовок:** Кто строит продукт, что нового и как связаться — раздел
   Company в одном месте. *(черновик)*
 - **CTA:** Book a Demo
 
 ### 2. Миссия одной строкой
-EvalLense строят, чтобы сделать **оценку стартапов более структурной, объяснимой
+EvalLens строят, чтобы сделать **оценку стартапов более структурной, объяснимой
 и управляемой человеком** — без превращения решения в «чёрный ящик».
 *(финальная формулировка — из [[about|About]].)*
 
 ### 3. Карта раздела
 Четыре тайла-ссылки (bento). Каждый — название, одна строка сути, переход:
-- **About** → `/company/about` — кто мы, зачем строим EvalLense, продуктовая
+- **About** → `/company/about` — кто мы, зачем строим EvalLens, продуктовая
   миссия.
 - **Newsroom** → `/blog` — новости, обновления и публичные анонсы. *(сейчас
   Newsroom живёт на `/blog`.)*
@@ -108,8 +108,8 @@ EvalLense строят, чтобы сделать **оценку стартап�
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Company: Team, Newsroom & Contact
-- **meta description:** Кто строит EvalLense и как связаться: About, Newsroom,
+- **`<title>`:** EvalLens — Company: Team, Newsroom & Contact
+- **meta description:** Кто строит EvalLens и как связаться: About, Newsroom,
   Careers и Contact — выберите страницу раздела Company. *(≤155)*
 - **OG-изображение:** слот `hero`
 

@@ -4,7 +4,7 @@ description: "ФАЗА 7 пакета component-forge — Integration / Index. �
 metadata:
   package: component-forge
   phase: 7
-  product: EvalLense
+  product: EvalLens
 ---
 
 # forge-index — Integration / Index (Фаза 7)

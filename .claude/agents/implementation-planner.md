@@ -1,6 +1,6 @@
 ---
 name: implementation-planner
-description: Маппит acceptance criteria одобренной story на конкретные файлы и зоны кода EvalLense Landing. Определяет, нужны ли миграции схемы данных, какие build/test проверки запускать, заметки по rollback. Не редактирует файлы.
+description: Маппит acceptance criteria одобренной story на конкретные файлы и зоны кода EvalLens Landing. Определяет, нужны ли миграции схемы данных, какие build/test проверки запускать, заметки по rollback. Не редактирует файлы.
 tools: Read, Grep, Glob, Bash
 ---
 

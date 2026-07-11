@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Trust-страница: объясняет методологию оценки EvalLense — как AI-жюри оценивает
+Trust-страница: объясняет методологию оценки EvalLens — как AI-жюри оценивает
 питч-деки по явным критериям с привязкой к доказательствам, и почему результату
 можно доверять, когда финальное решение остаётся за человеком.
 
@@ -28,7 +28,7 @@ Trust-страница: объясняет методологию оценки E
   к результату.
 - **Для кого:** организаторы (VC, акселераторы, конкурсы) и эксперты-сожюри,
   которым важно понимать, *как* получается оценка, а не только её число.
-- **Ключевое сообщение:** оценка EvalLense — не «чёрный ящик»: воспроизводимый
+- **Ключевое сообщение:** оценка EvalLens — не «чёрный ящик»: воспроизводимый
   процесс по явным критериям, где каждый балл привязан к доказательствам в деке,
   а финальное решение принимает человек.
 - **Целевое действие:** Book a Demo → `/company/contact`.
@@ -68,7 +68,7 @@ Trust-страница: объясняет методологию оценки E
 - **Eyebrow:** Methodology
 - **Heading:** A score you can [accent: inspect, compare, and defend].
   - *(titleLead: «A score you can» · titleAccent: «inspect, compare, and defend» · titleTrail: «.»)*
-- **Sub:** EvalLense does not ask one model for a final verdict. It turns each deck into evidence, routes that evidence through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control.
+- **Sub:** EvalLens does not ask one model for a final verdict. It turns each deck into evidence, routes that evidence through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control.
 - **CTAs:**
   - Primary: «See a sample score trace» → `#evidence`
   - Secondary: «Book a Demo» → `/company/contact`
@@ -78,7 +78,7 @@ Trust-страница: объясняет методологию оценки E
 
 - **Eyebrow:** Review at scale
 - **Heading:** Human review does not [accent: scale] cleanly
-- **Sub:** At small volume, reviewers can still read carefully. At large volume, consistency starts to crack. Different reviewers anchor on different signals, and strong submissions disappear in the pile. EvalLense keeps review structured when the batch is too large for unaided human review.
+- **Sub:** At small volume, reviewers can still read carefully. At large volume, consistency starts to crack. Different reviewers anchor on different signals, and strong submissions disappear in the pile. EvalLens keeps review structured when the batch is too large for unaided human review.
 - **Cards (Risk → System response) — gradient-card style:**
   | Risk | System response |
   |---|---|
@@ -197,7 +197,7 @@ Trust-страница: объясняет методологию оценки E
 
 - **Eyebrow:** Review signals
 - **Heading:** Averages can [accent: hide] the case that needs review
-- **Sub:** When judges disagree, EvalLense shows the spread instead of burying it in an average. Spread does not change the score. It points reviewers to the cases that need a closer look. The numeric tests live in Consistency & Reliability.
+- **Sub:** When judges disagree, EvalLens shows the spread instead of burying it in an average. Spread does not change the score. It points reviewers to the cases that need a closer look. The numeric tests live in Consistency & Reliability.
 - **leftTag:** Signal · **rightTag:** Meaning
 - **Pairs (Signal → Meaning):**
   | Signal | Meaning |
@@ -223,7 +223,7 @@ Trust-страница: объясняет методологию оценки E
 
 - **Eyebrow:** Clear boundaries
 - **Heading:** Prepares the review, never your [accent: judgment]
-- **Sub:** EvalLense evaluates what is present in the deck, highlights missing evidence, and prepares the review. It does not prove that every claim is true.
+- **Sub:** EvalLens evaluates what is present in the deck, highlights missing evidence, and prepares the review. It does not prove that every claim is true.
 - **Cards («It is not» → «What it does»):**
   | It is not | What it does |
   |---|---|
@@ -302,8 +302,8 @@ Trust-страница: объясняет методологию оценки E
 
 ## SEO / meta
 
-- **`<title>`:** Evidence-Based Pitch Evaluation Methodology - EvalLense
-- **meta description:** EvalLense does not ask one model for a final verdict. It turns each deck into evidence, routes it through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control. *(из кода `metadata.description`)*
+- **`<title>`:** Evidence-Based Pitch Evaluation Methodology - EvalLens
+- **meta description:** EvalLens does not ask one model for a final verdict. It turns each deck into evidence, routes it through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control. *(из кода `metadata.description`)*
 - **OG-изображение:** слот `hero`
 
 ## Источники истины

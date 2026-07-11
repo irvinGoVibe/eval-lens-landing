@@ -3,7 +3,7 @@ slug: when-every-deck-scores-a-five
 category: Product
 accent: violet
 title: When every deck scores a five
-excerpt: A score that lands every deck in the same narrow range isn't ranking anything. Here is the calibration problem we found in EvalLense, why the middle is a magnet, and how we widened the gap between strong and weak — without touching the math or the human's final call.
+excerpt: A score that lands every deck in the same narrow range isn't ranking anything. Here is the calibration problem we found in EvalLens, why the middle is a magnet, and how we widened the gap between strong and weak — without touching the math or the human's final call.
 date: 2026-07-07
 readMinutes: 7
 cover: /assets/blog/every-deck-a-five/cover.png
@@ -37,7 +37,7 @@ So the problem was never that a deck got the wrong number in isolation. It was t
 
 Here is the mechanism, and it's a known one.
 
-EvalLense runs a panel of role-based judges — a problem lens, a market lens, a team lens, and so on — and each dimension is covered by more than one of them. A judge is sharp inside its specialty. The trouble starts when a specialist is asked to weigh in on something at the edge of its lane and the deck gives it thin evidence to work with. Faced with not-enough-to-go-on, a rater does the safe, human thing: it aims for the middle. Not a 2, not an 8 — a comfortable, defensible 5-ish.
+EvalLens runs a panel of role-based judges — a problem lens, a market lens, a team lens, and so on — and each dimension is covered by more than one of them. A judge is sharp inside its specialty. The trouble starts when a specialist is asked to weigh in on something at the edge of its lane and the deck gives it thin evidence to work with. Faced with not-enough-to-go-on, a rater does the safe, human thing: it aims for the middle. Not a 2, not an 8 — a comfortable, defensible 5-ish.
 
 This has a name in the scoring literature — central-tendency, or leniency, bias — and it's exactly what you'd expect from a cautious evaluator hedging under uncertainty. It's not a hallucination and it's not a bug in any single answer. It's a systematic tug toward the center that, summed across a panel, quietly inflates weak decks and clips strong ones. The middle isn't a conclusion. It's a hiding place.
 

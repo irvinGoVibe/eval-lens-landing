@@ -9,7 +9,7 @@ updated: 2026-06-15
 
 ← [[index|Wiki]]
 
-Фиксирует, как EvalLense Landing работает с задачами в Linear.
+Фиксирует, как EvalLens Landing работает с задачами в Linear.
 
 Главная цель:
 - убрать хаос
@@ -35,7 +35,7 @@ Linear — **опциональный** слой. Если при bootstrap пр
 
 ## 1. Роль Linear в системе
 
-Linear в EvalLense Landing нужен не для хранения смысла продукта, а для управления исполнением.
+Linear в EvalLens Landing нужен не для хранения смысла продукта, а для управления исполнением.
 
 Источник правды по смыслу:
 - `notes/` — сырые находки
@@ -257,7 +257,7 @@ QA pass получен (`qa-acceptance-reviewer` → `ready for manual review`),
 
 ## 7a. Автоматизация: публикация через slash-команды
 
-Linear-объекты в EvalLense Landing заводятся не вручную, а через нейроассистента и Linear MCP. Точки входа:
+Linear-объекты в EvalLens Landing заводятся не вручную, а через нейроассистента и Linear MCP. Точки входа:
 
 - `/note [prefix:] <text>` — добавить запись в `notes/daily/<YYYY-MM-DD>.md` и опционально завести Issue. Маршрут зависит от префикса:
   - `bug:` → Issue в **— Backlog**

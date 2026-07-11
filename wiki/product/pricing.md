@@ -23,13 +23,13 @@ cta: Book a Demo
 > истины: финмодель `ai_jury_financial_model_v0_7_2_ru` лист «Тарифы» (v0.4)**.
 > Конкуренты и фичи — `ai-jury-prod/notes/research/competitor-landscape.md`
 > (status: draft, нужна верификация перед публикацией). Бренд на сайте —
-> **EvalLense** (в бизнес-доках продукт зовётся AI Jury — на странице не путать).
+> **EvalLens** (в бизнес-доках продукт зовётся AI Jury — на странице не путать).
 > Чего нет — в «Открытые вопросы», не выдумывать.
 
 ## Роль и аудитория
 
 - **Роль страницы:** показать модель монетизации и снять ценовые возражения —
-  EvalLense оплачивается **за мероприятие** (пакет заявок + срок действия), а не
+  EvalLens оплачивается **за мероприятие** (пакет заявок + срок действия), а не
   per-seat и не помесячно. Дать сравнить тарифы между собой и с альтернативными
   способами оценки.
 - **Для кого:** организаторы, принимающие решение о покупке — VC-фонды,
@@ -52,7 +52,7 @@ editorial-наборе**: `pricing-cards`, `comparison-table`, `faq`. Это о�
 | 1 | Hero | statement-hero | reveal | light | «Pay per event, not per seat» + lens-акцент + Start Free / Book a Demo |
 | 2 | Тарифы (4 карточки) | pricing-cards | reveal | light | Free · Стандартный (рекоменд.) · Профессиональный · Корпоративный; под ними строка «smaller plans» (Стартовый/Пилотный) |
 | 3 | Что входит в тариф | comparison-table | reveal | light | матрица фич × все 6 уровней (Free, Стартовый, Пилотный, Стандартный, Pro, Корп) — здесь живут Стартовый/Пилотный |
-| 4 | EvalLense vs альтернативы | comparison-table | reveal | ink | named-матрица фич (наши ✓ / у них ✗-частично), БЕЗ чужих цен + positioning-строка |
+| 4 | EvalLens vs альтернативы | comparison-table | reveal | ink | named-матрица фич (наши ✓ / у них ✗-частично), БЕЗ чужих цен + positioning-строка |
 | 5 | Возможности по категориям | bento | reveal | light | Intake · AI Evaluation · Reports · Review & Decision · Security & Trust · Admin |
 | 6 | FAQ по прайсингу | faq | reveal | light | что такое «заявка», срок действия, доп-пакеты, овераджи, оплата, данные, пилот |
 | 7 | Final CTA | quiet-cta | reveal | ink | призыв + Book a Demo / Start Free |
@@ -105,15 +105,15 @@ product-доков и модели):
 > evidence-linked scoring, human-in-the-loop) — на всех тарифах, включая
 > бесплатную пробу.** Дифференцируем объёмом и admin-возможностями, не доверием.
 
-### 4. EvalLense vs альтернативы
-**Named-матрица наличия фич, БЕЗ чужих цен.** Колонки — конкуренты + EvalLense;
-строки — наши фичи. Смысл: каждый конкурент закрывает только часть, **EvalLense —
+### 4. EvalLens vs альтернативы
+**Named-матрица наличия фич, БЕЗ чужих цен.** Колонки — конкуренты + EvalLens;
+строки — наши фичи. Смысл: каждый конкурент закрывает только часть, **EvalLens —
 единственная колонка со сплошными ✓** (мы = объединение «workflow-платформ» и
 «AI-аналитиков деков»). Колонки (из competitor-landscape.md): **YouNoodle**
 (competition workflow), **Evalato** (awards/applications), **PitchBob VC** (AI deck
-analyst), **EvalLense**.
+analyst), **EvalLens**.
 
-| Фича | YouNoodle | Evalato | PitchBob VC | **EvalLense** |
+| Фича | YouNoodle | Evalato | PitchBob VC | **EvalLens** |
 |---|---|---|---|---|
 | AI-оценка деков как ядро | ✗ | ✗ | ✓ | ✅ |
 | Методология 6 независимых судей (P1–P6) | ✗ | ✗ | частично | ✅ |
@@ -204,8 +204,8 @@ Bento-сетка фич, сгруппированная по продуктов�
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Pricing: Pay-per-Event Pitch Evaluation
-- **meta description:** Прозрачные тарифы EvalLense: от бесплатной пробы до
+- **`<title>`:** EvalLens — Pricing: Pay-per-Event Pitch Evaluation
+- **meta description:** Прозрачные тарифы EvalLens: от бесплатной пробы до
   Корпоративного. Оплата за мероприятие, не за места; AI-оценка 6 судьями на
   каждом тарифе. *(≤155)*
 - **OG-изображение:** слот `hero`

@@ -733,7 +733,7 @@
     }
   ],
   "style_anchors": {
-    "note": "page-composer Ф0.5/Ф6 — три стиль-варианта. Строятся на РЕАЛЬНЫХ токенах/компонентах EvalLense (globals.css + ui/* + _kit + Lab*), не на приближённых хексах. Стиль предлагается вариантом только когда его примитивы `ready`; иначе page-composer помечает вариант blocked-style и маршрутизирует примитивы в visual-layer-forge.",
+    "note": "page-composer Ф0.5/Ф6 — три стиль-варианта. Строятся на РЕАЛЬНЫХ токенах/компонентах EvalLens (globals.css + ui/* + _kit + Lab*), не на приближённых хексах. Стиль предлагается вариантом только когда его примитивы `ready`; иначе page-composer помечает вариант blocked-style и маршрутизирует примитивы в visual-layer-forge.",
     "themes": [
       "light",
       "dark"

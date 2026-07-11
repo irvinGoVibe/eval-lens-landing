@@ -15,7 +15,7 @@ cta: Run a safety test
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Trust-страница: объясняет, как EvalLense обращается со скрытыми или
+Trust-страница: объясняет, как EvalLens обращается со скрытыми или
 манипулятивными инструкциями внутри питч-деков — контент дека оценивается как
 evidence, а не исполняется как команда. AI готовит анализ — решает человек.
 
@@ -83,7 +83,7 @@ evidence, а не исполняется как команда. AI готови�
   - Lead: `Your deck is `
   - `[lens:evidence,]`
   - Trail: ` not an instruction.`
-- **Subhead:** EvalLense detects hidden and model-directed instructions, excludes them from scoring context, and flags them for review. In our safety test, judge scores stayed unchanged and the final ranking remained human-controlled.
+- **Subhead:** EvalLens detects hidden and model-directed instructions, excludes them from scoring context, and flags them for review. In our safety test, judge scores stayed unchanged and the final ranking remained human-controlled.
 - **CTA primary:** Run a safety test → `/#demo`
 - **CTA secondary (ghost):** Book a demo → `/company/contact`
 - **Медиа-слот (placeholder):** ratio 16:9, label "Image · deck through the lens · 16:9"
@@ -213,7 +213,7 @@ evidence, а не исполняется как команда. AI готови�
   - Lead: `Prompt injection safety is not the same as `
   - `[lens:fact checking]`
   - Trail: `.`
-- **Subhead:** EvalLense prevents instructions inside the deck from controlling the evaluation. It does not prove that every claim in the deck is true. False, incomplete, or unsupported claims still require evidence review and, where needed, external validation.
+- **Subhead:** EvalLens prevents instructions inside the deck from controlling the evaluation. It does not prove that every claim in the deck is true. False, incomplete, or unsupported claims still require evidence review and, where needed, external validation.
 
 ### Final CTA — `dark` (CtaBand, bleed)
 
@@ -262,7 +262,7 @@ evidence, а не исполняется как команда. AI готови�
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Prompt Injection Safety for Pitch Evaluation
+- **`<title>`:** EvalLens — Prompt Injection Safety for Pitch Evaluation
 - **meta description:** Deck content is evidence, not a command: independent judges, deterministic math, advisory AI and a human in the loop keep evaluation under control.
 - **OG-изображение:** слот `hero`
 
@@ -291,7 +291,7 @@ evidence, а не исполняется как команда. AI готови�
 - [x] §2b содержит реальные тестовые данные: AI Total Score 7.4 (clean = injected), 0/6 judge changes, security flag источник Slide 8
 - [x] факты только подтверждённые (6 независимых судей; human ranks; AI advisory; Function 1 без LLM; embedded dimensions) — без выдуманных KPI «защиты»
 - [x] honest claim держится: §5 «not the same as fact checking» — нет обещания «100% / immune / universal immunity»
-- [x] human-in-the-loop держится; нет «AI judges/decides/verdict»; имя EvalLense
+- [x] human-in-the-loop держится; нет «AI judges/decides/verdict»; имя EvalLens
 - [x] primary CTA — «Run a safety test» → `/#demo`; secondary — «Book a demo» → `/company/contact`
 - [x] реальные assets в `/assets/injection/` для §2, §3, §4; §1 hero остаётся placeholder
 - [x] `cd web && pnpm build` зелёный; `prefers-reduced-motion` уважается

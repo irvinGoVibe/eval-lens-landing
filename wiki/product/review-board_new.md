@@ -236,8 +236,8 @@ AI-оценки человек сравнивает разобранные ст�
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense Review Board — Compare, Shortlist, Decide
-- **meta description:** Review Board is the EvalLense decision workspace: compare
+- **`<title>`:** EvalLens Review Board — Compare, Shortlist, Decide
+- **meta description:** Review Board is the EvalLens decision workspace: compare
   scored startups, set human Jury Scores, rank by your decision and keep an audit
   trail — the final call always yours. (≤155, вербатим из кода)
 

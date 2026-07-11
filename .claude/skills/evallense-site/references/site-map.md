@@ -1,4 +1,4 @@
-# Карта сайта EvalLense — секции, копия, что писать и что изобразить
+# Карта сайта EvalLens — секции, копия, что писать и что изобразить
 
 Источник: репозиторий `eval-lens-landing` (Next.js 16). Копия приведена verbatim (EN) по состоянию лендинга. Лендинг ~80% готов: есть media-плейсхолдеры на внутренних страницах, финальный фон CtaBand ещё выбирают, часть email/docs — placeholder.
 
@@ -28,7 +28,7 @@ Problem (поток заявок > времени) → Workflow (собирае�
 - **Роль:** показать боль — поток заявок, неорганизованность, риск пропустить лидера.
 - **Текущая копия:**
   - Heading: `Find the leaders` + (градиент) `hidden in your flow.`
-  - Sub: `EvalLense batch-analyzes every deck, compares applications in one format, and brings the strongest candidates to the top.`
+  - Sub: `EvalLens batch-analyzes every deck, compares applications in one format, and brings the strongest candidates to the top.`
 - **Do:** назвать напряжение (много деков, мало времени) и сразу дать обещание подъёма сильнейших. Демо-имена деков нейтральные/выдуманные (Aurora Labs, Northwind AI, Quanta Bio, Vela Robotics).
 - **Don't:** жаловаться без выхода; технические детали пайплайна тут рано.
 - **Imagery:** scroll-scrub видео; карточки деков с номерами (001–123); таблица рейтинга (NovaPay 94, Northwind AI 88, Quanta Bio 81).
@@ -41,7 +41,7 @@ Problem (поток заявок > времени) → Workflow (собирае�
 - **Роль:** как собираем заявки — Entry Hub, один публичный линк, self-upload.
 - **Текущая копия:**
   - Heading: `Launch your` + (градиент) `entry point.`
-  - Sub: `Create one place where teams submit their pitch decks. EvalLense collects every application, organizes the full batch, and lets you run evaluation when you're ready.`
+  - Sub: `Create one place where teams submit their pitch decks. EvalLens collects every application, organizes the full batch, and lets you run evaluation when you're ready.`
   - 6 шагов: `Create entry point` → `Share submission link` → `Teams upload pitch decks` → `Applications collected` → `Batch ready` → `Run evaluation` (каждый с 1-строчным пояснением).
   - Мокап-данные: `evallense.app/s/<slug>`, счётчики collected/ready/missing, узлы пайплайна Decoder → AI Judges → Summarizer → Scoring → Reports.
 - **Do:** шаги — короткие глагольные; «No inbox digging»; один публичный линк. Имена шагов — параллельные по структуре.
@@ -66,7 +66,7 @@ Problem (поток заявок > времени) → Workflow (собирае�
 - **Текущая копия:**
   - Eyebrow: `Two outcomes, one batch`
   - Heading: `Select the best. Help every team improve.`
-  - Sub: `EvalLense gives batch owners a private decision dashboard and structured reports for every participant — so you can choose stronger candidates and give every team useful feedback.`
+  - Sub: `EvalLens gives batch owners a private decision dashboard and structured reports for every participant — so you can choose stronger candidates and give every team useful feedback.`
   - Панели: `Owner decision dashboard` (Private) / `Participant feedback report` (Shared) с блоками Strengths / Weaknesses & risks / Missing evidence / Next steps.
   - Петля: Batch review → Owner decision → Participant feedback → Better future submissions → ↻
   - Чипы: Private shortlist · Founder feedback · Better applications · Human decision · Reusable reports.
@@ -80,7 +80,7 @@ Problem (поток заявок > времени) → Workflow (собирае�
 - **Текущая копия:** Heading `From the Newsroom` · CTA `See all` → /blog.
 - **Do:** заголовки статей — методология/данные/уроки реальных программ.
 
-## EvalLense Bento (`components/sections/EvalLenseBentoSection.tsx`)
+## EvalLens Bento (`components/sections/EvalLenseBentoSection.tsx`)
 - **Роль:** Apple-style тёмное bento с живым 3D-единорогом; доказательства системы вокруг.
 - **Текущая копия:**
   - Overlay heading: `Trusted, Explainable,` + `Human-Controlled`
@@ -102,19 +102,19 @@ Problem (поток заявок > времени) → Workflow (собирае�
 - **Imagery:** тестовые видео-фоны (cube/neo/uniqorn) ИЛИ CSS-aurora — финал ещё выбирают; предложить лучший сюжет при необходимости.
 
 ## SiteHeader (`components/SiteHeader.tsx`)
-- **Текущая копия:** бренд `EvalLense`; nav `Product` (#workflow) · `Block` (#problem) · `Pricing` (#results) · `Newsroom` (/blog); CTA `Book a demo`.
+- **Текущая копия:** бренд `EvalLens`; nav `Product` (#workflow) · `Block` (#problem) · `Pricing` (#results) · `Newsroom` (/blog); CTA `Book a demo`.
 - **⚠️ Замечание:** лейблы `Block` и `Pricing` выглядят как WIP/неточные (ведут на #problem и #results). При работе над хедером — предложить корректные лейблы (напр. Product · How it works · Use cases · Newsroom) и согласовать с фаундером.
 
 ## Footer (`components/Footer.tsx`)
 - **Текущая копия:** описание `Batch-review pitch decks, rank the strongest startups, and give every team a clear report. Final decisions stay human-controlled.` · CTA `Book a call` / `Try live demo`.
-- Колонки: **Product** (Overview, Entry hub, Reports, Review board, Site map) · **Trust** (Methodology, Consistency & reliability, Prompt injection safety, Security & privacy, Use cases) · **Company** (About, Newsroom, Contact, careers@evallense.com) · Socials (X, Instagram, Telegram, Medium) · Legal (© 2026 EvalLense, Privacy, Terms, Security).
+- Колонки: **Product** (Overview, Entry hub, Reports, Review board, Site map) · **Trust** (Methodology, Consistency & reliability, Prompt injection safety, Security & privacy, Use cases) · **Company** (About, Newsroom, Contact, careers@evallense.com) · Socials (X, Instagram, Telegram, Medium) · Legal (© 2026 EvalLens, Privacy, Terms, Security).
 
 ---
 
 # PRODUCT (внутренние страницы)
 
 ## /product — Hub (`app/product/page.tsx`)
-- Eyebrow `Product` · Heading `Everything EvalLense does, in one place` · Sub `Collect decks, evaluate them with an AI jury, get evidence-based reports and review the results — four pages, one end-to-end workflow. Pick where to start.`
+- Eyebrow `Product` · Heading `Everything EvalLens does, in one place` · Sub `Collect decks, evaluate them with an AI jury, get evidence-based reports and review the results — four pages, one end-to-end workflow. Pick where to start.`
 - Стейтмент: `Not a one-off AI analysis — an operating layer that carries a batch of decks from intake to a human decision.`
 - 4 tile-страницы: Overview / Entry Hub / Evidence-Based Reports / Review Board.
 - Flow: **Collect** → **Evaluate** (`Six AI judges score every deck across P1–P6…`) → **Decide** (`the human decides`).
@@ -150,7 +150,7 @@ Problem (поток заявок > времени) → Workflow (собирае�
 # TRUST (внутренние страницы)
 
 ## /trust — Hub (`app/trust/page.tsx`)
-- Heading `Why you can trust the results` · стейтмент `EvalLense scores by structured rules — judge roles, rubrics and weights — not by an AI's general impression.`
+- Heading `Why you can trust the results` · стейтмент `EvalLens scores by structured rules — judge roles, rubrics and weights — not by an AI's general impression.`
 - 5 tile-страниц: Methodology · Consistency & Reliability · Prompt Injection Safety · Security & Privacy · Use Cases.
 - 4 слоя доверия (pinned) + сегменты use-cases (VC funds, Accelerators, Angel investors, Corporate innovation, Startup competitions, Grant programs, Hackathons, Universities) с 1-строчными описаниями.
 - **Do:** «structured rules, not general impression»; каждый слой — отдельная страница.
@@ -166,7 +166,7 @@ Problem (поток заявок > времени) → Workflow (собирае�
 - Цепочка: Pitch deck → structured analysis → specialized evaluation lenses → fixed criteria and rubrics → evidence-based report → human review → final decision.
 - Принципы (4): `AI supports decisions. It does not own them.` · `Every score should be explainable.` · `Disagreement is useful.` · `Methodology matters more than the model.`
 - Команда: **Yaroslav Volovoj** (Product, Strategy & Methodology) · **Vladislav Starodubov** (Engineering & Architecture) · **Arseniy** (Product Experience).
-- **Do:** это каноническое место origin-нарратива AI Jury → EvalLense; держать его именно здесь.
+- **Do:** это каноническое место origin-нарратива AI Jury → EvalLens; держать его именно здесь.
 
 ## /company/contact (`app/company/contact/page.tsx`)
 - Каналы: Book a demo · `hello@evallense.com` (general & sales) · `careers@evallense.com` · `security@evallense.com` · `press@evallense.com`.

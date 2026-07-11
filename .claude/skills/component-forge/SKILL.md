@@ -4,7 +4,7 @@ description: "ОРКЕСТРАТОР-дирижёр последовательн
 metadata:
   package: component-forge
   role: orchestrator
-  product: EvalLense
+  product: EvalLens
 ---
 
 # Component Forge — оркестратор переработки Section Lab архетипов
@@ -105,7 +105,7 @@ deprecated `_kit.tsx` (как факт субстрата). Выводит **Sur
 **4A.1 Draft → 4A.2 UI UX Pro Max Review → 4A.3 Revision → 4A.4 Final**. На 4A.2
 оркестратор **сам** вызывает Skill `ui-ux-pro-max` (advisory, **НЕ subagent**;
 typography/composition/responsive/media/background/anti-patterns; **запрещено**
-генерить новую DS/`--design-system`/`MASTER.md` — EvalLense DS = source of truth).
+генерить новую DS/`--design-system`/`MASTER.md` — EvalLens DS = source of truth).
 **≤2 цикла** 4A.2↔4A.3; не сошлось → `blocked-design-review`, Gate A не показываем.
 Три **брифа**: V1 Polish, V2 Modern Recomposition, V3 Expanded Expressive (+ Designer
 Self-Check + media-brief). Заголовки скомпонованы **по-разному в V1/V2/V3** (слова те

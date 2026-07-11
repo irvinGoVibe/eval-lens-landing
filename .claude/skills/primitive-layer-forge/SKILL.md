@@ -1,10 +1,10 @@
 ---
 name: primitive-layer-forge
-description: "ОРКЕСТРАТОР построения слоя ЧАСТЕЙ библиотеки EvalLense (L3 atoms + L4 layout shells) — извлекает повторяющиеся под-части из 15 (deprecated) Lab* и DS-секций/страниц в импортируемые ЧИСТЫЕ DS-атомы и DS-каркасы в `web/src/components/ds` (баррель `@/components/ds`, стили в `ds.css`/`.ds`), рефакторит потребителей на `@/components/ds` БЕЗ изменения рендера (visual parity), регистрирует через component-library-preparer и переключает compose_mode → atoms-and-layouts. Часть north-star: по мере извлечения CSS переезжает в `ds.css`/`.ds`, секции перестают зависеть от `.lab-*`/`section-lab`. После него page-composer собирает секции ИЗ ЧАСТЕЙ. Сам application-код пишет только назначенный инженер после user-гейта. НЕ component-forge (тот куёт целые секции) и НЕ forge-primitives (тот только строит карту одного архетипа). Режимы: full / targeted / gap. Триггеры — /primitive-layer-forge, «собери слой DS-атомов», «извлеки DS-каркасы в @/components/ds», «атомизируй (deprecated) Lab*», «нужен общий DS-примитив <…>», приём atom/layout gap от page-composer."
+description: "ОРКЕСТРАТОР построения слоя ЧАСТЕЙ библиотеки EvalLens (L3 atoms + L4 layout shells) — извлекает повторяющиеся под-части из 15 (deprecated) Lab* и DS-секций/страниц в импортируемые ЧИСТЫЕ DS-атомы и DS-каркасы в `web/src/components/ds` (баррель `@/components/ds`, стили в `ds.css`/`.ds`), рефакторит потребителей на `@/components/ds` БЕЗ изменения рендера (visual parity), регистрирует через component-library-preparer и переключает compose_mode → atoms-and-layouts. Часть north-star: по мере извлечения CSS переезжает в `ds.css`/`.ds`, секции перестают зависеть от `.lab-*`/`section-lab`. После него page-composer собирает секции ИЗ ЧАСТЕЙ. Сам application-код пишет только назначенный инженер после user-гейта. НЕ component-forge (тот куёт целые секции) и НЕ forge-primitives (тот только строит карту одного архетипа). Режимы: full / targeted / gap. Триггеры — /primitive-layer-forge, «собери слой DS-атомов», «извлеки DS-каркасы в @/components/ds», «атомизируй (deprecated) Lab*», «нужен общий DS-примитив <…>», приём atom/layout gap от page-composer."
 metadata:
   package: component-library
   role: orchestrator
-  product: EvalLense
+  product: EvalLens
   builds_layers: [L3_atoms, L4_layouts]
   unblocks: [page-composer (atoms-and-layouts mode)]
   routes_to: [component-library-preparer]
@@ -70,7 +70,7 @@ implementation-фазы. Аудитишь существующую библио�
 
 ## 1. Зачем (постановка)
 
-Реальные секции страниц EvalLense — **бесшовно разные сборки из разных кусков**, а
+Реальные секции страниц EvalLens — **бесшовно разные сборки из разных кусков**, а
 не «одна секция = один готовый архетип». Чтобы `page-composer` мог **дробить
 секцию на атомы и собирать**, нужен **импортируемый чистый DS** слой частей.
 Сейчас его нет — куски живут во **внутреннем (deprecated) субстрате**:

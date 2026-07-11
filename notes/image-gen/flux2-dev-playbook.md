@@ -1,4 +1,4 @@
-# EvalLense · FLUX.2 [dev] 6-bit — Draw Things Playbook
+# EvalLens · FLUX.2 [dev] 6-bit — Draw Things Playbook
 
 > Как настраивать и гонять **FLUX.2 [dev] (6-bit)** в Draw Things под картинки сайта
 > (hero / demo / layers в фирменном lens-стиле). Цель: «журнальное» качество,
@@ -52,7 +52,7 @@ FLUX.2 понимает промпт через **Mistral-24B VLM** — это �
 
 ## 2. Бренд-преамбула (вставлять в каждый промпт)
 
-Единый стиль = одинаковая «обёртка» вокруг сюжета. Базовый блок EvalLense:
+Единый стиль = одинаковая «обёртка» вокруг сюжета. Базовый блок EvalLens:
 
 ```
 Hyperrealistic macro product visual, Apple-grade minimalism, calm premium technology.

@@ -1,5 +1,5 @@
 ---
-title: About EvalLense
+title: About EvalLens
 status: live
 version: 1.0
 updated: 2026-06-28
@@ -11,11 +11,11 @@ in_footer_nav: true
 cta: Book a Demo
 ---
 
-# About EvalLense
+# About EvalLens
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Company-страница: кто стоит за EvalLense, зачем мы это строим, чему нас научили
+Company-страница: кто стоит за EvalLens, зачем мы это строим, чему нас научили
 прогоны, наши принципы и команда.
 
 > Продуктовый бриф страницы. **Первоисточник — авторский founder-нарратив** (дистиллирован
@@ -29,7 +29,7 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
   «безличность» AI-инструмента и усилить доверие через честную builder-историю,
   принципы и команду.
 - **Для кого:** организаторы (фонды, акселераторы, конкурсы, хакатоны), партнёры,
-  потенциальные сотрудники — те, кому важно понять, кто и зачем строит EvalLense.
+  потенциальные сотрудники — те, кому важно понять, кто и зачем строит EvalLens.
 - **Ключевое сообщение:** AI структурирует и подсвечивает — решение принимает человек.
 - **Целевое действие:** Book a Demo → `/#demo`; вторичное — Read the full
   story → `/blog/founding-story`.
@@ -40,12 +40,12 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 |---|---|---|---|---|---|
 | 1 | Hero / миссия | statement-hero | reveal | soft (light) | «clearer, faster, easier to defend» + миссия + CTA |
 | 2 | Проблема | editorial-split | reveal | light | «Good projects get lost when review has no system» |
-| 3 | From AI Jury to EvalLense | pinned-multi-screen | pin (3 шага) | ink | 3-шаговый journey + side visual + CTA «Read the full story» |
+| 3 | From AI Jury to EvalLens | pinned-multi-screen | pin (3 шага) | ink | 3-шаговый journey + side visual + CTA «Read the full story» |
 | 3b | Story Cinema | ds-Cinema | — | ink | Closing statement + видео-фон |
 | 4 | Принципы | bento | reveal | soft (light) | 1 feature-карточка + 4 карточки = 5 принципов |
 | 5 | Команда | dossier cards | reveal | ink | 2 со-фаундера — dossier-карточки с портретами, маркерами, чипами |
 | 6 | Who we build for | IcpBento | reveal | ink | 8 ICP-сегментов в premium bento (инкапсулировано в `<IcpBento />`) |
-| 7 | Final CTA | quiet-cta | reveal | ink | «See how EvalLense works on a real batch» + видео-фон |
+| 7 | Final CTA | quiet-cta | reveal | ink | «See how EvalLens works on a real batch» + видео-фон |
 
 > Ритм по поверхностям: 1S·2L·3I·3bI·4S·5I·6I·7I. Движение — через `<ScrollFX/>` +
 > data-атрибуты, без per-section useEffect. Архетипы/классы — из [[section-types|Section Types]].
@@ -57,9 +57,9 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 
 ### 1. Hero / миссия — `soft`
 
-- **Eyebrow:** About EvalLense
-- **H1:** We built EvalLense to make startup review clearer, faster, and easier to [lens]defend
-- **Subhead:** EvalLense turns messy startup applications into structured evidence, comparable scores, and questions reviewers can actually use. AI prepares the analysis. People keep the judgment.
+- **Eyebrow:** About EvalLens
+- **H1:** We built EvalLens to make startup review clearer, faster, and easier to [lens]defend
+- **Subhead:** EvalLens turns messy startup applications into structured evidence, comparable scores, and questions reviewers can actually use. AI prepares the analysis. People keep the judgment.
 - **CTA:** Book a Demo → `/#demo`
 - **Visual:** Observatory hero PNG `/assets/entry-hub/evallense-observatory-hero-01.png` (16:9, `ev-drift` class, transparent cut-out на soft-фоне). Страница применяет page-local инъекцию стилей для увеличения и подъёма изображения под кнопку.
 - **Background:** `<BlobField />` (ambient)
@@ -74,14 +74,14 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 
 > ⚠️ В брифе v0.8 эта секция помечена как `ink` — в живом коде она `band` (light). Исправлено.
 
-### 3. From AI Jury to EvalLense — `ink` (dark), pinned
+### 3. From AI Jury to EvalLens — `ink` (dark), pinned
 
 - **id:** `story`
-- **aria-label:** From AI Jury to EvalLense — the history in three steps
+- **aria-label:** From AI Jury to EvalLens — the history in three steps
 - **data-pin / data-pin-steps:** 3
 - **Eyebrow:** From AI jury to human-controlled evaluation
 - **H2:** What [lens]hundreds of runs taught us
-- **Subhead:** EvalLense started as AI Jury. The early idea was simple: use several specialized AI judges instead of one generic model opinion. Then the runs exposed the real problem.
+- **Subhead:** EvalLens started as AI Jury. The early idea was simple: use several specialized AI judges instead of one generic model opinion. Then the runs exposed the real problem.
 - **Steps (3, не 5):**
   1. **01 · AI Jury** — The first version was built during the Amazon Nova hackathon. It tested whether specialized AI judges could evaluate pitch decks from different angles.
   2. **02 · Hundreds of runs** — Adding more judges did not solve quality. Scores shifted, roles overlapped, and long reports created noise instead of clarity.
@@ -98,15 +98,15 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 - **Компонент:** `<Cinema>` из `@/components/ds`
 - **id:** `story-claim`
 - **surface:** `ink`
-- **Headline:** AI Jury tried to judge. EvalLense helps people see clearly before they decide.
+- **Headline:** AI Jury tried to judge. EvalLens helps people see clearly before they decide.
 - **Lines (desktop):**
   - AI Jury tried to judge.
-  - EvalLense helps people see
+  - EvalLens helps people see
   - clearly before they decide.
 - **Lines (mobile):**
   - AI Jury tried
   - to judge.
-  - EvalLense helps
+  - EvalLens helps
   - people see clearly
   - before they decide.
 - **Media:** видео `/assets/about/about-story-cinema.mp4`
@@ -118,18 +118,18 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 - **id:** `principles`
 - **Eyebrow:** Our principles
 - **H2:** The [lens]principles behind every evaluation
-- **Subhead:** These principles keep EvalLense useful: AI supports the work, scores link to evidence, disagreement stays visible, and methodology comes before the model.
+- **Subhead:** These principles keep EvalLens useful: AI supports the work, scores link to evidence, disagreement stays visible, and methodology comes before the model.
 - **Layout:** bento — левая feature-карточка (тёмная, видео-фон) + правая 2×2 сетка светлых карточек
 - **Feature card (принцип 1):**
   - Eyebrow: "Human in the loop"
   - H3: AI prepares the analysis. [lens]Humans own the decision.
-  - Body: EvalLense can structure evidence, surface risks, and prepare a ranking view. The final score, context, and decision stay under human control.
+  - Body: EvalLens can structure evidence, surface risks, and prepare a ranking view. The final score, context, and decision stay under human control.
   - Видео: `/assets/about/principles-feature-bg.mp4` (autoplay, muted, loop; poster `/assets/about/principles-feature-poster.jpg`)
 - **Cards (принципы 2–5):**
   | # | Заголовок | Тело |
   |---|---|---|
   | 01 | Every score needs evidence. | Reviewers should be able to see what influenced the result, which slide or claim supported it, and what information was missing. |
-  | 02 | Disagreement should be visible. | When evaluation lenses disagree, EvalLense does not hide the conflict inside an average. It shows the split so reviewers know where to look. |
+  | 02 | Disagreement should be visible. | When evaluation lenses disagree, EvalLens does not hide the conflict inside an average. It shows the split so reviewers know where to look. |
   | 03 | The same standard for every team. | Every application is judged against the same criteria and the same scale, so results stay comparable across the whole batch — and where repeated runs differ, that is visible too. |
   | 04 | Methodology beats model choice. | Reliable evaluation needs clear criteria, controlled roles, structured outputs, and consistent scoring logic. The model is only one part of the system. |
 
@@ -147,7 +147,7 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 
 **Founder 1 — Yaroslav Volovoj**
 - Role: Product & GTM
-- Bio: Turns messy startup evaluation into a product people can actually use. Owns the review flow, GTM logic, and the bridge from AI Jury to EvalLense.
+- Bio: Turns messy startup evaluation into a product people can actually use. Owns the review flow, GTM logic, and the bridge from AI Jury to EvalLens.
 - Marker: "Founder mode: on"
 - Off-screen: Off-screen: sharp decks, product calls, and probably a pickleball court.
 - Hobby: Hackathons & sport
@@ -159,7 +159,7 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 
 **Founder 2 — Vladislav Starodubov** *(код: «Vladislav», не «Vladyslav»)*
 - Role: Engineering & Reliability
-- Bio: Builds the system behind EvalLense: judge orchestration, scoring infrastructure, security, and repeatable evaluation runs.
+- Bio: Builds the system behind EvalLens: judge orchestration, scoring infrastructure, security, and repeatable evaluation runs.
 - Marker: "Keeps it working"
 - Off-screen: Off-screen: architecture maps, edge cases, and systems that refuse to break.
 - Hobby: Hard work & good company
@@ -205,8 +205,8 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 ### 7. Final CTA — `ink`
 
 - **Eyebrow:** Get to know us
-- **H2:** See how EvalLense works on a [lens]real batch
-- **Subhead:** Book a demo to walk through the workflow, review example reports, and see how EvalLense helps your team compare applications without giving up human control.
+- **H2:** See how EvalLens works on a [lens]real batch
+- **Subhead:** Book a demo to walk through the workflow, review example reports, and see how EvalLens helps your team compare applications without giving up human control.
 - **CTA:** Book a Demo → `/#demo`
 - **Visual:** Full-bleed looping video `/assets/about/about-cta-bg.mp4` + darkening scrim
 
@@ -259,8 +259,8 @@ Company-страница: кто стоит за EvalLense, зачем мы эт
 
 ## SEO / meta
 
-- **`<title>`:** About EvalLense — A better lens for human judgment
-- **meta description:** EvalLense helps startup programs, funds, and competitions review applications with structured AI analysis, evidence-backed reports, and human-controlled decisions.
+- **`<title>`:** About EvalLens — A better lens for human judgment
+- **meta description:** EvalLens helps startup programs, funds, and competitions review applications with structured AI analysis, evidence-backed reports, and human-controlled decisions.
 - Заданы в `export const metadata` в `page.tsx`; OG-изображение — hero-слот.
 
 ## Движение и анимации

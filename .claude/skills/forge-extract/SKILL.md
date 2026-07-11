@@ -4,7 +4,7 @@ description: "ФАЗА 5 пакета component-forge — Frontend Implementatio
 metadata:
   package: component-forge
   phase: 5
-  product: EvalLense
+  product: EvalLens
 ---
 
 # forge-extract — Frontend Implementation (Фаза 5)

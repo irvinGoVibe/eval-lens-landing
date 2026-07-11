@@ -5,11 +5,11 @@ version: 1.1
 updated: 2026-06-15
 ---
 
-# Карта сайта EvalLense
+# Карта сайта EvalLens
 
 ← [[index|Wiki]] · [[homepage-structure|Структура главной страницы сайта]]
 
-Документ фиксирует актуальную структуру сайта EvalLense. Логика сайта строится вокруг четырёх смысловых слоёв: conversion page, product, trust и company.
+Документ фиксирует актуальную структуру сайта EvalLens. Логика сайта строится вокруг четырёх смысловых слоёв: conversion page, product, trust и company.
 
 ## Принцип структуры
 
@@ -70,7 +70,7 @@ Book a Demo
 Основная логика страницы:
 
 ```text
-1. Hero - что делает EvalLense
+1. Hero - что делает EvalLens
 2. Problem / Solution - зачем нужен structured pitch deck evaluation
 3. Entry point - точка входа: сбор заявок и pitch decks
 4. Workflow - как пользователь проходит путь от entry до reports
@@ -132,7 +132,7 @@ Review Board
 /trust
 ```
 
-Роль раздела: объяснить, почему результатам EvalLense можно доверять.
+Роль раздела: объяснить, почему результатам EvalLens можно доверять.
 
 ### Trust Pages
 
@@ -152,7 +152,7 @@ Review Board
 | Consistency & Reliability | Стабильность оценок, variance, repeatability, confidence checks |
 | Prompt Injection Safety | Защита от инструкций внутри deck, которые пытаются повлиять на оценку |
 | Security & Privacy | Обработка pitch decks, доступы, приватность, безопасность |
-| Use Cases | Где применяется EvalLense и какие решения поддерживает |
+| Use Cases | Где применяется EvalLens и какие решения поддерживает |
 
 ### Trust Logic
 
@@ -211,7 +211,7 @@ Use Cases
 
 | Страница | Что раскрывает |
 |---|---|
-| About | Кто мы, зачем строим EvalLense, продуктовая миссия |
+| About | Кто мы, зачем строим EvalLens, продуктовая миссия |
 | Newsroom | Новости, обновления, публичные анонсы |
 | Careers | Вакансии и будущие роли |
 | Contact | Контактная форма, demo request, общий контакт |
@@ -318,4 +318,4 @@ LEGAL
 - [[overview|Обзор продукта]] - общий продуктовый контекст
 - [[human-in-the-loop|Human-in-the-Loop]] - контроль человека над финальным решением
 - [[report|Отчёт]] - продуктовый контекст по результату оценки
-- [[blog/from-ai-jury-to-evallense-400-ai-judging-runs|From AI Jury to EvalLense]] - продуктовая история и featured article
+- [[blog/from-ai-jury-to-evallense-400-ai-judging-runs|From AI Jury to EvalLens]] - продуктовая история и featured article

@@ -11,7 +11,7 @@
         "Берёт архетипы из section-types.md + сверяет с page-design-patterns.md",
         "Пишет в overview_new.md, оригинал не трогает",
         "Структура и H2-заголовки = _page-template.md",
-        "Сохраняет human-in-the-loop, имя EvalLense"
+        "Сохраняет human-in-the-loop, имя EvalLens"
       ],
       "files": []
     },

@@ -9,7 +9,7 @@ updated: 2026-06-15
 
 ← [[index|Wiki]] · [[system|System]]
 
-Как устроен раздел `/blog` (EvalLense Newsroom): какие сущности контента
+Как устроен раздел `/blog` (EvalLens Newsroom): какие сущности контента
 существуют, какие у них параметры, как из них собираются страницы и что такое
 «In the Loop» репосты.
 
@@ -90,7 +90,7 @@ Newsroom повторяет структуру Apple Newsroom тремя бло�
 | `date` | `string` | ISO-дата (`YYYY-MM-DD`). Управляет сортировкой и человекочитаемым штампом. |
 | `readMinutes` | `number` | Оценка времени чтения («N min read»). |
 | `cover` | `string` | Путь к обложке под `/public` (напр. `/assets/bento/jury-decision.png`). |
-| `author` | `string` | Автор / источник (напр. «EvalLense Newsroom»). |
+| `author` | `string` | Автор / источник (напр. «EvalLens Newsroom»). |
 | `role` | `string` | Подпись роли под автором (Company / Design / Security…). |
 | `body` | `Block[]` | Тело статьи — массив блоков (см. ниже). |
 

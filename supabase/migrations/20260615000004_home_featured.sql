@@ -1,4 +1,4 @@
--- EvalLense blog — "Home / Blog block" featured selection.
+-- EvalLens blog — "Home / Blog block" featured selection.
 --
 -- Story 02, "Главная → Блок «Блог»": the editor chooses which published
 -- articles appear in the blog block on the home page and in what order.

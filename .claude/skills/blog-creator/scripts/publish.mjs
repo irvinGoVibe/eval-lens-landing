@@ -1,4 +1,4 @@
-// EvalLense blog-creator — publish an article to Supabase (the CMS the admin reads).
+// EvalLens blog-creator — publish an article to Supabase (the CMS the admin reads).
 //
 // WHY THIS EXISTS
 // The /admin panel is a thin CRUD over the `articles` table (service_role,

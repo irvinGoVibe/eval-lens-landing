@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Trust-страница: объясняет, как EvalLense делает стабильность оценки видимой и
+Trust-страница: объясняет, как EvalLens делает стабильность оценки видимой и
 измеримой — где результаты согласованы, где судьи расходятся, и где нужен человек.
 
 > Продуктовый бриф страницы. Факты сверены с источником правды `ai-jury-prod`:
@@ -29,13 +29,13 @@ Trust-страница: объясняет, как EvalLense делает ста
 
 ## Роль и аудитория
 
-- **Роль страницы:** показать, что EvalLense заботится о *качестве* оценки, а не
+- **Роль страницы:** показать, что EvalLens заботится о *качестве* оценки, а не
   только об объёме — делает variance, repeatability и disagreement видимыми и
   измеримыми, и привязывает их к human-in-the-loop.
 - **Для кого:** VC-фонды, акселераторы, организаторы конкурсов — те, кто принимает
   решения по результатам и кому важно знать, *насколько* устойчив балл.
 - **Ключевое сообщение:** балл полезен, только если известно, насколько он
-  устойчив. EvalLense вскрывает согласие, разброс и случаи, требующие человека — и
+  устойчив. EvalLens вскрывает согласие, разброс и случаи, требующие человека — и
   **измеряет** воспроизводимость, а не прячет её за усреднением.
 - **Целевое действие:** Book a Demo → `/company/contact`; вторичный путь —
   View live report → `/try-live-demo`.
@@ -78,7 +78,7 @@ Trust-страница: объясняет, как EvalLense делает ста
 ### 1. Hero — `light`
 - **Eyebrow:** Consistency & Reliability
 - **Heading (lens на `inspect`):** Reliability you can `[inspect]`, not just trust
-- **Subhead:** EvalLense shows which scores stay stable, where judges disagree, and when human review is needed. It also tracks how results change across repeated runs.
+- **Subhead:** EvalLens shows which scores stay stable, where judges disagree, and when human review is needed. It also tracks how results change across repeated runs.
 - **CTA:** Book a Demo → `/company/contact`
 - **Media slot:** `16/9` — Two lenses with the same average but a different scatter of judge points
   - Hint: "Two lenses, same average, different scatter density — lens-gradient violet→cyan→aqua, calm"
@@ -116,7 +116,7 @@ Trust-страница: объясняет, как EvalLense делает ста
 ### 4. Два слоя надёжности — `light`
 - **Eyebrow:** Two layers
 - **Heading:** One layer is `[deterministic]`. The other is measured.
-- **Subhead:** EvalLense separates the math from the judgment and holds each to its own standard.
+- **Subhead:** EvalLens separates the math from the judgment and holds each to its own standard.
 - **Points:**
   - **Aggregation is deterministic.** Once judge outputs exist, the score is calculated by a deterministic aggregation function, not another LLM call. The same judge outputs and weights produce the same AI Total Score every time, with only rounding-level tolerance.
   - **Judges are measured for repeatability.** The AI judge layer runs on a language model, so repeated runs are not always identical. We benchmark that repeatability: in repeated runs of the same deck, our latest calibration prompt reduced run-to-run variance by about 60%, and the same deck reproduced the same dimension profile in roughly 86% of runs (internal single-deck repeatability test; see benchmark evidence below).
@@ -130,7 +130,7 @@ Trust-страница: объясняет, как EvalLense делает ста
 - **Компонент:** `PinnedSteps`
 - **Eyebrow:** Disagreement in the open
 - **Heading:** When judges `[split,]` / the report says so
-- **Subhead:** EvalLense tracks the spread between judges on each dimension and turns it into a clear label. A high spread does not lower the score automatically. It routes your attention to the decks worth a closer look. It is a signal, not a penalty.
+- **Subhead:** EvalLens tracks the spread between judges on each dimension and turns it into a clear label. A high spread does not lower the score automatically. It routes your attention to the decks worth a closer look. It is a signal, not a penalty.
 - **Steps (SPREAD_STEPS):**
   - `< 1.5` · **Consensus** — Judges agree. The dimension reads the same way across the jury.
   - `1.5 – 2.99` · **Split** — Judges diverge. It is worth checking where the views split.
@@ -179,7 +179,7 @@ Trust-страница: объясняет, как EvalLense делает ста
   - `UnicornEggBadge`
   - Scope: Internal repeatability benchmark: J-P5 Team Readiness, one deck, 24 runs, June 2026. A multi-deck regression across the full panel is in progress.
   - Targets: final-score standard deviation ≤ 3 · score-band consistency ≥ 90% · critical-risk recall ≥ 90% · schema-valid outputs ≥ 99% · regression pass ≥ 95%.
-  - Story: EvalLense comes from **1,000+ internal evaluation runs**, starting with an Amazon Nova hackathon prototype and the earlier AI Jury system.
+  - Story: EvalLens comes from **1,000+ internal evaluation runs**, starting with an Amazon Nova hackathon prototype and the earlier AI Jury system.
 
 > Предыдущий бриф: «400+ прогонов» (product story) — устарело; в коде и меморис — **1,000+**.
 > CTAs «View live report» + glassmorphic expandable details — новые в коде, в прежнем брифе отсутствовали.
@@ -188,7 +188,7 @@ Trust-страница: объясняет, как EvalLense делает ста
 - **Компонент:** page-local реплика `StatementHero` v3 (`ds-hero__v ds-hero__v3`), `className="band ink ds-hero consistency-honest-edge"`
 - **Eyebrow:** What we do not claim
 - **Heading (lens на `Reliability`):** `[Reliability]` has an honest edge
-- **Sub:** EvalLense does not promise to predict startup success. It raises the quality of evaluation by making it structured, evidence-linked, and checkable. It points you to the decisions that need human attention most — and because absolute calibration across every deck type is still being proven, the human makes the final call.
+- **Sub:** EvalLens does not promise to predict startup success. It raises the quality of evaluation by making it structured, evidence-linked, and checkable. It points you to the decisions that need human attention most — and because absolute calibration across every deck type is still being proven, the human makes the final call.
 - **Media:** `DelayedLoopVideo` — `/assets/consistency/honest-edge-bg.mp4`; plays once, holds last frame, replays after 7-second gap (не continuous loop)
 - **Layout:** editorial split (copy left, media right); на desktop медиа scale(1.5) anchored left, растёт в правый гаттер
 
@@ -256,8 +256,8 @@ Trust-страница: объясняет, как EvalLense делает ста
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Consistency & Reliability of Pitch Evaluation
-- **meta description:** How EvalLense makes score stability measurable: deterministic
+- **`<title>`:** EvalLens — Consistency & Reliability of Pitch Evaluation
+- **meta description:** How EvalLens makes score stability measurable: deterministic
   aggregation, benchmarked judge repeatability, judge spread, and bias controls —
   inspectable, not just promised. *(≤155)*
 - **OG-изображение:** слот `hero`

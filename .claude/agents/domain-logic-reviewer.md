@@ -1,6 +1,6 @@
 ---
 name: domain-logic-reviewer
-description: Read-only ревью доменной/бизнес-логики EvalLense Landing. Проверяет соблюдение доменных инвариантов из wiki/architecture/, server-side обработку, структурированный output, traceability. Зоны ответственности конфигурируются под Next.js 16 (App Router, TS, Tailwind v4, React 19, react-three-fiber) в web/ + legacy статика index.html/serve.py при bootstrap.
+description: Read-only ревью доменной/бизнес-логики EvalLens Landing. Проверяет соблюдение доменных инвариантов из wiki/architecture/, server-side обработку, структурированный output, traceability. Зоны ответственности конфигурируются под Next.js 16 (App Router, TS, Tailwind v4, React 19, react-three-fiber) в web/ + legacy статика index.html/serve.py при bootstrap.
 tools: Read, Grep, Glob, Bash
 ---
 

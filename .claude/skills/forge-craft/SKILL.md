@@ -4,7 +4,7 @@ description: "ФАЗА 4A пакета component-forge — Art Direction. Диз
 metadata:
   package: component-forge
   phase: 4A
-  product: EvalLense
+  product: EvalLens
 ---
 
 # forge-craft — Art Direction (Фаза 4A)
@@ -41,7 +41,7 @@ metadata:
   composition · responsive · media-placement · background-strategy · anti-patterns ·
   visual hierarchy. Для типографики — `--domain typography`. **Запрещено** для
   генерации новой DS/палитры/шрифтов/токенов и `--design-system`/`--persist`/
-  `MASTER.md` — EvalLense DS остаётся source of truth. Формат findings и deny-list —
+  `MASTER.md` — EvalLens DS остаётся source of truth. Формат findings и deny-list —
   `ui-ux-pro-max-review`. Не установлен → prerequisite, шаг пропускается с пометкой.
 - **4A.3 Designer Revision.** Оркестратор убирает дубли, делит findings на
   **blocker / major / advisory**, возвращает дизайнеру (по `return_to`). Дизайнер

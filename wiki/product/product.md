@@ -16,7 +16,7 @@ cta: Book a Demo
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
 Разводящая страница раздела **Product**: открыл — и сразу понял, что умеет
-EvalLense, и за один клик попал на любую внутреннюю страницу раздела
+EvalLens, и за один клик попал на любую внутреннюю страницу раздела
 (Overview, Entry Hub, Evidence-Based Reports, Review Board).
 
 > Это **продуктовый бриф страницы** — первичный источник для skill `build-pages`.
@@ -28,11 +28,11 @@ EvalLense, и за один клик попал на любую внутренн
 ## Роль и аудитория
 
 - **Роль страницы:** точка входа в раздел Product. Одним экраном показать, что
-  EvalLense — это сквозной workflow (сбор → оценка → отчёт → решение), и развести
+  EvalLens — это сквозной workflow (сбор → оценка → отчёт → решение), и развести
   посетителя по четырём внутренним страницам раздела.
 - **Для кого:** организаторы — VC-фонды, акселераторы, конкурсы; те, кто пришёл из
   хедера «Product» и хочет быстро сориентироваться, что внутри.
-- **Ключевое сообщение:** всё, что делает EvalLense, собрано в одном разделе —
+- **Ключевое сообщение:** всё, что делает EvalLens, собрано в одном разделе —
   начни с обзора или сразу иди в нужный модуль.
 - **Целевое действие:** Book a Demo → `/company/contact`; вторично — переход на
   одну из внутренних страниц раздела.
@@ -41,7 +41,7 @@ EvalLense, и за один клик попал на любую внутренн
 
 | # | Секция | Архетип | Движение | Поверхность | Что показываем |
 |---|---|---|---|---|---|
-| 1 | Hero | statement-hero | reveal | light | «Everything EvalLense does, in one place» + lens-акцент + CTA |
+| 1 | Hero | statement-hero | reveal | light | «Everything EvalLens does, in one place» + lens-акцент + CTA |
 | 2 | Что закрывает раздел | full-bleed-statement | reveal | ink | Одна мысль: продукт — это workflow от заявки до решения человека |
 | 3 | Карта раздела | bento | reveal | light | 4 тайла-ссылки: Overview (hero-тайл) · Entry Hub · Evidence-Based Reports · Review Board |
 | 4 | Как модули складываются | pinned-multi-screen | pin | ink | Entry → Judge → Report → Review; каждый шаг ведёт на свою страницу |
@@ -51,20 +51,20 @@ EvalLense, и за один клик попал на любую внутренн
 ## Контент по секциям
 
 ### 1. Hero
-- **Заголовок:** Everything EvalLense does, in one place
+- **Заголовок:** Everything EvalLens does, in one place
 - **Подзаголовок:** Сбор заявок, оценка AI-жюри, evidence-отчёты и review-доска —
   четыре страницы раздела, один сквозной workflow. *(черновик)*
 - **CTA:** Book a Demo
 
 ### 2. Что закрывает раздел
-EvalLense — это **operating layer для структурированной пакетной оценки
+EvalLens — это **operating layer для структурированной пакетной оценки
 питч-деков**: не разовый AI-анализ, а путь от сбора заявок до решения человека.
 Раздел Product показывает этот путь и его модули.
 
 ### 3. Карта раздела
 Четыре тайла-ссылки (bento, hero-тайл + 3). Каждый — название, одна строка сути,
 переход:
-- **Overview** → `/product/overview` — весь workflow EvalLense в одном месте: 7 шагов,
+- **Overview** → `/product/overview` — весь workflow EvalLens в одном месте: 7 шагов,
   pipeline, AI-жюри, что вы получаете. *(стартовая точка раздела)*
 - **Entry Hub** → `/product/entry-hub` — единая точка входа: сбор заявок и pitch
   decks, self-upload по ссылке, приватный workspace.
@@ -120,8 +120,8 @@ EvalLense — это **operating layer для структурированной
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Product: AI Pitch Deck Evaluation Workflow
-- **meta description:** Раздел Product EvalLense: обзор workflow, Entry Hub,
+- **`<title>`:** EvalLens — Product: AI Pitch Deck Evaluation Workflow
+- **meta description:** Раздел Product EvalLens: обзор workflow, Entry Hub,
   evidence-отчёты и Review Board — выберите страницу и посмотрите, как устроена
   оценка. *(≤155)*
 - **OG-изображение:** слот `hero`

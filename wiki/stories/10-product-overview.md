@@ -22,10 +22,10 @@ Linear Mapping: Project by default
   Overview) как Apple-grade scroll-страницу по образцу `/trust/security-privacy`
   и `/trust/consistency-reliability`.
 - зачем меняем — нужна одна страница, объясняющая весь рабочий процесс
-  EvalLense: что делает продукт, как устроен workflow организатора и какие
+  EvalLens: что делает продукт, как устроен workflow организатора и какие
   модули задействованы при оценке.
 - ожидаемый эффект — организаторы (VC-фонды, акселераторы, конкурсы) видят
-  EvalLense как operating layer для пакетной оценки питч-деков: сбор заявок,
+  EvalLens как operating layer для пакетной оценки питч-деков: сбор заявок,
   оценка 6 AI-судьями, evidence-отчёты, Review Board с leaderboard — и человек
   в финале.
 

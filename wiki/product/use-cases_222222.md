@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Trust-страница: показывает, где применяется EvalLense и что получает каждый
+Trust-страница: показывает, где применяется EvalLens и что получает каждый
 сегмент — чтобы посетитель узнал **свой** рабочий сценарий, а не «продукт вообще».
 
 > Продуктовый бриф страницы для skill `build-pages`. Факты сверены с источником
@@ -35,7 +35,7 @@ Trust-страница: показывает, где применяется Eval
 - **Для кого:** организаторы pitch competition (ICP #1), хакатонов, акселераторы,
   VC-фонды, ангелы, корпоративные инноваторы, грант-программы, университеты.
 - **Ключевое сообщение:** один и тот же зажим — **время против объективности** —
-  бьёт по всем; EvalLense решает его в *твоём* формате события: один продукт,
+  бьёт по всем; EvalLens решает его в *твоём* формате события: один продукт,
   много workflow.
 - **Целевое действие:** Book a Demo → `/company/contact` (сегмент-специфичный CTA).
 
@@ -65,13 +65,13 @@ Trust-страница: показывает, где применяется Eval
 - **Eyebrow:** Use Cases
 - **Heading (финал; lens на `one review system`):** One review system, many workflows
   - *(альтернатива, не используем: B «Wherever you have to pick the strongest from the pile»)*
-- **Subhead:** Use EvalLense anywhere a stack of pitch decks has to become a ranked shortlist — scored against one rubric, with the evidence in view and the final call yours.
+- **Subhead:** Use EvalLens anywhere a stack of pitch decks has to become a ranked shortlist — scored against one rubric, with the evidence in view and the final call yours.
 - **CTA:** Book a Demo
 
 ### 2. Общий зажим — `ink`
 - **Eyebrow:** The shared problem
 - **Heading:** Every program is squeezed between time and fairness
-- **Body:** A careful read of one deck takes 20–30 minutes. Across dozens or hundreds, the process stretches into weeks — or gets cut to a skim. And even with time, two honest reviewers can land three points apart on the same deck. On a big batch, speed and fairness suffer at once. EvalLense is built for exactly that batch.
+- **Body:** A careful read of one deck takes 20–30 minutes. Across dozens or hundreds, the process stretches into weeks — or gets cut to a skim. And even with time, two honest reviewers can land three points apart on the same deck. On a big batch, speed and fairness suffer at once. EvalLens is built for exactly that batch.
 
 ### 3. Найди свой сегмент — `light`
 - **Eyebrow:** Find your program
@@ -92,7 +92,7 @@ Trust-страница: показывает, где применяется Eval
 ### 4. Pitch Competitions, end to end — `ink`
 - **Eyebrow:** Pitch competitions · the flagship case
 - **Heading:** A hundred pitches in, a ranked shortlist out
-- **Subhead:** The case EvalLense was built for first. Collect the whole field, evaluate it against one rubric, and reach the finals with a ranked, defensible board — each step lights up as you scroll.
+- **Subhead:** The case EvalLens was built for first. Collect the whole field, evaluate it against one rubric, and reach the finals with a ranked, defensible board — each step lights up as you scroll.
 - **Steps (pinned, 5):**
   1. **Open submissions** — Share one link; teams upload their own decks into your Entry Hub.
   2. **Run the whole field** — Six judges score every deck against P1–P6, in parallel — overnight if you like, no one watching.
@@ -142,7 +142,7 @@ Trust-страница: показывает, где применяется Eval
 
 ### 8. Final CTA — `ink`
 - **Eyebrow:** Get started
-- **Heading:** Bring your next batch to EvalLense
+- **Heading:** Bring your next batch to EvalLens
 - **Subhead:** Book a demo and we'll walk your exact workflow — and a pilot batch of your own decks.
 - **CTA:** Book a Demo
 
@@ -185,8 +185,8 @@ Trust-страница: показывает, где применяется Eval
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense Use Cases — Batch Pitch Evaluation for Competitions, Accelerators & VC
-- **meta description:** Where EvalLense is used: pitch competitions, accelerators,
+- **`<title>`:** EvalLens Use Cases — Batch Pitch Evaluation for Competitions, Accelerators & VC
+- **meta description:** Where EvalLens is used: pitch competitions, accelerators,
   VC, angels, corporate innovation, grants, and universities — one rubric, evidence
   reports, a leaderboard, and the human deciding. *(≤155)*
 - **OG-изображение:** слот `hero`

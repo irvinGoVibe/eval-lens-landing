@@ -35,7 +35,7 @@ transcoding-stack без approval. Нечем пережать → `asset-gap` �
 0. **`web/public/assets/_demo-pool/`** — библиотека стаб-медиа, **искать здесь
    в первую очередь** (см. её README) →
 1. медиа, уже связанные с архетипом → 2. соседние Section Lab блоки →
-3. все медиа проекта (`web/public/assets/**`) → 4. brand-ассеты EvalLense →
+3. все медиа проекта (`web/public/assets/**`) → 4. brand-ассеты EvalLens →
 5. product screenshots → 6. видео+постеры → 7. повторное использование →
 8. выбрать лучший исходник/пару → 9. **показать дизайнеру** → 10. после approval
 готовить производные (в `web/public/assets/section-lab/<archetype>/`, не в пуле).

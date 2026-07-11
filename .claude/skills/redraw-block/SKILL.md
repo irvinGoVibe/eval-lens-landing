@@ -1,14 +1,14 @@
 ---
 name: redraw-block
-description: "Взять ОДИН структурный блок EvalLense и поднять его до продуктового качества в Apple-style. Инвариант — КОНТЕНТ/слоты (брифы/section-types/data), а РАСКЛАДКУ можно менять консистентно; глубина изменения структуры регулируется параметром structure=слабо|средне|сильно (дефолт средне). Два режима входа: (A) существующий компонент — редизайн на месте; (B) инлайн-секция/архетип — ИЗВЛЕЧЬ в prop-driven Server Component ЧИСТОГО DS (в web/src/components/ds, баррель @/components/ds, prefix-free имя, scope .ds, стили в ds.css; контент пропсами, surface=light|ink), НЕ оборачивая и НЕ копируя Lab*/_kit, и тут же поднять крафт. Поддерживает версии/варианты (light+dark, data-version, инспектор версий — user сравнивает и сохраняет) и правку конкретной версии по комментарию. Источник дизайн-языка — бандл EvalLense + interface-style-guide.html. Держит DS (@/components/ds — единственный публичный API), liquid-glass, ScrollOrchestrator, серверность, правило «можно/нельзя». Сборку страниц делает build-pages. Триггеры: «доведи блок до продуктового качества», «сделай качественную вёрстку <Имя>», «разрежь секцию <N> на компонент», «извлеки секцию в DS-компонент», «сделай вторую/тёмную версию», «поправь версию N секции», «перерисуй компонент», «redraw <Component>»."
+description: "Взять ОДИН структурный блок EvalLens и поднять его до продуктового качества в Apple-style. Инвариант — КОНТЕНТ/слоты (брифы/section-types/data), а РАСКЛАДКУ можно менять консистентно; глубина изменения структуры регулируется параметром structure=слабо|средне|сильно (дефолт средне). Два режима входа: (A) существующий компонент — редизайн на месте; (B) инлайн-секция/архетип — ИЗВЛЕЧЬ в prop-driven Server Component ЧИСТОГО DS (в web/src/components/ds, баррель @/components/ds, prefix-free имя, scope .ds, стили в ds.css; контент пропсами, surface=light|ink), НЕ оборачивая и НЕ копируя Lab*/_kit, и тут же поднять крафт. Поддерживает версии/варианты (light+dark, data-version, инспектор версий — user сравнивает и сохраняет) и правку конкретной версии по комментарию. Источник дизайн-языка — бандл EvalLens + interface-style-guide.html. Держит DS (@/components/ds — единственный публичный API), liquid-glass, ScrollOrchestrator, серверность, правило «можно/нельзя». Сборку страниц делает build-pages. Триггеры: «доведи блок до продуктового качества», «сделай качественную вёрстку <Имя>», «разрежь секцию <N> на компонент», «извлеки секцию в DS-компонент», «сделай вторую/тёмную версию», «поправь версию N секции», «перерисуй компонент», «redraw <Component>»."
 metadata:
   version: 1.4.0
-  product: EvalLense
+  product: EvalLens
 ---
 
 # Redraw Block — апгрейд блока до продуктового качества
 
-Ты — фронтенд-дизайнер EvalLense. Берёшь **один структурный блок** и
+Ты — фронтенд-дизайнер EvalLens. Берёшь **один структурный блок** и
 **доводишь его вёрстку до современного продуктового качества в Apple-style**,
 оставаясь строго внутри дизайн-системы и сохраняя поведение.
 
@@ -157,7 +157,7 @@ User задаёт уровень в запросе («слабо/средне/с
   `components/ui/`. Стенд-витрина — `components/sections/lab/` (deprecated субстрат
   `Lab*`/`_kit`/`.section-lab`; north-star — убрать, новый код туда не пишем).
 - **Токены и классы (источник правды по стилю):** `web/src/app/globals.css`.
-- **Дизайн-система (binding):** loadable бандл **EvalLense** —
+- **Дизайн-система (binding):** loadable бандл **EvalLens** —
   `.claude/designs/evallense/` (симлинк `designs/evallense`), namespace
   `Evallense_c7d744`. `readme.md` — текстовый гайд (токены, бренд-инварианты,
   foundations, инвентарь компонентов). Это **источник дизайн-языка** для
@@ -187,9 +187,9 @@ User задаёт уровень в запросе («слабо/средне/с
 Жёсткие рейлы проекта (glass, анимации, серверность, pnpm, порт):
 !`cat CLAUDE.md 2>/dev/null || cat eval-lens-landing/CLAUDE.md 2>/dev/null || echo "НЕ НАЙДЕН CLAUDE.md"`
 
-Дизайн-система EvalLense — гайд бандла (токены, бренд-инварианты, foundations,
+Дизайн-система EvalLens — гайд бандла (токены, бренд-инварианты, foundations,
 инвентарь компонентов). Это binding-источник дизайн-языка для внутренних страниц:
-!`cat .claude/designs/evallense/readme.md 2>/dev/null || cat eval-lens-landing/.claude/designs/evallense/readme.md 2>/dev/null || cat designs/evallense/readme.md 2>/dev/null || echo "НЕ НАЙДЕН бандл EvalLense — .claude/designs/evallense/readme.md"`
+!`cat .claude/designs/evallense/readme.md 2>/dev/null || cat eval-lens-landing/.claude/designs/evallense/readme.md 2>/dev/null || cat designs/evallense/readme.md 2>/dev/null || echo "НЕ НАЙДЕН бандл EvalLens — .claude/designs/evallense/readme.md"`
 
 > Визуальный эталон DS целиком (light/dark, status-чипы, ring, score, counters,
 > window chrome) — `.claude/designs/evallense/interface-style-guide.html`.
@@ -302,7 +302,7 @@ Per CLAUDE.md **не запускай dev-сервер сам.** Если нуж
 
 - Вызови скилл **baoyu-design** — он строит self-contained HTML-мокапы (быстро,
   не трогая `web/`). Поперебирай варианты раскладки/иерархии блока.
-- **Свяжи мокап с дизайн-системой EvalLense**, иначе он будет «красивый, но не
+- **Свяжи мокап с дизайн-системой EvalLens**, иначе он будет «красивый, но не
   наш» → переделка. У baoyu для этого есть `use-design-system` (грузит DS как
   binding visual constraint). Если loadable DS-bundle ещё не заведён — лучше
   один раз втянуть токены `globals.css` + компоненты через `import-from-html`/
@@ -451,7 +451,7 @@ user'у перед правкой кода, если редизайн замет
 ## Связанные скиллы
 
 - **baoyu-design** — front-stage эскиз: HTML-мокапы вариантов блока до правки TSX
-  (Шаг 2.5). Свяжи с дизайн-системой EvalLense; перенос в прод — обратно сюда.
+  (Шаг 2.5). Свяжи с дизайн-системой EvalLens; перенос в прод — обратно сюда.
 - **build-pages** — собирает страницы из готовых блоков (downstream-потребитель).
 - **evallense-site** — готовит продуктовые брифы (контент) для страниц.
 - **@/components/ds** — единственный публичный API сборки (баррель + `ds.css` +

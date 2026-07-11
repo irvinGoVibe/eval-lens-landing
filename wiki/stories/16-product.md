@@ -69,7 +69,7 @@ Linear Mapping: Project by default
 
 ## Main Flow
 
-1. Hero (statement-hero, light) — «Everything EvalLense does, in one place» + CTA.
+1. Hero (statement-hero, light) — «Everything EvalLens does, in one place» + CTA.
 2. Full-bleed statement (ink) — роль раздела: workflow от заявки до решения человека.
 3. Карта раздела (bento, light) — 4 тайла-ссылки, Overview как feature-тайл.
 4. Pinned multi-screen (ink) — «как складывается workflow», 3 шага загораются.

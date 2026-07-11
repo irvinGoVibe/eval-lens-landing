@@ -1,4 +1,4 @@
--- EvalLense blog — collapse taxonomy 6 -> 3 (Story 03, Task A), data-preserving.
+-- EvalLens blog — collapse taxonomy 6 -> 3 (Story 03, Task A), data-preserving.
 --
 -- Recategorize existing seeded articles in place to the three canonical rubrics
 -- (Press Release, Product, Research) via the per-slug mapping from the app

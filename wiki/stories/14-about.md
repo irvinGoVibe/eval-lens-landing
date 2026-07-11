@@ -24,7 +24,7 @@ Linear Mapping: Project by default
   editorial-split, pinned-multi-screen, bento, horizontal-gallery, quiet-cta).
 - зачем меняем — нужна company-страница, которая снимает «безличность»
   AI-инструмента: показывает миссию, проблему рынка, путь от **AI Jury** к
-  EvalLense, принципы, **команду** (центральный креативный pinned team-блок) и
+  EvalLens, принципы, **команду** (центральный креативный pinned team-блок) и
   сегменты аудитории; ведёт к Book a Demo.
 - ожидаемый эффект — организаторы, партнёры и потенциальные сотрудники видят
   людей и философию за продуктом («We are not building an artificial jury. We
@@ -76,7 +76,7 @@ Linear Mapping: Project by default
 ## Users / Actors
 
 - primary user: организаторы (фонды, акселераторы, конкурсы), партнёры,
-  потенциальные сотрудники — те, кому важно понять, кто и зачем строит EvalLense.
+  потенциальные сотрудники — те, кому важно понять, кто и зачем строит EvalLens.
 - system actor: статический рендер Next.js (страница без backend/process.env).
 
 ## Source of Truth
@@ -104,9 +104,9 @@ Linear Mapping: Project by default
 ## Main Flow
 
 1. Пользователь приходит из footer-колонки Company → `About`.
-2. Hero задаёт миссию «We built EvalLense to help people make better decisions».
+2. Hero задаёт миссию «We built EvalLens to help people make better decisions».
 3. Скролл проводит через 7 секций: hero/миссия (light) → проблема
-   (editorial-split, light) → From AI Jury to EvalLense (pinned-multi-screen,
+   (editorial-split, light) → From AI Jury to EvalLens (pinned-multi-screen,
    dark) → принципы (bento, light) → команда (креативный pinned team-блок,
    dark) → для кого мы строим (horizontal-gallery, light) → final CTA (dark).
 4. CTA `Book a Demo` (`/#demo`).

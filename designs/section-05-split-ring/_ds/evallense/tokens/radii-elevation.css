@@ -1,4 +1,4 @@
-/* EvalLense — radii, elevation, motion easing
+/* EvalLens — radii, elevation, motion easing
    Source: web/src/app/globals.css. Elevation is soft and VIOLET-TINTED —
    never a grey drop shadow. Motion uses one canonical Apple easing. */
 :root {

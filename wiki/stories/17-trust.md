@@ -18,7 +18,7 @@ Linear Mapping: Project by default
 ## Summary
 
 - Собрать разводящую (hub) страницу раздела Trust по маршруту `/trust`.
-- Открыл — понял, почему результатам EvalLense можно доверять, и за один клик
+- Открыл — понял, почему результатам EvalLens можно доверять, и за один клик
   ушёл на любую trust-страницу (Methodology, Consistency & Reliability, Prompt
   Injection Safety, Security & Privacy, Use Cases).
 - Эффект: «Trust» в навигации ведёт на лендинг раздела, а не в 404.

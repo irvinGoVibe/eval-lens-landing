@@ -21,7 +21,7 @@ Linear Mapping: Project by default
 - что меняем — добавляем внутреннюю Next.js-страницу `/product/entry-hub`
   (Entry Hub) как Apple-grade scroll-страницу по образцу `/product` и
   `/trust/prompt-injection-safety`.
-- зачем меняем — нужна страница, объясняющая, как EvalLense собирает заявки и
+- зачем меняем — нужна страница, объясняющая, как EvalLens собирает заявки и
   pitch decks в одну контролируемую точку входа вместо разрозненного intake.
 - ожидаемый эффект — program owners, фонды, акселераторы и организаторы
   конкурсов видят Entry Hub как замену хаотичному приёму заявок: один приёмный

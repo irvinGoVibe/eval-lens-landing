@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Product-страница: объясняет, как EvalLense собирает заявки и pitch decks в одну
+Product-страница: объясняет, как EvalLens собирает заявки и pitch decks в одну
 контролируемую точку входа вместо разрозненного intake по почте, формам и чатам.
 
 > Продуктовый бриф страницы для skill `build-pages`. Факты — из Application-доков
@@ -78,7 +78,7 @@ Product-страница: объясняет, как EvalLense собирает 
 - **submission metadata** и **review status** (ready / incomplete / submitted).
 
 ### 5. Два способа сбора
-EvalLense даёт два режима приёма (из `overview.md` / `scope.md`):
+EvalLens даёт два режима приёма (из `overview.md` / `scope.md`):
 - **Manual.** Организатор сам добавляет участников на Project Overview (имя,
   проект, дек, опциональные материалы).
 - **Self-upload.** Генерируется **публичная страница `/e/<slug>`**; участники
@@ -125,7 +125,7 @@ Entry Hub даёт команде **единый source of truth до старт
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense Entry Hub — One Intake Flow for Pitch Decks
+- **`<title>`:** EvalLens Entry Hub — One Intake Flow for Pitch Decks
 - **meta description:** Entry Hub заменяет разрозненный приём заявок одним
   контролируемым потоком: публичная submission-страница, сбор pitch decks и
   чистый batch-workspace до старта оценки. *(≤155)*

@@ -151,7 +151,7 @@
       "previewPath": "ui_kits/homepage/index.html",
       "kind": "screen",
       "section": "Homepage",
-      "subtitle": "EvalLense marketing homepage",
+      "subtitle": "EvalLens marketing homepage",
       "viewport": "1280x760"
     },
     {
@@ -160,7 +160,7 @@
       "previewPath": "ui_kits/newsroom/index.html",
       "kind": "screen",
       "section": "Newsroom",
-      "subtitle": "EvalLense Newsroom hub",
+      "subtitle": "EvalLens Newsroom hub",
       "viewport": "1280x820"
     }
   ],

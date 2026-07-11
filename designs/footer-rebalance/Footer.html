@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>EvalLense — Footer rebalance</title>
+<title>EvalLens — Footer rebalance</title>
 <style>
   :root{
     --violet:#6c4cf1; --violet-2:#7b5cf6;
@@ -159,7 +159,7 @@
 <body>
 <div class="page">
   <div class="toolbar">
-    <h1>EvalLense · Footer</h1>
+    <h1>EvalLens · Footer</h1>
     <div class="seg" id="seg" role="group" aria-label="Layout variant"></div>
     <div class="seg" id="headFont" role="group" aria-label="Heading font">
       <button data-head="sans" aria-pressed="true">Заголовки: Sans</button>
@@ -210,17 +210,17 @@
     var second = dark ? 'btn-glass' : 'btn-ghost';
     var ctas = '<div class="ctas"><a class="btn btn-gradient" href="#">Book a call</a><a class="btn '+second+'" href="#">Try live demo</a></div>';
     var su = socialsUnder ? '<div class="brand-social">'+socialIcons()+'</div>' : '';
-    return '<div class="col col--brand"><a class="brand" href="#"><span class="mark"></span>EvalLense</a>'
+    return '<div class="col col--brand"><a class="brand" href="#"><span class="mark"></span>EvalLens</a>'
       + '<p>Batch-review pitch decks, rank the strongest startups, and give every team a clear report. Final decisions stay human-controlled.</p>'
       + ctas + su + '</div>';
   }
   function links(){ return '<a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a>'; }
   function legal(mode){
     if(mode === 'socials'){
-      return '<div class="legal"><span class="legal-meta"><span>EvalLense © 2026</span>'+links()+'</span>'+socialIcons()+'</div>';
+      return '<div class="legal"><span class="legal-meta"><span>EvalLens © 2026</span>'+links()+'</span>'+socialIcons()+'</div>';
     }
     /* split — copy left, technical links right (the pre-socials look) */
-    return '<div class="legal"><span class="legal-copy">EvalLense © 2026</span><span class="legal-meta">'+links()+'</span></div>';
+    return '<div class="legal"><span class="legal-copy">EvalLens © 2026</span><span class="legal-meta">'+links()+'</span></div>';
   }
 
   function footer(n, dark){
@@ -236,7 +236,7 @@
     }
     else if(n===6){
       var second = dark?'btn-glass':'btn-ghost';
-      var band = '<div class="brand-band"><div class="bb-left"><a class="brand" href="#"><span class="mark"></span>EvalLense</a>'
+      var band = '<div class="brand-band"><div class="bb-left"><a class="brand" href="#"><span class="mark"></span>EvalLens</a>'
         + '<p>Batch-review pitch decks, rank the strongest startups, and give every team a clear report.</p></div>'
         + '<div class="bb-right"><div class="ctas"><a class="btn btn-gradient" href="#">Book a call</a><a class="btn '+second+'" href="#">Try live demo</a></div>'+socialIcons()+'</div></div>';
       inner = band + '<div class="wrap wrap--cols">'+navCols()+'</div>'+legal('split');

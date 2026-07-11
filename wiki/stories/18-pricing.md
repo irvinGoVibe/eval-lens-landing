@@ -83,8 +83,8 @@ Linear Mapping: Project by default
    plans (Стартовый/Пилотный).
 3. Матрица фич × 6 уровней (comparison-table): лимиты, сроки, доп-пакеты, оценка,
    отчёты, review, admin, поддержка.
-4. EvalLense vs конкуренты (comparison-table, ink): YouNoodle/Evalato/PitchBob VC
-   + EvalLense, ✓/✗, без цен + positioning-строки.
+4. EvalLens vs конкуренты (comparison-table, ink): YouNoodle/Evalato/PitchBob VC
+   + EvalLens, ✓/✗, без цен + positioning-строки.
 5. Возможности по категориям (bento/gallery, light): Intake · AI Evaluation ·
    Reports · Review · Security · Admin.
 6. FAQ (light): что такое заявка, срок, доп-пакеты, подписка ли, пилот, данные.

@@ -83,7 +83,7 @@ Component Forge. Запуск: `/component-forge "архетип 04"`. **Оди�
   типографика/сцены/scroll-driven). Заголовки скомпонованы **по-разному в V1/V2/V3**
   (слова те же). На 4A.2 оркестратор **сам** вызывает Skill `ui-ux-pro-max`
   (advisory: typography/composition/responsive/media/background/anti-patterns; **НЕ**
-  subagent; новую DS не создаёт — EvalLense DS = source of truth). **≤2 цикла**
+  subagent; новую DS не создаёт — EvalLens DS = source of truth). **≤2 цикла**
   4A.2↔4A.3; не сошлось → `blocked-design-review`, Gate A не показываем.
   + Designer Self-Check + media-brief. Новые правила-карточки: `typography-contract`,
   `theme-typography-geometry`, `overflow-discipline`, `motion-correctness`,
@@ -144,7 +144,7 @@ light и dark совпадают по геометрии** — меняется 
 
 ## Demo-медиа
 
-Реальные нейтральные ассеты **в стиле EvalLense** (не пустой placeholder). Пул —
+Реальные нейтральные ассеты **в стиле EvalLens** (не пустой placeholder). Пул —
 `web/public/assets/_demo-pool/` (`photo/`, `video/`, `INDEX.md` с тегами
 type/role/theme/ratio/text). `media-curator` **ищет здесь первым**, потом в ассетах
 архетипа/соседей/проекта. Обработка минимальная (ресайз+пережатие), главное —

@@ -1,4 +1,4 @@
--- EvalLense blog content backend — schema.
+-- EvalLens blog content backend — schema.
 --
 -- Tables: articles, loop_posts. Public read is restricted by RLS to
 -- status = 'published' (anon + authenticated). No write policies for anon.

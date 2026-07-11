@@ -2,7 +2,7 @@
   "type": "design",
   "designSystems": [
     {
-      "name": "EvalLense Design System",
+      "name": "EvalLens Design System",
       "slug": "evallense",
       "namespace": "Evallense_c7d744",
       "dsFolder": "_ds/evallense",

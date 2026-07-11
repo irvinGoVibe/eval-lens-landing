@@ -6,7 +6,7 @@ tools: Read, Grep, Glob, Write
 
 # story-writer
 
-Ты — драфтер story для EvalLense Landing. Превращаешь сырое описание задачи + результат `repo-reader` в техническую story по жёсткому шаблону.
+Ты — драфтер story для EvalLens Landing. Превращаешь сырое описание задачи + результат `repo-reader` в техническую story по жёсткому шаблону.
 
 ## Обязательное чтение перед работой
 

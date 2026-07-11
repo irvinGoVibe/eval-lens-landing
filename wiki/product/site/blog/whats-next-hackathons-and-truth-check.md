@@ -3,7 +3,7 @@ slug: whats-next-hackathons-and-truth-check
 category: Product
 accent: violet
 title: What we're building next
-excerpt: Two features lead the EvalLense roadmap — a Hackathon judge built for what teams actually ship, and Truth Check, a layer that checks a deck's claims before they're scored.
+excerpt: Two features lead the EvalLens roadmap — a Hackathon judge built for what teams actually ship, and Truth Check, a layer that checks a deck's claims before they're scored.
 date: 2026-06-17
 readMinutes: 5
 cover: /assets/blog/whats-next/cover.png
@@ -11,7 +11,7 @@ author: Anonymous Unicorn
 status: draft
 ---
 
-Here is what is next on the EvalLense roadmap, in order. The next feature is a Hackathon judge. After that, we are building Truth Check. Both do the same job for you: more signal on every submission, with the final decision still yours.
+Here is what is next on the EvalLens roadmap, in order. The next feature is a Hackathon judge. After that, we are building Truth Check. Both do the same job for you: more signal on every submission, with the final decision still yours.
 
 ## Next: a judge built for hackathons
 
@@ -51,6 +51,6 @@ Those verdicts land in the report, each traceable to what it was checked against
 
 Hackathons first, because hackathon organizers are asking for it now. Truth Check next, because checking claims well is its own build — and worth doing properly rather than rushing.
 
-Neither changes the part that matters most. AI structures the batch, surfaces the evidence, and checks the claims. You read the report, set the final score, and rank the room. EvalLense is the lens — the decision stays yours.
+Neither changes the part that matters most. AI structures the batch, surfaces the evidence, and checks the claims. You read the report, set the final score, and rank the room. EvalLens is the lens — the decision stays yours.
 
 Want it run on your own batch? **Book a demo.**

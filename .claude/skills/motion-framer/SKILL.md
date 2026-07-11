@@ -5,7 +5,7 @@ description: Modern animation library for React and JavaScript. Create smooth, p
 
 # Motion & Framer Motion
 
-> ## ⚠️ Project guard — EvalLense (`web/`)
+> ## ⚠️ Project guard — EvalLens (`web/`)
 >
 > Этот скилл — **справочник по Motion/Framer Motion**, а не разрешение тащить его в
 > боевой код. В этом репозитории действуют жёсткие конвенции (см. `CLAUDE.md`),

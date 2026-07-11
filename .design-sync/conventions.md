@@ -1,6 +1,6 @@
-# EvalLense — how to build with this design system
+# EvalLens — how to build with this design system
 
-EvalLense is an AI-jury product for investment decks: **AI prepares the analysis, a human decides.** The visual language is calm Apple-grade neutrals + a single signature "lens" gradient (violet → lavender → cyan → aqua) used as one accent per block. Elevation is always soft and violet-tinted, never a grey drop shadow.
+EvalLens is an AI-jury product for investment decks: **AI prepares the analysis, a human decides.** The visual language is calm Apple-grade neutrals + a single signature "lens" gradient (violet → lavender → cyan → aqua) used as one accent per block. Elevation is always soft and violet-tinted, never a grey drop shadow.
 
 ## Setup — no provider needed
 

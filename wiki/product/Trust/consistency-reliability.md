@@ -2,20 +2,20 @@
 
 ## Page purpose
 
-Explain how EvalLense checks whether evaluation results are stable, repeatable, and decision-ready.
+Explain how EvalLens checks whether evaluation results are stable, repeatable, and decision-ready.
 
 ## User task
 
-Help the user understand that EvalLense is not only producing scores, but also making reliability visible.
+Help the user understand that EvalLens is not only producing scores, but also making reliability visible.
 
 ## Main idea to communicate
 
-A score is only useful if you know how stable it is. EvalLense helps reveal consistency, variance, and cases that need human attention.
+A score is only useful if you know how stable it is. EvalLens helps reveal consistency, variance, and cases that need human attention.
 
 ## What the page should prove
 
 ```text
-EvalLense cares about evaluation quality, not just output volume.
+EvalLens cares about evaluation quality, not just output volume.
 ```
 
 ## Section structure

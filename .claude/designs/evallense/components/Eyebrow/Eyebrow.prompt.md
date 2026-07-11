@@ -3,7 +3,7 @@ a clean statement headline can stand without one.
 
 ```jsx
 <Eyebrow>Batch pitch-deck evaluation</Eyebrow>
-<Eyebrow onDark dot={false}>EvalLense Newsroom</Eyebrow>
+<Eyebrow onDark dot={false}>EvalLens Newsroom</Eyebrow>
 ```
 
 `dot` toggles the leading lens dot; `onDark` switches to the lavender accent for

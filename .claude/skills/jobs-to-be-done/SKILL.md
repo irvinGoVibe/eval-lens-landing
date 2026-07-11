@@ -3,7 +3,7 @@ name: jobs-to-be-done
 description: "Глубокий разбор страницы/продукта по методологии Advanced Jobs-To-Be-Done (AJTBD). Две фазы: (1) job-graph — строит граф работ сегмента вниз к Core Job (functional / emotional / social, под-работы, боли, opportunity-скоринг); (2) landing — аудит или генерация копии посадочной через линзу работ: one-liner позиционирование, job→feature, Point A→B (эмоциональная трансформация), forces (триггеры / тревоги / привычки), self-recognition секции. Применять, когда нужно понять, на какую «работу» клиент нанимает продукт, почему он не доходит до покупки, и как переписать страницу под эту работу. Триггеры: «JTBD <страница>», «jobs to be done», «на какую работу нанимают продукт», «построй граф работ», «forces / Point A→B», «разбери лендинг по работам», «почему не покупают». Для быстрого CRO-скоринга страницы (7 измерений, Quick Wins) — отдельный скилл fast-scoring. Рабочий диалог — рус., копия — EN."
 metadata:
   version: 1.0.0
-  product: EvalLense
+  product: EvalLens
   source: "snowtema/ajtbd-skills — ajtbd-job-graph + ajtbd-landing (adapted; Advanced JTBD, методология Замесина/Шундеевой)"
 ---
 
@@ -22,7 +22,7 @@ metadata:
 
 ## Фаза 1 — Граф работ (job-graph)
 Следуй методологии в [references/job-graph.md](references/job-graph.md).
-- **Вход:** сегмент или его описание. У EvalLense нет `.ajtbd/segments.md` — поэтому
+- **Вход:** сегмент или его описание. У EvalLens нет `.ajtbd/segments.md` — поэтому
   возьми ICP-сегмент с сайта (About ICP-бенто / use-cases: Pitch Competitions, VC Funds,
   Accelerators, Hackathons, Grant Programs, Corporate Innovation, Universities, Angel
   Investors) и кратко опиши сегмент сам, без отдельного segments-артефакта.
@@ -34,7 +34,7 @@ metadata:
 ## Фаза 2 — Лендинг через линзу работ (landing)
 Следуй методологии в [references/landing.md](references/landing.md).
 - **Вход:** граф работ из Фазы 1 (или существующий `.ajtbd/job-graph.md`).
-- **Режим АУДИТА (наш основной кейс):** пройди по СУЩЕСТВУЮЩЕЙ странице EvalLense и оцени её
+- **Режим АУДИТА (наш основной кейс):** пройди по СУЩЕСТВУЮЩЕЙ странице EvalLens и оцени её
   против работы — где one-liner не попадает в работу, где нет перехода Point A→B, где не сняты
   тревоги (forces), где фичи поданы вместо работ. Дай конкретные правки копии (old → new).
 - **Режим ГЕНЕРАЦИИ:** собери копию посадочной по структуре из landing.md.
@@ -43,6 +43,6 @@ metadata:
 - Это разбор «через работу», а не CRO-чеклист. Быстрый скоринг страницы (7 измерений,
   Quick Wins) — отдельный скилл **fast-scoring**. Хорошая связка: сначала `fast-scoring`
   закрывает очевидные дыры, потом `jobs-to-be-done` копает работу/forces/Point A→B.
-- Не выдумывай факты о продукте — источник правды EvalLense: `wiki/product/**` + живой сайт.
-- Референсы частично на русском; продакшен-копия EvalLense — на английском.
+- Не выдумывай факты о продукте — источник правды EvalLens: `wiki/product/**` + живой сайт.
+- Референсы частично на русском; продакшен-копия EvalLens — на английском.
 - Инвариант продукта держим: «AI готовит анализ — решает человек».

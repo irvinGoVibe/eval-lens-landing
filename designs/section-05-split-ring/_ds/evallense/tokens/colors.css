@@ -1,6 +1,6 @@
-/* EvalLense — color tokens
+/* EvalLens — color tokens
    Source of truth: web/src/app/globals.css :root (extracted verbatim).
-   Apple neutral foundation + EvalLense "lens" accents + warm orange glow.
+   Apple neutral foundation + EvalLens "lens" accents + warm orange glow.
    Semantic colors carry one job each — never decorative. */
 :root {
   /* ---- Apple neutral foundation (light surfaces) ---- */
@@ -26,7 +26,7 @@
   --border-on-dark-2: rgba(255,255,255,.07);
   --hairline: rgba(20,18,40,.07);
 
-  /* ---- EvalLense lens accents ---- */
+  /* ---- EvalLens lens accents ---- */
   --violet:   #6c4cf1;
   --violet-2: #7b5cf6;
   --lavender: #a99bff;

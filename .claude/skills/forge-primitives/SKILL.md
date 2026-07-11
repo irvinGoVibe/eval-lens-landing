@@ -4,7 +4,7 @@ description: "ФАЗА 2 пакета component-forge — Microstructure Map. Н
 metadata:
   package: component-forge
   phase: 2
-  product: EvalLense
+  product: EvalLens
 ---
 
 # forge-primitives — Microstructure Map (Фаза 2)

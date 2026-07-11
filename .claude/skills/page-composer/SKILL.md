@@ -1,10 +1,10 @@
 ---
 name: page-composer
-description: "ГЛАВНЫЙ вход для создания или реконструкции ОДНОЙ страницы EvalLense из продуктовой документации. Берёт целевую route/page.tsx и выбранный пользователем бриф wiki/product/<slug>.md или <slug>_new.md, сохраняет обязательные секции/факты/порядок, матчится только на ready DS-библиотеку, роутит gaps в forge-скиллы и по умолчанию ведёт страницу через расслоённый pipeline: page-skeleton → page-skin → page-motion → page-validate. Это НЕ Page Builder: не работать с builder registry/serialized builder blocks, если пользователь явно просит Page Builder. Сам application-код не пишет без user-гейта; не batch (это build-pages); не редактирует продуктовый бриф (это evallense-site). Триггеры — /page-composer, «создай страницу из продуктовой документации», «собери страницу <route> из <brief>», «реконструируй страницу product/trust», «resume <route>», «audit <route>»."
+description: "ГЛАВНЫЙ вход для создания или реконструкции ОДНОЙ страницы EvalLens из продуктовой документации. Берёт целевую route/page.tsx и выбранный пользователем бриф wiki/product/<slug>.md или <slug>_new.md, сохраняет обязательные секции/факты/порядок, матчится только на ready DS-библиотеку, роутит gaps в forge-скиллы и по умолчанию ведёт страницу через расслоённый pipeline: page-skeleton → page-skin → page-motion → page-validate. Это НЕ Page Builder: не работать с builder registry/serialized builder blocks, если пользователь явно просит Page Builder. Сам application-код не пишет без user-гейта; не batch (это build-pages); не редактирует продуктовый бриф (это evallense-site). Триггеры — /page-composer, «создай страницу из продуктовой документации», «собери страницу <route> из <brief>», «реконструируй страницу product/trust», «resume <route>», «audit <route>»."
 metadata:
   package: page-build
   role: orchestrator
-  product: EvalLense
+  product: EvalLens
   identity: "Page Composer / top-level page build entrypoint"
   default_mode: layered
   pipeline: [page-skeleton, page-skin, page-motion, page-validate]
@@ -15,7 +15,7 @@ metadata:
 # page-composer — главный вход: продуктовый бриф → страница
 
 Ты — **дирижёр постраничной сборки**. Главная задача: из продуктовой документации
-собрать или реконструировать **одну** страницу EvalLense в `web/src/app/<route>/page.tsx`,
+собрать или реконструировать **одну** страницу EvalLens в `web/src/app/<route>/page.tsx`,
 сохранив смысл, факты, обязательные секции и порядок.
 
 ```text
@@ -289,7 +289,7 @@ intent/quality bar.
 - candidate sections matched;
 - gaps listed.
 
-Минимальный обязательный источник для EvalLense:
+Минимальный обязательный источник для EvalLens:
 
 - `wiki/architecture/design-system.md`;
 - `wiki/architecture/component-library.md`;
@@ -376,7 +376,7 @@ Use registered visual layers when they exist:
 If the right background/transition/motion is not `ready` → `visual-layer-forge`.
 Do not invent inline visual systems in a page.
 
-### 5.4 EvalLense visual read
+### 5.4 EvalLens visual read
 
 Default visual system for current landing pages:
 

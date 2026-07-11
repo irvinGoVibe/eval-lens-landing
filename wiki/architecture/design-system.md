@@ -3,14 +3,14 @@ title: Design System
 status: generated
 version: 1.4
 updated: 2026-06-22
-source: DS-бандл .claude/designs/evallense/ (DesignSync, синк 2026-06-18) + web/src/app/globals.css (канон, вкл. `.ds` scope + `--dsc-*` + барель `@/components/ds`) + AI Jury / design / EvalLense-Interface-Style-Guide.html (v1.2)
+source: DS-бандл .claude/designs/evallense/ (DesignSync, синк 2026-06-18) + web/src/app/globals.css (канон, вкл. `.ds` scope + `--dsc-*` + барель `@/components/ds`) + AI Jury / design / EvalLens-Interface-Style-Guide.html (v1.2)
 ---
 
 # Design System
 
 ← [[index|Wiki]]
 
-Дизайн-система EvalLense — единый язык интерфейса. **Внутренние страницы сайта
+Дизайн-система EvalLens — единый язык интерфейса. **Внутренние страницы сайта
 строятся на этих же токенах**, чтобы лендинг и продукт читались как одно целое.
 
 > Этот файл — опорный референс для агентов и разработчиков при создании
@@ -31,7 +31,7 @@ source: DS-бандл .claude/designs/evallense/ (DesignSync, синк 2026-06-1
    **извлечён из кода**, а не наоборот.
 2. **`globals.css`** — [web/src/app/globals.css](web/src/app/globals.css) `:root`
    + `@theme inline`. То, что реально применяется на живом сайте. Канон.
-3. **Стайл-гайд продукта** — `EvalLense — Interface Style Guide` (v1.2, внешний
+3. **Стайл-гайд продукта** — `EvalLens — Interface Style Guide` (v1.2, внешний
    HTML). Концептуальный референс: принципы, продуктовые компоненты, паттерны
    решения/доверия. Часть продуктовых компонентов ещё не имеет React-реализации
    в `web/` (см. «Открытые вопросы»).
@@ -258,7 +258,7 @@ React-реализации в `web/` (см. «Открытые вопросы»)
 
 Ядро продукта — превращать деки в сравнимые, подтверждённые отчёты.
 
-- **Score + confidence ring** — подпись EvalLense: score (mono, gradient,
+- **Score + confidence ring** — подпись EvalLens: score (mono, gradient,
   tabular) + conic-кольцо уверенности (green/amber по уровню).
 - **Counters / stats** — hero-числа считаются вверх на reveal; позитивные метрики
   градиентом, attention-метрика — сплошным amber.

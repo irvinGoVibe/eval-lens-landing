@@ -1,6 +1,6 @@
 ---
 name: ui-reviewer
-description: Read-only ревью frontend-изменений EvalLense Landing. Проверяет соответствие дизайн-системе проекта, границы компонентов, консистентность и стандарты кода из CLAUDE.md. Конкретные правила (фреймворк, система стилей, библиотека компонентов) конфигурируются под Next.js 16 (App Router, TS, Tailwind v4, React 19, react-three-fiber) в web/ + legacy статика index.html/serve.py при bootstrap. Запускается, если затронут frontend-код.
+description: Read-only ревью frontend-изменений EvalLens Landing. Проверяет соответствие дизайн-системе проекта, границы компонентов, консистентность и стандарты кода из CLAUDE.md. Конкретные правила (фреймворк, система стилей, библиотека компонентов) конфигурируются под Next.js 16 (App Router, TS, Tailwind v4, React 19, react-three-fiber) в web/ + legacy статика index.html/serve.py при bootstrap. Запускается, если затронут frontend-код.
 tools: Read, Grep, Glob, Bash
 ---
 

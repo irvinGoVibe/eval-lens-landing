@@ -25,13 +25,13 @@ cta: Book a Demo
 > (v0.4)**, сверено с `ai-jury-prod/notes/research/pricing-model.en.md` v0.4
 > (совпадает). Конкуренты/фичи/позиционирование — `competitor-landscape.md` §5/§8
 > (draft v0.2 — фичи конкурентов верифицировать перед публикацией). Бренд на сайте
-> — **EvalLense** (в бизнес-доках продукт зовётся «AI Jury» — на странице не путать).
+> — **EvalLens** (в бизнес-доках продукт зовётся «AI Jury» — на странице не путать).
 > Валюта — **только USD**. Раздел «Контент по секциям» — финальная EN-копия.
 
 ## Роль и аудитория
 
 - **Роль страницы:** показать модель монетизации и снять ценовые возражения —
-  EvalLense оплачивается **за мероприятие** (пакет AI-оценённых заявок + срок
+  EvalLens оплачивается **за мероприятие** (пакет AI-оценённых заявок + срок
   действия), а не per-seat и не помесячно. Дать сравнить тарифы между собой и с
   альтернативными способами оценки.
 - **Для кого:** организаторы, принимающие решение о покупке — VC-фонды,
@@ -55,7 +55,7 @@ cta: Book a Demo
 | 1 | Hero | `StatementHero` (DS) | light | «Pay for the event, not every seat» + медиа-слот 16:9 |
 | 2 | Тарифы (4 карточки) | page-local `pr-plans` | light | Free · Standard (рекоменд.) · Pro · Enterprise + строка smaller plans |
 | 3 | Сравнение по тарифам | page-local `pr-compare` | light/soft | матрица 22 строки × 6 уровней |
-| 4 | Where EvalLense fits | page-local `pr-fit` (ink) | ink | 2 unnamed-категории + таблица 8 строк + EvalLense + 2 positioning-строки |
+| 4 | Where EvalLens fits | page-local `pr-fit` (ink) | ink | 2 unnamed-категории + таблица 8 строк + EvalLens + 2 positioning-строки |
 | 4b | How it works | `Cinema` (DS) | ink | cinematic knockout над видео |
 | 5 | Возможности | `Bento` (DS, version 2) | ink | 6 тайлов — Intake · Six-judge review · Evidence reports · Human decision · Trust layer · Plan controls |
 | 6 | FAQ по прайсингу | `Faq` (DS) | ink | 9 вопросов |
@@ -94,7 +94,7 @@ cta: Book a Demo
 | price | $0 | $1,500 | $3,900 | from $15,000 |
 | cadence | 3 submissions | 150 submissions | 500 submissions | 1,000+ submissions |
 | validity | lifetime · no credit card | 120 days · 5 projects | 180 days · unlimited projects | contract term |
-| message | Test EvalLense with 3 real submissions. | For a full pitch competition with up to 150 submissions. | Evaluate large cohorts and recurring programs. | Corporate, universities, and custom judging workflows. |
+| message | Test EvalLens with 3 real submissions. | For a full pitch competition with up to 150 submissions. | Evaluate large cohorts and recurring programs. | Corporate, universities, and custom judging workflows. |
 | bestFor | Best for: a first look before you commit. | Best for: a single full event. | Best for: large or recurring programs. | Best for: custom, high-volume programs. |
 | CTA | Start free | Start Standard | Start Pro | Talk to sales |
 | CTA variant | ghost | primary | ghost | ghost |
@@ -156,10 +156,10 @@ cta: Book a Demo
 > строка «Effective price per submission». Support: «Setup call + priority» без
 > указания минут (30- / 60-min убраны из копии).
 
-### 4. Where EvalLense fits — `pr-fit`, `ink`
-- **Eyebrow:** Where EvalLense fits (с точкой `.dot`)
+### 4. Where EvalLens fits — `pr-fit`, `ink`
+- **Eyebrow:** Where EvalLens fits (с точкой `.dot`)
 - **Heading:** Event workflow and AI evaluation in [one place] — `one place` = grad-word
-- **Subhead:** Event platforms manage submissions and judges. AI deck tools review one deck at a time. EvalLense evaluates the full cohort — six independent judges, evidence-linked rationale, a leaderboard, and a human-owned final decision.
+- **Subhead:** Event platforms manage submissions and judges. AI deck tools review one deck at a time. EvalLens evaluates the full cohort — six independent judges, evidence-linked rationale, a leaderboard, and a human-owned final decision.
 
 **FIT_BLOCKS (category framing, 3 блока):**
 
@@ -167,12 +167,12 @@ cta: Book a Demo
 |---|---|---|
 | Event-workflow platforms | Collect submissions, assign judges, publish results. | No AI-first pitch evaluation; judging stays manual. |
 | AI deck-analysts | Score and summarize one deck at a time. | No event workflow, no judge panel, no leaderboard. |
-| **EvalLense** | Both, plus what neither has: six independent judges (P1–P6), transparent evidence-linked rationale, a leaderboard, and human-in-the-loop final scoring. | *(null — нет gap, это мы)* |
+| **EvalLens** | Both, plus what neither has: six independent judges (P1–P6), transparent evidence-linked rationale, a leaderboard, and human-in-the-loop final scoring. | *(null — нет gap, это мы)* |
 
 **FIT_TABLE (comparison table, 8 строк):**
-Колонки: Event-workflow platforms · AI deck-analysts · **EvalLense** (highlighted `.pr-td--us`)
+Колонки: Event-workflow platforms · AI deck-analysts · **EvalLens** (highlighted `.pr-td--us`)
 
-| Capability | Event-workflow platforms | AI deck-analysts | EvalLense |
+| Capability | Event-workflow platforms | AI deck-analysts | EvalLens |
 |---|---|---|---|
 | AI deck evaluation as core | ✗ | ✓ | ✓ |
 | Six independent judges (P1–P6) | ✗ | partial | ✓ |
@@ -184,14 +184,14 @@ cta: Book a Demo
 | Questions for the live jury | ✗ | ✗ | ✓ |
 
 **Positioning statements (`.pr-statement`, staggered reveal):**
-1. "They manage the competition. EvalLense helps compare who is strongest and why."
+1. "They manage the competition. EvalLens helps compare who is strongest and why."
 2. "They review decks. We run structured evaluation across an entire competition."
 
 > ⚠️ Named-таблицу конкурентов сознательно **НЕ показываем** (решение user,
 > 2026-06-17). Причины: чужие фичи устаревают и неверифицируемы (research draft v0.2),
 > named-таблица образовывает покупателя об альтернативах и звучит оборонительно.
 > Категориальная рамка даёт differentiation без named-liability. Если понадобится
-> named-сравнение — на отдельной «Why EvalLense» с верифицированными, датированными
+> named-сравнение — на отдельной «Why EvalLens» с верифицированными, датированными
 > фактами, **не на pricing**.
 
 ### 4b. How it works — `Cinema` (DS), `ink` *(секция добавлена, в бриф v0.4 отсутствовала)*
@@ -251,7 +251,7 @@ cta: Book a Demo
 - **Secondary CTA:** Start free → `/company/contact`
 - **Медиа:** video `/assets/cta/neo.mp4`
 
-*(Было «Run your next event on EvalLense» / «Start free on three submissions...» в v0.4 — изменено.)*
+*(Было «Run your next event on EvalLens» / «Start free on three submissions...» в v0.4 — изменено.)*
 
 ## Числа и факты
 
@@ -291,8 +291,8 @@ cta: Book a Demo
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Pricing: Pay-per-Event Pitch Evaluation
-- **meta description:** Transparent EvalLense pricing: pay per event, not per seat. Plans are packages of AI-evaluated submissions; six AI judges on every plan, the human decides. *(≤155)*
+- **`<title>`:** EvalLens — Pricing: Pay-per-Event Pitch Evaluation
+- **meta description:** Transparent EvalLens pricing: pay per event, not per seat. Plans are packages of AI-evaluated submissions; six AI judges on every plan, the human decides. *(≤155)*
 - **OG-изображение:** слот `hero`
 
 ## Источники истины
@@ -317,7 +317,7 @@ cta: Book a Demo
 - [x] строка smaller plans (Starter/Pilot) под карточками; они же — в матрице
 - [x] матрица фич × 6 уровней (22 строки), unnamed категориальная таблица (8 строк), Cinema «How it works», Bento возможностей (6 тайлов), FAQ (9 вопросов)
 - [x] `Pricing` в header nav (top-level) + section-anchors Plans/Compare/FAQ
-- [x] валюта только USD; имя EvalLense (не «AI Jury»)
+- [x] валюта только USD; имя EvalLens (не «AI Jury»)
 - [x] только токены/классы из design-system
 - [ ] `cd web && pnpm build` зелёный; `prefers-reduced-motion` уважается
 
@@ -328,11 +328,11 @@ cta: Book a Demo
 - named-таблицу конкурентов **не показываем**, unnamed категориальная рамка — user 2026-06-17
 - Hero без CTA-кнопок (конверсия через карточки §2 и CTA §7)
 - Surface §5 и §6 переведены в ink (было light в v0.4)
-- Positioning line: «We help understand who should win and why» → «EvalLense helps compare who is strongest and why»
+- Positioning line: «We help understand who should win and why» → «EvalLens helps compare who is strongest and why»
 
 **Осталось:**
 - **Footer/nav-структура** — в какую группу footer кладём Pricing; в header — top-level.
 - **Sitemap** — `/pricing` должен быть помечен как live, не post-MVP.
-- **Имя бренда** — в финмодели/research продукт зовётся «AI Jury»; на странице — только **EvalLense**.
+- **Имя бренда** — в финмодели/research продукт зовётся «AI Jury»; на странице — только **EvalLens**.
 - **PricingToolkitCard изображение** — слот открыт (`.media-ph`), реальный PNG ещё не сгенерирован через FLUX.2 [dev].
 - **Fair-use лимиты** — убраны из публичной таблицы; нужно определить, где они живут (условия сервиса / help center).

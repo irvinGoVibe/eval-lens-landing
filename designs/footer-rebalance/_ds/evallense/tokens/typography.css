@@ -1,4 +1,4 @@
-/* EvalLense — typography tokens + type roles
+/* EvalLens — typography tokens + type roles
    Source: web/src/app/globals.css. System Apple type stack (SF Pro Display /
    SF Pro Text / SF Mono) — no webfonts shipped; consumers fall back to the
    platform stack. Display = headlines, UI = body, mono = eyebrows/tags. */

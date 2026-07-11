@@ -2,7 +2,7 @@
 
 ## Page purpose
 
-Explain the evaluation methodology behind EvalLense.
+Explain the evaluation methodology behind EvalLens.
 
 ## User task
 
@@ -10,7 +10,7 @@ Help the user understand that the system does not evaluate decks randomly or bas
 
 ## Main idea to communicate
 
-EvalLense evaluates pitch decks through structured criteria, judge roles, rubrics, and scoring logic.
+EvalLens evaluates pitch decks through structured criteria, judge roles, rubrics, and scoring logic.
 
 ## What the page should prove
 
@@ -129,7 +129,7 @@ Clarify that methodology supports humans, not replaces them.
 Message:
 
 ```text
-EvalLense prepares structured analysis. Humans make final decisions.
+EvalLens prepares structured analysis. Humans make final decisions.
 ```
 
 ### 8. CTA

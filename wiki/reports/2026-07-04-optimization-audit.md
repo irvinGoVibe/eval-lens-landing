@@ -5,7 +5,7 @@ version: 1.0
 updated: 2026-07-04
 ---
 
-# Отчёт — техническая оптимизация EvalLense Landing
+# Отчёт — техническая оптимизация EvalLens Landing
 
 ← [[index|Wiki]]
 

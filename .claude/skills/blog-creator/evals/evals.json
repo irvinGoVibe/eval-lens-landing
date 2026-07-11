@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Создай новую статью в блог про то, как EvalLense оценивает хакатонные сабмишены.",
+      "prompt": "Создай новую статью в блог про то, как EvalLens оценивает хакатонные сабмишены.",
       "expected_output": "Режим CREATE. Должен загрузить .agents/product-marketing.md, references/article-format.md, references/personas.md и copy-system. Должен сходить в ai-jury-prod (через PROJECT-ENTRYPOINT) за фактами по Hackathon-панели (J-H1…J-H5) и не выдумывать. Должен придумать kebab-case slug, проверить отсутствие файла, собрать валидный frontmatter (category из Research|Product|Press Release, accent из cyan|violet|aqua|orange, author: Anonymous Unicorn, status: draft, cover по конвенции /assets/blog/<short>/cover.png) и тело в фирменной структуре. Должен прогнать текст через персоны 1–7 и упомянуть это в отчёте. Должен записать wiki/product/site/blog/<slug>.md. В отчёте — список факт→файл и открытые вопросы. Диалог рус., копия англ.",
       "assertions": [
         "Загружает product-marketing.md, personas.md, article-format.md, copy-system",
@@ -12,7 +12,7 @@
         "Frontmatter валиден по cms/types.ts (category/accent из допустимых, author: Anonymous Unicorn, status: draft)",
         "Прогон через персоны 1–7 (включая AEO, copy-editor, humanizer)",
         "Пишет новый wiki/product/site/blog/<slug>.md",
-        "Сохраняет human-in-the-loop и имя EvalLense"
+        "Сохраняет human-in-the-loop и имя EvalLens"
       ],
       "files": []
     },
@@ -33,7 +33,7 @@
     },
     {
       "id": 3,
-      "prompt": "Напиши статью про роудмеп: что EvalLense строит дальше.",
+      "prompt": "Напиши статью про роудмеп: что EvalLens строит дальше.",
       "expected_output": "Режим CREATE, category Product. Должен взять факты роудмепа из ai-jury-prod (Hackathon judge, Truth Check) и подать роудмеп ПРЯМО (не как «возможно»). Должен использовать именно 'Truth Check' (не 'Trust Check'). Должен держать human-in-the-loop ('final decision still yours'). Должен собрать валидный frontmatter (accent violet как у эталона whats-next), Anonymous Unicorn, status draft. Прогон через персоны, антислоп. Открытые вопросы — то, чего нет в источниках.",
       "assertions": [
         "Факты роудмепа из ai-jury-prod, роудмеп подан прямо",

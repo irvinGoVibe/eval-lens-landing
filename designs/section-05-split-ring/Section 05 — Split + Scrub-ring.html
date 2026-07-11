@@ -19,7 +19,7 @@
 
 <style>
   /* Registered so the ring + bars animate (count-up on reveal, like the
-     EvalLense interface style guide). --v is the live value the ring fills to;
+     EvalLens interface style guide). --v is the live value the ring fills to;
      --pct is its integer readout. */
   @property --v   { syntax:"<number>";  inherits:true; initial-value:0; }
   @property --pct { syntax:"<integer>"; inherits:true; initial-value:0; }
@@ -62,7 +62,7 @@
   .s-sub{ font-family:var(--font-text); font-size:clamp(17px,1.5vw,20px); line-height:1.5; color:var(--muted); margin:18px 0 0; }
   .surf-ink .s-sub{ color:var(--muted-on-dark); }
 
-  /* ── confidence ring — from the EvalLense style guide ─────────────────
+  /* ── confidence ring — from the EvalLens style guide ─────────────────
      conic from -90deg, semantic color (green = high), soft glow; a centre
      disc the colour of the surface turns it into a gauge with the readout
      inside. Fills 0→target via --v when its block reveals (.is-in). */

@@ -1,4 +1,4 @@
--- EvalLense blog — migrate article bodies from Block[] (JSONB) to Markdown (text).
+-- EvalLens blog — migrate article bodies from Block[] (JSONB) to Markdown (text).
 --
 -- Story 02, etape 6: the article body becomes a Markdown source string instead
 -- of a structured Block[] array. The data type (articles.body JSONB -> text)

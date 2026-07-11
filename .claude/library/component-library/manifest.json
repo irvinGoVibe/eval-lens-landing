@@ -3,7 +3,7 @@
   "generated": "2026-06-17",
   "last_updated": "2026-06-25",
   "generator": "component-library-preparer (full re-scan 2026-06-22 — DS canon reframe: @/components/ds is the only public API; Lab*/_kit deprecated substrate; 11 non-barrel archetypes downgraded to component-api-gap)",
-  "product": "EvalLense landing",
+  "product": "EvalLens landing",
   "purpose": "Normalized source-of-truth inventory of the live UI library. Consumed by page-composer (only `ready`), build-pages, component-forge (gaps), forge-index (incremental refresh).",
   "compose_mode": "whole-sections-only",
   "compose_mode_reason": "No DS layout shells in @/components/ds yet (deprecated source sections/lab/_layout.tsx also absent, CL-001); atoms-and-layouts composition is blocked until DS shells are extracted by primitive-layer-forge. page-composer composes whole DS sections from @/components/ds (never raw Lab*).",

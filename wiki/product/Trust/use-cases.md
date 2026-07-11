@@ -2,15 +2,15 @@
 
 ## Page purpose
 
-Show where EvalLense can be applied and what each segment gets from the product.
+Show where EvalLens can be applied and what each segment gets from the product.
 
 ## User task
 
-Help the visitor recognize their own workflow and understand why EvalLense is relevant to them.
+Help the visitor recognize their own workflow and understand why EvalLens is relevant to them.
 
 ## Main idea to communicate
 
-EvalLense is useful wherever there are many pitch decks, limited reviewer time, and a need to choose the strongest candidates transparently.
+EvalLens is useful wherever there are many pitch decks, limited reviewer time, and a need to choose the strongest candidates transparently.
 
 ## Primary use cases
 
@@ -32,13 +32,13 @@ Universities
 Purpose:
 
 ```text
-Position EvalLense as a batch review system across startup evaluation workflows.
+Position EvalLens as a batch review system across startup evaluation workflows.
 ```
 
 Message:
 
 ```text
-Use EvalLense wherever teams need to review many startups, compare them consistently, and make faster decisions.
+Use EvalLens wherever teams need to review many startups, compare them consistently, and make faster decisions.
 ```
 
 ### 2. VC Funds

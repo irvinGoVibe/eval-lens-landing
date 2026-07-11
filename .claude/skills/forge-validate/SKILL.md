@@ -4,7 +4,7 @@ description: "ФАЗА 6 пакета component-forge — Render QA + Fix Loop +
 metadata:
   package: component-forge
   phase: 6
-  product: EvalLense
+  product: EvalLens
 ---
 
 # forge-validate — Render QA (Фаза 6) + Fix Loop

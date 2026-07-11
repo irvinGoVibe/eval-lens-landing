@@ -1,7 +1,7 @@
 ---
 status: draft
 ---
-# PROJECT ENTRYPOINT — EvalLense Landing
+# PROJECT ENTRYPOINT — EvalLens Landing
 
 Технический entrypoint для AI-агентов, работающих с проектом. Каждый AI обязан прочитать этот файл первым.
 
@@ -13,7 +13,7 @@ status: draft
 
 ## Project
 
-- **Name:** EvalLense Landing
+- **Name:** EvalLens Landing
 - **What it does:** Фронтэнд сайт Эвэнс с лендингом с блогом с методологией полноценный корпоративный сайт.
 - **Language:** Русский
 - **Repository:** irvinGoVibe/eval-lens-landing (https://github.com/irvinGoVibe/eval-lens-landing)

@@ -1,14 +1,14 @@
 ---
 name: evallense-site
-description: "Редактура продуктовой ДОКУМЕНТАЦИИ страниц EvalLense (брифы wiki/product/*.md), а не кода страниц. На вход — имя страницы (slug). Скилл читает текущий бриф, ходит за фактами в единый источник правды ai-jury-prod, сверяет раскладку с живыми page-design-patterns.md + section-types.md и пишет обогащённый бриф той же структуры в wiki/product/<slug>_new.md. Триггеры: «перепиши бриф страницы», «обнови документацию overview/entry-hub/methodology/pricing…», «собери сторителлинг для страницы», «применить скилл к product/<страница>», «evallense doc <slug>». Держит нарратив EvalLense: AI готовит анализ — решает человек."
+description: "Редактура продуктовой ДОКУМЕНТАЦИИ страниц EvalLens (брифы wiki/product/*.md), а не кода страниц. На вход — имя страницы (slug). Скилл читает текущий бриф, ходит за фактами в единый источник правды ai-jury-prod, сверяет раскладку с живыми page-design-patterns.md + section-types.md и пишет обогащённый бриф той же структуры в wiki/product/<slug>_new.md. Триггеры: «перепиши бриф страницы», «обнови документацию overview/entry-hub/methodology/pricing…», «собери сторителлинг для страницы», «применить скилл к product/<страница>», «evallense doc <slug>». Держит нарратив EvalLens: AI готовит анализ — решает человек."
 metadata:
   version: 2.0.0
-  product: EvalLense
+  product: EvalLens
 ---
 
-# EvalLense — редактура продуктовых брифов страниц
+# EvalLens — редактура продуктовых брифов страниц
 
-Ты — ведущий контент-стратег и продуктовый редактор **EvalLense**. Твоя задача —
+Ты — ведущий контент-стратег и продуктовый редактор **EvalLens**. Твоя задача —
 **править продуктовую документацию внутренних страниц сайта** (брифы в
 `eval-lens-landing/wiki/product/*.md`), а **не** код страниц (`page.tsx`).
 
@@ -50,11 +50,11 @@ metadata:
 
 ## Шаг 0. Загрузи контекст бренда (обязательно)
 
-Нарратив и нейминг EvalLense (use/avoid, human-in-the-loop, tone):
-!`cat .agents/product-marketing.md 2>/dev/null || cat .claude/product-marketing.md 2>/dev/null || echo "НЕ НАЙДЕН .agents/product-marketing.md — попроси пользователя указать путь к контексту EvalLense."`
+Нарратив и нейминг EvalLens (use/avoid, human-in-the-loop, tone):
+!`cat .agents/product-marketing.md 2>/dev/null || cat .claude/product-marketing.md 2>/dev/null || echo "НЕ НАЙДЕН .agents/product-marketing.md — попроси пользователя указать путь к контексту EvalLens."`
 
 Инварианты, которые держишь всегда:
-- Имя продукта наружу — **EvalLense** (не «AI Jury» — это origin story, уместна
+- Имя продукта наружу — **EvalLens** (не «AI Jury» — это origin story, уместна
   только на /company/about).
 - Ядро: **AI готовит доказательный анализ — финальное решение принимает человек**
   (human-in-the-loop; *the final call always yours*). Никаких «AI judges/decides/
@@ -215,7 +215,7 @@ metadata:
 - [ ] **«Контент по секциям» = финальная EN-копия по каждой секции** (eyebrow/heading/subhead/body/tiles/CTA), готовая к вёрстке — не русские описания.
 - [ ] Голос единый по всей странице; пройден антислоп-проход (§7 copy-system) — AI-штампов нет.
 - [ ] Структура и H2-заголовки = `_page-template.md` (build-pages-совместимо).
-- [ ] Имя EvalLense; нет «AI judges/decides/verdict»; human-in-the-loop держится.
+- [ ] Имя EvalLens; нет «AI judges/decides/verdict»; human-in-the-loop держится.
 - [ ] Термины канонические; CTA — Book a Demo / Try live demo.
 - [ ] Числа — с источником; ничего не выдумано (недостающее → «Открытые вопросы»).
 - [ ] Результат записан в `<slug>_new.md`, оригинал цел.

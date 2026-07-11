@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Company-страница: точка связи с EvalLense — сюда приземляются все CTA «Book a
+Company-страница: точка связи с EvalLens — сюда приземляются все CTA «Book a
 Demo» со всего сайта, плюс прямые каналы (общий контакт, careers, security) и
 **блок со ссылкой на пользовательскую документацию** (на стороннем сайте).
 
@@ -42,7 +42,7 @@ Demo» со всего сайта, плюс прямые каналы (общи�
 |---|---|---|---|---|---|
 | 1 | Hero | statement-hero | reveal | light | «Let's talk» + Book a Demo + «или напишите нам» |
 | 2 | Способы связи | bento / feature-grid | reveal | light | Карточки: Book a demo · General · Careers · Security · Press |
-| 3 | Документация (внешняя) | editorial-split / full-bleed | reveal | ink | «Already using EvalLense? Read the docs» + кнопка ↗ на сторонний сайт |
+| 3 | Документация (внешняя) | editorial-split / full-bleed | reveal | ink | «Already using EvalLens? Read the docs» + кнопка ↗ на сторонний сайт |
 | 4 | Latest news | horizontal-gallery | reveal | light | Лента 3 последних постов блога + «All news →» (`/blog`) |
 | 5 | Final CTA | quiet-cta | reveal | ink | Призыв + Book a Demo |
 
@@ -56,7 +56,7 @@ Demo» со всего сайта, плюс прямые каналы (общи�
 
 ### 2. Способы связи
 Карточки-каналы (bento). Каждая — заголовок, одно предложение, email/действие:
-- **Book a demo** — увидеть EvalLense на ваших деках. → demo-канал (primary).
+- **Book a demo** — увидеть EvalLens на ваших деках. → demo-канал (primary).
 - **General & sales** — вопросы о продукте, партнёрстве, пилоте. → `hello@evallense.com` *(placeholder)*.
 - **Careers** — присоединиться к команде. → `careers@evallense.com`.
 - **Security** — сообщить об уязвимости (responsible disclosure). → `security@evallense.com`, ссылка на [[sitemap|Security]] (`/security`).
@@ -64,7 +64,7 @@ Demo» со всего сайта, плюс прямые каналы (общи�
 
 ### 3. Документация (внешняя) — ключевой запрошенный блок
 Отдельный заметный блок (тёмный, чтобы выделялся):
-- **Заголовок:** Already using EvalLense? Read the docs
+- **Заголовок:** Already using EvalLens? Read the docs
 - **Подзаголовок:** Руководства для организаторов — как настроить программу,
   запустить оценку и управлять рабочим пространством. *(черновик)*
 - **Кнопка:** `Open the documentation ↗` → **внешний сайт документации**
@@ -125,8 +125,8 @@ Demo» со всего сайта, плюс прямые каналы (общи�
 
 ## SEO / meta
 
-- **`<title>`:** Contact EvalLense — Book a Demo & Talk to Us
-- **meta description:** Свяжитесь с EvalLense: запишитесь на demo, напишите по
+- **`<title>`:** Contact EvalLens — Book a Demo & Talk to Us
+- **meta description:** Свяжитесь с EvalLens: запишитесь на demo, напишите по
   общим вопросам, careers или security — и откройте пользовательскую
   документацию по управлению системой. *(≤155)*
 - **OG-изображение:** слот `hero`

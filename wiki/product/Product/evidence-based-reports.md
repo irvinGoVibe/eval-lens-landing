@@ -2,7 +2,7 @@
 
 ## Page purpose
 
-Explain the main output of EvalLense: structured reports where scores and conclusions are connected to deck content.
+Explain the main output of EvalLens: structured reports where scores and conclusions are connected to deck content.
 
 ## User task
 
@@ -14,7 +14,7 @@ Every score should be explainable. Every important conclusion should be connecte
 
 ## What the page should avoid
 
-Do not describe this as gap analysis or due diligence. Current product language should stay close to what EvalLense actually produces.
+Do not describe this as gap analysis or due diligence. Current product language should stay close to what EvalLens actually produces.
 
 ## What the report contains
 
@@ -91,7 +91,7 @@ Explain the connection between score and deck content.
 Message:
 
 ```text
-EvalLense does not just output a number. It explains the reasoning behind the score and connects the assessment to deck evidence.
+EvalLens does not just output a number. It explains the reasoning behind the score and connects the assessment to deck evidence.
 ```
 
 ### 5. Use in review process

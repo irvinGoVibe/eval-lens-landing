@@ -1,13 +1,13 @@
-# EvalLense Glass Object Brand Kit
+# EvalLens Glass Object Brand Kit
 
 Рабочий бренд-кит для генерации прозрачных 3D glassmorphism-объектов на белых и черных секциях сайта.
 
-Цель: получить серию PNG-ассетов с прозрачным alpha-фоном, которые выглядят как один визуальный мир EvalLense: спокойный premium tech, Apple-grade минимализм, физически убедительное стекло, мягкая рефракция и контролируемый lens-gradient.
+Цель: получить серию PNG-ассетов с прозрачным alpha-фоном, которые выглядят как один визуальный мир EvalLens: спокойный premium tech, Apple-grade минимализм, физически убедительное стекло, мягкая рефракция и контролируемый lens-gradient.
 
 Связано:
 - `flux2-dev-playbook.md` — настройки FLUX.2 / Draw Things.
 - `lora-dataset/README.md` — датасет и captions для будущей style-LoRA.
-- `designs/methodology-page/_ds/evallense/README.md` — дизайн-система EvalLense.
+- `designs/methodology-page/_ds/evallense/README.md` — дизайн-система EvalLens.
 
 ---
 
@@ -79,7 +79,7 @@ If a generator cannot truly output alpha, render on a perfectly separable solid 
 Use for objects that sit on white / off-white website sections.
 
 ```text
-Create a premium hyperrealistic 3D glassmorphism object in the EvalLense light brand style.
+Create a premium hyperrealistic 3D glassmorphism object in the EvalLens light brand style.
 
 The object represents AI-assisted pitch-deck evaluation: raw deck material being refracted through a calm analytical lens into structured evidence, scores, risks, or human decision context. Make it feel like a premium product-rendered glass instrument, not a flat UI screenshot.
 
@@ -92,7 +92,7 @@ STYLE:
 - More airy and delicate than the dark version.
 
 BRAND COLORS:
-- Use the EvalLense gradient softly: violet #6C4CF1 -> lavender #A99BFF -> cyan #2EC5E8 -> aqua #36E0C2.
+- Use the EvalLens gradient softly: violet #6C4CF1 -> lavender #A99BFF -> cyan #2EC5E8 -> aqua #36E0C2.
 - Colors must be lighter, softer, and more pastel than the dark version.
 - Use pale lavender, soft cyan, light aqua, icy blue, pearl white.
 - Avoid harsh neon. No heavy saturation.
@@ -153,7 +153,7 @@ NEGATIVE:
 Use for objects that sit on black / ink website sections.
 
 ```text
-Create a premium hyperrealistic 3D glassmorphism object in the EvalLense brand style.
+Create a premium hyperrealistic 3D glassmorphism object in the EvalLens brand style.
 
 The object represents AI-assisted pitch-deck evaluation: raw deck material being refracted through a calm analytical lens into structured evidence, scores, risks, or human decision context. Make it feel like a premium product-rendered glass instrument, not a flat UI screenshot.
 
@@ -268,37 +268,37 @@ Central object: a calm glass evidence tray where one small amber-tinted glass ma
 ### Light: Lens Matrix
 
 ```text
-Create a premium hyperrealistic 3D glassmorphism object in the EvalLense light brand style: a thick transparent biconvex glass lens intersecting a small stack of translucent pitch-deck cards, refracting them into a clean floating matrix of raised glass score cells. Use ultra-clear and frosted optical glass, polished bevels, thin hairline borders, soft caustic-like reflections and very high transparency. The EvalLense gradient appears only as internal pastel refraction and edge light: violet #6C4CF1, lavender #A99BFF, cyan #2EC5E8 and aqua #36E0C2, softened into pale lavender, icy blue and light aqua. Render as if photographed on a clean white/off-white studio background, but the final image must have fully transparent alpha outside the object silhouette. Keep only the object, object-bound highlights, tiny object-bound shadow/reflection and transparent margin. Slight 3/4 perspective, centered, strong silhouette, no people, no hands, no logos, no fake checkerboard, no background rectangle, no flat UI screenshot, no printed text, no harsh neon.
+Create a premium hyperrealistic 3D glassmorphism object in the EvalLens light brand style: a thick transparent biconvex glass lens intersecting a small stack of translucent pitch-deck cards, refracting them into a clean floating matrix of raised glass score cells. Use ultra-clear and frosted optical glass, polished bevels, thin hairline borders, soft caustic-like reflections and very high transparency. The EvalLens gradient appears only as internal pastel refraction and edge light: violet #6C4CF1, lavender #A99BFF, cyan #2EC5E8 and aqua #36E0C2, softened into pale lavender, icy blue and light aqua. Render as if photographed on a clean white/off-white studio background, but the final image must have fully transparent alpha outside the object silhouette. Keep only the object, object-bound highlights, tiny object-bound shadow/reflection and transparent margin. Slight 3/4 perspective, centered, strong silhouette, no people, no hands, no logos, no fake checkerboard, no background rectangle, no flat UI screenshot, no printed text, no harsh neon.
 ```
 
 ### Dark: Lens Matrix
 
 ```text
-Create a premium hyperrealistic 3D glassmorphism object in the EvalLense brand style: a dark transparent biconvex glass lens intersecting a small stack of translucent pitch-deck cards, refracting them into a clean floating matrix of raised glass score cells. Use frosted transparent surfaces, thick polished glass edges, subtle refraction, soft internal glow, layered depth and thin hairline borders. The EvalLense lens gradient appears as controlled violet #6C4CF1, lavender #A99BFF, cyan #2EC5E8 and aqua #36E0C2 rim light, with violet/lavender for advisory context and cyan/aqua for active human decision elements. Render as if photographed on a deep black cinematic background, but remove the outer background completely: fully transparent alpha outside the object silhouette. Keep only internal dark glass surfaces, attached glows, rim lights and object-bound reflections. Slight 3/4 perspective, centered, strong silhouette, no people, no hands, no logos, no fake checkerboard, no full background, no flat dashboard screenshot, no dense text, no cyberpunk clutter, no shields, no locks.
+Create a premium hyperrealistic 3D glassmorphism object in the EvalLens brand style: a dark transparent biconvex glass lens intersecting a small stack of translucent pitch-deck cards, refracting them into a clean floating matrix of raised glass score cells. Use frosted transparent surfaces, thick polished glass edges, subtle refraction, soft internal glow, layered depth and thin hairline borders. The EvalLens lens gradient appears as controlled violet #6C4CF1, lavender #A99BFF, cyan #2EC5E8 and aqua #36E0C2 rim light, with violet/lavender for advisory context and cyan/aqua for active human decision elements. Render as if photographed on a deep black cinematic background, but remove the outer background completely: fully transparent alpha outside the object silhouette. Keep only internal dark glass surfaces, attached glows, rim lights and object-bound reflections. Slight 3/4 perspective, centered, strong silhouette, no people, no hands, no logos, no fake checkerboard, no full background, no flat dashboard screenshot, no dense text, no cyberpunk clutter, no shields, no locks.
 ```
 
 ### Light: Evidence Prism
 
 ```text
-Create a premium hyperrealistic 3D glassmorphism object in the EvalLense light brand style: a clear triangular optical prism made of frosted glass, with three translucent pitch-deck sheets entering from one side and splitting into three restrained evidence streams made of raised glass ribbons. The object should feel carved from ultra-clear optical glass with polished bevels, thin white edge highlights, soft caustics and delicate internal refraction. Use the EvalLense gradient only as pastel refraction inside the glass: violet #6C4CF1, lavender #A99BFF, cyan #2EC5E8 and aqua #36E0C2, all pale and luminous. Render for a clean white/off-white studio environment, but output transparent alpha outside the object; no background rectangle, floor, wall, full-frame glow or checkerboard. Centered, floating, slight 3/4 perspective, readable silhouette, no people, no logos, no printed text.
+Create a premium hyperrealistic 3D glassmorphism object in the EvalLens light brand style: a clear triangular optical prism made of frosted glass, with three translucent pitch-deck sheets entering from one side and splitting into three restrained evidence streams made of raised glass ribbons. The object should feel carved from ultra-clear optical glass with polished bevels, thin white edge highlights, soft caustics and delicate internal refraction. Use the EvalLens gradient only as pastel refraction inside the glass: violet #6C4CF1, lavender #A99BFF, cyan #2EC5E8 and aqua #36E0C2, all pale and luminous. Render for a clean white/off-white studio environment, but output transparent alpha outside the object; no background rectangle, floor, wall, full-frame glow or checkerboard. Centered, floating, slight 3/4 perspective, readable silhouette, no people, no logos, no printed text.
 ```
 
 ### Dark: Human Decision Dial
 
 ```text
-Create a premium hyperrealistic 3D glassmorphism object in the EvalLense brand style: a circular transparent glass decision dial with layered rings, where outer advisory rings glow softly in violet #6C4CF1 and lavender #A99BFF and the inner final decision ring glows in cyan #2EC5E8 and aqua #36E0C2. Add a small raised glass selector, physically beveled and translucent, suggesting human control without showing any person or hand. Use dark frosted glass, thick polished edges, subtle refraction, attached rim lights, object-bound reflections and restrained internal glow. Render as if photographed on a deep black cinematic background, but final output must have transparent alpha outside the object silhouette. No full background, no floor, no wall, no fake checkerboard, no flat dashboard, no dense text, no shields, no locks, no cyberpunk clutter.
+Create a premium hyperrealistic 3D glassmorphism object in the EvalLens brand style: a circular transparent glass decision dial with layered rings, where outer advisory rings glow softly in violet #6C4CF1 and lavender #A99BFF and the inner final decision ring glows in cyan #2EC5E8 and aqua #36E0C2. Add a small raised glass selector, physically beveled and translucent, suggesting human control without showing any person or hand. Use dark frosted glass, thick polished edges, subtle refraction, attached rim lights, object-bound reflections and restrained internal glow. Render as if photographed on a deep black cinematic background, but final output must have transparent alpha outside the object silhouette. No full background, no floor, no wall, no fake checkerboard, no flat dashboard, no dense text, no shields, no locks, no cyberpunk clutter.
 ```
 
 ### Light: Review Signal
 
 ```text
-Create a premium hyperrealistic 3D glassmorphism object in the EvalLense light brand style: a calm transparent glass evidence tray with several small raised glass markers in pale violet/cyan/aqua refraction, and one tiny amber #e8943a glass marker gently separated to the side as a review signal. Make the amber marker soft and premium, not alarming. Use ultra-clear frosted glass, polished bevels, hairline borders, pearl reflections, soft caustics and object-bound shadow only. Render as if photographed on a white/off-white studio background, but final output must have fully transparent alpha outside the object silhouette. No warning icons, no red alert styling, no shields, no locks, no people, no printed text, no background rectangle, no fake checkerboard.
+Create a premium hyperrealistic 3D glassmorphism object in the EvalLens light brand style: a calm transparent glass evidence tray with several small raised glass markers in pale violet/cyan/aqua refraction, and one tiny amber #e8943a glass marker gently separated to the side as a review signal. Make the amber marker soft and premium, not alarming. Use ultra-clear frosted glass, polished bevels, hairline borders, pearl reflections, soft caustics and object-bound shadow only. Render as if photographed on a white/off-white studio background, but final output must have fully transparent alpha outside the object silhouette. No warning icons, no red alert styling, no shields, no locks, no people, no printed text, no background rectangle, no fake checkerboard.
 ```
 
 ### Dark: Layer Stack
 
 ```text
-Create a premium hyperrealistic 3D glassmorphism object in the EvalLense brand style: four stacked horizontal dark transparent glass layer-bars connected by thin hairline vertical glass channels. A single subtle lens-gradient thread descends through the layers, shifting from violet #6C4CF1 and lavender #A99BFF advisory context into cyan #2EC5E8 and aqua #36E0C2 final decision clarity. Use frosted transparent surfaces, thick polished bevels, soft internal glow, attached rim lights and object-bound reflections only. Render as if photographed on deep black cinematic background, but remove the entire outer background so everything outside the object silhouette is transparent alpha. No floor, no wall, no full-frame haze, no fake checkerboard, no flat UI screenshot, no dense text, no people, no shields, no locks.
+Create a premium hyperrealistic 3D glassmorphism object in the EvalLens brand style: four stacked horizontal dark transparent glass layer-bars connected by thin hairline vertical glass channels. A single subtle lens-gradient thread descends through the layers, shifting from violet #6C4CF1 and lavender #A99BFF advisory context into cyan #2EC5E8 and aqua #36E0C2 final decision clarity. Use frosted transparent surfaces, thick polished bevels, soft internal glow, attached rim lights and object-bound reflections only. Render as if photographed on deep black cinematic background, but remove the entire outer background so everything outside the object silhouette is transparent alpha. No floor, no wall, no full-frame haze, no fake checkerboard, no flat UI screenshot, no dense text, no people, no shields, no locks.
 ```
 
 ---
@@ -333,8 +333,8 @@ Before an image enters the site:
 - [ ] Brand gradient appears as refraction / rim / internal glow, not a rainbow overlay.
 - [ ] No people, hands, faces, logos, shields or locks.
 - [ ] No dense or garbled text.
-- [ ] The metaphor supports EvalLense: evidence, lens, scoring, review, human final decision.
-- [ ] Looks consistent with other EvalLense media assets.
+- [ ] The metaphor supports EvalLens: evidence, lens, scoring, review, human final decision.
+- [ ] Looks consistent with other EvalLens media assets.
 
 ---
 

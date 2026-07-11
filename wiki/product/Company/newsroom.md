@@ -6,11 +6,11 @@ Provide a place for product updates, announcements, research notes, public miles
 
 ## User task
 
-Help visitors see that EvalLense is active, developing, and building public momentum.
+Help visitors see that EvalLens is active, developing, and building public momentum.
 
 ## Main idea to communicate
 
-EvalLense is moving, shipping, testing, and learning in public.
+EvalLens is moving, shipping, testing, and learning in public.
 
 ## Section structure
 
@@ -25,7 +25,7 @@ Position Newsroom as the public update center.
 Message:
 
 ```text
-Latest updates, product milestones, research notes, and company announcements from EvalLense.
+Latest updates, product milestones, research notes, and company announcements from EvalLens.
 ```
 
 ### 2. Product updates

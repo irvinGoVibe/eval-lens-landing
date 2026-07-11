@@ -2,7 +2,7 @@
 
 ## Page purpose
 
-Explain who is building EvalLense, why the product exists, and what position the company takes on AI-assisted evaluation.
+Explain who is building EvalLens, why the product exists, and what position the company takes on AI-assisted evaluation.
 
 ## User task
 
@@ -10,7 +10,7 @@ Help the visitor trust the team and understand the product mission.
 
 ## Main idea to communicate
 
-EvalLense is built to make startup evaluation more structured, explainable, and human-controlled.
+EvalLens is built to make startup evaluation more structured, explainable, and human-controlled.
 
 ## Section structure
 
@@ -28,7 +28,7 @@ Message:
 We build tools for faster, more explainable startup evaluation without removing human judgment from final decisions.
 ```
 
-### 2. Why EvalLense exists
+### 2. Why EvalLens exists
 
 Purpose:
 
@@ -39,7 +39,7 @@ Explain the problem that motivated the product.
 Message:
 
 ```text
-Startup evaluation is often slow, inconsistent, and hard to compare across large batches. EvalLense was created to bring structure and evidence to that process.
+Startup evaluation is often slow, inconsistent, and hard to compare across large batches. EvalLens was created to bring structure and evidence to that process.
 ```
 
 ### 3. Product philosophy
@@ -71,7 +71,7 @@ Connect company story to product roadmap.
 Message:
 
 ```text
-EvalLense is becoming an evaluation layer for funds, accelerators, competitions, and programs that review many startups.
+EvalLens is becoming an evaluation layer for funds, accelerators, competitions, and programs that review many startups.
 ```
 
 ### 5. CTA

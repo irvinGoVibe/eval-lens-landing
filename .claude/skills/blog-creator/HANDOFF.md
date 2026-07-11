@@ -1,9 +1,9 @@
-# EvalLense blog-creator — handoff (продолжение в новой сессии)
+# EvalLens blog-creator — handoff (продолжение в новой сессии)
 
 Версия: blog-creator v1.2.0 · создан 2026-06-17 · язык работы: русский.
 
 ## Что это
-Скилл планирует, создаёт и переписывает статьи блога EvalLense (Newsroom) — брифы
+Скилл планирует, создаёт и переписывает статьи блога EvalLens (Newsroom) — брифы
 `eval-lens-landing/wiki/product/site/blog/<slug>.md`. Единый голос автора —
 `Anonymous Unicorn`; качество обеспечивает пул экспертных персон-линз.
 
@@ -77,7 +77,7 @@
   `product/*.md`, существующие статьи), `.agents/product-marketing.md`.
 
 ## Инварианты (не нарушать)
-- Имя продукта — **EvalLense** (AI Jury — только origin story).
+- Имя продукта — **EvalLens** (AI Jury — только origin story).
 - **human-in-the-loop**: AI готовит анализ — решает человек. Нет «AI решает».
 - Подпись — **Anonymous Unicorn**; `status: draft`.
 - Trust: **1,000+ runs**; фича — **Truth Check** (не Trust Check); роудмеп прямо.

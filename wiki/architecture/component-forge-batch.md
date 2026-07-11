@@ -97,7 +97,7 @@ forge заменены детерминированными решениями �
 
 ```
 1. repository rules (CLAUDE.md)
-2. EvalLense design system (source of truth)
+2. EvalLens design system (source of truth)
 3. Contract Lock (semantic/functional/theme)
 4. child-run review status (forge-validate / ui-ux-pro-max / reviewers)
 5. lowest-risk reversible solution

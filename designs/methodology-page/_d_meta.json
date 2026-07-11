@@ -2,7 +2,7 @@
   "type": "design",
   "designSystems": [
     {
-      "name": "EvalLense Design System",
+      "name": "EvalLens Design System",
       "slug": "evallense",
       "namespace": "Evallense_c7d744",
       "dsFolder": "_ds/evallense",
@@ -19,7 +19,7 @@
           "path": "Methodology.html",
           "createdAt": "2026-06-22T09:55:46.262Z",
           "status": "needs-review",
-          "subtitle": "Trust · /trust/methodology — 8 sections, EvalLense DS",
+          "subtitle": "Trust · /trust/methodology — 8 sections, EvalLens DS",
           "viewport": {
             "width": 1320,
             "height": 900

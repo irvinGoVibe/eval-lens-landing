@@ -6,7 +6,7 @@ Explain the workspace where teams review evaluated startups, compare results, bu
 
 ## User task
 
-Help the user understand how EvalLense supports the human decision process after AI-assisted evaluation is complete.
+Help the user understand how EvalLens supports the human decision process after AI-assisted evaluation is complete.
 
 ## Main idea to communicate
 
@@ -81,7 +81,7 @@ Final decision state
 Purpose:
 
 ```text
-Reinforce that EvalLense does not replace the final reviewer.
+Reinforce that EvalLens does not replace the final reviewer.
 ```
 
 Message:

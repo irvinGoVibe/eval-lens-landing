@@ -16,7 +16,7 @@ cta: Start a pilot
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
 A practical, self-serve one-page explainer (the web version of the 2-page PDF):
-a reader with no call should understand what they upload, what EvalLense does,
+a reader with no call should understand what they upload, what EvalLens does,
 how long it takes, what the jury gets, who sets the final score, and how to start
 a pilot.
 
@@ -26,25 +26,25 @@ a pilot.
 ## Роль и аудитория
 
 - **Роль страницы:** the practical landing/handout that replaces a sales call —
-  explains the whole EvalLense loop end to end on one scroll. Web mirror of the
+  explains the whole EvalLens loop end to end on one scroll. Web mirror of the
   PDF one-pager.
 - **Для кого:** selection-program organizers — pitch competitions, hackathons,
   accelerators, grant/innovation programs, universities.
-- **Ключевое сообщение:** EvalLense prepares a structured first read for every
+- **Ключевое сообщение:** EvalLens prepares a structured first read for every
   application so the jury sees strengths, risks, gaps and questions faster. The
   final score stays human.
 - **Целевое действие:** Start a pilot → `/company/contact` (20–40 applications).
 
 ### Positioning (НЕ менять смысл)
 
-Do NOT sell "AI evaluates projects". Sell: **EvalLense prepares a structured
+Do NOT sell "AI evaluates projects". Sell: **EvalLens prepares a structured
 first read of each application so the jury can move faster; the human sets the
 final score.**
 
 The core formula (the reading order the page must produce):
 1. You have a stream of applications.
 2. You set the criteria.
-3. EvalLense processes every application to one standard.
+3. EvalLens processes every application to one standard.
 4. One application takes 4–5 minutes of machine processing.
 5. The jury gets a report for each participant.
 6. The human sets the final score.
@@ -70,7 +70,7 @@ Rhythm: light · light · light · soft · INK · light · INK. ≥1 pinned (§3
 ### 1. Hero
 - **Eyebrow:** ONE REVIEW SYSTEM
 - **Heading:** Get through your application stream faster — without losing the strong projects
-- **Subhead:** EvalLense prepares a structured first read for every applicant: scores, strengths, risks, missing data, and questions for the jury. One application takes 4–5 minutes of machine processing. The human sets the final score.
+- **Subhead:** EvalLens prepares a structured first read for every applicant: scores, strengths, risks, missing data, and questions for the jury. One application takes 4–5 minutes of machine processing. The human sets the final score.
 - **Pills:** One standard · A report for every applicant · The human decides
 - **Practical numbers (replace the old "< 2 min"):**
   - 4–5 min of machine processing per application
@@ -79,7 +79,7 @@ Rhythm: light · light · light · soft · INK · light · INK. ≥1 pinned (§3
 - **Time-saving wording (soft only):** "Reduces the first-read load." Do NOT write "−60–80%" (no confirmed base).
 - **Primary CTA:** Start a pilot
 - **Secondary CTA:** Book a demo
-- **Visual:** the PATH, not just scores — Decks → EvalLense lens → reports for the jury. Left: a stack of pitch decks. Centre: a glass lens / evaluation core. Right: a few report cards (score, risk, question, evidence). The final score must NOT read as an AI verdict. Meaning: materials go in; the jury gets structured reports.
+- **Visual:** the PATH, not just scores — Decks → EvalLens lens → reports for the jury. Left: a stack of pitch decks. Centre: a glass lens / evaluation core. Right: a few report cards (score, risk, question, evidence). The final score must NOT read as an AI verdict. Meaning: materials go in; the jury gets structured reports.
 
 ### 2. Problem
 - **Eyebrow:** WHY MANUAL REVIEW BREAKS
@@ -95,11 +95,11 @@ Rhythm: light · light · light · soft · INK · light · INK. ≥1 pinned (§3
 ### 3. Guided workflow
 - **Eyebrow:** HOW ONE SELECTION RUNS
 - **Heading:** How a single selection runs
-- **Subhead:** You set the standard once. EvalLense applies it to every application and prepares the materials the jury needs to decide faster.
+- **Subhead:** You set the standard once. EvalLens applies it to every application and prepares the materials the jury needs to decide faster.
 - **Steps (render as ONE split visual, not two numbered blocks):**
   1. **Collect applications** — Participants submit decks, project descriptions, or other materials.
   2. **Set the criteria** — You choose the scale, weights, and scoring format for your selection.
-  3. **Run the machine pass** — EvalLense prepares a structured first read for each application. One application takes 4–5 minutes of machine processing.
+  3. **Run the machine pass** — EvalLens prepares a structured first read for each application. One application takes 4–5 minutes of machine processing.
   4. **Hand the reports to the jury** — Each participant has strengths, risks, gaps, and questions.
   5. **Set the final score** — The jury verifies, compares, and decides. The human sets the final score.
 - **Visual — split:** LEFT "Organizer sets the standard": criteria · weights · jury setup · intake. RIGHT "Every deck follows the same path": deck · structured slides · AI first read · evidence report · leaderboard input. BOTTOM-CENTRE: Human review + final ranking. Key line inside the visual: **One setup. Same path for every deck.**
@@ -120,7 +120,7 @@ Rhythm: light · light · light · soft · INK · light · INK. ≥1 pinned (§3
 ### 5. Trust
 - **Eyebrow:** AI PREPARES, THE HUMAN DECIDES
 - **Heading:** Not a black box. Not a jury replacement.
-- **Body:** EvalLense prepares the analysis but does not make the final decision. It helps the jury see evidence, risks, and questions faster.
+- **Body:** EvalLens prepares the analysis but does not make the final decision. It helps the jury see evidence, risks, and questions faster.
 - **Trust points:**
   - **One standard** — Every application runs through the same scoring logic.
   - **Every score is explained** — You see the reasons, not just a number.
@@ -132,7 +132,7 @@ Rhythm: light · light · light · soft · INK · light · INK. ≥1 pinned (§3
 ### 6. Use cases
 - **Eyebrow:** FITS DIFFERENT SELECTION FORMATS
 - **Heading:** Fits different selection formats
-- **Short text:** EvalLense works wherever you need to get through many applications fast and compare projects on one standard.
+- **Short text:** EvalLens works wherever you need to get through many applications fast and compare projects on one standard.
 - **Cards:**
   1. **Pitch competition** — Goal: pick a shortlist and prepare the jury for discussion. Looks at: problem, solution, market, team, feasibility.
   2. **Hackathon** — Goal: get through results fast after the deadline. Looks at: product, technical depth, value, readiness.
@@ -143,7 +143,7 @@ Rhythm: light · light · light · soft · INK · light · INK. ≥1 pinned (§3
 ### 7. Pilot CTA
 - **Eyebrow:** START
 - **Heading:** Run a pilot on a real application stream
-- **Body:** We'll process the participants' materials, prepare reports for the jury, and show how EvalLense works on your selection. Control over the decision stays with you.
+- **Body:** We'll process the participants' materials, prepare reports for the jury, and show how EvalLens works on your selection. Control over the decision stays with you.
 - **What a pilot needs:** 20–40 applications · decks, project descriptions, or other participant materials · scoring criteria · a list of participants or teams.
 - **What you get after the pilot:** reports per participant · a final-scoring table · questions for the jury · risks and missing data · comparison on one shared scale.
 - **CTA button:** Start a pilot
@@ -170,7 +170,7 @@ Rhythm: light · light · light · soft · INK · light · INK. ≥1 pinned (§3
 
 | Question | Must be obvious without explanation |
 |---|---|
-| What does EvalLense do? | Prepares a first read and reports per application |
+| What does EvalLens do? | Prepares a first read and reports per application |
 | What do I upload? | Decks / descriptions / participant materials |
 | How long does it take? | 4–5 minutes of machine time per application |
 | What does the jury get? | A report, risks, questions, scores |

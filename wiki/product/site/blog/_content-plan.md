@@ -1,18 +1,18 @@
 ---
-title: Content plan — EvalLense Newsroom
+title: Content plan — EvalLens Newsroom
 status: proposed
 layer: brand / content
 created: 2026-06-28
 owner: blog-creator (PLAN mode)
 ---
 
-# Контент-план EvalLense Newsroom
+# Контент-план EvalLens Newsroom
 
 Собран в режиме PLAN: инвентарь репо (P1) × веб-ресёрч актуального (P2) →
 пересечение (P3) → расписание с бэкдейтингом (P4). **Статус: на согласовании.**
 После утверждения каждая строка пишется как CREATE (Шаги 2–8).
 
-Нарратив-инвариант: **EvalLense готовит доказательный анализ — финальное решение
+Нарратив-инвариант: **EvalLens готовит доказательный анализ — финальное решение
 принимает человек.** Подпись — Anonymous Unicorn. Trust-число — **400+ runs**
 (см. «Открытые вопросы» про 1,000+).
 
@@ -29,7 +29,7 @@ owner: blog-creator (PLAN mode)
 | whats-next-hackathons-and-truth-check | Product | 2026-06-17 | роудмеп (Hackathon judge, Truth Check) |
 | same-deck-same-score | Research | 2026-06-21 | воспроизводимость / детерминированная математика |
 
-**Seed-фоллбэк (placeholder, автор «EvalLense Newsroom»), 17 шт.** покрывают темы:
+**Seed-фоллбэк (placeholder, автор «EvalLens Newsroom»), 17 шт.** покрывают темы:
 запуск AI Jury, explainable reports, prompt injection, Deck Vault, batch-review
 (400 decks), rubric design, human-in-the-loop, scoring matrix, behind-the-scenes,
 jury calibration, export to Notion/Affinity, what-a-strong-deck-looks-like, SOC 2,
@@ -99,7 +99,7 @@ cost-of-a-missed-deal, rubric templates by stage, inside Deck Vault, founding st
 | 5 | hundreds-of-decks-one-shortlist | Hundreds of decks, one ranked shortlist | Product | cyan | Ядро JTBD: поднять сильнейших из потока, не читая каждый дек час. Пошаговый batch-review | Practical playbook | #2/#6 (выигрывают high-volume) | «how to screen hundreds of pitch decks» | 2026-05-09 | пайплайн Decoder→Panel→Summarizer→Report→Human Review→Leaderboard; Jury vs AI Total Score; 400+ runs | proposed |
 | 6 | how-to-evaluate-an-ai-evaluation-tool | How to evaluate an AI evaluation tool | Research | violet | Покупатель выбирает инструмент скрининга. Дать честный чек-лист (воспроизводимость, explainability, калибровка, human-in-the-loop) | Practical playbook | #1/#3/#5 (нельзя верить lab-evals) | «how to choose an AI pitch deck screening tool» | 2026-04-25 | дифференциаторы: SourceRef/explainability, reproducibility, панель, калибровка | proposed |
 | 7 | disagreement-is-useful | Disagreement is useful: reading judge spread | Research | aqua | Организатор хочет понять, когда заявка спорная. Объяснить Spread как сигнал, а не шум | Startup observation | #6 (IRR, rubric drift) | «why do judges disagree / inter-rater reliability» | 2026-04-11 | бренд-столп #3; Spread(d)≥3.0; Jury Score финальный; калибровка | proposed |
-| 8 | how-do-you-judge-an-ai-business | How do you judge an AI business? | Research | orange | Thought-leadership: разбор Build with Gemini XPRIZE и его критериев как линза на тему «как судить AI» (ядро EvalLense). Не заявляет участие | Startup observation | XPRIZE $2M (Google I/O 19.05.2026), сдвиг demo→operated | «how do you judge an AI business / AI hackathon judging» | 2026-06-28 | критерии XPRIZE (devpost); прошлые победители; IRR; бренд human-in-the-loop | **written** |
+| 8 | how-do-you-judge-an-ai-business | How do you judge an AI business? | Research | orange | Thought-leadership: разбор Build with Gemini XPRIZE и его критериев как линза на тему «как судить AI» (ядро EvalLens). Не заявляет участие | Startup observation | XPRIZE $2M (Google I/O 19.05.2026), сдвиг demo→operated | «how do you judge an AI business / AI hackathon judging» | 2026-06-28 | критерии XPRIZE (devpost); прошлые победители; IRR; бренд human-in-the-loop | **written** |
 | 9 | building-for-the-gemini-xprize | We're building for the Build with Gemini XPRIZE | Press Release | violet | Анонс участия: входим новой AI-operated линией под существующим ИП; честно про планку (viability/AI-ops/impact). Без выдуманного трекшна | (announcement) | реальное участие команды в XPRIZE | «Build with Gemini XPRIZE participants» | 2026-06-28 | правила eligibility (новый проект через существующее юрлицо ok); критерии; стек | **written** |
 
 **Категории:** Research ×4, Product ×2 + (буфер). Press Release сознательно не

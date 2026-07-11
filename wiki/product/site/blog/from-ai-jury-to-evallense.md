@@ -2,7 +2,7 @@
 slug: from-ai-jury-to-evallense
 category: Research
 accent: violet
-title: "From AI Jury to EvalLense: what 400+ runs taught us"
+title: "From AI Jury to EvalLens: what 400+ runs taught us"
 excerpt: We thought the answer was more AI judges. After 400+ judging runs, the product taught us the opposite — the work was never the agents. It was the methodology around them, and the human who keeps the final call.
 date: 2026-06-17
 readMinutes: 9
@@ -74,7 +74,7 @@ The shift came when we stopped asking "which judge do we add next?" and started 
 
 This did not make the model deterministic, and we never claimed it did. It pinned down the parts of evaluation that do not need a language model's judgment: scope, dimensions, weights, output contracts, scoring math, aggregation, and ranking logic. The model still reasons. It no longer runs the whole evaluation.
 
-AI Jury had been a room of agents. EvalLense began the day we built the room around them — the rules, the scoring table, and the review process.
+AI Jury had been a room of agents. EvalLens began the day we built the room around them — the rules, the scoring table, and the review process.
 
 ## The matrix was the product, not a spreadsheet detail
 
@@ -151,7 +151,7 @@ The lesson that came with it: the best pipeline is not one model everywhere. It 
 
 ## The rubric became an execution contract
 
-The rubric changed meaning along the way. A rubric usually sounds like documentation — something you write down so people understand the criteria. In EvalLense it became part of the execution contract. Each judge receives only the dimensions it may grade, each dimension carries scoring guidance, and anything outside a judge's scope it never touches.
+The rubric changed meaning along the way. A rubric usually sounds like documentation — something you write down so people understand the criteria. In EvalLens it became part of the execution contract. Each judge receives only the dimensions it may grade, each dimension carries scoring guidance, and anything outside a judge's scope it never touches.
 
 The point is to stop the model from picking a score and then inventing the explanation. We force the reverse order: read the rubric, review the decoded deck, identify strengths, identify weaknesses, list what is missing, choose the rubric band, and only then produce the score.
 
@@ -182,7 +182,7 @@ We are not claiming universal immunity. The honest claim is narrower: in our tes
 
 ## What organizers actually need
 
-The more we tested EvalLense, the clearer the real user got. Our user is not shopping for AI judges. Our user — a VC scout, an accelerator, a hackathon organizer, a competition or grant program, a university entrepreneurship lead — has too many submissions and nowhere near enough structured review capacity.
+The more we tested EvalLens, the clearer the real user got. Our user is not shopping for AI judges. Our user — a VC scout, an accelerator, a hackathon organizer, a competition or grant program, a university entrepreneurship lead — has too many submissions and nowhere near enough structured review capacity.
 
 They do not want AI picking winners for them. They want a messy pile turned into a structured review queue, with the signal pulled to the surface: which teams are strong on market, which are strong on execution, where founder-market fit looks convincing, where a strong pitch hides a weak business model, where a weak pitch hides a strong team, where the lenses disagree, and which submissions deserve a deeper live review. The value is not replacing judgment. It is focusing it.
 
@@ -196,11 +196,11 @@ Today the system tracks that gap as a disagreement signal between judges. After 
 ![](/assets/blog/from-ai-jury-to-evallense/disagreement.png)
 :::
 
-## Why AI Jury became EvalLense
+## Why AI Jury became EvalLens
 
 The name AI Jury did its job for version one. It was simple and people got it instantly: AI judges evaluate a pitch. As the product matured, "jury" started to feel wrong, because a jury decides — and deciding is the one thing we do not want the system to do.
 
-We do not replace human judgment. We help people see structure, risk, strengths, weaknesses, and decision signals faster. A lens fit that better: it does not rule on anything, it reveals. That is how AI Jury started becoming EvalLense, and the line came with it — *Lens Your Next Unicorn.* Somewhere inside a batch of submissions sits a hidden gem: a strong team, a strange but promising idea, a future unicorn that does not look obvious at first glance. EvalLense exists to surface those signals before they vanish into the pile.
+We do not replace human judgment. We help people see structure, risk, strengths, weaknesses, and decision signals faster. A lens fit that better: it does not rule on anything, it reveals. That is how AI Jury started becoming EvalLens, and the line came with it — *Lens Your Next Unicorn.* Somewhere inside a batch of submissions sits a hidden gem: a strong team, a strange but promising idea, a future unicorn that does not look obvious at first glance. EvalLens exists to surface those signals before they vanish into the pile.
 
 :::gallery
 ![](/assets/blog/from-ai-jury-to-evallense/brand-evolution.png)
@@ -229,7 +229,7 @@ The next stage is less about new features and more about trust, control, and ada
 
 **Then scale and operations.** Supporting hundreds of applications takes imports, exports, notifications, public report links, integrations, audit logs, and leaderboard versioning, plus unlock flows for the moment a score or a file has to be corrected after finalization. Batch evaluation is part AI pipeline, part operating system for running application review.
 
-**Then open orchestration.** EvalLense ships fixed presets today. Over time, customers should define their own pipelines: dimensions, judge lenses, routing matrices, rubrics, protected dimensions, truth-check rules, scoring weights, report formats. A VC fund, a grant program, an accelerator, and a corporate innovation team run different decision processes, and none of them should be forced into one evaluation model.
+**Then open orchestration.** EvalLens ships fixed presets today. Over time, customers should define their own pipelines: dimensions, judge lenses, routing matrices, rubrics, protected dimensions, truth-check rules, scoring weights, report formats. A VC fund, a grant program, an accelerator, and a corporate innovation team run different decision processes, and none of them should be forced into one evaluation model.
 
 ## The lesson
 

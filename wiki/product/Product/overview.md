@@ -2,15 +2,15 @@
 
 ## Page purpose
 
-Explain the whole EvalLense workflow in one place.
+Explain the whole EvalLens workflow in one place.
 
 ## User task
 
-Help the visitor understand what EvalLense does, how the system works, and which product modules are used during evaluation.
+Help the visitor understand what EvalLens does, how the system works, and which product modules are used during evaluation.
 
 ## Main idea to communicate
 
-EvalLense is a structured evaluation system for batch pitch deck review, not a one-off AI analysis tool.
+EvalLens is a structured evaluation system for batch pitch deck review, not a one-off AI analysis tool.
 
 ## Target user questions
 
@@ -29,7 +29,7 @@ Who makes the final decision?
 Purpose:
 
 ```text
-Position EvalLense as the operating layer for structured pitch deck evaluation.
+Position EvalLens as the operating layer for structured pitch deck evaluation.
 ```
 
 Message:
@@ -90,7 +90,7 @@ Connect features to business value.
 Message:
 
 ```text
-EvalLense reduces manual review load, improves consistency, and gives teams a clearer decision trail.
+EvalLens reduces manual review load, improves consistency, and gives teams a clearer decision trail.
 ```
 
 ### 5. Product outcomes

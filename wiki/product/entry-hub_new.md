@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Product-страница: объясняет, как EvalLense собирает заявки и pitch decks в одну
+Product-страница: объясняет, как EvalLens собирает заявки и pitch decks в одну
 контролируемую точку входа вместо разрозненного intake по почте, формам и чатам.
 
 > Продуктовый бриф страницы. Факты сверены с источником правды `ai-jury-prod`
@@ -106,7 +106,7 @@ links:
   | 04 | Collect the entries | Every deck and team detail lands in the same project workspace. |
   | 05 | Check readiness | See what's ready, what's incomplete, and what still needs attention. |
   | 06 | Start judging | Launch evaluation once at least one entry is ready. |
-- **Media:** `DelayedLoopVideo` — src `/assets/entry-hub/entry-hub-flow-v2.mp4`, gap 7 s (play once, hold last frame, replay). Ratio 4:3. Frame-class `lab-rv__square--video`. aria-label «The EvalLense Entry Hub interface, from project setup to start judging».
+- **Media:** `DelayedLoopVideo` — src `/assets/entry-hub/entry-hub-flow-v2.mp4`, gap 7 s (play once, hold last frame, replay). Ratio 4:3. Frame-class `lab-rv__square--video`. aria-label «The EvalLens Entry Hub interface, from project setup to start judging».
 
 ### 4. Два способа сбора — `EditorialSplit` v3, surface `light`
 
@@ -161,7 +161,7 @@ links:
   - **One shared workspace** — Keep every deck, note, and team detail in one place instead of across inboxes, forms, and drives.
   - **Complete by default** — Every submission follows the same structure, making missing information easy to spot before judging starts.
   - **Ready to evaluate** — Start evaluation with a complete, consistent set of submissions.
-- **Media (реальный asset):** src `/assets/entry-hub/evallense-brandkit-workspace-unicorn-08.webp` · 1672×941 · ratio 16:9 · hint «High-contrast EvalLense workspace with crisp liquid-glass screens, a front-facing holographic unicorn head, world clocks, and a black RGB keyboard»
+- **Media (реальный asset):** src `/assets/entry-hub/evallense-brandkit-workspace-unicorn-08.webp` · 1672×941 · ratio 16:9 · hint «High-contrast EvalLens workspace with crisp liquid-glass screens, a front-facing holographic unicorn head, world clocks, and a black RGB keyboard»
 
 ### 8. Final CTA — `CtaBand`, theme `dark`, bleed
 
@@ -205,7 +205,7 @@ links:
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense Entry Hub — One Intake Flow for Pitch Decks
+- **`<title>`:** EvalLens Entry Hub — One Intake Flow for Pitch Decks
 - **meta description:** Entry Hub replaces scattered intake with one controlled flow: a private submission page, deck collection by link or by hand, and a clean batch-workspace before evaluation starts. *(≤155)*
 - **OG-изображение:** слот `hero`
 

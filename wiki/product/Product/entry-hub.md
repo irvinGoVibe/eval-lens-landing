@@ -2,7 +2,7 @@
 
 ## Page purpose
 
-Explain how EvalLense collects applications and pitch decks into one controlled intake flow.
+Explain how EvalLens collects applications and pitch decks into one controlled intake flow.
 
 ## User task
 
@@ -29,7 +29,7 @@ This creates messy tracking, missing files, duplicate entries, and slow review p
 ## What the page should prove
 
 ```text
-EvalLense gives every batch a clean entry point.
+EvalLens gives every batch a clean entry point.
 All decks and participant information enter the same review workspace.
 ```
 

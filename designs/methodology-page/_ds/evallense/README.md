@@ -1,12 +1,12 @@
-# EvalLense Design System
+# EvalLens Design System
 
-The brand and UI system for **EvalLense** — structured, evidence-based pitch-deck
+The brand and UI system for **EvalLens** — structured, evidence-based pitch-deck
 evaluation where **AI prepares the analysis and a human makes the final call**.
 This bundle gives design agents the tokens, type roles, components, and screen
 recreations to produce on-brand mockups and prototypes that match the live site.
 
 **Visual signature:** Apple structural grammar (neutral foundation, dramatic
-whitespace, statement typography, long cinematic scroll) + an EvalLense "lens"
+whitespace, statement typography, long cinematic scroll) + an EvalLens "lens"
 gradient accent (violet → lavender → cyan → aqua), with a warm orange glow used
 only as a bridge surface.
 
@@ -20,7 +20,7 @@ Extracted from the live product repository (read the code, not screenshots):
 
 ## CONTENT FUNDAMENTALS
 
-- **Product name is always "EvalLense"** in outward copy. ("AI Jury" is the
+- **Product name is always "EvalLens"** in outward copy. ("AI Jury" is the
   internal origin story — only ever on /company/about.)
 - **Core promise, in every claim about evaluation:** *AI scores and prepares the
   evidence — people decide.* Human-in-the-loop; "the final call is always yours."

@@ -5,9 +5,9 @@ import type { Category } from "@/lib/blog";
 import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "All News — EvalLense Newsroom",
+  title: "All News — EvalLens Newsroom",
   description:
-    "Every story from EvalLense Newsroom — press releases, product updates, research, and more.",
+    "Every story from EvalLens Newsroom — press releases, product updates, research, and more.",
 };
 
 /**
@@ -69,7 +69,7 @@ export default async function AllNewsPage({
       <section className="blog-section blog-section--hero">
         <div className="wrap blog-wrap">
           <header className="blog-masthead">
-            <p className="t-eyebrow">EvalLense Newsroom</p>
+            <p className="t-eyebrow">EvalLens Newsroom</p>
             <h1 className="blog-masthead__title">
               {headRest.length > 0 ? (
                 <>

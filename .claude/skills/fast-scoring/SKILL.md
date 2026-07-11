@@ -3,7 +3,7 @@ name: fast-scoring
 description: "Быстрый CRO-скоринг ОДНОЙ страницы (fast scoring, на базе page-cro). Смотрит маркетинговую страницу глазами незнакомца и за один проход даёт оценку по 7 измерениям (value proposition, заголовок, CTA, визуальная иерархия, trust/соц-пруф, отработка возражений, friction) → Quick Wins / High-Impact / Test Ideas + переписанные варианты headline и CTA. Для лендингов, pricing, фич-страниц, главной, one-pager. Триггеры: «фаст скоринг», «быстрый скоринг страницы», «оцени страницу», «прогони page-cro», «почему страница не конвертит», «this page isn't converting», «CRO <страница>», или просто дай URL/скрин и попроси фидбэк. Для глубокого Jobs-To-Be-Done разбора (работы/forces/Point A→B) — скилл jobs-to-be-done. Рабочий диалог — рус., правки копии — EN."
 metadata:
   version: 1.0.0
-  product: EvalLense
+  product: EvalLens
   source: "LeoYeAI/openclaw-marketing-skills — skills/page-cro (adapted)"
 ---
 

@@ -2,7 +2,7 @@
 
 ## Page purpose
 
-Explain how EvalLense treats hidden or malicious instructions inside pitch decks.
+Explain how EvalLens treats hidden or malicious instructions inside pitch decks.
 
 ## User task
 
@@ -19,7 +19,7 @@ Pitch decks can contain hidden text, embedded instructions, or adversarial conte
 ## What the page should prove
 
 ```text
-EvalLense separates document content from evaluation instructions.
+EvalLens separates document content from evaluation instructions.
 Evaluation logic remains controlled by the system, not by the uploaded deck.
 ```
 
@@ -112,7 +112,7 @@ Clarify that suspicious or ambiguous cases can be reviewed by humans.
 Message:
 
 ```text
-EvalLense supports controlled evaluation and keeps final decisions human-owned.
+EvalLens supports controlled evaluation and keeps final decisions human-owned.
 ```
 
 ### 7. CTA

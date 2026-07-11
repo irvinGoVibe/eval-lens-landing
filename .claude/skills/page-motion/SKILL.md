@@ -1,11 +1,11 @@
 ---
 name: page-motion
-description: "ПРОХОД 3 из 3 расслоённой сборки страницы EvalLense (skeleton → skin → motion). Делает ПЕРЕХОДЫ между секциями и тюнит АНИМАЦИЮ поверх уже раскрашенной страницы: на каждый стык ставит направленный `ready`-переход (`tr-*`) с `data-from`/`data-to` из skin.surface_sequence, добавляет/настраивает scroll/ambient motion через `data-reveal`/`data-scrub`/`data-pin`. `<ScrollFX/>` УЖЕ смонтирован скелетом (видимость DS-компонентов завязана на движок) — page-motion лишь проверяет его наличие, а не ставит с нуля. НЕ меняет структуру (skeleton.locked) и НЕ перекрашивает (skin). Переходы — ТОЛЬКО из готовой библиотеки; нужного нет → visual-layer-forge, не лепить руками. Отдельный проход = можно итерировать переходы, не трогая остальное. Сам код пишет инженер после user-гейта. Триггеры — /page-motion, «сделай переходы <route>», «оживи <route>», «добавь анимацию <route>», «motion <route>», «resume motion <route>»."
+description: "ПРОХОД 3 из 3 расслоённой сборки страницы EvalLens (skeleton → skin → motion). Делает ПЕРЕХОДЫ между секциями и тюнит АНИМАЦИЮ поверх уже раскрашенной страницы: на каждый стык ставит направленный `ready`-переход (`tr-*`) с `data-from`/`data-to` из skin.surface_sequence, добавляет/настраивает scroll/ambient motion через `data-reveal`/`data-scrub`/`data-pin`. `<ScrollFX/>` УЖЕ смонтирован скелетом (видимость DS-компонентов завязана на движок) — page-motion лишь проверяет его наличие, а не ставит с нуля. НЕ меняет структуру (skeleton.locked) и НЕ перекрашивает (skin). Переходы — ТОЛЬКО из готовой библиотеки; нужного нет → visual-layer-forge, не лепить руками. Отдельный проход = можно итерировать переходы, не трогая остальное. Сам код пишет инженер после user-гейта. Триггеры — /page-motion, «сделай переходы <route>», «оживи <route>», «добавь анимацию <route>», «motion <route>», «resume motion <route>»."
 metadata:
   package: page-build
   role: orchestrator
   pass: 3
-  product: EvalLense
+  product: EvalLens
   pipeline: [page-skeleton, page-skin, page-motion]
   depends_on: page-skin
   routes_to: [visual-layer-forge, component-library-preparer]

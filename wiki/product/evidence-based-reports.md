@@ -15,7 +15,7 @@ cta: Book a Demo
 
 ← [[index|Wiki]] · [[sitemap|Карта сайта]]
 
-Product-страница: объясняет главный output EvalLense — структурированные отчёты,
+Product-страница: объясняет главный output EvalLens — структурированные отчёты,
 где scores и выводы привязаны к содержимому дека.
 
 > Продуктовый бриф страницы для skill `build-pages`. Факты — из Application-доков
@@ -32,7 +32,7 @@ Product-страница: объясняет главный output EvalLense —
 - **Для кого:** review-команды, program owners, инвесткомитеты — те, кому отчёт
   нужен для ревью, shortlist и решения.
 - **Ключевое сообщение:** каждый score должен быть объясним; каждый важный вывод —
-  связан с evidence из питч-дека. EvalLense выдаёт не число, а обоснование.
+  связан с evidence из питч-дека. EvalLens выдаёт не число, а обоснование.
 - **Целевое действие:** Book a Demo → `/company/contact`; вторичный путь —
   View Sample Report (когда появится).
 
@@ -136,8 +136,8 @@ Explainability — сквозной слой (из `report.md` §7, §9):
 
 ## SEO / meta
 
-- **`<title>`:** EvalLense — Evidence-Based Reports for Pitch Evaluation
-- **meta description:** Explainable-отчёты EvalLense: scores по P1–P6 с
+- **`<title>`:** EvalLens — Evidence-Based Reports for Pitch Evaluation
+- **meta description:** Explainable-отчёты EvalLens: scores по P1–P6 с
   обоснованием, judge-матрица, привязка к слайдам дека и deck-completeness — не
   «чёрный ящик», а проверяемый вывод. *(≤155)*
 - **OG-изображение:** слот `hero`

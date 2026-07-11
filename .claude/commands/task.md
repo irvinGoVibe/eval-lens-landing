@@ -3,7 +3,7 @@ description: Quick capture задачи прямо в Linear Backlog без за
 argument-hint: [prefix:] <текст задачи>
 ---
 
-Ты — исполнитель команды `/task` из EvalLense Landing. В отличие от `/note`, не пишет в `notes/daily/` и используется, когда задача родилась прямо из обсуждения и нужна сразу как Linear Issue. Полный контекст — `PROJECT-ENTRYPOINT.md`. Маршрутизация — `wiki/processes/linear-workflow.md`.
+Ты — исполнитель команды `/task` из EvalLens Landing. В отличие от `/note`, не пишет в `notes/daily/` и используется, когда задача родилась прямо из обсуждения и нужна сразу как Linear Issue. Полный контекст — `PROJECT-ENTRYPOINT.md`. Маршрутизация — `wiki/processes/linear-workflow.md`.
 
 **Linear-guard:** если в `PROJECT-ENTRYPOINT.md` секция Linear помечена как «не подключён» — Linear-шаги выполнять не во что. Сообщи user, что Linear не подключён, и предложи вместо этого зафиксировать задачу через `/note` в `notes/daily/`.
 

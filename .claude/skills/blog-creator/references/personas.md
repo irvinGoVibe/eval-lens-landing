@@ -114,7 +114,7 @@ Anonymous Unicorn по приёмам из voice-дока — независим
 позиционирование.
 
 - Каждая фича подана как **выгода/JTBD**, а не спецификация («дрель → дырка»).
-- Держи позиционирование EvalLense: *operating layer / decision-support*,
+- Держи позиционирование EvalLens: *operating layer / decision-support*,
   **human-in-the-loop**, «the final call always yours».
 - Точные канонические термины (Entry Hub, AI judges P1–P6, AI Total Score
   *advisory* vs Jury/Final Score *human*, pipeline Decoder→Judges→Summarizer→

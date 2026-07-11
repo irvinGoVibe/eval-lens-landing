@@ -9,14 +9,14 @@ source: web/src/app/globals.css + wiki/architecture/design-system.md + web/publi
 
 ← [[index|Wiki]]
 
-Этот документ фиксирует визуальный портрет изображений EvalLense: что именно
+Этот документ фиксирует визуальный портрет изображений EvalLens: что именно
 генерировать для сайта, какие признаки сохранять, а какие запрещать. Он основан
 на текущей дизайн-системе, медиабрифах страниц и фактических ассетах в
 `web/public/assets`.
 
 ## Core Idea
 
-EvalLense изображает не "AI magic", а спокойную систему принятия решений:
+EvalLens изображает не "AI magic", а спокойную систему принятия решений:
 много шумных заявок, деков и сигналов проходят через линзу, становятся
 структурированным evidence, затем передаются человеку для финального решения.
 
@@ -107,7 +107,7 @@ Prompt kernel:
 
 > Cinematic dark product scene on near-black #000000, a transparent glass lens
 > object and thin UI panels lit by restrained violet and cyan edge light. Use
-> the EvalLense 118-degree lens gradient only as signal illumination. Hairline
+> the EvalLens 118-degree lens gradient only as signal illumination. Hairline
 > frames, subtle depth, soft bloom, high contrast, premium Apple-like product
 > visualization. No sci-fi clutter, no chrome overload, no security theatre.
 
@@ -128,7 +128,7 @@ Mandatory hierarchy:
 
 Prompt kernel:
 
-> Clean EvalLense interface mockup, Apple-neutral surface, hairline card frames,
+> Clean EvalLens interface mockup, Apple-neutral surface, hairline card frames,
 > muted AI Total Score and per-dimension evidence rows on the left, active human
 > Jury Score input and submit action on the right highlighted with the single
 > violet-to-cyan lens gradient. Mono numeric labels, tabular scores, calm
@@ -222,7 +222,7 @@ No shields, hackers, red cyber walls, or "attack" drama.
 Generate calm brand/world images:
 
 - lens focusing applications into one signal;
-- AI Jury → EvalLense history as a node chain;
+- AI Jury → EvalLens history as a node chain;
 - contact signal converging into one lens point;
 - documentation page / open guide as a quiet ink-surface object.
 
@@ -238,7 +238,7 @@ decision board, routing, disagreement, brand evolution.
 ## Master Prompt Template
 
 ```text
-Create an EvalLense website image for [slot/page].
+Create an EvalLens website image for [slot/page].
 Concept: [one sentence].
 Style: Apple-neutral editorial product visualization, generous negative space,
 1px hairline geometry, soft violet depth, precise UI-like structure.

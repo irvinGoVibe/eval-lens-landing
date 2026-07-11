@@ -1,7 +1,7 @@
 import type { ReactNode, CSSProperties } from "react";
 
 /**
- * EvalLense pill button — the single CTA primitive across the site.
+ * EvalLens pill button — the single CTA primitive across the site.
  * @startingPoint section="Components" subtitle="Token-driven pill CTA" viewport="700x180"
  */
 export interface ButtonProps {

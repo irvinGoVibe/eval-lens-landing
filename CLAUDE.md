@@ -1,4 +1,4 @@
-# EvalLense landing
+# EvalLens landing
 
 Two surfaces live in this repo:
 

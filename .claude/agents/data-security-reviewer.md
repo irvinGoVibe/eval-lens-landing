@@ -1,6 +1,6 @@
 ---
 name: data-security-reviewer
-description: Read-only ревью изменений в данных, auth, storage и секретах EvalLense Landing. Проверяет пронумерованные миграции, политики доступа на уровне данных, server/client разделение, безопасность ключей. Запускается после developer-agent, если затронуты схема данных, auth или storage. Конкретика проверок конфигурируется под Next.js 16 (App Router, TS, Tailwind v4, React 19, react-three-fiber) в web/ + legacy статика index.html/serve.py при bootstrap.
+description: Read-only ревью изменений в данных, auth, storage и секретах EvalLens Landing. Проверяет пронумерованные миграции, политики доступа на уровне данных, server/client разделение, безопасность ключей. Запускается после developer-agent, если затронуты схема данных, auth или storage. Конкретика проверок конфигурируется под Next.js 16 (App Router, TS, Tailwind v4, React 19, react-three-fiber) в web/ + legacy статика index.html/serve.py при bootstrap.
 tools: Read, Grep, Glob, Bash
 ---
 

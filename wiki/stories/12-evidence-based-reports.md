@@ -22,7 +22,7 @@ Linear Mapping: Project by default
   `/product/evidence-based-reports` (Evidence-Based Reports) как Apple-grade
   scroll-страницу по образцу `/product`, `/trust/use-cases` (horizontal-gallery)
   и `/trust/consistency-reliability` (scrubbed ring).
-- зачем меняем — нужна product-страница, объясняющая главный output EvalLense:
+- зачем меняем — нужна product-страница, объясняющая главный output EvalLens:
   структурированный explainable-отчёт, где каждый score объясним, а важные
   выводы привязаны к содержимому дека — а не «голый» AI-балл.
 - ожидаемый эффект — review-команды, program owners и инвесткомитеты видят
