@@ -223,8 +223,8 @@ export function EvalLenseBentoSection() {
               <Button variant="gradient" size="sm" href="https://calendly.com/evallens/30min">
                 Book a call
               </Button>
-              <Button variant="glass" size="sm" href="/try-live-demo">
-                Try live demo
+              <Button variant="glass" size="sm" href="https://calendly.com/evallens/30min">
+                See it live
               </Button>
             </div>
           </div>
