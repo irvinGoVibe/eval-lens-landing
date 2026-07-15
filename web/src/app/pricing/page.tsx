@@ -28,16 +28,18 @@ export const metadata: Metadata = {
 
 /*
  * ── NUMBERS & SOURCE OF TRUTH ────────────────────────────────────────────
- * All prices/limits/validity/top-up packs are USD from the financial model
- * v0.4 ("Тарифы" sheet) — the source of truth. Do not round or invent.
- *   Free Trial   $0           · 3 submissions   · lifetime trial   · 1 project
- *   Starter      $199         · 15 submissions  · 90 days          (matrix-only)
- *   Pilot        $500         · 40 submissions  · 90 days          (matrix-only)
- *   Standard ⭐  $1,500       · 150 submissions · 120 days · 5 projects (recommended)
- *   Pro          $3,900       · 500 submissions · 180 days · unlimited projects
- *   Enterprise   from $15,000 · 1,000+ submissions · contract term
- *   Top-up packs: Starter/Pilot +10/$150 ($15/sub); Standard +25/$300
- *   ($12/sub); Pro +50/$500 ($10/sub); Enterprise custom.
+ * All prices/limits/validity/top-up are USD from pricing-model v0.7
+ * (notes/research/pricing-model.md) — the source of truth. Do not round or
+ * invent. Three PUBLIC role-based tiers; every package is valid 180 days.
+ *   Micro              list $200   → founding $99 first event · 15 subs · 1 event
+ *   Pitch Competition  list $500   → founding $400            · 40 subs · 1 event
+ *   Cohort ⭐          list $1,900 → founding $1,520          · 150 subs · up to 5 projects
+ *   Funds & Accelerators — "Talk to us", NO public numbers (sales-only). Covers
+ *     Open Call / Annual / Enterprise; sized to pipeline on the call.
+ *   Single top-up: +25 submissions / $300 (Cohort). Validity: 180 days for all;
+ *   Annual & Funds volumes run for the contract term.
+ *   Founding pricing: until Aug 31, 2026 founding customers get launch prices
+ *   (shown against list) and keep them for 12 months; after that list applies.
  *
  * ── CONTENT NOTE (competitor framing) ────────────────────────────────────
  * Section 4 ("Where EvalLens fits") deliberately shows NO named competitors.
@@ -69,179 +71,146 @@ export const metadata: Metadata = {
  * reduced-motion is handled by the engine.
  */
 
-/* 2. Headline pricing cards — 3 public plans (brief §2, financial model v0.4). */
+/* 2. Headline pricing cards — 3 public role-based tiers (pricing-model v0.7).
+ * `listPrice` renders struck-through; `price` is the founding price shown large;
+ * `foundingNote` is the caption under it. Fences (do not blur across tiers):
+ *   – "Powered by EvalLens" branding is removable ONLY from Pitch up (fixed on Micro).
+ *   – Custom criteria & weights are a Cohort-only feature (NOT on Pitch). */
 const PLANS = [
   {
-    name: "Standard",
-    price: "$1,500",
-    cadence: "150 submissions",
-    validity: "120 days · 5 projects",
-    message: "For a full pitch competition with up to 150 submissions.",
+    name: "Micro",
+    listPrice: "$200",
+    price: "$99",
+    foundingNote: "Founding price · first event · until Aug 31",
+    cadence: "15 submissions",
+    validity: "180 days · 1 event",
+    message: "Try EvalLens on a small pitch session.",
+    bestFor: "Best for: a small, one-off event.",
+    cta: "Start Micro",
+    href: "/company/contact",
+    recommended: false,
+    bullets: [
+      "Full 6-judge panel (P1–P6)",
+      "Leaderboard + evidence feedback",
+      "“Powered by EvalLens” branding",
+    ],
+  },
+  {
+    name: "Pitch Competition",
+    listPrice: "$500",
+    price: "$400",
+    foundingNote: "Founding price · until Aug 31",
+    cadence: "40 submissions",
+    validity: "180 days · 1 event",
+    message: "Run one full event end-to-end.",
     bestFor: "Best for: a single full event.",
-    cta: "Start Standard",
+    cta: "Start Pitch",
+    href: "/company/contact",
+    recommended: false,
+    bullets: [
+      "Everything in Micro",
+      "Remove EvalLens branding",
+      "PDF export",
+      "Async setup help",
+    ],
+  },
+  {
+    name: "Cohort",
+    listPrice: "$1,900",
+    price: "$1,520",
+    foundingNote: "Founding price · until Aug 31",
+    cadence: "150 submissions",
+    validity: "180 days · up to 5 projects",
+    message: "For a full cohort selection or competition.",
+    bestFor: "Best for: a cohort or multi-project selection.",
+    cta: "Choose Cohort",
     href: "/company/contact",
     recommended: true,
     bullets: [
-      "Full evaluation workflow included",
-      "Leaderboard + CSV / PDF export",
-      "Custom criteria weights",
-      "Top-up +25 / $300 ($12 each)",
-    ],
-  },
-  {
-    name: "Pro",
-    price: "$3,900",
-    cadence: "500 submissions",
-    validity: "180 days · unlimited projects",
-    message: "Evaluate large cohorts and recurring programs.",
-    bestFor: "Best for: large or recurring programs.",
-    cta: "Start Pro",
-    href: "/company/contact",
-    recommended: false,
-    bullets: [
-      "Everything in Standard",
-      "Limited custom AI judges",
-      "BYO LLM (add-on)",
-      "Top-up +50 / $500 ($10 each)",
-    ],
-  },
-  {
-    name: "Enterprise",
-    price: "from $15,000",
-    cadence: "1,000+ submissions",
-    validity: "contract term",
-    message: "Corporate, universities, and custom judging workflows.",
-    bestFor: "Best for: custom, high-volume programs.",
-    cta: "Talk to sales",
-    href: "https://calendly.com/evallens/30min",
-    recommended: false,
-    bullets: [
-      "Everything in Pro",
-      "White-label branding",
-      "SLA + security review",
-      "Dedicated support",
+      "Everything in Pitch Competition",
+      "Custom criteria & weights",
+      "Custom AI judges (add-on)",
+      "30-min setup call",
+      "Top-up +25 / $300",
     ],
   },
 ];
 
-/* 3. Full comparison — all 5 paid levels (brief §3, pricing-model.en.md v0.4). */
+/* 3. Full comparison — 3 public role-based tiers (pricing-model v0.7). Lighter
+ * than v0.4: no seats, no per-tier validity ladder (all 180 days), no human-
+ * judges row (no such feature), no BYO/white-label/SLA (those live in the
+ * Funds & Accelerators band, not the self-serve tiers). */
 const COMPARE_COLS = [
-  "Starter",
-  "Pilot",
-  "Standard",
-  "Pro",
-  "Enterprise",
+  "Micro",
+  "Pitch Competition",
+  "Cohort",
 ];
 
 const COMPARE_ROWS = [
   {
-    label: "Price",
-    cells: ["$199", "$500", "$1,500", "$3,900", "from $15,000"],
+    label: "Price (list)",
+    cells: ["$200", "$500", "$1,900"],
+    num: true,
+  },
+  {
+    label: "Founding price",
+    cells: ["$99", "$400", "$1,520"],
     num: true,
   },
   {
     label: "Submissions included",
-    cells: ["15", "40", "150", "500", "custom"],
-    num: true,
-  },
-  {
-    label: "Validity",
-    cells: [
-      "90 days",
-      "90 days",
-      "120 days",
-      "180 days",
-      "contract term",
-    ],
+    cells: ["15", "40", "150"],
     num: true,
   },
   {
     label: "Projects",
-    cells: ["1", "2", "5", "unlimited", "custom"],
+    cells: ["1", "1", "5"],
     num: true,
   },
   {
     label: "Top-up package",
-    cells: ["+10 / $150", "+10 / $150", "+25 / $300", "+50 / $500", "custom"],
-    num: true,
-  },
-  {
-    label: "Effective price per submission",
-    cells: ["$15", "$15", "$12", "$10", "custom"],
+    cells: ["—", "+25 / $300", "+25 / $300"],
     num: true,
   },
   {
     label: "6 AI judges (P1–P6)",
-    cells: ["✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓"],
   },
   {
     label: "Evidence-linked rationale",
-    cells: ["✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓"],
   },
   {
     label: "Human-in-the-loop scoring",
-    cells: ["✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓"],
   },
   {
-    label: "Review Board + leaderboard",
-    cells: ["✓", "✓", "✓", "✓", "✓"],
-  },
-  {
-    label: "Prompt-injection safety & privacy",
-    cells: ["✓", "✓", "✓", "✓", "✓"],
+    label: "Leaderboard + feedback",
+    cells: ["✓", "✓", "✓"],
   },
   {
     label: "Self-upload page",
-    cells: ["✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓"],
   },
   {
     label: "CSV export",
-    cells: ["✓", "✓", "✓", "✓", "✓"],
+    cells: ["✓", "✓", "✓"],
   },
   {
     label: "PDF export",
-    cells: ["—", "✓", "✓", "✓", "✓"],
+    cells: ["—", "✓", "✓"],
   },
   {
-    label: "Remove watermark",
-    cells: ["—", "✓", "✓", "✓", "✓"],
+    label: "Remove branding",
+    cells: ["—", "✓", "✓"],
+  },
+  {
+    label: "Custom criteria & weights",
+    cells: ["—", "—", "✓"],
   },
   {
     label: "Custom AI judges",
-    cells: ["—", "—", "add-on", "limited", "✓"],
-  },
-  {
-    label: "BYO LLM",
-    cells: ["—", "—", "—", "add-on", "✓"],
-  },
-  {
-    label: "White-label branding",
-    cells: ["—", "—", "—", "—", "✓"],
-  },
-  {
-    label: "SLA + security review",
-    cells: ["—", "—", "—", "—", "✓"],
-  },
-  {
-    label: "Admin seats",
-    cells: ["1", "2", "5", "10", "custom"],
-    num: true,
-  },
-  {
-    label: "Human judges",
-    cells: ["2", "5", "10", "25", "custom"],
-    num: true,
-  },
-  {
-    label: "Support",
-    cells: [
-      "—",
-      "Async setup",
-      "Setup call + priority",
-      "Setup call + priority",
-      "Dedicated",
-    ],
-    num: true,
+    cells: ["—", "—", "add-on"],
   },
 ];
 
@@ -354,7 +323,7 @@ const CAPABILITIES = [
   },
 ];
 
-/* 6. FAQ — static Q/A blocks (NOT a JS accordion). Brief §6, 9 items.
+/* 6. FAQ — static Q/A blocks (NOT a JS accordion). Brief §6, 11 items.
  *
  * `FaqItem.a` is `ReactNode`, so an answer may be plain text or JSX — the two
  * answers below carry real inline <a> links to the Trust pages. */
@@ -369,11 +338,11 @@ const FAQ = [
   },
   {
     q: "What if I run out of submissions?",
-    a: "Add more anytime with top-up packages (from $150 for 10, cheaper on higher plans), or move up a plan.",
+    a: "Add a top-up: +25 submissions for $300. Or move up a plan.",
   },
   {
     q: "How long do submissions last?",
-    a: "Starter and Pilot, 90 days; Standard, 120 days; Pro, 180 days; Enterprise, the contract term.",
+    a: "Every package is valid for 180 days. Annual and Funds volumes run for the contract term.",
   },
   {
     q: "What if a deck can't be processed?",
@@ -384,8 +353,16 @@ const FAQ = [
     a: "A new report counts as a new evaluation.",
   },
   {
-    q: "Is there a paid pilot?",
-    a: "Yes — Pilot, $500 for 40 submissions. Talk to sales.",
+    q: "Do you have a first-time option?",
+    a: "Yes — Micro is $99 for your first event, up to 15 submissions.",
+  },
+  {
+    q: "What is founding pricing?",
+    a: "Until Aug 31, 2026 founding customers get launch pricing (shown against list) and keep it for 12 months. After that, list prices apply.",
+  },
+  {
+    q: "I run a VC open call or accelerator cohort — which plan?",
+    a: "Talk to us — we size Open Call and annual programs to your volume.",
   },
   {
     q: "Is my data safe?",
@@ -449,9 +426,27 @@ export default function PricingPage() {
 
 
 
-        {/* 2. Plans — 4 headline pricing cards (page-local), light. Standard recommended. */}
+        {/* 2. Plans — 3 headline role-based tiers (page-local), light. Cohort recommended. */}
         <section id="plans" className="band pr-plans">
           <div className="wrap">
+            <p
+              className="pr-founding-banner"
+              data-reveal="up"
+              style={{
+                margin: "0 auto 22px",
+                maxWidth: "620px",
+                textAlign: "center",
+                fontWeight: 600,
+                fontSize: "0.95rem",
+                lineHeight: 1.5,
+                padding: "10px 18px",
+                borderRadius: "999px",
+                border: "1px solid color-mix(in oklab, var(--grad-mid, #7c5cff) 45%, transparent)",
+                background: "color-mix(in oklab, var(--grad-mid, #7c5cff) 10%, transparent)",
+              }}
+            >
+              Founding customer pricing — until Aug 31, 2026. Prices lock for 12 months.
+            </p>
             <ul className="pr-cards" data-reveal="up">
               {PLANS.map((plan) => (
                 <li
@@ -469,7 +464,30 @@ export default function PricingPage() {
                     </span>
                   ) : null}
                   <h3 className="pr-card__name">{plan.name}</h3>
-                  <p className="pr-card__price">{plan.price}</p>
+                  <p className="pr-card__price">
+                    <s
+                      style={{
+                        marginRight: "10px",
+                        fontSize: "0.55em",
+                        fontWeight: 500,
+                        opacity: 0.5,
+                        textDecorationThickness: "1px",
+                      }}
+                    >
+                      {plan.listPrice}
+                    </s>
+                    {plan.price}
+                  </p>
+                  <p
+                    style={{
+                      margin: "2px 0 0",
+                      fontSize: "0.78rem",
+                      fontWeight: 600,
+                      color: "var(--grad-mid, #7c5cff)",
+                    }}
+                  >
+                    {plan.foundingNote}
+                  </p>
                   <p className="pr-card__cadence">
                     <span className="pr-card__pitches">{plan.cadence}</span>
                     <span className="pr-card__validity">{plan.validity}</span>
@@ -496,14 +514,57 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
+            {/* Funds-band — a separate, wider sales tier (NOT a 4th self-serve
+              * card). Public copy carries NO numbers: Open Call / Annual /
+              * Enterprise figures are sales-only, sized on the call. */}
+            <div
+              className="pr-funds-band"
+              data-reveal="up"
+              style={{
+                marginTop: "34px",
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "20px",
+                padding: "26px 30px",
+                borderRadius: "20px",
+                border: "1px solid color-mix(in oklab, var(--grad-mid, #7c5cff) 30%, transparent)",
+                background: "color-mix(in oklab, var(--grad-mid, #7c5cff) 6%, transparent)",
+              }}
+            >
+              <div style={{ flex: "1 1 420px", minWidth: "min(100%, 420px)" }}>
+                <h3
+                  style={{
+                    margin: "0 0 8px",
+                    fontSize: "1.15rem",
+                    fontWeight: 700,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  Funds &amp; Accelerators — custom programs
+                </h3>
+                <p style={{ margin: 0, opacity: 0.82, lineHeight: 1.55 }}>
+                  VC open calls, accelerator cohorts, and recurring annual
+                  programs. Custom volume, custom judge panels, white-label, SSO,
+                  SLA, and BYO-LLM — sized to your pipeline. Covers Open Call,
+                  Annual, and Enterprise.
+                </p>
+              </div>
+              <div style={{ flex: "0 0 auto" }}>
+                <Button variant="primary" href="https://calendly.com/evallens/30min">
+                  Talk to sales
+                </Button>
+              </div>
+            </div>
             <p className="pr-smaller" data-reveal="up">
-              For smaller events: Starter is $199 for 15 submissions. Pilot is
-              $500 for 40. See the full comparison below.
+              Larger open calls and recurring programs are priced per volume —
+              talk to us.
             </p>
           </div>
         </section>
 
-        {/* 3. Comparison matrix — all 5 paid levels (page-local), soft. Scrolls inside wrapper. */}
+        {/* 3. Comparison matrix — 3 public tiers (page-local), soft. Scrolls inside wrapper. */}
         <section id="compare" className="band soft pr-compare">
           <div className="wrap">
             <div className="head" data-reveal="up">
@@ -513,8 +574,8 @@ export default function PricingPage() {
               </span>
               <h2 className="title">Compare <span className="grad-word">plans</span></h2>
               <p className="sub">
-                Compare submissions, validity, projects, exports, support, and
-                admin controls.
+                Compare submissions, projects, top-ups, exports, and the
+                features that change by tier.
               </p>
             </div>
           </div>
@@ -540,12 +601,12 @@ export default function PricingPage() {
                         key={col}
                         scope="col"
                         className={
-                          col === "Standard" ? "pr-th pr-th--reco" : "pr-th"
+                          col === "Cohort" ? "pr-th pr-th--reco" : "pr-th"
                         }
                       >
-                        {col === "Standard" ? (
+                        {col === "Cohort" ? (
                           <>
-                            Standard
+                            Cohort
                             <span className="pr-th__note">recommended</span>
                           </>
                         ) : (
@@ -566,7 +627,7 @@ export default function PricingPage() {
                           key={`${row.label}-${COMPARE_COLS[i]}`}
                           data-label={COMPARE_COLS[i]}
                           className={
-                            COMPARE_COLS[i] === "Standard"
+                            COMPARE_COLS[i] === "Cohort"
                               ? `${row.num ? "pr-cell pr-cell--num" : cellClass(cell)} pr-td--reco`
                               : row.num
                                 ? "pr-cell pr-cell--num"
@@ -587,6 +648,10 @@ export default function PricingPage() {
                 </tbody>
               </table>
             </div>
+            <p className="pr-smaller" data-reveal="up">
+              All packages are valid 180 days. Funds &amp; Accelerators — custom
+              volume, seats, and white-label; talk to us.
+            </p>
           </div>
         </section>
         {/* light→ink flip seam: light zone (§1–§3) crossfades into INK §4. */}

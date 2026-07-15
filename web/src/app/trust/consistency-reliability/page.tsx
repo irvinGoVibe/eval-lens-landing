@@ -545,8 +545,8 @@ export default function ConsistencyReliabilityPage() {
                 the latest repeatability run.
               </p>
               <div className="bench-cta">
-                <Button href="/try-live-demo" variant="primary">
-                  View live report
+                <Button href="https://calendly.com/evallens/30min" variant="primary">
+                  See it live
                 </Button>
                 <Button href="https://calendly.com/evallens/30min" variant="glass">
                   Book a Demo

@@ -535,7 +535,7 @@ export default function UseCasesPage() {
           titleAccent="your batch?"
           sub="You just saw a real report. Send us one batch and we will produce the same from your own decks."
           primary={{ label: "Book a workflow call", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "Try sample workspace", href: "/try-live-demo" }}
+          secondary={{ label: "See it live", href: "https://calendly.com/evallens/30min" }}
           videoSrc="/assets/cta/cube-1.mp4"
           videoPoster="/assets/cta/cube-1-poster.webp"
           auroraVariant="violet"
