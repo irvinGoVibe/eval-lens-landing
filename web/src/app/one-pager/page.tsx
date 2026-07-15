@@ -70,7 +70,7 @@ const PROBLEM_TILES = [
   {
     tag: "The wall",
     title: "Breakouts get skimmed in an inbox that never empties",
-    body: "Decks arrive as links, files, and forwards faster than the team can read them closely. The one that matters gets a skim before anyone looks hard.",
+    body: "Decks land as links, PDFs, and forwards faster than any team can read them closely. The one that actually matters gets the same rushed skim as everything else.",
     feature: true,
     media: {
       src: "/assets/one-pager/problem-wall-broken.webp",
@@ -84,22 +84,22 @@ const PROBLEM_TILES = [
   {
     tag: "Volume",
     title: "Inbound never stops",
-    body: "More decks arrive each week than the team can read closely.",
+    body: "More decks land each week than any partner can read line by line — and the queue never resets.",
   },
   {
     tag: "Partner time",
     title: "Partner time is the bottleneck",
-    body: "The first decks get a real read; the rest get a skim — and the breakout might be in the rest.",
+    body: "The first few decks in the queue get a real read. The rest get a skim — and the breakout could be sitting further down the pile.",
   },
   {
     tag: "The bar",
     title: "The bar drifts",
-    body: "One analyst weighs traction, another the team — the screen isn't the same twice.",
+    body: "One analyst leans on traction, another on team fit — run the same deck through twice and you can get two different calls.",
   },
   {
     tag: "Defensibility",
     title: "Hard to defend the call",
-    body: "Months later, you can't reconstruct why a deck advanced — or died — for the IC or your LPs.",
+    body: "Ask why a deck died six months ago, and the honest answer is a shrug — not something you can bring to your IC or your LPs.",
   },
 ] as const;
 
@@ -122,13 +122,13 @@ const WORKFLOW_STEPS = [
   },
   {
     num: "04",
-    label: "See the leaderboard",
-    desc: "The whole batch ranked on your bar in one leaderboard — the field at a glance, top to bottom.",
+    label: "See the ranked reports",
+    desc: "The whole batch lands in one leaderboard, each deck with its one-page screening memo — thesis, risks, gaps — ready before anyone opens a call.",
   },
   {
     num: "05",
-    label: "Share the memos with partners",
-    desc: "Hand each deck's one-page screening memo — thesis, risks, gaps, and a recommendation to dig or pass. Partners verify and set the final score; the call stays human.",
+    label: "Score it with your own judgment",
+    desc: "Weigh what EvalLens surfaced against your own read of the deck, and set the score that counts. The call stays human, every time.",
   },
 ] as const;
 
@@ -248,10 +248,10 @@ export default function OnePagerPage() {
           surface="light"
           version={1}
           eyebrow="VC DEALFLOW SCREENING"
-          titleLead="Screen your inbound dealflow faster — without missing the"
+          titleLead="The inbox never empties. Don't let a skim cost you the"
           titleAccent="unicorn"
-          titleTrail=""
-          sub="EvalLens gives every inbound deck the same structured first read — on one consistent bar — so the breakout doesn't get skimmed. Screen a full batch in an afternoon; the final call is always yours."
+          titleTrail="."
+          sub="EvalLens gives every inbound deck the same structured first read, on one consistent bar, so the one that matters never gets waved through on a skim. Screen a full batch in an afternoon — the final call is always yours."
           ctas={[
             { label: "Start a pilot", href: "/company/contact" },
             { label: "Book a demo", href: "https://calendly.com/evallens/30min" },
