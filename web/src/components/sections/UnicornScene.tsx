@@ -399,7 +399,13 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
         found = child.geometry as THREE.BufferGeometry;
       }
     });
-    const geo = found ?? new THREE.IcosahedronGeometry(1, 1);
+    // `useGLTF` caches the parsed scene, so every UnicornScene receives the
+    // same source geometry. The rig rewrites position/normal buffers every
+    // frame; mutating the cached geometry makes two mounted unicorns deform
+    // each other. Clone before centering or marking attributes dynamic so each
+    // canvas owns an isolated set of buffers.
+    const source = found as THREE.BufferGeometry | null;
+    const geo = source?.clone() ?? new THREE.IcosahedronGeometry(1, 1);
     geo.center();
     // GLTF may deliver interleaved attributes, which can't be flagged dynamic
     // or rewritten per frame — copy them out into plain buffer attributes
@@ -558,12 +564,13 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     return () => {
       glass.dispose();
       innerGlow.dispose();
+      geometry.dispose();
       edges.dispose();
       seam.dispose();
       coreGlow.dispose();
       ringGlow.dispose();
     };
-  }, [glass, innerGlow, edges, seam, coreGlow, ringGlow]);
+  }, [geometry, glass, innerGlow, edges, seam, coreGlow, ringGlow]);
 
   useFrame((state, delta) => {
     const g = group.current;
