@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import "@/components/ds/ds.css";
 import { DevInspector } from "@/components/DevInspector";
+import { PartnerAccessModal } from "@/components/PartnerAccessModal";
 import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
@@ -96,6 +97,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSON_LD) }}
         />
         {children}
+        <PartnerAccessModal />
         {process.env.NODE_ENV !== "production" && <DevInspector />}
       </body>
     </html>

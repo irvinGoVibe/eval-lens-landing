@@ -318,6 +318,113 @@ body.hero-ready .site-header.is-hidden{
 .btn .arr{transition:transform .25s var(--ease);}
 .btn:hover .arr{transform:translateX(3px);}
 
+/* ---------- partner access modal ---------- */
+.partner-modal{
+  position:fixed;inset:0;z-index:500;
+  display:grid;place-items:center;
+  padding:max(20px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));
+  background:rgba(3,3,8,.64);
+  -webkit-backdrop-filter:blur(20px) saturate(135%);
+  backdrop-filter:blur(20px) saturate(135%);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .28s var(--ease),visibility 0s linear .28s;
+}
+.partner-modal[data-open]{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transition:opacity .28s var(--ease),visibility 0s;
+}
+.partner-modal__panel{
+  position:relative;isolation:isolate;overflow:hidden;
+  width:min(100%,780px);min-height:480px;
+  display:grid;grid-template-columns:minmax(210px,.78fr) minmax(0,1.55fr);
+  border:1px solid rgba(255,255,255,.17);border-radius:var(--r-lg);
+  color:var(--fg-on-dark);
+  background:
+    radial-gradient(ellipse 80% 100% at 0% 100%,rgba(108,76,241,.16),transparent 66%),
+    linear-gradient(145deg,rgba(20,18,34,.98),rgba(5,5,9,.99));
+  box-shadow:0 48px 120px -32px rgba(0,0,0,.78),inset 0 1px 0 rgba(255,255,255,.1);
+  transform:translateY(22px) scale(.965);opacity:0;
+  transition:transform .46s var(--ease),opacity .3s var(--ease);
+}
+.partner-modal[data-open] .partner-modal__panel{transform:none;opacity:1;}
+.partner-modal__close{
+  position:absolute;z-index:4;top:18px;right:18px;
+  width:42px;height:42px;display:grid;place-items:center;
+  padding:0;border:1px solid rgba(255,255,255,.14);border-radius:50%;
+  color:var(--body-on-dark);background:rgba(255,255,255,.055);cursor:pointer;
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  transition:transform .25s var(--ease),background .25s,border-color .25s;
+}
+.partner-modal__close:hover{transform:rotate(4deg);background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.3);}
+.partner-modal__close[data-silent-focus]:focus{outline:none;}
+.partner-modal__close svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;}
+.partner-modal__visual{
+  position:relative;overflow:hidden;min-height:100%;
+  border-right:1px solid rgba(255,255,255,.09);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.045),transparent 40%),
+    radial-gradient(circle at 50% 52%,rgba(46,197,232,.14),transparent 45%);
+}
+.partner-modal__visual::after{
+  content:"";position:absolute;inset:0;opacity:.22;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 72%);
+  mask-image:radial-gradient(circle at 50% 50%,#000,transparent 72%);
+}
+.partner-modal__unicorn{
+  position:absolute;z-index:2;inset:-7% -24% -4%;pointer-events:none;
+  filter:saturate(1.12) contrast(1.04);
+}
+.partner-modal__content{
+  align-self:center;padding:76px clamp(34px,5vw,68px) 58px;
+}
+.partner-modal__content h2{
+  max-width:520px;font-size:clamp(38px,5.2vw,62px);line-height:.98;letter-spacing:-.045em;
+  text-wrap:balance;
+}
+.partner-modal__accent{
+  color:transparent;background:var(--lens);background-clip:text;-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.partner-modal__content h2::after{
+  content:"";display:block;width:82px;height:3px;margin-top:28px;border-radius:var(--r-pill);background:var(--lens);
+}
+.partner-modal__content>p:not(.partner-modal__note){
+  max-width:500px;margin-top:25px;color:var(--body-on-dark);font-size:17px;line-height:1.55;
+}
+.partner-modal__actions{display:flex;align-items:center;gap:22px;margin-top:34px;flex-wrap:wrap;}
+.partner-modal__actions .btn{min-height:48px;padding-inline:24px;}
+.partner-modal__not-now{
+  padding:8px 0;border:0;color:var(--muted-on-dark);background:none;cursor:pointer;
+  font-size:14px;border-bottom:1px solid rgba(255,255,255,.2);
+  transition:color .2s,border-color .2s;
+}
+.partner-modal__not-now:hover{color:var(--fg-on-dark);border-color:rgba(255,255,255,.6);}
+.partner-modal__note{
+  margin-top:27px;color:var(--muted-2);font-family:var(--font-mono);font-size:10px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;
+}
+@media (prefers-reduced-motion:no-preference){
+  .partner-modal[data-open] .partner-modal__unicorn{animation:partner-unicorn-breathe 6.8s ease-in-out infinite;}
+}
+@keyframes partner-unicorn-breathe{0%,100%{scale:1;}50%{scale:1.025;}}
+@media (max-width:680px){
+  .partner-modal{align-items:end;padding:12px;}
+  .partner-modal__panel{min-height:0;grid-template-columns:1fr;border-radius:var(--r-lg);}
+  .partner-modal__visual{height:218px;min-height:0;border-right:0;border-bottom:1px solid rgba(255,255,255,.09);}
+  .partner-modal__unicorn{inset:-16% -13% -10%;}
+  .partner-modal__content{padding:34px 24px max(28px,env(safe-area-inset-bottom));}
+  .partner-modal__content h2{max-width:330px;font-size:clamp(36px,10.4vw,48px);}
+  .partner-modal__content h2::after{margin-top:20px;}
+  .partner-modal__content>p:not(.partner-modal__note){margin-top:20px;font-size:15.5px;}
+  .partner-modal__actions{margin-top:26px;gap:18px;}
+  .partner-modal__actions .btn{width:100%;justify-content:center;}
+  .partner-modal__note{margin-top:22px;font-size:9px;}
+}
+@media (prefers-reduced-motion:reduce){
+  .partner-modal,.partner-modal__panel,.partner-modal__close{transition-duration:.01ms;}
+}
+
 /* ── Shimmer button + card — bento glass mechanic, EvalLens brand spectrum ──
    Violet #6c4cf1 → cobalt #145cdd → cyan #2ec5e8 → teal #0bbbb0.
    Mechanic: dark glass base · 3 drifting blobs (mix-blend-mode:screen, blur:26px)
