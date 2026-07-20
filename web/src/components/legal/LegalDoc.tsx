@@ -59,9 +59,7 @@ export function LegalDoc({
             <aside className="legal-disclaimer" role="note">
               <strong>Draft for review.</strong> This page is a working draft
               provided for transparency. It has not been reviewed by qualified
-              legal counsel and does not constitute legal advice. Bracketed
-              placeholders such as <code>[Legal entity name]</code> must be
-              completed and the text reviewed before it is relied upon.
+              legal counsel and does not constitute legal advice.
             </aside>
           </div>
         </section>
