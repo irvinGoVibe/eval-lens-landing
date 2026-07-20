@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mobile QA Loop"
+  short_description: "Reproducible mobile audit, fix, and retest loop"
+  default_prompt: "Use $mobile-qa-loop to audit this page on mobile, produce evidence-backed defects, and retest approved fixes."

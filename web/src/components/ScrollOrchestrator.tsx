@@ -512,6 +512,7 @@ function runScript(): () => void {
      ============================================================ */
   (function initScrollScrub() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobileScrub = window.matchMedia("(max-width: 760px)").matches;
     const sections = document.querySelectorAll(".scroll-scrub");
     if (!sections.length) return;
 
@@ -571,12 +572,8 @@ function runScript(): () => void {
 
       if (reduce) {
         if (heading) {
-          heading.style.setProperty("--h-top", "50vh");
           heading.style.setProperty("--sub-op", "1");
-          heading.classList.add("is-shown", "is-epic-active");
         }
-        stageArea?.classList.add("is-visible");
-        scene?.classList.add("is-visible");
       }
 
       let epicPlayed = false;
@@ -586,6 +583,9 @@ function runScript(): () => void {
       let targetTime = 0;
       let currentTime = 0;
       let lastSetTime = -1;
+      const scrubFps = Math.max(1, Number(video?.dataset.scrubFps) || 15);
+      const scrubFrameDuration = 1 / scrubFps;
+      let reducedSceneReady = false;
       let progress = 0;
       let rafPending = false;
       let rafHandle = 0;
@@ -647,6 +647,10 @@ function runScript(): () => void {
         on(video, "play", () => {
           try { video.pause(); } catch (_) {}
         });
+        // Safari can stall the main thread when a stream of random-access
+        // currentTime writes arrives before the previous seek completes.
+        // Resume from the latest target only after WebKit has decoded a frame.
+        on(video, "seeked", schedule);
         // iOS Safari historically needed a play+pause to unlock seek. Keep
         // the prime, but pause again right after so we stay in scrub-only mode.
         const primeOnce = () => {
@@ -706,15 +710,25 @@ function runScript(): () => void {
         return 1 - Math.pow(1 - Math.min(1, t), 3.2);
       }
 
-      const PHASE = {
-        HOLD_END: 0.2,
-        LIFT_START: 0.2,
-        LIFT_END: 0.48,
-        SUB_START: 0.26,
-        VIDEO_START: 0.36,
-        SCENE_START: 0.5,
-        EXIT_START: 0.88,
-      };
+      const PHASE = mobileScrub
+        ? {
+            HOLD_END: 0.08,
+            LIFT_START: 0.08,
+            LIFT_END: 0.08,
+            SUB_START: 0.08,
+            VIDEO_START: 0.12,
+            SCENE_START: 0.34,
+            EXIT_START: 0.9,
+          }
+        : {
+            HOLD_END: 0.2,
+            LIFT_START: 0.2,
+            LIFT_END: 0.48,
+            SUB_START: 0.26,
+            VIDEO_START: 0.36,
+            SCENE_START: 0.5,
+            EXIT_START: 0.88,
+          };
       const SUCK_VIDEO_START = 0.56;
       const SUCK_VIDEO_END = 0.94;
       const FILES_GONE_PULL = 0.94;
@@ -727,7 +741,35 @@ function runScript(): () => void {
       let cellRest: { startX: number; startY: number }[] | null = null;
 
       function updateHeading(trackP: number) {
-        if (!heading || reduce) return;
+        if (!heading) return;
+        if (mobileScrub) {
+          // Keep the copy anchored to the sticky pin on touch devices. iOS
+          // Safari can rebase a JS-moved position:fixed descendant while its
+          // browser chrome collapses, which made this heading jump and overlap
+          // the scrubbed frame. The sticky parent already provides the pinning
+          // we need, so no per-frame heading position writes are necessary.
+          const trackIsOnScreen =
+            fPinActive && fTrackTop + fTrackHeight > 0 && trackP < PHASE.EXIT_START;
+          heading.classList.toggle("is-shown", trackIsOnScreen);
+          heading.classList.toggle("is-epic-active", trackIsOnScreen);
+          heading.style.setProperty("--sub-op", trackIsOnScreen ? "1" : "0");
+          heading.style.opacity = "";
+          smoothTop = null;
+          return;
+        }
+        if (reduce) {
+          // A reduced-motion visitor still needs the section heading, but it
+          // must remain scoped to the sticky scene. Showing this fixed element
+          // during initialisation placed it over the homepage hero in Safari.
+          const trackIsOnScreen =
+            fPinActive && fTrackTop + fTrackHeight > 0 && trackP < PHASE.EXIT_START;
+          heading.classList.toggle("is-shown", trackIsOnScreen);
+          heading.classList.toggle("is-epic-active", trackIsOnScreen);
+          heading.style.setProperty("--h-top", "50vh");
+          heading.style.setProperty("--sub-op", "1");
+          heading.style.opacity = "";
+          return;
+        }
         const vh = fVh;
         const scrollY = fScrollY;
         const start = vh * 0.5;
@@ -936,6 +978,8 @@ function runScript(): () => void {
       function updateSceneCells(p: number) {
         if (!scene || !scrubCells.length) return;
         if (reduce) {
+          if (reducedSceneReady) return;
+          reducedSceneReady = true;
           scene.classList.add("is-files-gone", "is-cells-active");
           scrubCells.forEach((cell, i) => {
             cell.style.opacity = "1";
@@ -1060,19 +1104,23 @@ function runScript(): () => void {
         if (ready && duration > 0 && video) {
           const vp = videoProgress(progress);
           targetTime = Math.max(0, Math.min(duration - 0.001, vp * duration));
-          if (reduce) {
-            currentTime = targetTime;
-          } else {
-            currentTime += (targetTime - currentTime) * 0.18;
-          }
-          if (Math.abs(currentTime - lastSetTime) > 1 / 120) {
+          // Coalesce touch-scroll updates to the newest requested frame. The
+          // previous lerp generated a queue of obsolete random-access seeks;
+          // WebKit decoded them one after another after the finger stopped,
+          // which looked like a freeze followed by several visible jumps.
+          currentTime = targetTime;
+          const frameTime = Math.min(
+            duration - 0.001,
+            Math.max(0, Math.round(currentTime * scrubFps) / scrubFps),
+          );
+          if (
+            !video.seeking &&
+            Math.abs(frameTime - lastSetTime) >= scrubFrameDuration * 0.5
+          ) {
             try {
-              video.currentTime = currentTime;
-              lastSetTime = currentTime;
+              video.currentTime = frameTime;
+              lastSetTime = frameTime;
             } catch (_) {}
-          }
-          if (Math.abs(targetTime - currentTime) > 0.002) {
-            schedule();
           }
         }
       }

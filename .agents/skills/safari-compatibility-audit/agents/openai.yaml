@@ -1,0 +1,4 @@
+interface:
+  display_name: "Safari Compatibility Audit"
+  short_description: "Audit EvalLens in Chromium, WebKit, and real Safari workflows"
+  default_prompt: "Use $safari-compatibility-audit to audit this project, report browser-specific findings, and verify fixes in Chromium and WebKit."

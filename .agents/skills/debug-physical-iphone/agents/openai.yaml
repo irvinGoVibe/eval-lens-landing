@@ -1,0 +1,4 @@
+interface:
+  display_name: "Physical iPhone Debug"
+  short_description: "Debug local sites on a real iPhone over Wi-Fi"
+  default_prompt: "Use $debug-physical-iphone to open this local site on my iPhone and switch safely between manual and automated testing."

@@ -1,5 +1,9 @@
 import { test, expect, type Page } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+});
+
 /**
  * Smoke suite — the minimal regression net for a static marketing site with a
  * Supabase-backed blog and a cookie-gated /admin. Asserts render + critical

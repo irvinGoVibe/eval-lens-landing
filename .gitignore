@@ -39,8 +39,9 @@ backups/
 *.dump
 *.bak
 
-# AI / agent state
-.codex/
+# AI / agent state. Keep only the shared project MCP configuration.
+.codex/*
+!.codex/config.toml
 .claude/state/
 .claude/worktrees/
 .claude/runs/
@@ -104,3 +105,5 @@ supabase/.temp/
 # playwright
 web/playwright-report/
 web/test-results/
+web/mobile-tests/runs/*
+!web/mobile-tests/runs/.gitkeep

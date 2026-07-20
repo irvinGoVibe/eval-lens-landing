@@ -33,6 +33,9 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  // Keep Safari's top/bottom browser surfaces aligned with the black landing
+  // canvas instead of falling back to the default white browser chrome.
+  themeColor: "#000000",
 };
 
 const sandboxShim = `(function(){

@@ -291,7 +291,7 @@ export function EvalLenseBentoSection() {
           <div className="mt-4 flex flex-wrap content-start gap-2">
             {caseChips.map((c) => (
               <Link
-                key={c.href}
+                key={c.label}
                 href={c.href}
                 className="chip chip-pulse"
               >
