@@ -1131,7 +1131,15 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
        -g 1 -keyint_min 1 -sc_threshold 0 \
        -movflags +faststart section2-scroll-2.mp4
    ============================================================ */
-.scroll-scrub{background:transparent;color:var(--fg-on-dark);position:relative;overflow:visible;z-index:7;}
+.scroll-scrub{
+  background:transparent;color:var(--fg-on-dark);position:relative;overflow:visible;z-index:7;
+  /* The transparent lead overlaps the bottom of the hero by design. Keep the
+     visual blend, but do not let the section's otherwise empty hit box steal
+     taps from the hero CTAs underneath it (notably in iOS Safari). */
+  pointer-events:none;
+}
+.scroll-scrub .scrub-track,
+.scroll-scrub .scrub-tail{pointer-events:auto;}
 /* 300px overlap: fade hero → section 2 (top stays transparent so hero isn't tinted at rest) */
 .scroll-scrub .scrub-lead{
   position:relative;height:300px;margin-top:-300px;z-index:1;pointer-events:none;
@@ -1981,7 +1989,18 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 @supports (height:100svh){
   @media (max-width:760px){
     .scroll-scrub .scrub-track{height:320svh;}
-    .scroll-scrub .scrub-pin{height:100svh;}
+    .scroll-scrub .scrub-pin{
+      height:100svh;
+      padding-top:clamp(40px,7svh,90px);
+    }
+    .scroll-scrub .scrub-bottom-fade{height:clamp(120px,20svh,200px);}
+    .scroll-scrub .scrub-stage{padding-bottom:18svh;}
+    .scroll-scrub .scrub-scene{padding-block:6svh;}
+    .scroll-scrub .scrub-files{height:36svh;}
+    .section-mist-bridge{
+      margin-top:calc(-1 * clamp(60px,12svh,140px));
+      height:clamp(200px,30svh,280px);
+    }
 
     /* The sticky pin is the positioning context on iOS. Avoid a fixed child:
        Safari rebases fixed descendants while its top/bottom chrome collapses,

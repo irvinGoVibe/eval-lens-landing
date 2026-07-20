@@ -75,16 +75,13 @@ function runScript(): () => void {
       const y = Math.max(1, Math.round(r.bottom - 2));
       const surface = document
         .elementsFromPoint(x, y)
-        .find((el): el is HTMLElement => {
+        .map((el) => {
           if (!(el instanceof HTMLElement)) return false;
-          return (
-            el.id === "hero" ||
-            el.classList.contains("scroll-scrub") ||
-            el.classList.contains("section-orange-glow") ||
-            el.classList.contains("band") ||
-            el.classList.contains("cta-band--dark")
+          return el.closest<HTMLElement>(
+            "#hero, .scroll-scrub, .section-orange-glow, .band, .cta-band--dark",
           );
-        });
+        })
+        .find((el): el is HTMLElement => Boolean(el));
       const overDark = Boolean(
         surface &&
           (surface.id === "hero" ||
@@ -749,7 +746,9 @@ function runScript(): () => void {
           // the scrubbed frame. The sticky parent already provides the pinning
           // we need, so no per-frame heading position writes are necessary.
           const trackIsOnScreen =
-            fPinActive && fTrackTop + fTrackHeight > 0 && trackP < PHASE.EXIT_START;
+            fPinActive &&
+            fTrackTop + fTrackHeight > 0 &&
+            trackP < PHASE.EXIT_START - 0.001;
           heading.classList.toggle("is-shown", trackIsOnScreen);
           heading.classList.toggle("is-epic-active", trackIsOnScreen);
           heading.style.setProperty("--sub-op", trackIsOnScreen ? "1" : "0");

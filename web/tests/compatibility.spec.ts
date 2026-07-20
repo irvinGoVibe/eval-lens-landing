@@ -94,6 +94,29 @@ test("homepage primary mobile controls are touch sized", async ({ page, isMobile
   }
 });
 
+test("homepage partner access CTA remains tappable above the problem overlap", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("body")).toHaveClass(/hero-ready/, { timeout: 20_000 });
+
+  const trigger = page.getByRole("button", { name: /Try live demo/i }).first();
+  const hitTarget = await trigger.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    const hit = document.elementFromPoint(
+      rect.left + rect.width / 2,
+      rect.top + rect.height / 2,
+    );
+    return Boolean(hit && element.contains(hit));
+  });
+  expect(hitTarget).toBe(true);
+
+  await trigger.tap();
+  await expect(page.getByRole("dialog")).toBeVisible();
+});
+
 test("homepage mobile scrub pins, advances, and releases", async ({ page, isMobile }) => {
   test.skip(!isMobile, "mobile profile only");
   await page.goto("/", { waitUntil: "domcontentloaded" });

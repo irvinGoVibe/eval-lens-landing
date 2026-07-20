@@ -3,6 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Cache Components (Next 16): enables `use cache`, `cacheTag`, `cacheLife`.
   cacheComponents: true,
+  // Physical-device QA reaches the user-owned dev server over the local Wi-Fi
+  // address. Next blocks cross-origin dev chunks/HMR unless that LAN hostname
+  // is explicitly trusted, which leaves Safari with server HTML but no React
+  // hydration. This setting is development-only inside Next.js.
+  allowedDevOrigins: ["192.168.*.*"],
   turbopack: {
     root: process.cwd(),
   },
