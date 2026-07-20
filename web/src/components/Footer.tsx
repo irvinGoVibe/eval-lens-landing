@@ -106,6 +106,10 @@ export function Footer({ variant = "light" }: FooterProps) {
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
             <Link href="/security">Security</Link>
+            <Link href="/cookies">Cookies</Link>
+            <Link href="/acceptable-use">Acceptable Use</Link>
+            <Link href="/dpa">DPA</Link>
+            <Link href="/subprocessors">Sub-processors</Link>
           </span>
         </div>
       </div>

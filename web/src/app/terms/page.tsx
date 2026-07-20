@@ -107,7 +107,11 @@ const SECTIONS: LegalSection[] = [
           You retain ownership of the pitch decks, materials, and data you or
           your participants submit (&ldquo;Customer Content&rdquo;). You grant us
           a limited license to host, process, and display Customer Content solely
-          to provide the Service to you.
+          to provide the Service to you. Where Customer Content includes personal
+          data that we process on your behalf, our{" "}
+          <a href="/dpa">Data Processing Addendum</a> applies, and the providers
+          that help us run the Service are listed on our{" "}
+          <a href="/subprocessors">Sub&#8209;processors</a> page.
         </p>
         <p>You represent and warrant that:</p>
         <ul>
@@ -132,7 +136,11 @@ const SECTIONS: LegalSection[] = [
     heading: "Acceptable use",
     body: (
       <>
-        <p>You agree not to:</p>
+        <p>
+          Your use of the Service is subject to our{" "}
+          <a href="/acceptable-use">Acceptable Use Policy</a>, which forms part of
+          these Terms. In summary, you agree not to:
+        </p>
         <ul>
           <li>use the Service for unlawful, infringing, or harmful purposes;</li>
           <li>
@@ -197,22 +205,53 @@ const SECTIONS: LegalSection[] = [
   },
   {
     id: "fees",
-    heading: "Fees",
+    heading: "Fees and payment",
     body: (
-      <p>
-        Fees for the Service and for any development or configuration work are
-        set out in the applicable order, statement of work, or plan presented
-        before you incur a charge, and those terms form part of this agreement.
-        Unless stated otherwise, all fees are <strong>exclusive of
-        value&#8209;added tax (VAT) and any other taxes</strong>. Because the
-        Service is supplied to business customers, where the reverse&#8209;charge
-        mechanism applies <strong>you are responsible for self&#8209;accounting
-        for VAT in your own jurisdiction</strong>, and you agree to provide a
-        valid VAT or tax registration number on request. You are responsible for
-        all taxes arising from your use of the Service other than taxes on our
-        income. <strong>[Payment processor / merchant&#8209;of&#8209;record and
-        refund terms to be confirmed.]</strong>
-      </p>
+      <>
+        <p>
+          Fees for the Service and for any development or configuration work are
+          set out in the applicable order, statement of work, or plan presented
+          before you incur a charge, and those terms form part of this agreement.
+        </p>
+        <p>We use two payment methods depending on the plan:</p>
+        <ul>
+          <li>
+            <strong>Invoiced engagements (default).</strong> Managed
+            configuration and most subscriptions are invoiced by{" "}
+            <strong>{OPERATOR}</strong> and paid by bank transfer to the account
+            stated on the invoice, on the terms set out in your order or
+            statement of work.
+          </li>
+          <li>
+            <strong>Smaller plans paid by card.</strong> Where a card checkout is
+            offered for a smaller plan, the payment is processed by a
+            third&#8209;party <strong>merchant&#8209;of&#8209;record</strong> that
+            acts as the seller of record for that transaction. That provider
+            handles payment, billing, and applicable&#8209;tax collection for
+            those purchases, and its terms apply to the payment.
+          </li>
+        </ul>
+        <p>
+          Unless stated otherwise, all fees are{" "}
+          <strong>exclusive of value&#8209;added tax (VAT) and any other
+          taxes</strong>. For invoiced business customers, where the
+          reverse&#8209;charge mechanism applies{" "}
+          <strong>you are responsible for self&#8209;accounting for VAT in your
+          own jurisdiction</strong>, and you agree to provide a valid VAT or tax
+          registration number on request. For card purchases handled by the
+          merchant&#8209;of&#8209;record, any VAT or sales tax is collected by
+          that provider. You are responsible for all taxes arising from your use
+          of the Service other than taxes on our income.
+        </p>
+        <p>
+          <strong>Refunds.</strong> Except where required by law, fees for
+          invoiced engagements are non&#8209;refundable once the corresponding
+          work or subscription period has begun, unless your order or statement
+          of work says otherwise. For card purchases, refunds are handled under
+          the merchant&#8209;of&#8209;record&rsquo;s refund policy shown at
+          checkout.
+        </p>
+      </>
     ),
   },
   {
@@ -241,9 +280,12 @@ const SECTIONS: LegalSection[] = [
         punitive damages, or any loss of profits, data, or goodwill, arising from
         or related to the Service. Our total liability for any claim relating to
         the Service will not exceed{" "}
-        <strong>[the greater of amounts paid in the prior 12 months or US$100]</strong>.
-        Some jurisdictions do not allow these limits, so they may not fully apply
-        to you.
+        <strong>
+          the greater of the total fees you paid for the Service in the twelve
+          (12) months before the event giving rise to the claim, or US$100
+        </strong>
+        . Some jurisdictions do not allow these limits, so they may not fully
+        apply to you.
       </p>
     ),
   },
@@ -279,11 +321,12 @@ const SECTIONS: LegalSection[] = [
       <p>
         These Terms are governed by the laws of <strong>Georgia</strong>, without
         regard to its conflict&#8209;of&#8209;laws rules. You and{" "}
-        <strong>{OPERATOR}</strong> agree to the exclusive jurisdiction of
-        the competent courts located in Georgia for any dispute not subject to an
-        alternative dispute&#8209;resolution process that the parties separately
-        agree to in writing.{" "}
-        <strong>[Arbitration / venue specifics to be confirmed.]</strong>
+        <strong>{OPERATOR}</strong> agree to the{" "}
+        <strong>exclusive jurisdiction of the competent courts located in
+        Tbilisi, Georgia</strong>, for any dispute arising out of or relating to
+        these Terms or the Service, except that either party may seek injunctive
+        or other equitable relief in any court of competent jurisdiction to
+        protect its intellectual property or confidential information.
       </p>
     ),
   },

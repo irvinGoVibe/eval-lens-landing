@@ -113,7 +113,7 @@ const SECTIONS: LegalSection[] = [
         EvalLens does not currently hold formal third&#8209;party security
         certifications (such as SOC&nbsp;2 or ISO&nbsp;27001). As the product
         matures, we expect to formalize additional controls and will update this
-        page accordingly. <strong>[Status to be confirmed.]</strong>
+        page accordingly.
       </p>
     ),
   },

@@ -152,7 +152,9 @@ const SECTIONS: LegalSection[] = [
             vendors to host data and run the Service, including cloud hosting
             and authentication (e.g., Supabase) and AI inference infrastructure
             (e.g., Vercel AI Gateway and the underlying model providers). They
-            process information under contract and only on our instructions.
+            process information under contract and only on our instructions. The
+            current list is on our{" "}
+            <a href="/subprocessors">Sub&#8209;processors</a> page.
           </li>
           <li>
             <strong>Within a program.</strong> Materials an organizer collects
@@ -181,6 +183,30 @@ const SECTIONS: LegalSection[] = [
     ),
   },
   {
+    id: "transfers",
+    heading: "International data transfers",
+    body: (
+      <>
+        <p>
+          EvalLens is operated from <strong>Georgia</strong> and our service
+          providers may process data in the European Union, the United States,
+          and other countries. When we transfer personal data across borders, we
+          rely on appropriate safeguards &mdash; such as the European
+          Commission&rsquo;s Standard Contractual Clauses (and the UK
+          addendum where relevant), or a transfer to a country recognized as
+          providing an adequate level of protection.
+        </p>
+        <p>
+          Where we process personal data on an organizer&rsquo;s behalf, those
+          transfers are also governed by our{" "}
+          <a href="/dpa">Data Processing Addendum</a>. You may request a copy of
+          the relevant safeguards by emailing{" "}
+          <a href="mailto:privacy@evallens.io">privacy@evallens.io</a>.
+        </p>
+      </>
+    ),
+  },
+  {
     id: "cookies",
     heading: "Cookies and similar technologies",
     body: (
@@ -190,7 +216,8 @@ const SECTIONS: LegalSection[] = [
         Service and any privacy&#8209;respecting analytics required to maintain
         it; we do not use advertising cookies. You can control cookies through
         your browser settings, though disabling essential cookies may break
-        sign&#8209;in.
+        sign&#8209;in. For details, see our{" "}
+        <a href="/cookies">Cookie Policy</a>.
       </p>
     ),
   },
@@ -198,14 +225,37 @@ const SECTIONS: LegalSection[] = [
     id: "retention",
     heading: "Data retention",
     body: (
-      <p>
-        We retain personal information for as long as needed to provide the
-        Service, comply with our legal obligations, resolve disputes, and
-        enforce our agreements. Specific retention periods{" "}
-        <strong>[to be confirmed]</strong> depend on the type of data and the
-        program context. When information is no longer needed, we delete or
-        de&#8209;identify it. You may request deletion as described below.
-      </p>
+      <>
+        <p>
+          We retain personal information for as long as needed to provide the
+          Service, comply with our legal obligations, resolve disputes, and
+          enforce our agreements. Unless a longer period is required by law or
+          agreed in your order or statement of work, we apply these default
+          periods:
+        </p>
+        <ul>
+          <li>
+            <strong>Account data</strong> is retained for the duration of your
+            relationship with us and deleted or de&#8209;identified within{" "}
+            <strong>90 days</strong> after the account is closed.
+          </li>
+          <li>
+            <strong>Submitted content and evaluation data</strong> (pitch decks,
+            reports, scores, notes) are deleted or de&#8209;identified within{" "}
+            <strong>12 months</strong> after the relevant program or evaluation
+            closes, unless you ask us to remove it sooner.
+          </li>
+          <li>
+            <strong>Backups and logs</strong> are kept on a short rolling basis
+            and purged within approximately <strong>35 days</strong>, after which
+            deleted data is overwritten in the ordinary course.
+          </li>
+        </ul>
+        <p>
+          When information is no longer needed we delete or de&#8209;identify it.
+          You may request deletion as described below.
+        </p>
+      </>
     ),
   },
   {
