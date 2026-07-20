@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { type BlobCfg, BLOB_DIR, LETTERS, initBlobLayer, nextZoneId } from "@/components/ds/blobKit";
 
@@ -11,6 +11,19 @@ const BlobInspector = dynamic(
   () => import("@/components/ds/BlobInspector").then((m) => m.BlobInspector),
   { ssr: false },
 );
+
+function subscribeToLocationChange(onStoreChange: () => void) {
+  window.addEventListener("popstate", onStoreChange);
+  return () => window.removeEventListener("popstate", onStoreChange);
+}
+
+function hasBlobInspectorParam() {
+  return new URLSearchParams(window.location.search).has("blobs");
+}
+
+function getServerBlobInspectorParam() {
+  return false;
+}
 
 /**
  * Floating background blobs for a `.ds-zone` — the production-grade driver for the
@@ -57,11 +70,11 @@ export function ZoneBlobs({ top, bottom, label }: { top?: string; bottom?: strin
   const root = useRef<HTMLDivElement>(null);
   // ?blobs gate for the dev inspector — read client-side so the dynamic chunk
   // isn't even requested on normal visits.
-  const [inspect, setInspect] = useState(false);
-
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).has("blobs")) setInspect(true);
-  }, []);
+  const inspect = useSyncExternalStore(
+    subscribeToLocationChange,
+    hasBlobInspectorParam,
+    getServerBlobInspectorParam,
+  );
 
   useEffect(() => {
     let cancelled = false;
