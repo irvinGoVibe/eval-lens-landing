@@ -9,23 +9,48 @@ export const metadata: Metadata = {
 
 const UPDATED = "June 16, 2026";
 
+const OPERATOR = "Individual Entrepreneur Yaroslav Volovyi";
+
 const SECTIONS: LegalSection[] = [
   {
     id: "acceptance",
     heading: "Acceptance of these terms",
     body: (
-      <p>
-        These Terms of Service (&ldquo;Terms&rdquo;) are a legal agreement
-        between you and <strong>[Operator name]</strong>, an individual
-        entrepreneur registered in Georgia
-        (&ldquo;EvalLens,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) governing
-        your access to and use of the EvalLens website and service (the
-        &ldquo;Service&rdquo;). The Service is provided to businesses and
-        organizations only. By creating an account or using the Service, you
-        represent that you are acting on behalf of a business or organization
-        (and not as a consumer) and that you have authority to bind that
-        organization to these Terms.
-      </p>
+      <>
+        <p>
+          These Terms of Service (&ldquo;Terms&rdquo;) are a legal agreement
+          between you and <strong>{OPERATOR}</strong>, an individual entrepreneur
+          registered in Georgia
+          (&ldquo;EvalLens,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) governing
+          your access to and use of the EvalLens website and service (the
+          &ldquo;Service&rdquo;). The Service is provided to businesses and
+          organizations only. By creating an account or using the Service, you
+          represent that you are acting on behalf of a business or organization
+          (and not as a consumer) and that you have authority to bind that
+          organization to these Terms.
+        </p>
+        <p>The Service is operated by:</p>
+        <ul>
+          <li>
+            <strong>Operator:</strong> {OPERATOR}
+          </li>
+          <li>
+            <strong>Legal form:</strong> Individual Entrepreneur, registered in
+            Georgia
+          </li>
+          <li>
+            <strong>Identification number:</strong> 305676649
+          </li>
+          <li>
+            <strong>Registering authority:</strong> LEPL National Agency of
+            Public Registry (registered February 12, 2024)
+          </li>
+          <li>
+            <strong>Registered address:</strong> Gotua Street N26, Floor 10, Flat
+            N37, Saburtalo District, Tbilisi, Georgia
+          </li>
+        </ul>
+      </>
     ),
   },
   {
@@ -254,7 +279,7 @@ const SECTIONS: LegalSection[] = [
       <p>
         These Terms are governed by the laws of <strong>Georgia</strong>, without
         regard to its conflict&#8209;of&#8209;laws rules. You and{" "}
-        <strong>[Operator name]</strong> agree to the exclusive jurisdiction of
+        <strong>{OPERATOR}</strong> agree to the exclusive jurisdiction of
         the competent courts located in Georgia for any dispute not subject to an
         alternative dispute&#8209;resolution process that the parties separately
         agree to in writing.{" "}
@@ -280,7 +305,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Questions about these Terms? Contact{" "}
-        <strong>[Operator name]</strong> at{" "}
+        <strong>{OPERATOR}</strong> at{" "}
         <a href="mailto:legal@evallens.io">legal@evallens.io</a>.
       </p>
     ),
