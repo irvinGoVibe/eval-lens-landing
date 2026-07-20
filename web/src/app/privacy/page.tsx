@@ -9,6 +9,10 @@ export const metadata: Metadata = {
 
 const UPDATED = "June 16, 2026";
 
+const OPERATOR = "Individual Entrepreneur Yaroslav Volovyi";
+const OPERATOR_ADDRESS =
+  "Gotua Street N26, Floor 10, Flat N37, Saburtalo District, Tbilisi, Georgia";
+
 const SECTIONS: LegalSection[] = [
   {
     id: "scope",
@@ -16,7 +20,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          This Privacy Policy explains how <strong>[Operator name]</strong>, an
+          This Privacy Policy explains how <strong>{OPERATOR}</strong>, an
           individual entrepreneur registered in Georgia
           (&ldquo;EvalLens,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) handles
           personal information in connection with the EvalLens website and the
@@ -24,6 +28,26 @@ const SECTIONS: LegalSection[] = [
           &ldquo;Service&rdquo;). It applies to organizers who use the Service
           and to participants whose materials are submitted to it.
         </p>
+        <p>The data controller responsible for your information is:</p>
+        <ul>
+          <li>
+            <strong>Controller:</strong> {OPERATOR}
+          </li>
+          <li>
+            <strong>Legal form:</strong> Individual Entrepreneur, registered in
+            Georgia
+          </li>
+          <li>
+            <strong>Identification number:</strong> 305676649
+          </li>
+          <li>
+            <strong>Registering authority:</strong> LEPL National Agency of
+            Public Registry (registered February 12, 2024)
+          </li>
+          <li>
+            <strong>Registered address:</strong> {OPERATOR_ADDRESS}
+          </li>
+        </ul>
         <p>
           EvalLens is operated from <strong>Georgia</strong> and serves business
           customers internationally. By using the Service, you understand that
@@ -284,9 +308,9 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Questions about this policy or your information? Contact{" "}
-        <strong>[Operator name]</strong> at{" "}
+        <strong>{OPERATOR}</strong> at{" "}
         <a href="mailto:privacy@evallens.io">privacy@evallens.io</a> or at{" "}
-        <strong>[mailing address]</strong>.
+        <strong>{OPERATOR_ADDRESS}</strong>.
       </p>
     ),
   },
