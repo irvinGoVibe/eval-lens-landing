@@ -56,6 +56,7 @@ export function Problem() {
                 #problem gets within two viewports (IO, rootMargin 200%). */}
             <video
               className="scrub-video"
+              data-scrub-fps="15"
               muted
               playsInline
               preload="metadata"

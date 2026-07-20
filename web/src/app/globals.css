@@ -1974,6 +1974,47 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   .scrub-file.f8,.scrub-file.f9,.scrub-file.f10{display:none;}
 }
 
+/* Mobile Safari resolves legacy vh against the large viewport. The resulting
+   874px sticky scene inside a 660px visual viewport jitters and releases at the
+   wrong point. svh is intentionally stable while Safari's browser chrome
+   expands/collapses, which keeps the scroll-to-video mapping deterministic. */
+@supports (height:100svh){
+  @media (max-width:760px){
+    .scroll-scrub .scrub-track{height:320svh;}
+    .scroll-scrub .scrub-pin{height:100svh;}
+
+    /* The sticky pin is the positioning context on iOS. Avoid a fixed child:
+       Safari rebases fixed descendants while its top/bottom chrome collapses,
+       producing the visible heading jump captured on the physical iPhone. */
+    .scroll-scrub .scrub-heading-slot{
+      min-height:clamp(150px,24svh,180px);
+      padding-top:0;
+    }
+    .scroll-scrub .scrub-heading{
+      position:absolute;
+      top:clamp(92px,15svh,112px);
+      width:100%;
+      max-width:none;
+      padding-inline:24px;
+      transform:translateX(-50%);
+    }
+    .scroll-scrub .scrub-heading .scrub-title{
+      font-size:clamp(34px,9.5vw,42px);
+      line-height:1.04;
+    }
+    .scroll-scrub .scrub-heading .scrub-sub{
+      max-width:34ch;
+      margin:14px auto 0;
+      line-height:1.4;
+    }
+    .scroll-scrub .scrub-stage-area,
+    .scroll-scrub .scrub-scene{
+      transform:none;
+      transition:opacity .24s linear;
+    }
+  }
+}
+
 /* ============================================================
    3 · ENTRY POINT — scroll-driven product workflow demo
    ============================================================ */
@@ -8959,4 +9000,60 @@ section.band.ink .mini-tag{color:var(--lavender);}
 .ev-drift{ animation:ev-drift-a 11s ease-in-out infinite; will-change:translate; }
 @media (prefers-reduced-motion:reduce){
   .ev-drift{ animation:none !important; }
+}
+
+/* ── Homepage Safari/mobile audit fixes ───────────────────────────────────
+   Keep these overrides scoped to homepage sections and shared client chrome.
+   They address findings reproduced in WebKit and on a physical iPhone; they
+   do not mask layout overflow or change the product's visual hierarchy. */
+
+/* WCAG AA contrast for the decision rail and the two affected newsroom tags. */
+#decisions .sd-rail-lead,
+#decisions .sd-rail .step .idx,
+#decisions .sd-rail .step .desc{color:#64646e;}
+.home-blog .blog-tag[data-accent="aqua"]{color:#0f766e;}
+.home-blog .blog-tag[data-accent="orange"]{color:#9a3412;}
+
+@media (prefers-reduced-motion:reduce){
+  #decisions .sd-rail .step,
+  #decisions .sd-rail .step .idx,
+  #decisions .sd-rail .step .name,
+  #decisions .sd-rail .step .desc,
+  #decisions .sd-rail .step .track{transition:none !important;}
+}
+
+/* iOS touch targets: preserve the visible control sizes while making the
+   interactive boxes at least Apple's/WCAG-recommended 44px. */
+@media (max-width:760px), (pointer:coarse){
+  .site-header .brand,
+  .site-header__cta.btn{min-height:44px;}
+
+  #workflow .wf-nav-btn,
+  #decisions .sd-nav-btn,
+  #decisions .sd-mnav-btn,
+  .news-arrow{width:44px;height:44px;min-width:44px;min-height:44px;}
+
+  #workflow .copy,
+  #workflow .run-btn,
+  #decisions .sect-cta .btn,
+  .home-blog__seeall,
+  .horse-ctas .btn,
+  #system .chip,
+  #system a[href="/trust/use-cases"],
+  .partner-modal__not-now{
+    min-height:44px;
+    display:inline-flex;
+    align-items:center;
+  }
+
+  .foot .col-h a,
+  .foot .col nav a,
+  .foot .foot-legal__meta a{
+    min-width:44px;
+    min-height:44px;
+    display:flex;
+    align-items:center;
+  }
+  .foot .foot-social a{width:44px;height:44px;}
+  .partner-modal__close{width:44px;height:44px;}
 }

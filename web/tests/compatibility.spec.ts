@@ -1,0 +1,124 @@
+import { test, expect } from "@playwright/test";
+import {
+  assertNoCriticalDiagnostics,
+  capturePageDiagnostics,
+} from "./support/diagnostics";
+import { KEY_PUBLIC_ROUTES, PUBLIC_AUTH_ROUTES } from "./support/routes";
+
+test.beforeEach(async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+});
+
+for (const route of KEY_PUBLIC_ROUTES) {
+  test(`${route} renders without browser diagnostics`, async ({ page }, testInfo) => {
+    const diagnostics = capturePageDiagnostics(page);
+    const response = await page.goto(route, { waitUntil: "domcontentloaded" });
+
+    expect(response?.status(), `${route} response status`).toBeLessThan(400);
+    await expect(page.locator("main, body").first()).toBeVisible();
+    await assertNoCriticalDiagnostics(diagnostics, testInfo);
+  });
+}
+
+test("mobile navigation supports touch-sized controls", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/pricing", { waitUntil: "domcontentloaded" });
+
+  const menuButton = page.getByRole("button", { name: "Open menu" });
+  await expect(menuButton).toBeVisible();
+  const box = await menuButton.boundingBox();
+  expect(box?.width ?? 0).toBeGreaterThanOrEqual(44);
+  expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+
+  await menuButton.tap();
+  await expect(page.getByRole("dialog", { name: "Site navigation" })).toBeVisible();
+});
+
+for (const route of PUBLIC_AUTH_ROUTES) {
+  test(`${route} form remains usable on mobile`, async ({ page, isMobile }) => {
+    test.skip(!isMobile, "mobile profile only");
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+
+    const password = page.locator('input[type="password"]');
+    await expect(password).toBeVisible();
+    await password.focus();
+    await expect(password).toBeFocused();
+
+    const fontSize = await password.evaluate((element) =>
+      Number.parseFloat(getComputedStyle(element).fontSize),
+    );
+    expect(fontSize, "iOS form controls should avoid focus zoom").toBeGreaterThanOrEqual(16);
+  });
+}
+
+test("viewport metadata opts into safe-area support", async ({ page }) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  const viewport = await page.locator('meta[name="viewport"]').getAttribute("content");
+  expect(viewport).toContain("width=device-width");
+  expect(viewport).toContain("viewport-fit=cover");
+});
+
+test("homepage reduced-motion heading does not cover the hero", async ({ page }) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  const heading = page.locator(".scrub-heading");
+  await expect(heading).toBeHidden();
+
+  const overlapsHero = await page.evaluate(() => {
+    const hero = document.querySelector(".hero-head");
+    const scrubHeading = document.querySelector(".scrub-heading");
+    if (!hero || !scrubHeading) return false;
+    const a = hero.getBoundingClientRect();
+    const b = scrubHeading.getBoundingClientRect();
+    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  });
+  expect(overlapsHero).toBe(false);
+});
+
+test("homepage primary mobile controls are touch sized", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  for (const selector of [
+    ".site-header__cta",
+    "#wf-navDown",
+    "#sd-navDown",
+    ".home-blog__seeall",
+    ".news-arrow",
+  ]) {
+    const control = page.locator(selector).first();
+    await expect(control, selector).toBeAttached();
+    const box = await control.boundingBox();
+    expect(box?.width ?? 0, `${selector} width`).toBeGreaterThanOrEqual(44);
+    expect(box?.height ?? 0, `${selector} height`).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test("homepage mobile scrub pins, advances, and releases", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  const metrics = await page.locator(".scrub-track").evaluate((track) => {
+    const rect = track.getBoundingClientRect();
+    return {
+      top: rect.top + window.scrollY,
+      height: rect.height,
+      viewport: window.innerHeight,
+    };
+  });
+
+  await page.evaluate((y) => window.scrollTo(0, y), metrics.top + 2);
+  await expect(page.locator(".scrub-heading")).toBeVisible();
+
+  const pinHeight = await page.locator(".scrub-pin").evaluate(
+    (pin) => pin.getBoundingClientRect().height,
+  );
+  expect(Math.abs(pinHeight - metrics.viewport)).toBeLessThanOrEqual(1);
+
+  await page.evaluate(
+    ({ top, height, viewport }) =>
+      window.scrollTo(0, top + (height - viewport) * 0.9),
+    metrics,
+  );
+  await expect(page.locator(".scrub-heading")).toBeHidden();
+});

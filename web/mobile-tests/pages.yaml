@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "defaults": {
+    "locale": "en-US",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "scrollStepRatio": 0.75,
+    "maxCheckpoints": 24,
+    "motion": "reduce",
+    "freezeAnimations": true
+  },
+  "devices": [
+    {
+      "id": "iphone-narrow",
+      "label": "iPhone narrow boundary",
+      "viewport": { "width": 375, "height": 812 }
+    },
+    {
+      "id": "iphone-large",
+      "label": "iPhone large boundary",
+      "viewport": { "width": 430, "height": 932 }
+    }
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "url": "/",
+      "scenario": "home",
+      "states": ["initial", "partner-modal-open", "bottom-of-page"],
+      "criticalFlows": ["open homepage", "scroll every checkpoint", "open partner modal"],
+      "motion": "no-preference",
+      "freezeAnimations": false,
+      "waitFor": {
+        "selector": "body.hero-ready",
+        "skeletonSelectors": []
+      }
+    }
+  ]
+}
