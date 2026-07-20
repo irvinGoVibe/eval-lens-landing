@@ -107,7 +107,7 @@ Problem (поток заявок > времени) → Workflow (собирае�
 
 ## Footer (`components/Footer.tsx`)
 - **Текущая копия:** описание `Batch-review pitch decks, rank the strongest startups, and give every team a clear report. Final decisions stay human-controlled.` · CTA `Book a call` / `Try live demo`.
-- Колонки: **Product** (Overview, Entry hub, Reports, Review board, Site map) · **Trust** (Methodology, Consistency & reliability, Prompt injection safety, Security & privacy, Use cases) · **Company** (About, Newsroom, Contact, careers@evallense.com) · Socials (X, Instagram, Telegram, Medium) · Legal (© 2026 EvalLens, Privacy, Terms, Security).
+- Колонки: **Product** (Overview, Entry hub, Reports, Review board, Site map) · **Trust** (Methodology, Consistency & reliability, Prompt injection safety, Security & privacy, Use cases) · **Company** (About, Newsroom, Contact, careers@evallens.io) · Socials (X, Instagram, Telegram, Medium) · Legal (© 2026 EvalLens, Privacy, Terms, Security).
 
 ---
 
@@ -169,7 +169,7 @@ Problem (поток заявок > времени) → Workflow (собирае�
 - **Do:** это каноническое место origin-нарратива AI Jury → EvalLens; держать его именно здесь.
 
 ## /company/contact (`app/company/contact/page.tsx`)
-- Каналы: Book a demo · `hello@evallense.com` (general & sales) · `careers@evallense.com` · `security@evallense.com` · `press@evallense.com`.
+- Каналы: Book a demo · `hello@evallens.io` (general & sales) · `careers@evallens.io` · `security@evallens.io` · `press@evallens.io`.
 - Docs: `https://docs.evallense.com` (placeholder — подтвердить).
 - Socials: X, Instagram, Telegram, Medium.
 - **⚠️** некоторые email/docs — placeholder, подтвердить с фаундером перед публикацией.
