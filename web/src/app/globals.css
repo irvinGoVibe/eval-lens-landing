@@ -4112,6 +4112,14 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
 .mnav__close:focus-visible{outline:2px solid var(--violet);outline-offset:2px;}
 .mnav__close-icon{width:22px;height:22px;}
 
+/* iOS Safari treats programmatic focus inside a dialog opened by touch as
+   focus-visible. Track input modality in MobileNav so taps do not leave a
+   keyboard-style purple ring behind; the first key event restores it. */
+.mnav__overlay[data-pointer-focus="true"] :is(a,button):focus-visible,
+.mnav[data-pointer-focus="true"] .mnav__trigger:focus-visible{
+  outline:none;
+}
+
 /* scrollable region between the top row and the pinned CTA zone */
 .mnav__scroll{
   flex:1 1 auto;min-height:0;overflow-y:auto;

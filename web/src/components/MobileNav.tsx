@@ -42,6 +42,7 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [pointerFocus, setPointerFocus] = useState(false);
   // The overlay is portaled to <body>, so it can't read the header's
   // `.page-header--dark` ancestor. Snapshot the header surface when opening and
   // mirror it onto the overlay via `--dark`.
@@ -53,6 +54,13 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelId = useId();
+
+  // Real taps have a non-zero click detail. The physical-iPhone QA bridge
+  // drives Safari through WebDriver and emits an untrusted detail=0 click with
+  // no preceding pointer/touch event, so treat that path as pointer-like too.
+  // A genuine keyboard activation remains trusted + detail=0.
+  const isPointerActivation = (event: React.MouseEvent) =>
+    event.detail !== 0 || !event.isTrusted;
 
   // Section whose `match` prefixes the current path (used for active accent and
   // default-expanded state).
@@ -148,8 +156,13 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
     <div
       className={dark ? "mnav__overlay mnav__overlay--dark" : "mnav__overlay"}
       data-open={open}
+      data-pointer-focus={pointerFocus || undefined}
       aria-hidden={!open}
       onClick={closeDrawer}
+      onClickCapture={(event) => setPointerFocus(isPointerActivation(event))}
+      onPointerDownCapture={(event) => setPointerFocus(event.pointerType !== "mouse")}
+      onTouchStartCapture={() => setPointerFocus(true)}
+      onKeyDownCapture={() => setPointerFocus(false)}
     >
       <div
         className="mnav__sheet"
@@ -317,7 +330,7 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
   );
 
   return (
-    <div className="mnav">
+    <div className="mnav" data-pointer-focus={pointerFocus || undefined}>
       <button
         type="button"
         ref={triggerRef}
@@ -326,7 +339,14 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={() => (open ? closeDrawer() : openDrawer())}
+        onPointerDown={(event) => setPointerFocus(event.pointerType !== "mouse")}
+        onTouchStart={() => setPointerFocus(true)}
+        onKeyDown={() => setPointerFocus(false)}
+        onClick={(event) => {
+          setPointerFocus(isPointerActivation(event));
+          if (open) closeDrawer();
+          else openDrawer();
+        }}
       >
         <svg
           className="mnav__trigger-icon"

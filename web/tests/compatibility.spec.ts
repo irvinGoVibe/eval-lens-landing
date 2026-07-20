@@ -30,8 +30,35 @@ test("mobile navigation supports touch-sized controls", async ({ page, isMobile 
   expect(box?.width ?? 0).toBeGreaterThanOrEqual(44);
   expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
 
+  await expect(page.locator(".mnav__overlay")).toBeAttached();
   await menuButton.tap();
-  await expect(page.getByRole("dialog", { name: "Site navigation" })).toBeVisible();
+  await expect(page.locator(".mnav__overlay")).toHaveAttribute(
+    "data-pointer-focus",
+    "true",
+  );
+  const dialog = page.getByRole("dialog", { name: "Site navigation" });
+  await expect(dialog).toBeVisible();
+
+  const close = page.getByRole("button", { name: "Close menu" });
+  await expect(close).toBeFocused();
+  const outline = await close.evaluate((element) => getComputedStyle(element).outlineStyle);
+  expect(outline).toBe("none");
+
+  await close.tap();
+  await expect(menuButton).toBeFocused();
+  expect(
+    await menuButton.evaluate((element) => getComputedStyle(element).outlineStyle),
+  ).toBe("none");
+
+  await menuButton.press("Enter");
+  await expect(page.locator(".mnav__overlay")).not.toHaveAttribute(
+    "data-pointer-focus",
+    "true",
+  );
+  await expect(close).toBeFocused();
+  expect(await close.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe(
+    "solid",
+  );
 });
 
 for (const route of PUBLIC_AUTH_ROUTES) {
