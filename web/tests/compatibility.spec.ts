@@ -211,6 +211,22 @@ test("blog article avoids automatic RSC prefetch bursts on the LAN QA origin", a
   expect(prefetchedRsc).toEqual([]);
 });
 
+test("about origin-story CTA opens the published article", async ({ page }) => {
+  await page.goto("/company/about", { waitUntil: "domcontentloaded" });
+
+  const originStory = page.getByRole("link", { name: /Read the full story/ });
+  await expect(originStory).toHaveAttribute(
+    "href",
+    "/blog/from-ai-jury-to-evallense",
+  );
+  await originStory.click();
+
+  await expect(page).toHaveURL(/\/blog\/from-ai-jury-to-evallense$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "From AI Jury to EvalLens: what 400+ runs taught us",
+  );
+});
+
 test("all-news mobile cards are ready before Safari reaches the fourth story", async ({
   page,
   isMobile,

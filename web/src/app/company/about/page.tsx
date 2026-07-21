@@ -308,13 +308,13 @@ export default function AboutPage() {
                     </li>
                   ))}
                 </ol>
-                {/* link to the long-form origin story (Newsroom: founding-story) */}
+                {/* Link to the published long-form EvalLens origin story. */}
                 <div
                   className="ab-story__cta"
                   data-reveal="up"
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Button href="/blog/founding-story" variant="gradient" arrow>
+                  <Button href="/blog/from-ai-jury-to-evallense" variant="gradient" arrow>
                     Read the full story
                   </Button>
                 </div>
