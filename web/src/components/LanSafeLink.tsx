@@ -29,12 +29,38 @@ function isLanQaOrigin() {
  */
 export default function LanSafeLink({
   prefetch,
+  onClick,
   ...props
 }: LanSafeLinkProps) {
   return (
     <NextLink
       {...props}
       prefetch={isLanQaOrigin() ? false : prefetch}
+      onClick={(event) => {
+        onClick?.(event);
+        if (event.defaultPrevented || !isLanQaOrigin()) return;
+        if (
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey ||
+          event.currentTarget.target === "_blank" ||
+          event.currentTarget.hasAttribute("download")
+        ) {
+          return;
+        }
+
+        const destination = new URL(event.currentTarget.href, window.location.href);
+        if (destination.origin !== window.location.origin) return;
+
+        // Activated RSC navigation can still lose its connection in physical
+        // Safari after a valid Local Network Access preflight. A full document
+        // request does not take that fetch path and is deterministic on the
+        // isolated LAN QA origin. This branch is never active in production.
+        event.preventDefault();
+        window.location.assign(destination.href);
+      }}
     />
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LanSafeLink";
 import { notFound } from "next/navigation";
 import { MarkdownBody } from "@/components/article/MarkdownBody";
 import { ArticleCard } from "@/components/blog/ArticleCard";

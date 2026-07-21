@@ -189,6 +189,28 @@ test("blog avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
   expect(prefetchedRsc).toEqual([]);
 });
 
+test("blog article avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile profile only");
+  const prefetchedRsc: string[] = [];
+  page.on("request", (request) => {
+    const url = new URL(request.url());
+    if (url.searchParams.has("_rsc")) prefetchedRsc.push(url.href);
+  });
+
+  await page.goto("/blog/how-to-prepare-for-our-pitch-competition", {
+    waitUntil: "networkidle",
+  });
+  await page.waitForTimeout(500);
+
+  await page.locator(".blog-section--related").getByRole("link", { name: /See all/ }).tap();
+  await expect(page).toHaveURL(/\/blog\/all$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("All News");
+  expect(prefetchedRsc).toEqual([]);
+});
+
 test("all-news mobile cards are ready before Safari reaches the fourth story", async ({
   page,
   isMobile,
