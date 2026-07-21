@@ -292,6 +292,24 @@ test("blog avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
   expect(prefetchedRsc).toEqual([]);
 });
 
+test("trust hub avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile profile only");
+  const prefetchedRsc: string[] = [];
+  page.on("request", (request) => {
+    const url = new URL(request.url());
+    if (url.searchParams.has("_rsc")) prefetchedRsc.push(url.href);
+  });
+
+  await page.goto("/trust", { waitUntil: "networkidle" });
+  await page.locator("#map").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(800);
+
+  expect(prefetchedRsc).toEqual([]);
+});
+
 test("blog article avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
   page,
   isMobile,
