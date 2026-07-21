@@ -1,6 +1,13 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float, useGLTF } from "@react-three/drei";
@@ -232,6 +239,14 @@ type UnicornSceneProps = {
    *  background-glow sprites so the page (and the title behind it) shows
    *  through every empty pixel. Lighting and bloom stay. */
   noBackdrop?: boolean;
+  /** Normalized physical-device tilt, calibrated on the first sensor sample. */
+  gyro?: MutableRefObject<GyroGaze>;
+};
+
+export type GyroGaze = {
+  x: number;
+  y: number;
+  active: boolean;
 };
 
 /** Soft radial sprite used for the halo behind the head. */
@@ -316,7 +331,13 @@ function BackgroundGlow() {
   );
 }
 
-function UnicornModel({ isMobile }: { isMobile: boolean }) {
+function UnicornModel({
+  isMobile,
+  gyro,
+}: {
+  isMobile: boolean;
+  gyro?: MutableRefObject<GyroGaze>;
+}) {
   const { scene } = useGLTF(MODEL_URL);
   const gl = useThree((state) => state.gl);
   const group = useRef<THREE.Group>(null);
@@ -578,7 +599,8 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     const t = state.clock.elapsedTime;
     // the neck (group) stays planted in the 45° rest pose with a faint
     // breathing sway; only the head turns toward the cursor, on a spring
-    const engaged = !isMobile && gaze.current.active;
+    const gazeInput = isMobile && gyro ? gyro.current : gaze.current;
+    const engaged = gazeInput.active;
     const r = rig.current;
 
     // body yaw: rest pose for a centered/right cursor; once the cursor moves
@@ -587,18 +609,18 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
     const bodyTarget =
       BASE_YAW +
       (engaged
-        ? THREE.MathUtils.clamp(gaze.current.x, -1, 0) * BODY_TURN_LEFT
+        ? THREE.MathUtils.clamp(gazeInput.x, -1, 0) * BODY_TURN_LEFT
         : 0);
     springStep(r.bodyYaw, bodyTarget, 10, 4.5, delta);
 
     // the chain aims at the world-space gaze minus whatever the body has
     // already turned, so as the body swings the neck unwinds by itself
-    const worldYaw = engaged ? GAZE_YAW + gaze.current.x * 0.6 : BASE_YAW;
+    const worldYaw = engaged ? GAZE_YAW + gazeInput.x * 0.6 : BASE_YAW;
     const totalYaw = worldYaw - r.bodyYaw.x;
     // asymmetric pitch: the head throws itself up at a cursor above it much
     // harder than it dips toward one below
-    const pitchGain = gaze.current.y < 0 ? 0.55 : 0.2;
-    const totalPitch = engaged ? gaze.current.y * pitchGain : 0;
+    const pitchGain = gazeInput.y < 0 ? 0.55 : 0.2;
+    const totalPitch = engaged ? gazeInput.y * pitchGain : 0;
 
     // split the turn across the chain with anatomical limits: the neck takes
     // its share, the skull does the rest at the poll joint
@@ -817,7 +839,13 @@ function UnicornModel({ isMobile }: { isMobile: boolean }) {
   );
 }
 
-export default function UnicornScene({ isMobile, active, zoom = 1, noBackdrop }: UnicornSceneProps) {
+export default function UnicornScene({
+  isMobile,
+  active,
+  zoom = 1,
+  noBackdrop,
+  gyro,
+}: UnicornSceneProps) {
   const camZ = 3.2 / zoom;
   return (
     <Canvas
@@ -875,7 +903,7 @@ export default function UnicornScene({ isMobile, active, zoom = 1, noBackdrop }:
       </Environment>
       <Suspense fallback={null}>
         <Float speed={1.4} rotationIntensity={0} floatIntensity={0.5} floatingRange={[-0.06, 0.06]}>
-          <UnicornModel isMobile={isMobile} />
+          <UnicornModel isMobile={isMobile} gyro={gyro} />
         </Float>
       </Suspense>
       <BloomLayer isMobile={isMobile} />

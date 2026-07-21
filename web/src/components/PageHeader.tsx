@@ -1,4 +1,5 @@
 import Link from "@/components/LanSafeLink";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Button } from "@/components/ui/Button";
 import { HeaderThemeSync } from "@/components/HeaderThemeSync";
 import { GlobalNavSwitcher } from "@/components/GlobalNavSwitcher";
@@ -54,8 +55,7 @@ export function PageHeader({
           className="brand page-header__brand"
           aria-label="EvalLens home"
         >
-          <span className="mark" aria-hidden="true"></span>
-          EvalLens
+          <BrandLogo />
         </Link>
 
         {nav && (

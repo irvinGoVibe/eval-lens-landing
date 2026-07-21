@@ -1,4 +1,5 @@
 import Link from "@/components/LanSafeLink";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Button } from "@/components/ui/Button";
 
 type FooterProps = {
@@ -28,8 +29,13 @@ export function Footer({ variant = "light" }: FooterProps) {
       <div className="inner">
         <div className="wrap">
           <div className="col col--brand">
-            <Link className="brand" href="/#top" style={{ marginBottom: 14 }}>
-              <span className="mark"></span>EvalLens
+            <Link
+              className="brand"
+              href="/#top"
+              aria-label="EvalLens home"
+              style={{ marginBottom: 14 }}
+            >
+              <BrandLogo tone={isDark ? "light" : "dark"} />
             </Link>
             <p>
               Batch-review pitch decks.<br />

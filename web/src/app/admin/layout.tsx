@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { BrandLogo } from "@/components/BrandLogo";
 import { SESSION_COOKIE } from "@/lib/cms/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { LogoutButton } from "@/components/admin/LogoutButton";
@@ -30,9 +31,9 @@ async function AdminChrome({ children }: { children: React.ReactNode }) {
     <div className="admin-root">
       <aside className="admin-sidebar">
         <div className="admin-brand">
-          <Link href="/admin">
-            <span className="admin-brand__mark" aria-hidden="true" />
-            EvalLens CMS
+          <Link href="/admin" aria-label="EvalLens CMS home">
+            <BrandLogo tone="dark" />
+            <span className="admin-brand__suffix">CMS</span>
           </Link>
         </div>
         <AdminNav />

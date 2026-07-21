@@ -4,6 +4,7 @@ import Link from "@/components/LanSafeLink";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Button } from "@/components/ds";
 import { NavIconGlyph } from "@/components/nav-icons";
 import { MOBILE_NAV, type NavLink, type SectionNav } from "@/lib/site-nav";
@@ -176,9 +177,8 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         <span className="mnav__grabber" aria-hidden="true" />
 
         <div className="mnav__top">
-          <span className="mnav__brand">
-            <span className="mnav__mark" aria-hidden="true" />
-            EvalLens
+          <span className="mnav__brand" role="img" aria-label="EvalLens">
+            <BrandLogo />
           </span>
           <button
             type="button"

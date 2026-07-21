@@ -188,10 +188,19 @@ a{color:inherit;text-decoration:none;}
 .progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:200;background:transparent;}
 .progress::before{content:"";display:block;height:100%;width:var(--p,0%);background:var(--lens);transition:width .08s linear;}
 
-/* ---------- brand (footer) ---------- */
-.brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:600;font-size:19px;letter-spacing:-.02em;}
-.brand .mark{width:24px;height:26px;border-radius:0;background:url(/assets/brand/evallense-logo.webp) center/contain no-repeat;position:relative;box-shadow:none;}
-.brand .mark::after{content:none;}
+/* ---------- official EvalLens brand ---------- */
+.brand{display:flex;align-items:center;}
+.brand-logo{
+  display:block;flex:none;width:104px;height:36px;
+  background-position:left center;background-repeat:no-repeat;background-size:contain;
+}
+/* “dark” means dark ink for a light surface; “light” is the white wordmark. */
+.brand-logo--auto,.brand-logo--dark{background-image:url(/assets/brand/evallens-logo-dark.svg);}
+.brand-logo--light,
+.site-header:not(.is-light) .brand-logo--auto,
+.page-header--dark .brand-logo--auto,
+.foot.is-dark .brand-logo--auto,
+.mnav__overlay--dark .brand-logo--auto{background-image:url(/assets/brand/evallens-logo-light.svg);}
 
 /* ---------- site header ---------- */
 .site-header{
@@ -245,10 +254,8 @@ body.hero-ready .site-header.is-hidden{
   pointer-events:auto;
 }
 .site-header .brand{
-  flex:none;font-size:18px;color:var(--fg-on-dark);
-  transition:color .35s var(--ease);
+  flex:none;color:var(--fg-on-dark);
 }
-.site-header .brand .mark{box-shadow:none;}
 .site-header__nav{
   display:flex;align-items:center;gap:clamp(18px,2.6vw,36px);
   margin-left:auto;margin-right:clamp(12px,2vw,28px);
@@ -265,7 +272,6 @@ body.hero-ready .site-header.is-hidden{
 .site-header__link:hover{color:var(--fg-on-dark);}
 /* past hero — readable on light sections, still transparent */
 .site-header.is-light .brand{color:var(--fg);}
-.site-header.is-light .brand .mark{box-shadow:none;}
 .site-header.is-light .site-header__link{color:var(--violet);}
 .site-header.is-light .site-header__link:hover{color:var(--fg);}
 @media (max-width:900px){
@@ -410,8 +416,12 @@ body.hero-ready .site-header.is-hidden{
 @keyframes partner-unicorn-breathe{0%,100%{scale:1;}50%{scale:1.025;}}
 @media (max-width:680px){
   .partner-modal{align-items:end;padding:12px;}
-  .partner-modal__panel{min-height:0;grid-template-columns:1fr;border-radius:var(--r-lg);}
-  .partner-modal__visual{height:218px;min-height:0;border-right:0;border-bottom:1px solid rgba(255,255,255,.09);}
+  .partner-modal__panel{
+    min-height:0;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);
+    grid-template-columns:1fr;border-radius:var(--r-lg);
+    overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
+  }
+  .partner-modal__visual{height:clamp(150px,24svh,180px);min-height:0;border-right:0;border-bottom:1px solid rgba(255,255,255,.09);}
   .partner-modal__unicorn{inset:-16% -13% -10%;}
   .partner-modal__content{padding:34px 24px max(28px,env(safe-area-inset-bottom));}
   .partner-modal__content h2{max-width:330px;font-size:clamp(36px,10.4vw,48px);}
@@ -2151,7 +2161,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #workflow .chrome .dots{display:flex;gap:7px;}
 #workflow .chrome .dots i{width:11px;height:11px;border-radius:50%;background:var(--border);}
 #workflow .chrome .brand{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:13.5px;letter-spacing:-.01em;}
-#workflow .chrome .brand .glyph{width:16px;height:16px;border-radius:50%;background:var(--lens);}
+#workflow .chrome .brand .glyph{width:16px;height:16px;background:url(/assets/brand/evallens-mark.svg) center/contain no-repeat;}
 #workflow .chrome .crumb{font-family:var(--font-mono);font-size:11px;color:var(--muted-2);letter-spacing:.02em;}
 #workflow .chrome .spacer{flex:1;}
 #workflow .chrome .pill{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--violet);
@@ -2470,12 +2480,12 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   #workflow .wf-nav-btn svg{width:15px;height:15px;}
   #workflow .wf-rail{
     flex-direction:row;overflow-x:auto;gap:10px;padding:2px 2px 5px;scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-y;
   }
   #workflow .wf-rail::-webkit-scrollbar{display:none;}
   #workflow .wf-rail .step{
     grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;
-    flex:0 0 clamp(222px,64vw,248px);min-width:0;max-width:none;min-height:112px;
+    flex:0 0 100%;min-width:0;max-width:none;min-height:112px;height:auto;align-self:stretch;
     padding:13px 14px;border-radius:18px;background:rgba(255,255,255,.72);
     border:1px solid rgba(108,76,241,.10);scroll-snap-align:start;
     transition:background .45s var(--ease),box-shadow .45s var(--ease),transform .45s var(--ease);
@@ -2484,11 +2494,12 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   #workflow .wf-rail .step .idx{width:28px;height:28px;font-size:11px;}
   #workflow .wf-rail .step .body{display:block;min-width:0;}
   #workflow .wf-rail .step .name{
-    font-size:14px;line-height:1.2;font-weight:650;white-space:normal;overflow:visible;text-overflow:clip;color:var(--fg);
+    font-size:14px;line-height:1.2;font-weight:650;white-space:normal;overflow:visible;text-overflow:clip;
+    overflow-wrap:break-word;color:var(--fg);
   }
   #workflow .wf-rail .step .desc{
     display:block;max-height:none;opacity:1;overflow:visible;margin-top:5px;
-    font-size:12px;line-height:1.35;color:var(--muted-2);
+    font-size:12px;line-height:1.35;white-space:normal;overflow-wrap:break-word;color:var(--muted-2);
   }
   #workflow .wf-rail .step .track{display:block;grid-column:2;max-height:2px;opacity:1;margin-top:9px;}
   #workflow .wf-window-shell{width:100%;padding:4px;border-radius:28px;}
@@ -2587,7 +2598,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   #workflow .workflow-heading{padding:0 18px;}
   #workflow .wf-railcol{grid-template-columns:auto minmax(0,1fr);gap:8px;}
   #workflow .wf-nav-btn{width:34px;height:34px;}
-  #workflow .wf-rail .step{flex-basis:clamp(236px,73vw,286px);min-height:102px;padding:12px;}
+  #workflow .wf-rail .step{flex-basis:100%;min-height:102px;padding:12px;}
   #workflow .wf-rail .step .name{font-size:13.5px;}
   #workflow .wf-rail .step .desc{font-size:11.5px;}
   #workflow .wf-window{height:clamp(492px,66dvh,540px);}
@@ -2664,7 +2675,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 #decisions .sd-chrome .dots{display:flex;gap:7px;}
 #decisions .sd-chrome .dots i{width:11px;height:11px;border-radius:50%;background:var(--border);}
 #decisions .sd-chrome .brand{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:13.5px;letter-spacing:-.01em;}
-#decisions .sd-chrome .brand .glyph{width:16px;height:16px;border-radius:50%;background:var(--lens);}
+#decisions .sd-chrome .brand .glyph{width:16px;height:16px;background:url(/assets/brand/evallens-mark.svg) center/contain no-repeat;}
 #decisions .sd-chrome .crumb{font-family:var(--font-mono);font-size:11px;color:var(--muted-2);letter-spacing:.02em;}
 #decisions .sd-chrome .spacer{flex:1;}
 #decisions .sd-chrome .pill{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--violet);
@@ -3091,11 +3102,13 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 
   /* rail → readable horizontal step cards: full title + caption */
   #decisions .sd-rail{flex-direction:row;overflow-x:auto;gap:10px;scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;scroll-padding-left:0;scrollbar-width:none;padding:2px 2px 5px;}
+    -webkit-overflow-scrolling:touch;scroll-padding-left:0;scrollbar-width:none;touch-action:pan-y;padding:2px 2px 5px;}
   #decisions .sd-rail::-webkit-scrollbar{display:none;}
+  /* Size cards from the rail column, not the full viewport: the mobile arrow
+     column reduces the actually visible carousel width. */
   #decisions .sd-rail .step{
     display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:10px;
-    flex:0 0 clamp(244px,74vw,300px);min-width:0;max-width:none;min-height:96px;
+    flex:0 0 100%;min-width:0;max-width:none;min-height:96px;height:auto;align-self:stretch;
     padding:13px 14px;border-radius:18px;background:rgba(255,255,255,.72);
     border:1px solid rgba(108,76,241,.10);scroll-snap-align:start;
   }
@@ -3103,11 +3116,12 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   #decisions .sd-rail .step .idx{width:28px;height:28px;font-size:11px;}
   #decisions .sd-rail .step .body{display:block;min-width:0;}
   #decisions .sd-rail .step .name{
-    font-size:14px;line-height:1.2;font-weight:650;white-space:normal;overflow:visible;text-overflow:clip;color:var(--fg);
+    font-size:14px;line-height:1.2;font-weight:650;white-space:normal;overflow:visible;text-overflow:clip;
+    overflow-wrap:break-word;color:var(--fg);
   }
   #decisions .sd-rail .step .desc{
     display:block;max-height:none;opacity:1;overflow:visible;margin-top:5px;
-    font-size:12px;line-height:1.35;color:var(--muted-2);
+    font-size:12px;line-height:1.35;white-space:normal;overflow-wrap:break-word;color:var(--muted-2);
   }
   #decisions .sd-rail .step .track{display:block;grid-column:2;max-height:2px;opacity:1;margin-top:9px;}
 
@@ -3212,7 +3226,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   #decisions .sd-window{height:clamp(470px,66dvh,540px);min-height:470px;}
   #decisions .sd-railcol{grid-template-columns:auto minmax(0,1fr);gap:8px;}
   #decisions .sd-nav-btn{width:34px;height:34px;}
-  #decisions .sd-rail .step{flex-basis:clamp(218px,64vw,246px);min-height:112px;padding:12px;}
+  #decisions .sd-rail .step{flex-basis:100%;min-height:112px;padding:12px;}
   #decisions .sd-rail .step .name{font-size:13.5px;}
   #decisions .sd-rail .step .desc{font-size:11.5px;}
   #decisions .brk .row{grid-template-columns:54px 1fr 22px;}
@@ -3627,8 +3641,7 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
   transform:translate3d(0,-110%,0);
 }
 .page-header__brand{
-  color:var(--fg);font-size:18px;flex:none;
-  transition:color .45s var(--ease);
+  color:var(--fg);flex:none;
 }
 /* bare pages (no section nav): brand + CTA only — push the CTA to the edge */
 .page-header__inner > .page-header__cta:nth-child(2){margin-left:auto;}
@@ -3696,9 +3709,6 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
   box-shadow:0 18px 55px rgba(0,0,0,.22);
 }
 .page-header--dark .page-header__brand{color:var(--fg-on-dark);}
-.page-header--dark .page-header__brand .mark{
-  box-shadow:0 0 0 1px rgba(255,255,255,.45) inset, 0 4px 14px -4px var(--violet);
-}
 .page-header--dark .page-header__divider{background:var(--border-on-dark);}
 .page-header--dark .page-header__link{color:var(--muted-on-dark);}
 .page-header--dark .page-header__link:hover{color:var(--fg-on-dark);}
@@ -4089,14 +4099,9 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
   flex:none;padding:10px 18px 12px;
 }
 .mnav__brand{
-  display:flex;align-items:center;gap:9px;
-  font-family:var(--font-display);font-size:17px;font-weight:600;
-  letter-spacing:-.02em;color:var(--mnav-fg);
+  display:flex;align-items:center;color:var(--mnav-fg);
 }
-.mnav__mark{
-  width:22px;height:22px;border-radius:50%;background:var(--lens);
-  box-shadow:0 0 0 1px rgba(255,255,255,.5) inset, 0 4px 14px -4px var(--violet);
-}
+.mnav__brand .brand-logo{width:94px;height:33px;}
 /* Bare × glyph — no circle wrapper: transparent, no border/blur, ≥44px touch
    target via min-size/padding only. The visible mark is the inline "× inset" SVG.
    Colour follows the theme via --mnav-fg (mirrored on the dark overlay). */
@@ -4178,7 +4183,7 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
 }
 
 /* leading section marker = glossy lens-gradient ORB (sphere). Brand mark
-   material (see `.brand .mark`): radial highlight top-left + soft brand glow.
+   material: radial highlight top-left + soft brand glow.
    Per-section hue rotation via --mnav-orb-rot keeps the row set premium but
    distinct. Glassmorphic: 1px inner light rim refracts the edge. */
 .mnav__orb{
@@ -7444,7 +7449,7 @@ section.band.ink .mini-tag{color:var(--lavender);}
   border:1px solid color-mix(in oklab,var(--green-on-dark) 40%, transparent);background:color-mix(in oklab,var(--green-on-dark) 13%, transparent);}
 .about .ab-pill__k{flex:none;font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--green-on-dark) 72%, #fff);opacity:.85;}
 /* tiny EvalLens logo after the "Grow a unicorn!" dream */
-.about .ab-pill__logo{flex:none;width:14px;height:16px;align-self:center;margin-left:-2px;background:url(/assets/brand/evallense-logo.webp) center/contain no-repeat;}
+.about .ab-pill__logo{flex:none;width:14px;height:16px;align-self:center;margin-left:-2px;background:url(/assets/brand/evallens-mark.svg) center/contain no-repeat;}
 .about .ab-dossier__link{display:inline-flex;align-items:center;gap:2px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-on-dark);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s, border-color .2s;}
 .about .ab-dossier__link:hover{color:var(--acc);border-color:color-mix(in oklab,var(--acc) 50%, transparent);}
 

@@ -494,7 +494,7 @@ export default function MethodologyPage() {
             titleTrail="."
             sub="EvalLens does not ask one model for a final verdict. It turns each deck into evidence, routes that evidence through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control."
             ctas={[
-              { label: "See a sample score trace", href: "#evidence" },
+              { label: "Sample score", href: "#evidence" },
               { label: "Book a Demo", href: "https://calendly.com/evallens/30min" },
             ]}
             media={{

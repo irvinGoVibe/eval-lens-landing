@@ -280,16 +280,43 @@ export default function EvidenceBasedReportsPage() {
             }
           }
 
-          /* The four-line knockout in this page's "Beyond the number" Cinema
-             occupies the middle of the viewport. Keep its supporting copy in
-             the clear space above it without changing the shared Cinema or the
-             shorter final CTA instance below. */
+          /* Page-local reading order for the "Beyond the number" Cinema:
+             eyebrow above the SVG knockout, supporting copy below it. The
+             shared Cinema stays untouched because its other instances use
+             different headline geometry. */
           .evidence-reports #beyond .ds-cinema__copy{
-            top: clamp(96px, 14vh, 132px);
+            inset: 0;
+            top: 0;
+            max-width: none;
+            margin: 0;
+            display: block;
+          }
+          .evidence-reports #beyond .ds-cinema__eyebrow{
+            position: absolute;
+            top: clamp(72px, 12svh, 112px);
+            left: var(--gutter);
+            right: var(--gutter);
+            justify-content: center;
+            margin: 0;
+          }
+          .evidence-reports #beyond .ds-cinema__sub{
+            position: absolute;
+            top: 59%;
+            left: var(--gutter);
+            right: var(--gutter);
+            max-width: 54ch;
+            margin: 0 auto;
           }
           @media (max-width: 880px){
-            .evidence-reports #beyond .ds-cinema__copy{
-              top: clamp(76px, 12svh, 108px);
+            .evidence-reports #beyond .ds-cinema__eyebrow{
+              top: clamp(30px, 7svh, 52px);
+            }
+            .evidence-reports #beyond .ds-cinema__sub{
+              top: auto;
+              bottom: clamp(20px, 4svh, 34px);
+              max-width: 36ch;
+              font-size: clamp(13px, 3.45vw, 15px);
+              line-height: 1.35;
             }
           }
 
@@ -392,7 +419,7 @@ export default function EvidenceBasedReportsPage() {
           eyebrow="Beyond the number"
           headline="Explain the score. Defend the decision."
           lines={["Explain the score.", "Defend the decision."]}
-          mobileLines={["Explain", "the score.", "Defend", "the decision."]}
+          mobileLines={["Explain the", "score. Defend", "the decision."]}
           sub="EvalLens shows what shaped the score and links each finding back to the deck. Your team can defend the shortlist, explain the feedback, and know what to ask next."
           media={{
             videoSrc: "/assets/evidence-reports/beyond-number-cinema.mp4",

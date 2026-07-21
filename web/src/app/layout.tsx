@@ -20,7 +20,7 @@ const ORG_JSON_LD = {
   "@type": "Organization",
   name: "EvalLens",
   url: SITE_URL,
-  logo: `${SITE_URL}/assets/brand/evallense-logo.webp`,
+  logo: `${SITE_URL}/icons/icon-512.png`,
   sameAs: [
     "https://x.com/EvalLensio",
     "https://www.instagram.com/evallens/",

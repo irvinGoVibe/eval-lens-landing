@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BrandLogo } from "@/components/BrandLogo";
 import { LoginForm } from "@/components/admin/LoginForm";
 
 export const metadata: Metadata = {
@@ -10,7 +11,10 @@ export default function LoginPage() {
   return (
     <div className="admin-login">
       <div className="admin-login__card">
-        <h1 className="admin-login__title">EvalLens CMS</h1>
+        <h1 className="admin-login__title" aria-label="EvalLens CMS">
+          <BrandLogo tone="dark" />
+          <span>CMS</span>
+        </h1>
         <LoginForm />
       </div>
     </div>

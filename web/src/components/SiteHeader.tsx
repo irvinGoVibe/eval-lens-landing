@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Button } from "@/components/ui/Button";
 
 /**
@@ -23,8 +24,7 @@ export function SiteHeader() {
       ></div>
       <div className="site-header__inner">
         <a className="brand" href="#top" aria-label="EvalLens home">
-          <span className="mark" aria-hidden="true"></span>
-          EvalLens
+          <BrandLogo />
         </a>
         <nav className="site-header__nav" aria-label="Primary">
           <Link className="site-header__link" href="/product/overview">

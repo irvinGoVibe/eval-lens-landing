@@ -48,6 +48,74 @@ function runScript(): () => void {
     cleanups.push(() => target.removeEventListener(type, handler, options));
   };
 
+  /**
+   * Turn a horizontal touch gesture into one deterministic step change.
+   * The rail itself uses `touch-action: pan-y`, so vertical page scrolling is
+   * preserved while a left/right swipe follows the exact same `goTo()` path
+   * as the arrow controls. Suppressing the synthetic click prevents the card
+   * under the release point from immediately overriding the swipe result.
+   */
+  const bindStepRailSwipe = (
+    rail: HTMLElement,
+    enabled: () => boolean,
+    onStep: (direction: -1 | 1) => void,
+  ) => {
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+    let suppressClickUntil = 0;
+
+    on(
+      rail,
+      "touchstart",
+      (event: TouchEvent) => {
+        if (!enabled() || event.touches.length !== 1) {
+          tracking = false;
+          return;
+        }
+        const touch = event.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        tracking = true;
+      },
+      { passive: true },
+    );
+    on(
+      rail,
+      "touchend",
+      (event: TouchEvent) => {
+        if (!tracking || !enabled()) return;
+        tracking = false;
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        const dx = touch.clientX - startX;
+        const dy = touch.clientY - startY;
+        if (Math.abs(dx) < 44 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
+        suppressClickUntil = performance.now() + 500;
+        onStep(dx < 0 ? 1 : -1);
+      },
+      { passive: true },
+    );
+    on(
+      rail,
+      "touchcancel",
+      () => {
+        tracking = false;
+      },
+      { passive: true },
+    );
+    on(
+      rail,
+      "click",
+      (event: MouseEvent) => {
+        if (performance.now() >= suppressClickUntil) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      },
+      true,
+    );
+  };
+
   /* scroll progress */
   const prog = document.getElementById("progress");
   const onScroll = () => {
@@ -1351,6 +1419,7 @@ function runScript(): () => void {
     const layerC = document.getElementById("wf-layerC");
     const crumb = document.getElementById("wf-crumb");
     const pill = document.getElementById("wf-stagepill");
+    const windowEl = document.getElementById("wf-window");
     const steps = Array.from(section.querySelectorAll(".wf-rail .step"));
     const rail = section.querySelector(".wf-rail") as HTMLElement | null;
     if (!scroll || !layerA || !layerB || !layerC || !crumb || !pill || !steps.length) return;
@@ -1448,6 +1517,7 @@ function runScript(): () => void {
     }
 
     function setStage(stage: number, frac: number) {
+      windowEl?.setAttribute("data-stage", String(stage));
       steps.forEach((s, i) => {
         const n = i + 1;
         s.classList.toggle("active", n === stage);
@@ -1569,9 +1639,9 @@ function runScript(): () => void {
     }
 
     // ── manual stepper ───────────────────────────────────────────────
-    // Stages advance ONLY via the up/down buttons (or by clicking a step),
-    // never by scroll. Each transition tweens the in-stage fraction 0→1 so
-    // the demo's typing / counters / progress bars still play out.
+    // Stages advance via the up/down buttons, a card tap, or a horizontal
+    // card swipe on mobile — never by page scroll. Every path funnels through
+    // goTo(), so the demo's typing / counters / progress bars stay in sync.
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const navUp = document.getElementById("wf-navUp") as HTMLButtonElement | null;
     const navDown = document.getElementById("wf-navDown") as HTMLButtonElement | null;
@@ -1697,6 +1767,11 @@ function runScript(): () => void {
     steps.forEach((s, i) => {
       on(s as HTMLElement, "click", () => goTo(i + 1));
     });
+    if (rail) {
+      bindStepRailSwipe(rail, () => window.innerWidth <= 880, (direction) =>
+        goTo(current + direction),
+      );
+    }
     // layout-only re-paint; keeps the current stage settled on resize
     on(window, "resize", () => {
       setStage(current, 1);
@@ -2003,9 +2078,9 @@ function runScript(): () => void {
     }
 
     // ── manual stepper (same as #workflow) ───────────────────────────
-    // Stages switch ONLY via the up/down buttons or by clicking a step,
-    // never by scroll. Each transition tweens the in-stage fraction 0→1
-    // so the demo's reveals still play out.
+    // Stages switch via the up/down buttons, a card tap, or a horizontal
+    // swipe on mobile — never by page scroll. Every path funnels through
+    // goTo(), so the demo's reveals stay in sync.
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isPhone = () => window.matchMedia("(max-width: 640px)").matches;
     const navUp = document.getElementById("sd-navUp") as HTMLButtonElement | null;
@@ -2075,6 +2150,9 @@ function runScript(): () => void {
     steps.forEach((s, i) => {
       on(s as HTMLElement, "click", () => goTo(i + 1));
     });
+    if (rail) {
+      bindStepRailSwipe(rail, isPhone, (direction) => goTo(current + direction));
+    }
 
     // phone: horizontal swipe on the window steps through stages (the dx>dy
     // guard leaves vertical scrolling of the report panel/grid untouched)
