@@ -5013,8 +5013,39 @@ section[id]{scroll-margin-top:72px;}
    Motion lives in the single rAF loop; these are just the styles.
    ============================================================ */
 
-/* reveal-on-enter — variants via data-reveal value, stagger via --reveal-delay */
-[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .75s var(--ease),transform .75s var(--ease);transition-delay:var(--reveal-delay,0ms);will-change:opacity,transform;}
+/* reveal-on-enter — variants via data-reveal value, stagger via --reveal-delay.
+   No `will-change` in the base rule: a page carries hundreds of these, and a
+   permanent compositor layer each blows up texture memory while they sit
+   unrevealed off-screen. ScrollFX adds `.is-revealing` for the length of the
+   transition (below), so the promotion exists exactly while it pays off. */
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .75s var(--ease),transform .75s var(--ease);transition-delay:var(--reveal-delay,0ms);}
+[data-reveal].is-revealing{will-change:opacity,transform;}
+/* ------------------------------------------------------------
+   Ambient-layer gate.
+
+   The decorative blooms/blobs/floats below run `infinite` CSS animations and
+   are promoted to their own compositor layer. Left ungated they animate — and
+   hold that layer — for the whole session, including the ~90% of the time
+   their section is nowhere near the viewport. On the home page that is ~30
+   large blurred layers burning texture memory permanently.
+
+   ScrollOrchestrator marks each host with `data-fx-gate` and toggles
+   `is-onscreen` from an IntersectionObserver. The attribute is set by JS, so
+   with JS off nothing matches and every animation runs exactly as before.
+
+   `animation:none` rather than `animation-play-state:paused` — a paused
+   compositor animation still holds its layer, which is the whole cost we are
+   trying to shed. Restarting the loop is invisible because the observer's
+   rootMargin flips `is-onscreen` a screenful early: the animation is already
+   running by the time the section is actually looked at. */
+[data-fx-gate]:not(.is-onscreen) .section-orange-glow__bloom,
+[data-fx-gate]:not(.is-onscreen) .cta-band__bloom,
+[data-fx-gate]:not(.is-onscreen) .blob-field img,
+[data-fx-gate]:not(.is-onscreen) .wf-float{
+  animation:none;
+  will-change:auto;
+}
+
 [data-reveal="fade"]{transform:none;}
 [data-reveal="left"]{transform:translateX(-32px);}
 [data-reveal="right"]{transform:translateX(32px);}

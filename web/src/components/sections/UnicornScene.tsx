@@ -12,6 +12,7 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float, useGLTF } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { onScrollFrame } from "@/lib/scroll-bus";
 
 const MODEL_URL = "/assets/models/unicorn-head-lowpoly.glb";
 
@@ -404,12 +405,12 @@ function UnicornModel({
       update();
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+    // update() reads the canvas rect; the shared scroll frame coalesces the
+    // bursts so that read happens once per frame instead of per scroll event.
+    const unsubscribeScroll = onScrollFrame(update);
     return () => {
       window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      unsubscribeScroll();
     };
   }, [gl, isMobile]);
 

@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+import { onScrollFrame } from "@/lib/scroll-bus";
+
 /**
  * Scroll FX runtime for INTERNAL pages (not the homepage — that's
  * ScrollOrchestrator). One shared rAF loop per page, opt-in purely via
@@ -65,18 +67,40 @@ export function ScrollFX() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 
-    /* 1 — reveal on enter */
+    /* 1 — reveal on enter.
+       `.is-revealing` carries the `will-change` for the length of the fade and
+       is dropped on transitionend: a page can hold hundreds of [data-reveal]
+       nodes, and promoting all of them for the whole session (the old base-rule
+       `will-change`) costs far more texture memory than it ever saves. */
     const reveals = Array.from(document.querySelectorAll("[data-reveal]"));
     let io: IntersectionObserver | null = null;
+    const revealCleanups: Array<() => void> = [];
     if (reveals.length) {
       if (reduce) {
+        // No transition to promote for — reduced motion cuts straight to the
+        // revealed state.
         reveals.forEach((el) => el.classList.add("is-in"));
       } else {
+        const settle = (el: Element) => {
+          let timer = 0;
+          const done = () => {
+            el.classList.remove("is-revealing");
+            el.removeEventListener("transitionend", done);
+            window.clearTimeout(timer);
+          };
+          el.addEventListener("transitionend", done);
+          // transitionend never fires if the element is hidden or the value
+          // does not actually change; the timeout guarantees the release.
+          // .75s transition + up to ~.6s of --reveal-delay stagger.
+          timer = window.setTimeout(done, 1600);
+          revealCleanups.push(done);
+        };
         io = new IntersectionObserver(
           (entries) => {
             entries.forEach((e) => {
               if (e.isIntersecting) {
-                e.target.classList.add("is-in");
+                e.target.classList.add("is-revealing", "is-in");
+                settle(e.target);
                 io?.unobserve(e.target);
               }
             });
@@ -310,19 +334,18 @@ export function ScrollFX() {
     );
     pinVideos.forEach((v) => v.addEventListener("loadedmetadata", schedule));
 
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    const unsubscribeScroll = onScrollFrame(paint);
     schedule();
 
     return () => {
+      unsubscribeScroll();
+      revealCleanups.forEach((fn) => fn());
       io?.disconnect();
       playIo?.disconnect();
       playCleanups.forEach((fn) => fn());
       reducedMetaCleanups.forEach((fn) => fn());
       unlock();
       pinVideos.forEach((v) => v.removeEventListener("loadedmetadata", schedule));
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
     };
   }, []);
 

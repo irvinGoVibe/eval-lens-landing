@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { onScrollFrame } from "@/lib/scroll-bus";
 
 /**
  * Reverse through-background tone-flip seam — flips a `.ds-zone` from DARK back to
@@ -47,29 +48,18 @@ export function ZoneToneFlipReverse() {
           // Reduced motion removes the crossfade, not the tonal boundary. Keep
           // the layer derived from the seam position so pages with multiple
           // flips do not settle every stacked background into its final state.
-          let raf = 0;
           const sync = () => {
             const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
             gsap.set(relight, {
               opacity: seam.getBoundingClientRect().top <= viewportHeight / 2 ? 1 : 0,
             });
           };
-          const scheduleSync = () => {
-            cancelAnimationFrame(raf);
-            raf = requestAnimationFrame(sync);
-          };
-
           sync();
           if (bridge) gsap.set(bridge, { opacity: 0 });
           if (glow) gsap.set(glow, { opacity: 0 });
-          window.addEventListener("scroll", scheduleSync, { passive: true });
-          window.addEventListener("resize", scheduleSync);
-          window.visualViewport?.addEventListener("resize", scheduleSync);
+          const unsubscribeScroll = onScrollFrame(sync);
           innerCleanup = () => {
-            cancelAnimationFrame(raf);
-            window.removeEventListener("scroll", scheduleSync);
-            window.removeEventListener("resize", scheduleSync);
-            window.visualViewport?.removeEventListener("resize", scheduleSync);
+            unsubscribeScroll();
             gsap.set([relight, bridge, glow].filter(Boolean) as HTMLElement[], {
               clearProps: "opacity",
             });

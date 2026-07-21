@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+import { onScrollFrame } from "@/lib/scroll-bus";
+
 /**
  * Verbatim port of the original landing-page <script> block.
  * Single client-side mount: progress bar, header tint, reveal IO,
@@ -28,7 +30,6 @@ export function ScrollOrchestrator() {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prefer-const */
 function runScript(): () => void {
   /* teardown registry — every listener / observer / rAF loop / timeout below
      registers its undo here; the effect cleanup runs them all. */
@@ -46,6 +47,15 @@ function runScript(): () => void {
   ) => {
     target.addEventListener(type, handler, options);
     cleanups.push(() => target.removeEventListener(type, handler, options));
+  };
+  /**
+   * Subscribe to the shared scroll/resize frame (see `@/lib/scroll-bus`) and
+   * register the teardown. Every scroll-driven block below used to own a
+   * `scroll` + `resize` listener pair and a private rAF; they now all paint in
+   * one frame behind one listener pair.
+   */
+  const subscribeScroll = (handler: () => void) => {
+    cleanups.push(onScrollFrame(handler));
   };
 
   /**
@@ -123,7 +133,7 @@ function runScript(): () => void {
     const max = h.scrollHeight - h.clientHeight;
     if (prog) prog.style.setProperty("--p", (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%");
   };
-  on(document, "scroll", onScroll, { passive: true });
+  subscribeScroll(onScroll);
   onScroll();
 
   /* site header — flip text colour to contrast whatever section sits under the
@@ -186,23 +196,10 @@ function runScript(): () => void {
         header.classList.add("is-hidden");
       }
     };
-    // rAF-throttle: scroll/resize can fire several times per frame, and sync()
-    // does elementsFromPoint + getBoundingClientRect. Listeners only schedule;
-    // sync runs at most once per frame (same schedule pattern as the scrub).
-    let syncRaf = 0;
-    const scheduleSync = () => {
-      if (syncRaf) return;
-      syncRaf = requestAnimationFrame(() => {
-        syncRaf = 0;
-        sync();
-      });
-    };
-    cleanups.push(() => {
-      if (syncRaf) cancelAnimationFrame(syncRaf);
-    });
+    // sync() does elementsFromPoint + getBoundingClientRect, so it must run at
+    // most once per frame — the shared scroll frame already guarantees that.
     sync();
-    on(window, "scroll", scheduleSync, { passive: true });
-    on(window, "resize", scheduleSync, { passive: true });
+    subscribeScroll(sync);
     // onPointerMove itself does no layout reads (class toggles only) — kept
     // direct so header reveal stays immediate; sync() is no longer called
     // from any per-event path.
@@ -216,10 +213,7 @@ function runScript(): () => void {
   (function initOrangeGlowPhase() {
     const glow = document.querySelector(".section-orange-glow") as HTMLElement | null;
     if (!glow) return;
-    let ticking = false;
-    let glowRaf = 0;
     const compute = () => {
-      ticking = false;
       const rect = glow.getBoundingClientRect();
       const vh = window.innerHeight || 1;
       const total = vh + rect.height;
@@ -230,15 +224,40 @@ function runScript(): () => void {
       glow.style.setProperty("--glow-p", p.toFixed(3));
       glow.style.setProperty("--glow-zarya", zarya.toFixed(3));
     };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      glowRaf = requestAnimationFrame(compute);
-    };
-    cleanups.push(() => cancelAnimationFrame(glowRaf));
     compute();
-    on(window, "scroll", onScroll, { passive: true });
-    on(window, "resize", onScroll, { passive: true });
+    subscribeScroll(compute);
+  })();
+
+  /* ambient-layer gate — the decorative blooms / blobs / floats run `infinite`
+     CSS animations on promoted layers. Off-screen that is pure cost: an
+     animation nobody can see, holding a large blurred compositor layer. Mark
+     each host so `[data-fx-gate]:not(.is-onscreen)` in globals.css can switch
+     its ambient children off, and toggle `is-onscreen` from one observer.
+     The 60% rootMargin restarts the loops a screenful before they are seen. */
+  (function initAmbientGate() {
+    const hosts = document.querySelectorAll<HTMLElement>(
+      ".section-orange-glow, .cta-band, .blob-field, .wf-floats",
+    );
+    if (!hosts.length) return;
+    const gate = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          e.target.classList.toggle("is-onscreen", e.isIntersecting);
+        });
+      },
+      { rootMargin: "60% 0px 60% 0px" },
+    );
+    hosts.forEach((host) => {
+      host.dataset.fxGate = "";
+      gate.observe(host);
+    });
+    cleanups.push(() => {
+      gate.disconnect();
+      hosts.forEach((host) => {
+        delete host.dataset.fxGate;
+        host.classList.remove("is-onscreen");
+      });
+    });
   })();
 
   /* reveal on scroll — drives every `.reveal` element, including the home-page
@@ -530,10 +549,8 @@ function runScript(): () => void {
 
     const BG_RATE = 0.14;
     const FG_RATE = 0.52;
-    let raf = 0;
 
     const paint = () => {
-      raf = 0;
       const rect = hero.getBoundingClientRect();
       const shift = -rect.top;
       const heroH = rect.height || window.innerHeight;
@@ -558,18 +575,10 @@ function runScript(): () => void {
       });
     };
 
-    const schedule = () => {
-      if (!raf) {
-        raf = requestAnimationFrame(paint);
-      }
-    };
-    cleanups.push(() => {
-      if (raf) cancelAnimationFrame(raf);
-    });
-
-    on(window, "scroll", schedule, { passive: true });
-    on(window, "resize", schedule);
-    schedule();
+    // paint() only reads the hero rect and writes custom properties, so it can
+    // run straight off the shared scroll frame — no private rAF hop needed.
+    subscribeScroll(paint);
+    paint();
   })();
 
   /* ============================================================
@@ -1212,8 +1221,10 @@ function runScript(): () => void {
         cancelAnimationFrame(rafHandle);
       });
 
-      on(window, "scroll", schedule, { passive: true });
-      on(window, "resize", schedule);
+      // schedule() (not tick) stays the entry point: tick re-arms itself while
+      // it eases the video toward the scroll target, so its rafPending
+      // bookkeeping must keep owning that loop.
+      subscribeScroll(schedule);
       schedule();
     });
   })();

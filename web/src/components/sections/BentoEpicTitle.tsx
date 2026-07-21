@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef } from "react";
+import { onScrollFrame } from "@/lib/scroll-bus";
 
 /* Two headings in the landing's language:
    - BentoScrollHeading: the section header — a fixed overlay that starts
@@ -58,12 +59,7 @@ export function BentoScrollHeading({
         head.style.setProperty("--bh-top", `${r.top + r.height / 2}px`);
       };
       dock();
-      window.addEventListener("scroll", dock, { passive: true });
-      window.addEventListener("resize", dock);
-      return () => {
-        window.removeEventListener("scroll", dock);
-        window.removeEventListener("resize", dock);
-      };
+      return onScrollFrame(dock);
     }
 
     let activated = false;

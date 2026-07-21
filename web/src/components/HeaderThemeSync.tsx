@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+import { onScrollFrame } from "@/lib/scroll-bus";
+
 /**
  * Makes the internal-page header adapt to the band it currently sits over.
  *
@@ -11,20 +13,19 @@ import { useEffect } from "react";
  * light one it flips back. CSS transitions on the header's background/text turn
  * the swap into a smooth cross-fade rather than a hard cut.
  *
- * Self-contained by design: internal pages don't mount `ScrollOrchestrator`
- * (the homepage's shared rAF loop), so this one rAF-throttled listener owns the
- * behavior for the whole internal-page surface.
+ * Internal pages don't mount `ScrollOrchestrator` (the homepage's rAF loop),
+ * so this component owns the behavior for the whole internal-page surface. It
+ * still shares the page-wide scroll frame (`@/lib/scroll-bus`) rather than
+ * binding a listener of its own.
  */
 export function HeaderThemeSync() {
   useEffect(() => {
     const header = document.querySelector<HTMLElement>(".page-header");
     if (!header) return;
-    let raf = 0;
     let lastY = window.scrollY;
     let pointerNearHeader = false;
     const HEADER_REVEAL_ZONE = 96;
     const sync = () => {
-      raf = 0;
       const r = header.getBoundingClientRect();
       const x = Math.round(window.innerWidth / 2);
       // Probe just below the fixed 56px bar row, NOT the header's bottom — the
@@ -51,9 +52,6 @@ export function HeaderThemeSync() {
       }
       if (Math.abs(delta) > 1) lastY = yNow;
     };
-    const schedule = () => {
-      if (!raf) raf = requestAnimationFrame(sync);
-    };
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType && event.pointerType !== "mouse") return;
       pointerNearHeader = event.clientY <= HEADER_REVEAL_ZONE;
@@ -71,14 +69,11 @@ export function HeaderThemeSync() {
     };
 
     sync();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
+    const unsubscribeScroll = onScrollFrame(sync);
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     return () => {
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      unsubscribeScroll();
       window.removeEventListener("pointermove", onPointerMove);
-      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
