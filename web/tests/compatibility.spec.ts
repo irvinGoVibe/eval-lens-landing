@@ -357,6 +357,30 @@ test("consistency background videos settle when motion is reduced", async ({
     .toBe(true);
 });
 
+test("methodology zone blobs stay static when motion is reduced", async ({
+  page,
+}) => {
+  await page.goto("/trust/methodology", { waitUntil: "domcontentloaded" });
+  await page.waitForFunction(() =>
+    Array.from(document.querySelectorAll<HTMLElement>(".ds-blob")).every(
+      (blob) => Boolean(blob.style.width),
+    ),
+  );
+
+  const blobs = page.locator(".ds-blob");
+  const before = await blobs.evaluateAll((elements) =>
+    elements.map((element) => getComputedStyle(element).transform),
+  );
+  await page.evaluate(() => scrollTo({ top: 8_000, left: 0, behavior: "instant" }));
+  await page.waitForTimeout(500);
+  const after = await blobs.evaluateAll((elements) =>
+    elements.map((element) => getComputedStyle(element).transform),
+  );
+
+  expect(before.every((transform) => transform === "none")).toBe(true);
+  expect(after).toEqual(before);
+});
+
 test("blog article avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
   page,
   isMobile,

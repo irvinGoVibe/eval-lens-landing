@@ -164,6 +164,7 @@ export function initBlobLayer(g: GsapBundle, args: {
   g.gsap.registerPlugin(g.ScrollTrigger); // idempotent — safe if the caller already did
   const { id, label, els, blobs, trigger, mode } = args;
   const { start, end } = parallaxRange(mode);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const seat = (i: number) => {
     const el = els[i];
     if (el && blobs[i]) applyGeom(el, blobs[i]);
@@ -171,7 +172,9 @@ export function initBlobLayer(g: GsapBundle, args: {
   els.forEach((el, i) => {
     if (!blobs[i]) return;
     applyGeom(el, blobs[i]);
-    buildMotion(g, el, blobs[i], i, { idPrefix: id, trigger, start, end });
+    if (!reduce) {
+      buildMotion(g, el, blobs[i], i, { idPrefix: id, trigger, start, end });
+    }
   });
   const ctl: BlobController = {
     id,
@@ -182,7 +185,9 @@ export function initBlobLayer(g: GsapBundle, args: {
     pause: () => killMotion(g, els, id),
     resume: () => {
       killMotion(g, els, id);
-      els.forEach((el, i) => blobs[i] && buildMotion(g, el, blobs[i], i, { idPrefix: id, trigger, start, end }));
+      if (!reduce) {
+        els.forEach((el, i) => blobs[i] && buildMotion(g, el, blobs[i], i, { idPrefix: id, trigger, start, end }));
+      }
     },
   };
   return registerZone(ctl);
