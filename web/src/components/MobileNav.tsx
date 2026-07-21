@@ -73,8 +73,14 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
   );
 
   const openDrawer = () => {
-    const header = document.querySelector(".page-header");
-    setDark(Boolean(header?.classList.contains("page-header--dark")));
+    const pageHeader = document.querySelector(".page-header");
+    const siteHeader = document.querySelector(".site-header");
+    setDark(
+      Boolean(
+        pageHeader?.classList.contains("page-header--dark") ||
+          (siteHeader && !siteHeader.classList.contains("is-light")),
+      ),
+    );
     // Active section starts open (single-open); none if there's no active one.
     setExpanded(activeMatch);
     setOpen(true);
@@ -177,9 +183,15 @@ export function MobileNav({ nav, cta }: { nav?: SectionNav; cta: NavLink }) {
         <span className="mnav__grabber" aria-hidden="true" />
 
         <div className="mnav__top">
-          <span className="mnav__brand" role="img" aria-label="EvalLens">
+          <Link
+            href="/"
+            className="mnav__brand"
+            aria-label="EvalLens home"
+            tabIndex={open ? undefined : -1}
+            onClick={closeDrawer}
+          >
             <BrandLogo />
-          </span>
+          </Link>
           <button
             type="button"
             ref={closeRef}

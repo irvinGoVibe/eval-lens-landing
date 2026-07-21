@@ -61,6 +61,70 @@ test("mobile navigation supports touch-sized controls", async ({ page, isMobile 
   );
 });
 
+test("homepage mobile header replaces Launch App with the burger menu", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("body")).toHaveClass(/hero-ready/, { timeout: 20_000 });
+
+  await expect(page.locator(".site-header__cta")).toBeHidden();
+  const menuButton = page.locator(".site-header").getByRole("button", {
+    name: "Open menu",
+  });
+  await expect(menuButton).toBeVisible();
+  await menuButton.tap();
+  const dialog = page.getByRole("dialog", { name: "Site navigation" });
+  await expect(dialog).toBeVisible();
+  await expect(page.locator(".mnav__overlay")).toHaveClass(/mnav__overlay--dark/);
+  await expect(dialog.getByText("On this page", { exact: true })).toBeVisible();
+  await expect(dialog.locator(".mnav__anchors a")).toHaveCount(4);
+
+  await dialog.getByRole("link", { name: "Entry point" }).tap();
+  await expect(page).toHaveURL(/#workflow$/);
+  await expect(dialog).toBeHidden();
+});
+
+test("mobile menu brand returns to the homepage", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/trust/methodology", { waitUntil: "domcontentloaded" });
+
+  await page.getByRole("button", { name: "Open menu" }).tap();
+  const dialog = page.getByRole("dialog", { name: "Site navigation" });
+  await dialog.getByRole("link", { name: "EvalLens home" }).tap();
+
+  await expect(page).toHaveURL(/\/$/);
+  await expect(dialog).toBeHidden();
+});
+
+test("mobile menu split row highlights as one card while keeping both actions", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("/trust/methodology", { waitUntil: "domcontentloaded" });
+  await page.getByRole("button", { name: "Open menu" }).click();
+
+  const group = page.locator(".mnav__group").filter({ hasText: "Product" }).first();
+  const row = group.locator(".mnav__row");
+  const pageLink = group.locator(".mnav__row-link");
+  const accordionButton = group.locator(".mnav__row-toggle");
+
+  await pageLink.hover();
+  await page.waitForTimeout(250);
+  const hoverStyle = await row.evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    shadow: getComputedStyle(element).boxShadow,
+  }));
+  expect(hoverStyle.background).not.toMatch(/rgba\(0, 0, 0, 0\)|\/ 0\)/);
+  expect(hoverStyle.shadow).toContain("inset");
+  await expect(pageLink).toHaveAttribute("href", "/product/overview");
+
+  await accordionButton.click();
+  await expect(group).toHaveAttribute("data-expanded", "true");
+  await expect(accordionButton).toHaveAttribute("aria-expanded", "true");
+});
+
 for (const route of PUBLIC_AUTH_ROUTES) {
   test(`${route} form remains usable on mobile`, async ({ page, isMobile }) => {
     test.skip(!isMobile, "mobile profile only");
@@ -118,6 +182,21 @@ test("partner access modal fits the visible mobile viewport", async ({ page }) =
   expect(geometry.scrollHeight).toBeLessThanOrEqual(geometry.clientHeight);
 });
 
+test("homepage report-demo CTA opens partner access and the final CTA has one action", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  await page.getByRole("button", { name: /View live report demo/i }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+
+  await page.getByRole("button", { name: /Close partner access dialog/i }).click();
+  const finalActions = page.locator(".cta-band--dark .cta-band__actions");
+  await expect(finalActions.getByRole("link", { name: /Book a demo/i })).toHaveCount(1);
+  await expect(finalActions.getByRole("link", { name: /See it live/i })).toHaveCount(0);
+});
+
 test("mobile step rails swipe through the same stage as their arrows", async ({
   page,
 }) => {
@@ -148,6 +227,42 @@ test("mobile step rails swipe through the same stage as their arrows", async ({
   await swipeLeft("#sd-rail");
   await expect(page.locator("#sd-rail .step.active")).toHaveAttribute("data-step", "2");
   await expect(page.locator("#sd-window")).toHaveAttribute("data-stage", "2");
+});
+
+test("workflow create-entry action advances to the link-ready slide", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  await expect(page.locator("#wf-window")).toHaveAttribute("data-stage", "1");
+  await page.locator("#wf-createBtn").click();
+
+  await expect(page.locator("#wf-window")).toHaveAttribute("data-stage", "2");
+  await expect(page.locator("#wf-rail .step.active")).toHaveAttribute("data-step", "2");
+  await expect(page.locator("#wf-layerA")).toHaveClass(/\bon\b/);
+  await expect(page.locator("#wf-linkCard")).toBeVisible();
+});
+
+test("tapping either demo window advances its slide", async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  const tapWindow = async (selector: string) => {
+    await page.locator(selector).evaluate((element) => {
+      element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+  };
+
+  await tapWindow("#wf-window");
+  await expect(page.locator("#wf-window")).toHaveAttribute("data-stage", "2");
+  await tapWindow("#wf-window");
+  await expect(page.locator("#wf-window")).toHaveAttribute("data-stage", "3");
+
+  await tapWindow("#sd-window");
+  await expect(page.locator("#sd-window")).toHaveAttribute("data-stage", "2");
+  await tapWindow("#sd-window");
+  await expect(page.locator("#sd-window")).toHaveAttribute("data-stage", "3");
 });
 
 test("mobile workflow cards contain their full wrapped copy", async ({ page }) => {

@@ -35,7 +35,6 @@ export default function HomePage() {
           titleAccent="ranked in a day"
           sub="Batch-review every pitch deck, surface the strongest startups, and hand each team an evidence-based report — with the final call always yours."
           primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "See it live", href: "https://calendly.com/evallens/30min" }}
         />
       </main>
       <Footer variant="dark" />

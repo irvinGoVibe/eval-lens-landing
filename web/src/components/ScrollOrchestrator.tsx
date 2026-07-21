@@ -1762,8 +1762,18 @@ function runScript(): () => void {
 
     if (navUp) on(navUp, "click", () => goTo(current - 1));
     if (navDown) on(navDown, "click", () => goTo(current + 1));
+    // The primary action in the setup mockup completes stage 1 and advances
+    // through the same transition path as the rail, swipe, and down arrow.
+    if (createBtn) on(createBtn, "click", () => goTo(2));
     // the "Run evaluation" button on the Batch-ready card launches stage 6
     if (runBtn) on(runBtn, "click", () => goTo(STAGES));
+    if (windowEl) {
+      on(windowEl, "click", (event: MouseEvent) => {
+        const target = event.target as Element | null;
+        if (target?.closest("button, a, input, textarea, select, [role='button']")) return;
+        goTo(current + 1);
+      });
+    }
     steps.forEach((s, i) => {
       on(s as HTMLElement, "click", () => goTo(i + 1));
     });
@@ -2147,6 +2157,13 @@ function runScript(): () => void {
     if (navDown) on(navDown, "click", () => goTo(current + 1));
     if (mPrev) on(mPrev, "click", () => goTo(current - 1));
     if (mNext) on(mNext, "click", () => goTo(current >= STAGES ? 1 : current + 1));
+    let lastWindowSwipeAt = 0;
+    on(windowElRef, "click", (event: MouseEvent) => {
+      const target = event.target as Element | null;
+      if (target?.closest("button, a, input, textarea, select, [role='button']")) return;
+      if (Date.now() - lastWindowSwipeAt < 450) return;
+      goTo(current >= STAGES ? 1 : current + 1);
+    });
     steps.forEach((s, i) => {
       on(s as HTMLElement, "click", () => goTo(i + 1));
     });
@@ -2176,6 +2193,7 @@ function runScript(): () => void {
         const dx = t.clientX - tsx;
         const dy = t.clientY - tsy;
         if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+          lastWindowSwipeAt = Date.now();
           goTo(dx < 0 ? current + 1 : current - 1);
         }
       },

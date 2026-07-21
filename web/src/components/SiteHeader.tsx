@@ -1,6 +1,19 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
+import { MobileNav } from "@/components/MobileNav";
 import { Button } from "@/components/ui/Button";
+import { LAUNCH_CTA, type SectionNav } from "@/lib/site-nav";
+
+const HOME_NAV: SectionNav = {
+  section: "Home",
+  sectionHref: "/",
+  links: [
+    { label: "Find leaders", href: "#problem" },
+    { label: "Entry point", href: "#workflow" },
+    { label: "Structured reports", href: "#decisions" },
+    { label: "Trust & control", href: "#system" },
+  ],
+};
 
 /**
  * Homepage header — fixed and transparent, sitting over the page. The bar never
@@ -43,6 +56,7 @@ export function SiteHeader() {
         <Button href="/#demo" className="site-header__cta" arrow>
           Launch App
         </Button>
+        <MobileNav nav={HOME_NAV} cta={LAUNCH_CTA} />
       </div>
     </header>
   );
