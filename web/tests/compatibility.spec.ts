@@ -85,6 +85,47 @@ test("viewport metadata opts into safe-area support", async ({ page }) => {
   expect(viewport).toContain("viewport-fit=cover");
 });
 
+test("Entry Hub tonal layers follow their seams with reduced motion", async ({
+  page,
+}) => {
+  await page.goto("/product/entry-hub", { waitUntil: "domcontentloaded" });
+
+  const layers = page.locator(".ds-relight, .ds-redark");
+  const seams = page.locator(".ds-zone__flip-seam");
+  await expect(layers).toHaveCount(2);
+  await expect(seams).toHaveCount(2);
+
+  const seamPositions = await seams.evaluateAll((elements) =>
+    elements.map((element) => element.getBoundingClientRect().top + window.scrollY),
+  );
+  const viewportHeight = await page.evaluate(() => window.innerHeight);
+  const threshold = (position: number) => position - viewportHeight / 2;
+  const states = [
+    { y: threshold(seamPositions[0]) - 100, expected: ["0", "0"] },
+    {
+      y: (threshold(seamPositions[0]) + threshold(seamPositions[1])) / 2,
+      expected: ["1", "0"],
+    },
+    { y: threshold(seamPositions[1]) + 100, expected: ["1", "1"] },
+    {
+      y: (threshold(seamPositions[0]) + threshold(seamPositions[1])) / 2,
+      expected: ["1", "0"],
+    },
+    { y: threshold(seamPositions[0]) - 100, expected: ["0", "0"] },
+  ];
+
+  for (const state of states) {
+    await page.evaluate((y) => window.scrollTo(0, y), state.y);
+    await expect
+      .poll(() =>
+        layers.evaluateAll((elements) =>
+          elements.map((element) => getComputedStyle(element).opacity),
+        ),
+      )
+      .toEqual(state.expected);
+  }
+});
+
 test("Demo Day stages follow the visible mobile viewport", async ({ page }) => {
   await page.goto("/demoday", { waitUntil: "domcontentloaded" });
 

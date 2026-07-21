@@ -48,7 +48,32 @@ export function ZoneToneFlip({
         if (!seam || !darkBg) return;
 
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          gsap.set(darkBg, { opacity: 1 });
+          // Reduced motion removes the crossfade, not the tonal boundary. Keep
+          // the layer derived from the seam position so pages with multiple
+          // flips do not settle every stacked background into its final state.
+          let raf = 0;
+          const sync = () => {
+            const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+            gsap.set(darkBg, {
+              opacity: seam.getBoundingClientRect().top <= viewportHeight / 2 ? 1 : 0,
+            });
+          };
+          const scheduleSync = () => {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(sync);
+          };
+
+          sync();
+          window.addEventListener("scroll", scheduleSync, { passive: true });
+          window.addEventListener("resize", scheduleSync);
+          window.visualViewport?.addEventListener("resize", scheduleSync);
+          innerCleanup = () => {
+            cancelAnimationFrame(raf);
+            window.removeEventListener("scroll", scheduleSync);
+            window.removeEventListener("resize", scheduleSync);
+            window.visualViewport?.removeEventListener("resize", scheduleSync);
+            gsap.set(darkBg, { clearProps: "opacity" });
+          };
           return;
         }
 
