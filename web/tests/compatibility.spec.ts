@@ -174,6 +174,20 @@ test("one-pager trust media reserves its mobile geometry before decode", async (
   expect(metrics.height).toBeCloseTo((metrics.width * 972) / 1619, 0);
 });
 
+test("sitemap does not prefetch its intentional 404 destination", async ({ page }) => {
+  const requested404s: string[] = [];
+  page.on("request", (request) => {
+    const url = new URL(request.url());
+    if (url.pathname === "/404") requested404s.push(url.href);
+  });
+
+  await page.goto("/sitemap", { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(800);
+
+  await expect(page.locator('a[href="/404"]')).toBeVisible();
+  expect(requested404s).toEqual([]);
+});
+
 test("homepage reduced-motion heading does not cover the hero", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 

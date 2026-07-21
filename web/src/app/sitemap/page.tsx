@@ -143,6 +143,7 @@ function renderRows(
       <Link
         className="sm-node sm-node--ready"
         href={href}
+        prefetch={href === "/404" ? false : undefined}
         target="_blank"
         rel="noopener noreferrer"
       >
