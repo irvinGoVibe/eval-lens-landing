@@ -840,6 +840,31 @@ function UnicornModel({
   );
 }
 
+/** One idle-time render while the frameloop is still "never": compiles the
+ *  shaders and uploads textures ahead of the first visible frame. Without it
+ *  that work (~100ms+ on a throttled phone) runs exactly when the scene
+ *  scrolls into view — mid-scroll. The canvas is off-screen when this fires,
+ *  so nothing visible changes. */
+function WarmupFrame({ active }: { active: boolean }) {
+  const advance = useThree((s) => s.advance);
+  const fired = useRef(false);
+  useEffect(() => {
+    if (active || fired.current) return;
+    fired.current = true;
+    const run = () => advance(performance.now());
+    // requestIdleCallback is still missing from some Safari versions
+    const ric = typeof requestIdleCallback === "function";
+    const id = ric
+      ? requestIdleCallback(run, { timeout: 3000 })
+      : window.setTimeout(run, 800);
+    return () => {
+      if (ric) cancelIdleCallback(id);
+      else window.clearTimeout(id);
+    };
+  }, [active, advance]);
+  return null;
+}
+
 export default function UnicornScene({
   isMobile,
   active,
@@ -855,6 +880,7 @@ export default function UnicornScene({
       camera={{ position: [0, 0.05, camZ], fov: 38 }}
       gl={{ antialias: true, powerPreference: "high-performance", alpha: noBackdrop }}
     >
+      <WarmupFrame active={active} />
       {/* noBackdrop drops only the OPAQUE black clear: the canvas goes
           transparent (alpha gl, no scene background) so every empty pixel
           shows the page's own wash straight through — a smaller head can no

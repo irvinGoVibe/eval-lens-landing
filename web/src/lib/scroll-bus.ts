@@ -15,7 +15,14 @@
  * Client-only: `onScrollFrame` touches `window`, so call it from an effect.
  */
 
-type Frame = () => void;
+/**
+ * A subscriber runs in the READ phase (layout queries are cheap here — nothing
+ * has invalidated styles yet this frame). If it returns a function, that runs
+ * in the WRITE phase after every subscriber has finished reading. Interleaving
+ * read→write→read across subscribers is what forces synchronous layouts; the
+ * two-phase split lets the browser lay out at most once per frame.
+ */
+type Frame = () => void | (() => void);
 
 const subscribers = new Set<Frame>();
 let rafHandle = 0;
@@ -23,15 +30,24 @@ let bound = false;
 
 const flush = () => {
   rafHandle = 0;
+  const writes: Array<() => void> = [];
   // Snapshot: a subscriber may unsubscribe itself (or another) mid-pass.
   for (const run of Array.from(subscribers)) {
     if (!subscribers.has(run)) continue;
     try {
-      run();
+      const write = run();
+      if (typeof write === "function") writes.push(write);
     } catch (error) {
       // One broken effect must not stop the rest of the frame from painting —
       // that would freeze unrelated sections. Surface it instead of hiding it.
       console.error("[scroll-bus] subscriber failed", error);
+    }
+  }
+  for (const write of writes) {
+    try {
+      write();
+    } catch (error) {
+      console.error("[scroll-bus] subscriber write failed", error);
     }
   }
 };

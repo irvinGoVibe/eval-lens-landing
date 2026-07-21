@@ -129,12 +129,17 @@ function runScript(): () => void {
   /* scroll progress */
   const prog = document.getElementById("progress");
   const onScroll = () => {
+    // read phase: layout queries only; the style write runs in the bus's
+    // write phase so it cannot force a reflow for later readers.
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
-    if (prog) prog.style.setProperty("--p", (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%");
+    const p = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+    return () => {
+      if (prog) prog.style.setProperty("--p", p);
+    };
   };
   subscribeScroll(onScroll);
-  onScroll();
+  onScroll()();
 
   /* site header — flip text colour to contrast whatever section sits under the
      bar. Light text (lavender/white) over the dark zones — the hero, the bento
@@ -172,17 +177,20 @@ function runScript(): () => void {
                 surface.getBoundingClientRect().height * 0.5 >
                 y)),
       );
-      header.classList.toggle("is-light", !overDark);
-
       const yNow = window.scrollY;
       const delta = yNow - lastY;
-      if (yNow <= 4) {
-        header.classList.remove("is-hidden");
-      } else if (document.body.classList.contains("hero-ready")) {
-        if (delta > 8 && !pointerNearHeader) header.classList.add("is-hidden");
-        else if (delta < -6) header.classList.remove("is-hidden");
-      }
+      const heroReady = document.body.classList.contains("hero-ready");
       if (Math.abs(delta) > 1) lastY = yNow;
+      // write phase: all class toggles deferred behind the frame's reads
+      return () => {
+        header.classList.toggle("is-light", !overDark);
+        if (yNow <= 4) {
+          header.classList.remove("is-hidden");
+        } else if (heroReady) {
+          if (delta > 8 && !pointerNearHeader) header.classList.add("is-hidden");
+          else if (delta < -6) header.classList.remove("is-hidden");
+        }
+      };
     };
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType && event.pointerType !== "mouse") return;
@@ -198,7 +206,7 @@ function runScript(): () => void {
     };
     // sync() does elementsFromPoint + getBoundingClientRect, so it must run at
     // most once per frame — the shared scroll frame already guarantees that.
-    sync();
+    sync()();
     subscribeScroll(sync);
     // onPointerMove itself does no layout reads (class toggles only) — kept
     // direct so header reveal stays immediate; sync() is no longer called
@@ -221,10 +229,13 @@ function runScript(): () => void {
       const p = Math.max(0, Math.min(1, traveled / total));
       // intro halo: ramps 0→1 over p∈[0,.2], then 1→0 over p∈[.2,.55]
       const zarya = p < 0.2 ? p / 0.2 : Math.max(0, (0.55 - p) / 0.35);
-      glow.style.setProperty("--glow-p", p.toFixed(3));
-      glow.style.setProperty("--glow-zarya", zarya.toFixed(3));
+      // write phase — style writes deferred behind the frame's reads
+      return () => {
+        glow.style.setProperty("--glow-p", p.toFixed(3));
+        glow.style.setProperty("--glow-zarya", zarya.toFixed(3));
+      };
     };
-    compute();
+    compute()();
     subscribeScroll(compute);
   })();
 
@@ -397,7 +408,15 @@ function runScript(): () => void {
       reveal();
     };
 
+    // The fallback deadline may only move CLOSER, never further out. Re-arming
+    // used to restart the clock (metadata arriving at 5s on a slow connection
+    // pushed the reveal to 5s + duration) and left the hero copy hidden for
+    // 10–13s — the page's LCP. The ceiling set at boot now always holds.
+    let fallbackDeadline = Infinity;
     const armFallback = (sec: number) => {
+      const target = performance.now() + (sec + 1) * 1000;
+      if (target >= fallbackDeadline) return;
+      fallbackDeadline = target;
       if (maxWait) clearTimeout(maxWait);
       maxWait = setTimeout(finish, (sec + 1) * 1000);
     };
@@ -513,7 +532,13 @@ function runScript(): () => void {
         el,
         "loadedmetadata",
         () => {
-          if (video.duration) armFallback(video.duration);
+          // Cap the re-arm at the initial 3s ceiling. On a slow connection
+          // metadata arrives long before the video can play, and re-arming to
+          // the full duration used to leave the hero copy hidden for the whole
+          // clip length (13s+ observed on Slow 4G) — an LCP disaster. The
+          // normal choreography (videos ready → play → 1.4s copy reveal) never
+          // reaches this timer; it only caps the degraded-network wait.
+          if (video.duration) armFallback(Math.min(video.duration, 3));
         },
         { once: true }
       );
@@ -551,11 +576,14 @@ function runScript(): () => void {
     const FG_RATE = 0.52;
 
     const paint = () => {
+      // read phase — one rect; every dataset read is DOM-attr only (no layout)
       const rect = hero.getBoundingClientRect();
       const shift = -rect.top;
       const heroH = rect.height || window.innerHeight;
 
       const bgY = (shift * BG_RATE).toFixed(2) + "px";
+      // write phase
+      return () => {
       if (mediaStack) mediaStack.style.setProperty("--bg-y", bgY);
       if (heroDim) heroDim.style.setProperty("--bg-y", bgY);
       if (unicornWrap) unicornWrap.style.setProperty("--bg-y", bgY);
@@ -573,12 +601,13 @@ function runScript(): () => void {
         el.style.setProperty("--py", py.toFixed(2) + "px");
         el.style.setProperty("--scroll-fade", fade.toFixed(3));
       });
+      };
     };
 
-    // paint() only reads the hero rect and writes custom properties, so it can
-    // run straight off the shared scroll frame — no private rAF hop needed.
+    // paint() reads the hero rect in the bus's read phase and returns the
+    // style writes for its write phase — no private rAF hop needed.
     subscribeScroll(paint);
-    paint();
+    paint()();
   })();
 
   /* ============================================================

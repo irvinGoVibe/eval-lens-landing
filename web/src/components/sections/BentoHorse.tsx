@@ -80,6 +80,50 @@ export function BentoHorse() {
     const el = holder.current;
     if (!el) return;
 
+    // Prefetch the three.js scene chunk while the page is idle (the user is
+    // still reading the hero). Evaluating it lazily at the IO mount point cost
+    // a 240–1300ms main-thread task in the middle of the scroll on a 4x-CPU
+    // mobile profile; after this warm-up the dynamic() mount below resolves
+    // from the module registry with no long task. Fetch-only — mounting still
+    // waits for the IntersectionObserver, so behavior is unchanged.
+    // requestIdleCallback is still missing from some Safari versions
+    const ric =
+      "requestIdleCallback" in window
+        ? window.requestIdleCallback.bind(window)
+        : undefined;
+    const warm = () => {
+      const loaded = import("./UnicornScene");
+      // On touch devices go one step further: mount as soon as the chunk has
+      // landed and the thread is idle again. The WebGL init (context + shader
+      // compile) is the expensive part, and running it while the user is still
+      // up at the hero keeps it off the scroll path entirely. The scene is
+      // off-screen (renders nothing) and its frameloop stays paused via viewIo
+      // until it actually scrolls into view — visual behavior is unchanged.
+      if (window.matchMedia("(pointer: coarse)").matches) {
+        loaded.then(() => {
+          const mountNow = () => {
+            if (!canUseWebGL()) {
+              setFallback(true);
+              return;
+            }
+            setIsMobile(true);
+            setMounted(true);
+          };
+          if (ric) ric(mountNow, { timeout: 4000 });
+          else window.setTimeout(mountNow, 500);
+        });
+      }
+    };
+    const idleId = ric ? ric(warm, { timeout: 6000 }) : window.setTimeout(warm, 2500);
+
+    // Mobile mounts far earlier (~3 screens out): the three.js init (chunk
+    // eval + WebGL context + shader compile) is a 240–1300ms main-thread task
+    // on a throttled phone, and at 400px it landed mid-scroll and dropped
+    // frames. At 2400px it runs while the user is still reading the sections
+    // above. The scene renders nothing until scrolled into view and the
+    // frameloop stays paused (viewIo below), so only the init timing moves.
+    // Desktop keeps the original 400px.
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
     const mountIo = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
@@ -91,7 +135,7 @@ export function BentoHorse() {
         setIsMobile(window.matchMedia("(pointer: coarse)").matches);
         setMounted(true);
       },
-      { rootMargin: "400px 0px" },
+      { rootMargin: coarse ? "2400px 0px" : "400px 0px" },
     );
     const viewIo = new IntersectionObserver(
       (entries) => setInView(entries.some((e) => e.isIntersecting)),
@@ -102,6 +146,8 @@ export function BentoHorse() {
     return () => {
       mountIo.disconnect();
       viewIo.disconnect();
+      if (ric) cancelIdleCallback(idleId);
+      else clearTimeout(idleId);
     };
   }, []);
 
