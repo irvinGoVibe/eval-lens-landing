@@ -145,6 +145,35 @@ test("DPA sub-processor copy keeps the frozen mobile wrapping", async ({
   }
 });
 
+test("one-pager trust media reserves its mobile geometry before decode", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 402, height: 660 });
+  await page.route("**/_next/image?**", async (route) => {
+    if (route.request().url().includes("final-decision-human-ranking.webp")) {
+      await route.abort();
+      return;
+    }
+    await route.continue();
+  });
+  await page.goto("/one-pager", { waitUntil: "domcontentloaded" });
+
+  const metrics = await page
+    .locator("#trust .lab-bento__media--img")
+    .evaluate((image: HTMLImageElement) => {
+      const box = image.getBoundingClientRect();
+      return {
+        naturalWidth: image.naturalWidth,
+        width: box.width,
+        height: box.height,
+      };
+    });
+
+  expect(metrics.naturalWidth, "the test must observe the pre-decode state").toBe(0);
+  expect(metrics.width).toBeGreaterThan(300);
+  expect(metrics.height).toBeCloseTo((metrics.width * 972) / 1619, 0);
+});
+
 test("homepage reduced-motion heading does not cover the hero", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 

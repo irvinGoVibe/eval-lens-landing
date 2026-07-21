@@ -6448,6 +6448,14 @@ section.band.ink .mini-tag{color:var(--lavender);}
   display:block;margin-top:auto;margin-inline:auto;
   width:auto;height:auto;max-width:100%;
 }
+/* Mobile browsers may defer intrinsic sizing for below-the-fold lazy images
+   while both authored dimensions are auto. Give the image a definite inline
+   size so its width/height attributes reserve the final ratio before decode;
+   loaded mobile geometry is unchanged and desktop art direction keeps its
+   width:auto + max-height behaviour. */
+@media (max-width:900px){
+  .lab-bento__media--img{width:100%;object-fit:contain;}
+}
 /* feature (left) — moderate cap, near the bottom edge */
 .lab-bento__tile--feature .lab-bento__media--img{
   max-height:clamp(220px,24vw,330px);
