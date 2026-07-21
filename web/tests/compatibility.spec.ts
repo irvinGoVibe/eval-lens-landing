@@ -121,6 +121,108 @@ test("homepage primary mobile controls are touch sized", async ({ page, isMobile
   }
 });
 
+test("blog rail controls stay above the Safari scroll layer", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/blog", { waitUntil: "domcontentloaded" });
+
+  const next = page.locator(".loop-controls").getByRole("button", { name: "Next" });
+  await next.scrollIntoViewIfNeeded();
+  const hitIsControl = await next.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    const hit = document.elementFromPoint(
+      rect.left + rect.width / 2,
+      rect.top + rect.height / 2,
+    );
+    return Boolean(hit && element.contains(hit));
+  });
+  expect(hitIsControl).toBe(true);
+
+  await next.tap();
+  await expect
+    .poll(() => page.locator(".loop-rail").evaluate((element) => element.scrollLeft))
+    .toBeGreaterThan(10);
+});
+
+test("blog loop deep link closes and clears its URL state", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/blog?loop=earth-day-team", { waitUntil: "domcontentloaded" });
+
+  const modal = page.locator(".loop-modal");
+  await expect(modal).toBeVisible();
+  const modalGeometry = await modal.evaluate((element) => {
+    const panel = element.querySelector(".loop-modal__panel");
+    const photo = element.querySelector(".loop-modal__photo");
+    const panelRect = panel?.getBoundingClientRect();
+    const photoRect = photo?.getBoundingClientRect();
+    return {
+      viewportHeight: innerHeight,
+      panelBottom: panelRect?.bottom ?? Infinity,
+      photoHeight: photoRect?.height ?? Infinity,
+    };
+  });
+  expect(modalGeometry.panelBottom).toBeLessThanOrEqual(modalGeometry.viewportHeight);
+  expect(modalGeometry.photoHeight).toBeLessThanOrEqual(
+    modalGeometry.viewportHeight * 0.47,
+  );
+  await modal.getByRole("button", { name: "Close" }).tap();
+  await expect(modal).toBeHidden();
+  await expect(page).toHaveURL(/\/blog$/);
+  await expect
+    .poll(() => page.evaluate(() => getComputedStyle(document.body).overflow))
+    .not.toBe("hidden");
+});
+
+test("blog avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile profile only");
+  const prefetchedRsc: string[] = [];
+  page.on("request", (request) => {
+    const url = new URL(request.url());
+    if (url.searchParams.has("_rsc")) prefetchedRsc.push(url.href);
+  });
+
+  await page.goto("/blog", { waitUntil: "networkidle" });
+  await page.waitForTimeout(500);
+
+  expect(prefetchedRsc).toEqual([]);
+});
+
+test("RSC preflight supports physical Safari on a LAN host", async ({ request }) => {
+  const origin = "http://127.0.0.1:3405";
+  const response = await request.fetch("/blog?_rsc=physical-safari", {
+    method: "OPTIONS",
+    headers: {
+      Origin: origin,
+      "Access-Control-Request-Method": "GET",
+      "Access-Control-Request-Headers": "rsc,next-router-state-tree",
+      "Access-Control-Request-Private-Network": "true",
+    },
+  });
+
+  expect(response.status()).toBe(204);
+  expect(response.headers()["access-control-allow-origin"]).toBe(origin);
+  expect(response.headers()["access-control-allow-credentials"]).toBe("true");
+  expect(response.headers()["access-control-allow-private-network"]).toBe("true");
+  expect(response.headers()["access-control-max-age"]).toBe("600");
+});
+
+test("RSC GET authorizes the exact private-LAN QA origin", async ({ request }) => {
+  for (const host of ["192.168.1.4", "physical-qa.local", "physical-qa.local."]) {
+    const origin = `http://${host}:3405`;
+    const response = await request.get(
+      "http://127.0.0.1:3405/blog?_rsc=physical-safari",
+      { headers: { Host: `${host}:3405`, Origin: origin, RSC: "1" } },
+    );
+
+    expect(response.ok()).toBe(true);
+    expect(response.headers()["access-control-allow-origin"]).toBe(origin);
+    expect(response.headers()["access-control-allow-credentials"]).toBe("true");
+    expect(response.headers()["access-control-allow-private-network"]).toBe("true");
+  }
+});
+
 test("homepage partner access CTA remains tappable above the problem overlap", async ({
   page,
   isMobile,

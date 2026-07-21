@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { LoopPost } from "@/lib/blog";
@@ -201,50 +201,57 @@ function PopupGallery({ photos }: { photos: string[] }) {
  *  (video reels + photo posts) that open in a popup on click. */
 export function InTheLoop({ posts }: { posts: LoopPost[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [pages, setPages] = useState(1);
   const [page, setPage] = useState(0);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  // Initialise deep-link state atomically. The previous mount effect rendered
+  // one null-state frame first, so the URL-sync effect raced to remove
+  // `?loop=` before the modal state was set. Its stale search-param snapshot
+  // then prevented a later close from clearing the visible URL.
+  const [activeIndex, setActiveIndex] = useState<number | null>(() => {
+    const id = searchParams.get("loop");
+    if (!id) return null;
+    const index = posts.findIndex((post) => post.id === id);
+    return index >= 0 ? index : null;
+  });
   const active = activeIndex === null ? null : posts[activeIndex];
   const [lead, body] = active ? splitCaption(active.caption) : ["", ""];
 
-  // Deep-link: on mount, open the popup if `?loop=<id>` points at a known post.
-  // Unknown / missing id is a graceful no-op. Runs once — listing/closing must
-  // not re-trigger it, so it deliberately omits `searchParams` from deps.
-  useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("loop");
-    if (!id) return;
-    const idx = posts.findIndex((p) => p.id === id);
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional URL→state sync on mount (deep link into a loop card)
-    if (idx >= 0) setActiveIndex(idx);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [posts]);
+  // Modal state and `?loop=` are one client-side transaction. Keeping URL
+  // writes next to the state writes avoids a two-way effect race during a
+  // deep-link mount (one render could otherwise restore a just-removed id).
+  const replaceLoopParam = useCallback((id: string | null) => {
+    const params = new URLSearchParams(window.location.search);
+    if (id === null) params.delete("loop");
+    else params.set("loop", id);
+    const query = params.toString();
+    window.history.replaceState(
+      window.history.state,
+      "",
+      query ? `${pathname}?${query}` : pathname,
+    );
+  }, [pathname]);
 
-  // Mirror the open item into `?loop=<id>` (open / step) and strip it on close.
-  // `router.replace` of the same path/segment updates the URL without
-  // remounting, so `activeIndex` survives. Skips writes when the URL already
-  // matches to avoid redundant history churn.
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    const current = params.get("loop");
-    const target =
-      activeIndex === null ? null : (posts[activeIndex]?.id ?? null);
-    if (current === target) return;
-    if (target === null) params.delete("loop");
-    else params.set("loop", target);
-    const qs = params.toString();
-    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-  }, [activeIndex, posts, pathname, router, searchParams]);
+  const openAt = useCallback((index: number) => {
+    setActiveIndex(index);
+    replaceLoopParam(posts[index]?.id ?? null);
+  }, [posts, replaceLoopParam]);
+
+  const closeActive = useCallback(() => {
+    setActiveIndex(null);
+    replaceLoopParam(null);
+  }, [replaceLoopParam]);
 
   // Flip through items inside the popup (wraps around).
   const step = useCallback(
-    (dir: 1 | -1) =>
-      setActiveIndex((i) =>
-        i === null ? i : (i + dir + posts.length) % posts.length,
-      ),
-    [posts.length],
+    (dir: 1 | -1) => {
+      if (activeIndex === null) return;
+      const next = (activeIndex + dir + posts.length) % posts.length;
+      setActiveIndex(next);
+      replaceLoopParam(posts[next]?.id ?? null);
+    },
+    [activeIndex, posts, replaceLoopParam],
   );
 
   // Page count from the *scrollable* range (not clientWidth ratio, which
@@ -295,7 +302,7 @@ export function InTheLoop({ posts }: { posts: LoopPost[] }) {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveIndex(null);
+      if (e.key === "Escape") closeActive();
       else if (e.key === "ArrowRight") step(1);
       else if (e.key === "ArrowLeft") step(-1);
     };
@@ -304,7 +311,7 @@ export function InTheLoop({ posts }: { posts: LoopPost[] }) {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
     };
-  }, [activeIndex, step]);
+  }, [activeIndex, closeActive, step]);
 
   return (
     <section className="blog-loop" id="loop">
@@ -317,9 +324,9 @@ export function InTheLoop({ posts }: { posts: LoopPost[] }) {
           {posts.map((post, idx) => (
             <div className="loop-rail__item" key={post.id}>
               {post.kind === "video" ? (
-                <VideoCard post={post} onOpen={() => setActiveIndex(idx)} />
+                <VideoCard post={post} onOpen={() => openAt(idx)} />
               ) : (
-                <PhotoCard post={post} onOpen={() => setActiveIndex(idx)} />
+                <PhotoCard post={post} onOpen={() => openAt(idx)} />
               )}
             </div>
           ))}
@@ -368,7 +375,7 @@ export function InTheLoop({ posts }: { posts: LoopPost[] }) {
             role="dialog"
             aria-modal="true"
             aria-label={active.caption}
-            onClick={() => setActiveIndex(null)}
+            onClick={closeActive}
           >
             <button
               type="button"
@@ -391,7 +398,7 @@ export function InTheLoop({ posts }: { posts: LoopPost[] }) {
                   type="button"
                   className="loop-modal__close"
                   aria-label="Close"
-                  onClick={() => setActiveIndex(null)}
+                  onClick={closeActive}
                 >
                   ✕
                 </button>

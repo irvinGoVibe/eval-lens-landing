@@ -24,6 +24,29 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Physical iOS Safari applies Local Network Access checks to RSC
+        // prefetches from the isolated LAN QA server. Echo that private host
+        // exactly on cache-keyed RSC GET responses; production hosts do not
+        // match this rule.
+        source: "/:path*",
+        has: [
+          { type: "query", key: "_rsc" },
+          {
+            type: "host",
+            value:
+              "(?<qaHost>(?:10\\.\\d+\\.\\d+\\.\\d+|192\\.168\\.\\d+\\.\\d+|172\\.(?:1[6-9]|2\\d|3[01])\\.\\d+\\.\\d+|[a-z0-9-]+\\.local\\.?))",
+          },
+        ],
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "http://:qaHost:3405",
+          },
+          { key: "Access-Control-Allow-Credentials", value: "true" },
+          { key: "Access-Control-Allow-Private-Network", value: "true" },
+        ],
+      },
+      {
         // Versioned static media under public/assets — safe to cache forever;
         // file replacements ship under a new name or ?v= cache-bust.
         source: "/assets/:path*",

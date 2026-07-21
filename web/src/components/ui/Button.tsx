@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/LanSafeLink";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 type Variant = "primary" | "ghost" | "glass" | "dark" | "gradient";

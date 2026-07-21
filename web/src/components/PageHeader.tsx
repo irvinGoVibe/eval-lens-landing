@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/LanSafeLink";
 import { Button } from "@/components/ui/Button";
 import { HeaderThemeSync } from "@/components/HeaderThemeSync";
 import { GlobalNavSwitcher } from "@/components/GlobalNavSwitcher";
