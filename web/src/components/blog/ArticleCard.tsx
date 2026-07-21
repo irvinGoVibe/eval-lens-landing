@@ -16,10 +16,12 @@ export function ArticleCard({
   post,
   variant = "grid",
   priority = false,
+  eager = false,
 }: {
   post: Post;
   variant?: Variant;
   priority?: boolean;
+  eager?: boolean;
 }) {
   const meta = (
     <span className="blog-card__meta">
@@ -52,11 +54,12 @@ export function ArticleCard({
           fill
           sizes={
             variant === "feature"
-              ? "(max-width: 900px) 100vw, 60vw"
-              : "(max-width: 700px) 100vw, 33vw"
+              ? "(max-width: 900px) calc(100vw - 40px), 60vw"
+              : "(max-width: 560px) calc(100vw - 40px), (max-width: 820px) calc(50vw - 32px), 33vw"
           }
           className="blog-card__img"
           priority={priority}
+          loading={eager ? "eager" : undefined}
         />
       </span>
       <span className="blog-card__body">

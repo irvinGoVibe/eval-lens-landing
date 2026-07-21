@@ -189,6 +189,64 @@ test("blog avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
   expect(prefetchedRsc).toEqual([]);
 });
 
+test("all-news mobile cards are ready before Safari reaches the fourth story", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile profile only");
+  await page.goto("/blog/all", { waitUntil: "domcontentloaded" });
+
+  const images = page.locator(".blog-grid .blog-card__img");
+  expect(await images.count()).toBeGreaterThanOrEqual(4);
+  for (let index = 0; index < 4; index += 1) {
+    await expect(images.nth(index)).toHaveAttribute("loading", "eager");
+    await expect(images.nth(index)).toHaveAttribute(
+      "sizes",
+      /calc\(100vw - 40px\)/,
+    );
+  }
+
+  await page.evaluate(() => scrollTo({ top: 1485, left: 0, behavior: "instant" }));
+  await expect
+    .poll(() =>
+      images.nth(3).evaluate((image) => {
+        const element = image as HTMLImageElement;
+        return element.complete && element.naturalWidth > 0;
+      }),
+    )
+    .toBe(true);
+});
+
+test("all-news filters render and the backlink clears filter state", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile profile only");
+
+  for (const [query, heading, articleCount] of [
+    ["product", "Product Updates", 1],
+    ["research", "Research", 4],
+    ["press-release", "Press Releases", 1],
+  ] as const) {
+    const automaticRsc: string[] = [];
+    const onRequest = (request: { url(): string }) => {
+      const url = new URL(request.url());
+      if (url.searchParams.has("_rsc")) automaticRsc.push(url.href);
+    };
+    page.on("request", onRequest);
+    await page.goto(`/blog/all?${query}`, { waitUntil: "networkidle" });
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
+    await expect(page.locator(".blog-grid .blog-card")).toHaveCount(articleCount);
+    await page.waitForTimeout(300);
+    expect(automaticRsc).toEqual([]);
+    page.off("request", onRequest);
+  }
+
+  await page.getByRole("link", { name: "All News" }).tap();
+  await expect(page).toHaveURL(/\/blog\/all$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("All News");
+});
+
 test("RSC preflight supports physical Safari on a LAN host", async ({ request }) => {
   const origin = "http://127.0.0.1:3405";
   const response = await request.fetch("/blog?_rsc=physical-safari", {

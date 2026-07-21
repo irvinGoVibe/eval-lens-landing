@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/LanSafeLink";
 import { Suspense } from "react";
 import { AllNewsGrid } from "@/components/blog/AllNewsGrid";
 import { MoreFromNewsroom } from "@/components/blog/MoreFromNewsroom";

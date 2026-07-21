@@ -15,8 +15,13 @@ export function AllNewsGrid({ posts }: { posts: Post[] }) {
   return (
     <>
       <div className="blog-grid blog-grid--surface">
-        {visible.map((post) => (
-          <ArticleCard key={post.slug} post={post} variant="grid" />
+        {visible.map((post, index) => (
+          <ArticleCard
+            key={post.slug}
+            post={post}
+            variant="grid"
+            eager={index < 4}
+          />
         ))}
       </div>
 
