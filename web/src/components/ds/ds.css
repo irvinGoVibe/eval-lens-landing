@@ -418,7 +418,9 @@
 .ds-pattern::after{content:"";position:absolute;left:50%;top:16%;width:min(72vw,880px);aspect-ratio:1;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle,color-mix(in oklab,var(--violet) 20%, transparent),transparent 62%);filter:blur(44px);opacity:.65;}
 
 /* ── v1 media background (image/video) — full-bleed scene + bottom-up scrim ── */
-.ds-hero__v--media{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin-left:50%;transform:translateX(-50%);min-height:clamp(560px,82vh,880px);display:grid;align-items:center;padding:clamp(120px,16vw,190px) 0 clamp(40px,6vw,80px);}
+/* iPhone Safari resolves legacy `vh` against the large viewport while its
+   browser chrome is visible; `svh` matches the responsive reference height. */
+.ds-hero__v--media{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin-left:50%;transform:translateX(-50%);min-height:clamp(560px,82svh,880px);display:grid;align-items:center;padding:clamp(120px,16vw,190px) 0 clamp(40px,6vw,80px);}
 .ds-hero__media-bg{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#0a0a0d;background-image:radial-gradient(90% 80% at 72% 22%, color-mix(in oklab,var(--violet) 40%,transparent), transparent 60%),radial-gradient(70% 60% at 14% 28%, color-mix(in oklab,var(--cyan) 22%,transparent), transparent 62%),var(--ink-grad);}
 .ds-hero__media-vid{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;background:#0a0a0d;}
 .ds-hero__media-scrim{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(0deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.30) 38%, transparent 72%);}
@@ -2118,4 +2120,3 @@ section.ds-cinema.ds-cinema--lens-end{background:linear-gradient(180deg,#fbfaff 
   --a-cool:    rgba(199,120,255,.20);
   --a-accent:  rgba(140,76,241,.30);
 }
-

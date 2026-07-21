@@ -363,7 +363,7 @@ export default function DemoDayPage() {
         <section
           aria-hidden="true"
           className="band ink"
-          style={{ minHeight: "40vh", background: "var(--bg-ink)" }}
+          style={{ minHeight: "40svh", background: "var(--bg-ink)" }}
         />
 
         {/* Block B — Hundreds of runs (ported verbatim from company/about
@@ -487,7 +487,7 @@ export default function DemoDayPage() {
         <section
           aria-hidden="true"
           className="band ink"
-          style={{ minHeight: "40vh", background: "var(--bg-ink)" }}
+          style={{ minHeight: "40svh", background: "var(--bg-ink)" }}
         />
 
         {/* Slide 5 — Pipeline (PinnedSteps, DS, ink). Copied verbatim from

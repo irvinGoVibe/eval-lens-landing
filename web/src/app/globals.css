@@ -6360,7 +6360,9 @@ section.band.ink .mini-tag{color:var(--lavender);}
    (~2264px of cards), which then centres .wrap inside an over-wide track and
    shoves the head off to the right below ~1920px. Paired with min-width:0 on the
    inner so the grid item itself can shrink. */
-.lab-gallery__v--expr{position:relative;padding-block:clamp(40px,9vw,120px);min-height:clamp(560px,72vh,820px);overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;}
+/* `svh` keeps the stage tied to the visible iPhone Safari viewport instead of
+   the browser-chrome-inclusive large `vh` viewport. */
+.lab-gallery__v--expr{position:relative;padding-block:clamp(40px,9vw,120px);min-height:clamp(560px,72svh,820px);overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;}
 .lab-gallery__backdrop{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url("/assets/section-lab/06-horizontal-gallery/gallery-v3-light-desktop.webp");background-size:cover;background-position:center;background-repeat:no-repeat;transform:translateX(calc((var(--scrub,0) - .5) * -40px));will-change:transform;}
 .lab-gallery.ink .lab-gallery__backdrop{background-image:url("/assets/section-lab/06-horizontal-gallery/gallery-v3-dark-desktop.webp");}
 /* light scrim — SYMMETRIC: darkest band down the centre (where the centred head

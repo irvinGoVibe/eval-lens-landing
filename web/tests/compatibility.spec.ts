@@ -85,6 +85,38 @@ test("viewport metadata opts into safe-area support", async ({ page }) => {
   expect(viewport).toContain("viewport-fit=cover");
 });
 
+test("Demo Day stages follow the visible mobile viewport", async ({ page }) => {
+  await page.goto("/demoday", { waitUntil: "domcontentloaded" });
+
+  const metrics = await page.evaluate(() => {
+    const transition = document.querySelector<HTMLElement>(
+      'main > section.band.ink[aria-hidden="true"]',
+    );
+    const gallery = document.querySelector<HTMLElement>(".lab-gallery__v--expr");
+    const liveDemo = document.querySelector<HTMLElement>(
+      "#live-demo > .ds-hero__v--media",
+    );
+    return {
+      viewport: innerHeight,
+      authoredTransitionHeight: transition?.style.minHeight,
+      transition: Number.parseFloat(getComputedStyle(transition!).minHeight),
+      gallery: Number.parseFloat(getComputedStyle(gallery!).minHeight),
+      liveDemo: Number.parseFloat(getComputedStyle(liveDemo!).minHeight),
+    };
+  });
+
+  expect(metrics.authoredTransitionHeight).toBe("40svh");
+  expect(metrics.transition).toBeCloseTo(metrics.viewport * 0.4, 0);
+  expect(metrics.gallery).toBeCloseTo(
+    Math.min(820, Math.max(560, metrics.viewport * 0.72)),
+    0,
+  );
+  expect(metrics.liveDemo).toBeCloseTo(
+    Math.min(880, Math.max(560, metrics.viewport * 0.82)),
+    0,
+  );
+});
+
 test("homepage reduced-motion heading does not cover the hero", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
