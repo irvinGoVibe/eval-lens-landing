@@ -235,19 +235,32 @@ const SECTIONS: LegalSection[] = [
 
 export default function DpaPage() {
   return (
-    <LegalDoc
-      eyebrow="Legal"
-      title="Data Processing Addendum"
-      updated={UPDATED}
-      intro={
-        <p>
-          This addendum governs how EvalLens processes personal data on a
-          customer&rsquo;s behalf &mdash; the roles of the parties, our
-          instructions and security duties, sub&#8209;processors, breach notice,
-          deletion, and international transfers.
-        </p>
-      }
-      sections={SECTIONS}
-    />
+    <>
+      <style>{`
+        @supports (font: -apple-system-body) {
+          @media (max-width: 880px) {
+            /* Safari's system-font metrics otherwise add one line versus the
+               frozen Chromium reference at the 402px iPhone viewport. */
+            .legal #subprocessors .legal-prose > p {
+              letter-spacing: -0.005em;
+            }
+          }
+        }
+      `}</style>
+      <LegalDoc
+        eyebrow="Legal"
+        title="Data Processing Addendum"
+        updated={UPDATED}
+        intro={
+          <p>
+            This addendum governs how EvalLens processes personal data on a
+            customer&rsquo;s behalf &mdash; the roles of the parties, our
+            instructions and security duties, sub&#8209;processors, breach notice,
+            deletion, and international transfers.
+          </p>
+        }
+        sections={SECTIONS}
+      />
+    </>
   );
 }

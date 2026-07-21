@@ -117,6 +117,34 @@ test("Demo Day stages follow the visible mobile viewport", async ({ page }) => {
   );
 });
 
+test("DPA sub-processor copy keeps the frozen mobile wrapping", async ({
+  page,
+  browserName,
+}) => {
+  await page.setViewportSize({ width: 402, height: 660 });
+  await page.goto("/dpa", { waitUntil: "domcontentloaded" });
+
+  const metrics = await page.locator("#subprocessors p").evaluate((paragraph) => {
+    const style = getComputedStyle(paragraph);
+    const height = paragraph.getBoundingClientRect().height;
+    const lineHeight = Number.parseFloat(style.lineHeight);
+    return {
+      lines: Math.round(height / lineHeight),
+      letterSpacing: style.letterSpacing,
+      webkitSystemFont: CSS.supports("font", "-apple-system-body"),
+    };
+  });
+
+  expect(metrics.lines).toBe(10);
+  if (browserName === "webkit") {
+    expect(metrics.webkitSystemFont).toBe(true);
+    expect(metrics.letterSpacing).toBe("-0.08px");
+  } else {
+    expect(metrics.webkitSystemFont).toBe(false);
+    expect(metrics.letterSpacing).toBe("normal");
+  }
+});
+
 test("homepage reduced-motion heading does not cover the hero", async ({ page }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
