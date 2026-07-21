@@ -107,3 +107,7 @@ web/playwright-report/
 web/test-results/
 web/mobile-tests/runs/*
 !web/mobile-tests/runs/.gitkeep
+
+# Physical Mobile QA
+.mobile-qa.local.json
+/test-results/physical-mobile-qa/

@@ -1,0 +1,12 @@
+{
+  "name": "EvalLens",
+  "healthUrl": "http://127.0.0.1:3005",
+  "deviceUrl": "auto",
+  "artifactsDir": "test-results/physical-mobile-qa",
+  "verification": {
+    "lint": "cd web && pnpm lint",
+    "build": "cd web && pnpm test:build",
+    "chromium": "cd web && pnpm test:smoke:chromium",
+    "webkit": "cd web && pnpm test:smoke:webkit"
+  }
+}
