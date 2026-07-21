@@ -310,6 +310,53 @@ test("trust hub avoids automatic RSC prefetch bursts on the LAN QA origin", asyn
   expect(prefetchedRsc).toEqual([]);
 });
 
+test("consistency lazy videos start without aborted reloads", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  const failedMedia: string[] = [];
+  page.on("requestfailed", (request) => {
+    if (request.resourceType() === "media") failedMedia.push(request.url());
+  });
+
+  await page.goto("/trust/consistency-reliability", {
+    waitUntil: "domcontentloaded",
+  });
+
+  for (const selector of [
+    "#mechanisms video",
+    "#benchmark video",
+    ".consistency-honest-edge video",
+  ]) {
+    const video = page.locator(selector);
+    await video.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() => video.evaluate((element: HTMLVideoElement) => element.readyState))
+      .toBeGreaterThanOrEqual(2);
+  }
+
+  expect(failedMedia).toEqual([]);
+});
+
+test("consistency background videos settle when motion is reduced", async ({
+  page,
+}) => {
+  await page.goto("/trust/consistency-reliability", {
+    waitUntil: "domcontentloaded",
+  });
+
+  const videos = page.locator("main video");
+  for (let index = 0; index < (await videos.count()); index += 1) {
+    await videos.nth(index).scrollIntoViewIfNeeded();
+  }
+
+  await expect
+    .poll(() =>
+      videos.evaluateAll((elements: HTMLVideoElement[]) =>
+        elements.every((video) => video.paused && video.currentTime < 0.05),
+      ),
+    )
+    .toBe(true);
+});
+
 test("blog article avoids automatic RSC prefetch bursts on the LAN QA origin", async ({
   page,
   isMobile,

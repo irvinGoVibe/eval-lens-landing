@@ -153,6 +153,26 @@ export function ScrollFX() {
     if (reduce) {
       scrubs.forEach((el) => el.style.setProperty("--scrub", "1"));
       const metaCleanups: Array<() => void> = [];
+      // Native autoplay ignores prefers-reduced-motion. Freeze declarative
+      // background loops on their first frame so internal pages do not keep
+      // animating after the rest of the motion system has settled.
+      document
+        .querySelectorAll<HTMLVideoElement>("video[autoplay]")
+        .forEach((video) => {
+          const freeze = () => {
+            video.pause();
+            try {
+              video.currentTime = 0;
+            } catch {
+              /* metadata is not seekable yet; loadedmetadata retries below */
+            }
+          };
+          freeze();
+          video.addEventListener("loadedmetadata", freeze);
+          metaCleanups.push(() =>
+            video.removeEventListener("loadedmetadata", freeze),
+          );
+        });
       pins.forEach((section) => {
         section.style.setProperty("--pin", "1");
         section.querySelectorAll("[data-pin-step]").forEach((it) => {

@@ -61,8 +61,10 @@ export function DelayedLoopVideo({
         if (!entries.some((e) => e.isIntersecting)) return;
         io.disconnect();
         v.preload = "auto";
-        v.load();
-        play();
+        // play() starts resource selection. An explicit load() after changing
+        // preload cancels the first request, which Chrome reports as
+        // net::ERR_ABORTED and Safari may expose as a poster/frame reset.
+        if (!reduce) play();
       },
       { rootMargin: "600px 0px" },
     );

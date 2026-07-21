@@ -60,9 +60,13 @@ export function LazyVideo({
 
     const start = () => {
       v.preload = "auto";
-      v.load();
-      if (mode === "loop") {
-        // muted playback may autostart without a gesture; swallow AbortError
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (mode === "loop" && !reduce) {
+        // play() starts resource selection after the preload hint changes.
+        // Calling load() here would cancel that first request and start it
+        // again, surfacing as net::ERR_ABORTED and flashing the poster in
+        // Safari. Muted playback may autostart without a gesture; swallow the
+        // play promise if the browser still declines it.
         void v.play().catch(() => {});
       }
     };
