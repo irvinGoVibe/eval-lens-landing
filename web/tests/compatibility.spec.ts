@@ -126,6 +126,104 @@ test("Entry Hub tonal layers follow their seams with reduced motion", async ({
   }
 });
 
+test("Cinema keeps the full web transition with reduced motion", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile cinematic profile");
+  await page.goto("/product/evidence-based-reports", {
+    waitUntil: "domcontentloaded",
+  });
+
+  const video = page
+    .locator("video.ds-cinema__vid")
+    .filter({ has: page.locator('source[src*="beyond-number-cinema"]') })
+    .first();
+  const cinema = video.locator("xpath=ancestor::section[contains(@class, 'ds-cinema')]");
+  const stage = cinema.locator(".ds-cinema__stage");
+  const mobileKnockout = cinema.locator(".ds-cinema__knockout--m");
+
+  await expect(video).toBeAttached();
+  const geometry = await cinema.evaluate((section) => ({
+    top: section.getBoundingClientRect().top + window.scrollY,
+    height: section.offsetHeight,
+    viewport: window.innerHeight,
+  }));
+  expect(geometry.height).toBeGreaterThanOrEqual(geometry.viewport * 2.9);
+
+  await page.evaluate(
+    ({ top, height, viewport }) =>
+      window.scrollTo(0, top + (height - viewport) * 0.4),
+    geometry,
+  );
+
+  await expect
+    .poll(() =>
+      cinema.evaluate((section) =>
+        Number.parseFloat(
+          (section as HTMLElement).style.getPropertyValue("--pin") || "0",
+        ),
+      ),
+    )
+    .toBeGreaterThan(0.35);
+  await expect
+    .poll(() =>
+      cinema.evaluate((section) =>
+        Number.parseFloat(
+          (section as HTMLElement).style.getPropertyValue("--pin") || "0",
+        ),
+      ),
+    )
+    .toBeLessThan(0.45);
+
+  await expect(stage).toHaveCSS("position", "sticky");
+  await expect(video).toHaveCSS("opacity", "1");
+  await expect(mobileKnockout).toBeVisible();
+  const stageBox = await stage.boundingBox();
+  expect(stageBox?.height ?? 0).toBeCloseTo(geometry.viewport, 0);
+});
+
+test("Evidence Reports Cinema supporting copy stays in its upper safe zone", async ({
+  page,
+}) => {
+  await page.goto("/product/evidence-based-reports", {
+    waitUntil: "domcontentloaded",
+  });
+
+  const cinema = page.locator("#beyond");
+  const geometry = await cinema.evaluate((section) => ({
+    top: section.getBoundingClientRect().top + window.scrollY,
+    height: section.clientHeight,
+    viewport: window.innerHeight,
+  }));
+
+  await page.evaluate(
+    ({ top, height, viewport }) =>
+      window.scrollTo(0, top + (height - viewport) * 0.9),
+    geometry,
+  );
+  await expect
+    .poll(() =>
+      cinema.evaluate((section) =>
+        Number.parseFloat(
+          (section as HTMLElement).style.getPropertyValue("--pin") || "0",
+        ),
+      ),
+    )
+    .toBeGreaterThan(0.85);
+
+  const [copyBox, stageBox] = await Promise.all([
+    cinema.locator(".ds-cinema__copy").boundingBox(),
+    cinema.locator(".ds-cinema__stage").boundingBox(),
+  ]);
+
+  expect(copyBox).not.toBeNull();
+  expect(stageBox).not.toBeNull();
+  expect(copyBox!.y + copyBox!.height).toBeLessThan(
+    stageBox!.y + stageBox!.height * 0.34,
+  );
+});
+
 test("Demo Day stages follow the visible mobile viewport", async ({ page }) => {
   await page.goto("/demoday", { waitUntil: "domcontentloaded" });
 
@@ -377,14 +475,12 @@ test("consistency lazy videos start without aborted reloads", async ({ page }) =
   expect(failedMedia).toEqual([]);
 });
 
-test("consistency background videos settle when motion is reduced", async ({
-  page,
-}) => {
+test("non-cinema background videos settle when motion is reduced", async ({ page }) => {
   await page.goto("/trust/consistency-reliability", {
     waitUntil: "domcontentloaded",
   });
 
-  const videos = page.locator("main video");
+  const videos = page.locator("main video:not(.ds-cinema__vid)");
   for (let index = 0; index < (await videos.count()); index += 1) {
     await videos.nth(index).scrollIntoViewIfNeeded();
   }

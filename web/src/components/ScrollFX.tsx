@@ -139,6 +139,14 @@ export function ScrollFX() {
     /* 2 + 3 — scrub & pin share one rAF loop */
     const scrubs = Array.from(document.querySelectorAll("[data-scrub]")) as HTMLElement[];
     const pins = Array.from(document.querySelectorAll("[data-pin]")) as HTMLElement[];
+    // Cinema intentionally keeps the full web transition even when the device
+    // requests reduced motion. Other scrub/pin scenes retain their static end
+    // state, so this exception stays tightly scoped to the cinematic primitive.
+    const animatedScrubs = reduce ? [] : scrubs;
+    const animatedPins = reduce
+      ? pins.filter((section) => section.classList.contains("ds-cinema"))
+      : pins;
+    const reducedMetaCleanups: Array<() => void> = [];
 
     const seekVideoEnd = (video: HTMLVideoElement) => {
       if (video.duration && Number.isFinite(video.duration)) {
@@ -152,7 +160,6 @@ export function ScrollFX() {
 
     if (reduce) {
       scrubs.forEach((el) => el.style.setProperty("--scrub", "1"));
-      const metaCleanups: Array<() => void> = [];
       // Native autoplay ignores prefers-reduced-motion. Freeze declarative
       // background loops on their first frame so internal pages do not keep
       // animating after the rest of the motion system has settled.
@@ -169,38 +176,36 @@ export function ScrollFX() {
           };
           freeze();
           video.addEventListener("loadedmetadata", freeze);
-          metaCleanups.push(() =>
+          reducedMetaCleanups.push(() =>
             video.removeEventListener("loadedmetadata", freeze),
           );
         });
-      pins.forEach((section) => {
-        section.style.setProperty("--pin", "1");
-        section.querySelectorAll("[data-pin-step]").forEach((it) => {
-          it.classList.add("is-active", "is-current");
-        });
-        section
-          .querySelectorAll<HTMLVideoElement>("video[data-scrub-video]")
-          .forEach((video) => {
-            const onMeta = () => seekVideoEnd(video);
-            onMeta();
-            video.addEventListener("loadedmetadata", onMeta);
-            metaCleanups.push(() =>
-              video.removeEventListener("loadedmetadata", onMeta),
-            );
+      pins
+        .filter((section) => !section.classList.contains("ds-cinema"))
+        .forEach((section) => {
+          section.style.setProperty("--pin", "1");
+          section.querySelectorAll("[data-pin-step]").forEach((it) => {
+            it.classList.add("is-active", "is-current");
           });
-      });
-      return () => {
-        io?.disconnect();
-        unlock();
-        metaCleanups.forEach((fn) => fn());
-      };
+          section
+            .querySelectorAll<HTMLVideoElement>("video[data-scrub-video]")
+            .forEach((video) => {
+              const onMeta = () => seekVideoEnd(video);
+              onMeta();
+              video.addEventListener("loadedmetadata", onMeta);
+              reducedMetaCleanups.push(() =>
+                video.removeEventListener("loadedmetadata", onMeta),
+              );
+            });
+        });
     }
 
-    if (!scrubs.length && !pins.length) {
+    if (!animatedScrubs.length && !animatedPins.length) {
       return () => {
         io?.disconnect();
         playIo?.disconnect();
         playCleanups.forEach((fn) => fn());
+        reducedMetaCleanups.forEach((fn) => fn());
         unlock();
       };
     }
@@ -289,8 +294,8 @@ export function ScrollFX() {
     let rafPending = false;
     const paint = () => {
       rafPending = false;
-      scrubs.forEach(paintScrub);
-      pins.forEach(paintPin);
+      animatedScrubs.forEach(paintScrub);
+      animatedPins.forEach(paintPin);
     };
     const schedule = () => {
       if (rafPending) return;
@@ -300,7 +305,7 @@ export function ScrollFX() {
 
     // Re-seek scrub videos once their metadata (and thus duration) is ready, so
     // the first paint lands on the right frame without waiting for a scroll.
-    const pinVideos = pins.flatMap((s) =>
+    const pinVideos = animatedPins.flatMap((s) =>
       Array.from(s.querySelectorAll<HTMLVideoElement>("video[data-scrub-video]")),
     );
     pinVideos.forEach((v) => v.addEventListener("loadedmetadata", schedule));
@@ -313,6 +318,7 @@ export function ScrollFX() {
       io?.disconnect();
       playIo?.disconnect();
       playCleanups.forEach((fn) => fn());
+      reducedMetaCleanups.forEach((fn) => fn());
       unlock();
       pinVideos.forEach((v) => v.removeEventListener("loadedmetadata", schedule));
       window.removeEventListener("scroll", schedule);

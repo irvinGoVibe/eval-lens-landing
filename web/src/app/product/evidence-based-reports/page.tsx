@@ -280,6 +280,19 @@ export default function EvidenceBasedReportsPage() {
             }
           }
 
+          /* The four-line knockout in this page's "Beyond the number" Cinema
+             occupies the middle of the viewport. Keep its supporting copy in
+             the clear space above it without changing the shared Cinema or the
+             shorter final CTA instance below. */
+          .evidence-reports #beyond .ds-cinema__copy{
+            top: clamp(96px, 14vh, 132px);
+          }
+          @media (max-width: 880px){
+            .evidence-reports #beyond .ds-cinema__copy{
+              top: clamp(76px, 12svh, 108px);
+            }
+          }
+
           /* §3 Anatomy ("One report. Three layers.") — the evidence-map art is
              scaled +15% and given a buoyant "floating in air" drift with a gentle
              sway. Applied to the inner <img> (NOT the .lab-process__media wrapper),

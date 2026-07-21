@@ -595,22 +595,10 @@ section.band.ds-cinema[class*="lab-"]{padding:0;}
 @media (min-width:881px){
   .ds-cinema--multiline .ds-cinema__copy{top:54%;}
 }
-/* reduced-motion ONLY: un-pin → static lens-gradient statement (no scroll motion).
-   Mobile now keeps the animated cinematic (see the block below). */
-@media (prefers-reduced-motion:reduce){
-  section.ds-cinema{min-height:0;}
-  .ds-cinema__stage{position:static;min-height:78svh;padding:clamp(80px,14vw,150px) var(--gutter);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
-  .ds-cinema__vid{opacity:.16;}
-  .ds-cinema__knockout{display:none;}
-  .ds-cinema__fill{display:none;}
-  .ds-cinema__headline{display:block;font-family:var(--font-display);font-weight:600;font-size:clamp(34px,8vw,60px);line-height:1.05;letter-spacing:-.02em;position:relative;z-index:4;background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .ds-cinema__copy{position:static;margin-top:clamp(24px,5vw,44px);}
-  .ds-cinema__eyebrow,.ds-cinema__sub,.ds-cinema__cta{opacity:1;transform:none;}
-}
-/* mobile (motion OK): KEEP the pinned cinematic — just swap the landscape
-   knockout for the portrait two-line one, and drop the copy lower so it clears
-   the taller heading. */
-@media (max-width:880px) and (prefers-reduced-motion:no-preference){
+/* Mobile keeps the same pinned cinematic under either motion preference: swap
+   the landscape knockout for the portrait two-line one, and drop the copy lower
+   so it clears the taller heading. */
+@media (max-width:880px){
   .ds-cinema__knockout--d{display:none;}
   .ds-cinema__knockout--m{display:block;}
   /* two-line heading ends ~55% vh; keep the sub on one rhythm tier below it */

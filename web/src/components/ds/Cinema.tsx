@@ -19,7 +19,8 @@ import { LazyVideo } from "@/components/LazyVideo";
  * viewBox, single line) and `--m` (mobile, portrait viewBox, headline wrapped to
  * `mobileLines`). Motion is 100% `--pin`-driven by the page's single `<ScrollFX/>`
  * (`data-pin` / `data-pin-stage`) — no per-section runtime, no `useEffect`.
- * reduced-motion / mobile degrade to a static statement.
+ * The cinematic intentionally keeps the same scroll-driven composition across
+ * motion preferences so physical Safari matches the responsive web version.
  *
  * Surface: `.ds-cinema` defaults to a LIGHT (white) scrim; `surface="ink"`
  * (default) adds `.ink` for the black scrim. Both supported — surface only flips

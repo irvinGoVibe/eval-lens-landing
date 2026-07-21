@@ -61,7 +61,10 @@ export function LazyVideo({
     const start = () => {
       v.preload = "auto";
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (mode === "loop" && !reduce) {
+      // Cinema is explicitly art-directed to match the full web transition on
+      // every device, including Safari with system Reduce Motion enabled.
+      const cinemaMotion = Boolean(v.closest(".ds-cinema"));
+      if (mode === "loop" && (!reduce || cinemaMotion)) {
         // play() starts resource selection after the preload hint changes.
         // Calling load() here would cancel that first request and start it
         // again, surfacing as net::ERR_ABORTED and flashing the poster in
