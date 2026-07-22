@@ -4,6 +4,17 @@
    / .sub). Theme-agnostic: colours come only from tokens, surfaces flip via
    the existing `.band.ink` rules. Clean DS namespace (no `Lab` prefix). */
 
+/* Ambient-layer gate (set by ScrollFX). `.fx-off` lands on a decorative
+   element while it sits >60% of a viewport away: its infinite animation and
+   layer-promotion hint are dropped so off-screen ornaments stop holding GPU
+   texture memory. `animation:none` (not `paused`) on purpose — a paused
+   compositor animation keeps its layer. JS-only class: with JS off nothing
+   matches and every ornament animates exactly as authored. */
+.fx-off,
+.fx-off::before,
+.fx-off::after{animation:none !important;}
+.fx-off{will-change:auto !important;}
+
 /* ============================================================
    Shared canvas — decouple SURFACE FILL from TONE.
    Normally `.band.soft`/`.band.ink` do TWO things: paint a flat fill AND set

@@ -64,6 +64,50 @@ export function ScrollFX() {
       if (bodyWasLocked) document.body.classList.remove("hero-ready");
     };
 
+    /* 0 — ambient-layer gate for internal pages. Same mechanism the homepage
+       runs in ScrollOrchestrator: decorative `infinite` animations hold
+       promoted compositor layers even while their section is screens away.
+       Hosts (globals.css ambient groups) reuse the `[data-fx-gate]` +
+       `is-onscreen` CSS gate; individual DS ornaments get `.fx-off` (see
+       ds.css) because their styles live on the element / its pseudo. */
+    const gateCleanups: Array<() => void> = [];
+    {
+      const hosts = document.querySelectorAll<HTMLElement>(
+        ".section-orange-glow, .cta-band, .blob-field, .wf-floats",
+      );
+      const ornaments = document.querySelectorAll<HTMLElement>(
+        ".ds-blob, .ds-flow__blob, .ds-glass__orbit, .ds-chipgrid--bare .ds-chip, .ds-hubmap__card--feature",
+      );
+      if (hosts.length || ornaments.length) {
+        const gate = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              const el = e.target as HTMLElement;
+              if (el.dataset.fxGate !== undefined) {
+                el.classList.toggle("is-onscreen", e.isIntersecting);
+              } else {
+                el.classList.toggle("fx-off", !e.isIntersecting);
+              }
+            });
+          },
+          { rootMargin: "60% 0px 60% 0px" },
+        );
+        hosts.forEach((host) => {
+          host.dataset.fxGate = "";
+          gate.observe(host);
+        });
+        ornaments.forEach((el) => gate.observe(el));
+        gateCleanups.push(() => {
+          gate.disconnect();
+          hosts.forEach((host) => {
+            delete host.dataset.fxGate;
+            host.classList.remove("is-onscreen");
+          });
+          ornaments.forEach((el) => el.classList.remove("fx-off"));
+        });
+      }
+    }
+
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 
@@ -339,6 +383,7 @@ export function ScrollFX() {
 
     return () => {
       unsubscribeScroll();
+      gateCleanups.forEach((fn) => fn());
       revealCleanups.forEach((fn) => fn());
       io?.disconnect();
       playIo?.disconnect();

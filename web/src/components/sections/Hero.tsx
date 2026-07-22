@@ -32,7 +32,17 @@ export function Hero({
             disablePictureInPicture
             poster="/assets/hero-intro-2-poster.webp"
           >
-            <source src="/assets/hero-intro-2.mp4?v=2" type="video/mp4" />
+            {/* Desktop-first source order: Firefox ignores `media` on <source>
+                and always takes the first playable entry — that must be the
+                full-res file so desktop never downgrades. Chrome/Safari on a
+                phone skip the min-width entry and land on the 720p encode
+                (1.8MB vs 5MB), which is what the hero LCP needs on Slow 4G. */}
+            <source
+              src="/assets/hero-intro-2.mp4?v=2"
+              media="(min-width: 821px)"
+              type="video/mp4"
+            />
+            <source src="/assets/hero-intro-2-mobile.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -49,12 +59,25 @@ export function Hero({
             disablePictureInPicture
             poster="/assets/hero-intro-transed-poster.webp"
           >
+            {/* Same desktop-first pattern as the background video. The intro
+                script prunes this list down to one source per browser (mov for
+                Safari, webm otherwise) and honours these media attributes. */}
             <source
               src="/assets/hero-intro-transed-test.mov?v=6"
+              media="(min-width: 821px)"
+              type='video/quicktime; codecs="hvc1"'
+            />
+            <source
+              src="/assets/hero-intro-transed-mobile.mov"
               type='video/quicktime; codecs="hvc1"'
             />
             <source
               src="/assets/hero-intro-transed-test.webm?v=6"
+              media="(min-width: 821px)"
+              type="video/webm"
+            />
+            <source
+              src="/assets/hero-intro-transed-mobile.webm"
               type="video/webm"
             />
           </video>

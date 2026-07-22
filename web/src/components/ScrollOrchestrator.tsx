@@ -355,9 +355,17 @@ function runScript(): () => void {
     if (overlay) {
       const isSafari = document.documentElement.classList.contains("ua-safari");
       const sources = Array.from(overlay.querySelectorAll("source"));
-      const mov = sources.find((s) => /\.mov/i.test(s.getAttribute("src") || ""));
-      const webm = sources.find((s) => /\.webm/i.test(s.getAttribute("src") || ""));
-      const keep = isSafari ? mov : webm;
+      // Respect the responsive `media` attributes: on a phone the min-width
+      // sources don't apply, so the 720p mobile encodes must win. Only then
+      // pick the format for the browser (mov for Safari, webm otherwise).
+      const applies = (s: HTMLSourceElement) => {
+        const m = s.getAttribute("media");
+        return !m || window.matchMedia(m).matches;
+      };
+      const candidates = sources.filter(applies);
+      const mov = candidates.find((s) => /\.mov/i.test(s.getAttribute("src") || ""));
+      const webm = candidates.find((s) => /\.webm/i.test(s.getAttribute("src") || ""));
+      const keep = (isSafari ? mov : webm) ?? mov ?? webm;
       sources.forEach((s) => {
         if (s !== keep) s.remove();
       });
