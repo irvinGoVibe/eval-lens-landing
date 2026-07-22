@@ -64,6 +64,11 @@ export function Problem() {
               aria-hidden="true"
               poster="/assets/section2-scroll-2-poster.jpg"
             >
+              <source
+                src="/assets/section2-scroll-2-mobile.mp4?v=1"
+                type="video/mp4"
+                media="(max-width: 760px)"
+              />
               <source src="/assets/section2-scroll-2.mp4?v=3" type="video/mp4" />
             </video>
             <div className="scrub-veil" aria-hidden="true"></div>

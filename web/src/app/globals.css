@@ -1999,6 +1999,23 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   .scroll-scrub .scrub-lead{height:220px;margin-top:-220px;}
   .scroll-scrub .scrub-track{height:320vh;}
   .scroll-scrub .scrub-bottom-fade{height:clamp(120px,20vh,200px);}
+  /* Physical Safari already decodes a scroll-seeked video in this scene.
+     Keep the cards' composition but stop seven independent ambient transform
+     loops; the scroll-bound pull/fade remains the only mobile motion. */
+  .scroll-scrub .scrub-file{
+    animation:none;
+    filter:none;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+  }
+  .scroll-scrub .scrub-cell{
+    filter:none;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    will-change:transform,opacity;
+  }
+  .scroll-scrub .scrub-scene::before,
+  .scroll-scrub .scrub-scene.is-sucking::before{filter:none;}
   .section-orange-glow{
     display:none;}
   .section-orange-glow::after{display:none;}

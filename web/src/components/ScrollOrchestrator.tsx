@@ -957,9 +957,13 @@ function runScript(): () => void {
         let y = 0;
         if (p >= PHASE.EXIT_START) {
           const t = (p - PHASE.EXIT_START) / (1 - PHASE.EXIT_START);
-          y = easeInOut(Math.min(1, t)) * 60;
+          // Keep the exit distance in the same stable coordinate space as the
+          // sticky pin. Mobile Safari changes `vh` while its browser chrome
+          // expands/collapses; an inline `translateY(...vh)` therefore moved
+          // even when scrollY did not.
+          y = easeInOut(Math.min(1, t)) * fVh * 0.6;
         }
-        stageArea.style.transform = y > 0 ? `translateY(-${y}vh)` : "";
+        stageArea.style.transform = y > 0 ? `translate3d(0,-${y.toFixed(1)}px,0)` : "";
       }
 
       function videoProgress(p: number) {
@@ -1047,8 +1051,12 @@ function runScript(): () => void {
           const flyT = Math.pow(pull, 0.48);
           const blur = (10 + towardT * 62) * flyT * cardWeight;
           const bright = 1 + flyT * 0.48;
-          file.style.filter =
-            blur > 0.4
+          // Large animated blur layers are disproportionately expensive in
+          // physical Safari while a video seek is decoding in the same frame.
+          // Mobile keeps the same trajectory/fade without the raster blur.
+          file.style.filter = mobileScrub
+            ? "none"
+            : blur > 0.4
               ? `blur(${blur.toFixed(1)}px) brightness(${bright.toFixed(2)})`
               : "none";
         });
@@ -1158,7 +1166,9 @@ function runScript(): () => void {
           const e = easeOut(t);
           const x = rest.startX * (1 - e);
           const y = rest.startY * (1 - e);
-          const blur = (1 - Math.pow(e, 0.78)) * CELL_BLUR_MAX;
+          const blur = mobileScrub
+            ? 0
+            : (1 - Math.pow(e, 0.78)) * CELL_BLUR_MAX;
           cell.style.opacity = t > 0.02 ? String(e) : "0";
           cell.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
           cell.style.filter = blur > 0.5 ? `blur(${blur.toFixed(1)}px)` : "none";
@@ -1196,7 +1206,15 @@ function runScript(): () => void {
         rafPending = false;
         // ── read phase: every layout read for this frame, before any write ──
         const trackRect = track!.getBoundingClientRect();
-        fVh = window.innerHeight || document.documentElement.clientHeight;
+        // CSS deliberately pins this scene to `100svh` on mobile so Safari's
+        // collapsing browser chrome cannot resize the sticky element. Use the
+        // exact same stable height for progress math. `window.innerHeight`
+        // grows/shrinks with the chrome and previously changed the denominator
+        // (`trackHeight - viewportHeight`) mid-gesture, visibly jumping the
+        // video time and every scroll-bound transform.
+        fVh = mobileScrub
+          ? pin!.offsetHeight
+          : window.innerHeight || document.documentElement.clientHeight;
         fTrackTop = trackRect.top;
         fTrackHeight = track!.offsetHeight;
         fPinActive = trackRect.top <= 2;
