@@ -42,7 +42,10 @@ export function Problem() {
           </span>
           <h2 className="problem-mobile__title">
             Find the leaders
-            <span>hidden in your flow.</span>
+            <span>
+              hidden in your flow
+              <span className="problem-mobile__punctuation">.</span>
+            </span>
           </h2>
           <p className="problem-mobile__sub">
             EvalLens compares every deck in one format and brings the strongest
@@ -54,6 +57,7 @@ export function Problem() {
           <video
             className="problem-mobile__video"
             data-problem-mobile-video
+            data-scrub-fps="15"
             muted
             playsInline
             preload="metadata"

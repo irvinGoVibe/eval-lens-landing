@@ -650,41 +650,136 @@ function runScript(): () => void {
       );
       if (!track || !pin) return;
 
-      // Mobile uses the same cinematic tube as desktop, but as a normal
-      // time-based video: play once when the section enters the viewport.
-      // The hidden desktop scene gets no scroll listeners or per-frame work.
+      // Mobile keeps the compact one-screen composition, but the tube itself
+      // is scrubbed while its frame travels through the viewport. This keeps
+      // native page scrolling intact and makes upward scrolling rewind it.
       if (mobileScrub) {
+        const mobileBlock = section.querySelector(
+          ".problem-mobile",
+        ) as HTMLElement | null;
+        const mobileVisual = section.querySelector(
+          ".problem-mobile__visual",
+        ) as HTMLElement | null;
         const mobileVideo = section.querySelector(
           "[data-problem-mobile-video]",
         ) as HTMLVideoElement | null;
-        if (!mobileVideo || reduce) return;
+        if (!mobileBlock || !mobileVisual || !mobileVideo || reduce) return;
 
-        let hasPlayed = false;
-        const playOnce = () => {
-          if (hasPlayed) return;
-          hasPlayed = true;
-          mobileVideo.preload = "auto";
-          mobileVideo.currentTime = 0;
-          const playback = mobileVideo.play();
-          if (playback && typeof playback.catch === "function") {
-            playback.catch(() => {
-              // Keep the poster visible when a browser policy blocks autoplay.
-              hasPlayed = false;
-            });
+        let mobileDuration = 0;
+        let mobileReady = false;
+        let mobileTargetTime = 0;
+        let mobileLastSetTime = -1;
+        const mobileFps = Math.max(
+          1,
+          Number(mobileVideo.dataset.scrubFps) || 15,
+        );
+        const mobileFrameDuration = 1 / mobileFps;
+
+        const applyMobileTarget = () => {
+          if (!mobileReady || mobileDuration <= 0 || mobileVideo.seeking) return;
+          const frameTime = Math.min(
+            mobileDuration - 0.001,
+            Math.max(
+              0,
+              Math.round(mobileTargetTime * mobileFps) / mobileFps,
+            ),
+          );
+          if (
+            Math.abs(frameTime - mobileLastSetTime) <
+            mobileFrameDuration * 0.5
+          ) {
+            return;
           }
+          try {
+            mobileVideo.currentTime = frameTime;
+            mobileLastSetTime = frameTime;
+          } catch (_) {}
         };
 
-        const mobileVideoIO = new IntersectionObserver(
+        const scrubMobileVideo = () => {
+          const visualRect = mobileVisual.getBoundingClientRect();
+          // The block is 100svh, so its rendered height is stable while iOS
+          // browser chrome expands/collapses. Using it here avoids progress
+          // jumps caused by the mutable window.innerHeight value.
+          const stableViewportHeight = mobileBlock.offsetHeight;
+          const scrubRange = stableViewportHeight + visualRect.height;
+          const mobileProgress =
+            scrubRange > 0
+              ? Math.min(
+                  1,
+                  Math.max(0, (stableViewportHeight - visualRect.top) / scrubRange),
+                )
+              : 0;
+          mobileTargetTime = Math.max(
+            0,
+            Math.min(mobileDuration - 0.001, mobileProgress * mobileDuration),
+          );
+          return applyMobileTarget;
+        };
+
+        const onMobileMetadata = () => {
+          mobileDuration = mobileVideo.duration || 0;
+          if (mobileDuration <= 0) return;
+          mobileReady = true;
+          try {
+            mobileVideo.pause();
+          } catch (_) {}
+          scrubMobileVideo()();
+        };
+
+        if (mobileVideo.readyState >= 1 && mobileVideo.duration > 0) {
+          onMobileMetadata();
+        } else {
+          on(mobileVideo, "loadedmetadata", onMobileMetadata, { once: true });
+          on(mobileVideo, "durationchange", onMobileMetadata, { once: true });
+        }
+        on(mobileVideo, "play", () => {
+          try {
+            mobileVideo.pause();
+          } catch (_) {}
+        });
+        // WebKit decodes one random-access frame at a time. When a fast swipe
+        // changes the target during a seek, immediately continue from the
+        // newest target instead of replaying a queue of stale intermediate
+        // frames.
+        on(mobileVideo, "seeked", applyMobileTarget);
+
+        let mobileWarmed = mobileVideo.preload === "auto";
+        const mobileWarmIO = new IntersectionObserver(
           (entries) => {
-            if (!entries.some((entry) => entry.intersectionRatio >= 0.25)) return;
-            playOnce();
-            mobileVideoIO.disconnect();
+            if (!entries.some((entry) => entry.isIntersecting) || mobileWarmed) {
+              return;
+            }
+            mobileWarmed = true;
+            mobileVideo.preload = "auto";
+            try {
+              mobileVideo.load();
+            } catch (_) {}
+            mobileWarmIO.disconnect();
           },
-          { threshold: [0, 0.25] },
+          { rootMargin: "150% 0px 150% 0px" },
         );
-        mobileVideoIO.observe(section);
+        mobileWarmIO.observe(section);
+
+        // A first touch unlocks random-access video seeking on older iOS
+        // Safari versions. Pause immediately so playback never fights scroll.
+        const primeMobileVideo = () => {
+          if (!mobileReady) return;
+          const playback = mobileVideo.play();
+          if (playback && typeof playback.then === "function") {
+            playback.then(() => mobileVideo.pause()).catch(() => {});
+          }
+        };
+        on(window, "touchstart", primeMobileVideo, {
+          passive: true,
+          once: true,
+        });
+        on(window, "click", primeMobileVideo, { once: true });
+
+        subscribeScroll(scrubMobileVideo);
+        scrubMobileVideo()();
         cleanups.push(() => {
-          mobileVideoIO.disconnect();
+          mobileWarmIO.disconnect();
           mobileVideo.pause();
         });
         return;

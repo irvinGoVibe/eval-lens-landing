@@ -151,6 +151,9 @@ body{
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
+/* Homepage canvas stays black behind every section; light sections paint their
+   own surfaces, while transparent seams and mobile overscroll reveal ink. */
+body:has(#hero){background:var(--bg-ink);}
 /* Hard-clip horizontal overflow (decorative elements — hero splash SVGs,
    orange-glow blooms sized in vw, scrub-files positioned off-screen — must not
    trigger a horizontal scroll on mobile). `clip` over `hidden` so it doesn't
@@ -2050,6 +2053,13 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
     color:transparent;
     -webkit-text-fill-color:transparent;
   }
+  .problem-mobile__title .problem-mobile__punctuation{
+    display:inline;
+    margin:0;
+    background:none;
+    color:#fff;
+    -webkit-text-fill-color:#fff;
+  }
   .problem-mobile__sub{
     max-width:34ch;
     margin:22px 0 0;
@@ -2064,6 +2074,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
     width:100vw;
     margin:clamp(28px,4svh,40px) calc(50% - 50vw) 0;
     aspect-ratio:16/9;
+    background:#000;
   }
   .problem-mobile__visual::before{
     content:"";
