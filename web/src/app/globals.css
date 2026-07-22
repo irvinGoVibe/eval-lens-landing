@@ -1171,6 +1171,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 }
 .scroll-scrub .scrub-track,
 .scroll-scrub .scrub-tail{pointer-events:auto;}
+.problem-mobile{display:none;}
 /* 300px overlap: fade hero → section 2 (top stays transparent so hero isn't tinted at rest) */
 .scroll-scrub .scrub-lead{
   position:relative;height:300px;margin-top:-300px;z-index:1;pointer-events:none;
@@ -1996,8 +1997,94 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
 }
 
 @media (max-width:760px){
-  .scroll-scrub .scrub-lead{height:220px;margin-top:-220px;}
-  .scroll-scrub .scrub-track{height:320vh;}
+  .scroll-scrub{
+    background:transparent;
+    pointer-events:auto;
+    overflow:visible;
+    z-index:7;
+  }
+  .scroll-scrub .scrub-track,
+  .scroll-scrub .scrub-tail{display:none;}
+  .scroll-scrub .scrub-lead{
+    display:block;
+    height:clamp(180px,26svh,240px);
+    margin-top:calc(-1 * clamp(180px,26svh,240px));
+    background:linear-gradient(180deg,
+      transparent 0%,
+      rgba(0,0,0,.08) 18%,
+      rgba(0,0,0,.28) 38%,
+      rgba(0,0,0,.62) 64%,
+      rgba(0,0,0,.9) 84%,
+      #000 100%);
+  }
+
+  /* Match the video's true black plate so its frame disappears into the section. */
+  .problem-mobile{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    min-height:100svh;
+    padding:clamp(104px,14svh,132px) 24px 0;
+    background:#000;
+    color:#fff;
+    isolation:isolate;
+    overflow:hidden;
+  }
+  .problem-mobile__copy{max-width:520px;margin-inline:auto;width:100%;}
+  .problem-mobile__title{
+    margin:0;
+    font-family:var(--font-display);
+    font-size:clamp(42px,12.8vw,58px);
+    font-weight:600;
+    letter-spacing:-.045em;
+    line-height:.96;
+    text-wrap:balance;
+  }
+  .problem-mobile__title span{
+    display:block;
+    margin-top:7px;
+    background:var(--lens);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+  }
+  .problem-mobile__sub{
+    max-width:34ch;
+    margin:22px 0 0;
+    font-family:var(--font-text);
+    font-size:16px;
+    line-height:1.5;
+    color:rgba(245,245,247,.7);
+  }
+  .problem-mobile__visual{
+    position:relative;
+    max-width:none;
+    width:100vw;
+    margin:clamp(28px,4svh,40px) calc(50% - 50vw) 0;
+    aspect-ratio:16/9;
+  }
+  .problem-mobile__visual::before{
+    content:"";
+    position:absolute;
+    inset:8% 5%;
+    border-radius:50%;
+    background:radial-gradient(ellipse,rgba(103,73,241,.34),rgba(37,205,213,.12) 45%,transparent 72%);
+    filter:blur(18px);
+    pointer-events:none;
+  }
+  .problem-mobile__video{
+    position:relative;
+    z-index:1;
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#000;
+    pointer-events:none;
+  }
+
   .scroll-scrub .scrub-bottom-fade{height:clamp(120px,20vh,200px);}
   /* Physical Safari already decodes a scroll-seeked video in this scene.
      Keep the cards' composition but stop seven independent ambient transform
@@ -2498,7 +2585,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
   #workflow .workflow-heading .epic-char{opacity:1 !important;transform:none !important;animation:none !important;}
   #workflow .workflow-heading .epic-line.l2 .grad{background-size:100% 100% !important;animation:none !important;}
   #workflow .workflow-heading .workflow-sub{
-    margin-top:12px;max-width:30rem;font-size:clamp(14px,3.9vw,16px);line-height:1.44;
+    margin-top:12px;max-width:30rem;font-size:clamp(14px,2.1vw,19px);line-height:1.42;
     color:#55515d;opacity:1;transform:none;
   }
   #workflow .wf-scroll{height:auto;}
@@ -3106,7 +3193,7 @@ body:not(.hero-ready):has(#hero){overflow:hidden;}
     transform:none;
     margin-top:18px;
     max-width:31ch;
-    font-size:clamp(20px,6vw,28px);
+    font-size:clamp(14px,2.1vw,19px);
     line-height:1.42;
     color:var(--muted);
     text-shadow:none;

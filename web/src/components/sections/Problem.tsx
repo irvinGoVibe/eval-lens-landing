@@ -30,6 +30,57 @@ export function Problem() {
       data-od-id="problem-stage"
     >
       <div className="scrub-lead" aria-hidden="true"></div>
+
+      <div
+        className="problem-mobile"
+        style={{ minHeight: "100svh", justifyContent: "flex-end" }}
+      >
+        <div className="problem-mobile__copy">
+          <span className="eyebrow">
+            <span className="dot"></span>
+            Batch review
+          </span>
+          <h2 className="problem-mobile__title">
+            Find the leaders
+            <span>hidden in your flow.</span>
+          </h2>
+          <p className="problem-mobile__sub">
+            EvalLens compares every deck in one format and brings the strongest
+            candidates to the top.
+          </p>
+        </div>
+
+        <div className="problem-mobile__visual" aria-hidden="true">
+          <video
+            className="problem-mobile__video"
+            data-problem-mobile-video
+            muted
+            playsInline
+            preload="metadata"
+            disablePictureInPicture
+            poster="/assets/section2-scroll-2-poster.jpg"
+          >
+            <source
+              src="/assets/section2-scroll-2.mp4?v=3"
+              type="video/mp4"
+              media="(max-width: 760px)"
+            />
+          </video>
+        </div>
+
+        <div
+          className="tr-gradient-bridge"
+          data-from="ink"
+          data-to="light"
+          aria-hidden="true"
+          style={{
+            width: "100vw",
+            marginInline: "calc(50% - 50vw)",
+            flex: "none",
+          }}
+        ></div>
+      </div>
+
       <div className="scrub-track">
         <div className="scrub-pin">
           <div className="scrub-heading-slot" aria-hidden="true"></div>
@@ -65,11 +116,10 @@ export function Problem() {
               poster="/assets/section2-scroll-2-poster.jpg"
             >
               <source
-                src="/assets/section2-scroll-2-mobile.mp4?v=1"
+                src="/assets/section2-scroll-2.mp4?v=3"
                 type="video/mp4"
-                media="(max-width: 760px)"
+                media="(min-width: 761px)"
               />
-              <source src="/assets/section2-scroll-2.mp4?v=3" type="video/mp4" />
             </video>
             <div className="scrub-veil" aria-hidden="true"></div>
 

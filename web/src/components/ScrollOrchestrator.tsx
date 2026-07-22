@@ -650,6 +650,46 @@ function runScript(): () => void {
       );
       if (!track || !pin) return;
 
+      // Mobile uses the same cinematic tube as desktop, but as a normal
+      // time-based video: play once when the section enters the viewport.
+      // The hidden desktop scene gets no scroll listeners or per-frame work.
+      if (mobileScrub) {
+        const mobileVideo = section.querySelector(
+          "[data-problem-mobile-video]",
+        ) as HTMLVideoElement | null;
+        if (!mobileVideo || reduce) return;
+
+        let hasPlayed = false;
+        const playOnce = () => {
+          if (hasPlayed) return;
+          hasPlayed = true;
+          mobileVideo.preload = "auto";
+          mobileVideo.currentTime = 0;
+          const playback = mobileVideo.play();
+          if (playback && typeof playback.catch === "function") {
+            playback.catch(() => {
+              // Keep the poster visible when a browser policy blocks autoplay.
+              hasPlayed = false;
+            });
+          }
+        };
+
+        const mobileVideoIO = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.intersectionRatio >= 0.25)) return;
+            playOnce();
+            mobileVideoIO.disconnect();
+          },
+          { threshold: [0, 0.25] },
+        );
+        mobileVideoIO.observe(section);
+        cleanups.push(() => {
+          mobileVideoIO.disconnect();
+          mobileVideo.pause();
+        });
+        return;
+      }
+
       function splitEpicLines() {
         if (!heading || heading.dataset.charsSplit) return;
         heading.dataset.charsSplit = "1";
