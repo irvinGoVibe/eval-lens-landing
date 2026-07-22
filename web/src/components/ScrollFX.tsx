@@ -73,7 +73,7 @@ export function ScrollFX() {
     const gateCleanups: Array<() => void> = [];
     {
       const hosts = document.querySelectorAll<HTMLElement>(
-        ".section-orange-glow, .cta-band, .blob-field, .wf-floats",
+        ".section-orange-glow, .cta-band, .blob-field, .wf-floats, .scroll-scrub",
       );
       const ornaments = document.querySelectorAll<HTMLElement>(
         ".ds-blob, .ds-flow__blob, .ds-glass__orbit, .ds-chipgrid--bare .ds-chip, .ds-hubmap__card--feature",

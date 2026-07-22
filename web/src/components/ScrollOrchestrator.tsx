@@ -247,7 +247,7 @@ function runScript(): () => void {
      The 60% rootMargin restarts the loops a screenful before they are seen. */
   (function initAmbientGate() {
     const hosts = document.querySelectorAll<HTMLElement>(
-      ".section-orange-glow, .cta-band, .blob-field, .wf-floats",
+      ".section-orange-glow, .cta-band, .blob-field, .wf-floats, #hero, .scroll-scrub, #decisions",
     );
     if (!hosts.length) return;
     const gate = new IntersectionObserver(

@@ -335,12 +335,16 @@ body.hero-ready .site-header.is-hidden{
   display:grid;place-items:center;
   padding:max(20px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));
   background:rgba(3,3,8,.64);
-  -webkit-backdrop-filter:blur(20px) saturate(135%);
-  backdrop-filter:blur(20px) saturate(135%);
+  /* backdrop-filter lives on the OPEN state only: a closed fullscreen overlay
+     with a backdrop still holds an 11MB+ compositor layer (mobile @3x) for a
+     modal nobody sees. Visually identical — at opacity:0 the blur shows
+     nothing, and during the fade the blur ramps with opacity either way. */
   opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .28s var(--ease),visibility 0s linear .28s;
 }
 .partner-modal[data-open]{
+  -webkit-backdrop-filter:blur(20px) saturate(135%);
+  backdrop-filter:blur(20px) saturate(135%);
   opacity:1;visibility:visible;pointer-events:auto;
   transition:opacity .28s var(--ease),visibility 0s;
 }
@@ -4079,12 +4083,13 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
   position:fixed;inset:0;z-index:200;
   display:flex;flex-direction:column;
   background:var(--mnav-scrim);
-  -webkit-backdrop-filter:blur(2px);
-  backdrop-filter:blur(2px);
+  /* backdrop-filter moves to the open state — see .partner-modal note */
   opacity:0;visibility:hidden;
   transition:opacity .26s var(--ease), visibility 0s linear .26s;
 }
 .mnav__overlay[data-open="true"]{
+  -webkit-backdrop-filter:blur(2px);
+  backdrop-filter:blur(2px);
   opacity:1;visibility:visible;transition:opacity .26s var(--ease), visibility 0s;
 }
 
@@ -4099,15 +4104,19 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
   /* STRONG frost — pushed 40px → 64px (into the desktop `.gnav__panel` 56px
      range) so the sheet reads as the same heavy "liquid glass" material; saturate
      kept unitless for the live brand tint. -webkit- mirror kept identical. */
-  -webkit-backdrop-filter:blur(64px) saturate(1.8) brightness(1.05);
-  backdrop-filter:blur(64px) saturate(1.8) brightness(1.05);
   border-top:1px solid var(--mnav-panel-border);
   box-shadow:var(--mnav-panel-rim);
   transform:translateY(14px);opacity:.4;
   transition:transform .3s var(--ease), opacity .3s var(--ease);
   overflow:hidden;
 }
-.mnav__overlay[data-open="true"] .mnav__sheet{transform:none;opacity:1;}
+.mnav__overlay[data-open="true"] .mnav__sheet{
+  /* the heavy 64px frost composites only while the sheet is actually open —
+     kept identical to the declaration that used to sit on .mnav__sheet */
+  -webkit-backdrop-filter:blur(64px) saturate(1.8) brightness(1.05);
+  backdrop-filter:blur(64px) saturate(1.8) brightness(1.05);
+  transform:none;opacity:1;
+}
 
 .mnav__grabber{
   width:38px;height:4px;border-radius:99px;background:var(--mnav-handle);
@@ -5052,9 +5061,27 @@ section[id]{scroll-margin-top:72px;}
    running by the time the section is actually looked at. */
 [data-fx-gate]:not(.is-onscreen) .section-orange-glow__bloom,
 [data-fx-gate]:not(.is-onscreen) .cta-band__bloom,
+[data-fx-gate]:not(.is-onscreen) .cta-band__aurora,
+[data-fx-gate]:not(.is-onscreen) .cta-band__aurora::before,
+[data-fx-gate]:not(.is-onscreen) .cta-band__aurora::after,
 [data-fx-gate]:not(.is-onscreen) .blob-field img,
 [data-fx-gate]:not(.is-onscreen) .wf-float{
   animation:none;
+  will-change:auto;
+}
+
+/* Promotion-only demotion: these are scroll-driven (no keyframes to stop),
+   but their permanent will-change kept 11.5MB fullscreen @3x layers alive for
+   the whole session — the hero stack alone held ~35MB while the user read the
+   footer. Off-screen they lose the hint; the shared scroll frame re-writes
+   their transforms the moment they scroll back toward the viewport. */
+[data-fx-gate]:not(.is-onscreen) .hero-media-stack,
+[data-fx-gate]:not(.is-onscreen) .hero-dim,
+[data-fx-gate]:not(.is-onscreen) .hero-unicorn-wrap,
+[data-fx-gate]:not(.is-onscreen) .hero-splash,
+[data-fx-gate]:not(.is-onscreen) .scrub-stage-area,
+[data-fx-gate]:not(.is-onscreen) .scrub-stage,
+[data-fx-gate]:not(.is-onscreen) .sd-panel{
   will-change:auto;
 }
 
