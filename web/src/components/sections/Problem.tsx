@@ -44,7 +44,18 @@ export function Problem() {
             Find the leaders
             <span>
               hidden in your flow
-              <span className="problem-mobile__punctuation">.</span>
+              <span
+                className="problem-mobile__punctuation"
+                style={{
+                  display: "inline",
+                  margin: 0,
+                  background: "none",
+                  color: "#fff",
+                  WebkitTextFillColor: "#fff",
+                }}
+              >
+                .
+              </span>
             </span>
           </h2>
           <p className="problem-mobile__sub">
