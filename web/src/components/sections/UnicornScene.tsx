@@ -19,8 +19,9 @@ const MODEL_URL = "/assets/models/unicorn-head-lowpoly.glb";
 /* Decimated derivative of the raw Meshy export (unicorn-head.glb, 365k tris) —
    the low-poly faceted look needs the simplified mesh; swap URLs to compare. */
 
-/* Rest pose: 15° to the left of head-on; the gaze still centers on camera. */
-const BASE_YAW = Math.PI / 12;
+/* Rest pose: a calm 30° three-quarter view matching the bento's opening
+   composition; pointer/gyro gaze still springs away from this pose. */
+const BASE_YAW = Math.PI / 6;
 /* Yaw at which the head faces the camera — the gaze pivots around this once
    the cursor enters the canvas, so it actually "sees" the cursor. */
 const GAZE_YAW = 0;
