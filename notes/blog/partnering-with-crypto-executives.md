@@ -27,7 +27,7 @@ AI prepares the evaluation. People make the final call. That line survives every
 
 [Crypto Executives](https://cryptoexecutives.io) describes itself as **the largest crypto C-level community in the world** — a network of executives and co-founders across the web3 space, built around one promise: "through our network we solve the pain of every web3 project."
 
-In practice that means four things: hands-on advisory that takes founders from early stage to fundraise-ready over one to three months; a [deal flow board](https://t.me/CEDealFlowChannel) connecting projects with investment entities; a KOL marketplace with **300+ influencers**; and a steady calendar of demo days and ecosystem events. Founders come in with a deck. They leave with a cap table. If you want to watch the flow itself, they run it in the open — on [Telegram](https://t.me/CEDealFlowChannel), on [X](https://x.com/Crypto_Execs), and on [LinkedIn](https://www.linkedin.com/company/crypto-executives/).
+In practice that means four things: hands-on advisory that takes founders from early stage to fundraise-ready over one to three months; a deal flow board connecting projects with investment entities; a KOL marketplace with **300+ influencers**; and a steady calendar of demo days and ecosystem events. Founders come in with a deck. They leave with a cap table. If you want to watch the flow itself, they run it in the open — on [X](https://x.com/Crypto_Execs) and on [LinkedIn](https://www.linkedin.com/company/crypto-executives/).
 
 What CE doesn't do — by design — is deep analysis. Their model is triage at speed: figure out which service a project needs and route it there. Which is exactly where a six-lens, evidence-backed evaluation slots in without changing how anyone works.
 
