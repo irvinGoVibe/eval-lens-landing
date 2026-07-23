@@ -18,16 +18,16 @@ That speed is the whole point of their business. It's also the thing we found fa
 Today, it's signed. EvalLens is partnering with **Crypto Executives**.
 
 ```text
-CE network (founders, funds, KOLs) → pitch decks → EvalLens (6 lenses) → evidence-backed reports → human decision
+CE network → pitch decks → EvalLens 6 lenses → evidence report → human decision
 ```
 
 AI prepares the evaluation. People make the final call. That line survives every partnership we do — this one included.
 
 ## Who we're partnering with
 
-Crypto Executives describes itself as **the largest crypto C-level community in the world** — a network of executives and co-founders across the web3 space, built around one promise: "through our network we solve the pain of every web3 project."
+[Crypto Executives](https://cryptoexecutives.io) describes itself as **the largest crypto C-level community in the world** — a network of executives and co-founders across the web3 space, built around one promise: "through our network we solve the pain of every web3 project."
 
-In practice that means four things: hands-on advisory that takes founders from early stage to fundraise-ready over one to three months; a deal flow board connecting projects with investment entities; a KOL marketplace with **300+ influencers**; and a steady calendar of demo days and ecosystem events. Founders come in with a deck. They leave with a cap table.
+In practice that means four things: hands-on advisory that takes founders from early stage to fundraise-ready over one to three months; a [deal flow board](https://t.me/CEDealFlowChannel) connecting projects with investment entities; a KOL marketplace with **300+ influencers**; and a steady calendar of demo days and ecosystem events. Founders come in with a deck. They leave with a cap table. If you want to watch the flow itself, they run it in the open — on [Telegram](https://t.me/CEDealFlowChannel), on [X](https://x.com/Crypto_Execs), and on [LinkedIn](https://www.linkedin.com/company/crypto-executives/).
 
 What CE doesn't do — by design — is deep analysis. Their model is triage at speed: figure out which service a project needs and route it there. Which is exactly where a six-lens, evidence-backed evaluation slots in without changing how anyone works.
 
@@ -55,8 +55,8 @@ Crypto moves faster than diligence. That gap is usually filled with instinct, re
 
 So the joint mission is simple: every project that moves through this network shows up with a structured, evidence-backed read. Founders learn what's weak before an investor finds it. Investors spend their attention on the decks that earned it. And the final decision, every single time, belongs to a person.
 
-:::gallery
-![](/assets/blog/crypto-executives/network-evidence.png)
-:::
+![CE network → 6 judging lenses → evidence report → human decision](/assets/blog/crypto-executives/network-evidence.png)
 
-If you run deal flow of your own — a fund, a syndicate, an accelerator — this is the exact workflow we'd set up for you. [Book a demo](/demo), and bring your messiest batch of decks. That's what they're for.
+If you run deal flow of your own — a fund, a syndicate, an accelerator — this is the exact workflow we'd set up for you. Bring your messiest batch of decks. That's what they're for.
+
+[Book a demo](https://calendly.com/evallens/30min)

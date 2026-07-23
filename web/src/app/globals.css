@@ -4947,6 +4947,20 @@ section[id]{scroll-margin-top:72px;}
    1500×1000 artwork (no crop); max-height keeps it within the screen on wide
    monitors. :::gallery is used only by these editorial articles, so this does
    not disturb other layouts. */
+/* Plain in-column article image (diagrams/schemes) — scales with the text column */
+.article-img{display:block;width:100%;height:auto;margin:clamp(1.6em,3vw,2.4em) 0;border:1px solid var(--border-2);border-radius:14px;background:#fff;}
+
+/* In-article links — visible, on-brand */
+.article-link{color:var(--lavender,#7C5CFF);text-decoration:underline;text-decoration-color:color-mix(in oklab,var(--lavender,#7C5CFF) 45%,transparent);text-underline-offset:3px;}
+.article-link:hover{text-decoration-color:var(--lavender,#7C5CFF);}
+/* A link standing alone in its own paragraph becomes the article CTA pill */
+.article-body p>a.article-link:only-child{display:inline-block;padding:12px 26px;border-radius:999px;background:linear-gradient(118deg,#7C5CFF,#22D3EE);color:#fff;font-weight:600;text-decoration:none;}
+.article-body p>a.article-link:only-child:hover{filter:brightness(1.06);}
+
+/* Code blocks inside articles — branded card, never overflow the column */
+.article-body pre{overflow-x:auto;max-width:100%;background:#f6f7fb;border:1px solid var(--border-2);border-radius:14px;padding:14px 18px;margin:clamp(1.2em,2.4vw,1.8em) 0;font-size:.86em;line-height:1.55;}
+.article-body :not(pre)>code{background:#f2f3f8;border:1px solid var(--border-2);border-radius:6px;padding:.1em .35em;font-size:.9em;}
+
 .article-gallery{margin:clamp(2.2em,4.5vw,3.6em) calc(50% - 50vw);width:100vw;}
 .article-gallery__photo{position:relative;width:100%;aspect-ratio:3/2;max-height:92vh;overflow:hidden;background:#fff;border-block:1px solid var(--border-2);}
 .article-gallery__img{object-fit:cover;}

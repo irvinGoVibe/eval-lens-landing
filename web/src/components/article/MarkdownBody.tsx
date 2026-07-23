@@ -119,6 +119,27 @@ const components = {
   blockquote: ({ children }: { children?: React.ReactNode }) => (
     <blockquote className="article-quote">{children}</blockquote>
   ),
+  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
+    <a
+      className="article-link"
+      href={href}
+      {...(href?.startsWith("http")
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
+    >
+      {children}
+    </a>
+  ),
+  // Plain Markdown image: stays inside the text column (diagrams, schemes).
+  // Full-bleed photography should keep using the `:::gallery` directive.
+  img: ({ src, alt }: { src?: string | Blob; alt?: string }) => (
+    <img
+      className="article-img"
+      src={typeof src === "string" ? src : undefined}
+      alt={alt ?? ""}
+      loading="lazy"
+    />
+  ),
   "article-video": ArticleVideoNode,
   "article-gallery": ArticleGalleryNode,
 } as unknown as Components;
