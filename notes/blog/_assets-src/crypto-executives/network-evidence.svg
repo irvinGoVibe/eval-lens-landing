@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2800" height="1200" viewBox="0 0 2800 1200">
+  <defs>
+    <linearGradient id="lens2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C5CFF"/>
+      <stop offset="35%" stop-color="#A78BFA"/>
+      <stop offset="70%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+  </defs>
+  <rect width="2800" height="1200" fill="#FFFFFF"/>
+
+  <!-- Stage 1: network -->
+  <g stroke="#C7CEDB" stroke-width="4" fill="none">
+    <path d="M330 330 L470 600"/>
+    <path d="M300 620 L470 600"/>
+    <path d="M350 880 L470 600"/>
+    <path d="M560 380 L470 600"/>
+    <path d="M580 850 L470 600"/>
+  </g>
+  <g>
+    <circle cx="330" cy="330" r="26" fill="#FFFFFF" stroke="url(#lens2)" stroke-width="9"/>
+    <circle cx="300" cy="620" r="20" fill="#FFFFFF" stroke="url(#lens2)" stroke-width="9"/>
+    <circle cx="350" cy="880" r="26" fill="#FFFFFF" stroke="url(#lens2)" stroke-width="9"/>
+    <circle cx="560" cy="380" r="20" fill="#FFFFFF" stroke="url(#lens2)" stroke-width="9"/>
+    <circle cx="580" cy="850" r="20" fill="#FFFFFF" stroke="url(#lens2)" stroke-width="9"/>
+    <circle cx="470" cy="600" r="34" fill="url(#lens2)"/>
+  </g>
+  <text x="440" y="1060" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="46" font-weight="700" fill="#15181E" text-anchor="middle">CE network</text>
+  <text x="440" y="1120" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="38" fill="#6B7280" text-anchor="middle">founders · funds · KOLs</text>
+
+  <path d="M760 600 L1000 600" stroke="#C7CEDB" stroke-width="6"/>
+  <path d="M1000 600 l-26 -16 v32 z" fill="#C7CEDB"/>
+
+  <!-- Stage 2: six lenses -->
+  <g fill="none" stroke="url(#lens2)" stroke-width="12">
+    <circle cx="1210" cy="450" r="62"/>
+    <circle cx="1390" cy="450" r="62"/>
+    <circle cx="1210" cy="620" r="62"/>
+    <circle cx="1390" cy="620" r="62"/>
+    <circle cx="1210" cy="790" r="62"/>
+    <circle cx="1390" cy="790" r="62"/>
+  </g>
+  <text x="1300" y="1060" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="46" font-weight="700" fill="#15181E" text-anchor="middle">6 judging lenses</text>
+  <text x="1300" y="1120" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="38" fill="#6B7280" text-anchor="middle">independent · in parallel</text>
+
+  <path d="M1590 600 L1830 600" stroke="#C7CEDB" stroke-width="6"/>
+  <path d="M1830 600 l-26 -16 v32 z" fill="#C7CEDB"/>
+
+  <!-- Stage 3: evidence report -->
+  <g>
+    <rect x="1900" y="380" width="360" height="460" rx="26" fill="#FFFFFF" stroke="#C7CEDB" stroke-width="5"/>
+    <rect x="1948" y="440" width="200" height="26" rx="13" fill="url(#lens2)"/>
+    <rect x="1948" y="510" width="264" height="16" rx="8" fill="#D7DCE6"/>
+    <rect x="1948" y="552" width="264" height="16" rx="8" fill="#D7DCE6"/>
+    <rect x="1948" y="594" width="190" height="16" rx="8" fill="#D7DCE6"/>
+    <rect x="1948" y="660" width="264" height="16" rx="8" fill="#D7DCE6"/>
+    <rect x="1948" y="702" width="222" height="16" rx="8" fill="#D7DCE6"/>
+    <rect x="1948" y="760" width="140" height="30" rx="15" fill="none" stroke="url(#lens2)" stroke-width="6"/>
+  </g>
+  <text x="2080" y="1060" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="46" font-weight="700" fill="#15181E" text-anchor="middle">Evidence report</text>
+  <text x="2080" y="1120" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="38" fill="#6B7280" text-anchor="middle">every claim → a slide</text>
+
+  <path d="M2330 600 L2500 600" stroke="#C7CEDB" stroke-width="6"/>
+  <path d="M2500 600 l-26 -16 v32 z" fill="#C7CEDB"/>
+
+  <!-- Stage 4: human decision -->
+  <circle cx="2610" cy="600" r="96" fill="url(#lens2)"/>
+  <path d="M2564 600 l32 34 62 -70" stroke="#FFFFFF" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="2610" y="1060" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="46" font-weight="700" fill="#15181E" text-anchor="middle">Human decision</text>
+  <text x="2610" y="1120" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="38" fill="#6B7280" text-anchor="middle">the final call is yours</text>
+</svg>

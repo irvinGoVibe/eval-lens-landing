@@ -31,6 +31,8 @@ tmp/
 uploads/
 private/
 customer-data/
+# app route for password-gated blog previews (not private data)
+!web/src/app/blog/private/
 
 # Exports / imports / backups
 exports/

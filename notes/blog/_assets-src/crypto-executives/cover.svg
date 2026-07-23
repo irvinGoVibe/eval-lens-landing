@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="1580" viewBox="0 0 3000 1580">
+  <defs>
+    <linearGradient id="lens" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(28)">
+      <stop offset="0%" stop-color="#7C5CFF"/>
+      <stop offset="35%" stop-color="#A78BFA"/>
+      <stop offset="70%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#EEF2FB"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="3000" height="1580" fill="#FFFFFF"/>
+  <circle cx="2210" cy="790" r="640" fill="url(#halo)"/>
+
+  <!-- kicker -->
+  <text x="185" y="530" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="10" fill="#3F4551">EVALLENS&#160;&#160;·&#160;&#160;PRESS RELEASE</text>
+
+  <!-- headline -->
+  <text x="180" y="680" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="800" fill="#15181E">EvalLens partners with</text>
+  <text x="180" y="820" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="800" fill="url(#lens)">Crypto Executives</text>
+
+  <!-- dek -->
+  <text x="183" y="935" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">The network moves the decks. The lenses read them.</text>
+  <text x="183" y="1000" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">The final call stays human.</text>
+
+  <!-- right graphic: network converging into a lens -->
+  <g stroke="#C7CEDB" stroke-width="4" fill="none">
+    <path d="M1760 430 L2210 790"/>
+    <path d="M1820 1210 L2210 790"/>
+    <path d="M2620 380 L2210 790"/>
+    <path d="M2700 1150 L2210 790"/>
+    <path d="M2210 300 L2210 790"/>
+  </g>
+  <!-- network nodes -->
+  <g>
+    <circle cx="1760" cy="430" r="34" fill="#FFFFFF" stroke="url(#lens)" stroke-width="10"/>
+    <circle cx="1820" cy="1210" r="26" fill="#FFFFFF" stroke="url(#lens)" stroke-width="10"/>
+    <circle cx="2620" cy="380" r="26" fill="#FFFFFF" stroke="url(#lens)" stroke-width="10"/>
+    <circle cx="2700" cy="1150" r="34" fill="#FFFFFF" stroke="url(#lens)" stroke-width="10"/>
+    <circle cx="2210" cy="300" r="22" fill="#FFFFFF" stroke="url(#lens)" stroke-width="10"/>
+  </g>
+  <!-- central lens -->
+  <circle cx="2210" cy="790" r="300" fill="url(#lens)"/>
+  <circle cx="2210" cy="790" r="212" fill="none" stroke="#FFFFFF" stroke-width="52"/>
+  <circle cx="2210" cy="790" r="104" fill="none" stroke="#FFFFFF" stroke-width="40"/>
+  <circle cx="2210" cy="790" r="22" fill="#FFFFFF"/>
+</svg>
