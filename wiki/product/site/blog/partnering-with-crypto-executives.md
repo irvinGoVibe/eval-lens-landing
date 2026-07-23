@@ -45,7 +45,7 @@ Add co-marketing across both audiences, and that's the shape of it.
 
 ## The part that's already working
 
-Partnerships usually get announced first and tested later. This one ran backwards. Before the ink dried, the CE team had opened doors across their network — including the introduction that became our [Kaizen Finance and R2 Copilot partnership](/blog/partnering-with-kaizen-finance-and-r2-copilot) last week.
+Partnerships usually get announced first and tested later. This one ran backwards. Before the ink dried, the CE team had opened doors across their network — including the introduction that became our Kaizen Finance and R2 Copilot partnership last week.
 
 A network that produces results before the agreement is signed tends to produce results after it, too. That's the bet, and for once it comes with a track record attached.
 
