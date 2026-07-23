@@ -1,0 +1,52 @@
+{
+  "brand": {
+    "name": "EvalLens",
+    "tagline": "AI reviews. Human decides.",
+    "spelling": {
+      "correct": "EvalLens",
+      "incorrect": "EvalLense"
+    }
+  },
+  "color": {
+    "violet": "#674DE8",
+    "electricViolet": "#9E4BE8",
+    "magenta": "#D24AE9",
+    "lavender": "#EDA8F2",
+    "ink": "#000000",
+    "paper": "#F5F5F7",
+    "cyan": "#2EC5E8",
+    "aqua": "#36E0C2",
+    "lensGradient": "linear-gradient(118deg, #674DE8 0%, #A99BFF 32%, #2EC5E8 68%, #36E0C2 100%)"
+  },
+  "typography": {
+    "display": "-apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "text": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "mono": "Menlo, \"SF Mono\", ui-monospace, \"JetBrains Mono\", monospace",
+    "weights": {
+      "regular": 400,
+      "semibold": 600
+    },
+    "scalePx": {
+      "display": 88,
+      "heading1": 64,
+      "heading2": 40,
+      "heading3": 24,
+      "body": 18,
+      "label": 12
+    }
+  },
+  "logo": {
+    "minimumWidthPx": {
+      "lockup": 160,
+      "symbol": 24
+    },
+    "clearSpace": "One vertical-stem width on every side"
+  },
+  "social": {
+    "openGraph": {
+      "width": 1200,
+      "height": 630,
+      "ratio": "1.91:1"
+    }
+  }
+}
