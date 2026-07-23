@@ -4,6 +4,7 @@
 // stores the SHA-256 digest of the password, never the password itself.
 
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "@/components/LanSafeLink";
 import { notFound } from "next/navigation";
@@ -22,7 +23,28 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function PrivateArticlePage({
+// Prerender a static shell per protected slug (mirrors /blog/[slug]) — the
+// layout chrome needs a known pathname under `cacheComponents`; the dynamic
+// cookie check stays inside the Suspense boundary below.
+export function generateStaticParams() {
+  return Object.keys(PRIVATE_POSTS).map((slug) => ({ slug }));
+}
+
+// With `cacheComponents`, request-time data (cookies) must be read inside a
+// <Suspense> boundary or the prerender pass fails the production build. The
+// page shell stays static; the gate does all the dynamic work.
+export default function PrivateArticlePage(props: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ error?: string }>;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <PrivateArticleGate {...props} />
+    </Suspense>
+  );
+}
+
+async function PrivateArticleGate({
   params,
   searchParams,
 }: {
