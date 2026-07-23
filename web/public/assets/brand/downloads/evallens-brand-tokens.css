@@ -1,0 +1,17 @@
+:root {
+  --evallens-violet: #674de8;
+  --evallens-electric-violet: #9e4be8;
+  --evallens-magenta: #d24ae9;
+  --evallens-lavender: #eda8f2;
+  --evallens-cyan: #2ec5e8;
+  --evallens-aqua: #36e0c2;
+  --evallens-ink: #000000;
+  --evallens-paper: #f5f5f7;
+  --evallens-lens-gradient: linear-gradient(
+    118deg,
+    var(--evallens-violet) 0%,
+    #a99bff 32%,
+    var(--evallens-cyan) 68%,
+    var(--evallens-aqua) 100%
+  );
+}

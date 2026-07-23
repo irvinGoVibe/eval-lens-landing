@@ -1,0 +1,24 @@
+:root {
+  --evallens-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --evallens-font-text: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --evallens-font-mono: Menlo, "SF Mono", ui-monospace, "JetBrains Mono",
+    monospace;
+
+  --evallens-type-display: 88px;
+  --evallens-type-heading-1: 64px;
+  --evallens-type-heading-2: 40px;
+  --evallens-type-heading-3: 24px;
+  --evallens-type-body: 18px;
+  --evallens-type-label: 12px;
+
+  --evallens-weight-regular: 400;
+  --evallens-weight-semibold: 600;
+}
+
+/*
+ * SF Pro is not bundled with this file. Apple distributes it under its own
+ * license at https://developer.apple.com/fonts/. On Apple platforms the
+ * system stack resolves to SF Pro automatically.
+ */
