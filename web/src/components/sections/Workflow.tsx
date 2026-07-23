@@ -5,6 +5,46 @@ export function Workflow() {
       data-screen-label="03 Launch your entry point"
       data-od-id="entry-stage"
     >
+      <style>{`
+        @media (max-width: 520px) {
+          #workflow .wf-window[data-stage="2"] .layer {
+            padding-block: 9px;
+          }
+          #workflow .wf-window[data-stage="2"] .a-stack {
+            gap: 6px;
+          }
+          #workflow .wf-window[data-stage="2"] .setup-card.done {
+            padding-block: 9px;
+          }
+          #workflow .wf-window[data-stage="2"] .link-card {
+            padding: 10px 12px;
+            gap: 6px;
+          }
+          #workflow .wf-window[data-stage="2"] .lc-url {
+            padding-block: 6px;
+          }
+          #workflow .wf-window[data-stage="2"] .lc-hint {
+            display: none;
+          }
+          #workflow .wf-window[data-stage="2"] .pv-bar {
+            padding-block: 7px;
+          }
+          #workflow .wf-window[data-stage="2"] .pv-body {
+            padding: 10px;
+            gap: 7px;
+          }
+          #workflow .wf-window[data-stage="2"] .pv-tcell {
+            padding: 6px 7px;
+          }
+          #workflow .wf-window[data-stage="2"] .pv-cta {
+            gap: 5px;
+            padding-top: 7px;
+          }
+          #workflow .wf-window[data-stage="2"] .pv-submit {
+            padding: 8px 10px;
+          }
+        }
+      `}</style>
       <div className="workflow-heading-pin">
         <div className="workflow-heading">
           <h2 className="title">
