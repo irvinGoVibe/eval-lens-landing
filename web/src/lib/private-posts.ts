@@ -8,9 +8,12 @@
 
 /** slug → hex SHA-256 digest of that article's access password. */
 export const PRIVATE_POSTS: Record<string, string> = {
-  // password shared with the Crypto Executives team
-  "partnering-with-crypto-executives":
-    "81a1d3da303fef84af2f08e7c1c27228bc07fc96c66dbb2d950f484ea483fd49",
+  // password shared with the Kaizen Finance team
+  "partnering-with-kaizen-finance":
+    "117868380d2a58ab3225ab0c3f5bc96c7e29343d99686a037490f38951185315",
+  // password shared with the R2 Copilot team
+  "partnering-with-r2-copilot":
+    "7d690ef53ea05af27af2bbc7c690b366e2fcba90911ca0c434a4dc99e9be8c41",
 };
 
 export function privateCookieName(slug: string): string {
