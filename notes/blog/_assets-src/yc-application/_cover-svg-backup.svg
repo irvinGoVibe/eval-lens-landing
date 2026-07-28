@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="1580" viewBox="0 0 3000 1580">
+  <defs>
+    <linearGradient id="lens" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(28)">
+      <stop offset="0%" stop-color="#7C5CFF"/>
+      <stop offset="35%" stop-color="#A78BFA"/>
+      <stop offset="70%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#EEF2FB"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="3000" height="1580" fill="#FFFFFF"/>
+  <circle cx="2280" cy="790" r="640" fill="url(#halo)"/>
+
+  <!-- kicker -->
+  <text x="185" y="530" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="10" fill="#3F4551">EVALLENS&#160;&#160;·&#160;&#160;PRESS RELEASE</text>
+
+  <!-- headline -->
+  <text x="180" y="680" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="800" fill="#15181E">We applied to</text>
+  <text x="180" y="820" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="800" fill="url(#lens)">Y Combinator</text>
+
+  <!-- dek -->
+  <text x="183" y="935" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">One deck in a queue of twenty thousand.</text>
+  <text x="183" y="1000" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">We build for exactly that queue.</text>
+
+  <!-- right graphic: a queue of decks, one read through the lens -->
+  <g fill="#FFFFFF" stroke="#C7CEDB" stroke-width="4">
+    <rect x="1810" y="360" width="170" height="120" rx="14"/>
+    <rect x="2020" y="360" width="170" height="120" rx="14"/>
+    <rect x="2230" y="360" width="170" height="120" rx="14"/>
+    <rect x="2440" y="360" width="170" height="120" rx="14"/>
+    <rect x="2650" y="360" width="170" height="120" rx="14"/>
+
+    <rect x="1810" y="530" width="170" height="120" rx="14"/>
+    <rect x="2020" y="530" width="170" height="120" rx="14"/>
+    <rect x="2440" y="530" width="170" height="120" rx="14"/>
+    <rect x="2650" y="530" width="170" height="120" rx="14"/>
+
+    <rect x="1810" y="700" width="170" height="120" rx="14"/>
+    <rect x="2020" y="700" width="170" height="120" rx="14"/>
+    <rect x="2230" y="700" width="170" height="120" rx="14"/>
+    <rect x="2440" y="700" width="170" height="120" rx="14"/>
+    <rect x="2650" y="700" width="170" height="120" rx="14"/>
+
+    <rect x="1810" y="870" width="170" height="120" rx="14"/>
+    <rect x="2020" y="870" width="170" height="120" rx="14"/>
+    <rect x="2230" y="870" width="170" height="120" rx="14"/>
+    <rect x="2440" y="870" width="170" height="120" rx="14"/>
+    <rect x="2650" y="870" width="170" height="120" rx="14"/>
+
+    <rect x="1810" y="1040" width="170" height="120" rx="14"/>
+    <rect x="2020" y="1040" width="170" height="120" rx="14"/>
+    <rect x="2230" y="1040" width="170" height="120" rx="14"/>
+    <rect x="2440" y="1040" width="170" height="120" rx="14"/>
+    <rect x="2650" y="1040" width="170" height="120" rx="14"/>
+  </g>
+
+  <!-- the one deck under review, tinted by the lens -->
+  <rect x="2230" y="530" width="170" height="120" rx="14" fill="#FFFFFF" stroke="url(#lens)" stroke-width="12"/>
+  <g stroke="url(#lens)" stroke-width="10" stroke-linecap="round">
+    <line x1="2262" y1="572" x2="2368" y2="572"/>
+    <line x1="2262" y1="604" x2="2340" y2="604"/>
+  </g>
+
+  <!-- lens over the highlighted deck -->
+  <g>
+    <circle cx="2400" cy="672" r="150" fill="#FFFFFF" fill-opacity="0.55" stroke="url(#lens)" stroke-width="22"/>
+    <circle cx="2400" cy="672" r="96" fill="none" stroke="url(#lens)" stroke-width="10" stroke-opacity="0.55"/>
+    <line x1="2508" y1="780" x2="2620" y2="892" stroke="url(#lens)" stroke-width="30" stroke-linecap="round"/>
+  </g>
+</svg>
