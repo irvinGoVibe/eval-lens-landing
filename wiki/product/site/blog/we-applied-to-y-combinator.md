@@ -15,10 +15,6 @@ On July 27, a few hours before Y Combinator's 8pm Pacific deadline, we pressed S
 
 Then we sat there for a minute, because the moment was stranger than we expected.
 
-:::gallery
-![](/assets/blog/yc-application/founders.png)
-:::
-
 ## We just entered the world's largest batch review
 
 YC doesn't publish exact application counts, but outside estimates put a recent cycle at [15,000–20,000+ applications for roughly 150–250 spots](https://valueaddvc.com/blog/yc-acceptance-rate-2026-how-many-apply-how-many-get-in-and-what-it-takes) — an acceptance rate somewhere between one and two percent. Every one of those applications gets read, sorted, and ranked against a bar.
@@ -68,3 +64,5 @@ Nothing changes. The September fund pilot is in preparation, the next live event
 If your inbox looks like a smaller version of YC's — hundreds of applications, one rubric, not enough weeks — that's the problem we build for. **Book a demo**, or **try the live demo** and run a deck through the lens yourself.
 
 Twenty thousand decks, and somebody has to read them all. We have thoughts on that.
+
+![The two of us, mid-application, in Nha Trang](/assets/blog/yc-application/founders.png)
