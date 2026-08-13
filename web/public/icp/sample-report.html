@@ -1,0 +1,145 @@
+<title>EvalLens — Sample Evaluation Report</title>
+<style>
+  :root{
+    --bg:#ffffff; --soft:#f5f5f7; --fg:#1d1d1f; --muted:#6e6e73; --border:#d2d2d7; --border2:#e6e6ea;
+    --violet:#6c4cf1; --amber:#c47f17; --red:#b4443c; --green:#0E8F76;
+    --lens:linear-gradient(118deg,#6c4cf1 0%,#a99bff 32%,#2ec5e8 68%,#36e0c2 100%);
+    --mono:Menlo,"SF Mono",ui-monospace,monospace;
+    --sans:-apple-system,"SF Pro Text",BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--soft);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5;padding:32px clamp(12px,3vw,40px) 60px}
+  .doc{max-width:880px;margin:0 auto;background:#fff;border:1px solid var(--border);border-radius:20px;
+    box-shadow:0 24px 60px -28px rgba(60,40,160,.22);padding:clamp(24px,4vw,48px);display:flex;flex-direction:column;gap:28px}
+  .notice{background:#fff8ec;border:1px solid #f0dcb4;border-radius:12px;padding:12px 16px;font-size:13px;color:#7a5a14}
+  .dochead{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--border2);padding-bottom:22px}
+  .brand{font-weight:700;font-size:17px;display:inline-flex;align-items:center;gap:8px}
+  .brand .mark{width:14px;height:14px;border-radius:50%;background:var(--lens)}
+  .doctag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet)}
+  h1{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;margin-top:6px}
+  .meta{font-size:12.5px;color:var(--muted);margin-top:6px;font-family:var(--mono)}
+  .totals{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .score-ring{width:92px;height:92px;border-radius:50%;background:var(--lens);display:grid;place-items:center;flex:none}
+  .score-ring i{width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center;
+    font-style:normal;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+  .score-ring i small{display:block;font-size:9px;color:var(--muted);font-weight:400;text-align:center;letter-spacing:.06em}
+  .tot-meta{font-size:12.5px;color:var(--muted);max-width:30ch}
+  h2{font-size:17px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px}
+  h2 .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--violet);text-transform:uppercase}
+  .sumtext{font-size:14.5px;color:#3c3c43;max-width:76ch;line-height:1.6}
+  .dim{border:1px solid var(--border2);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+  .dimhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .dimscore{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--lens);
+    -webkit-background-clip:text;background-clip:text;color:transparent;min-width:44px}
+  .dimname{font-weight:600;font-size:15px}
+  .strength{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:3px 10px}
+  .s-strong{background:rgba(14,143,118,.12);color:var(--green)}
+  .s-mod{background:rgba(196,127,23,.12);color:var(--amber)}
+  .finding{font-size:14px;color:#3c3c43}
+  .quote{border-left:3px solid var(--violet);background:var(--soft);border-radius:0 10px 10px 0;padding:9px 14px;font-size:13.5px;font-style:italic;color:#3c3c43}
+  .quote b{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--violet);font-weight:400;white-space:nowrap}
+  .flag{display:flex;gap:10px;align-items:baseline;font-size:14px;padding:10px 14px;border-radius:10px}
+  .flag.red{background:rgba(180,68,60,.07);color:#7c2f29}
+  .flag.amb{background:rgba(196,127,23,.08);color:#6d4a0f}
+  .flag b{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+  ol.qa{padding-left:20px;display:flex;flex-direction:column;gap:9px;font-size:14px}
+  ol.qa span{color:var(--muted);font-size:12px;display:block}
+  .decision{background:var(--soft);border:1px solid var(--border2);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+  .decision .row{display:flex;gap:10px;align-items:baseline}
+  .decision b{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);min-width:110px}
+  .covlog{font-family:var(--mono);font-size:11.5px;color:var(--muted);border-top:1px solid var(--border2);padding-top:16px;display:flex;flex-wrap:wrap;gap:14px}
+  .foot{max-width:880px;margin:18px auto 0;text-align:center;font-size:12px;color:var(--muted)}
+  @media print{body{background:#fff;padding:0}.doc{box-shadow:none;border:none}.notice{display:none}}
+</style>
+
+<div class="doc">
+  <div class="notice">⚠️ Illustrative sample. “NimbusFreight” is a fictional company created to show the report format. Structure, evidence chains and decision log are exactly what your team receives; the content is invented.</div>
+
+  <div class="dochead">
+    <div>
+      <span class="brand"><span class="mark"></span>EvalLens</span>
+      <div class="doctag" style="margin-top:8px">Evaluation report · Pitch Competition preset</div>
+      <h1>NimbusFreight — seed, logistics SaaS</h1>
+      <div class="meta">14-slide deck · every page read · coverage 14/14 logged · 6 independent AI reviewer roles</div>
+    </div>
+    <div class="totals">
+      <div class="score-ring"><i>7.1<small>AI TOTAL<br>advisory</small></i></div>
+      <div class="tot-meta">AI Total is advisory context. The ranking your program sees is built from your team's Jury Scores — this number never decides anything.</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Project summary <span class="tag">what the deck claims</span></h2>
+    <p class="sumtext">NimbusFreight sells route-consolidation software to mid-size freight forwarders. The deck claims $41k MRR across 11 accounts, a 9-week average integration, and a bottom-up market entry through Benelux forwarders. Two founders previously shipped a comparable dispatching product; the third joined from a customer. Pricing is validated with early customers; distribution beyond founder-led sales remains a hypothesis. Churn is not disclosed anywhere in the deck.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2>Score breakdown <span class="tag">evidence before score · quotes verified against the deck</span></h2>
+
+    <div class="dim">
+      <div class="dimhead"><span class="dimscore">7.8</span><span class="dimname">P1 · Problem significance</span><span class="strength s-strong">Evidence: strong</span></div>
+      <p class="finding">The problem is documented from the buyer's side, not asserted: the deck quantifies dispatcher hours lost to manual consolidation and names the workflow it replaces.</p>
+      <div class="quote">“…dispatchers spend 11–14 h/week reconciling partial loads across three tools…” <b>· slide 3</b></div>
+    </div>
+
+    <div class="dim">
+      <div class="dimhead"><span class="dimscore">7.4</span><span class="dimname">P2 · Solution differentiation</span><span class="strength s-strong">Evidence: strong</span></div>
+      <p class="finding">Differentiation rests on integration depth with legacy TMS systems rather than features; two named integrations are live at customers.</p>
+      <div class="quote">“…bidirectional sync with Cargowise-class TMS in production at two accounts…” <b>· slide 6</b></div>
+    </div>
+
+    <div class="dim">
+      <div class="dimhead"><span class="dimscore">6.9</span><span class="dimname">P3 · Market attractiveness</span><span class="strength s-mod">Evidence: moderate</span></div>
+      <p class="finding">Bottom-up sizing is grounded in a served niche with documented pull; the top-down €4B claim is unsupported by any referenced source.</p>
+      <div class="quote">“…112 paying-capable forwarders in Benelux alone, 9% m/m inbound growth…” <b>· slide 8</b></div>
+    </div>
+
+    <div class="dim">
+      <div class="dimhead"><span class="dimscore">6.2</span><span class="dimname">P4 · Business model &amp; GTM</span><span class="strength s-mod">Evidence: moderate</span></div>
+      <p class="finding">Pricing is validated with early customers ($190–420/mo per seat band); the channel plan beyond founder-led sales is a stated intention with no evidence yet.</p>
+      <div class="quote">“…14 pilot customers at $190/mo, two converted to annual…” <b>· slide 9</b></div>
+    </div>
+
+    <div class="dim">
+      <div class="dimhead"><span class="dimscore">7.8</span><span class="dimname">P5 · Team / founder fit</span><span class="strength s-strong">Evidence: strong</span></div>
+      <p class="finding">Two founders shipped a comparable product at their previous company; domain exposure is direct, not adjacent.</p>
+      <div class="quote">“…led the dispatch product from prototype to 200k users at FreightCo…” <b>· slide 11</b></div>
+    </div>
+
+    <div class="dim">
+      <div class="dimhead"><span class="dimscore">6.5</span><span class="dimname">P6 · Feasibility &amp; readiness</span><span class="strength s-mod">Evidence: moderate</span></div>
+      <p class="finding">Product is live and integrated at real customers; the 9-week integration claim is consistent across slides but rests on two data points.</p>
+      <div class="quote">“…deployed at two forwarders, 9-week average integration…” <b>· slide 12</b></div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:8px">
+    <h2>Flags <span class="tag">what moves scores down, never up</span></h2>
+    <div class="flag red"><b>Red flag</b><span>Churn is not disclosed anywhere in the deck — for a $41k MRR business this is the single most material omission.</span></div>
+    <div class="flag amb"><b>Unverified</b><span>Top-down €4B market claim has no referenced source — routed to the verification checklist, excluded from the P3 score.</span></div>
+    <div class="flag amb"><b>Concentration</b><span>Top-3 customers appear to represent ~68% of MRR (slide 9 table); not addressed in the risks slide.</span></div>
+  </section>
+
+  <section>
+    <h2>Questions for live Q&amp;A <span class="tag">ranked · tied to weak dimensions</span></h2>
+    <ol class="qa">
+      <li>What is logo churn for the last two quarters? <span>→ P4 · the undisclosed number the score hinges on</span></li>
+      <li>How do you reach the next 100 forwarders without founder-led sales? <span>→ P4 · channel plan is a hypothesis</span></li>
+      <li>What breaks in the 9-week integration when the TMS is not Cargowise-class? <span>→ P6 · claim rests on two data points</span></li>
+      <li>Walk us through what you shipped at FreightCo — and what you'd do differently. <span>→ P5 · verify the shipping claim</span></li>
+      <li>What's the source behind the €4B figure — or should we ignore it? <span>→ P3 · unverified top-down claim</span></li>
+    </ol>
+  </section>
+
+  <section class="decision">
+    <div class="row"><b>Reviewer split</b><span>P4 scored 5.6–6.9 across roles — surfaced to the committee as an open question, not averaged away.</span></div>
+    <div class="row"><b>Human decision</b><span>Committee Jury Score 7.0 · confirmed P1/P2/P5 · overrode P3 down to 6.5 (“market pull is regional”) — reason logged.</span></div>
+    <div class="row"><b>Record</b><span>Scores, evidence, split, override reason and sign-off stored with the application — exportable for any later question.</span></div>
+  </section>
+
+  <div class="covlog">
+    <span>COVERAGE 14/14 SLIDES</span><span>QUOTES VERIFIED AGAINST SOURCE — NO QUOTE, NO FINDING</span><span>PROCESSED ONLY FOR THIS EVALUATION · NEVER USED FOR TRAINING</span>
+  </div>
+</div>
+
+<p class="foot">Want this on your own applications? A retro-test on a closed batch takes 48 hours — <a href="https://calendly.com/evallens/30min" style="color:#6c4cf1">calendly.com/evallens/30min</a> · hello@evallens.io</p>
