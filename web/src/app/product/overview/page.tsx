@@ -304,6 +304,7 @@ export default function ProductOverviewPage() {
           ctas={[{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }]}
           media={{
             ratio: "16/9",
+            src: "/assets/product-overview/hero-decks-into-lens.webp",
             label: "Image · decks into a lens · 16:9",
             hint: "Decks converge into a lens and exit as a ranked workspace — lens-gradient violet→cyan→aqua, calm",
             ariaLabel:
@@ -321,6 +322,7 @@ export default function ProductOverviewPage() {
           title={{ line1: "The organizer path,", line2: "in", line2Accent: "seven steps" }}
           sub="EvalLens walks you from sign-in to a ranked leaderboard. The path is fixed, and each step lights up as you scroll."
           steps={PATH_STEPS}
+          photos={["/assets/product-overview/organizer-flow.webp"]}
           media={{
             ratio: "4/3",
             label: "Image · organizer flow · 4:3",
@@ -363,6 +365,7 @@ export default function ProductOverviewPage() {
               ? {
                   ...m,
                   media: {
+                    src: "/assets/product-overview/modules-bento.webp",
                     label: "Image · modules bento · 16:9",
                     hint: "Three module tiles with quiet signal icons, one lens accent",
                     ariaLabel:
