@@ -66,7 +66,7 @@ Because the volume is about to break the old way of doing it. At Y Combinator's 
 
 You can watch the bar move in Google's own contests. The [2024 Gemini API Developer Competition](https://ai.google.dev/competition) rewarded beautiful apps — Jayu, Gaze Link, ViddyScribe — and handed out a custom DeLorean. Two years later, the XPRIZE rewards a *business* with customers and revenue. Same sponsor, harder question.
 
-A $2M prize had to publish its rubric, require a paper trail, and grade operations over impressions to be taken seriously. Quiet decisions — the accelerator shortlist, the grant round, the dealflow funnel — deserve the same discipline. That's the part we'd love to show you: if you run a batch of submissions and want to see what evidence-backed, reproducible scoring looks like before the next deadline lands, [book a demo](https://evallense.com). The judging stays yours. We just make it defensible.
+A $2M prize had to publish its rubric, require a paper trail, and grade operations over impressions to be taken seriously. Quiet decisions — the accelerator shortlist, the grant round, the dealflow funnel — deserve the same discipline. That's the part we'd love to show you: if you run a batch of submissions and want to see what evidence-backed, reproducible scoring looks like before the next deadline lands, [book a demo](https://evallens.io). The judging stays yours. We just make it defensible.
 
 ## Sources
 

@@ -6,7 +6,7 @@ title: EvalLens partners with Crypto Executives
 excerpt: The largest crypto C-level community in the world moves hundreds of decks a year on instinct and speed. We're adding the layer instinct can't provide — evidence. Here's what we're building together.
 date: 2026-07-23
 readMinutes: 4
-cover: /assets/blog/crypto-executives/cover.png
+cover: /assets/blog/crypto-executives/cover-v2.png
 author: Anonymous Unicorn
 status: draft
 ---

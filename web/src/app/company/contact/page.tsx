@@ -54,11 +54,7 @@ export const metadata: Metadata = {
  *   - demo channel: Book a Demo → /#demo (until a real scheduler/mailto)
  *   - hello@evallens.io  — general & sales (placeholder, confirm)
  *   - press@evallens.io  — press & media (placeholder, confirm)
- *   - DOCS_URL below       — external user-documentation site (placeholder)
  */
-
-/* TODO: real user-docs URL — [user documentation URL] */
-const DOCS_URL = "https://docs.evallens.io";
 
 /* 2. Ways to reach us — channel grid (brief §2). The four direct lines sit at
    the top; "Book a Demo" moves below the grid as a single button. The sales
@@ -136,7 +132,7 @@ const HEADER_NAV: SectionNav = {
   section: "Company",
   links: [
     { label: "Channels", href: "#channels" },
-    { label: "Docs", href: "#docs" },
+    { label: "How it works", href: "#docs" },
     { label: "Newsroom", href: "#news" },
   ],
 };
@@ -207,8 +203,8 @@ export default async function ContactPage() {
               style={{ ["--reveal-delay" as string]: "360ms" }}
             >
               <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
-              <Button variant="ghost" href="mailto:hello@evallens.io">
-                Email us
+              <Button variant="ghost" href="#batch">
+                Send us your batch
               </Button>
             </div>
           </div>
@@ -294,25 +290,19 @@ export default async function ContactPage() {
             <div className="ct-docs__copy" data-reveal="left">
               <span className="eyebrow">
                 <span className="dot" aria-hidden="true"></span>
-                Documentation
+                How it works
               </span>
-              <h2 className="title">Already using EvalLens? Read the <span className="grad-word">docs</span></h2>
+              <h2 className="title">Want the mechanics first? Read the <span className="grad-word">methodology</span></h2>
               <p className="sub">
-                Guides for organizers — how to set up a program, run an
-                evaluation and manage your workspace. The documentation lives on
-                a separate site.
+                How the panel reads a deck, why a score repeats on a re-run, and
+                what happens to a document you upload. Written for the person
+                who has to defend the shortlist.
               </p>
-              {/* external user-docs link — opens in a new tab, ↗ indicator.
-                  URL is a placeholder; see DOCS_URL + brief §Open Questions */}
+              {/* Was an external docs site that does not exist yet (the
+                  placeholder host did not resolve). Until it ships, this points
+                  at the Trust pages, which answer the same questions. */}
               <div className="ct-docs__cta">
-                <Button
-                  href={DOCS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open the documentation{" "}
-                  <span aria-hidden="true">↗</span>
-                </Button>
+                <Button href="/trust/methodology">Read the methodology</Button>
               </div>
             </div>
             {/* docs visual — real image, floating + pointer parallax */}

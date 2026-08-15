@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="640" viewBox="0 0 1600 640" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="0.35">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="0.35" stop-color="#a78bfa"/>
+      <stop offset="0.7" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#5eead4"/>
+    </linearGradient>
+    <linearGradient id="lensSoft" x1="0" y1="0" x2="1" y2="0.35">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#5eead4" stop-opacity="0.25"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10" fill="none" stroke="#9aa0ab" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="640" fill="#ffffff"/>
+
+  <!-- Stage 1: decks in -->
+  <g>
+    <rect x="70" y="240" width="220" height="160" rx="18" fill="#fafafc" stroke="#e6e6ee" stroke-width="1.5"/>
+    <g fill="none" stroke="#b9bcc7" stroke-width="2">
+      <rect x="130" y="282" width="40" height="52" rx="4"/>
+      <rect x="160" y="296" width="40" height="52" rx="4" fill="#fafafc"/>
+    </g>
+    <text x="180" y="380" text-anchor="middle" font-size="20" fill="#3c3c46">Your decks</text>
+  </g>
+  <line x1="290" y1="320" x2="360" y2="320" stroke="#9aa0ab" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Stage 2: isolated Azure environment (big capsule) -->
+  <rect x="370" y="90" width="860" height="460" rx="40" fill="#fbfbff" stroke="url(#lens)" stroke-width="2.5"/>
+  <text x="800" y="136" text-anchor="middle" font-size="21" fill="#3c3c46" font-weight="600">R2 Copilot · certified Azure environment</text>
+  <text x="800" y="162" text-anchor="middle" font-size="15" fill="#8a8f9a">Microsoft Solutions Partner · Industry AI on Azure</text>
+
+  <!-- inner blocks: pipeline steps -->
+  <g font-size="16" fill="#3c3c46" text-anchor="middle">
+    <rect x="410" y="210" width="180" height="90" rx="14" fill="#ffffff" stroke="#e6e6ee" stroke-width="1.5"/>
+    <text x="500" y="248">PII detection</text>
+    <text x="500" y="272" font-size="13" fill="#8a8f9a">Azure, built-in</text>
+
+    <rect x="614" y="210" width="180" height="90" rx="14" fill="#ffffff" stroke="#e6e6ee" stroke-width="1.5"/>
+    <text x="704" y="248">6 lenses</text>
+    <text x="704" y="272" font-size="13" fill="#8a8f9a">EvalLens methodology</text>
+
+    <rect x="818" y="210" width="180" height="90" rx="14" fill="#ffffff" stroke="#e6e6ee" stroke-width="1.5"/>
+    <text x="908" y="248">Evidence report</text>
+    <text x="908" y="272" font-size="13" fill="#8a8f9a">per deck</text>
+
+    <rect x="1022" y="210" width="170" height="90" rx="14" fill="#ffffff" stroke="#e6e6ee" stroke-width="1.5"/>
+    <text x="1107" y="248">Encrypted at rest</text>
+    <text x="1107" y="272" font-size="13" fill="#8a8f9a">Blob · SQL · Key Vault</text>
+  </g>
+  <g stroke="#c9cdd6" stroke-width="1.5">
+    <line x1="590" y1="255" x2="614" y2="255" marker-end="url(#arrow)"/>
+    <line x1="794" y1="255" x2="818" y2="255" marker-end="url(#arrow)"/>
+    <line x1="998" y1="255" x2="1022" y2="255" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- access strip -->
+  <rect x="410" y="360" width="782" height="120" rx="14" fill="none" stroke="url(#lensSoft)" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <g font-size="15" fill="#5b5f6a" text-anchor="middle">
+    <text x="670" y="412">RBAC · private endpoints</text>
+    <text x="670" y="436" font-size="13" fill="#8a8f9a">only verified internal components</text>
+    <text x="980" y="412">HTTPS in transit</text>
+    <text x="980" y="436" font-size="13" fill="#8a8f9a">delete data &amp; account any time</text>
+  </g>
+  <line x1="801" y1="380" x2="801" y2="460" stroke="#e6e6ee" stroke-width="1.5"/>
+
+  <line x1="1230" y1="320" x2="1300" y2="320" stroke="#9aa0ab" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Stage 3: your decision -->
+  <g>
+    <rect x="1310" y="240" width="220" height="160" rx="18" fill="#ffffff" stroke="url(#lens)" stroke-width="2"/>
+    <circle cx="1420" cy="300" r="24" fill="none" stroke="url(#lens)" stroke-width="2"/>
+    <circle cx="1420" cy="300" r="8" fill="url(#lens)"/>
+    <text x="1420" y="360" text-anchor="middle" font-size="20" fill="#3c3c46" font-weight="600">Your decision</text>
+    <text x="1420" y="384" text-anchor="middle" font-size="13" fill="#8a8f9a">the final call always yours</text>
+  </g>
+</svg>

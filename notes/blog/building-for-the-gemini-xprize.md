@@ -37,7 +37,7 @@ We're clear-eyed about the odds. The prize ladder is steep — [$500k for first,
 
 There's a tidy irony in a judging company entering a judging contest, and we like it. The XPRIZE publishes its rubric, requires a paper trail, and scores operations over impressions — which is exactly the discipline we sell. Entering keeps us honest: it forces us to live inside our own standard, on someone else's clock, with the scoreboard public.
 
-We'll share what we learn as we go — what the evidence requirements actually feel like to meet, where the methodology holds, and where it has to bend. If you run evaluations of your own and want to compare notes — or see how we score a batch of submissions before your next deadline — [book a demo](https://evallense.com). The verdict stays yours. We just bring the evidence.
+We'll share what we learn as we go — what the evidence requirements actually feel like to meet, where the methodology holds, and where it has to bend. If you run evaluations of your own and want to compare notes — or see how we score a batch of submissions before your next deadline — [book a demo](https://evallens.io). The verdict stays yours. We just bring the evidence.
 
 ## Sources
 

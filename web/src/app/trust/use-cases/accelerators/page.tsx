@@ -399,7 +399,7 @@ export default function AcceleratorsPage() {
           eyebrow="Next step"
           title="Run the retro-test on your last"
           titleAccent="cohort."
-          sub="30 minutes with you: we map your rubric, pick the batch, and you see agreement-and-misses on decisions you already made. 48 hours later, you'll know. Free through August 31, up to 10 decks."
+          sub="30 minutes with you: we map your rubric, pick the batch, and you see agreement-and-misses on decisions you already made. 48 hours later, you'll know. Free through August 31, up to 20 applications from a past cohort."
           primary={{ label: "Book the free retro-test", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

@@ -48,8 +48,8 @@ Linear Mapping: Project by default
 - primary CTA `Book a Demo` (`/#demo`) виден; есть вторичный email-путь.
 - есть блок документации с внешней кнопкой `Open the documentation ↗`
   (`target=_blank rel=noopener`); URL — плейсхолдер до подтверждения.
-- есть контакт-каналы: general/sales, careers (`careers@evallense.com`),
-  security (`security@evallense.com` + ссылка `/security`), press (ссылка
+- есть контакт-каналы: general/sales, careers (`careers@evallens.io`),
+  security (`security@evallens.io` + ссылка `/security`), press (ссылка
   `/blog`).
 - есть блок Latest news: 3 последних поста из `getAllPosts()` (ссылки на
   `/blog/<slug>`) + `All news →` (`/blog`); страница async Server Component.
@@ -122,7 +122,7 @@ Linear Mapping: Project by default
 - Только канонические токены `:root` и существующие глобальные классы; без
   новых цветов/теней/радиусов, без `--wf-*` / `--sd-*`.
 - Контакт-email'ы и demo/docs-URL — плейсхолдеры (см. Open Questions); реальные
-  только `careers@evallense.com`, `security@evallense.com`. Не выдумывать
+  только `careers@evallens.io`, `security@evallens.io`. Не выдумывать
   конкретику сверх брифа.
 - Сайт статичный: контактная форма серверная не делается; каналы — `mailto:` /
   внешние ссылки.
@@ -219,14 +219,14 @@ Linear Mapping: Project by default
 (перенесено из брифа §Открытые вопросы)
 - **URL пользовательской документации** — нужен реальный адрес стороннего сайта
   (GitBook / Notion / отдельный домен?). Сейчас плейсхолдер `[user
-  documentation URL]` (в коде заглушка `https://docs.evallense.com`).
+  documentation URL]` (в коде заглушка `https://docs.evallens.io`).
 - **Demo-механика на статике** — `mailto:` (`hello@`/`demo@`) или внешний
   scheduler (Calendly / Cal.com)? От этого зависит, куда ведёт primary CTA и все
   «Book a Demo» по сайту. Сейчас — `/#demo`.
 - **Контактная форма** — sitemap упоминает «контактную форму»; на статике нужна
   3rd-party (Formspree/Tally/…) или backend. По умолчанию — email-каналы без
   формы; форму добавим, если согласуем сервис.
-- **Email-адреса** — подтвердить `hello@evallense.com` и `press@evallense.com`
+- **Email-адреса** — подтвердить `hello@evallens.io` и `press@evallens.io`
   (placeholder); реальные только `careers@`/`security@`.
 - **Сроки ответа / SLA** — не обещать конкретику без подтверждения.
 - **Глобальная замена `/#demo` → `/company/contact`** по всем собранным
