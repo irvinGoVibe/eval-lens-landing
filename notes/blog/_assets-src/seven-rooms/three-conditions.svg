@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Where the EvalLens fit lives</title>
+  <desc id="desc">Venn diagram of volume, capacity and exposure; only the triple overlap is the job EvalLens does.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <clipPath id="volumeClip">
+      <circle cx="680" cy="420" r="280"/>
+    </clipPath>
+    <clipPath id="capacityClip">
+      <circle cx="920" cy="420" r="280"/>
+    </clipPath>
+    <clipPath id="exposureClip">
+      <circle cx="800" cy="620" r="280"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1600" height="1000" fill="#ffffff"/>
+  <text x="100" y="76" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="12" letter-spacing="0.16em">WHERE THE FIT LIVES</text>
+  <line x1="100" y1="106" x2="1500" y2="106" stroke="#d2d2d7" stroke-width="1"/>
+
+  <g clip-path="url(#volumeClip)">
+    <g clip-path="url(#capacityClip)">
+      <rect x="500" y="300" width="600" height="500" fill="url(#lens)" opacity="0.95" clip-path="url(#exposureClip)"/>
+    </g>
+  </g>
+
+  <circle cx="680" cy="420" r="280" fill="none" stroke="#1d1d1f" stroke-opacity="0.72" stroke-width="2"/>
+  <circle cx="920" cy="420" r="280" fill="none" stroke="#1d1d1f" stroke-opacity="0.72" stroke-width="2"/>
+  <circle cx="800" cy="620" r="280" fill="none" stroke="#1d1d1f" stroke-opacity="0.72" stroke-width="2"/>
+
+  <g aria-label="Volume">
+    <text x="118" y="320" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="20" font-weight="600">Volume</text>
+    <text x="118" y="350" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12">avg first read: 2:30 (DocSend, 2024)</text>
+    <line x1="342" y1="346" x2="418" y2="368" stroke="#d2d2d7" stroke-width="1"/>
+  </g>
+
+  <g aria-label="Capacity">
+    <text x="1482" y="320" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="20" font-weight="600">Capacity</text>
+    <text x="1482" y="350" text-anchor="end" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12">review hours don't stretch</text>
+    <line x1="1258" y1="346" x2="1182" y2="368" stroke="#d2d2d7" stroke-width="1"/>
+  </g>
+
+  <g aria-label="Exposure">
+    <line x1="800" y1="900" x2="800" y2="918" stroke="#d2d2d7" stroke-width="1"/>
+    <text x="800" y="944" text-anchor="middle" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="20" font-weight="600">Exposure</text>
+    <text x="800" y="974" text-anchor="middle" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12">reviewer agreement: ICC 0.26 (PLOS One)</text>
+  </g>
+
+  <g fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="13">
+    <text x="800" y="246" text-anchor="middle">a faster pipeline</text>
+    <text x="800" y="265" text-anchor="middle">is enough</text>
+    <text x="640" y="625" text-anchor="middle">hire more</text>
+    <text x="640" y="644" text-anchor="middle">readers</text>
+    <text x="960" y="625" text-anchor="middle">just read them</text>
+  </g>
+
+  <text x="800" y="515" text-anchor="middle" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.14em">THIS JOB</text>
+</svg>
