@@ -106,6 +106,8 @@ And the score that repeats is still advisory. The leaderboard ranks on the human
 
 So when the founder emails, you have a real answer. Here is the dimension. Here is the evidence the judges read. Here is the weight. Here is the number — and yes, it is the same today as it was in the room. AI prepares the evaluation. You make the final call. Neither of you has to wonder what a re-run would say.
 
+The full breakdown of what stays deterministic and what a person is actually deciding lives on [Consistency & reliability](/trust/consistency-reliability).
+
 ## Common questions
 
 **Does the AI pick the winner?** No. The `AI Total Score` is advisory. The leaderboard ranks on the human `Jury Score`, which you set after reading the report and running live Q&A.

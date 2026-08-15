@@ -436,7 +436,16 @@ export default function UseCasesPage() {
                 <span className="grad-word">easier to explain.</span>
               </h1>
 
-              {/* video between title and sub */}
+              {/* video between title and sub. LCP candidate on mobile — the
+                  poster is preloaded at high priority and the video itself
+                  only fetches metadata first, so the poster paints before
+                  the mp4 competes for bandwidth (fixes ~2.9s mobile LCP). */}
+              <link
+                rel="preload"
+                as="image"
+                href="/assets/use-cases/hero-demo-poster.webp"
+                fetchPriority="high"
+              />
               <div
                 className="uc2-hero-vid-wrap"
                 data-reveal="up"
@@ -448,7 +457,7 @@ export default function UseCasesPage() {
                   muted
                   loop
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   poster="/assets/use-cases/hero-demo-poster.webp"
                   aria-hidden="true"
                 >

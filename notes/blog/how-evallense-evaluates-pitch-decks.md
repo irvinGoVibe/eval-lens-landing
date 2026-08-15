@@ -140,6 +140,8 @@ A good evaluation system should show:
 
 That is the core of how EvalLens works — and why the lens stays in your hands.
 
+The full rubric, judge routing, and scoring weights are documented on [Methodology](/trust/methodology).
+
 Want to see it run on your own batch? **Book a demo.**
 
 ## Common questions
