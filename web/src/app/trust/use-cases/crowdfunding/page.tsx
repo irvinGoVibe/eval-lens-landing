@@ -366,7 +366,7 @@ export default function CrowdfundingPage() {
           eyebrow="Next step"
           title="Thirty applications. Side by"
           titleAccent="side."
-          sub="30 minutes with whoever owns screening: we agree the metrics, sign the DPA, and run one month of inbound in parallel. Answer project owners in days — and hold a file you'd hand over the same afternoon. The first run is free through August 31, for batches up to 10 decks."
+          sub="Start small: through August 31 a retro-run on up to 10 past applications is free. If the file holds up, the next step is the fixed-fee pilot — one month of inbound, around thirty applications, run in parallel with your own screening under a signed DPA."
           primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

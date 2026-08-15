@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/PageHeader";
 import type { SectionNav } from "@/lib/site-nav";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
+import { LeadForm } from "@/components/LeadForm";
 import { CtaBand } from "@/components/ds";
 import { ScrollFX } from "@/components/ScrollFX";
 import { FloatFx } from "@/components/FloatFx";
@@ -258,6 +259,31 @@ export default async function ContactPage() {
             {/* Book a Demo — moved below the four channel cards */}
             <div className="ct-channels__demo" data-reveal="up">
               <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
+            </div>
+          </div>
+        </section>
+
+        {/* 2b. Batch intake — low-commitment lane: send the batch, get the
+            free retro-test. Writes to site_leads via /api/lead. */}
+        <section id="batch" className="band ct-batch">
+          <div className="wrap">
+            <div className="head" data-reveal="up">
+              <span className="eyebrow">
+                <span className="dot" aria-hidden="true"></span>
+                Send us your batch
+              </span>
+              <h2 className="title">
+                Skip the call. Start with <span className="grad-word">your decks</span>
+              </h2>
+              <p className="sub">
+                Tell us what your program reviews and roughly how many decks are
+                in the pile. Through August 31 the first retro-test run is free,
+                for batches up to 10 decks. AI prepares the analysis; your team
+                makes the call.
+              </p>
+            </div>
+            <div data-reveal="up">
+              <LeadForm />
             </div>
           </div>
         </section>
