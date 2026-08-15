@@ -10,6 +10,7 @@ export interface ArticleRow {
   title: string;
   excerpt: string | null;
   date: string;
+  updated_at?: string | null;
   read_minutes: number | null;
   cover: string | null;
   author: string | null;
@@ -97,6 +98,7 @@ export function mapArticle(row: ArticleRow): Post {
     title: row.title,
     excerpt: row.excerpt ?? "",
     date: row.date,
+    updatedAt: row.updated_at ?? null,
     readMinutes: row.read_minutes ?? 0,
     cover: row.cover ?? "",
     author: row.author ?? "",

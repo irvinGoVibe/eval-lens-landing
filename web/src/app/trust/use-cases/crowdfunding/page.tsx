@@ -208,7 +208,7 @@ export default function CrowdfundingPage() {
           sub="EvalLens reads every campaign application end to end — deck, business plan, financial narrative — and produces an evidence-linked screening file per project owner. Your analysts verify, your Funding Committee decides, and the record exists from day one instead of being reconstructed later."
           ctas={[
             { label: "Scope the pilot", href: "https://calendly.com/evallens/30min" },
-            { label: "All use cases", href: "/trust/use-cases", variant: "glass" },
+            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
             ratio: "16/9",
@@ -366,7 +366,7 @@ export default function CrowdfundingPage() {
           eyebrow="Next step"
           title="Thirty applications. Side by"
           titleAccent="side."
-          sub="30 minutes with whoever owns screening: we agree the metrics, sign the DPA, and run one month of inbound in parallel. Answer project owners in days — and hold a file you'd hand over the same afternoon."
+          sub="30 minutes with whoever owns screening: we agree the metrics, sign the DPA, and run one month of inbound in parallel. Answer project owners in days — and hold a file you'd hand over the same afternoon. The first run is free through August 31, for batches up to 10 decks."
           primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

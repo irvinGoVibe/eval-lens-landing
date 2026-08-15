@@ -30,6 +30,8 @@ export interface Post {
   excerpt: string;
   /** ISO date — drives ordering and the human-readable stamp. */
   date: string;
+  /** ISO timestamp of the last CMS edit; feeds Article dateModified. */
+  updatedAt?: string | null;
   readMinutes: number;
   /** Public media URL (Supabase Storage). */
   cover: string;

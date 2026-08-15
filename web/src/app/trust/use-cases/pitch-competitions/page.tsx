@@ -130,7 +130,7 @@ const KIT_ROWS = [
 const DATA_IP = [
   { icon: "🚫", title: "Never trained on", body: "Student and team submissions are processed only for your competition's evaluation — never used to train models. Contractual." },
   { icon: "🏫", title: "The institution owns the record", body: "Reports, scores and the decision log belong to your program. Retention and deletion on your policy; student-data handling structured to support your FERPA obligations, DPA available." },
-  { icon: "🧾", title: "Procurement-ready", body: "PO and invoice accepted · vendor registration forms and security questionnaires supported · sub-processor list on request · education discount for university programs." },
+  { icon: "🧾", title: "Procurement-ready", body: "PO and invoice accepted · vendor registration forms and security questionnaires supported · public sub-processor list at /subprocessors · education discount for university programs." },
 ];
 
 /* §8 — FAQ */
@@ -218,7 +218,7 @@ export default function PitchCompetitionsPage() {
           sub="EvalLens is the judging layer under your existing competition: an AI panel pre-reads the whole written round on your rubric, your screening committee confirms with briefing packs instead of blank PDF stacks, and your live judges walk into semis briefed. The final call stays exactly where it belongs."
           ctas={[
             { label: "Run a shadow pilot", href: "https://calendly.com/evallens/30min" },
-            { label: "All use cases", href: "/trust/use-cases", variant: "glass" },
+            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
             ratio: "16/9",
@@ -405,7 +405,7 @@ export default function PitchCompetitionsPage() {
           eyebrow="Next step"
           title="Shadow-pilot your next screening"
           titleAccent="round."
-          sub="Applications flow as usual; the AI panel pre-reads in parallel with your screeners; you compare before anything counts. One event, fixed price, PO and invoice welcome."
+          sub="Applications flow as usual; the AI panel pre-reads in parallel with your screeners; you compare before anything counts. One event, fixed price, PO and invoice welcome. The first run is free through August 31, for batches up to 10 decks."
           primary={{ label: "Set up the shadow pilot", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

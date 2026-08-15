@@ -207,7 +207,7 @@ export default function TendersPage() {
           sub="EvalLens reads every bid end to end against the criteria you published — technical approach, methodology, team, delivery — and hands your evaluation committee per-criterion findings with quotes and page references. Your evaluators score and award; the record exists from day one."
           ctas={[
             { label: "Scope the parallel pilot", href: "https://calendly.com/evallens/30min" },
-            { label: "All use cases", href: "/trust/use-cases", variant: "glass" },
+            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
             ratio: "16/9",
@@ -369,7 +369,7 @@ export default function TendersPage() {
           eyebrow="Next step"
           title="One tender, evaluated in"
           titleAccent="parallel."
-          sub="30 minutes with whoever owns the evaluation: we map your criteria, agree the metrics, and run one tender side by side with your committee — before anything counts."
+          sub="30 minutes with whoever owns the evaluation: we map your criteria, agree the metrics, and run one tender side by side with your committee — before anything counts. The first run is free through August 31, for batches up to 10 decks."
           primary={{ label: "Scope the parallel pilot", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

@@ -192,7 +192,7 @@ export default function VcOpenCallsPage() {
           sub="You publicly invite founders to apply. Then the median submission gets 150 seconds and silence. EvalLens reads every submitted deck in full against your investment dimensions and hands your team a comparable, evidence-linked view of the whole batch — every deck with flags, founder questions, and a quote behind every finding."
           ctas={[
             { label: "Book the parallel run", href: "https://calendly.com/evallens/30min" },
-            { label: "All use cases", href: "/trust/use-cases", variant: "glass" },
+            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
             ratio: "16/9",
@@ -350,7 +350,7 @@ export default function VcOpenCallsPage() {
           eyebrow="Next step"
           title="Run it in parallel on your next"
           titleAccent="call."
-          sub="Under NDA, we demo on your own decks first. Then one batch, side by side: where the ranked view agreed with your analysts — and what the skim missed."
+          sub="Under NDA, we demo on your own decks first. Then one batch, side by side: where the ranked view agreed with your analysts — and what the skim missed. The first run is free through August 31, for batches up to 10 decks."
           primary={{ label: "Book the parallel run", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

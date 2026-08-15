@@ -207,7 +207,7 @@ export default function AngelNetworksPage() {
           sub="EvalLens reads the whole monthly batch and hands your screening committee a one-page, evidence-linked brief per company — findings, red flags, quotes with page references, and the questions worth asking in a ten-minute pitch. Your Dealum or Gust pipeline stays exactly where it is."
           ctas={[
             { label: "Try one monthly batch", href: "https://calendly.com/evallens/30min" },
-            { label: "All use cases", href: "/trust/use-cases", variant: "glass" },
+            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
             ratio: "16/9",
@@ -361,7 +361,7 @@ export default function AngelNetworksPage() {
           eyebrow="Next step"
           title="This month's batch, in"
           titleAccent="parallel."
-          sub="30 minutes with your screening chair or executive director: we map your criteria and run one month of deals side by side with your pre-screen. Nothing about your process changes."
+          sub="30 minutes with your screening chair or executive director: we map your criteria and run one month of deals side by side with your pre-screen. Nothing about your process changes. The first run is free through August 31, for batches up to 10 decks."
           primary={{ label: "Set up the batch", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

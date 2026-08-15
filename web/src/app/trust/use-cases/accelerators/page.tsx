@@ -214,7 +214,7 @@ export default function AcceleratorsPage() {
           sub="EvalLens gives your screening committee a first pass it can trust: every application read in full and scored against your rubric with page-level evidence. Your team reads reports instead of raw applications — and humans make every call."
           ctas={[
             { label: "Book the free retro-test", href: "https://calendly.com/evallens/30min" },
-            { label: "All use cases", href: "/trust/use-cases", variant: "glass" },
+            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
             ratio: "16/9",
@@ -399,7 +399,7 @@ export default function AcceleratorsPage() {
           eyebrow="Next step"
           title="Run the retro-test on your last"
           titleAccent="cohort."
-          sub="30 minutes with you: we map your rubric, pick the batch, and you see agreement-and-misses on decisions you already made. 48 hours later, you'll know."
+          sub="30 minutes with you: we map your rubric, pick the batch, and you see agreement-and-misses on decisions you already made. 48 hours later, you'll know. Free through August 31, up to 10 decks."
           primary={{ label: "Book the free retro-test", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

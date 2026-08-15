@@ -221,7 +221,7 @@ export default function GrantsPrizesPage() {
           sub="EvalLens is a structured first-read layer for your existing review process: it reads every proposal in full, scores it against your rubric anchor by anchor — a quote and a page reference behind every score — and hands your panel a pre-read brief. Never a decision."
           ctas={[
             { label: "Scope the pilot", href: "https://calendly.com/evallens/30min" },
-            { label: "All use cases", href: "/trust/use-cases", variant: "glass" },
+            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
             ratio: "16/9",
@@ -409,7 +409,7 @@ export default function GrantsPrizesPage() {
           eyebrow="Next step"
           title="Pick one round. Measure us against your"
           titleAccent="panel."
-          sub="30 minutes with you: we map the rubric, agree the pilot metrics, and schedule your security review first. Bring the questionnaire."
+          sub="30 minutes with you: we map the rubric, agree the pilot metrics, and schedule your security review first. Bring the questionnaire. The first run is free through August 31, for batches up to 10 decks."
           primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

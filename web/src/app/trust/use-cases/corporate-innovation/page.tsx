@@ -209,7 +209,7 @@ export default function CorporateInnovationPage() {
           sub="EvalLens reads every challenge submission end to end against your criteria, hands your jury evidence-linked one-pagers, and produces a selection memo you can defend upstairs — every pick traced to a quote and a page. Your jury decides; you hold proof of process."
           ctas={[
             { label: "Scope the pilot", href: "https://calendly.com/evallens/30min" },
-            { label: "All use cases", href: "/trust/use-cases", variant: "glass" },
+            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
             ratio: "16/9",
@@ -321,12 +321,12 @@ export default function CorporateInnovationPage() {
           </div>
           <div className="wrap">
             <div className="seg-kit" data-reveal="up">
-              <h3>Security pack on request, before any document moves.</h3>
+              <h3>Security pack up front, before any document moves.</h3>
               <p className="lead">
                 Startup decks are confidential submissions under your program&rsquo;s
                 terms — and AI vendors are exactly what your vendor-risk process exists
                 for. So the review comes first, with artifacts your team can actually
-                check:
+                check — the sub-processor list, DPA and security overview are already public on this site:
               </p>
               <div className="arts">
                 {INFOSEC_ARTS.map((a) => (
@@ -371,7 +371,7 @@ export default function CorporateInnovationPage() {
           eyebrow="Next step"
           title="Pilot it on your next"
           titleAccent="challenge."
-          sub="30 minutes with you: we map the challenge statement to criteria, agree the pilot metrics, and hand your InfoSec the security pack the same day."
+          sub="30 minutes with you: we map the challenge statement to criteria, agree the pilot metrics, and hand your InfoSec the security pack the same day. The first run is free through August 31, for batches up to 10 decks."
           primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
           auroraVariant="violet"

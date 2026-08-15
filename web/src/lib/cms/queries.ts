@@ -9,7 +9,7 @@ import { type ArticleRow, type LoopRow, mapArticle, mapLoopPost } from "./map";
 import type { LoopPost, Post } from "./types";
 
 const ARTICLE_COLUMNS =
-  "slug, category, accent, title, excerpt, date, read_minutes, cover, author, role, body";
+  "slug, category, accent, title, excerpt, date, read_minutes, cover, author, role, body, updated_at";
 const LOOP_COLUMNS =
   "id, kind, author, initials, accent, caption, cover, video, photos, date, href";
 

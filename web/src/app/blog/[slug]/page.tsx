@@ -98,6 +98,7 @@ export default async function ArticlePage({
     description: post.excerpt,
     image: coverAbs ? [coverAbs] : undefined,
     datePublished: post.date,
+    dateModified: post.updatedAt ?? post.date,
     url: articleUrl,
     mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     author: { "@type": "Person", name: post.author },
@@ -164,7 +165,7 @@ export default async function ArticlePage({
       <div className="article-cover wrap blog-wrap" data-accent={post.accent}>
         <Image
           src={post.cover}
-          alt=""
+          alt={`${post.title} — article cover`}
           width={1180}
           height={620}
           className="article-cover__img"

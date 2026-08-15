@@ -30,6 +30,11 @@ const ORG_JSON_LD = {
   name: "EvalLens",
   url: SITE_URL,
   logo: `${SITE_URL}/icons/icon-512.png`,
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "hello@evallens.io",
+    contactType: "sales",
+  },
   sameAs: [
     "https://www.linkedin.com/company/evallens",
     "https://x.com/EvalLensio",
