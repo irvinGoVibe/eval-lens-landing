@@ -55,12 +55,6 @@ export function LegalDoc({
             <h1 className="legal-hero__title">{title}</h1>
             <p className="legal-meta">Last updated: {updated}</p>
             <div className="legal-intro">{intro}</div>
-
-            <aside className="legal-disclaimer" role="note">
-              <strong>Draft for review.</strong> This page is a working draft
-              provided for transparency. It has not been reviewed by qualified
-              legal counsel and does not constitute legal advice.
-            </aside>
           </div>
         </section>
 
