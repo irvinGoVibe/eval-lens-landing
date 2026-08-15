@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">AI reviewer overlap compared with human reviewer overlap</title>
+  <desc id="desc">Six tightly overlapping AI reviewer opinions show 21 percent overlap; six separated human reviewer opinions show 3 percent overlap.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-25%" width="140%" height="150%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="760" fill="#ffffff"/>
+  <text x="100" y="72" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" letter-spacing="0.16em">WHOSE OPINIONS ARE OPINIONS</text>
+  <line x1="100" y1="104" x2="1500" y2="104" stroke="#d2d2d7"/>
+
+  <g aria-label="AI reviewers, 21 percent overlap">
+    <rect x="100" y="144" width="650" height="438" rx="24" fill="#ffffff" stroke="#d2d2d7" stroke-width="2"/>
+    <text x="140" y="198" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.14em">AI REVIEWERS</text>
+    <text x="140" y="230" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="16">Six voices, much of the same territory</text>
+
+    <g fill="#1d1d1f" fill-opacity="0.22" stroke="#1d1d1f" stroke-width="2">
+      <circle cx="374" cy="338" r="92"/>
+      <circle cx="430" cy="314" r="92"/>
+      <circle cx="486" cy="338" r="92"/>
+      <circle cx="390" cy="390" r="92"/>
+      <circle cx="446" cy="414" r="92"/>
+      <circle cx="502" cy="390" r="92"/>
+    </g>
+    <text x="425" y="534" text-anchor="middle" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="28" font-weight="650">21% overlap</text>
+  </g>
+
+  <g aria-label="Human reviewers, 3 percent overlap">
+    <rect x="850" y="144" width="650" height="438" rx="24" fill="none" stroke="url(#lens)" stroke-width="18" opacity="0.18" filter="url(#softGlow)"/>
+    <rect x="850" y="144" width="650" height="438" rx="24" fill="#ffffff" stroke="url(#lens)" stroke-width="4"/>
+    <text x="890" y="198" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.14em">HUMAN REVIEWERS</text>
+    <text x="890" y="230" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="16">Six voices, visibly distinct territory</text>
+
+    <g fill="#ffffff" stroke="#1d1d1f" stroke-width="3">
+      <circle cx="975" cy="329" r="57"/>
+      <circle cx="1175" cy="329" r="57"/>
+      <circle cx="1375" cy="329" r="57"/>
+      <circle cx="975" cy="445" r="57"/>
+      <circle cx="1175" cy="445" r="57"/>
+      <circle cx="1375" cy="445" r="57"/>
+    </g>
+    <text x="1175" y="548" text-anchor="middle" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="28" font-weight="650">3% overlap</text>
+  </g>
+
+  <line x1="100" y1="638" x2="1500" y2="638" stroke="#d2d2d7"/>
+  <text x="100" y="682" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">45 experts grading AI-written reviews of Nature-family papers (arXiv, 2026)</text>
+</svg>

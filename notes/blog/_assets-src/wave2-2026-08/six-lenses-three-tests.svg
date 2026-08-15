@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">Three tests for any AI evaluation ensemble</title>
+  <desc id="desc">The pedigree test, the unanimity test, and the blindfold test reveal whether an ensemble contains independent opinions.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="760" fill="#ffffff"/>
+  <text x="100" y="72" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" letter-spacing="0.16em">TEST ANY ENSEMBLE</text>
+  <line x1="100" y1="104" x2="1500" y2="104" stroke="#d2d2d7"/>
+
+  <g aria-label="The pedigree test">
+    <rect x="100" y="154" width="440" height="446" rx="24" fill="#ffffff" stroke="#d2d2d7" stroke-width="2"/>
+    <circle cx="172" cy="230" r="42" fill="url(#lens)"/>
+    <text x="172" y="239" text-anchor="middle" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="20" font-weight="700">01</text>
+    <text x="140" y="322" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="25" font-weight="650">The pedigree test</text>
+    <line x1="140" y1="352" x2="500" y2="352" stroke="#d2d2d7"/>
+    <text x="140" y="398" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="17">
+      <tspan x="140" dy="0">Name structural differences:</tspan>
+      <tspan x="140" dy="28">roles, rubric zones, evidence</tspan>
+      <tspan x="140" dy="28">requirements, model families.</tspan>
+    </text>
+    <text x="140" y="554" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12" letter-spacing="0.08em">PROMPTS ARE NOT PEDIGREE</text>
+  </g>
+
+  <g aria-label="The unanimity test">
+    <rect x="580" y="154" width="440" height="446" rx="24" fill="#ffffff" stroke="#d2d2d7" stroke-width="2"/>
+    <circle cx="652" cy="230" r="42" fill="url(#lens)"/>
+    <text x="652" y="239" text-anchor="middle" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="20" font-weight="700">02</text>
+    <text x="620" y="322" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="25" font-weight="650">The unanimity test</text>
+    <line x1="620" y1="352" x2="980" y2="352" stroke="#d2d2d7"/>
+    <text x="620" y="398" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="17">
+      <tspan x="620" dy="0">Run varied past submissions.</tspan>
+      <tspan x="620" dy="28">Near-zero disagreement is a</tspan>
+      <tspan x="620" dy="28">red flag, not a feature.</tspan>
+    </text>
+    <text x="620" y="554" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12" letter-spacing="0.08em">DISAGREEMENT IS THE RECEIPT</text>
+  </g>
+
+  <g aria-label="The blindfold test">
+    <rect x="1060" y="154" width="440" height="446" rx="24" fill="#ffffff" stroke="#d2d2d7" stroke-width="2"/>
+    <circle cx="1132" cy="230" r="42" fill="url(#lens)"/>
+    <text x="1132" y="239" text-anchor="middle" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="20" font-weight="700">03</text>
+    <text x="1100" y="322" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="25" font-weight="650">The blindfold test</text>
+    <line x1="1100" y1="352" x2="1460" y2="352" stroke="#d2d2d7"/>
+    <text x="1100" y="398" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="17">
+      <tspan x="1100" dy="0">No judge should see another</tspan>
+      <tspan x="1100" dy="28">judge’s output before scoring.</tspan>
+    </text>
+    <text x="1100" y="554" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12" letter-spacing="0.08em">NO ANCHORING · NO BANDWAGON</text>
+  </g>
+
+  <text x="800" y="678" text-anchor="middle" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="16">Three questions. One afternoon.</text>
+</svg>

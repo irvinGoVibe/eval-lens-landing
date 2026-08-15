@@ -4,11 +4,11 @@ category: Research
 accent: orange
 title: The prompt in a private Slack
 excerpt: 85% of dealmakers use AI daily, and most of that screening runs through an unnamed prompt someone pastes decks into. It is fast, free, and unaccountable. Here is what the convenience actually costs.
-date: 2026-08-15
+date: 2026-08-03
 readMinutes: 7
 cover: /assets/blog/private-slack-prompt/cover.png
 author: Anonymous Unicorn
-status: draft
+status: published
 ---
 
 Monday pipeline meeting. A partner points at a deck on the screen and asks a reasonable question: why did this one advance?

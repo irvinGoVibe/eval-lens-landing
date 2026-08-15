@@ -4,11 +4,11 @@ category: Research
 accent: orange
 title: What the ERC ban actually allows
 excerpt: Every newsletter reran the headline that reviewers may not use AI. Almost nobody answered the organizer's next question. Here is the working boundary between administration you can automate and evaluation you cannot delegate.
-date: 2026-08-15
+date: 2026-08-14
 readMinutes: 7
 cover: /assets/blog/erc-ban-allows/cover.png
 author: Anonymous Unicorn
-status: draft
+status: published
 ---
 
 On March 24, 2026, the European Research Council published a clarification on AI in grant evaluation, and within a week every research-adjacent newsletter had run some version of the same headline: reviewers banned from using AI. Somewhere in a funding agency, a program manager read it, looked at the intake automation her team spent a year building, and forwarded the link upstairs with one line: so do we turn everything off?
@@ -30,7 +30,7 @@ The ERC rule is about judgment. Assessing merit is the one task a funder cannot 
 Once you see the two fences, the map of what is allowed draws itself.
 
 :::gallery
-![](/assets/blog/erc-ban-allows/two-fences.png)
+![](/assets/blog/erc-ban-allows/two-rules.png)
 :::
 
 ## Administration versus evaluation, operation by operation
@@ -64,7 +64,7 @@ And underneath the enforcement problem sits the real fear, which was never accur
 That is what the administration line is actually for. It is less a compliance trick than an accountability design.
 
 :::gallery
-![](/assets/blog/erc-ban-allows/boundary-map.png)
+![](/assets/blog/erc-ban-allows/allowed-table.png)
 :::
 
 ## If you run a private program, the rules are yours to write

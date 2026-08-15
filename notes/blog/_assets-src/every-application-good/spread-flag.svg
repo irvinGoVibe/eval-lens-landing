@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">Similar average scores can hide very different reviewer spread</title>
+  <desc id="desc">Three applications have averages of 7.1, 7.0, and 7.2; the middle application is contested because its score spread is much wider.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <filter id="flagGlow" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+
+  <rect width="1600" height="760" fill="#ffffff"/>
+  <text x="100" y="72" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" letter-spacing="0.16em">SAME AVERAGE, DIFFERENT STORY</text>
+  <line x1="100" y1="104" x2="1500" y2="104" stroke="#d2d2d7"/>
+
+  <text x="132" y="150" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12" letter-spacing="0.12em">APPLICATION</text>
+  <text x="488" y="150" text-anchor="middle" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12" letter-spacing="0.12em">AVERAGE</text>
+  <text x="680" y="150" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12" letter-spacing="0.12em">SPREAD</text>
+
+  <g aria-label="Application A, average 7.1, narrow spread">
+    <rect x="100" y="174" width="1400" height="130" rx="20" fill="#ffffff" stroke="#d2d2d7" stroke-width="2"/>
+    <text x="132" y="252" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="22" font-weight="650">Application A</text>
+    <text x="488" y="256" text-anchor="middle" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="30" font-weight="700">7.1</text>
+    <rect x="680" y="226" width="700" height="24" rx="12" fill="#f5f5f7"/>
+    <rect x="958" y="226" width="132" height="24" rx="12" fill="#1d1d1f"/>
+  </g>
+
+  <g aria-label="Application B, average 7.0, wide contested spread">
+    <rect x="100" y="326" width="1400" height="174" rx="20" fill="#ffffff" stroke="#1d1d1f" stroke-width="2"/>
+    <text x="132" y="416" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="22" font-weight="650">Application B</text>
+    <text x="488" y="420" text-anchor="middle" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="30" font-weight="700">7.0</text>
+    <rect x="680" y="378" width="700" height="30" rx="15" fill="#f5f5f7"/>
+    <rect x="742" y="378" width="570" height="30" rx="15" fill="url(#lens)"/>
+    <rect x="1004" y="432" width="402" height="50" rx="25" fill="url(#lens)" opacity="0.24" filter="url(#flagGlow)"/>
+    <rect x="1004" y="432" width="402" height="50" rx="25" fill="url(#lens)"/>
+    <text x="1205" y="463" text-anchor="middle" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.08em">CONTESTED — HUMAN ATTENTION HERE</text>
+  </g>
+
+  <g aria-label="Application C, average 7.2, narrow spread">
+    <rect x="100" y="522" width="1400" height="130" rx="20" fill="#ffffff" stroke="#d2d2d7" stroke-width="2"/>
+    <text x="132" y="600" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="22" font-weight="650">Application C</text>
+    <text x="488" y="604" text-anchor="middle" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="30" font-weight="700">7.2</text>
+    <rect x="680" y="574" width="700" height="24" rx="12" fill="#f5f5f7"/>
+    <rect x="1010" y="574" width="118" height="24" rx="12" fill="#1d1d1f"/>
+  </g>
+
+  <text x="100" y="706" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">Spread locates the disagreement. A human resolves it.</text>
+</svg>

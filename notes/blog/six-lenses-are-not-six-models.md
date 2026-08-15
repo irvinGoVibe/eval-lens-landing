@@ -4,11 +4,11 @@ category: Research
 accent: cyan
 title: Six lenses are not six models
 excerpt: New research says AI reviewers overlap with each other in 21% of cases, versus 3% for humans. That number is aimed straight at products like ours. Here is why we quote it anyway, and how to tell a real panel from one judge in six costumes.
-date: 2026-08-15
+date: 2026-08-07
 readMinutes: 7
 cover: /assets/blog/six-lenses/cover.png
 author: Anonymous Unicorn
-status: draft
+status: published
 ---
 
 Ask for a second opinion on a scary diagnosis and you have exactly one requirement: a different doctor. Not your doctor's med school roommate, who trained on the same wards, reads the same journal, and reveres the same textbook. The roommate will be confident, articulate, and nearly useless, because he shares every habit that produced the first opinion.
@@ -40,7 +40,7 @@ Two forces drive the collapse. First, shared habits: every copy of a model inher
 Run one model six times with six prompt personas and you have not convened a panel. You have hired one judge and six costumes. The roommate problem, at industrial scale.
 
 :::gallery
-![](/assets/blog/six-lenses/one-judge-six-costumes.png)
+![](/assets/blog/six-lenses/overlap-gap.png)
 :::
 
 ## What independence actually requires
@@ -68,7 +68,7 @@ Spread does double duty. For the organizer, it routes attention. For anyone audi
 And the verdict never belongs to the machines. The AI Total Score stays advisory; the ranking runs on the Jury Score a human sets after reading the evidence. Six lenses make the analysis harder to bias. Only a person can own the call.
 
 :::gallery
-![](/assets/blog/six-lenses/spread-flag.png)
+![](/assets/blog/six-lenses/three-tests.png)
 :::
 
 ## Three tests for any ensemble

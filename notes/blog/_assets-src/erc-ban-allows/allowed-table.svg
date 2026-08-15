@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">What the ERC-style boundary still allows</title>
+  <desc id="desc">Nine common operations sorted between workable administration and human-only or off-limits evaluation.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <g id="check" fill="none" stroke="#1d1d1f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-10 0l7 8 15-18"/>
+    </g>
+  </defs>
+
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="100" y="72" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" letter-spacing="0.16em">WHAT STILL RUNS</text>
+  <line x1="100" y1="104" x2="1500" y2="104" stroke="#d2d2d7"/>
+
+  <rect x="100" y="132" width="1400" height="82" rx="18" fill="url(#lens)"/>
+  <text x="130" y="181" fill="#ffffff" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="18" font-weight="650">OPERATION</text>
+  <text x="1240" y="181" text-anchor="middle" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.12em">ALLOWED</text>
+  <text x="1410" y="181" text-anchor="middle" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.12em">HUMAN ONLY</text>
+
+  <g fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="16">
+    <text x="130" y="251">Extract submission data into structured fields</text>
+    <text x="130" y="311">Check completeness: budget, sections, file integrity</text>
+    <text x="130" y="371">Screen eligibility against published objective criteria</text>
+    <text x="130" y="431">Route submissions by topic or conflict rules</text>
+    <text x="130" y="491">Keep decision logs and audit records</text>
+    <text x="130" y="551">Summarize a proposal for a reviewer</text>
+    <text x="130" y="611">Draft assessment text</text>
+    <text x="130" y="671">Score scientific merit</text>
+    <text x="130" y="731">Upload proposal content to an external AI tool</text>
+  </g>
+
+  <g stroke="#d2d2d7" stroke-width="1">
+    <line x1="100" y1="274" x2="1500" y2="274"/>
+    <line x1="100" y1="334" x2="1500" y2="334"/>
+    <line x1="100" y1="394" x2="1500" y2="394"/>
+    <line x1="100" y1="454" x2="1500" y2="454"/>
+    <line x1="100" y1="514" x2="1500" y2="514"/>
+    <line x1="100" y1="574" x2="1500" y2="574"/>
+    <line x1="100" y1="634" x2="1500" y2="634"/>
+    <line x1="100" y1="694" x2="1500" y2="694"/>
+    <line x1="100" y1="754" x2="1500" y2="754"/>
+    <line x1="1145" y1="214" x2="1145" y2="754"/>
+    <line x1="1325" y1="214" x2="1325" y2="754"/>
+  </g>
+
+  <use href="#check" transform="translate(1240 246)"/>
+  <use href="#check" transform="translate(1240 306)"/>
+  <use href="#check" transform="translate(1240 366)"/>
+  <use href="#check" transform="translate(1240 426)"/>
+  <use href="#check" transform="translate(1240 486)"/>
+
+  <g fill="#1d1d1f">
+    <circle cx="1410" cy="546" r="8"/>
+    <circle cx="1410" cy="606" r="8"/>
+    <circle cx="1410" cy="666" r="8"/>
+    <circle cx="1410" cy="726" r="8"/>
+  </g>
+  <rect x="908" y="706" width="180" height="30" rx="15" fill="#1d1d1f"/>
+  <text x="998" y="726" text-anchor="middle" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="0.1em">OFF LIMITS</text>
+
+  <text x="100" y="824" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">Eligibility stays workable only while the criterion is objective. External upload remains off limits under both rule sets.</text>
+</svg>

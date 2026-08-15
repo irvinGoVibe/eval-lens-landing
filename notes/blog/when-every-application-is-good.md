@@ -4,11 +4,11 @@ category: Research
 accent: violet
 title: When every application is good
 excerpt: Application volume is up 57% in three years while the share of weak submissions collapsed from 20% to 5%. The screening job quietly changed from filtering junk to separating good from good, and most processes never noticed.
-date: 2026-08-15
+date: 2026-08-11
 readMinutes: 8
 cover: /assets/blog/every-application-good/cover.png
 author: Anonymous Unicorn
-status: draft
+status: published
 ---
 
 The debrief after a screening cycle used to have a rhythm. Half the pile was obviously out, the committee argued about the middle, and the top ten picked themselves.
