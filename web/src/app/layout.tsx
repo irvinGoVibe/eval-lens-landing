@@ -21,6 +21,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@EvalLensio",
   },
+  verification: {
+    other: {
+      "msvalidate.01": "6067D7567511E7B1D45DC32964485E8A",
+    },
+  },
 };
 
 /** Organization JSON-LD — sitewide, rendered once in the root layout. */
