@@ -67,6 +67,7 @@ const REVIEW_STATS = [
 const POLICY_ROWS = [
   { b: "Never trained on", span: "Applicant documents are processed only for your evaluation — never used to train models. Contractual." },
   { b: "Disclosed to applicants", span: "We provide template disclosure language for your call documents, so applicants know exactly how AI assists the review." },
+  { b: "Where merit review is closed, we stop at administration", span: "Some funders now bar AI from assessing merit at all, not just from touching confidential files. In those programs we run intake, completeness, eligibility and the audit record, and your reviewers do the scientific judgment unaided." },
   { b: "Governed, not improvised", span: "A governed alternative for the first read beats not knowing what your reviewer pool does at midnight." },
 ];
 
@@ -128,7 +129,7 @@ const DAY_CARDS = [
   {
     tag: "Award day — you hold",
     title: "A defensible round, documented",
-    body: "Every application read in full with coverage logged · evidence-linked reviews with quotes and page references · a comparable ranked pool with disagreements surfaced · awards decided by your panel, logged · approved feedback for every applicant · an exportable audit record that outlives staff turnover.",
+    body: "Every application read in full with coverage logged · evidence-linked reviews with quotes and page references · a comparable ranked pool with disagreements surfaced · awards decided by your panel, logged · approved feedback for every applicant · an exportable review record that outlives staff turnover.",
   },
 ];
 
@@ -257,16 +258,33 @@ export default function GrantsPrizesPage() {
           <div className="wrap">
             <div className="seg-kit" data-reveal="up">
               <h3>
-                NOT-OD-23-149 bans reviewers uploading confidential proposals to consumer
-                AI tools. So do we.
+                Two different rules, and we answer both plainly.
               </h3>
               <p className="lead">
-                That rule exists because individual reviewers paste applications into
-                public chatbots — unlogged, ungoverned, retained by whoever runs the
-                tool. An organizer-governed, closed evaluation perimeter is a different
-                object: the program controls what is processed, where, under which
-                retention terms, with every read logged. We&rsquo;ll gladly walk your
-                counsel through the distinction — and leave the memo with you.
+                NIH{" "}
+                <a href="https://grants.nih.gov/grants/guide/notice-files/NOT-OD-23-149.html">
+                  NOT-OD-23-149
+                </a>{" "}
+                bars reviewers from uploading confidential proposals to consumer AI
+                tools. So do we: that rule exists because individual reviewers paste
+                applications into public chatbots, unlogged and retained by whoever runs
+                the tool. An organizer-governed perimeter is a different object, and we
+                will walk your counsel through the distinction.
+              </p>
+              <p className="lead">
+                The{" "}
+                <a href="https://erc.europa.eu/news-events/news/erc-clarifies-limits-ai-use-grant-evaluation">
+                  ERC guidance of March 2026
+                </a>{" "}
+                goes further: reviewers may not delegate the assessment of scientific
+                merit to AI at all. That is a boundary no perimeter fixes, so we do not
+                argue with it. In programs under rules like these, EvalLens runs the
+                administrative half of the round, intake, completeness, eligibility,
+                comparability checks and the record, while merit stays entirely with
+                your reviewers. Prize programs, foundation calls and competitions that
+                set their own rules can use the scored first read as well. If you are
+                not sure which side your call sits on, that is the first question we
+                ask, before any document moves.
               </p>
               <div className="rows">
                 {POLICY_ROWS.map((r) => (
@@ -293,7 +311,11 @@ export default function GrantsPrizesPage() {
             <p className="sub">
               Today the answer lives in scanned scoresheets and a departed
               reviewer&rsquo;s inbox. With EvalLens, staff opens the record for that
-              application in one click — scores, evidence, overrides, and who signed off.
+              application in one click: the AI read and the panel score both preserved
+              side by side, each finding tied to the quote and page it came from, and
+              the human sign-off attached. Field-level change history and rubric
+              versioning are on the roadmap, and we will tell you plainly where that
+              line sits before you buy.
             </p>
           </div>
           <div className="wrap">
