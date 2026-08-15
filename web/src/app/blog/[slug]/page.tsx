@@ -163,21 +163,19 @@ export default async function ArticlePage({
       </div>
 
       {/* Page-local: in-article :::gallery visuals used to break out to the full
-          viewport (width:100vw), which on wide screens rendered a huge slab far
-          bigger than the article's own cover. Cap them at the cover's width and
-          give them the same rounded frame, so every image on the page reads at
-          one scale. Shared globals untouched. */}
+          viewport (width:100vw), rendering a slab far wider than the text it
+          belongs to. They now sit inside the 720px reading column like any other
+          in-article figure, with the same rounded frame. Shared globals stay put. */}
       <style>{`
         .article-gallery{
-          --gal-w: min(var(--maxw), calc(100vw - var(--gutter) * 2));
-          width: var(--gal-w);
-          margin-left: calc(50% - var(--gal-w) / 2);
-          margin-right: calc(50% - var(--gal-w) / 2);
+          width: 100%;
+          margin-left: 0;
+          margin-right: 0;
         }
         .article-gallery__photo{
           max-height: none;
           border: 1px solid var(--border-2);
-          border-radius: var(--radius-stage);
+          border-radius: 14px;
         }
       `}</style>
       <div className="article-cover wrap blog-wrap" data-accent={post.accent}>

@@ -24,7 +24,7 @@ export function ArticleGallery({ photos }: { photos: string[] }) {
           src={photos[i]}
           alt=""
           fill
-          sizes="(max-width: 1240px) 100vw, 1180px"
+          sizes="(max-width: 800px) 100vw, 720px"
           className="article-gallery__img"
         />
         {many && (
