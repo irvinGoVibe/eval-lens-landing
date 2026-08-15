@@ -57,10 +57,10 @@ Demo» со всего сайта, плюс прямые каналы (общи�
 ### 2. Способы связи
 Карточки-каналы (bento). Каждая — заголовок, одно предложение, email/действие:
 - **Book a demo** — увидеть EvalLens на ваших деках. → demo-канал (primary).
-- **General & sales** — вопросы о продукте, партнёрстве, пилоте. → `hello@evallense.com` *(placeholder)*.
-- **Careers** — присоединиться к команде. → `careers@evallense.com`.
-- **Security** — сообщить об уязвимости (responsible disclosure). → `security@evallense.com`, ссылка на [[sitemap|Security]] (`/security`).
-- **Press & media** — публикации и анонсы. → `press@evallense.com` *(placeholder)*; ссылка на Newsroom (`/blog`).
+- **General & sales** — вопросы о продукте, партнёрстве, пилоте. → `hello@evallens.io` *(placeholder)*.
+- **Careers** — присоединиться к команде. → `careers@evallens.io`.
+- **Security** — сообщить об уязвимости (responsible disclosure). → `security@evallens.io`, ссылка на [[sitemap|Security]] (`/security`).
+- **Press & media** — публикации и анонсы. → `press@evallens.io` *(placeholder)*; ссылка на Newsroom (`/blog`).
 
 ### 3. Документация (внешняя) — ключевой запрошенный блок
 Отдельный заметный блок (тёмный, чтобы выделялся):
@@ -96,10 +96,10 @@ Demo» со всего сайта, плюс прямые каналы (общи�
 
 | Канал | Значение | Статус |
 |---|---|---|
-| Careers | `careers@evallense.com` | используется (footer) |
-| Security | `security@evallense.com` | используется (/security) |
-| General | `hello@evallense.com` | placeholder — подтвердить |
-| Press | `press@evallense.com` | placeholder — подтвердить |
+| Careers | `careers@evallens.io` | используется (footer) |
+| Security | `security@evallens.io` | используется (/security) |
+| General | `hello@evallens.io` | placeholder — подтвердить |
+| Press | `press@evallens.io` | placeholder — подтвердить |
 | Documentation | `[user documentation URL]` | placeholder — нужен URL |
 | Demo | mailto или внешний scheduler | open question |
 | Соцсети | `@evallense` (TikTok / YouTube) | из `blog-static.ts` |
