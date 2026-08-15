@@ -141,7 +141,7 @@ export default function ConsistencyReliabilityPage() {
           titleLead="Reliability you can "
           titleAccent="inspect"
           titleTrail=", not just trust"
-          sub="EvalLens shows which scores stay stable, where judges disagree, and when human review is needed. It also tracks how results change across repeated runs."
+          sub="A 7 from one reviewer is a 4 from another, and by the fifteenth application the scores start to blur. EvalLens gives every submission the same reading, shows where judges split, and keeps the result stable across re-runs."
           ctas={[{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }]}
           media={{
             ratio: "16/9",
@@ -151,6 +151,53 @@ export default function ConsistencyReliabilityPage() {
               "Two lenses with the same average but a different scatter of judge points",
           }}
         />
+
+        {/* 1b. The human baseline — page-local. Why buyers need this page:
+            the failure modes of unstructured panels, with sources. Speaks the
+            organizer's language before the product speaks its own. */}
+        <section className="band light" aria-label="What breaks in a human-only panel">
+          <div className="wrap">
+            <div className="head" data-reveal="up">
+              <Eyebrow>The baseline</Eyebrow>
+              <h2 className="title">
+                What breaks in a panel <span className="grad-word">without structure</span>
+              </h2>
+            </div>
+            <div className="cr-base" data-reveal="up">
+              {[
+                {
+                  h: "A 7 is somebody's 4",
+                  p: "Trained reviewers scoring the same applications agreed at an intraclass correlation of zero in a controlled NIH replication. Generosity varies more than quality does.",
+                  link: { label: "The research", href: "/blog/the-bias-in-a-single-ai-judge" },
+                },
+                {
+                  h: "Scores blur with fatigue",
+                  p: "A reviewer on their fifteenth application of the evening compresses toward the middle. Every submission here meets the same reading at the same depth, first or fifty-first.",
+                  link: { label: "How the panel reads", href: "/trust/methodology" },
+                },
+                {
+                  h: "No rooms, no gaps",
+                  p: "In room-based judging, entries compete only against whoever landed in the same room, and some are never fully read. One pipeline reads everything, so coverage is structural, not aspirational.",
+                  link: { label: "See the workflow", href: "/trust/use-cases" },
+                },
+              ].map((c) => (
+                <div key={c.h} className="cr-base__card">
+                  <h3>{c.h}</h3>
+                  <p>{c.p}</p>
+                  <a href={c.link.href}>{c.link.label} →</a>
+                </div>
+              ))}
+            </div>
+            <style>{`
+              .cr-base{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:26px; }
+              .cr-base__card{ border:1px solid var(--border,#d2d2d7); border-radius:18px; padding:22px 24px; background:#fff; display:flex; flex-direction:column; gap:10px; }
+              .cr-base__card h3{ font-size:17px; font-weight:600; }
+              .cr-base__card p{ font-size:14.5px; color:var(--muted); line-height:1.5; flex:1; }
+              .cr-base__card a{ font-size:13.5px; font-weight:600; color:#6c4cf1; text-decoration:none; }
+              @media (max-width:900px){ .cr-base{ grid-template-columns:1fr; } }
+            `}</style>
+          </div>
+        </section>
 
         {/* 2. The problem with one number — local EditorialSplit v1 layout with a
             real image in the media slot (page-local; shared component untouched). */}

@@ -553,6 +553,14 @@ export default function PricingPage() {
                   h: "Price locked for 12 months",
                   p: "Founding pricing holds for a year from purchase, list prices apply afterwards.",
                 },
+                {
+                  h: "Judges are not seats",
+                  p: "Invite as many reviewers as the event needs. Nobody is counted, licensed, or locked out mid-review.",
+                },
+                {
+                  h: "No in-house admin needed",
+                  p: "Setup is one working session with us, not a staff specialist. Your rubric goes in, the batch runs.",
+                },
               ].map((g) => (
                 <li key={g.h}>
                   <strong>{g.h}</strong>
@@ -564,7 +572,7 @@ export default function PricingPage() {
               .pricing .pr-guarantee{
                 list-style:none; margin:26px 0 0; padding:0;
                 display:grid; gap:14px;
-                grid-template-columns:repeat(4, minmax(0,1fr));
+                grid-template-columns:repeat(3, minmax(0,1fr));
               }
               .pricing .pr-guarantee li{
                 padding:18px 20px; border:1px solid var(--border,#d2d2d7);

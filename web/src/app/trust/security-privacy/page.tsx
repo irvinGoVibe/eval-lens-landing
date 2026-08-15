@@ -251,6 +251,34 @@ export default function SecurityPrivacyPage() {
         </div>
         {/* ── End unified tonal zone ── */}
 
+        {/* 6b. Disclosed sub-processors — page-local. Most AI vendors do not
+            name their AI sub-processors in legal docs; we publish ours. A
+            procurement-facing superiority stated plainly, with the source. */}
+        <section className="band light" aria-label="Disclosed sub-processors">
+          <div className="wrap sp-disclose" data-reveal="up">
+            <div>
+              <h2 className="title">
+                Ask any AI vendor who <span className="grad-word">actually processes</span> your decks
+              </h2>
+              <p className="sub">
+                A 2026 DataGrail review found 63.6% of vendors advertising AI never
+                name a third-party AI sub-processor in their legal documents ({" "}
+                <a href="https://venturebeat.com/security/datagrail-report-finds-your-vendor-may-be-sending-data-to-ai-models-you-never-approved">
+                  VentureBeat
+                </a>
+                ). Ours are published, with purpose and processing region for each,
+                before any sales call: <a href="/subprocessors">the sub-processor list</a>,{" "}
+                <a href="/dpa">the DPA</a>, and this page. Bring your security
+                questionnaire to the first conversation, not the last.
+              </p>
+            </div>
+            <style>{`
+              .sp-disclose .sub a{ color:#6c4cf1; text-decoration:none; font-weight:600; }
+              .sp-disclose{ max-width:820px; }
+            `}</style>
+          </div>
+        </section>
+
         {/* 7. Final CTA — CtaBand on the dark (ink) theme with a looping
             background video and `bleed` so it spills onto the black footer:
             the page's single cinematic ink closer. `auroraVariant` is the CSS
