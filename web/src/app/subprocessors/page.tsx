@@ -4,7 +4,7 @@ import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 export const metadata: Metadata = {
   title: "Sub-processors — EvalLens",
   description:
-    "The third-party providers EvalLens uses to run the service — hosting, authentication, AI inference, and sign-in — with the purpose and processing region for each.",
+    "The third party providers behind EvalLens: hosting, authentication, AI inference, and sign in, with the purpose and processing region listed for each one.",
 };
 
 const UPDATED = "July 20, 2026";

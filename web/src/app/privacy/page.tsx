@@ -4,7 +4,7 @@ import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 export const metadata: Metadata = {
   title: "Privacy Policy — EvalLens",
   description:
-    "How EvalLens collects, uses, shares and protects personal information, and the privacy rights available under the GDPR, Georgian data-protection law, and the California CCPA/CPRA.",
+    "How EvalLens collects, uses, shares, and protects personal information, plus your privacy rights under the GDPR, Georgian law, and the California CCPA/CPRA.",
 };
 
 const UPDATED = "June 16, 2026";

@@ -14,7 +14,7 @@ import { BlobField } from "@/components/BlobField";
 export const metadata: Metadata = {
   title: "About EvalLens — A better lens for human judgment",
   description:
-    "EvalLens helps startup programs, funds, and competitions review applications with structured AI analysis, evidence-backed reports, and human-controlled decisions.",
+    "EvalLens helps startup programs, funds, and competitions review applications with structured AI analysis, evidence backed reports, and human led decisions.",
 };
 
 /*

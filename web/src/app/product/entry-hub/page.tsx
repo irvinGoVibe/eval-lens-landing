@@ -25,7 +25,7 @@ const HEADER_NAV: SectionNav = {
 export const metadata: Metadata = {
   title: "EvalLens Entry Hub — One Intake Flow for Pitch Decks",
   description:
-    "Entry Hub replaces scattered intake with one controlled flow: a private submission page, deck collection by link or by hand, and a clean batch-workspace before evaluation starts.",
+    "Entry Hub replaces scattered intake with one controlled flow: a private submission page, deck collection by link or by hand, and a clean batch workspace.",
 };
 
 /*

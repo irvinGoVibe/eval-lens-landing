@@ -14,9 +14,9 @@ import {
 } from "@/components/ds";
 
 export const metadata: Metadata = {
-  title: "EvalLens — Screen your VC dealflow, without missing the breakout (one-pager)",
+  title: "EvalLens One-Pager: VC Dealflow Screening for Funds",
   description:
-    "A practical one-page explainer for VC funds: how EvalLens screens inbound decks on one consistent bar, ranks a partner-ready shortlist with evidence-cited memos, and leaves the final call to you.",
+    "A one page explainer for VC funds: how EvalLens screens inbound decks on one consistent bar, ranks an evidence cited shortlist, and leaves the call to you.",
 };
 
 /*

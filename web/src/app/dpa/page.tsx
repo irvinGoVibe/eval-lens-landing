@@ -4,7 +4,7 @@ import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 export const metadata: Metadata = {
   title: "Data Processing Addendum — EvalLens",
   description:
-    "The Data Processing Addendum governing how EvalLens processes personal data on a customer's behalf: roles, instructions, security, sub-processors, data-subject assistance, breach notice, deletion, and international transfers.",
+    "The Data Processing Addendum for EvalLens: roles, documented instructions, security, sub processors, breach notice, deletion, and international transfers.",
 };
 
 const UPDATED = "July 20, 2026";

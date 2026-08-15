@@ -31,7 +31,7 @@ const HEADER_NAV: SectionNav = {
 export const metadata: Metadata = {
   title: "EvalLens — Product Overview: Batch Pitch Deck Evaluation",
   description:
-    "How EvalLens works: collect decks in the Entry Hub, evaluate with 6 AI judges, get evidence-based reports and a Review Board with a leaderboard — the human decides.",
+    "How EvalLens works: collect decks in the Entry Hub, evaluate with six AI judges, get evidence based reports and a Review Board leaderboard. The human decides.",
 };
 
 /*

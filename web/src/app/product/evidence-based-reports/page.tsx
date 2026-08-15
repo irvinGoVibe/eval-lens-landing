@@ -20,7 +20,7 @@ import {
 export const metadata: Metadata = {
   title: "EvalLens — Evidence-Based Reports for Pitch Evaluation",
   description:
-    "Explainable reports from EvalLens: scores across every dimension with reasoning, a judge matrix, findings grounded in the deck, and deck-completeness signals — not a black box.",
+    "Explainable EvalLens reports: scored dimensions with reasoning, a judge matrix, findings grounded in the deck, and completeness signals. Not a black box.",
 };
 
 /*

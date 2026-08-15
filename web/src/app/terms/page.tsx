@@ -4,7 +4,7 @@ import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 export const metadata: Metadata = {
   title: "Terms of Service — EvalLens",
   description:
-    "The terms governing business use of the EvalLens pitch-deck evaluation service, including acceptable use, AI-output disclaimers, liability limits, VAT reverse-charge, and Georgia governing law.",
+    "The terms for business use of the EvalLens pitch deck evaluation service: acceptable use, AI output disclaimers, liability limits, VAT, and Georgian law.",
 };
 
 const UPDATED = "June 16, 2026";

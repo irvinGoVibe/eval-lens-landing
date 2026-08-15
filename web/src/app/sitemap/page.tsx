@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Site Map — EvalLens",
+  title: "EvalLens Site Map: Every Page of the Site in One Tree",
   description:
     "The full page tree of EvalLens, mirrored from the product sitemap. Live pages are clickable links; pages that are not built yet are shown as inactive.",
 };

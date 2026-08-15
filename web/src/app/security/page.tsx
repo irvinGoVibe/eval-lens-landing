@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Security — EvalLens",
+  title: "Security at EvalLens: How We Protect Decks and Data",
   description:
-    "How EvalLens protects pitch decks and account data: encryption in transit, access controls, workspace isolation, server-side secrets, and responsible disclosure.",
+    "How EvalLens protects pitch decks and account data: encryption in transit, access controls, workspace isolation, server side secrets, responsible disclosure.",
 };
 
 const UPDATED = "June 16, 2026";

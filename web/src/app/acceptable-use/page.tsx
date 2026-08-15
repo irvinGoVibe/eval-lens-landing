@@ -4,7 +4,7 @@ import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 export const metadata: Metadata = {
   title: "Acceptable Use Policy — EvalLens",
   description:
-    "The rules for using the EvalLens pitch-deck evaluation service: prohibited uses, evaluation integrity and anti-manipulation, security, third-party rights, and how we enforce this policy.",
+    "The rules for using the EvalLens pitch deck evaluation service: prohibited uses, evaluation integrity, security, third party rights, and how enforcement works.",
 };
 
 const UPDATED = "July 20, 2026";

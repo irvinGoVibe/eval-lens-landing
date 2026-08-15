@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalDoc, type LegalSection } from "@/components/legal/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Cookie Policy — EvalLens",
+  title: "EvalLens Cookie Policy: Essential Cookies, No Ad Tracking",
   description:
     "How EvalLens uses cookies: strictly necessary sign-in and security cookies, privacy-respecting analytics, no advertising cookies, and how to control them.",
 };

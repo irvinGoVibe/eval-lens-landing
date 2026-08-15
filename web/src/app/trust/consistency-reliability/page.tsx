@@ -33,7 +33,7 @@ const HEADER_NAV: SectionNav = {
 export const metadata: Metadata = {
   title: "EvalLens — Consistency & Reliability of Pitch Evaluation",
   description:
-    "How EvalLens makes score stability measurable: deterministic aggregation, benchmarked judge repeatability, judge spread, and bias controls — inspectable, not just promised.",
+    "How EvalLens makes score stability measurable: deterministic aggregation, benchmarked judge repeatability, spread thresholds, and bias controls you can inspect.",
 };
 
 /* ── Content (verbatim from the page-composer brief). No invented

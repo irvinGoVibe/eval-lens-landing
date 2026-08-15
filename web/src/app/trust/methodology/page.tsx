@@ -37,7 +37,7 @@ const HEADER_NAV: SectionNav = {
 export const metadata: Metadata = {
   title: "Evidence-Based Pitch Evaluation Methodology — EvalLens",
   description:
-    "EvalLens does not ask one model for a final verdict. It turns each deck into evidence, routes it through fixed criteria and independent judge lenses, computes an advisory AI Total Score, and keeps the final ranking under human control.",
+    "EvalLens never asks one model for a verdict. Each deck becomes evidence, scored on fixed criteria by independent judges, with the ranking under human control.",
 };
 
 /* ── Content. Public-facing copy: qualitative labels + "reproducible". No
