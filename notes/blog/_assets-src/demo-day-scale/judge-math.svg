@@ -1,4 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="t d">
-<title id="t">Judge capacity arithmetic</title><desc id="d">Projects times rounds times minutes divided by available minutes gives the judges needed</desc><defs><linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
-<stop offset="0" stop-color="#6c4cf1"/><stop offset="0.32" stop-color="#a99bff"/>
-<stop offset="0.68" stop-color="#2ec5e8"/><stop offset="1" stop-color="#36e0c2"/></linearGradient></defs><rect width="1600" height="760" fill="#ffffff"/><text x="100" y="78" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.16em">RUN THIS BEFORE YOU PROMISE A FORMAT</text><line x1="100" y1="108" x2="1500" y2="108" stroke="#d2d2d7" stroke-width="1"/><text x="100" y="212" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="28" font-weight="700">judges = (P &#215; n &#215; t) &#247; T</text><rect x="100" y="262" width="325" height="128" rx="16" fill="#ffffff" stroke="#d2d2d7"/><text x="126" y="312" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="22" font-weight="700">P</text><text x="126" y="344" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">projects</text><text x="386" y="352" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700">60</text><rect x="455" y="262" width="325" height="128" rx="16" fill="#ffffff" stroke="#d2d2d7"/><text x="481" y="312" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="22" font-weight="700">n</text><text x="481" y="344" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">rounds per project</text><text x="741" y="352" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700">3</text><rect x="810" y="262" width="325" height="128" rx="16" fill="#ffffff" stroke="#d2d2d7"/><text x="836" y="312" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="22" font-weight="700">t</text><text x="836" y="344" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">minutes per project</text><text x="1096" y="352" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700">4</text><rect x="1165" y="262" width="325" height="128" rx="16" fill="#ffffff" stroke="#d2d2d7"/><text x="1191" y="312" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="22" font-weight="700">T</text><text x="1191" y="344" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">minutes each judge has</text><text x="1451" y="352" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700">60</text><rect x="100" y="440" width="620" height="112" rx="18" fill="#ffffff" stroke="#d2d2d7"/><text x="132" y="486" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.15em">TOTAL LOAD</text><text x="132" y="526" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="26" font-weight="700">720 judge-minutes</text><text x="760" y="500" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="30">&#8594;</text><rect x="820" y="440" width="620" height="112" rx="18" fill="url(#lens)"/><text x="852" y="486" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.15em">JUDGES NEEDED</text><text x="852" y="526" fill="#ffffff" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="26" font-weight="700">12, for a solid hour</text><line x1="100" y1="640" x2="1500" y2="640" stroke="#d2d2d7" stroke-width="1"/><text x="100" y="684" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">No breaks, no drift, no overrun. Most Demo Day judging plans turn out to be short by half.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">Judge capacity arithmetic</title>
+  <desc id="desc">Sixty projects across three rounds at four minutes each, divided by sixty minutes per judge, requires twelve judges.</desc>
+  <defs>
+    <linearGradient id="lens" gradientUnits="userSpaceOnUse" x1="100" y1="620" x2="1490" y2="140">
+      <stop offset="0" stop-color="#6c4cf1"/><stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/><stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="760" fill="#ffffff"/>
+  <text x="100" y="78" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.16em">RUN THIS BEFORE YOU PROMISE A FORMAT</text>
+  <line x1="100" y1="108" x2="1500" y2="108" stroke="#d2d2d7"/>
+  <text x="100" y="190" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="28" font-weight="700">judges = (P × n × t) ÷ T</text>
+
+  <g>
+    <rect x="100" y="232" width="325" height="128" rx="16" fill="#ffffff" stroke="#d2d2d7"/>
+    <text x="126" y="282" fill="url(#lens)" font-family="Menlo, ui-monospace, monospace" font-size="22" font-weight="700">P</text>
+    <text x="126" y="316" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">projects</text>
+    <text x="386" y="322" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700">60</text>
+    <rect x="455" y="232" width="325" height="128" rx="16" fill="#ffffff" stroke="#d2d2d7"/>
+    <text x="481" y="282" fill="url(#lens)" font-family="Menlo, ui-monospace, monospace" font-size="22" font-weight="700">n</text>
+    <text x="481" y="316" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">rounds per project</text>
+    <text x="741" y="322" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700">3</text>
+    <rect x="810" y="232" width="325" height="128" rx="16" fill="#ffffff" stroke="#d2d2d7"/>
+    <text x="836" y="282" fill="url(#lens)" font-family="Menlo, ui-monospace, monospace" font-size="22" font-weight="700">t</text>
+    <text x="836" y="316" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">minutes per project</text>
+    <text x="1096" y="322" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700">4</text>
+    <rect x="1165" y="232" width="325" height="128" rx="16" fill="#ffffff" stroke="#d2d2d7"/>
+    <text x="1191" y="282" fill="url(#lens)" font-family="Menlo, ui-monospace, monospace" font-size="22" font-weight="700">T</text>
+    <text x="1191" y="316" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="14">minutes each judge has</text>
+    <text x="1451" y="322" text-anchor="end" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700">60</text>
+  </g>
+
+  <rect x="100" y="410" width="620" height="120" rx="18" fill="#ffffff" stroke="#d2d2d7"/>
+  <text x="132" y="456" fill="#6e6e73" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.15em">TOTAL LOAD</text>
+  <text x="132" y="498" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="26" font-weight="700">720 judge-minutes</text>
+  <text x="770" y="486" text-anchor="middle" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="34">→</text>
+  <rect x="820" y="410" width="620" height="120" rx="18" fill="url(#lens)"/>
+  <text x="852" y="456" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.15em">JUDGES NEEDED</text>
+  <text x="852" y="498" fill="#ffffff" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="26" font-weight="700">12, for a solid hour</text>
+
+  <line x1="100" y1="588" x2="1500" y2="588" stroke="#d2d2d7"/>
+  <text x="100" y="638" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">No breaks, no drift, no overrun. Most Demo Day judging plans turn out to be short by half.</text>
+</svg>

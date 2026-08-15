@@ -9,6 +9,7 @@ import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { PricingToolkitCard } from "@/components/PricingToolkitCard";
 import { JsonLd, faqJsonLd } from "@/components/JsonLd";
+import { PlanPicker } from "@/components/PlanPicker";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -528,6 +529,57 @@ export default function PricingPage() {
               1,000+ evaluation runs behind the methodology. AI prepares the
               analysis. You make the final call.
             </p>
+
+            <PlanPicker />
+
+            {/* Zero-surprise band — the guarantees already promised across the
+              * FAQ, gathered into one visible risk-reversal block next to the
+              * money (fast-scoring High-Impact #3). No new promises here. */}
+            <ul className="pr-guarantee" data-reveal="up">
+              {[
+                {
+                  h: "No meter",
+                  p: "A package of submissions with a validity window. No seats, no tokens, no usage surprises.",
+                },
+                {
+                  h: "Unreadable decks are free",
+                  p: "A deck we cannot process is not an evaluated submission. Disagreeing with the output is not one either.",
+                },
+                {
+                  h: "180 days to use it",
+                  p: "Every package stays valid for 180 days, so a postponed cohort does not burn your budget.",
+                },
+                {
+                  h: "Price locked for 12 months",
+                  p: "Founding pricing holds for a year from purchase, list prices apply afterwards.",
+                },
+              ].map((g) => (
+                <li key={g.h}>
+                  <strong>{g.h}</strong>
+                  <span>{g.p}</span>
+                </li>
+              ))}
+            </ul>
+            <style>{`
+              .pricing .pr-guarantee{
+                list-style:none; margin:26px 0 0; padding:0;
+                display:grid; gap:14px;
+                grid-template-columns:repeat(4, minmax(0,1fr));
+              }
+              .pricing .pr-guarantee li{
+                padding:18px 20px; border:1px solid var(--border,#d2d2d7);
+                border-radius:16px; background:#fff;
+                display:flex; flex-direction:column; gap:6px;
+              }
+              .pricing .pr-guarantee strong{ font-size:15px; font-weight:600; }
+              .pricing .pr-guarantee span{ font-size:13.5px; color:var(--muted); line-height:1.45; }
+              @media (max-width:900px){
+                .pricing .pr-guarantee{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+              }
+              @media (max-width:560px){
+                .pricing .pr-guarantee{ grid-template-columns:1fr; }
+              }
+            `}</style>
             {/* Funds-band — a separate, wider sales tier (NOT a 4th self-serve
               * card). Public copy carries NO numbers: Open Call / Annual /
               * Enterprise figures are sales-only, sized on the call. */}

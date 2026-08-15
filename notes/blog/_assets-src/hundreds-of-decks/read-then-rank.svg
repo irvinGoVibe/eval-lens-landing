@@ -1,4 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
-<title id="t">Read cold, then rank once</title><desc id="d">Every submission scored against the same rubric in parallel, then the whole batch ranked in one sitting</desc><defs><linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
-<stop offset="0" stop-color="#6c4cf1"/><stop offset="0.32" stop-color="#a99bff"/>
-<stop offset="0.68" stop-color="#2ec5e8"/><stop offset="1" stop-color="#36e0c2"/></linearGradient></defs><rect width="1600" height="900" fill="#ffffff"/><text x="100" y="78" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.16em">SEPARATE THE READING FROM THE RANKING</text><line x1="100" y1="108" x2="1500" y2="108" stroke="#d2d2d7" stroke-width="1"/><text x="100" y="168" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.14em">PHASE 1 &#183; READ COLD, IN PARALLEL</text><rect x="110" y="200" width="66" height="86" rx="8" fill="#ffffff" stroke="#d2d2d7"/><line x1="143" y1="292" x2="143" y2="352" stroke="#d2d2d7" stroke-width="1.5"/><rect x="205" y="200" width="66" height="86" rx="8" fill="#ffffff" stroke="#d2d2d7"/><line x1="238" y1="292" x2="238" y2="352" stroke="#d2d2d7" stroke-width="1.5"/><rect x="300" y="200" width="66" height="86" rx="8" fill="#ffffff" stroke="#d2d2d7"/><line x1="333" y1="292" x2="333" y2="352" stroke="#d2d2d7" stroke-width="1.5"/><rect x="395" y="200" width="66" height="86" rx="8" fill="#ffffff" stroke="#d2d2d7"/><line x1="428" y1="292" x2="428" y2="352" stroke="#d2d2d7" stroke-width="1.5"/><rect x="490" y="200" width="66" height="86" rx="8" fill="#ffffff" stroke="#d2d2d7"/><line x1="523" y1="292" x2="523" y2="352" stroke="#d2d2d7" stroke-width="1.5"/><rect x="585" y="200" width="66" height="86" rx="8" fill="#ffffff" stroke="#d2d2d7"/><line x1="618" y1="292" x2="618" y2="352" stroke="#d2d2d7" stroke-width="1.5"/><rect x="680" y="200" width="66" height="86" rx="8" fill="#ffffff" stroke="#d2d2d7"/><line x1="713" y1="292" x2="713" y2="352" stroke="#d2d2d7" stroke-width="1.5"/><rect x="100" y="352" width="676" height="58" rx="12" fill="url(#lens)" opacity="0.14"/><rect x="100" y="352" width="676" height="58" rx="12" fill="none" stroke="url(#lens)" stroke-width="2"/><text x="438" y="388" text-anchor="middle" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="16" font-weight="600">one fixed rubric, identical for every submission</text><text x="100" y="452" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">Nothing is compared yet, so queue position cannot leak into a score.</text><line x1="820" y1="150" x2="820" y2="800" stroke="#d2d2d7" stroke-width="1"/><text x="880" y="168" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.14em">PHASE 2 &#183; RANK ONCE, AT THE END</text><rect x="880" y="210" width="520" height="46" rx="10" fill="url(#lens)" stroke="#d2d2d7"/><text x="906" y="240" fill="#ffffff" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="16" font-weight="700">ranked shortlist</text><rect x="880" y="272" width="498" height="46" rx="10" fill="#ffffff" stroke="#d2d2d7"/><rect x="880" y="334" width="476" height="46" rx="10" fill="#ffffff" stroke="#d2d2d7"/><rect x="880" y="396" width="454" height="46" rx="10" fill="#ffffff" stroke="#d2d2d7"/><rect x="880" y="458" width="432" height="46" rx="10" fill="#ffffff" stroke="#d2d2d7"/><text x="880" y="560" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">Scores derived the same way are finally comparable. A person sorts the field.</text><line x1="100" y1="780" x2="1500" y2="780" stroke="#d2d2d7" stroke-width="1"/><text x="100" y="824" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">Steps 3 and 5 of the playbook. Everything else is hygiene around them.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Read cold, then rank once</title>
+  <desc id="desc">Every submission is first scored independently against one fixed rubric, then the whole field is ranked once at the end.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c4cf1"/><stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/><stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="100" y="78" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.16em">SEPARATE THE READING FROM THE RANKING</text>
+  <line x1="100" y1="108" x2="1500" y2="108" stroke="#d2d2d7"/>
+  <line x1="820" y1="148" x2="820" y2="700" stroke="#d2d2d7"/>
+
+  <text x="100" y="168" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.14em">PHASE 1 · READ COLD, IN PARALLEL</text>
+  <g fill="#ffffff" stroke="#d2d2d7">
+    <rect x="100" y="214" width="66" height="86" rx="8"/><rect x="198" y="214" width="66" height="86" rx="8"/>
+    <rect x="296" y="214" width="66" height="86" rx="8"/><rect x="394" y="214" width="66" height="86" rx="8"/>
+    <rect x="492" y="214" width="66" height="86" rx="8"/><rect x="590" y="214" width="66" height="86" rx="8"/>
+    <rect x="688" y="214" width="66" height="86" rx="8"/>
+  </g>
+  <g stroke="#d2d2d7" stroke-width="1.5">
+    <line x1="133" y1="300" x2="133" y2="370"/><line x1="231" y1="300" x2="231" y2="370"/>
+    <line x1="329" y1="300" x2="329" y2="370"/><line x1="427" y1="300" x2="427" y2="370"/>
+    <line x1="525" y1="300" x2="525" y2="370"/><line x1="623" y1="300" x2="623" y2="370"/>
+    <line x1="721" y1="300" x2="721" y2="370"/>
+  </g>
+  <g stroke="#d2d2d7">
+    <line x1="116" y1="238" x2="150" y2="238"/><line x1="116" y1="252" x2="144" y2="252"/>
+    <line x1="214" y1="238" x2="248" y2="238"/><line x1="214" y1="252" x2="242" y2="252"/>
+    <line x1="312" y1="238" x2="346" y2="238"/><line x1="312" y1="252" x2="340" y2="252"/>
+    <line x1="410" y1="238" x2="444" y2="238"/><line x1="410" y1="252" x2="438" y2="252"/>
+    <line x1="508" y1="238" x2="542" y2="238"/><line x1="508" y1="252" x2="536" y2="252"/>
+    <line x1="606" y1="238" x2="640" y2="238"/><line x1="606" y1="252" x2="634" y2="252"/>
+    <line x1="704" y1="238" x2="738" y2="238"/><line x1="704" y1="252" x2="732" y2="252"/>
+  </g>
+  <rect x="100" y="370" width="654" height="76" rx="14" fill="url(#lens)" fill-opacity="0.14" stroke="url(#lens)" stroke-width="2"/>
+  <text x="427" y="416" text-anchor="middle" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="16" font-weight="600">one fixed rubric, identical for every submission</text>
+  <text x="100" y="498" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">Nothing is compared yet, so queue position cannot leak into a score.</text>
+
+  <text x="880" y="168" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.14em">PHASE 2 · RANK ONCE, AT THE END</text>
+  <rect x="880" y="214" width="520" height="52" rx="11" fill="url(#lens)"/>
+  <text x="908" y="247" fill="#ffffff" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="16" font-weight="700">ranked shortlist</text>
+  <g fill="#ffffff" stroke="#d2d2d7">
+    <rect x="880" y="284" width="498" height="52" rx="11"/><rect x="880" y="354" width="476" height="52" rx="11"/>
+    <rect x="880" y="424" width="454" height="52" rx="11"/><rect x="880" y="494" width="432" height="52" rx="11"/>
+  </g>
+  <text x="880" y="596" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">Scores derived the same way are finally comparable.</text>
+  <text x="880" y="620" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">A person sorts the field.</text>
+
+  <line x1="100" y1="742" x2="1500" y2="742" stroke="#d2d2d7"/>
+  <text x="100" y="790" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">Steps 3 and 5 of the playbook. Everything else is hygiene around them.</text>
+</svg>
