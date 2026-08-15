@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">The attention arithmetic</title>
+  <desc id="desc">Three hundred submissions multiplied by two minutes and fifty seconds of attention per deck equals about fifteen hours of pure reading.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c4cf1"/><stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/><stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <pattern id="deckGrid" width="27" height="27" patternUnits="userSpaceOnUse">
+      <rect width="18" height="18" rx="3" fill="#f2f2f4" stroke="#d2d2d7" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="760" fill="#ffffff"/>
+  <text x="100" y="78" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.16em">BEFORE THE FIRST COMPARISON</text>
+  <line x1="100" y1="108" x2="1500" y2="108" stroke="#d2d2d7"/>
+
+  <rect x="100" y="154" width="675" height="324" fill="url(#deckGrid)"/>
+  <text x="100" y="520" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="17" font-weight="600">300 submissions</text>
+  <text x="100" y="548" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">one square, one deck</text>
+
+  <text x="818" y="332" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="40" font-weight="700">×</text>
+  <text x="880" y="309" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="30" font-weight="600">2 min 50 s</text>
+  <text x="880" y="340" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">real attention per deck (DocSend)</text>
+  <text x="1115" y="332" fill="#1d1d1f" font-family="Menlo, ui-monospace, monospace" font-size="40" font-weight="700">=</text>
+  <rect x="1170" y="262" width="330" height="86" rx="16" fill="url(#lens)"/>
+  <text x="1200" y="297" fill="#ffffff" font-family="Menlo, ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.15em">PURE READING</text>
+  <text x="1200" y="332" fill="#ffffff" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="26" font-weight="700">about 15 hours</text>
+
+  <line x1="100" y1="602" x2="1500" y2="602" stroke="#d2d2d7"/>
+  <text x="100" y="650" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">And that is before any two submissions have been compared to each other.</text>
+</svg>

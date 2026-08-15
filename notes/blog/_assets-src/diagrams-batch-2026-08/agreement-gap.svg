@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">Correlation is not agreement</title>
+  <desc id="desc">Tool scores preserve the reviewers' ranking but are consistently lower, so correlation stays high while Cohen's kappa does not.</desc>
+  <defs>
+    <linearGradient id="lens" gradientUnits="userSpaceOnUse" x1="220" y1="560" x2="1220" y2="240">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset="0.32" stop-color="#a99bff"/>
+      <stop offset="0.68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="760" fill="#ffffff"/>
+  <text x="100" y="78" fill="#6c4cf1" font-family="Menlo, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="0.16em">CORRELATION IS NOT AGREEMENT</text>
+  <line x1="100" y1="108" x2="1500" y2="108" stroke="#d2d2d7"/>
+
+  <g fill="none" stroke="#d2d2d7" stroke-width="2" stroke-dasharray="5 7">
+    <line x1="220" y1="190" x2="220" y2="315"/>
+    <line x1="410" y1="240" x2="410" y2="365"/>
+    <line x1="600" y1="285" x2="600" y2="410"/>
+    <line x1="790" y1="325" x2="790" y2="450"/>
+    <line x1="980" y1="360" x2="980" y2="485"/>
+    <line x1="1170" y1="395" x2="1170" y2="520"/>
+  </g>
+
+  <polyline points="220,190 410,240 600,285 790,325 980,360 1170,395" fill="none" stroke="#1d1d1f" stroke-width="3" stroke-opacity="0.35" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="220,315 410,365 600,410 790,450 980,485 1170,520" fill="none" stroke="url(#lens)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g fill="#1d1d1f">
+    <circle cx="220" cy="190" r="12"/><circle cx="410" cy="240" r="12"/>
+    <circle cx="600" cy="285" r="12"/><circle cx="790" cy="325" r="12"/>
+    <circle cx="980" cy="360" r="12"/><circle cx="1170" cy="395" r="12"/>
+  </g>
+  <g fill="url(#lens)" stroke="#ffffff" stroke-width="2">
+    <circle cx="220" cy="315" r="14"/><circle cx="410" cy="365" r="14"/>
+    <circle cx="600" cy="410" r="14"/><circle cx="790" cy="450" r="14"/>
+    <circle cx="980" cy="485" r="14"/><circle cx="1170" cy="520" r="14"/>
+  </g>
+
+  <text x="1210" y="401" fill="#1d1d1f" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="17" font-weight="600">your reviewers</text>
+  <text x="1210" y="526" fill="#6c4cf1" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="17" font-weight="600">the tool</text>
+
+  <line x1="100" y1="602" x2="1500" y2="602" stroke="#d2d2d7"/>
+  <text x="100" y="650" fill="#6e6e73" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="15">Same ranking, every score shifted down. Correlation stays near perfect; Cohen's kappa does not.</text>
+</svg>
