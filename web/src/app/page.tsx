@@ -38,8 +38,9 @@ export default function HomePage() {
           auroraVariant="violet"
           title="See your next cohort"
           titleAccent="ranked in a day"
-          sub="Batch-review every pitch deck, surface the strongest startups, and hand each team an evidence-based report — with the final call always yours."
+          sub="Batch-review every pitch deck, surface the strongest startups, and hand each team an evidence-based report — with the final call always yours. The first run is free through August 31, for batches up to 10 decks."
           primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
         />
       </main>
       <Footer variant="dark" />

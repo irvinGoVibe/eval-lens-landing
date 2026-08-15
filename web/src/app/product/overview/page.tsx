@@ -13,11 +13,34 @@ import {
   Numbered,
   Bento,
   Gallery,
+  Faq,
   CtaBand,
 } from "@/components/ds";
+import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
 
 /** Header nav for this page — anchor links to its own sections (see the
  *  matching `id`s on the Lab* sections below). Each page declares its own. */
+/* §7b FAQ — the four questions this page raises but never answered, so the
+ * buyer does not have to leave to find them. Feeds FAQPage structured data. */
+const FAQ = [
+  {
+    q: "What does EvalLens actually do with a pitch deck?",
+    a: "It reads the deck in full, scores it against your rubric with a panel of independent AI judges, ties every finding to the passage it came from, and hands your team a report plus a ranked board. It never issues the decision: the leaderboard sorts on the Jury Score a person sets.",
+  },
+  {
+    q: "How long does a batch take?",
+    a: "A batch is evaluated in a single run rather than deck by deck, so a cohort that would take a team weeks of reading comes back as a comparable set. The pace that matters is your review meeting, not our processing time.",
+  },
+  {
+    q: "Do we have to change how applicants submit?",
+    a: "No. You can add entrants by hand or open a public submission page through the Entry Hub, and existing intake tools keep working. Applicants do not change what they send.",
+  },
+  {
+    q: "Can we use our own criteria and weights?",
+    a: "Yes. Criteria and weights are yours and apply at the leaderboard, not inside each judge's reading, so the same evidence can be re-ranked without re-running the batch.",
+  },
+];
+
 const HEADER_NAV: SectionNav = {
   section: "Product",
   sectionHref: "/product/overview",
@@ -413,6 +436,22 @@ export default function ProductOverviewPage() {
 
         </div>{/* /ds-zone §1–§7 */}
 
+        <Faq
+          id="faq"
+          eyebrow="Before you book"
+          title="The four questions this page raises"
+          titleAccent="four questions"
+          items={FAQ}
+        />
+
+        <JsonLd data={faqJsonLd(FAQ)} />
+        <JsonLd
+          data={breadcrumbJsonLd([
+            ["Product", "/product"],
+            ["Overview", "/product/overview"],
+          ])}
+        />
+
         {/* §8 — Final CTA. Cinematic closer: CtaBand on the dark (ink) theme with
             a looping background video (`neo`) and `bleed` so it spills onto the
             footer — the single ink peak of the page. `auroraVariant` stays as the
@@ -426,8 +465,9 @@ export default function ProductOverviewPage() {
           eyebrow="Get started"
           title="See the whole workflow on"
           titleAccent="your own decks"
-          sub="Book a demo and watch intake, evaluation, and human review play out end to end."
+          sub="Book a demo and watch intake, evaluation, and human review play out end to end. Over 1,000 evaluation runs behind the methodology, and the first run is free through August 31, up to 10 decks."
           primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
         />
       </main>
       <Footer variant="dark" />

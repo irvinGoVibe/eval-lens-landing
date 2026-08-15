@@ -55,8 +55,8 @@ export function HeroActions({
         </Button>
       )}
       {showSecondary ? (
-        <Button variant="glass" arrow data-partner-access="true">
-          Try live demo
+        <Button variant="glass" arrow href="/trust/use-cases#sample-output">
+          See a sample report
         </Button>
       ) : null}
     </div>

@@ -663,7 +663,7 @@ export function Decisions() {
       <div className="wrap">
         <div className="sect-cta reveal d2">
           <Button variant="ghost" arrow data-partner-access="true">
-            View live report demo
+            Request partner access
           </Button>
         </div>
       </div>
