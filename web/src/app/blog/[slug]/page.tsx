@@ -173,10 +173,16 @@ export default async function ArticlePage({
           margin-right: 0;
         }
         .article-gallery__photo{
+          aspect-ratio: 16 / 9;
           max-height: none;
           border: 1px solid var(--border-2);
           border-radius: 14px;
         }
+        /* Diagrams are 2.11:1, 1.78:1 and 1.5:1 across the archive, so a fixed
+           box with object-fit:cover cropped the widest ones and cut the labels
+           off both edges. Contain keeps every schematic whole; the box still
+           reserves height, so CLS stays at zero. */
+        .article-gallery__img{ object-fit: contain; }
       `}</style>
       <div className="article-cover wrap blog-wrap" data-accent={post.accent}>
         <Image
