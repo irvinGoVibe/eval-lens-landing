@@ -15,6 +15,14 @@ sources:
 
 # Programmatic SEO: что нам реально применимо
 
+> **Обновление 2026-08-15 после AI-baseline.** Замер в ChatGPT показал, что мы уже присутствуем
+> и рекомендуемся в AI-выдаче, а реальные конкуренты в нашей категории — не Evalyze, а
+> **Peachdeck, Metric, Evala AI, Jolders, VentureLens, Frictionless Intelligence**. Comparison-страницы
+> стоит планировать против них; `/compare/evalyze` остаётся только как защита бренда от подмены
+> в поиске. Полная карта — [ai-visibility-baseline](../../../notes/ai-visibility-baseline-2026-08-15.md).
+
+
+
 Документ на согласование. Страницы не создаются, фиксируется только стратегия.
 
 ## 0. Отправная точка (честно)
