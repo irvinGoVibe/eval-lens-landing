@@ -8,7 +8,7 @@ import type { SectionNav } from "@/lib/site-nav";
 import { SampleOutputSection } from "./SampleOutputSection";
 
 export const metadata: Metadata = {
-  title: "EvalLens Use Cases - Structured First Read for Every Shortlist",
+  title: "EvalLens Use Cases — Structured First Read for Every Shortlist",
   description:
     "Turn decks and structured application materials into an explainable shortlist before the final call. Pitch competitions, VC dealflow, hackathons, and more.",
 };
