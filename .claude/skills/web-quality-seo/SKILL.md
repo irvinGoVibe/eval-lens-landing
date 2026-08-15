@@ -524,4 +524,4 @@ body {
 - [Google Search Central](https://developers.google.com/search)
 - [Schema.org](https://schema.org/)
 - [Core Web Vitals](../core-web-vitals/SKILL.md)
-- [Web Quality Audit](../web-quality-audit/SKILL.md)
+- [Performance](../performance/SKILL.md)
