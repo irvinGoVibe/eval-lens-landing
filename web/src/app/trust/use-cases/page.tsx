@@ -57,77 +57,85 @@ const BATCH_STEPS = [
   },
 ];
 
-/* ── §5 Workflow data ────────────────────────────────────────── */
-const FEATURED_ICPS = [
+/* ── §5 Workflow data — one segment, one live page ────────────
+ * Rebuilt 2026-08-15: the Featured/Upcoming/Later shelves are gone —
+ * every segment has its own page under /trust/use-cases/<slug>.
+ * Hackathons and university programs are formats inside
+ * pitch-competitions (student-IP governance lives there), not
+ * separate segments. */
+const SEGMENTS = [
   {
     tag: "Pitch competitions",
-    headline: "Review decks before finals day.",
+    headline: "Every entry gets a full read. Every rank carries its receipts.",
     moment: "Finals are close. Decks are still scattered. Judges are reading at different depth.",
-    body: "Give your judging panel a finalist board, participant reports, risks, and questions before they meet.",
-    output: "Finalist board, participant reports, evidence, risks, and judge-ready questions.",
-    cta: "See pitch competition workflow",
-    // TODO: update href when /use-cases/pitch-competitions page is ready
-    href: "/company/contact?use_case=Pitch+competitions",
+    body: "An AI panel pre-reads the whole written round on your rubric; your screeners confirm with briefing packs; live rounds run exactly as designed.",
+    scopeLine: "Hackathon and university program screening run on this same workflow.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/pitch-competitions",
     primary: true,
   },
   {
-    tag: "VC / angel dealflow",
-    headline: "Know which decks deserve partner time before Monday's meeting.",
-    moment: "Inbound came from six sources. The meeting is soon. Nobody has time to read every deck deeply.",
-    body: "Give partners, scouts, or members a cleaner first-pass view: which companies deserve attention, what evidence is missing, and what risks need a second look.",
-    output: "First-pass signal, red flags, missing evidence, partner-ready notes, and risks to verify.",
-    cta: "See VC workflow",
-    // TODO: update href when /use-cases/vc-funds page is ready
-    href: "/company/contact?use_case=VC+angel+dealflow",
+    tag: "VC open calls",
+    headline: "Your open call, actually read.",
+    moment: "Inbound came from six sources. The pipeline meeting is Monday. The median deck gets 150 seconds.",
+    body: "Every submitted deck read in full against your investment dimensions — flags, founder questions, a quote behind every finding. The aide, never the arbiter.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/vc-open-calls",
     primary: false,
   },
   {
-    tag: "Hackathons",
-    headline: "Review applications before teams start building.",
-    moment: "Applications close tonight. The team needs a shortlist before anyone starts building.",
-    body: "EvalLens reviews what teams submit: project clarity, proposed solution, feasibility, evidence, execution plan, and risks.",
-    scopeLine: "Live demos, code execution, and build quality can be reviewed as separate layers.",
-    output: "Application summaries, feasibility signals, execution-plan risks, missing proof, and selection questions.",
-    cta: "See hackathon workflow",
-    // TODO: update href when /use-cases/hackathons page is ready
-    href: "/company/contact?use_case=Hackathons",
+    tag: "Angel networks",
+    headline: "Every deal read before screening night.",
+    moment: "The monthly batch is in. The screening chair is a volunteer. The reading marathon starts tonight.",
+    body: "A one-page, evidence-linked brief per company for your screening committee — findings, red flags, pitch questions. Every judgment stays your members'.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/angel-networks",
     primary: false,
   },
-];
-
-const UPCOMING_ICPS = [
   {
     tag: "Accelerators",
-    headline: "Select a stronger batch with less reviewer chaos.",
-    moment: "Applications arrive in different formats. The committee still needs one clean comparison before the cohort decision.",
-    body: "Help your selection committee compare applications with the same first-read logic before the cohort decision.",
-    cta: "Book an accelerator workflow call",
-    href: "/company/contact?use_case=Accelerators",
+    headline: "Every application gets a full read. Every rejection gets a reason.",
+    moment: "Hundreds applied in three weeks. The committee decides the cohort next Friday.",
+    body: "Every application read in full and scored on your rubric with page-level evidence. Start with a free retro-test on your last cohort.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/accelerators",
+    primary: false,
   },
   {
     tag: "Corporate innovation",
-    headline: "Shortlist internal proposals before stakeholder review.",
-    moment: "Internal ideas move through committees, business cases, and stakeholder opinions. The team still needs a clean evidence view.",
-    body: "Give stakeholders a cleaner view of which ideas are clear, feasible, supported by evidence, and worth moving forward.",
-    cta: "Book a corporate workflow call",
-    href: "/company/contact?use_case=Corporate+innovation",
-  },
-];
-
-const LATER_ICPS = [
-  {
-    tag: "Grants",
-    headline: "Compare applications against fixed criteria.",
-    body: "Give your review committee a clearer evidence trail before funding decisions.",
-    cta: "Book a grant review call",
-    href: "/company/contact?use_case=Grants",
+    headline: "From challenge statement to a signed PoC.",
+    moment: "The challenge closed with 300+ submissions. The steering committee asks: why these five?",
+    body: "Evidence-linked one-pagers for your jury and a selection memo you can defend upstairs — every pick traced to a quote and a page.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/corporate-innovation",
+    primary: false,
   },
   {
-    tag: "Universities",
-    headline: "Prepare fairer student competition reviews.",
-    body: "Help your review panel compare student teams with more consistency before awards, grants, or program selection.",
-    cta: "Book a university review call",
-    href: "/company/contact?use_case=Universities",
+    tag: "Grants & prizes",
+    headline: "Every score survives the audit.",
+    moment: "Review panels are stretched, cycles run long — and three years later someone asks “why 4.2?”",
+    body: "Every proposal scored to your rubric anchor by anchor, with an appeal-ready record. Your reviewers remain the reviewers of record.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/grants-prizes",
+    primary: false,
+  },
+  {
+    tag: "Crowdfunding platforms",
+    headline: "Screen project owners in days. Keep the file.",
+    moment: "Too slow, the deal lists elsewhere. Too fast, the file won't hold when the NCA asks.",
+    body: "An evidence-linked screening file per project owner, analyst verification, committee decisions logged — built to ESMA's dialect.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/crowdfunding",
+    primary: false,
+  },
+  {
+    tag: "Tenders & RFPs",
+    headline: "Awards that survive the challenge.",
+    moment: "The award is announced — and the losing bidder's lawyer asks for the evaluation record.",
+    body: "Every bid read end to end against your published criteria, scored with quotes and page references. Your committee awards; the record is one click.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/tenders",
+    primary: false,
   },
 ];
 
@@ -294,12 +302,9 @@ function ChooseYourWorkflow() {
           </p>
         </div>
 
-        {/* Tier 1: Best fit now */}
-        <div className="uc2-tier-label" data-reveal="up">
-          Best fit now
-        </div>
+        {/* One flat grid — every segment is live, every card leads to its page. */}
         <div className="uc2-featured-grid">
-          {FEATURED_ICPS.map((icp, i) => (
+          {SEGMENTS.map((icp, i) => (
             <article
               key={icp.tag}
               className="uc-glass uc2-icp-card uc2-icp-card--featured"
@@ -313,61 +318,12 @@ function ChooseYourWorkflow() {
               {"scopeLine" in icp && icp.scopeLine && (
                 <p className="uc2-scope-line">{icp.scopeLine}</p>
               )}
-              <div className="uc2-icp-output">
-                <span>Output</span>
-                <p>{icp.output}</p>
-              </div>
               <Button
                 href={icp.href}
                 variant={icp.primary ? "gradient" : "ghost"}
               >
                 {icp.cta}
               </Button>
-            </article>
-          ))}
-        </div>
-
-        {/* Tier 2: Also relevant */}
-        <div className="uc2-tier-label" data-reveal="up">
-          Also relevant
-        </div>
-        <div className="uc2-upcoming-grid">
-          {UPCOMING_ICPS.map((icp, i) => (
-            <article
-              key={icp.tag}
-              className="uc-glass uc2-icp-card uc2-icp-card--upcoming"
-              data-reveal="up"
-              style={{ "--reveal-delay": `${i * 70}ms` } as CSSProperties}
-            >
-              <span className="mini-tag">{icp.tag}</span>
-              <h3>{icp.headline}</h3>
-              <p className="uc2-icp-moment">{icp.moment}</p>
-              <p>{icp.body}</p>
-              <a href={icp.href} className="uc2-icp-cta-link">
-                {icp.cta}
-              </a>
-            </article>
-          ))}
-        </div>
-
-        {/* Tier 3: More workflows */}
-        <div className="uc2-tier-label" data-reveal="up">
-          More workflows
-        </div>
-        <div className="uc2-later-grid">
-          {LATER_ICPS.map((icp, i) => (
-            <article
-              key={icp.tag}
-              className="uc-glass uc2-icp-card uc2-icp-card--later"
-              data-reveal="up"
-              style={{ "--reveal-delay": `${i * 70}ms` } as CSSProperties}
-            >
-              <span className="mini-tag">{icp.tag}</span>
-              <h3>{icp.headline}</h3>
-              <p>{icp.body}</p>
-              <a href={icp.href} className="uc2-icp-cta-link">
-                {icp.cta}
-              </a>
             </article>
           ))}
         </div>
@@ -410,30 +366,27 @@ function HonestScope() {
             </ul>
           </div>
 
-          {/* Col 2: Best fit today */}
+          {/* Col 2: Built for */}
           <div
             className="uc-glass uc2-scope-col"
             data-reveal="up"
             style={{ "--reveal-delay": "90ms" } as CSSProperties}
           >
-            <span className="uc2-scope-col__label">Best fit now</span>
+            <span className="uc2-scope-col__label">Built for</span>
             <ul>
               {[
-                "pitch competitions",
-                "VC / angel deck review",
-                "hackathon application screening",
+                "pitch competitions & hackathons",
+                "VC open calls",
+                "angel networks",
+                "accelerators",
+                "corporate innovation",
+                "grants & prizes",
+                "crowdfunding platforms",
+                "tenders & RFPs",
               ].map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            <div className="uc2-scope-upcoming">
-              <span>Upcoming</span>
-              <ul>
-                {["accelerators", "corporate innovation"].map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
           </div>
 
           {/* Col 3: Roadmap */}
@@ -603,6 +556,51 @@ export default function UseCasesPage() {
         {/* §7 Honest Scope */}
         <HonestScope />
 
+        {/* §7b Trust pack — added 2026-08-15 (panel-review fix: the public
+            trust-pack the segment pages promise lives one click away). */}
+        <section
+          className="band light"
+          aria-labelledby="uc2-trustpack-h2"
+        >
+          <div className="wrap">
+            <h2 id="uc2-trustpack-h2" data-reveal="up">
+              The claims above are{" "}
+              <span className="grad-word">inspectable.</span>
+            </h2>
+            <p className="sub" data-reveal="up" style={{ maxWidth: "64ch" } as CSSProperties}>
+              Every workflow on this page leans on the same public methodology — how
+              scores are built, how disagreement is surfaced, and how submissions are
+              protected. Read it before the call, not after.
+            </p>
+            <div
+              data-reveal="up"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "14px",
+                marginTop: "28px",
+              } as CSSProperties}
+            >
+              {[
+                { label: "Methodology", desc: "How judges, evidence and scores work", href: "/trust/methodology" },
+                { label: "Consistency & reliability", desc: "Spread, repeat runs, what stays stable", href: "/trust/consistency-reliability" },
+                { label: "Security & privacy", desc: "Perimeter, DPA, never trained on", href: "/trust/security-privacy" },
+                { label: "Prompt-injection safety", desc: "Why a deck can't talk its way up", href: "/trust/prompt-injection-safety" },
+              ].map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="uc-glass uc2-icp-card"
+                  style={{ textDecoration: "none", display: "block" } as CSSProperties}
+                >
+                  <h3>{l.label}</h3>
+                  <p>{l.desc}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* §8 Final CTA — original distinct close (program → pilot) */}
         <CtaBand
           theme="dark"
@@ -612,7 +610,7 @@ export default function UseCasesPage() {
           titleAccent="EvalLens"
           sub="Tell us what kind of program you run. We will map your workflow, show how the review would work, and walk through a pilot batch."
           primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "Choose your use case", href: "#workflows" }}
+          secondary={{ label: "Choose your use case", href: "#choose-workflow" }}
           auroraVariant="ocean"
         />
       </main>
