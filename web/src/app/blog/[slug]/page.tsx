@@ -177,7 +177,6 @@ export default async function ArticlePage({
         .article-gallery__photo{
           max-height: none;
           border: 1px solid var(--border-2);
-          border-block: 1px solid var(--border-2);
           border-radius: var(--radius-stage);
         }
       `}</style>
