@@ -11,35 +11,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { LOGIN_PATH, SESSION_COOKIE, expectedSessionToken } from "@/lib/cms/auth";
 
-// /icp/* — password-gated ICP landing previews shared with the founder for
-// review. Same philosophy as `private-posts.ts`: the repo stores only a
-// SHA-256 digest of the shared password (overridable via env), never the raw
-// value. Any username is accepted; only the password is checked.
-const ICP_PASSWORD_SHA256 =
-  process.env.ICP_REVIEW_PASSWORD_SHA256 ??
-  "e534c16afdf55c41a1885edafac7ee745515a03c4cc345cb1995e2738b295572";
-
-async function icpBasicAuthOk(request: NextRequest): Promise<boolean> {
-  const header = request.headers.get("authorization") ?? "";
-  if (!header.startsWith("Basic ")) return false;
-  let decoded: string;
-  try {
-    decoded = atob(header.slice(6));
-  } catch {
-    return false;
-  }
-  const password = decoded.slice(decoded.indexOf(":") + 1);
-  if (!password) return false;
-  const digestBytes = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(password),
-  );
-  const digest = Array.from(new Uint8Array(digestBytes))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-  return digest === ICP_PASSWORD_SHA256;
-}
-
 function rscCorsHeaders(request: NextRequest): Headers | null {
   const origin = request.headers.get("origin");
   if (!origin) return null;
@@ -84,19 +55,6 @@ export async function proxy(request: NextRequest) {
     return new NextResponse(null, { status: 204, headers: corsHeaders });
   }
 
-  // Password-gated ICP previews (static pages under /public/icp).
-  if (pathname === "/icp" || pathname.startsWith("/icp/")) {
-    if (await icpBasicAuthOk(request)) {
-      return NextResponse.next();
-    }
-    return new NextResponse("Authentication required", {
-      status: 401,
-      headers: {
-        "WWW-Authenticate": 'Basic realm="EvalLens ICP review", charset="UTF-8"',
-      },
-    });
-  }
-
   // Public requests pass through untouched; the public matcher is restricted
   // to the RSC OPTIONS preflight handled above.
   if (!pathname.startsWith("/admin")) {
@@ -126,7 +84,6 @@ export const config = {
   // The login API route handler performs its own authentication check.
   matcher: [
     "/admin/:path*",
-    "/icp/:path*",
     {
       source: "/:path*",
       has: [

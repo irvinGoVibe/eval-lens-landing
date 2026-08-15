@@ -3,6 +3,28 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Cache Components (Next 16): enables `use cache`, `cacheTag`, `cacheLife`.
   cacheComponents: true,
+  async redirects() {
+    // The password-gated static ICP previews (/public/icp/*.html) were ported
+    // into the site as /trust/use-cases/<segment> on 2026-08-15; the gate in
+    // proxy.ts was removed with them. Old review links keep working.
+    const segment = (from: string, to: string) => ({
+      source: `/icp/${from}`,
+      destination: `/trust/use-cases/${to}`,
+      permanent: true,
+    });
+    return [
+      { source: "/icp", destination: "/trust/use-cases", permanent: true },
+      { source: "/icp/index.html", destination: "/trust/use-cases", permanent: true },
+      { source: "/icp/sample-report.html", destination: "/trust/use-cases", permanent: true },
+      segment("pitch-competitions.html", "pitch-competitions"),
+      segment("accelerators.html", "accelerators"),
+      segment("vc-open-calls.html", "vc-open-calls"),
+      segment("angel-networks.html", "angel-networks"),
+      segment("grants-prizes.html", "grants-prizes"),
+      segment("corporate-innovation.html", "corporate-innovation"),
+      segment("crowdfunding-ecspr.html", "crowdfunding"),
+    ];
+  },
   // Physical-device QA reaches the user-owned dev server over the local Wi-Fi
   // address. Next blocks cross-origin dev chunks/HMR unless that LAN hostname
   // is explicitly trusted, which leaves Safari with server HTML but no React
