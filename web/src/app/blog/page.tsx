@@ -6,6 +6,13 @@ import { InTheLoop } from "@/components/blog/InTheLoop";
 import { MoreFromNewsroom } from "@/components/blog/MoreFromNewsroom";
 import { getAllPosts, getLoopPosts } from "@/lib/blog";
 
+/**
+ * "In the Loop" rail is temporarily hidden (2026-08-15, founder request).
+ * The component, its data fetch and the CMS rows are untouched — flip this
+ * to `true` to bring the section back.
+ */
+const SHOW_IN_THE_LOOP = false;
+
 export const metadata: Metadata = {
   title: "EvalLens Newsroom — Latest News",
   description:
@@ -50,7 +57,7 @@ export default async function BlogHubPage() {
       {/* ---- In the Loop: paged rail of reposted social items (popup) ---- */}
       {/* Suspense: InTheLoop reads `?loop=<id>` via useSearchParams, which
           requires a boundary for the prod build (Next 16 CSR bailout). */}
-      {loopPosts.length > 0 && (
+      {SHOW_IN_THE_LOOP && loopPosts.length > 0 && (
         <Suspense fallback={null}>
           <InTheLoop posts={loopPosts} />
         </Suspense>
