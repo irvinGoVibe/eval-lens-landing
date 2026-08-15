@@ -15,7 +15,7 @@ import { getAllPosts } from "@/lib/blog";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 
 export const metadata: Metadata = {
-  title: "Contact EvalLens — Book a Demo & Talk to Us",
+  title: "Contact EvalLens — Book a demo & Talk to Us",
   description:
     "Get in touch with EvalLens: book a demo, reach us for sales, careers or security, and open the product documentation for organizers.",
 };
@@ -51,13 +51,13 @@ export const metadata: Metadata = {
  * news is read at build time via getAllPosts() — exactly like /blog.
  *
  * ── PLACEHOLDERS (brief §Open Questions) ──────────────────────────────────
- *   - demo channel: Book a Demo → /#demo (until a real scheduler/mailto)
+ *   - demo channel: Book a demo → /#demo (until a real scheduler/mailto)
  *   - hello@evallens.io  — general & sales (placeholder, confirm)
  *   - press@evallens.io  — press & media (placeholder, confirm)
  */
 
 /* 2. Ways to reach us — channel grid (brief §2). The four direct lines sit at
-   the top; "Book a Demo" moves below the grid as a single button. The sales
+   the top; "Book a demo" moves below the grid as a single button. The sales
    card carries a "Book a Call" button (bottom-right); the secondary page links
    on Security / Press are de-emphasised and pushed to the card's bottom-right. */
 type Channel = {
@@ -202,7 +202,7 @@ export default async function ContactPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "360ms" }}
             >
-              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a demo</Button>
               <Button variant="ghost" href="#batch">
                 Send us your batch
               </Button>
@@ -252,9 +252,9 @@ export default async function ContactPage() {
                 </li>
               ))}
             </ul>
-            {/* Book a Demo — moved below the four channel cards */}
+            {/* Book a demo — moved below the four channel cards */}
             <div className="ct-channels__demo" data-reveal="up">
-              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a demo</Button>
             </div>
           </div>
         </section>
@@ -417,7 +417,7 @@ export default async function ContactPage() {
           title="See EvalLens run on"
           titleAccent="your own applications"
           sub="Book a demo to walk through the product and run a pilot batch on your own decks."
-          primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
+          primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
         />
       </main>
       <Footer variant="dark" />

@@ -186,7 +186,7 @@ export default function AboutPage() {
           <BlobField />
           {/* Hero observatory PNG tuning — page-local injection (globals untouched):
               enlarge ~10% and pull it up so the top constellation stars sit right
-              under the Book a Demo button, while the larger art drops toward the
+              under the Book a demo button, while the larger art drops toward the
               section end. */}
           <style>{`
             .about .ab-hero__media--img{ width:min(98vw,1364px); max-width:98vw; }
@@ -223,7 +223,7 @@ export default function AboutPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a demo</Button>
             </div>
             {/* hero visual — the observatory lens: startup applications stream
                 in and resolve into evidence, risk signals, score cards, and
@@ -602,7 +602,7 @@ export default function AboutPage() {
           title="See how EvalLens works on a"
           titleAccent="real batch"
           sub="Book a demo to walk through the workflow, review example reports, and see how EvalLens helps your team compare applications without giving up human control."
-          primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
+          primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
           videoSrc="/assets/about/about-cta-bg.mp4"
           videoPoster="/assets/about/about-cta-bg-poster.webp"
         />

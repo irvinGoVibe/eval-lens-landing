@@ -164,7 +164,7 @@ export default function TrustHubPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a demo</Button>
             </div>
             {/* hero visual slot — see prompt 1 in file header */}
             <figure
@@ -368,7 +368,7 @@ export default function TrustHubPage() {
               data-reveal="up"
               style={{ ["--reveal-delay" as string]: "270ms" }}
             >
-              <Button href="https://calendly.com/evallens/30min">Book a Demo</Button>
+              <Button href="https://calendly.com/evallens/30min">Book a demo</Button>
             </div>
           </div>
         </section>

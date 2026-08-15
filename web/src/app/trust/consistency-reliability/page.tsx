@@ -142,7 +142,7 @@ export default function ConsistencyReliabilityPage() {
           titleAccent="inspect"
           titleTrail=", not just trust"
           sub="EvalLens shows which scores stay stable, where judges disagree, and when human review is needed. It also tracks how results change across repeated runs."
-          ctas={[{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }]}
+          ctas={[{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }]}
           media={{
             ratio: "16/9",
             label: "Image · twin lenses · 16:9",
@@ -549,7 +549,7 @@ export default function ConsistencyReliabilityPage() {
                   See it live
                 </Button>
                 <Button href="https://calendly.com/evallens/30min" variant="glass">
-                  Book a Demo
+                  Book a demo
                 </Button>
               </div>
               <details className="bench-details">
@@ -668,7 +668,7 @@ export default function ConsistencyReliabilityPage() {
           titleLead="See how stable the scores are on"
           titleAccent="your own decks"
           sub="Book a demo and see consensus, spread, and reproducibility on a real batch."
-          ctas={[{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }]}
+          ctas={[{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }]}
         />
       </main>
       <Footer variant="dark" />
