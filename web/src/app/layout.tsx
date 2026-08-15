@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import "@/components/ds/ds.css";
+import { ConversionEvents } from "@/components/ConversionEvents";
 import { DevInspector } from "@/components/DevInspector";
 import { PartnerAccessModal } from "@/components/PartnerAccessModal";
 import { SITE_URL } from "@/lib/site-url";
@@ -9,7 +11,10 @@ import { SITE_URL } from "@/lib/site-url";
 export const metadata: Metadata = {
   // Absolute base for OG/Twitter images and canonical URLs on Vercel.
   metadataBase: new URL(SITE_URL),
-  title: "EvalLens — AI reviews. Human decides.",
+  // Variant A (2026-08-15): homepage title carries the category query
+  // "ai pitch deck evaluation"; /product/overview keeps the distinct
+  // "batch pitch deck evaluation" phrasing (keyword-map §5).
+  title: "EvalLens — AI Pitch Deck Evaluation. Human Decides.",
   description:
     "A clearer lens for every pitch deck: structured reviews, evidence, and ranking support for human selection decisions.",
   openGraph: {
@@ -121,6 +126,8 @@ export default function RootLayout({
         />
         {children}
         <PartnerAccessModal />
+        <Analytics />
+        <ConversionEvents />
         {process.env.NODE_ENV !== "production" && <DevInspector />}
       </body>
     </html>

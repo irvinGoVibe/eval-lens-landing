@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@vercel/analytics";
 
 /**
  * Low-commitment lead form: "send us your batch". Posts to /api/lead
@@ -38,6 +39,10 @@ export function LeadForm() {
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
+      track("lead_submit", {
+        programType: String(data.programType ?? ""),
+        path: window.location.pathname,
+      });
       setState("done");
       form.reset();
     } catch {
