@@ -54,6 +54,7 @@ export async function generateMetadata({
   const label = activeCategory ? CATEGORY_HEADING[activeCategory] : "All News";
   return {
     title: `${label} — EvalLens Newsroom`,
+    alternates: { canonical: "/blog/all" },
     description:
       "Every story from EvalLens Newsroom — press releases, product updates, research, and more.",
   };

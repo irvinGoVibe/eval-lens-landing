@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { ScrollOrchestrator } from "@/components/ScrollOrchestrator";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -10,6 +11,10 @@ import { MistBridge } from "@/components/sections/MistBridge";
 import { OrangeGlow } from "@/components/sections/OrangeGlow";
 import { Problem } from "@/components/sections/Problem";
 import { Workflow } from "@/components/sections/Workflow";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   return (

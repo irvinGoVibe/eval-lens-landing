@@ -8,6 +8,7 @@ import { StatementHero, Bento, Faq, CtaBand, Cinema } from "@/components/ds";
 import { ZoneBlobs } from "@/components/ZoneBlobs";
 import { ZoneToneFlip } from "@/components/ZoneToneFlip";
 import { PricingToolkitCard } from "@/components/PricingToolkitCard";
+import { JsonLd, faqJsonLd } from "@/components/JsonLd";
 
 /** Header nav for this page — anchor links to its own sections. ≤3. */
 const HEADER_NAV: SectionNav = {
@@ -785,6 +786,8 @@ export default function PricingPage() {
         />
 
         {/* 6. FAQ — Faq (DS), light. Static Q/A, NOT a JS accordion. */}
+        <JsonLd data={faqJsonLd(FAQ)} />
+
         <Faq
           id="faq"
           eyebrow="Pricing FAQ"

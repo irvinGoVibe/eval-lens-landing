@@ -1,0 +1,50 @@
+# EvalLens
+
+> EvalLens is a pitch-deck evaluation platform for selection programs: pitch competitions, accelerators, VC open calls, angel networks, grant programs, corporate innovation challenges, crowdfunding platforms, and public tenders. A panel of independent AI judges reads every submission against one rubric and prepares evidence-linked reports, comparison context, and an advisory score. The final ranking always stays with the human jury: AI prepares the analysis, people decide.
+
+Key facts:
+- One review engine, configured per program mode (Pitch Competition: 6 judges; Hackathon: 5 judges).
+- Every score stays connected to the evidence in the deck it came from (SourceRef).
+- The AI Total Score is advisory; the leaderboard ranks on the human Jury Score.
+- The scoring arithmetic is deterministic: same judge outputs and weights in, same number out.
+- 1,000+ evaluation runs across programs.
+- AI never picks winners; humans hold the final decision.
+
+## Product
+
+- [Product overview](https://evallens.io/product/overview): What EvalLens does, the evaluation pipeline, and the human-in-the-loop model
+- [Entry Hub](https://evallens.io/product/entry-hub): One intake flow — manual entry or public self-upload page for submissions
+- [Evidence-based reports](https://evallens.io/product/evidence-based-reports): Structured first read per deck: findings, gaps, scores, and questions linked to evidence
+- [Review Board](https://evallens.io/product/review-board): Batch view for comparing the whole field before the live decision
+- [Pricing](https://evallens.io/pricing): Plans and pilot options
+
+## Use cases
+
+- [Use-case atlas](https://evallens.io/trust/use-cases): Who uses EvalLens and which selection workflow each segment runs
+- [Pitch competitions](https://evallens.io/trust/use-cases/pitch-competitions): From open submissions to a ranked finalist board
+- [Accelerators](https://evallens.io/trust/use-cases/accelerators): Compare applicants on one standard and defend the cohort decision
+- [VC open calls](https://evallens.io/trust/use-cases/vc-open-calls): Inbound decks into a partner-ready first read
+- [Angel networks](https://evallens.io/trust/use-cases/angel-networks): Which decks deserve the screening committee's time
+- [Grants and prizes](https://evallens.io/trust/use-cases/grants-prizes): Fixed-criteria scoring with a record that survives an appeal
+- [Corporate innovation](https://evallens.io/trust/use-cases/corporate-innovation): Separate real partnership potential from innovation theatre
+- [Crowdfunding platforms](https://evallens.io/trust/use-cases/crowdfunding): One documented standard for every applicant
+- [Public tenders](https://evallens.io/trust/use-cases/tenders): An appeal-proof evaluation record for procurement decisions
+
+## Trust & methodology
+
+- [Methodology](https://evallens.io/trust/methodology): How the judge panel, rubric, and scoring work
+- [Consistency & reliability](https://evallens.io/trust/consistency-reliability): Reproducibility — same deck, same score
+- [Prompt injection safety](https://evallens.io/trust/prompt-injection-safety): How submissions cannot manipulate their own evaluation
+- [Security & privacy](https://evallens.io/trust/security-privacy): Data handling and access controls
+
+## Company
+
+- [About](https://evallens.io/company/about): Team and the origin of EvalLens (formerly AI Jury)
+- [Newsroom](https://evallens.io/blog): Research on evaluation methodology, product updates, and announcements
+- [Contact](https://evallens.io/company/contact): Book a demo
+
+## Optional
+
+- [Terms](https://evallens.io/terms)
+- [Privacy](https://evallens.io/privacy)
+- [Security](https://evallens.io/security)

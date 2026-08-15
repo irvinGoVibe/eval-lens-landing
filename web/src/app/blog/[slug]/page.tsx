@@ -11,6 +11,31 @@ import {
   getPostBySlug,
   getRelatedPosts,
 } from "@/lib/blog";
+import { SITE_URL } from "@/lib/site-url";
+
+/**
+ * Pull Q&A pairs out of a "## Common questions" markdown section so articles
+ * that carry an FAQ get FAQPage JSON-LD for free. Returns [] when the section
+ * is absent or holds fewer than two well-formed `**Question?** answer` pairs.
+ */
+function extractFaq(markdown: string): { q: string; a: string }[] {
+  const section = markdown.match(/^## Common questions\s*$([\s\S]*?)(?=^## |\n*$(?![\s\S]))/m);
+  if (!section) return [];
+  const pairs: { q: string; a: string }[] = [];
+  const re = /\*\*(.+?\?)\*\*\s*([\s\S]+?)(?=\n\s*\n\*\*|\s*$)/g;
+  for (const m of section[1].matchAll(re)) {
+    const strip = (s: string) =>
+      s
+        .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+        .replace(/[*_`]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    const q = strip(m[1]);
+    const a = strip(m[2]);
+    if (q && a) pairs.push({ q, a });
+  }
+  return pairs.length >= 2 ? pairs : [];
+}
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -29,11 +54,21 @@ export async function generateMetadata({
   return {
     title: `${post.title} — EvalLens Newsroom`,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
+      url: `/blog/${post.slug}`,
+      publishedTime: post.date,
+      authors: [post.author],
       images: [{ url: post.cover }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [post.cover],
     },
   };
 }
@@ -50,16 +85,43 @@ export default async function ArticlePage({
   const related = await getRelatedPosts(slug);
 
   // Article JSON-LD — every field already lives on the post record.
+  const articleUrl = `${SITE_URL}/blog/${post.slug}`;
+  const coverAbs = post.cover
+    ? post.cover.startsWith("http")
+      ? post.cover
+      : `${SITE_URL}${post.cover}`
+    : undefined;
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
-    image: post.cover ? [post.cover] : undefined,
+    image: coverAbs ? [coverAbs] : undefined,
     datePublished: post.date,
+    url: articleUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     author: { "@type": "Person", name: post.author },
-    publisher: { "@type": "Organization", name: "EvalLens" },
+    publisher: {
+      "@type": "Organization",
+      name: "EvalLens",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/icons/icon-512.png` },
+    },
   };
+
+  const faq = extractFaq(post.body);
+  const faqJsonLd =
+    faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map(({ q, a }) => ({
+            "@type": "Question",
+            name: q,
+            acceptedAnswer: { "@type": "Answer", text: a },
+          })),
+        }
+      : null;
 
   return (
     <article className="article">
@@ -67,6 +129,12 @@ export default async function ArticlePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       <div className="wrap blog-wrap">
         <Link href="/blog" className="article-back">
           <span aria-hidden="true">←</span> Newsroom

@@ -9,9 +9,18 @@ import { SITE_URL } from "@/lib/site-url";
 export const metadata: Metadata = {
   // Absolute base for OG/Twitter images and canonical URLs on Vercel.
   metadataBase: new URL(SITE_URL),
-  title: "EvalLens — Lens Your Next Unicorn",
+  title: "EvalLens — AI reviews. Human decides.",
   description:
-    "Batch-review pitch decks, rank the strongest startups, and give every team a clear report.",
+    "A clearer lens for every pitch deck: structured reviews, evidence, and ranking support for human selection decisions.",
+  openGraph: {
+    siteName: "EvalLens",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@EvalLensio",
+  },
 };
 
 /** Organization JSON-LD — sitewide, rendered once in the root layout. */
@@ -22,6 +31,7 @@ const ORG_JSON_LD = {
   url: SITE_URL,
   logo: `${SITE_URL}/icons/icon-512.png`,
   sameAs: [
+    "https://www.linkedin.com/company/evallens",
     "https://x.com/EvalLensio",
     "https://www.instagram.com/evallens/",
     "https://t.me/evallens",
