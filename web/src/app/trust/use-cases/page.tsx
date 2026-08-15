@@ -60,19 +60,28 @@ const BATCH_STEPS = [
 /* ── §5 Workflow data — one segment, one live page ────────────
  * Rebuilt 2026-08-15: the Featured/Upcoming/Later shelves are gone —
  * every segment has its own page under /trust/use-cases/<slug>.
- * Hackathons and university programs are formats inside
- * pitch-competitions (student-IP governance lives there), not
- * separate segments. */
+ * Hackathons got their own page (2026-08-15); university programs
+ * stay a format inside pitch-competitions, where student-IP
+ * governance lives. */
 const SEGMENTS = [
   {
     tag: "Pitch competitions",
     headline: "Every entry gets a full read. Every rank carries its receipts.",
     moment: "Finals are close. Decks are still scattered. Judges are reading at different depth.",
     body: "An AI panel pre-reads the whole written round on your rubric; your screeners confirm with briefing packs; live rounds run exactly as designed.",
-    scopeLine: "Hackathon and university program screening run on this same workflow.",
+    scopeLine: "University program screening runs on this same workflow.",
     cta: "See the workflow",
     href: "/trust/use-cases/pitch-competitions",
     primary: true,
+  },
+  {
+    tag: "Hackathons",
+    headline: "Every project gets a full read before the expo floor opens.",
+    moment: "Submissions just closed. 175 projects, a two hour expo, and four minutes per team per judge.",
+    body: "An AI panel reads every submission on your rubric with execution and technical depth weight protected, and each judge walks the tables with a briefing instead of a blank scorecard.",
+    cta: "See the workflow",
+    href: "/trust/use-cases/hackathons",
+    primary: false,
   },
   {
     tag: "VC open calls",

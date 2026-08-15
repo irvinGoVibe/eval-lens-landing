@@ -25,6 +25,7 @@ const STATIC_ROUTES = [
   "/trust/use-cases/accelerators",
   "/trust/use-cases/corporate-innovation",
   "/trust/use-cases/grants-prizes",
+  "/trust/use-cases/hackathons",
   "/trust/use-cases/crowdfunding",
   "/trust/use-cases/tenders",
   "/trust/consistency-reliability",
