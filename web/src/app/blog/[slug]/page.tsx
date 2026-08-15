@@ -162,19 +162,31 @@ export default async function ArticlePage({
         </header>
       </div>
 
-      {/* Page-local: the cover used to render at its natural ratio (height:auto),
-          so wide 1.9:1 artwork sat inside the card with dead margins and a small
-          subject. Crop it to 16/9 with object-fit like the feed cards do, so the
-          hero image reads at the same scale everywhere. Shared globals untouched. */}
+      {/* Page-local: in-article :::gallery visuals used to break out to the full
+          viewport (width:100vw), which on wide screens rendered a huge slab far
+          bigger than the article's own cover. Cap them at the cover's width and
+          give them the same rounded frame, so every image on the page reads at
+          one scale. Shared globals untouched. */}
       <style>{`
-        .article-cover__img{ aspect-ratio:16/9; object-fit:cover; object-position:center; }
+        .article-gallery{
+          --gal-w: min(var(--maxw), calc(100vw - var(--gutter) * 2));
+          width: var(--gal-w);
+          margin-left: calc(50% - var(--gal-w) / 2);
+          margin-right: calc(50% - var(--gal-w) / 2);
+        }
+        .article-gallery__photo{
+          max-height: none;
+          border: 1px solid var(--border-2);
+          border-block: 1px solid var(--border-2);
+          border-radius: var(--radius-stage);
+        }
       `}</style>
       <div className="article-cover wrap blog-wrap" data-accent={post.accent}>
         <Image
           src={post.cover}
           alt={`${post.title} — article cover`}
           width={1180}
-          height={664}
+          height={620}
           className="article-cover__img"
           priority
           sizes="(max-width: 1240px) 100vw, 1180px"
