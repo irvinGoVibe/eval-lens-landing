@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Judge routing matrix</title>
+  <desc id="desc">Six judges by six dimensions grid with primary, secondary, and advisory routing.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="0" gradientTransform="rotate(118 .5 .5)">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset=".32" stop-color="#a99bff"/>
+      <stop offset=".68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <style>
+      .sf{font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+      .mono{font-family:Menlo,ui-monospace,monospace}
+      .eyebrow{font-size:12px;fill:#6e6e73;letter-spacing:.16em}
+      .code{font-size:12px;fill:#1d1d1f}
+      .dimension{font-size:13px;font-weight:600;fill:#1d1d1f}
+      .weight{font-size:11px;fill:#6e6e73}
+      .legend{font-size:13px;fill:#1d1d1f}
+      .note{font-size:11px;fill:#6e6e73;letter-spacing:.05em}
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="#fff"/>
+  <text x="120" y="86" class="mono eyebrow">JUDGE ROUTING</text>
+
+  <g text-anchor="middle">
+    <g transform="translate(460 0)"><text y="170" class="mono code">P1</text><text y="198" class="sf dimension">Problem</text><text y="222" class="mono weight">0.15</text></g>
+    <g transform="translate(620 0)"><text y="170" class="mono code">P2</text><text y="198" class="sf dimension">Solution</text><text y="222" class="mono weight">0.15</text></g>
+    <g transform="translate(780 0)"><text y="170" class="mono code">P3</text><text y="198" class="sf dimension">Market</text><text y="222" class="mono weight">0.20</text></g>
+    <g transform="translate(940 0)"><text y="170" class="mono code">P4</text><text y="198" class="sf dimension">Business model</text><text y="222" class="mono weight">0.15</text></g>
+    <g transform="translate(1100 0)"><text y="170" class="mono code">P5</text><text y="198" class="sf dimension">Team</text><text y="222" class="mono weight">0.20</text></g>
+    <g transform="translate(1260 0)"><text y="170" class="mono code">P6</text><text y="198" class="sf dimension">Feasibility</text><text y="222" class="mono weight">0.15</text></g>
+  </g>
+
+  <g stroke="#d2d2d7" stroke-width="1" fill="none">
+    <rect x="380" y="260" width="960" height="540"/>
+    <path d="M540 260V800M700 260V800M860 260V800M1020 260V800M1180 260V800"/>
+    <path d="M380 350H1340M380 440H1340M380 530H1340M380 620H1340M380 710H1340"/>
+  </g>
+
+  <g class="mono code" text-anchor="end">
+    <text x="330" y="315">J-P1</text><text x="330" y="405">J-P2</text>
+    <text x="330" y="495">J-P3</text><text x="330" y="585">J-P4</text>
+    <text x="330" y="675">J-P5</text><text x="330" y="765">J-P6</text>
+  </g>
+
+  <g>
+    <circle cx="460" cy="305" r="10" fill="url(#lens)"/><circle cx="620" cy="305" r="8" fill="url(#lens)" opacity=".45"/><circle cx="940" cy="305" r="7" fill="none" stroke="#6e6e73"/>
+    <circle cx="620" cy="395" r="10" fill="url(#lens)"/><circle cx="780" cy="395" r="8" fill="url(#lens)" opacity=".45"/><circle cx="1100" cy="395" r="7" fill="none" stroke="#6e6e73"/>
+    <circle cx="780" cy="485" r="10" fill="url(#lens)"/><circle cx="940" cy="485" r="8" fill="url(#lens)" opacity=".45"/><circle cx="1260" cy="485" r="7" fill="none" stroke="#6e6e73"/>
+    <circle cx="940" cy="575" r="10" fill="url(#lens)"/><circle cx="1100" cy="575" r="8" fill="url(#lens)" opacity=".45"/><circle cx="460" cy="575" r="7" fill="none" stroke="#6e6e73"/>
+    <circle cx="1100" cy="665" r="10" fill="url(#lens)"/><circle cx="1260" cy="665" r="8" fill="url(#lens)" opacity=".45"/><circle cx="620" cy="665" r="7" fill="none" stroke="#6e6e73"/>
+    <circle cx="1260" cy="755" r="10" fill="url(#lens)"/><circle cx="460" cy="755" r="8" fill="url(#lens)" opacity=".45"/><circle cx="780" cy="755" r="7" fill="none" stroke="#6e6e73"/>
+  </g>
+
+  <g transform="translate(380 872)">
+    <circle cx="10" cy="0" r="10" fill="url(#lens)"/><text x="34" y="5" class="sf legend">Primary</text>
+    <circle cx="190" cy="0" r="8" fill="url(#lens)" opacity=".45"/><text x="214" y="5" class="sf legend">Secondary</text>
+    <circle cx="405" cy="0" r="7" fill="none" stroke="#6e6e73"/><text x="429" y="5" class="sf legend">Advisory</text>
+    <text x="0" y="54" class="mono note">illustrative routing</text>
+  </g>
+</svg>

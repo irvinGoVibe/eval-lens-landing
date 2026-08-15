@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Copies versus independent judges</title>
+  <desc id="desc">Nine identical judges collapse into two effective votes, while six independent judges preserve visible disagreement.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="0" gradientTransform="rotate(118 .5 .5)">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset=".32" stop-color="#a99bff"/>
+      <stop offset=".68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#6c4cf1"/><stop offset="1" stop-color="#36e0c2"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#a99bff"/><stop offset="1" stop-color="#2ec5e8"/></linearGradient>
+    <linearGradient id="g3" x1="1" y1="0" x2="0" y2="1"><stop stop-color="#36e0c2"/><stop offset="1" stop-color="#6c4cf1"/></linearGradient>
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2ec5e8"/><stop offset=".55" stop-color="#a99bff"/><stop offset="1" stop-color="#6c4cf1"/></linearGradient>
+    <linearGradient id="g5" x1="1" y1="1" x2="0" y2="0"><stop stop-color="#36e0c2"/><stop offset=".6" stop-color="#2ec5e8"/><stop offset="1" stop-color="#a99bff"/></linearGradient>
+    <linearGradient id="g6" x1="0" y1="1" x2="1" y2="1"><stop stop-color="#6c4cf1"/><stop offset=".45" stop-color="#a99bff"/><stop offset="1" stop-color="#36e0c2"/></linearGradient>
+    <style>
+      .sf{font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+      .mono{font-family:Menlo,ui-monospace,monospace}
+      .eyebrow{font-size:12px;fill:#6e6e73;letter-spacing:.16em}
+      .eyebrow-accent{font-size:12px;fill:#6c4cf1;letter-spacing:.16em}
+      .caption-muted{font-size:13px;fill:#6e6e73}
+      .caption{font-size:13px;fill:#1d1d1f}
+      .vote{font-size:11px;fill:#6e6e73;letter-spacing:.12em}
+      .spread{font-size:11px;fill:#1d1d1f;letter-spacing:.10em}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#fff"/>
+  <line x1="800" y1="80" x2="800" y2="820" stroke="#d2d2d7" stroke-width="1"/>
+  <text x="120" y="92" class="mono eyebrow">NINE COPIES</text>
+  <text x="880" y="92" class="mono eyebrow-accent">SIX INDEPENDENT JUDGES</text>
+
+  <g fill="none" stroke="#d2d2d7" stroke-width="1" stroke-dasharray="5 7">
+    <line x1="248" y1="216" x2="248" y2="536"/>
+    <line x1="400" y1="216" x2="400" y2="536"/>
+    <line x1="552" y1="216" x2="552" y2="568"/>
+    <line x1="248" y1="536" x2="400" y2="536"/>
+    <line x1="320" y1="536" x2="320" y2="620"/>
+    <line x1="480" y1="568" x2="552" y2="568"/>
+    <line x1="480" y1="568" x2="480" y2="620"/>
+  </g>
+  <g fill="#1d1d1f">
+    <circle cx="248" cy="216" r="14"/><circle cx="400" cy="216" r="14"/><circle cx="552" cy="216" r="14"/>
+    <circle cx="248" cy="344" r="14"/><circle cx="400" cy="344" r="14"/><circle cx="552" cy="344" r="14"/>
+    <circle cx="248" cy="472" r="14"/><circle cx="400" cy="472" r="14"/><circle cx="552" cy="472" r="14"/>
+  </g>
+  <rect x="312" y="568" width="176" height="28" rx="4" fill="#fff"/>
+  <text x="400" y="584" text-anchor="middle" class="mono vote">2 EFFECTIVE VOTES</text>
+  <circle cx="320" cy="620" r="11" fill="#1d1d1f"/>
+  <circle cx="480" cy="620" r="11" fill="#1d1d1f"/>
+  <text x="320" y="656" text-anchor="middle" class="mono vote">VOTE</text>
+  <text x="480" y="656" text-anchor="middle" class="mono vote">VOTE</text>
+  <text x="120" y="760" class="sf caption-muted">correlated errors · two effective votes</text>
+
+  <g fill="none" stroke="#d2d2d7" stroke-width="1">
+    <line x1="936" y1="248" x2="936" y2="620"/>
+    <line x1="1032" y1="248" x2="1032" y2="620"/>
+    <line x1="1128" y1="248" x2="1128" y2="620"/>
+    <line x1="1224" y1="248" x2="1224" y2="620"/>
+    <line x1="1320" y1="248" x2="1320" y2="620"/>
+    <line x1="1416" y1="248" x2="1416" y2="620"/>
+    <line x1="896" y1="620" x2="1464" y2="620"/>
+  </g>
+  <g>
+    <circle cx="936" cy="248" r="16" fill="url(#g1)"/>
+    <circle cx="1032" cy="248" r="16" fill="url(#g2)"/>
+    <circle cx="1128" cy="248" r="16" fill="url(#g3)"/>
+    <circle cx="1224" cy="248" r="16" fill="url(#g4)"/>
+    <circle cx="1320" cy="248" r="16" fill="url(#g5)"/>
+    <circle cx="1416" cy="248" r="16" fill="url(#g6)"/>
+  </g>
+  <rect x="936" y="612" width="480" height="16" rx="8" fill="url(#lens)" opacity=".8"/>
+  <g fill="#1d1d1f">
+    <circle cx="936" cy="620" r="8"/><circle cx="1032" cy="620" r="8"/>
+    <circle cx="1128" cy="620" r="8"/><circle cx="1224" cy="620" r="8"/>
+    <circle cx="1320" cy="620" r="8"/><circle cx="1416" cy="620" r="8"/>
+  </g>
+  <rect x="1104" y="552" width="144" height="32" rx="8" fill="#fff" stroke="#d2d2d7"/>
+  <text x="1176" y="572" text-anchor="middle" class="mono spread">SPREAD ≥ 3.0</text>
+  <line x1="1176" y1="584" x2="1176" y2="612" stroke="#d2d2d7" stroke-width="1"/>
+  <text x="880" y="760" class="sf caption">independent reads · disagreement measured</text>
+</svg>

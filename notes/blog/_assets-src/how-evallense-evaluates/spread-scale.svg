@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">Disagreement is a map</title>
+  <desc id="desc">Two score scales compare clustered judge scores with a wide gradient-highlighted spread.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="0" gradientTransform="rotate(118 .5 .5)">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset=".32" stop-color="#a99bff"/>
+      <stop offset=".68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <style>
+      .sf{font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+      .mono{font-family:Menlo,ui-monospace,monospace}
+      .eyebrow{font-size:12px;fill:#6e6e73;letter-spacing:.16em}
+      .tick{font-size:11px;fill:#6e6e73}
+      .muted{font-size:16px;fill:#6e6e73}
+      .strong{font-size:17px;font-weight:600;fill:#1d1d1f}
+      .conflict{font-size:11px;fill:#6e6e73;letter-spacing:.14em}
+    </style>
+  </defs>
+  <rect width="1600" height="760" fill="#fff"/>
+  <text x="120" y="88" class="mono eyebrow">DISAGREEMENT IS A MAP</text>
+
+  <g stroke="#d2d2d7" stroke-width="1">
+    <path d="M250 250H1350M250 500H1350"/>
+    <path d="M250 242V258M470 242V258M690 242V258M910 242V258M1130 242V258M1350 242V258"/>
+    <path d="M250 492V508M470 492V508M690 492V508M910 492V508M1130 492V508M1350 492V508"/>
+  </g>
+  <g class="mono tick" text-anchor="middle">
+    <text x="250" y="282">0</text><text x="470" y="282">2</text><text x="690" y="282">4</text><text x="910" y="282">6</text><text x="1130" y="282">8</text><text x="1350" y="282">10</text>
+    <text x="250" y="532">0</text><text x="470" y="532">2</text><text x="690" y="532">4</text><text x="910" y="532">6</text><text x="1130" y="532">8</text><text x="1350" y="532">10</text>
+  </g>
+
+  <g fill="#1d1d1f">
+    <circle cx="966" cy="250" r="6"/><circle cx="988" cy="250" r="6"/>
+    <circle cx="1007" cy="250" r="6"/><circle cx="1029" cy="250" r="6"/>
+    <circle cx="1052" cy="250" r="6"/><circle cx="1072" cy="250" r="6"/>
+  </g>
+  <text x="250" y="350" class="sf muted">agreement — read the report</text>
+
+  <rect x="690" y="496" width="550" height="8" rx="4" fill="url(#lens)" opacity=".8"/>
+  <g fill="#1d1d1f">
+    <circle cx="690" cy="500" r="6"/><circle cx="778" cy="500" r="6"/>
+    <circle cx="866" cy="500" r="6"/><circle cx="1042" cy="500" r="6"/>
+    <circle cx="1130" cy="500" r="6"/><circle cx="1240" cy="500" r="6"/>
+  </g>
+  <text x="965" y="466" text-anchor="middle" class="mono conflict">CONFLICT</text>
+  <text x="250" y="615" class="sf strong">spread ≥ 3.0 — your attention goes here</text>
+</svg>

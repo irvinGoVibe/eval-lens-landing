@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">The EvalLens evaluation pipeline</title>
+  <desc id="desc">Seven-step pipeline from Decoder to Leaderboard, with Human Review highlighted.</desc>
+  <defs>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="0" gradientTransform="rotate(118 .5 .5)">
+      <stop offset="0" stop-color="#6c4cf1"/>
+      <stop offset=".32" stop-color="#a99bff"/>
+      <stop offset=".68" stop-color="#2ec5e8"/>
+      <stop offset="1" stop-color="#36e0c2"/>
+    </linearGradient>
+    <radialGradient id="halo">
+      <stop offset="0" stop-color="#a99bff" stop-opacity=".25"/>
+      <stop offset=".62" stop-color="#2ec5e8" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#36e0c2" stop-opacity="0"/>
+    </radialGradient>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8Z" fill="#d2d2d7"/>
+    </marker>
+    <style>
+      .sf{font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+      .mono{font-family:Menlo,ui-monospace,monospace}
+      .label{font-size:14px;font-weight:600;fill:#1d1d1f}
+      .role{font-size:11px;fill:#6e6e73;letter-spacing:.03em}
+      .eyebrow{font-size:12px;fill:#6e6e73;letter-spacing:.16em}
+    </style>
+  </defs>
+  <rect width="1600" height="760" fill="#fff"/>
+  <text x="120" y="100" class="mono eyebrow">THE PIPELINE</text>
+  <line x1="180" y1="354" x2="1430" y2="354" stroke="#d2d2d7" stroke-width="1"/>
+
+  <g fill="none" stroke="#d2d2d7" stroke-width="1" marker-end="url(#arrow)">
+    <path d="M189 354H359"/>
+    <path d="M421 354H590"/>
+    <path d="M609 354H800"/>
+    <path d="M819 354H1000"/>
+    <path d="M1019 354H1200"/>
+    <path d="M1239 354H1420"/>
+  </g>
+
+  <g text-anchor="middle">
+    <circle cx="180" cy="354" r="9" fill="#1d1d1f"/>
+    <text x="180" y="404" class="sf label">Decoder</text>
+
+    <g fill="#1d1d1f">
+      <circle cx="390" cy="340" r="5"/><circle cx="402" cy="347" r="5"/>
+      <circle cx="402" cy="361" r="5"/><circle cx="390" cy="368" r="5"/>
+      <circle cx="378" cy="361" r="5"/><circle cx="378" cy="347" r="5"/>
+    </g>
+    <text x="390" y="404" class="sf label">6 AI judges</text>
+    <text x="390" y="428" class="mono role">independent · parallel</text>
+
+    <circle cx="600" cy="354" r="9" fill="#1d1d1f"/>
+    <text x="600" y="404" class="sf label">Summarizer</text>
+
+    <circle cx="810" cy="354" r="9" fill="#1d1d1f"/>
+    <text x="810" y="404" class="sf label">Scoring</text>
+    <text x="810" y="428" class="mono role">advisory</text>
+
+    <circle cx="1010" cy="354" r="9" fill="#1d1d1f"/>
+    <text x="1010" y="404" class="sf label">Report</text>
+
+    <circle cx="1220" cy="354" r="62" fill="url(#halo)"/>
+    <circle cx="1220" cy="354" r="12" fill="url(#lens)"/>
+    <text x="1220" y="404" class="sf label">Human Review</text>
+    <text x="1220" y="428" class="mono role">final</text>
+
+    <circle cx="1430" cy="354" r="9" fill="#1d1d1f"/>
+    <text x="1430" y="404" class="sf label">Leaderboard</text>
+  </g>
+</svg>
