@@ -82,12 +82,12 @@ const PLANS = [
     name: "Micro",
     listPrice: "$200",
     price: "$99",
-    foundingNote: "Founding price · first event · until Aug 31",
+    foundingNote: "Founding price · first event · until Aug 31, 2026",
     cadence: "15 submissions",
     validity: "180 days · 1 event",
     message: "Try EvalLens on a small pitch session.",
     bestFor: "Best for: a small, one-off event.",
-    cta: "Start Micro",
+    cta: "Book Micro setup",
     href: "/company/contact",
     recommended: false,
     bullets: [
@@ -100,12 +100,12 @@ const PLANS = [
     name: "Pitch Competition",
     listPrice: "$500",
     price: "$400",
-    foundingNote: "Founding price · until Aug 31",
+    foundingNote: "Founding price · until Aug 31, 2026",
     cadence: "40 submissions",
     validity: "180 days · 1 event",
     message: "Run one full event end-to-end.",
     bestFor: "Best for: a single full event.",
-    cta: "Start Pitch",
+    cta: "Book Pitch setup",
     href: "/company/contact",
     recommended: false,
     bullets: [
@@ -119,12 +119,12 @@ const PLANS = [
     name: "Cohort",
     listPrice: "$1,900",
     price: "$1,520",
-    foundingNote: "Founding price · until Aug 31",
+    foundingNote: "Founding price · until Aug 31, 2026",
     cadence: "150 submissions",
     validity: "180 days · up to 5 projects",
     message: "For a full cohort selection or competition.",
     bestFor: "Best for: a cohort or multi-project selection.",
-    cta: "Choose Cohort",
+    cta: "Book Cohort setup",
     href: "/company/contact",
     recommended: true,
     bullets: [
@@ -515,6 +515,19 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
+            <p
+              className="pr-proof"
+              data-reveal="up"
+              style={{
+                marginTop: "22px",
+                textAlign: "center",
+                fontSize: "14px",
+                color: "var(--muted)",
+              }}
+            >
+              1,000+ evaluation runs behind the methodology. AI prepares the
+              analysis. You make the final call.
+            </p>
             {/* Funds-band — a separate, wider sales tier (NOT a 4th self-serve
               * card). Public copy carries NO numbers: Open Call / Annual /
               * Enterprise figures are sales-only, sized on the call. */}
@@ -804,9 +817,9 @@ export default function PricingPage() {
           eyebrow="Get started"
           title="Ready to evaluate your next"
           titleAccent="cohort?"
-          sub="Book a demo with your own decks, or get started with your first event."
+          sub="Book a demo with your own decks. AI prepares the analysis. You decide."
           primary={{ label: "Book a demo", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "Get started", href: "/company/contact" }}
+          secondary={{ label: "Email us", href: "mailto:hello@evallens.io" }}
           videoSrc="/assets/cta/neo.mp4"
           videoPoster="/assets/cta/neo-poster.webp"
         />

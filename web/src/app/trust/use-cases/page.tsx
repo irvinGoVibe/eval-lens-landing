@@ -471,8 +471,8 @@ export default function UseCasesPage() {
                 data-reveal="up"
                 style={{ "--reveal-delay": "250ms" } as CSSProperties}
               >
+                <Button href="#sample-output">See sample output</Button>
                 <Button href="https://calendly.com/evallens/30min" variant="glass">Book a workflow call</Button>
-                <Button href="#sample-output" variant="glass">See sample output</Button>
               </div>
             </div>
           </div>
@@ -486,9 +486,9 @@ export default function UseCasesPage() {
           theme="dark"
           title="Want this for"
           titleAccent="your batch?"
-          sub="You just saw a real report. Send us one batch and we will produce the same from your own decks."
+          sub="You just saw a real report. Send us one batch and we will produce the same from your own decks. First run free through Aug 31, 2026, up to 10 decks."
           primary={{ label: "Book a workflow call", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "See it live", href: "https://calendly.com/evallens/30min" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
           videoSrc="/assets/cta/cube-1.mp4"
           videoPoster="/assets/cta/cube-1-poster.webp"
           auroraVariant="violet"
@@ -609,7 +609,7 @@ export default function UseCasesPage() {
           title="Bring your next batch to"
           titleAccent="EvalLens"
           sub="Tell us what kind of program you run. We will map your workflow, show how the review would work, and walk through a pilot batch."
-          primary={{ label: "Book a Demo", href: "https://calendly.com/evallens/30min" }}
+          primary={{ label: "Book a workflow call", href: "https://calendly.com/evallens/30min" }}
           secondary={{ label: "Choose your use case", href: "#choose-workflow" }}
           auroraVariant="ocean"
         />
