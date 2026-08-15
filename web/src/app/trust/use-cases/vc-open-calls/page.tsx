@@ -12,6 +12,7 @@ import {
   Eyebrow,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
+import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /trust/use-cases/vc-open-calls
@@ -26,7 +27,7 @@ import type { SectionNav } from "@/lib/site-nav";
 export const metadata: Metadata = {
   title: "EvalLens for VC Open Calls — Your Open Call, Actually Read",
   description:
-    "Every submitted deck read in full against your investment dimensions: flags, founder questions, and a quote behind every finding. The aide, never the arbiter — partners decide.",
+    "Every submitted deck read in full against your investment dimensions — flags, founder questions, a quote behind every finding. The aide, never the arbiter.",
 };
 
 const HEADER_NAV: SectionNav = {
@@ -165,6 +166,21 @@ export default function VcOpenCallsPage() {
       <PageHeader nav={HEADER_NAV} theme="dark" />
       <style>{SEG_STYLES}</style>
       <main className="seg section-lab ds">
+      {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: FAQ.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a },
+            })),
+          }),
+        }}
+      />
         {/* §1 Hero — id must not be "hero" (globals body:has(#hero) canvas rule) */}
         <StatementHero
           id="hero-vc"
@@ -311,6 +327,15 @@ export default function VcOpenCallsPage() {
         <div className="tr-gradient-bridge" data-from="light" data-to="ink" aria-hidden="true" />
 
         {/* §7 FAQ */}
+        <JsonLd data={faqJsonLd(FAQ)} />
+        <JsonLd
+          data={breadcrumbJsonLd([
+            ["Trust", "/trust"],
+            ["Use cases", "/trust/use-cases"],
+            ["VC open calls", "/trust/use-cases/vc-open-calls"],
+          ])}
+        />
+
         <Faq
           id="faq"
           eyebrow="FAQ"

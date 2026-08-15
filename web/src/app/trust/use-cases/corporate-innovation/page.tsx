@@ -12,6 +12,7 @@ import {
   Eyebrow,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
+import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /trust/use-cases/corporate-innovation
@@ -24,9 +25,9 @@ import type { SectionNav } from "@/lib/site-nav";
  * ──────────────────────────────────────────────────────────────────────── */
 
 export const metadata: Metadata = {
-  title: "EvalLens for Corporate Innovation — From Challenge to a Signed PoC",
+  title: "EvalLens for Corporate Innovation — Challenge to Signed PoC",
   description:
-    "Every challenge submission read end to end against your criteria, evidence-linked one-pagers for your jury, and a selection memo you can defend upstairs. Your jury decides.",
+    "Every challenge submission read end to end, evidence-linked one-pagers for your jury, and a selection memo you can defend upstairs. Your jury decides.",
 };
 
 const HEADER_NAV: SectionNav = {
@@ -182,6 +183,21 @@ export default function CorporateInnovationPage() {
       <PageHeader nav={HEADER_NAV} theme="dark" />
       <style>{SEG_STYLES}</style>
       <main className="seg section-lab ds">
+      {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: FAQ.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a },
+            })),
+          }),
+        }}
+      />
         {/* §1 Hero — id must not be "hero" (globals body:has(#hero) canvas rule) */}
         <StatementHero
           id="hero-corporate"
@@ -332,6 +348,15 @@ export default function CorporateInnovationPage() {
         <div className="tr-gradient-bridge" data-from="light" data-to="ink" aria-hidden="true" />
 
         {/* §7 FAQ */}
+        <JsonLd data={faqJsonLd(FAQ)} />
+        <JsonLd
+          data={breadcrumbJsonLd([
+            ["Trust", "/trust"],
+            ["Use cases", "/trust/use-cases"],
+            ["Corporate innovation", "/trust/use-cases/corporate-innovation"],
+          ])}
+        />
+
         <Faq
           id="faq"
           eyebrow="FAQ"

@@ -12,6 +12,7 @@ import {
   Eyebrow,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
+import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /use-cases/pitch-competitions
@@ -28,9 +29,9 @@ import type { SectionNav } from "@/lib/site-nav";
  * ──────────────────────────────────────────────────────────────────────── */
 
 export const metadata: Metadata = {
-  title: "EvalLens for Pitch Competitions — A Judging Layer With Receipts",
+  title: "EvalLens for Pitch Competitions — Judging With Receipts",
   description:
-    "An AI panel pre-reads every written-round entry on your rubric, your screeners confirm with briefing packs, and the final ranking stays human. Shadow-pilot it on your next round.",
+    "An AI panel pre-reads the written round on your rubric, screeners confirm with briefing packs, the final ranking stays human. Shadow-pilot your next round.",
 };
 
 const HEADER_NAV: SectionNav = {
@@ -188,6 +189,21 @@ export default function PitchCompetitionsPage() {
       <PageHeader nav={HEADER_NAV} theme="dark" />
       <style>{PC_STYLES}</style>
       <main className="pc section-lab ds">
+      {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: FAQ.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a },
+            })),
+          }),
+        }}
+      />
         {/* §1 Hero */}
         {/* id must NOT be "hero": globals.css `body:has(#hero)` is the homepage
             canvas rule that forces the whole body to ink, which turns bare
@@ -366,6 +382,15 @@ export default function PitchCompetitionsPage() {
         <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
 
         {/* §8 FAQ */}
+        <JsonLd data={faqJsonLd(FAQ)} />
+        <JsonLd
+          data={breadcrumbJsonLd([
+            ["Trust", "/trust"],
+            ["Use cases", "/trust/use-cases"],
+            ["Pitch competitions", "/trust/use-cases/pitch-competitions"],
+          ])}
+        />
+
         <Faq
           id="faq"
           eyebrow="FAQ"
