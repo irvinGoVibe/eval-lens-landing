@@ -126,7 +126,10 @@ export default function RootLayout({
         />
         {children}
         <PartnerAccessModal />
-        <Analytics />
+        {/* Vercel injects /_vercel/insights/script.js only on its own infra;
+            anywhere else (CI `next start`, self-host) the tag 404s on every
+            page. VERCEL=1 is set on all Vercel builds. */}
+        {process.env.VERCEL ? <Analytics /> : null}
         <ConversionEvents />
         {process.env.NODE_ENV !== "production" && <DevInspector />}
       </body>
