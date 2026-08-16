@@ -154,6 +154,10 @@ const FAQ = [
     a: "Those rules bar reviewers from uploading confidential applications to consumer tools — a rule we agree with. An organizer-governed closed perimeter with logged processing, no training on applicant data, and template applicant disclosure is a different legal object. We'll walk your counsel through it and leave the memo.",
   },
   {
+    q: "Applications here are 40-page proposals with budget annexes — often not in English.",
+    a: "The panel reads the proposal and its document annexes in full, with page references, in the language of submission — and scores against the same anchors, so proposals land on one scale whatever language they arrived in. Budget spreadsheets and structured data are configured during setup so they're read the way your reviewers read them. Nothing is skipped for format: where material is missing or unreadable, the gap is flagged, not guessed.",
+  },
+  {
     q: "What do applicants get told?",
     a: "Whatever your policy requires — and we make it easy: template disclosure language for the call documents, plus a plain-language description of how AI assists (and never replaces) the human panel.",
   },

@@ -152,6 +152,10 @@ const FAQ = [
     a: "Tracks, criteria and weights are configured per competition; each track scores against its own rubric, and the leaderboard respects your weighting.",
   },
   {
+    q: "Our entries are a video pitch plus five slides. Can it read that?",
+    a: "The written materials — deck, application answers, team notes — get the full read under identical rules, in whatever language students submit, so every entry lands on one scale. Video pitches stay with your judges on the day: the panel's written read briefs each judge on what to verify from the stage, so the live round starts prepared instead of cold.",
+  },
+  {
     q: "Can a team appeal or see their own record?",
     a: "Two things are product defaults: a team can request its own record, and no entry is eliminated without a named human sign-off. Whether you run open appeals stays your policy — the per-entry evidence, scores and judge decisions make both a five-minute conversation instead of an archaeology dig.",
   },

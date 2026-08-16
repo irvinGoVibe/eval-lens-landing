@@ -139,6 +139,10 @@ const FAQ = [
     a: "It does — extraction and pre-filling, and it's good workflow. What your platform's AI doesn't do is hand your screening committee an evidence-linked, page-referenced brief per company on your criteria, with disagreements flagged. Keep the pipeline; add the reading layer on top.",
   },
   {
+    q: "Deal flow here means five deck formats and a founder video per company.",
+    a: "That's the batch we expect. Decks, one-pagers and written answers are read in full, in the language they arrive in, against your chapter's criteria — on one standard underneath, so briefs stay comparable across the pipeline. Founder videos and external links are configured during setup rather than skimmed, and the per-deal coverage log shows the screening committee what was read.",
+  },
+  {
     q: "What if the AI invents something about a deal?",
     a: "Quotes are verified against the deck before a finding stands — no quote, no finding. Thin evidence moves conclusions down, never up, and gaps are flagged as questions for the committee rather than papered over.",
   },
