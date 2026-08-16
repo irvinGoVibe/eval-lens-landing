@@ -210,7 +210,7 @@ export default function AngelNetworksPage() {
           titleTrail="."
           sub="EvalLens reads the whole monthly batch and hands your screening committee a one-page, evidence-linked brief per company — findings, red flags, quotes with page references, and the questions worth asking in a ten-minute pitch. Your Dealum or Gust pipeline stays exactly where it is."
           ctas={[
-            { label: "Try one monthly batch", href: "https://calendly.com/evallens/30min" },
+            { label: "Try one monthly batch", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=angel-networks" },
             { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
@@ -334,7 +334,7 @@ export default function AngelNetworksPage() {
               batch to start — this month&rsquo;s deals, run alongside your pre-screen.
               If the briefs earn their seat at the screening meeting, they stay. Failed
               runs never billed. <a href="/pricing">See pricing</a> or{" "}
-              <a href="https://calendly.com/evallens/30min">book a call</a>.
+              <a href="https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=angel-networks">book a call</a>.
             </p>
           </div>
         </section>
@@ -366,8 +366,8 @@ export default function AngelNetworksPage() {
           title="This month's batch, in"
           titleAccent="parallel."
           sub="30 minutes with your screening chair or executive director: we map your criteria and run one month of deals side by side with your pre-screen. Nothing about your process changes. The first run is free through August 31, for batches up to 10 decks."
-          primary={{ label: "Set up the batch", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
+          primary={{ label: "Set up the batch", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=angel-networks" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
           auroraVariant="violet"
         />
       </main>

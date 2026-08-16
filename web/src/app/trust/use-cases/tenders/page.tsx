@@ -28,7 +28,7 @@ import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
  * ──────────────────────────────────────────────────────────────────────── */
 
 export const metadata: Metadata = {
-  title: "EvalLens for Tenders & RFPs — Challenge-Proof Awards",
+  title: "EvalLens for Tenders & RFPs — A Defensible Evaluation Record",
   description:
     "Every bid read in full against your published criteria, with an award record you export instead of reconstruct. Your evaluation committee decides.",
 };
@@ -52,8 +52,8 @@ const AWARD_STATS = [
   },
   {
     value: "52%",
-    label: "of protests end in some form of relief — corrective action or sustain. Half the time, the file didn't hold",
-    src: "GAO effectiveness rate",
+    label: "of GAO protests end in some form of relief — mostly voluntary corrective action; 16% are sustained outright. Either way, it's the evaluation record that gets re-examined",
+    src: "GAO Annual Report FY2024",
   },
   {
     value: "4–8 h",
@@ -86,7 +86,7 @@ const STEPS = [
   {
     num: "02",
     title: "Bids land complete",
-    body: "From your e-procurement portal or your inbox — batch in, files out. Missing documents and unmet mandatory requirements are flagged against your checklist; your team handles exceptions, not the pile. You get: the compliance screen done before evaluation starts.",
+    body: "A batch export from your e-procurement portal — files in, evaluations out. Missing documents and unmet mandatory requirements are flagged against your checklist; your team reviews every flag and decides every exception. You get: a completeness pre-screen your committee confirms before evaluation starts.",
   },
   {
     num: "03",
@@ -106,7 +106,7 @@ const STEPS = [
   {
     num: "06",
     title: "Debriefs from the same file",
-    body: "Every unsuccessful bidder gets a substantive debrief drafted from the record — strengths, weaknesses against the published criteria — reviewed by your team before anything is sent. The letter that answers the question before it becomes a protest. You get: fewer challenges, faster closure.",
+    body: "Every unsuccessful bidder gets a substantive debrief drafted from the record — strengths, weaknesses against the published criteria — reviewed by your team before anything is sent. The letter that answers the question before it becomes a protest. You get: every debrief drafted from the same file it will be checked against.",
   },
 ];
 
@@ -153,7 +153,7 @@ const FAQ = [
   },
   {
     q: "Who else runs this?",
-    a: "We're onboarding a founding cohort of evaluation teams — which is why the entry point is a parallel pilot on one live or recently closed tender: your committee evaluates as usual, EvalLens reads the same bids, and you compare hours, coverage and where the reads agreed before anything counts.",
+    a: "We're onboarding a founding cohort of evaluation teams — which is why the entry point is a parallel pilot on one recently closed tender: your committee evaluates as usual, EvalLens reads the same bids, and you compare hours, coverage and where the reads agreed before anything counts.",
   },
 ];
 
@@ -205,12 +205,12 @@ export default function TendersPage() {
           id="hero-tenders"
           surface="ink"
           eyebrow="For tender & RFP evaluation teams"
-          titleLead="Every bid read against the spec. Every award that survives the "
-          titleAccent="challenge"
+          titleLead="Every bid read against the spec. Every score backed by the "
+          titleAccent="record"
           titleTrail="."
           sub="EvalLens reads every bid end to end against the criteria you published — technical approach, methodology, team, delivery — and hands your evaluation committee per-criterion findings with quotes and page references. Your evaluators score and award; the record exists from day one."
           ctas={[
-            { label: "Scope the parallel pilot", href: "https://calendly.com/evallens/30min" },
+            { label: "Scope the parallel pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=tenders" },
             { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
@@ -310,6 +310,13 @@ export default function TendersPage() {
                 ))}
               </div>
             </div>
+            <p className="seg-note" data-reveal="up">
+              The sub-processor and model-provider list is public at{" "}
+              <a href="/subprocessors">/subprocessors</a>; the security
+              architecture is documented under{" "}
+              <a href="/trust/security-privacy">Security &amp; privacy</a>. Both
+              ship in the security pack before any document moves.
+            </p>
           </div>
         </section>
 
@@ -324,7 +331,7 @@ export default function TendersPage() {
               <span className="grad-word">tender.</span>
             </h2>
             <p className="sub">
-              One live or recently closed tender, run side by side with your committee —
+              One recently closed tender, run side by side with your committee —
               success metrics agreed before we start, security review first.
             </p>
           </div>
@@ -342,7 +349,7 @@ export default function TendersPage() {
               <strong>Fixed-fee pilot, procurement-friendly.</strong> PO and invoice
               accepted; MSA and DPA templates ready for your process.{" "}
               <a href="/pricing">See pricing</a> or{" "}
-              <a href="https://calendly.com/evallens/30min">book a call</a>.
+              <a href="https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=tenders">book a call</a>.
             </p>
           </div>
         </section>
@@ -373,9 +380,9 @@ export default function TendersPage() {
           eyebrow="Next step"
           title="One tender, evaluated in"
           titleAccent="parallel."
-          sub="30 minutes with whoever owns the evaluation: we map your criteria, agree the metrics, and run one tender side by side with your committee — before anything counts. The first run is free through August 31, for batches up to 10 decks."
-          primary={{ label: "Scope the parallel pilot", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
+          sub="30 minutes with whoever owns the evaluation: we map your criteria, agree the metrics, and run one recently closed tender side by side with your committee — before anything counts. The first run is free through August 31, for batches of up to 10 bids."
+          primary={{ label: "Scope the parallel pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=tenders" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
           auroraVariant="violet"
         />
       </main>

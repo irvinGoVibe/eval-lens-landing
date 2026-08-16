@@ -208,7 +208,7 @@ export default function CorporateInnovationPage() {
           titleTrail="."
           sub="EvalLens reads every challenge submission end to end against your criteria, hands your jury evidence-linked one-pagers, and produces a selection memo you can defend upstairs — every pick traced to a quote and a page. Your jury decides; you hold proof of process."
           ctas={[
-            { label: "Scope the pilot", href: "https://calendly.com/evallens/30min" },
+            { label: "Scope the pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=corporate-innovation" },
             { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
@@ -340,7 +340,7 @@ export default function CorporateInnovationPage() {
               current screening, sized so most teams start it under a single PO — and an
               Enterprise track with SSO, SLA, your approved models, your servers and your
               retention policy. <a href="/pricing">See pricing</a> or{" "}
-              <a href="https://calendly.com/evallens/30min">book a call</a>.
+              <a href="https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=corporate-innovation">book a call</a>.
             </p>
           </div>
         </section>
@@ -372,8 +372,8 @@ export default function CorporateInnovationPage() {
           title="Pilot it on your next"
           titleAccent="challenge."
           sub="30 minutes with you: we map the challenge statement to criteria, agree the pilot metrics, and hand your InfoSec the security pack the same day. The first run is free through August 31, for batches up to 10 decks."
-          primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
+          primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=corporate-innovation" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
           auroraVariant="violet"
         />
       </main>

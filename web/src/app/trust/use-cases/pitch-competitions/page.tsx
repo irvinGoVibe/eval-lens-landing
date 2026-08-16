@@ -221,7 +221,7 @@ export default function PitchCompetitionsPage() {
           titleTrail="."
           sub="EvalLens is the judging layer under your existing competition: an AI panel pre-reads the whole written round on your rubric, your screening committee confirms with briefing packs instead of blank PDF stacks, and your live judges walk into semis briefed. The final call stays exactly where it belongs."
           ctas={[
-            { label: "Run a shadow pilot", href: "https://calendly.com/evallens/30min" },
+            { label: "Run a shadow pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=pitch-competitions" },
             { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
@@ -377,7 +377,7 @@ export default function PitchCompetitionsPage() {
               season, or a small pitch night. PO and invoice accepted; education
               discount for university programs.{" "}
               <a href="/pricing">See pricing</a> or{" "}
-              <a href="https://calendly.com/evallens/30min">book a call</a>.
+              <a href="https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=pitch-competitions">book a call</a>.
             </p>
           </div>
         </section>
@@ -410,8 +410,8 @@ export default function PitchCompetitionsPage() {
           title="Shadow-pilot your next screening"
           titleAccent="round."
           sub="Applications flow as usual; the AI panel pre-reads in parallel with your screeners; you compare before anything counts. One event, fixed price, PO and invoice welcome. The first run is free through August 31, for batches up to 10 decks."
-          primary={{ label: "Set up the shadow pilot", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
+          primary={{ label: "Set up the shadow pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=pitch-competitions" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
           auroraVariant="violet"
         />
       </main>

@@ -31,7 +31,7 @@ import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
 export const metadata: Metadata = {
   title: "Hackathon Judging Software | EvalLens",
   description:
-    "An AI panel reads every hackathon submission on your rubric and briefs your judges before the expo opens. Execution weighted scores, and your judges decide.",
+    "An AI panel reads every hackathon submission on your rubric and briefs your judges before the expo opens. Evidence-linked scores, and your judges decide.",
   alternates: { canonical: "/trust/use-cases/hackathons" },
 };
 
@@ -79,7 +79,7 @@ const EVIDENCE_CHAIN = [
     label: "Score",
     value: "8.1",
     big: true,
-    note: "on Execution and Demo. H1 carries 0.30 of the default weight",
+    note: "on Execution and Demo, the heaviest dimension in the default rubric at 0.30",
   },
   {
     label: "Finding",
@@ -92,7 +92,7 @@ const EVIDENCE_CHAIN = [
   {
     label: "Disagreement",
     value:
-      "Judges split on Technical Depth. The report flags the spread instead of averaging it away.",
+      "AI reviewers split on Technical Depth. The report flags the spread instead of averaging it away.",
   },
   {
     label: "Human score",
@@ -116,12 +116,12 @@ const STEPS = [
   {
     num: "03",
     title: "The hackathon panel does the first read",
-    body: "Five reviewer roles, independent AI reads rather than people, score every submission on execution, technical depth, problem impact, innovation, UX clarity and delivery readiness. Execution and technical depth are weight protected, so a polished story cannot outrank a working build. You get: the whole field pre-read in hours.",
+    body: "Five reviewer roles, independent AI reads rather than people, score every submission on execution, technical depth, problem impact, innovation, UX clarity and delivery readiness. Execution and technical depth carry the heaviest default weights, and every score is pinned to quotes from the submission itself, so judges walk in knowing which claims still need proof at the table. You get: the whole field pre-read in hours.",
   },
   {
     num: "04",
     title: "Every judge walks in with a briefing",
-    body: "Per team: scores with the evidence behind them, quotes tagged to the slide they came from, what to verify at the table, and three questions worth the four minutes. You get: table visits that test the build instead of the pitch.",
+    body: "Per team: scores with the evidence behind them, quotes tagged to the slide they came from, what to verify at the table, and the questions worth the visit. You get: table visits that test the build instead of the pitch.",
   },
   {
     num: "05",
@@ -140,7 +140,7 @@ const PANEL_CARDS = [
   {
     icon: "🧪",
     title: "Five reviewers, execution weighted",
-    body: "Innovation, Technical Execution, Business Value, Pitch Quality and Feasibility read every submission independently, across six dimensions. Execution and Demo carries 0.30 of the default weight and Technical Depth 0.20, and both are protected. Weights are yours to set before the run and lock when it starts.",
+    body: "Five independent AI reads per submission, each from a different reviewer angle, scored across six dimensions: execution, technical depth, problem impact, innovation, UX clarity and delivery readiness. Execution and Demo carries 0.30 of the default weight and Technical Depth 0.20. Weights are yours to set before the run and lock when it starts.",
   },
   {
     icon: "📥",
@@ -155,7 +155,7 @@ const PANEL_CARDS = [
   {
     icon: "⏱️",
     title: "The gap the rubric never admits",
-    body: "A standard hackathon rubric puts most of the weight on technical execution and innovation, then asks a judge to grade both from a 3 minute video and a table visit. The first pass closes that gap before your judges ever have to.",
+    body: "A standard hackathon rubric puts most of the weight on technical execution and innovation, then asks a judge to grade both from a 3 minute video and a table visit. The first pass narrows that gap with a full read of the written record, and tells your judges exactly what still needs verifying live.",
   },
 ];
 
@@ -163,7 +163,7 @@ const PANEL_CARDS = [
 const KIT_ROWS = [
   {
     b: "The opening ceremony sentence",
-    span: "“Every submission gets a full read under identical rules, and humans decide every placement.”",
+    span: "“An AI panel gives every submission a full read under identical rules, and humans decide every placement.”",
   },
   {
     b: "The rules page paragraph",
@@ -189,7 +189,7 @@ const DATA_IP = [
   {
     icon: "🏫",
     title: "The event owns the record",
-    body: "Reports, scores and the decision log belong to your program. Retention and deletion follow your policy, and a DPA is available. Student data handling is structured to support your institution's obligations.",
+    body: "Reports, scores and the decision log belong to your program. Retention and deletion follow your policy; student-data handling structured to support your FERPA obligations, DPA available.",
   },
   {
     icon: "🧾",
@@ -277,7 +277,7 @@ export default function HackathonsPage() {
           titleLead="Every project gets a full read before the "
           titleAccent="expo floor"
           titleTrail=" opens."
-          sub="EvalLens is hackathon judging software that runs the first pass. An AI panel reads every submission against your rubric, scores execution and technical depth before anyone walks the tables, and hands each judge a briefing instead of a blank scorecard. Your judges still pick the winner."
+          sub="EvalLens is hackathon judging software that runs the first pass. An AI panel reads every submission against your rubric, scores the whole field with evidence quotes before anyone walks the tables, and hands each judge a briefing instead of a blank scorecard. Your judges still pick the winner."
           ctas={[
             { label: "See a sample report", href: "/trust/use-cases#sample-output" },
             { label: "Send us your batch", href: "/company/contact#batch", variant: "glass" },
@@ -285,7 +285,7 @@ export default function HackathonsPage() {
           media={{
             ratio: "16/9",
             label: "Image · judge briefing pack · 16:9",
-            hint: "Hackathon briefing pack UI: a team card with H1 to H6 scores, an evidence quote tagged to a slide, a judge disagreement flag, and three questions for the table visit. Light Apple-style dashboard.",
+            hint: "Hackathon briefing pack UI: a team card with per-dimension scores, an evidence quote tagged to a slide, a reviewer disagreement flag, and questions for the table visit. Light Apple-style dashboard.",
             ariaLabel:
               "Hackathon briefing pack: team card with execution and technical depth scores, evidence quotes, and questions for the table visit",
           }}
@@ -356,8 +356,8 @@ export default function HackathonsPage() {
           <div className="wrap hk-narrow" data-reveal="up">
             <Eyebrow>Under the hood</Eyebrow>
             <h2 id="hk-panel-h2">
-              A judge built for what teams{" "}
-              <span className="grad-word">actually shipped.</span>
+              A first pass built for what teams{" "}
+              <span className="grad-word">actually submit.</span>
             </h2>
           </div>
           <div className="wrap">

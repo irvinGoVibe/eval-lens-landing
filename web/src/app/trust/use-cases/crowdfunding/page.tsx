@@ -211,7 +211,7 @@ export default function CrowdfundingPage() {
           titleTrail="."
           sub="EvalLens reads every campaign application end to end — deck, business plan, financial narrative — and produces an evidence-linked screening file per project owner. Your analysts verify, your Funding Committee decides, and the record exists from day one instead of being reconstructed later."
           ctas={[
-            { label: "Scope the pilot", href: "https://calendly.com/evallens/30min" },
+            { label: "Scope the pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=crowdfunding" },
             { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
@@ -339,7 +339,7 @@ export default function CrowdfundingPage() {
               inbound, in EUR, invoiced.</strong> Applications are read in the language
               they arrive in, Nordic and Southern-European included, with scores
               comparable across languages. <a href="/pricing">See pricing</a> or{" "}
-              <a href="https://calendly.com/evallens/30min">book a call</a>.
+              <a href="https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=crowdfunding">book a call</a>.
             </p>
           </div>
         </section>
@@ -371,8 +371,8 @@ export default function CrowdfundingPage() {
           title="Thirty applications. Side by"
           titleAccent="side."
           sub="Start small: through August 31 a retro-run on up to 10 past applications is free. If the file holds up, the next step is the fixed-fee pilot — one month of inbound, around thirty applications, run in parallel with your own screening under a signed DPA."
-          primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
+          primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=crowdfunding" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
           auroraVariant="violet"
         />
       </main>

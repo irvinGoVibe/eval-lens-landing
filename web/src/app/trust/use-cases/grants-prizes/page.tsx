@@ -225,7 +225,7 @@ export default function GrantsPrizesPage() {
           titleTrail="."
           sub="EvalLens is a structured first-read layer for your existing review process: it reads every proposal in full, scores it against your rubric anchor by anchor — a quote and a page reference behind every score — and hands your panel a pre-read brief. Never a decision."
           ctas={[
-            { label: "Scope the pilot", href: "https://calendly.com/evallens/30min" },
+            { label: "Scope the pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=grants-prizes" },
             { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
@@ -404,7 +404,7 @@ export default function GrantsPrizesPage() {
               baseline, and the completeness of the decision record. Fixed-fee parallel
               pilot, 4–6 weeks, security review first; then a program licence sized on
               the pilot&rsquo;s own numbers. <a href="/pricing">See pricing</a> or{" "}
-              <a href="https://calendly.com/evallens/30min">book a call</a>.
+              <a href="https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=grants-prizes">book a call</a>.
             </p>
           </div>
         </section>
@@ -436,8 +436,8 @@ export default function GrantsPrizesPage() {
           title="Pick one round. Measure us against your"
           titleAccent="panel."
           sub="30 minutes with you: we map the rubric, agree the pilot metrics, and schedule your security review first. Bring the questionnaire. The first run is free through August 31, for batches up to 10 decks."
-          primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
+          primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=grants-prizes" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
           auroraVariant="violet"
         />
       </main>

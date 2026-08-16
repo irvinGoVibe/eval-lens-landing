@@ -213,7 +213,7 @@ export default function AcceleratorsPage() {
           titleTrail="."
           sub="EvalLens gives your screening committee a first pass it can trust: every application read in full and scored against your rubric with page-level evidence. Your team reads reports instead of raw applications — and humans make every call."
           ctas={[
-            { label: "Book the free retro-test", href: "https://calendly.com/evallens/30min" },
+            { label: "Book the free retro-test", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=accelerators" },
             { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
           ]}
           media={{
@@ -368,7 +368,7 @@ export default function AcceleratorsPage() {
               <strong>Priced per intake, not per seat — cheaper than the skim.</strong>{" "}
               Failed runs are never billed; education discount for university-affiliated
               programs. <a href="/pricing">See pricing</a> or{" "}
-              <a href="https://calendly.com/evallens/30min">book a call</a>.
+              <a href="https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=accelerators">book a call</a>.
             </p>
           </div>
         </section>
@@ -400,8 +400,8 @@ export default function AcceleratorsPage() {
           title="Run the retro-test on your last"
           titleAccent="cohort."
           sub="30 minutes with you: we map your rubric, pick the batch, and you see agreement-and-misses on decisions you already made. 48 hours later, you'll know. Free through August 31, up to 20 applications from a past cohort."
-          primary={{ label: "Book the free retro-test", href: "https://calendly.com/evallens/30min" }}
-          secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
+          primary={{ label: "Book the free retro-test", href: "https://calendly.com/evallens/30min?utm_source=evallens_site&utm_medium=use_cases&utm_campaign=accelerators" }}
+          secondary={{ label: "Send your batch", href: "/company/contact#batch" }}
           auroraVariant="violet"
         />
       </main>
