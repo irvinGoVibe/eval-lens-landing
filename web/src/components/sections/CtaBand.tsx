@@ -7,6 +7,8 @@ export type CtaLink = {
   href: string;
   /** Force a button variant. Defaults are theme-aware (see below). */
   variant?: "primary" | "ghost" | "glass" | "dark" | "gradient";
+  /** Open the shared partner-call gate before following the link. */
+  partnerAccess?: boolean;
 };
 
 /**
@@ -130,11 +132,20 @@ export function CtaBand({
         </h2>
         {sub && <p className="cta-band__sub">{sub}</p>}
         <div className="cta-band__actions">
-          <Button variant={primaryVariant} href={primary.href} arrow>
+          <Button
+            variant={primaryVariant}
+            href={primary.href}
+            arrow
+            data-partner-access={primary.partnerAccess || undefined}
+          >
             {primary.label}
           </Button>
           {secondary && (
-            <Button variant={secondaryVariant} href={secondary.href}>
+            <Button
+              variant={secondaryVariant}
+              href={secondary.href}
+              data-partner-access={secondary.partnerAccess || undefined}
+            >
               {secondary.label}
             </Button>
           )}

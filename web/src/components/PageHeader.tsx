@@ -26,6 +26,7 @@ export function PageHeader({
   nav,
   theme = "light",
   cta = LAUNCH_CTA,
+  className,
 }: {
   /** Section + per-page anchor links. `nav.links` are in-page anchors for the
    *  page being rendered. Omit `nav` for bare pages (sitemap, 404): brand +
@@ -33,8 +34,10 @@ export function PageHeader({
   nav?: SectionNav;
   theme?: "light" | "dark";
   cta?: NavLink;
+  /** Optional page-local layout modifier; shared header styling stays unchanged. */
+  className?: string;
 }) {
-  const className = ["page-header", theme === "dark" && "page-header--dark"]
+  const headerClassName = ["page-header", theme === "dark" && "page-header--dark", className]
     .filter(Boolean)
     .join(" ");
   const glassStyle = {
@@ -43,7 +46,7 @@ export function PageHeader({
   };
 
   return (
-    <header className={className}>
+    <header className={headerClassName}>
       <div
         className="page-header__glass"
         aria-hidden="true"

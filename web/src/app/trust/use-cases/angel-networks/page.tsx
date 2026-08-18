@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
@@ -7,10 +6,12 @@ import { ScrollFX } from "@/components/ScrollFX";
 import { Button } from "@/components/ui/Button";
 import {
   StatBand,
+  PinnedSteps,
   Numbered,
   Faq,
   CtaBand,
   Eyebrow,
+  Cinema,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
 import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
@@ -65,14 +66,14 @@ const VOLUNTEER_STATS = [
 ];
 
 /* The spiral loop */
-const SPIRAL = [
-  "Slow screening",
-  "strong founders skip the group",
-  "weaker deals at the monthly meeting",
-  "members see mediocre dealflow",
-  "renewals dip · best members drift to syndicates",
-  "fewer volunteers",
-  "screening gets slower",
+const SPIRAL_STEPS = [
+  { num: "01", label: "Slow screening", desc: "" },
+  { num: "02", label: "Strong founders skip the group", desc: "" },
+  { num: "03", label: "Weaker deals at the monthly meeting", desc: "" },
+  { num: "04", label: "Members see mediocre dealflow", desc: "" },
+  { num: "05", label: "Renewals dip · best members drift to syndicates", desc: "" },
+  { num: "06", label: "Fewer volunteers", desc: "" },
+  { num: "07", label: "Screening gets slower", desc: "" },
 ];
 
 /* How it works — seven steps */
@@ -114,13 +115,33 @@ const STEPS = [
   },
 ];
 
-/* The brief, unpacked — chain */
-const EVIDENCE_CHAIN = [
-  { label: "Quote", value: "“…$41k MRR across 11 accounts…” · page 7" },
-  { label: "Finding", value: "Revenue is recurring and concentrated: top-3 customers are 68% of MRR." },
-  { label: "Red flag", value: "Customer concentration not addressed anywhere in the deck." },
-  { label: "DD step", value: "Request cohort revenue breakdown — pre-listed for the deep-dive agenda." },
-  { label: "Score — optional context", value: "7.2", big: true, note: "your criteria, your weights, advisory only. Members judge; this never ranks a deal for them." },
+/* What one screening brief gives the committee */
+const BRIEF_DELIVERABLES = [
+  {
+    label: "Evidence",
+    title: "The exact claim, linked to its source.",
+    example: "“…$41k MRR across 11 accounts…” · page 7",
+  },
+  {
+    label: "Finding",
+    title: "What the evidence means against your criteria.",
+    example: "Revenue is recurring and concentrated: top-3 customers are 68% of MRR.",
+  },
+  {
+    label: "Risk",
+    title: "What the deck does not prove.",
+    example: "Customer concentration is not addressed anywhere in the deck.",
+  },
+  {
+    label: "Next step",
+    title: "What the committee should ask or request.",
+    example: "Request a cohort revenue breakdown for the deep-dive agenda.",
+  },
+  {
+    label: "Optional score",
+    title: "Context using your criteria and weights.",
+    example: "Advisory only. Members judge; the score never ranks a deal for them.",
+  },
 ];
 
 /* Engagement cards */
@@ -201,11 +222,12 @@ const OTHER_USE_CASES = [
 ];
 
 const SEG_STYLES = `
+.page-header--angels-wide .page-header__inner{width:min(100vw,1920px);max-width:none;padding-inline:clamp(28px,1.9vw,36px)}
 .seg .seg-narrow{max-width:760px}
 .seg .seg-title{font-size:clamp(33px,5vw,56px);line-height:1.06;letter-spacing:-.025em;text-wrap:balance}
 .seg .seg-title .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-.seg-hero-exact{position:relative;height:clamp(760px,56vw,1075px);padding:0;background:#f7f7f5;overflow:hidden}
+.seg-hero-exact{position:relative;height:clamp(760px,52vw,1000px);padding:0;background:#f7f7f5;overflow:hidden}
 .seg-hero-exact__stage{position:relative;width:min(100vw,1920px);height:100%;margin:0 auto}
 .seg-hero-exact__copy{position:absolute;z-index:2;top:14.5%;left:5.73%;width:58%}
 .seg-hero-exact__copy .eyebrow{margin-bottom:clamp(28px,2.3vw,44px)}
@@ -213,7 +235,7 @@ const SEG_STYLES = `
 .seg-hero-exact__title .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent}
 .seg-hero-exact__sub{width:66%;margin:clamp(26px,2vw,38px) 0 0;font-size:clamp(15px,1.1vw,21px);line-height:1.55;color:var(--muted)}
 .seg-hero-exact__actions{display:flex;align-items:center;gap:18px;margin-top:clamp(28px,2.8vw,42px)}
-.seg-hero-exact__media{position:absolute;z-index:1;top:29.5%;right:-4%;width:78%;height:auto;max-width:none}
+.seg-hero-exact__media{position:absolute;z-index:1;top:27%;right:min(-5vw,calc((1920px - 100vw)/2 - 5vw));width:clamp(1050px,72vw,2300px);height:auto;max-width:none}
 
 .seg .ds-statband__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .seg .ds-statband__grid li{text-align:left;padding:clamp(22px,3vw,30px);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 18px 42px -30px rgba(60,40,160,.24)}
@@ -221,35 +243,34 @@ const SEG_STYLES = `
 .seg .ds-statband__grid span{font-family:var(--font-ui);font-size:14px;line-height:1.5;letter-spacing:0;text-transform:none}
 .seg .ds-statband__grid .ds-statband__src{font-family:var(--font-mono);font-size:10px;line-height:1.35;letter-spacing:.06em;text-transform:uppercase;margin-top:auto;padding-top:8px}
 
-.seg-spiral-layout{display:grid;grid-template-columns:minmax(0,.82fr) minmax(480px,1.18fr);gap:clamp(48px,8vw,110px);align-items:start}
-.seg-spiral-copy{padding-top:10px}
-.seg-spiral-note{margin-top:clamp(26px,4vw,42px)!important;max-width:52ch}
-.seg-spiral-flow{list-style:none;margin:0;padding:18px 26px 18px 18px;border:1px solid var(--border);border-radius:24px;background:rgba(255,255,255,.78);box-shadow:0 22px 70px rgba(24,20,44,.07);overflow:hidden}
-.seg-spiral-flow li{position:relative;display:grid;grid-template-columns:54px minmax(0,1fr);align-items:center;width:calc(100% - 54px);min-height:66px;padding:13px 18px;border-bottom:1px solid var(--border);color:var(--fg);font-size:clamp(15px,1.15vw,17px);line-height:1.35}
-.seg-spiral-flow li:nth-child(2),.seg-spiral-flow li:nth-child(6){transform:translateX(18px)}
-.seg-spiral-flow li:nth-child(3),.seg-spiral-flow li:nth-child(5){transform:translateX(36px)}
-.seg-spiral-flow li:nth-child(4){transform:translateX(54px)}
-.seg-spiral-flow li:last-child{border-bottom:0}
-.seg-spiral-flow li::before{content:attr(data-step);font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--violet)}
-.seg-spiral-flow li:not(:last-child)::after{content:'↓';position:absolute;left:28px;bottom:-11px;z-index:1;display:grid;width:18px;height:18px;place-items:center;border-radius:50%;background:#fff;color:var(--lavender);font-size:11px}
-.seg-spiral-flow li:last-child::after{content:'↺';position:absolute;right:12px;color:var(--violet);font-size:22px}
+.seg #spiral .lab-pv__grid{grid-template-columns:minmax(0,.98fr) minmax(520px,1.02fr)}
+.seg #spiral.lab-process{min-height:0;padding-top:clamp(72px,8vw,112px);padding-bottom:clamp(76px,8vw,118px)}
+.seg #spiral .lab-process__stage{position:relative;top:auto;min-height:0;overflow:visible}
+.seg #spiral .lab-process__copy{text-align:left}
+.seg #spiral .lab-process__title{font-size:clamp(44px,4.8vw,68px);line-height:1.02}
+.seg #spiral .lab-process__title .lab-process__line > span{transform:none}
+.seg #spiral .lab-process__copy .sub{max-width:54ch;margin-inline:0;font-size:clamp(15px,1.25vw,18px);line-height:1.62}
+.seg #spiral .lab-window{max-width:620px;border-radius:24px;box-shadow:0 28px 74px rgba(35,25,92,.12)}
+.seg #spiral .lab-window__title{font-size:0}
+.seg #spiral .lab-window__title::after{content:'Angel network · screening loop';font-size:11px}
+.seg #spiral .lab-window__row{grid-template-columns:54px minmax(0,1fr);min-height:64px;padding-inline:16px}
+.seg #spiral .lab-window__status{display:none}
+.seg #spiral .lab-window__rlabel{text-transform:none;letter-spacing:0;font-family:var(--font-ui);font-size:clamp(14px,1.3vw,17px);line-height:1.35}
+.seg #how-it-works .ds-numbered__head .title{max-width:24ch;white-space:pre-line}
 
-.seg-brief-sheet{margin-top:clamp(34px,5vw,58px);border:1px solid var(--border);border-radius:26px;background:#fff;box-shadow:0 24px 76px rgba(24,20,44,.08);overflow:hidden}
-.seg-brief-top{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(250px,.55fr)}
-.seg-brief-main{padding:clamp(28px,4vw,48px)}
-.seg-brief-field+.seg-brief-field{margin-top:clamp(30px,4vw,48px);padding-top:clamp(26px,3vw,36px);border-top:1px solid var(--border)}
-.seg-brief-label{display:block;margin-bottom:14px;font-family:var(--font-mono);font-size:11px;line-height:1.4;letter-spacing:.12em;text-transform:uppercase;color:var(--violet)}
-.seg-brief-quote{font-size:clamp(18px,2vw,24px);line-height:1.45;color:var(--fg)}
-.seg-brief-finding{max-width:26ch;font-size:clamp(24px,3vw,38px);line-height:1.12;letter-spacing:-.035em;color:var(--fg)}
-.seg-brief-score{display:flex;flex-direction:column;justify-content:space-between;padding:clamp(28px,4vw,48px);border-left:1px solid var(--border);background:color-mix(in oklab,var(--violet) 5%,#fff)}
-.seg-brief-score strong{display:block;margin:18px 0 22px;font-family:var(--font-mono);font-size:clamp(58px,7vw,86px);font-weight:500;line-height:.9;letter-spacing:-.08em;color:var(--violet)}
-.seg-brief-score p{margin:0;font-size:13px;line-height:1.55;color:var(--muted)}
-.seg-brief-bottom{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border)}
-.seg-brief-action{padding:clamp(24px,3.5vw,38px) clamp(28px,4vw,48px);font-size:clamp(16px,1.5vw,19px);line-height:1.5;color:var(--fg)}
-.seg-brief-action+.seg-brief-action{border-left:1px solid var(--border)}
-.seg-brief-action--risk{background:color-mix(in oklab,var(--amber) 5%,#fff)}
-.seg-brief-action--risk .seg-brief-label{color:var(--amber-ink)}
-.seg-brief-action--step{background:color-mix(in oklab,var(--aqua) 4%,#fff)}
+.seg-brief-head{max-width:1120px}
+.seg-brief-head .seg-title{max-width:none;font-size:clamp(48px,5.6vw,78px);line-height:.98;letter-spacing:-.05em}
+.seg-brief-title-line{display:block;white-space:nowrap}
+.seg-brief-head .sub{max-width:62ch;margin:clamp(24px,3vw,34px) 0 0;font-size:clamp(17px,1.55vw,21px);line-height:1.5}
+.seg-brief-list{list-style:none;margin:clamp(48px,7vw,84px) 0 0;padding:0;border-top:1px solid var(--border)}
+.seg-brief-row{display:grid;grid-template-columns:64px minmax(120px,.42fr) minmax(240px,.9fr) minmax(280px,1.1fr);gap:clamp(20px,3vw,48px);align-items:start;padding:clamp(26px,3.6vw,42px) 0;border-bottom:1px solid var(--border)}
+.seg-brief-row__num,.seg-brief-row__label{font-family:var(--font-mono);font-size:10px;line-height:1.45;letter-spacing:.12em;text-transform:uppercase;color:var(--violet)}
+.seg-brief-row h3{max-width:25ch;margin:0;font-size:clamp(20px,2vw,27px);font-weight:580;line-height:1.16;letter-spacing:-.03em;text-wrap:pretty}
+.seg-brief-row p{max-width:46ch;margin:0;font-size:clamp(15px,1.35vw,18px);line-height:1.55;color:var(--muted);text-wrap:pretty}
+.seg-brief-rule{display:grid;grid-template-columns:64px minmax(120px,.42fr) minmax(0,2fr);gap:clamp(20px,3vw,48px);align-items:start;padding:clamp(26px,3.6vw,42px) 0 0}
+.seg-brief-rule__mark{font-family:var(--font-mono);font-size:22px;line-height:1;color:var(--violet)}
+.seg-brief-rule strong{font-size:clamp(18px,1.7vw,23px);line-height:1.25;letter-spacing:-.02em}
+.seg-brief-rule p{max-width:62ch;margin:0;font-size:15px;line-height:1.6;color:var(--muted)}
 
 .seg-engage{list-style:none;margin:clamp(38px,5vw,62px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .seg-engage li{display:flex;min-width:0;min-height:278px;flex-direction:column;padding:clamp(26px,3.2vw,40px)}
@@ -257,9 +278,14 @@ const SEG_STYLES = `
 .seg-engage .num{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--violet)}
 .seg-engage h3{margin:clamp(44px,6vw,72px) 0 18px;max-width:14ch;font-size:clamp(22px,2.35vw,30px);line-height:1.08;letter-spacing:-.035em}
 .seg-engage p{margin:auto 0 0;max-width:38ch;font-size:14px;line-height:1.6;color:var(--muted)}
-.seg-note{margin-top:clamp(28px,4vw,42px);font-size:15px;line-height:1.6;color:var(--muted);max-width:78ch}
-.seg-note strong{color:var(--fg);font-weight:650}
-.seg #spiral,.seg #brief,.seg .seg-engagement{padding-top:clamp(72px,8vw,112px);padding-bottom:clamp(76px,8vw,118px)}
+.seg-engagement__head{margin-left:auto;margin-right:auto}
+.seg-engagement__head .seg-title{max-width:16ch}
+.seg-engagement__head .sub{max-width:66ch}
+.seg-note{position:relative;max-width:none;margin-top:clamp(28px,4vw,42px);padding:clamp(24px,3vw,32px) clamp(26px,3.4vw,40px);border:1px solid color-mix(in oklab,var(--violet) 14%,var(--border));border-left:4px solid var(--violet);border-radius:0 18px 18px 0;background:color-mix(in oklab,var(--violet) 5%,#fff);font-size:clamp(16px,1.45vw,19px);line-height:1.55;color:var(--fg)}
+.seg-note strong{display:block;margin-bottom:8px;font-size:clamp(19px,1.8vw,24px);line-height:1.2;letter-spacing:-.025em;color:var(--fg);font-weight:650}
+.seg-note a{color:var(--violet);text-decoration-color:color-mix(in oklab,var(--violet) 36%,transparent);text-underline-offset:3px}
+.seg-hard-divider{height:1px;background:var(--border)}
+.seg #brief,.seg .seg-engagement{padding-top:clamp(72px,8vw,112px);padding-bottom:clamp(76px,8vw,118px)}
 
 .seg-related{padding-top:clamp(76px,9vw,124px);padding-bottom:clamp(80px,10vw,140px)}
 .seg-related__head{max-width:760px;margin-bottom:clamp(34px,5vw,60px)}
@@ -282,16 +308,19 @@ const SEG_STYLES = `
   .seg-hero-exact__title{max-width:13ch;font-size:clamp(46px,8.5vw,68px);white-space:normal;text-wrap:balance}
   .seg-hero-exact__sub{width:min(100%,48ch);font-size:16px}
   .seg-hero-exact__media{position:relative;top:auto;right:auto;width:138%;margin:-2% -19% -8%}
-  .seg-spiral-layout{grid-template-columns:1fr;gap:42px}
-  .seg-spiral-copy{max-width:700px;padding-top:0}
+  .seg #spiral .lab-pv__grid{grid-template-columns:1fr}
+  .seg-brief-title-line{white-space:normal}
+  .seg-brief-row{grid-template-columns:48px minmax(110px,.38fr) minmax(0,1fr)}
+  .seg-brief-row p{grid-column:3}
+  .seg-brief-rule{grid-template-columns:48px minmax(110px,.38fr) minmax(0,1fr)}
   .seg-related__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:720px){
-  .seg-brief-top{grid-template-columns:1fr}
-  .seg-brief-score{border-top:1px solid var(--border);border-left:0}
-  .seg-brief-score strong{margin-bottom:16px}
-  .seg-brief-bottom{grid-template-columns:1fr}
-  .seg-brief-action+.seg-brief-action{border-top:1px solid var(--border);border-left:0}
+  .seg #how-it-works .ds-numbered__head .title{white-space:normal}
+  .seg-brief-row{grid-template-columns:42px 1fr;gap:12px 18px}
+  .seg-brief-row h3,.seg-brief-row p{grid-column:2}
+  .seg-brief-rule{grid-template-columns:42px 1fr;gap:12px 18px}
+  .seg-brief-rule p{grid-column:2}
   .seg-engage{grid-template-columns:1fr}
   .seg-engage li{min-height:0;padding:28px 0}
   .seg-engage li+li{border-top:1px solid var(--border);border-left:0}
@@ -307,9 +336,6 @@ const SEG_STYLES = `
   .seg-hero-exact__actions .btn{width:100%;min-height:44px;flex:none}
   .seg-hero-exact__media{width:126%;margin:8px -13% -3%}
   .seg .ds-statband__grid{grid-template-columns:1fr}
-  .seg-spiral-flow{padding:10px 14px}
-  .seg-spiral-flow li,.seg-spiral-flow li:nth-child(n){width:100%;min-height:62px;padding:12px 8px;transform:none}
-  .seg-spiral-flow li:last-child::after{right:4px}
   .seg-related__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .seg-related__card{min-height:176px;padding:16px}
   .seg-related__tag{font-size:9px;letter-spacing:.09em}
@@ -321,7 +347,7 @@ const SEG_STYLES = `
 export default function AngelNetworksPage() {
   return (
     <>
-      <PageHeader nav={HEADER_NAV} theme="light" />
+      <PageHeader nav={HEADER_NAV} theme="light" className="page-header--angels-wide" />
       <style>{SEG_STYLES}</style>
       <main className="seg section-lab ds">
       {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
@@ -355,7 +381,7 @@ export default function AngelNetworksPage() {
                 Dealum or Gust pipeline stays exactly where it is.
               </p>
               <div className="seg-hero-exact__actions">
-                <Button href="https://calendly.com/evallens/30min" variant="gradient">
+                <Button href="/#demo" variant="gradient" data-partner-access="true">
                   Try one monthly batch
                 </Button>
                 <Button href="/trust/use-cases#sample-output" variant="ghost">
@@ -365,11 +391,11 @@ export default function AngelNetworksPage() {
             </div>
             <Image
               className="seg-hero-exact__media"
-              src="/assets/use-cases/angel-networks/evidence-brief-stack.png"
+              src="/assets/use-cases/angel-networks/evidence-brief-stack-v2.webp"
               alt="A stack of evidence-linked screening briefs prepared for an angel network"
-              width={1536}
-              height={1024}
-              sizes="(max-width: 900px) 120vw, 78vw"
+              width={3072}
+              height={2048}
+              sizes="(max-width: 900px) 120vw, 72vw"
               priority
             />
           </div>
@@ -384,37 +410,35 @@ export default function AngelNetworksPage() {
           stats={VOLUNTEER_STATS}
         />
 
-        {/* §3 The spiral (page-local, the page's key block) */}
-        <section id="spiral" className="band light" aria-labelledby="seg-spiral-h2">
-          <div className="wrap seg-spiral-layout">
-            <div className="seg-spiral-copy" data-reveal="up">
-              <Eyebrow>What&rsquo;s actually at stake</Eyebrow>
-              <h2 id="seg-spiral-h2" className="title seg-title">
-                This is how good groups quietly <span className="grad-word">hollow out.</span>
-              </h2>
-              <p className="sub">The spiral starts — or stops — at screening speed.</p>
-              <p className="sub seg-spiral-note">
-                Founder guides now openly advise skipping angel groups over process length.
-                Groups that answer founders in days — with evidence, not silence — keep the
-                deal quality that keeps the members. The brief is how the meeting stays
-                worth the dues.
-              </p>
-            </div>
-            <ol className="seg-spiral-flow" data-reveal="up" aria-label="The screening death spiral">
-              {SPIRAL.map((step, i) => (
-                <li key={step} data-step={String(i + 1).padStart(2, "0")}>{step}</li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
+        {/* §3 The spiral — PinnedSteps v2 keeps the complete context on the left
+            while the sequential screening-loop rows occupy the right-hand window. */}
+        <PinnedSteps
+          id="spiral"
+          surface="light"
+          version={2}
+          ariaLabel="The angel-group screening spiral"
+          eyebrow="What’s actually at stake"
+          title={{
+            line1: "This is how good groups",
+            line2: "quietly",
+            line2Accent: "hollow out.",
+          }}
+          sub="The spiral starts — or stops — at screening speed. Founder guides now openly advise skipping angel groups over process length. Groups that answer founders in days — with evidence, not silence — keep the deal quality that keeps the members. The brief is how the meeting stays worth the dues."
+          steps={SPIRAL_STEPS}
+          media={{
+            ratio: "4/3",
+            label: "Screening loop",
+            hint: "Seven connected stages in the angel-group screening spiral",
+            ariaLabel: "Seven connected stages in the angel-group screening spiral",
+          }}
+        />
         {/* §4 How it works (ink → ink, no bridge) */}
         <Numbered
           id="how-it-works"
           surface="soft"
           version={1}
           eyebrow="How it works"
-          title="Seven steps from application to investment screening"
+          title={"Seven steps from application\nto investment screening"}
           titleAccent="Seven steps"
           sub="Every application becomes a screening-ready, evidence-linked brief. Every decision stays with your members."
           items={STEPS}
@@ -422,54 +446,48 @@ export default function AngelNetworksPage() {
 
         {/* §5 The brief, unpacked */}
         <section id="brief" className="band light" aria-labelledby="seg-brief-h2">
-          <div className="wrap seg-narrow" data-reveal="up">
-            <Eyebrow>The brief, unpacked</Eyebrow>
-            <h2 id="seg-brief-h2" className="title seg-title">
-              What your screening chair holds on <span className="grad-word">Tuesday.</span>
-            </h2>
-          </div>
           <div className="wrap">
-            <article className="seg-brief-sheet" data-reveal="up" aria-label="Example one-page screening brief">
-              <div className="seg-brief-top">
-                <div className="seg-brief-main">
-                  <div className="seg-brief-field">
-                    <span className="seg-brief-label">{EVIDENCE_CHAIN[0].label}</span>
-                    <div className="seg-brief-quote">{EVIDENCE_CHAIN[0].value}</div>
-                  </div>
-                  <div className="seg-brief-field">
-                    <span className="seg-brief-label">{EVIDENCE_CHAIN[1].label}</span>
-                    <div className="seg-brief-finding">{EVIDENCE_CHAIN[1].value}</div>
-                  </div>
-                </div>
-                <aside className="seg-brief-score">
-                  <div>
-                    <span className="seg-brief-label">{EVIDENCE_CHAIN[4].label}</span>
-                    <strong>{EVIDENCE_CHAIN[4].value}</strong>
-                  </div>
-                  <p>{EVIDENCE_CHAIN[4].note}</p>
-                </aside>
+            <header className="seg-brief-head" data-reveal="up">
+              <div>
+                <Eyebrow>The screening brief</Eyebrow>
+                <h2 id="seg-brief-h2" className="title seg-title">
+                  <span className="seg-brief-title-line">What your committee gets</span>
+                  <span className="seg-brief-title-line grad-word">before screening night.</span>
+                </h2>
               </div>
-              <div className="seg-brief-bottom">
-                <div className="seg-brief-action seg-brief-action--risk">
-                  <span className="seg-brief-label">{EVIDENCE_CHAIN[2].label}</span>
-                  {EVIDENCE_CHAIN[2].value}
-                </div>
-                <div className="seg-brief-action seg-brief-action--step">
-                  <span className="seg-brief-label">{EVIDENCE_CHAIN[3].label}</span>
-                  {EVIDENCE_CHAIN[3].value}
-                </div>
-              </div>
-            </article>
-            <p className="sub seg-narrow" style={{ marginTop: "28px" } as CSSProperties}>
-              Quotes are verified against the deck before a finding stands. No quote, no
-              finding.
-            </p>
+              <p className="sub">
+                One page per company: the evidence, what it means, what is missing,
+                and what your committee should ask next.
+              </p>
+            </header>
+
+            <ol className="seg-brief-list" aria-label="Contents of a screening brief">
+              {BRIEF_DELIVERABLES.map((item, index) => (
+                <li className="seg-brief-row" key={item.label} data-reveal="up">
+                  <span className="seg-brief-row__num" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="seg-brief-row__label">{item.label}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.example}</p>
+                </li>
+              ))}
+            </ol>
+
+            <aside className="seg-brief-rule" data-reveal="up">
+              <span className="seg-brief-rule__mark" aria-hidden="true">↳</span>
+              <strong>No quote, no finding.</strong>
+              <p>
+                Every conclusion must trace back to the deck. If the evidence is thin,
+                the brief turns the gap into a question for the committee — never a stronger claim.
+              </p>
+            </aside>
           </div>
         </section>
 
         {/* §6 The engagement question (page-local) */}
         <section className="band soft seg-engagement" aria-labelledby="seg-engage-h2">
-          <div className="wrap seg-narrow" data-reveal="up">
+          <div className="wrap seg-engagement__head" data-reveal="up">
             <Eyebrow>The engagement question, head-on</Eyebrow>
             <h2 id="seg-engage-h2" className="title seg-title">
               &ldquo;If the machine reads, what do my members <span className="grad-word">do?</span>&rdquo;
@@ -501,7 +519,21 @@ export default function AngelNetworksPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
+        <div className="seg-hard-divider" aria-hidden="true" />
+
+        <Cinema
+          id="questions-cinema"
+          surface="ink"
+          headline="Want more? Ask the harder questions."
+          lines={["Want more?", "Ask the harder questions."]}
+          mobileLines={["Want more?", "Ask the harder", "questions."]}
+          sub="See how EvalLens fits your existing pipeline, keeps every finding traceable to the deck, protects founder data, and leaves every investment decision with your members."
+          media={{
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
+          }}
+          maskId="angel-network-questions"
+        />
 
         {/* §7 FAQ */}
         <JsonLd data={faqJsonLd(FAQ)} />
@@ -546,13 +578,15 @@ export default function AngelNetworksPage() {
         {/* §9 Final CTA */}
         <CtaBand
           theme="dark"
+          bleed
+          videoSrc="/assets/cta/cube-1.mp4"
+          videoPoster="/assets/cta/cube-1-poster.webp"
           eyebrow="Next step"
           title="This month's batch, in"
           titleAccent="parallel."
           sub="30 minutes with your screening chair or executive director: we map your criteria and run one month of deals side by side with your pre-screen. Nothing about your process changes. The first run is free through August 31, for batches up to 10 decks."
-          primary={{ label: "Set up the batch", href: "https://calendly.com/evallens/30min" }}
+          primary={{ label: "Set up the batch", href: "/#demo", partnerAccess: true }}
           secondary={{ label: "hello@evallens.io", href: "mailto:hello@evallens.io" }}
-          auroraVariant="violet"
         />
       </main>
       <Footer variant="dark" />
