@@ -4,15 +4,17 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import {
-  StatementHero,
   StatBand,
   Numbered,
   Faq,
   CtaBand,
   Eyebrow,
+  Cinema,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
 import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
+import { HeroAccent, UseCaseDetailHero } from "../UseCaseDetailHero";
+import { UseCaseRelated } from "../UseCaseRelated";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /trust/use-cases/tenders
@@ -156,9 +158,9 @@ const FAQ = [
 const SEG_STYLES = `
 .seg main .seg-narrow{max-width:720px}
 .seg-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:clamp(28px,4vw,44px)}
-.seg-chip{background:var(--panel-2,rgba(255,255,255,.04));border:1px solid var(--border-on-dark,rgba(255,255,255,.14));border-radius:16px;padding:18px}
-.seg-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender,#a99bff);margin-bottom:8px}
-.seg-chip .cv{font-size:14.5px;line-height:1.5;color:var(--body-on-dark,rgba(255,255,255,.82))}
+.seg-chip{background:rgba(255,255,255,.72);border:1px solid color-mix(in oklab,var(--violet,#6c4cf1) 14%,var(--border,rgba(20,16,45,.12)));border-radius:16px;padding:18px;box-shadow:0 24px 58px -46px rgba(52,37,126,.42)}
+.seg-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet,#6c4cf1);margin-bottom:8px}
+.seg-chip .cv{font-size:14.5px;line-height:1.5;color:var(--muted,#5b5670)}
 .seg-chip .big{font-size:30px;font-weight:700;line-height:1;margin-bottom:6px;background:var(--lens,linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .seg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:clamp(24px,3vw,36px)}
 .seg-card{border:1px solid var(--border,rgba(20,16,45,.12));border-radius:18px;padding:22px;background:var(--surface,#fff)}
@@ -178,9 +180,9 @@ const SEG_STYLES = `
 export default function TendersPage() {
   return (
     <>
-      <PageHeader nav={HEADER_NAV} theme="dark" />
+      <PageHeader nav={HEADER_NAV} theme="light" className="page-header--use-cases-wide" />
       <style>{SEG_STYLES}</style>
-      <main className="seg section-lab ds">
+      <main className="seg section-lab ds use-case-detail">
       {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
       <script
         type="application/ld+json"
@@ -196,29 +198,15 @@ export default function TendersPage() {
           }),
         }}
       />
-        {/* §1 Hero — id must not be "hero" (globals body:has(#hero) canvas rule) */}
-        <StatementHero
+        <UseCaseDetailHero
           id="hero-tenders"
-          surface="ink"
           eyebrow="For tender & RFP evaluation teams"
-          titleLead="Every bid read against the spec. Every award that survives the "
-          titleAccent="challenge"
-          titleTrail="."
+          title={<>Every bid read against the spec. Every award that survives the <HeroAccent>challenge.</HeroAccent></>}
           sub="EvalLens reads every bid end to end against the criteria you published — technical approach, methodology, team, delivery — and hands your evaluation committee per-criterion findings with quotes and page references. Your evaluators score and award; the record exists from day one."
-          ctas={[
-            { label: "Scope the parallel pilot", href: "https://calendly.com/evallens/30min" },
-            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
-          ]}
-          media={{
-            ratio: "16/9",
-            label: "Image · bid evaluation record · 16:9",
-            hint: "Bid-evaluation record UI: per-criterion scores against published weightings, quote citations with page numbers, clarification list and committee-decision log — light Apple-style dashboard",
-            ariaLabel:
-              "Bid evaluation record: per-criterion scores against published weightings, quote citations with page numbers, and a committee-decision log",
-          }}
+          primary={{ label: "Scope the parallel pilot", href: "https://calendly.com/evallens/30min" }}
+          secondary={{ label: "See a sample report", href: "/trust/use-cases#sample-output" }}
+          mediaAlt="A stack of evidence-linked bid evaluation reports prepared for a tender committee"
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
         {/* §2 The award, honestly */}
         <StatBand
@@ -229,10 +217,8 @@ export default function TendersPage() {
           stats={AWARD_STATS}
         />
 
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
-
         {/* §3 The challenge letter — chain (page-local key block) */}
-        <section id="record" className="band ink" aria-labelledby="seg-record-h2">
+        <section id="record" className="band light" aria-labelledby="seg-record-h2">
           <div className="wrap seg-narrow" data-reveal="up">
             <Eyebrow>The challenge letter</Eyebrow>
             <h2 id="seg-record-h2">
@@ -265,9 +251,10 @@ export default function TendersPage() {
           </div>
         </section>
 
-        {/* §4 How it works (ink → ink, no bridge) */}
+        {/* §4 How it works — the light narrative continues. */}
         <Numbered
           id="how-it-works"
+          surface="soft"
           version={1}
           eyebrow="How it works"
           title="Bid opening → award decision, in six steps"
@@ -275,8 +262,6 @@ export default function TendersPage() {
           sub="EvalLens prepares the consistent first read. Your evaluation committee scores, reaches consensus, and awards."
           items={STEPS}
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="light" aria-hidden="true" />
 
         {/* §5 Governance (page-local) */}
         <section id="governance" className="band light" aria-labelledby="seg-gov-h2">
@@ -308,8 +293,6 @@ export default function TendersPage() {
             </div>
           </div>
         </section>
-
-        <div className="tr-gradient-bridge" data-from="light" data-to="soft" aria-hidden="true" />
 
         {/* §6 Measured, not asserted — pilot metrics (page-local) */}
         <section className="band soft" aria-labelledby="seg-metrics-h2">
@@ -343,7 +326,19 @@ export default function TendersPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
+        <Cinema
+          id="questions-cinema"
+          surface="ink"
+          headline="Want more? Ask the harder questions."
+          lines={["Want more?", "Ask the harder questions."]}
+          mobileLines={["Want more?", "Ask the harder", "questions."]}
+          sub="See how EvalLens reads bids against the published specification, keeps every finding traceable, and prepares an evaluation record that can survive challenge."
+          media={{
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
+          }}
+          maskId="tender-questions"
+        />
 
         {/* §7 FAQ */}
         <JsonLd data={faqJsonLd(FAQ)} />
@@ -362,6 +357,8 @@ export default function TendersPage() {
           titleAccent="procurement lead"
           items={FAQ}
         />
+
+        <UseCaseRelated currentHref="/trust/use-cases/tenders" />
 
         {/* §8 Final CTA */}
         <CtaBand

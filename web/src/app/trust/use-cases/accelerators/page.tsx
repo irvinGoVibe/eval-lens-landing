@@ -4,15 +4,17 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import {
-  StatementHero,
   StatBand,
   Numbered,
   Faq,
   CtaBand,
   Eyebrow,
+  Cinema,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
 import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
+import { HeroAccent, UseCaseDetailHero } from "../UseCaseDetailHero";
+import { UseCaseRelated } from "../UseCaseRelated";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /trust/use-cases/accelerators
@@ -161,9 +163,9 @@ const FAQ = [
 const SEG_STYLES = `
 .seg main .seg-narrow{max-width:720px}
 .seg-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:clamp(28px,4vw,44px)}
-.seg-chip{background:var(--panel-2,rgba(255,255,255,.04));border:1px solid var(--border-on-dark,rgba(255,255,255,.14));border-radius:16px;padding:18px}
-.seg-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender,#a99bff);margin-bottom:8px}
-.seg-chip .cv{font-size:14.5px;line-height:1.5;color:var(--body-on-dark,rgba(255,255,255,.82))}
+.seg-chip{background:rgba(255,255,255,.72);border:1px solid color-mix(in oklab,var(--violet,#6c4cf1) 14%,var(--border,rgba(20,16,45,.12)));border-radius:16px;padding:18px;box-shadow:0 24px 58px -46px rgba(52,37,126,.42)}
+.seg-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet,#6c4cf1);margin-bottom:8px}
+.seg-chip .cv{font-size:14.5px;line-height:1.5;color:var(--muted,#5b5670)}
 .seg-chip .big{font-size:30px;font-weight:700;line-height:1;margin-bottom:6px;background:var(--lens,linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .seg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:clamp(24px,3vw,36px)}
 .seg-card{border:1px solid var(--border,rgba(20,16,45,.12));border-radius:18px;padding:22px;background:var(--surface,#fff)}
@@ -185,9 +187,9 @@ const SEG_STYLES = `
 export default function AcceleratorsPage() {
   return (
     <>
-      <PageHeader nav={HEADER_NAV} theme="dark" />
+      <PageHeader nav={HEADER_NAV} theme="light" className="page-header--use-cases-wide" />
       <style>{SEG_STYLES}</style>
-      <main className="seg section-lab ds">
+      <main className="seg section-lab ds use-case-detail">
       {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
       <script
         type="application/ld+json"
@@ -203,29 +205,15 @@ export default function AcceleratorsPage() {
           }),
         }}
       />
-        {/* §1 Hero — id must not be "hero" (globals body:has(#hero) canvas rule) */}
-        <StatementHero
+        <UseCaseDetailHero
           id="hero-accelerators"
-          surface="ink"
           eyebrow="For accelerators & startup programs"
-          titleLead="Every application gets a full read. Every rejection gets a "
-          titleAccent="reason"
-          titleTrail="."
+          title={<>Every application gets a full read. Every rejection gets a <HeroAccent>reason.</HeroAccent></>}
           sub="EvalLens gives your screening committee a first pass it can trust: every application read in full and scored against your rubric with page-level evidence. Your team reads reports instead of raw applications — and humans make every call."
-          ctas={[
-            { label: "Book the free retro-test", href: "https://calendly.com/evallens/30min" },
-            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
-          ]}
-          media={{
-            ratio: "16/9",
-            label: "Image · ranked cohort board · 16:9",
-            hint: "Ranked cohort board UI: rows of teams with per-criterion scores, evidence flags, borderline band highlighted — light Apple-style dashboard",
-            ariaLabel:
-              "Ranked cohort board: rows of teams with per-criterion scores, evidence flags, and a highlighted borderline band",
-          }}
+          primary={{ label: "Book the free retro-test", href: "https://calendly.com/evallens/30min" }}
+          secondary={{ label: "See a sample report", href: "/trust/use-cases#sample-output" }}
+          mediaAlt="A stack of evidence-linked application review reports prepared for an accelerator selection committee"
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="light" aria-hidden="true" />
 
         {/* §2 The zero-risk test — retro-test (page-local, the page's key block) */}
         <section id="retro-test" className="band light" aria-labelledby="seg-retro-h2">
@@ -264,8 +252,6 @@ export default function AcceleratorsPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="light" data-to="soft" aria-hidden="true" />
-
         {/* §3 The intake, honestly */}
         <StatBand
           id="intake"
@@ -275,10 +261,8 @@ export default function AcceleratorsPage() {
           stats={INTAKE_STATS}
         />
 
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
-
         {/* §4 Evidence, not vibes — chain (page-local) */}
-        <section id="evidence" className="band ink" aria-labelledby="seg-evidence-h2">
+        <section id="evidence" className="band light" aria-labelledby="seg-evidence-h2">
           <div className="wrap seg-narrow" data-reveal="up">
             <Eyebrow>Evidence, not vibes</Eyebrow>
             <h2 id="seg-evidence-h2">
@@ -309,9 +293,10 @@ export default function AcceleratorsPage() {
           </div>
         </section>
 
-        {/* §5 How it works — Numbered (DS, bakes ink surface; no bridge needed) */}
+        {/* §5 How it works — the light narrative continues. */}
         <Numbered
           id="how-it-works"
+          surface="soft"
           version={1}
           eyebrow="How it works"
           title="Five steps. Your committee stays in charge"
@@ -319,8 +304,6 @@ export default function AcceleratorsPage() {
           sub="EvalLens prepares the structured first read. Your committee makes the cohort decision."
           items={STEPS}
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
         {/* §6 Day 0 vs Selection Day (page-local) */}
         <section className="band soft" aria-labelledby="seg-days-h2">
@@ -342,8 +325,6 @@ export default function AcceleratorsPage() {
             </div>
           </div>
         </section>
-
-        <div className="tr-gradient-bridge" data-from="soft" data-to="light" aria-hidden="true" />
 
         {/* §7 Data & trust (page-local) */}
         <section className="band light" aria-labelledby="seg-data-h2">
@@ -373,7 +354,19 @@ export default function AcceleratorsPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="light" data-to="ink" aria-hidden="true" />
+        <Cinema
+          id="questions-cinema"
+          surface="ink"
+          headline="Want more? Ask the harder questions."
+          lines={["Want more?", "Ask the harder questions."]}
+          mobileLines={["Want more?", "Ask the harder", "questions."]}
+          sub="See how EvalLens fits your intake, keeps every finding traceable, protects applicant data, and leaves the cohort decision with your committee."
+          media={{
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
+          }}
+          maskId="accelerator-questions"
+        />
 
         {/* §8 FAQ */}
         <JsonLd data={faqJsonLd(FAQ)} />
@@ -392,6 +385,8 @@ export default function AcceleratorsPage() {
           titleAccent="program director"
           items={FAQ}
         />
+
+        <UseCaseRelated currentHref="/trust/use-cases/accelerators" />
 
         {/* §9 Final CTA */}
         <CtaBand

@@ -4,15 +4,17 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import {
-  StatementHero,
   StatBand,
   Numbered,
   Faq,
   CtaBand,
   Eyebrow,
+  Cinema,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
 import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
+import { HeroAccent, UseCaseDetailHero } from "../UseCaseDetailHero";
+import { UseCaseRelated } from "../UseCaseRelated";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /trust/use-cases/crowdfunding
@@ -158,9 +160,9 @@ const FAQ = [
 const SEG_STYLES = `
 .seg main .seg-narrow{max-width:720px}
 .seg-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:clamp(28px,4vw,44px)}
-.seg-chip{background:var(--panel-2,rgba(255,255,255,.04));border:1px solid var(--border-on-dark,rgba(255,255,255,.14));border-radius:16px;padding:18px}
-.seg-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender,#a99bff);margin-bottom:8px}
-.seg-chip .cv{font-size:14.5px;line-height:1.5;color:var(--body-on-dark,rgba(255,255,255,.82))}
+.seg-chip{background:rgba(255,255,255,.72);border:1px solid color-mix(in oklab,var(--violet,#6c4cf1) 14%,var(--border,rgba(20,16,45,.12)));border-radius:16px;padding:18px;box-shadow:0 24px 58px -46px rgba(52,37,126,.42)}
+.seg-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet,#6c4cf1);margin-bottom:8px}
+.seg-chip .cv{font-size:14.5px;line-height:1.5;color:var(--muted,#5b5670)}
 .seg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:clamp(24px,3vw,36px)}
 .seg-card{border:1px solid var(--border,rgba(20,16,45,.12));border-radius:18px;padding:22px;background:var(--surface,#fff)}
 .seg-card .ic{font-size:22px;line-height:1}
@@ -179,9 +181,9 @@ const SEG_STYLES = `
 export default function CrowdfundingPage() {
   return (
     <>
-      <PageHeader nav={HEADER_NAV} theme="dark" />
+      <PageHeader nav={HEADER_NAV} theme="light" className="page-header--use-cases-wide" />
       <style>{SEG_STYLES}</style>
-      <main className="seg section-lab ds">
+      <main className="seg section-lab ds use-case-detail">
       {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
       <script
         type="application/ld+json"
@@ -197,29 +199,15 @@ export default function CrowdfundingPage() {
           }),
         }}
       />
-        {/* §1 Hero — id must not be "hero" (globals body:has(#hero) canvas rule) */}
-        <StatementHero
+        <UseCaseDetailHero
           id="hero-crowdfunding"
-          surface="ink"
           eyebrow="For crowdfunding service providers under ECSPR"
-          titleLead="Screen every project owner in days. Keep the file your NCA will "
-          titleAccent="ask for"
-          titleTrail="."
+          title={<>Screen every project owner in days. Keep the file your NCA will <HeroAccent>ask for.</HeroAccent></>}
           sub="EvalLens reads every campaign application end to end — deck, business plan, financial narrative — and produces an evidence-linked screening file per project owner. Your analysts verify, your Funding Committee decides, and the record exists from day one instead of being reconstructed later."
-          ctas={[
-            { label: "Scope the pilot", href: "https://calendly.com/evallens/30min" },
-            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
-          ]}
-          media={{
-            ratio: "16/9",
-            label: "Image · screening file · 16:9",
-            hint: "Screening-file UI: project-owner dossier with per-criterion findings, page-tagged quotes, verification checklist and committee-decision log — light Apple-style dashboard",
-            ariaLabel:
-              "Screening file: project-owner dossier with per-criterion findings, page-tagged quotes, a verification checklist and a committee-decision log",
-          }}
+          primary={{ label: "Scope the pilot", href: "https://calendly.com/evallens/30min" }}
+          secondary={{ label: "See a sample report", href: "/trust/use-cases#sample-output" }}
+          mediaAlt="A stack of evidence-linked project-owner screening reports prepared for a crowdfunding funding committee"
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
         {/* §2 The double bind */}
         <StatBand
@@ -230,10 +218,8 @@ export default function CrowdfundingPage() {
           stats={BIND_STATS}
         />
 
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
-
         {/* §3 The supervisory request — chain (page-local key block) */}
-        <section id="file" className="band ink" aria-labelledby="seg-file-h2">
+        <section id="file" className="band light" aria-labelledby="seg-file-h2">
           <div className="wrap seg-narrow" data-reveal="up">
             <Eyebrow>The supervisory request</Eyebrow>
             <h2 id="seg-file-h2">
@@ -259,9 +245,10 @@ export default function CrowdfundingPage() {
           </div>
         </section>
 
-        {/* §4 How it works (ink → ink, no bridge) */}
+        {/* §4 How it works — the light narrative continues. */}
         <Numbered
           id="how-it-works"
+          surface="soft"
           version={1}
           eyebrow="How it works"
           title="Campaign application → listing decision, in seven steps"
@@ -269,8 +256,6 @@ export default function CrowdfundingPage() {
           sub="EvalLens prepares the screening file. Your analysts verify; your Funding Committee decides."
           items={STEPS}
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="light" aria-hidden="true" />
 
         {/* §5 AI governance — ESMA (page-local) */}
         <section id="governance" className="band light" aria-labelledby="seg-gov-h2">
@@ -305,8 +290,6 @@ export default function CrowdfundingPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="light" data-to="soft" aria-hidden="true" />
-
         {/* §6 Measured, not asserted — pilot metrics (page-local) */}
         <section className="band soft" aria-labelledby="seg-metrics-h2">
           <div className="wrap seg-narrow" data-reveal="up">
@@ -340,7 +323,19 @@ export default function CrowdfundingPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
+        <Cinema
+          id="questions-cinema"
+          surface="ink"
+          headline="Want more? Ask the harder questions."
+          lines={["Want more?", "Ask the harder questions."]}
+          mobileLines={["Want more?", "Ask the harder", "questions."]}
+          sub="See how EvalLens supports analyst verification, preserves an evidence-linked screening file, and leaves every funding decision with your committee."
+          media={{
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
+          }}
+          maskId="crowdfunding-questions"
+        />
 
         {/* §7 FAQ */}
         <JsonLd data={faqJsonLd(FAQ)} />
@@ -359,6 +354,8 @@ export default function CrowdfundingPage() {
           titleAccent="compliance"
           items={FAQ}
         />
+
+        <UseCaseRelated currentHref="/trust/use-cases/crowdfunding" />
 
         {/* §8 Final CTA */}
         <CtaBand

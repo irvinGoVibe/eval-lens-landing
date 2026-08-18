@@ -4,15 +4,17 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import {
-  StatementHero,
   StatBand,
   Numbered,
   Faq,
   CtaBand,
   Eyebrow,
+  Cinema,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
 import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
+import { HeroAccent, UseCaseDetailHero } from "../UseCaseDetailHero";
+import { UseCaseRelated } from "../UseCaseRelated";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /use-cases/pitch-competitions
@@ -164,9 +166,9 @@ const FAQ = [
 const PC_STYLES = `
 .pc main .pc-narrow{max-width:720px}
 .pc-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:clamp(28px,4vw,44px)}
-.pc-chip{background:var(--panel-2,rgba(255,255,255,.04));border:1px solid var(--border-on-dark,rgba(255,255,255,.14));border-radius:16px;padding:18px}
-.pc-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender,#a99bff);margin-bottom:8px}
-.pc-chip .cv{font-size:14.5px;line-height:1.5;color:var(--body-on-dark,rgba(255,255,255,.82))}
+.pc-chip{background:rgba(255,255,255,.72);border:1px solid color-mix(in oklab,var(--violet,#6c4cf1) 14%,var(--border,rgba(20,16,45,.12)));border-radius:16px;padding:18px;box-shadow:0 24px 58px -46px rgba(52,37,126,.42)}
+.pc-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet,#6c4cf1);margin-bottom:8px}
+.pc-chip .cv{font-size:14.5px;line-height:1.5;color:var(--muted,#5b5670)}
 .pc-chip .big{font-size:30px;font-weight:700;line-height:1;margin-bottom:6px;background:var(--lens,linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .pc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:clamp(24px,3vw,36px)}
 .pc-card{border:1px solid var(--border,rgba(20,16,45,.12));border-radius:18px;padding:22px;background:var(--surface,#fff)}
@@ -186,9 +188,9 @@ const PC_STYLES = `
 export default function PitchCompetitionsPage() {
   return (
     <>
-      <PageHeader nav={HEADER_NAV} theme="dark" />
+      <PageHeader nav={HEADER_NAV} theme="light" className="page-header--use-cases-wide" />
       <style>{PC_STYLES}</style>
-      <main className="pc section-lab ds">
+      <main className="pc section-lab ds use-case-detail">
       {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
       <script
         type="application/ld+json"
@@ -204,32 +206,15 @@ export default function PitchCompetitionsPage() {
           }),
         }}
       />
-        {/* §1 Hero */}
-        {/* id must NOT be "hero": globals.css `body:has(#hero)` is the homepage
-            canvas rule that forces the whole body to ink, which turns bare
-            `.band.light` sections black. Mirror use-cases' `hero-usecases`. */}
-        <StatementHero
+        <UseCaseDetailHero
           id="hero-pitch"
-          surface="ink"
-          eyebrow="AI prepares the analysis · People decide"
-          titleLead="Every entry gets a full read. Every rank carries its "
-          titleAccent="receipts"
-          titleTrail="."
+          eyebrow="For pitch competitions & university programs"
+          title={<>Every entry gets a full read. Every rank carries its <HeroAccent>receipts.</HeroAccent></>}
           sub="EvalLens is the judging layer under your existing competition: an AI panel pre-reads the whole written round on your rubric, your screening committee confirms with briefing packs instead of blank PDF stacks, and your live judges walk into semis briefed. The final call stays exactly where it belongs."
-          ctas={[
-            { label: "Run a shadow pilot", href: "https://calendly.com/evallens/30min" },
-            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
-          ]}
-          media={{
-            ratio: "16/9",
-            label: "Image · judge briefing pack · 16:9",
-            hint: "Judge briefing pack UI: team card with rubric scores, evidence quotes with page tags, and ranked Q&A for the live round — light Apple-style dashboard",
-            ariaLabel:
-              "Judge briefing pack: a team card with rubric scores, evidence quotes with page tags, and ranked questions for the live round",
-          }}
+          primary={{ label: "Run a shadow pilot", href: "https://calendly.com/evallens/30min" }}
+          secondary={{ label: "See a sample report", href: "/trust/use-cases#sample-output" }}
+          mediaAlt="A stack of evidence-linked entry review reports prepared for a pitch competition jury"
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
         {/* §2 The written round, honestly (StatBand bakes a soft surface) */}
         <StatBand
@@ -240,10 +225,8 @@ export default function PitchCompetitionsPage() {
           stats={WRITTEN_ROUND_STATS}
         />
 
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
-
         {/* §3 The Monday-after email — page-local evidence chain */}
-        <section id="record" className="band ink" aria-labelledby="pc-record-h2">
+        <section id="record" className="band light" aria-labelledby="pc-record-h2">
           <div className="wrap pc-narrow" data-reveal="up">
             <Eyebrow>The Monday-after email</Eyebrow>
             <h2 id="pc-record-h2">
@@ -274,11 +257,10 @@ export default function PitchCompetitionsPage() {
           </div>
         </section>
 
-        {/* §3 record (ink) → §4 Numbered (ink): both dark, no bridge needed. */}
-
-        {/* §4 How it works — Numbered (DS) bakes an ink surface */}
+        {/* §4 How it works — the light narrative continues. */}
         <Numbered
           id="how-it-works"
+          surface="soft"
           version={1}
           eyebrow="How it works"
           title="Applications open → awards night, in six steps"
@@ -286,8 +268,6 @@ export default function PitchCompetitionsPage() {
           sub="Prelim decisions stay human. The AI panel does the first read; your judges keep the room and the final ranking."
           items={STEPS}
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
         {/* §5 Judge math — page-local */}
         <section className="band soft" aria-labelledby="pc-math-h2">
@@ -315,8 +295,6 @@ export default function PitchCompetitionsPage() {
             </div>
           </div>
         </section>
-
-        <div className="tr-gradient-bridge" data-from="soft" data-to="light" aria-hidden="true" />
 
         {/* §6 Disclosure kit — page-local */}
         <section className="band light" aria-labelledby="pc-kit-h2">
@@ -347,8 +325,6 @@ export default function PitchCompetitionsPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="light" data-to="soft" aria-hidden="true" />
-
         {/* §7 Data & student IP — page-local */}
         <section className="band soft" aria-labelledby="pc-data-h2">
           <div className="wrap pc-narrow" data-reveal="up">
@@ -378,8 +354,20 @@ export default function PitchCompetitionsPage() {
           </div>
         </section>
 
-        {/* Faq (DS) bakes an ink surface, so bridge into dark, not light. */}
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
+        {/* Cinema starts the single dark act; FAQ and conversion stay dark. */}
+        <Cinema
+          id="questions-cinema"
+          surface="ink"
+          headline="Want more? Ask the harder questions."
+          lines={["Want more?", "Ask the harder questions."]}
+          mobileLines={["Want more?", "Ask the harder", "questions."]}
+          sub="See how EvalLens prepares the written round, makes rankings explainable, gives live judges sharper questions, and leaves the final call with your jury."
+          media={{
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
+          }}
+          maskId="pitch-competition-questions"
+        />
 
         {/* §8 FAQ */}
         <JsonLd data={faqJsonLd(FAQ)} />
@@ -398,6 +386,8 @@ export default function PitchCompetitionsPage() {
           titleAccent="will ask"
           items={FAQ}
         />
+
+        <UseCaseRelated currentHref="/trust/use-cases/pitch-competitions" />
 
         {/* §9 Final CTA */}
         <CtaBand

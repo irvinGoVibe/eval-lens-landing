@@ -4,15 +4,17 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import {
-  StatementHero,
   StatBand,
   Numbered,
   Faq,
   CtaBand,
   Eyebrow,
+  Cinema,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
 import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
+import { HeroAccent, UseCaseDetailHero } from "../UseCaseDetailHero";
+import { UseCaseRelated } from "../UseCaseRelated";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /trust/use-cases/hackathons
@@ -229,9 +231,9 @@ const FAQ = [
 const HK_STYLES = `
 .hk main .hk-narrow{max-width:720px}
 .hk-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:clamp(28px,4vw,44px)}
-.hk-chip{background:var(--panel-2,rgba(255,255,255,.04));border:1px solid var(--border-on-dark,rgba(255,255,255,.14));border-radius:16px;padding:18px}
-.hk-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender,#a99bff);margin-bottom:8px}
-.hk-chip .cv{font-size:14.5px;line-height:1.5;color:var(--body-on-dark,rgba(255,255,255,.82))}
+.hk-chip{background:rgba(255,255,255,.72);border:1px solid color-mix(in oklab,var(--violet,#6c4cf1) 14%,var(--border,rgba(20,16,45,.12)));border-radius:16px;padding:18px;box-shadow:0 24px 58px -46px rgba(52,37,126,.42)}
+.hk-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet,#6c4cf1);margin-bottom:8px}
+.hk-chip .cv{font-size:14.5px;line-height:1.5;color:var(--muted,#5b5670)}
 .hk-chip .big{font-size:30px;font-weight:700;line-height:1;margin-bottom:6px;background:var(--lens,linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hk-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:clamp(24px,3vw,36px)}
 .hk-card{border:1px solid var(--border,rgba(20,16,45,.12));border-radius:18px;padding:22px;background:var(--surface,#fff)}
@@ -251,9 +253,9 @@ const HK_STYLES = `
 export default function HackathonsPage() {
   return (
     <>
-      <PageHeader nav={HEADER_NAV} theme="dark" />
+      <PageHeader nav={HEADER_NAV} theme="light" className="page-header--use-cases-wide" />
       <style>{HK_STYLES}</style>
-      <main className="hk section-lab ds">
+      <main className="hk section-lab ds use-case-detail">
       {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
       <script
         type="application/ld+json"
@@ -269,29 +271,15 @@ export default function HackathonsPage() {
           }),
         }}
       />
-        {/* §1 Hero — id must not be "hero" (globals body:has(#hero) canvas rule) */}
-        <StatementHero
+        <UseCaseDetailHero
           id="hero-hackathons"
-          surface="ink"
-          eyebrow="AI prepares the analysis · People decide"
-          titleLead="Every project gets a full read before the "
-          titleAccent="expo floor"
-          titleTrail=" opens."
+          eyebrow="For hackathon organisers & judging teams"
+          title={<>Every project gets a full read before the <HeroAccent>expo floor</HeroAccent> opens.</>}
           sub="EvalLens is hackathon judging software that runs the first pass. An AI panel reads every submission against your rubric, scores execution and technical depth before anyone walks the tables, and hands each judge a briefing instead of a blank scorecard. Your judges still pick the winner."
-          ctas={[
-            { label: "See a sample report", href: "/trust/use-cases#sample-output" },
-            { label: "Send us your batch", href: "/company/contact#batch", variant: "glass" },
-          ]}
-          media={{
-            ratio: "16/9",
-            label: "Image · judge briefing pack · 16:9",
-            hint: "Hackathon briefing pack UI: a team card with H1 to H6 scores, an evidence quote tagged to a slide, a judge disagreement flag, and three questions for the table visit. Light Apple-style dashboard.",
-            ariaLabel:
-              "Hackathon briefing pack: team card with execution and technical depth scores, evidence quotes, and questions for the table visit",
-          }}
+          primary={{ label: "Send us your batch", href: "/company/contact#batch" }}
+          secondary={{ label: "See a sample report", href: "/trust/use-cases#sample-output" }}
+          mediaAlt="A stack of evidence-linked project review reports prepared for a hackathon judging team"
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
         {/* §2 Judging math (StatBand bakes a soft surface) */}
         <StatBand
@@ -302,10 +290,8 @@ export default function HackathonsPage() {
           stats={JUDGING_MATH}
         />
 
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
-
         {/* §3 The record — page-local evidence chain */}
-        <section id="record" className="band ink" aria-labelledby="hk-record-h2">
+        <section id="record" className="band light" aria-labelledby="hk-record-h2">
           <div className="wrap hk-narrow" data-reveal="up">
             <Eyebrow>Monday, in the Discord</Eyebrow>
             <h2 id="hk-record-h2">
@@ -336,11 +322,10 @@ export default function HackathonsPage() {
           </div>
         </section>
 
-        {/* §3 record (ink) → §4 Numbered (ink): both dark, no bridge needed. */}
-
-        {/* §4 How it works — Numbered (DS) bakes an ink surface */}
+        {/* §4 How it works — the light narrative continues. */}
         <Numbered
           id="how-it-works"
+          surface="soft"
           version={1}
           eyebrow="How it works"
           title="Submissions close, judging starts already read"
@@ -348,8 +333,6 @@ export default function HackathonsPage() {
           sub="The AI panel does the first pass. Your judges keep the floor, the questions and the final call."
           items={STEPS}
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
         {/* §5 What the panel reads — page-local */}
         <section className="band soft" aria-labelledby="hk-panel-h2">
@@ -372,8 +355,6 @@ export default function HackathonsPage() {
             </div>
           </div>
         </section>
-
-        <div className="tr-gradient-bridge" data-from="soft" data-to="light" aria-hidden="true" />
 
         {/* §6 What we tell the hackers — page-local disclosure kit */}
         <section className="band light" aria-labelledby="hk-kit-h2">
@@ -404,8 +385,6 @@ export default function HackathonsPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="light" data-to="soft" aria-hidden="true" />
-
         {/* §7 Data & team IP — page-local */}
         <section className="band soft" aria-labelledby="hk-data-h2">
           <div className="wrap hk-narrow" data-reveal="up">
@@ -435,8 +414,20 @@ export default function HackathonsPage() {
           </div>
         </section>
 
-        {/* Faq (DS) bakes an ink surface, so bridge into dark, not light. */}
-        <div className="tr-gradient-bridge" data-from="soft" data-to="ink" aria-hidden="true" />
+        {/* Cinema starts the single dark act; FAQ and conversion stay dark. */}
+        <Cinema
+          id="questions-cinema"
+          surface="ink"
+          headline="Want more? Ask the harder questions."
+          lines={["Want more?", "Ask the harder questions."]}
+          mobileLines={["Want more?", "Ask the harder", "questions."]}
+          sub="See how EvalLens protects execution and technical depth in the first read, prepares judges for the expo floor, and leaves the final ranking with people."
+          media={{
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
+          }}
+          maskId="hackathon-questions"
+        />
 
         {/* §8 FAQ */}
         <JsonLd data={faqJsonLd(FAQ)} />
@@ -455,6 +446,8 @@ export default function HackathonsPage() {
           titleAccent="will ask"
           items={FAQ}
         />
+
+        <UseCaseRelated currentHref="/trust/use-cases/hackathons" />
 
         {/* §9 Final CTA */}
         <CtaBand

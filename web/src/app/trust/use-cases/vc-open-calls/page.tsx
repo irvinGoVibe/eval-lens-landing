@@ -4,15 +4,17 @@ import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import {
-  StatementHero,
   StatBand,
   Numbered,
   Faq,
   CtaBand,
   Eyebrow,
+  Cinema,
 } from "@/components/ds";
 import type { SectionNav } from "@/lib/site-nav";
 import { JsonLd, faqJsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
+import { HeroAccent, UseCaseDetailHero } from "../UseCaseDetailHero";
+import { UseCaseRelated } from "../UseCaseRelated";
 
 /* ────────────────────────────────────────────────────────────────────────
  * /trust/use-cases/vc-open-calls
@@ -140,9 +142,9 @@ const FAQ = [
 const SEG_STYLES = `
 .seg main .seg-narrow{max-width:720px}
 .seg-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:clamp(28px,4vw,44px)}
-.seg-chip{background:var(--panel-2,rgba(255,255,255,.04));border:1px solid var(--border-on-dark,rgba(255,255,255,.14));border-radius:16px;padding:18px}
-.seg-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--lavender,#a99bff);margin-bottom:8px}
-.seg-chip .cv{font-size:14.5px;line-height:1.5;color:var(--body-on-dark,rgba(255,255,255,.82))}
+.seg-chip{background:rgba(255,255,255,.72);border:1px solid color-mix(in oklab,var(--violet,#6c4cf1) 14%,var(--border,rgba(20,16,45,.12)));border-radius:16px;padding:18px;box-shadow:0 24px 58px -46px rgba(52,37,126,.42)}
+.seg-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet,#6c4cf1);margin-bottom:8px}
+.seg-chip .cv{font-size:14.5px;line-height:1.5;color:var(--muted,#5b5670)}
 .seg-chip .big{font-size:30px;font-weight:700;line-height:1;margin-bottom:6px;background:var(--lens,linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .seg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:clamp(24px,3vw,36px)}
 .seg-card{border:1px solid var(--border,rgba(20,16,45,.12));border-radius:18px;padding:22px;background:var(--surface,#fff)}
@@ -163,9 +165,9 @@ const SEG_STYLES = `
 export default function VcOpenCallsPage() {
   return (
     <>
-      <PageHeader nav={HEADER_NAV} theme="dark" />
+      <PageHeader nav={HEADER_NAV} theme="light" className="page-header--use-cases-wide" />
       <style>{SEG_STYLES}</style>
-      <main className="seg section-lab ds">
+      <main className="seg section-lab ds use-case-detail">
       {/* FAQPage JSON-LD — built from this page's FAQ data (AEO) */}
       <script
         type="application/ld+json"
@@ -181,29 +183,15 @@ export default function VcOpenCallsPage() {
           }),
         }}
       />
-        {/* §1 Hero — id must not be "hero" (globals body:has(#hero) canvas rule) */}
-        <StatementHero
+        <UseCaseDetailHero
           id="hero-vc"
-          surface="ink"
-          eyebrow="For funds running open calls · scout programs · demo days"
-          titleLead="Your open call, actually "
-          titleAccent="read"
-          titleTrail="."
+          eyebrow="For funds running open calls, scout programs & demo days"
+          title={<>Your open call, actually <HeroAccent>read.</HeroAccent></>}
           sub="You publicly invite founders to apply. Then the median submission gets 150 seconds and silence. EvalLens reads every submitted deck in full against your investment dimensions and hands your team a comparable, evidence-linked view of the whole batch — every deck with flags, founder questions, and a quote behind every finding."
-          ctas={[
-            { label: "Book the parallel run", href: "https://calendly.com/evallens/30min" },
-            { label: "See a sample report", href: "/trust/use-cases#sample-output", variant: "glass" },
-          ]}
-          media={{
-            ratio: "16/9",
-            label: "Image · comparable batch view · 16:9",
-            hint: "Comparable batch view UI: rows of companies with per-dimension scores, red-flag chips, founder-question buttons — light Apple-style dashboard",
-            ariaLabel:
-              "Comparable batch view: rows of companies with per-dimension scores, red-flag chips, and founder-question buttons",
-          }}
+          primary={{ label: "Book the parallel run", href: "https://calendly.com/evallens/30min" }}
+          secondary={{ label: "See a sample report", href: "/trust/use-cases#sample-output" }}
+          mediaAlt="A stack of evidence-linked company review reports prepared for a venture fund open call"
         />
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="soft" aria-hidden="true" />
 
         {/* §2 Cold inbound, honestly */}
         <StatBand
@@ -213,8 +201,6 @@ export default function VcOpenCallsPage() {
           accent="optics"
           stats={INBOUND_STATS}
         />
-
-        <div className="tr-gradient-bridge" data-from="soft" data-to="light" aria-hidden="true" />
 
         {/* §3 Aide, not arbiter — the GV story (page-local, the page's key block) */}
         <section id="aide" className="band light" aria-labelledby="seg-aide-h2">
@@ -243,11 +229,10 @@ export default function VcOpenCallsPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="light" data-to="ink" aria-hidden="true" />
-
         {/* §4 How it works */}
         <Numbered
           id="how-it-works"
+          surface="soft"
           version={1}
           eyebrow="How it works"
           title="Application window → pipeline meeting, in five steps"
@@ -256,8 +241,8 @@ export default function VcOpenCallsPage() {
           items={STEPS}
         />
 
-        {/* §5 The brief — chain (ink → ink, no bridge) */}
-        <section id="brief" className="band ink" aria-labelledby="seg-brief-h2">
+        {/* §5 The brief — evidence chain on the light editorial canvas. */}
+        <section id="brief" className="band light" aria-labelledby="seg-brief-h2">
           <div className="wrap seg-narrow" data-reveal="up">
             <Eyebrow>The brief</Eyebrow>
             <h2 id="seg-brief-h2">
@@ -285,8 +270,6 @@ export default function VcOpenCallsPage() {
             </p>
           </div>
         </section>
-
-        <div className="tr-gradient-bridge" data-from="ink" data-to="light" aria-hidden="true" />
 
         {/* §6 Brand-safe founder feedback (page-local) */}
         <section className="band light" aria-labelledby="seg-brand-h2">
@@ -324,7 +307,19 @@ export default function VcOpenCallsPage() {
           </div>
         </section>
 
-        <div className="tr-gradient-bridge" data-from="light" data-to="ink" aria-hidden="true" />
+        <Cinema
+          id="questions-cinema"
+          surface="ink"
+          headline="Want more? Ask the harder questions."
+          lines={["Want more?", "Ask the harder questions."]}
+          mobileLines={["Want more?", "Ask the harder", "questions."]}
+          sub="See how EvalLens fits your inbound pipeline, reads the whole open-call batch consistently, and leaves every investment decision with your team."
+          media={{
+            videoSrc: "/assets/methodology/cinema.mp4",
+            poster: "/assets/methodology/cinema-poster.webp",
+          }}
+          maskId="vc-open-call-questions"
+        />
 
         {/* §7 FAQ */}
         <JsonLd data={faqJsonLd(FAQ)} />
@@ -343,6 +338,8 @@ export default function VcOpenCallsPage() {
           titleAccent="skeptical GP"
           items={FAQ}
         />
+
+        <UseCaseRelated currentHref="/trust/use-cases/vc-open-calls" />
 
         {/* §8 Final CTA */}
         <CtaBand
