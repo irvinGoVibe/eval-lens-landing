@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
@@ -22,7 +21,7 @@ import { UseCaseRelated } from "../UseCaseRelated";
  * Ported from the gated review page web/public/icp/pitch-competitions.html
  * (source of truth: eval-lens-crm/wiki/sales/icp-pages/_body-competitions.html)
  * into the site design system. DS components carry the standard sections;
- * four bespoke blocks (evidence chain, judge-math, disclosure kit, data & IP)
+ * four bespoke blocks (evidence record, judge-math, disclosure kit, data & IP)
  * are page-local with a scoped `.pc-*` style block — shared DS untouched.
  *
  * Copy invariants: no invented clients/cases/logos, no SOC2/ISO claims
@@ -104,13 +103,33 @@ const STEPS = [
   },
 ];
 
-/* §3 — the Monday-after evidence chain (page-local) */
-const EVIDENCE_CHAIN = [
-  { label: "Score", value: "7.4", big: true, note: "on “business model” — your rubric, your weights" },
-  { label: "Finding", value: "Pricing validated with early customers; distribution still a hypothesis." },
-  { label: "Quote", value: "“…14 pilot customers at $190/mo…” · page 9" },
-  { label: "Evidence strength", value: "Strong — 3 of 3 claims verified on-page. No quote, no finding." },
-  { label: "Judge scores", value: "Human panel's scores and deliberation notes, logged alongside." },
+/* §3 — the Monday-after record */
+const RECORD_ROWS = [
+  {
+    label: "Score",
+    title: "7.4",
+    body: "On “business model”: your rubric, your weights.",
+  },
+  {
+    label: "Finding",
+    title: "Pricing validated with early customers.",
+    body: "Distribution is still a hypothesis.",
+  },
+  {
+    label: "Quote",
+    title: "“…14 pilot customers at $190/mo…”",
+    body: "Page 9",
+  },
+  {
+    label: "Evidence strength",
+    title: "Strong: 3 of 3 claims verified on-page.",
+    body: "No quote, no finding.",
+  },
+  {
+    label: "Judge scores",
+    title: "Human panel's scores and deliberation notes.",
+    body: "Logged alongside the evidence record.",
+  },
 ];
 
 /* §5 — judge math cards (page-local) */
@@ -165,11 +184,20 @@ const FAQ = [
 
 const PC_STYLES = `
 .pc main .pc-narrow{max-width:720px}
-.pc-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:clamp(28px,4vw,44px)}
-.pc-chip{background:rgba(255,255,255,.72);border:1px solid color-mix(in oklab,var(--violet,#6c4cf1) 14%,var(--border,rgba(20,16,45,.12)));border-radius:16px;padding:18px;box-shadow:0 24px 58px -46px rgba(52,37,126,.42)}
-.pc-chip .cl{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet,#6c4cf1);margin-bottom:8px}
-.pc-chip .cv{font-size:14.5px;line-height:1.5;color:var(--muted,#5b5670)}
-.pc-chip .big{font-size:30px;font-weight:700;line-height:1;margin-bottom:6px;background:var(--lens,linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pc-record-numbered{background:#fff}
+.pc-record-head{max-width:1120px}
+.pc-record-head .pc-record-title{max-width:none;margin:0;font-size:clamp(48px,5.6vw,78px);font-weight:600;line-height:.98;letter-spacing:-.05em}
+.pc-record-title-line{display:block}
+.pc-record-head .sub{max-width:62ch;margin:clamp(24px,3vw,34px) 0 0;font-size:clamp(17px,1.55vw,21px);line-height:1.5}
+.pc-record-list{list-style:none;margin:clamp(48px,7vw,84px) 0 0;padding:0;border-top:1px solid var(--border)}
+.pc-record-row{display:grid;grid-template-columns:64px minmax(120px,.42fr) minmax(240px,.9fr) minmax(280px,1.1fr);gap:clamp(20px,3vw,48px);align-items:start;padding:clamp(26px,3.6vw,42px) 0;border-bottom:1px solid var(--border)}
+.pc-record-row__num,.pc-record-row__label{font-family:var(--font-mono);font-size:10px;line-height:1.45;letter-spacing:.12em;text-transform:uppercase;color:var(--violet)}
+.pc-record-row h3{max-width:25ch;margin:0;font-size:clamp(20px,2vw,27px);font-weight:580;line-height:1.16;letter-spacing:-.03em;text-wrap:pretty}
+.pc-record-row p{max-width:46ch;margin:0;font-size:clamp(15px,1.35vw,18px);line-height:1.55;color:var(--muted);text-wrap:pretty}
+.pc-record-rule{display:grid;grid-template-columns:64px minmax(120px,.42fr) minmax(0,2fr);gap:clamp(20px,3vw,48px);align-items:start;padding:clamp(26px,3.6vw,42px) 0 0}
+.pc-record-rule__mark{font-family:var(--font-mono);font-size:22px;line-height:1;color:var(--violet)}
+.pc-record-rule strong{font-size:clamp(18px,1.7vw,23px);line-height:1.25;letter-spacing:-.02em}
+.pc-record-rule p{max-width:62ch;margin:0;font-size:15px;line-height:1.6;color:var(--muted)}
 .pc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:clamp(24px,3vw,36px)}
 .pc-card{border:1px solid var(--border,rgba(20,16,45,.12));border-radius:18px;padding:22px;background:var(--surface,#fff)}
 .pc-card .ic{font-size:22px;line-height:1}
@@ -183,6 +211,18 @@ const PC_STYLES = `
 .pc-kit .row span{font-size:14px;line-height:1.55;color:var(--muted,#5b5670)}
 .pc-price{margin-top:clamp(24px,3vw,34px);font-size:15px;color:var(--muted,#5b5670);text-wrap:balance}
 .pc-price strong{color:var(--fg,#14102d);font-weight:640}
+@media(max-width:900px){
+  .pc-record-row{grid-template-columns:48px minmax(110px,.38fr) minmax(0,1fr)}
+  .pc-record-row p{grid-column:3}
+  .pc-record-rule{grid-template-columns:48px minmax(110px,.38fr) minmax(0,1fr)}
+}
+@media(max-width:620px){
+  .pc-record-head .pc-record-title{font-size:clamp(40px,12vw,56px);line-height:1.02}
+  .pc-record-row{grid-template-columns:42px 1fr;gap:12px 18px}
+  .pc-record-row h3,.pc-record-row p{grid-column:2}
+  .pc-record-rule{grid-template-columns:42px 1fr;gap:12px 18px}
+  .pc-record-rule p{grid-column:2}
+}
 `;
 
 export default function PitchCompetitionsPage() {
@@ -211,9 +251,10 @@ export default function PitchCompetitionsPage() {
           eyebrow="For pitch competitions & university programs"
           title={<>Every entry gets a full read. Every rank carries its <HeroAccent>receipts.</HeroAccent></>}
           sub="EvalLens is the judging layer under your existing competition: an AI panel pre-reads the whole written round on your rubric, your screening committee confirms with briefing packs instead of blank PDF stacks, and your live judges walk into semis briefed. The final call stays exactly where it belongs."
-          primary={{ label: "Run a shadow pilot", href: "https://calendly.com/evallens/30min" }}
+          primary={{ label: "Run a shadow pilot", href: "/#demo", partnerAccess: true }}
           secondary={{ label: "See a sample report", href: "/trust/use-cases#sample-output" }}
           mediaAlt="A stack of evidence-linked entry review reports prepared for a pitch competition jury"
+          blendMediaCanvas
         />
 
         {/* §2 The written round, honestly (StatBand bakes a soft surface) */}
@@ -225,35 +266,48 @@ export default function PitchCompetitionsPage() {
           stats={WRITTEN_ROUND_STATS}
         />
 
-        {/* §3 The Monday-after email — page-local evidence chain */}
-        <section id="record" className="band light" aria-labelledby="pc-record-h2">
-          <div className="wrap pc-narrow" data-reveal="up">
-            <Eyebrow>The Monday-after email</Eyebrow>
-            <h2 id="pc-record-h2">
-              &ldquo;Judging process concerns&rdquo; — cc: sponsor,{" "}
-              <span className="grad-word">cc: dean.</span>
-            </h2>
-            <p className="sub">
-              A faculty advisor&rsquo;s team lost. Today you answer with a shrug and an
-              apology draft, because the written round genuinely is a lottery of tired
-              volunteers. With a record, the thread dies in one reply.
-            </p>
-          </div>
+        {/* §3 The Monday-after email — four-column Numbered record */}
+        <section
+          id="record"
+          className="band light ds-numbered pc-record-numbered"
+          data-version="1"
+          aria-labelledby="pc-record-h2"
+        >
           <div className="wrap">
-            <div className="pc-chain">
-              {EVIDENCE_CHAIN.map((c) => (
-                <div key={c.label} className="pc-chip" data-reveal="up">
-                  <div className="cl">{c.label}</div>
-                  {c.big ? <div className="big">{c.value}</div> : null}
-                  <div className="cv">{c.big ? c.note : c.value}</div>
-                </div>
+            <header className="pc-record-head" data-reveal="up">
+              <Eyebrow>The Monday-after email</Eyebrow>
+              <h2 id="pc-record-h2" className="pc-record-title">
+                <span className="pc-record-title-line">&ldquo;Judging process concerns&rdquo;</span>
+                <span className="pc-record-title-line grad-word">cc: sponsor, cc: dean.</span>
+              </h2>
+              <p className="sub">
+                A faculty advisor&rsquo;s team lost. Today you answer with a shrug and an
+                apology draft, because the written round genuinely is a lottery of tired
+                volunteers. With a record, the thread dies in one reply.
+              </p>
+            </header>
+
+            <ol className="pc-record-list" aria-label="Evidence in the decision record">
+              {RECORD_ROWS.map((item, index) => (
+                <li className="pc-record-row" key={item.label} data-reveal="up">
+                  <span className="pc-record-row__num" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="pc-record-row__label">{item.label}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </li>
               ))}
-            </div>
-            <p className="sub pc-narrow" style={{ marginTop: "28px" } as CSSProperties}>
-              The first and the last entry are evaluated under exactly the same rules —
-              something no volunteer process can honestly claim. Judge disagreement
-              surfaces for deliberation — never averaged away.
-            </p>
+            </ol>
+
+            <aside className="pc-record-rule" data-reveal="up">
+              <span className="pc-record-rule__mark" aria-hidden="true">↳</span>
+              <strong>One standard, whole pool.</strong>
+              <p>
+                The first and the last entry are evaluated under exactly the same rules.
+                Judge disagreement surfaces for deliberation, never averaged away.
+              </p>
+            </aside>
           </div>
         </section>
 
