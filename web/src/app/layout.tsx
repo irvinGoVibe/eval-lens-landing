@@ -48,9 +48,7 @@ const ORG_JSON_LD = {
   sameAs: [
     "https://www.linkedin.com/company/evallens",
     "https://x.com/EvalLensio",
-    "https://www.instagram.com/evallens/",
     "https://t.me/evallens",
-    "https://medium.com/@evallens",
   ],
 };
 
