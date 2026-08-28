@@ -10,6 +10,22 @@
       <stop offset="0%" stop-color="#EEF2FB"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
+    <linearGradient id="card-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#081527"/>
+      <stop offset="48%" stop-color="#0A1024"/>
+      <stop offset="100%" stop-color="#171038"/>
+    </linearGradient>
+    <linearGradient id="card-frame" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2EC5E8" stop-opacity="0.82"/>
+      <stop offset="52%" stop-color="#A99BFF" stop-opacity="0.74"/>
+      <stop offset="100%" stop-color="#6C4CF1" stop-opacity="0.88"/>
+    </linearGradient>
+    <clipPath id="card-portrait-clip">
+      <rect x="1880" y="140" width="960" height="960" rx="44"/>
+    </clipPath>
+    <filter id="card-shadow" x="-35%" y="-30%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
   </defs>
 
   <rect width="3000" height="1580" fill="#FFFFFF"/>
@@ -26,26 +42,19 @@
   <text x="183" y="935" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">Ten years studying how judgment works.</text>
   <text x="183" y="1000" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">Now building the lens with us.</text>
 
-  <!-- right graphic: a stack of books read through the lens -->
-  <g transform="translate(2020,420)">
-    <!-- book stack, hairline -->
-    <g fill="#FFFFFF" stroke="#C7CEDB" stroke-width="4">
-      <rect x="70" y="560" width="560" height="86" rx="14"/>
-      <rect x="110" y="462" width="490" height="86" rx="14"/>
-      <rect x="88" y="364" width="530" height="86" rx="14"/>
-      <rect x="132" y="266" width="450" height="86" rx="14"/>
-    </g>
-    <!-- spine ticks -->
-    <g stroke="#C7CEDB" stroke-width="4">
-      <line x1="150" y1="582" x2="150" y2="624"/>
-      <line x1="186" y1="484" x2="186" y2="526"/>
-      <line x1="164" y1="386" x2="164" y2="428"/>
-      <line x1="206" y1="288" x2="206" y2="330"/>
-    </g>
-    <!-- top book highlighted through the lens -->
-    <rect x="132" y="266" width="450" height="86" rx="14" fill="none" stroke="url(#lens)" stroke-width="7"/>
-    <!-- lens circle -->
-    <circle cx="360" cy="300" r="230" fill="none" stroke="url(#lens)" stroke-width="10"/>
-    <line x1="522" y1="462" x2="640" y2="580" stroke="url(#lens)" stroke-width="10" stroke-linecap="round"/>
+  <!-- right graphic: a complete founder card, matching the About-page treatment -->
+  <g>
+    <rect x="1804" y="84" width="1112" height="1412" rx="78" fill="#6C4CF1" opacity="0.12" filter="url(#card-shadow)"/>
+    <rect x="1818" y="70" width="1084" height="1426" rx="76" fill="url(#card-bg)" stroke="url(#card-frame)" stroke-width="6"/>
+    <rect x="1850" y="108" width="1020" height="1024" rx="54" fill="#050A16" stroke="#A99BFF" stroke-opacity="0.22" stroke-width="4"/>
+    <image href="akim-cover-card.png" x="1880" y="140" width="960" height="960" preserveAspectRatio="xMidYMid meet" clip-path="url(#card-portrait-clip)"/>
+
+    <line x1="1880" y1="1164" x2="2840" y2="1164" stroke="#A99BFF" stroke-opacity="0.24" stroke-width="3"/>
+    <text x="2360" y="1250" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="34" font-weight="500" font-style="italic" fill="#F2F0FF">
+      <tspan x="2360" dy="0">“I don't want to promise what I won't deliver.</tspan>
+      <tspan x="2360" dy="56">But I'm ready to deliver everything I can.”</tspan>
+    </text>
+    <rect x="2220" y="1370" width="280" height="5" rx="3" fill="url(#lens)" opacity="0.88"/>
+    <text x="2360" y="1432" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="5" fill="#36E0C2">DR. AKIM GOLUBEV</text>
   </g>
 </svg>

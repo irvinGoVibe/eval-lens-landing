@@ -5,7 +5,7 @@ accent: violet
 title: Dr. Akim Golubev joins EvalLens
 excerpt: We build software that helps humans judge startups. Our newest co-founder has spent a decade studying how judgment works — and what responsibility means when humans and machines share it.
 date: 2026-08-28
-readMinutes: 4
+readMinutes: 5
 cover: /assets/blog/akim-joins/cover.png
 author: Anonymous Unicorn
 status: draft
@@ -41,6 +41,10 @@ Akim has spent a decade inside that argument. His research asks what happens to 
 
 What we gain in Akim is someone who can take that answer apart, put it back together, and tell us where it will bend. When we first walked him through the product, he gave us the line we'd happily put on a wall: *"This is the theory becoming application — the thing I wanted to build myself, but had no idea where to even begin."*
 
+:::gallery
+![Posthumanism as a distributed field of human and nonhuman agency](/assets/blog/akim-joins/posthumanism-distributed-agency.png)
+:::
+
 ## Why now
 
 Akim didn't join a startup that happened to have an open seat. He joined because of what EvalLens is today — and what it's about to become.
@@ -51,6 +55,10 @@ Akim didn't join a startup that happened to have an open seat. He joined because
 
 We'll unveil the full vision next week, in this Newsroom. It's the reason a scholar of distributed agency said yes to a startup. Asked what he could commit to, Akim gave the most on-brand answer we've heard: *"I don't want to promise what I won't deliver. But I'm ready to deliver everything I can."* His job starts before the announcement: making sure the theory underneath can hold weight before we ask anyone to stand on it.
 
+:::gallery
+![EvalLens today and next: evaluation with receipts, then the price of responsibility](/assets/blog/akim-joins/today-next.png)
+:::
+
 ## What he'll actually be doing
 
 Four things, in rough order of appearance:
@@ -59,6 +67,22 @@ Four things, in rough order of appearance:
 - **Podcasts and conversations.** He has hosted long-form academic interviews before, and we're setting up a studio. You can see where this is going.
 - **Academic pilots.** We're scoping a university pitch-day pilot: student startups get evidence-backed reports, judges get a structured first read, and the leaderboard stays human. Details when they're real.
 - **Being where the arguments happen.** He lives and teaches in the middle of Silicon Valley — demo days, AI meetups, hallway debates included. Somebody from EvalLens should be in those rooms; now somebody is.
+
+:::gallery
+![Four roles: research and writing, podcasts, academic pilots, Silicon Valley presence](/assets/blog/akim-joins/four-roles.png)
+:::
+
+## Common questions
+
+**Who is Dr. Akim Golubev?** Dr. Akim Golubev is a co-founder of EvalLens, a professor at the University of Nevada, Las Vegas, and a teacher at The Harker School in San Jose. He holds a Ph.D. in English Literature from UNLV (2025), is the first Crimean Tatar to earn a Ph.D. in the United States, received UNLV's Outstanding Teaching Award, and his book *Posthuman Vital Materialism* is forthcoming from Macmillan.
+
+**Why did EvalLens add an academic co-founder?** Because evaluation products win on methodology, and a methodology is a theory of judgment. Akim's research on distributed agency covers the exact question EvalLens is built around: when AI prepares the analysis and a person makes the final call, who owns the decision? At EvalLens he leads research and academic partnerships.
+
+**What will Akim Golubev do at EvalLens?** Four things: research and writing on evaluation and human-AI judgment, podcasts and long-form conversations, academic pilots starting with a university pitch-day program, and representing EvalLens in Silicon Valley, where he lives and teaches.
+
+**Who are the founders of EvalLens?** EvalLens has three co-founders: Yaroslav Volovoj (product, strategy, and methodology), Vladislav Starodubov (engineering and architecture), and Dr. Akim Golubev (research and academic partnerships).
+
+**What is the price of responsibility?** The observation that once AI makes execution abundant, responsibility becomes the scarce resource — and scarce things acquire a price. Evaluating AI-delegated work, and proving who stands behind it, is the next problem EvalLens is building for. The full vision lands in this Newsroom next week.
 
 ## The quiet part
 
