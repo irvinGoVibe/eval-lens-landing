@@ -37,9 +37,7 @@ Akim has spent a decade inside that argument. His research asks what happens to 
 
 What we gain in Akim is someone who can take that answer apart, put it back together, and tell us where it will bend. When we first walked him through the product, he gave us the line we'd happily put on a wall: *"This is the theory becoming application — the thing I wanted to build myself, but had no idea where to even begin."*
 
-:::gallery
 ![Posthumanism as a distributed field of human and nonhuman agency](/assets/blog/akim-joins/posthumanism-distributed-agency.png)
-:::
 
 ## Why now
 
