@@ -6,7 +6,7 @@ title: Dr. Akim Golubev joins EvalLens
 excerpt: We build software that helps humans judge startups. Our newest co-founder has spent a decade studying how judgment works — and what responsibility means when humans and machines share it.
 date: 2026-08-28
 readMinutes: 5
-cover: /assets/blog/akim-joins/cover.png
+cover: /assets/blog/akim-joins/cover-v2.png
 author: Anonymous Unicorn
 status: draft
 ---
@@ -54,11 +54,6 @@ Akim didn't join a startup that happened to have an open seat. He joined because
 **Next** is the part we've been quietly building toward. AI agents are starting to do work that used to take teams, and someone still signs for the result. Execution is becoming abundant. Responsibility stays scarce. And scarce things acquire a price. Internally we call it the **price of responsibility**: once work is delegated to machines, evaluating that work — and proving who stands behind it — becomes the scarce skill. Everything EvalLens does today is the first stage of that larger arc.
 
 We'll unveil the full vision next week, in this Newsroom. It's the reason a scholar of distributed agency said yes to a startup. Asked what he could commit to, Akim gave the most on-brand answer we've heard: *"I don't want to promise what I won't deliver. But I'm ready to deliver everything I can."* His job starts before the announcement: making sure the theory underneath can hold weight before we ask anyone to stand on it.
-
-:::gallery
-![EvalLens today and next: evaluation with receipts, then the price of responsibility](/assets/blog/akim-joins/today-next.png)
-:::
-
 ## What he'll actually be doing
 
 Four things, in rough order of appearance:
@@ -67,11 +62,6 @@ Four things, in rough order of appearance:
 - **Podcasts and conversations.** He has hosted long-form academic interviews before, and we're setting up a studio. You can see where this is going.
 - **Academic pilots.** We're scoping a university pitch-day pilot: student startups get evidence-backed reports, judges get a structured first read, and the leaderboard stays human. Details when they're real.
 - **Being where the arguments happen.** He lives and teaches in the middle of Silicon Valley — demo days, AI meetups, hallway debates included. Somebody from EvalLens should be in those rooms; now somebody is.
-
-:::gallery
-![Four roles: research and writing, podcasts, academic pilots, Silicon Valley presence](/assets/blog/akim-joins/four-roles.png)
-:::
-
 ## Common questions
 
 **Who is Dr. Akim Golubev?** Dr. Akim Golubev is a co-founder of EvalLens, a professor at the University of Nevada, Las Vegas, and a teacher at The Harker School in San Jose. He holds a Ph.D. in English Literature from UNLV (2025), is the first Crimean Tatar to earn a Ph.D. in the United States, received UNLV's Outstanding Teaching Award, and his book *Posthuman Vital Materialism* is forthcoming from Macmillan.
