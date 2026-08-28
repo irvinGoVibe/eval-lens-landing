@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="1580" viewBox="0 0 3000 1580">
+  <defs>
+    <linearGradient id="lens" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(28)">
+      <stop offset="0%" stop-color="#7C5CFF"/>
+      <stop offset="35%" stop-color="#A78BFA"/>
+      <stop offset="70%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#EEF2FB"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="3000" height="1580" fill="#FFFFFF"/>
+  <circle cx="2300" cy="790" r="640" fill="url(#halo)"/>
+
+  <!-- kicker -->
+  <text x="185" y="530" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="10" fill="#3F4551">EVALLENS&#160;&#160;·&#160;&#160;PRESS RELEASE</text>
+
+  <!-- headline -->
+  <text x="180" y="680" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="800" fill="#15181E">A new co-founder:</text>
+  <text x="180" y="820" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="800" fill="url(#lens)">Dr. Akim Golubev</text>
+
+  <!-- dek -->
+  <text x="183" y="935" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">Ten years studying how judgment works.</text>
+  <text x="183" y="1000" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">Now building the lens with us.</text>
+
+  <!-- right graphic: a stack of books read through the lens -->
+  <g transform="translate(2020,420)">
+    <!-- book stack, hairline -->
+    <g fill="#FFFFFF" stroke="#C7CEDB" stroke-width="4">
+      <rect x="70" y="560" width="560" height="86" rx="14"/>
+      <rect x="110" y="462" width="490" height="86" rx="14"/>
+      <rect x="88" y="364" width="530" height="86" rx="14"/>
+      <rect x="132" y="266" width="450" height="86" rx="14"/>
+    </g>
+    <!-- spine ticks -->
+    <g stroke="#C7CEDB" stroke-width="4">
+      <line x1="150" y1="582" x2="150" y2="624"/>
+      <line x1="186" y1="484" x2="186" y2="526"/>
+      <line x1="164" y1="386" x2="164" y2="428"/>
+      <line x1="206" y1="288" x2="206" y2="330"/>
+    </g>
+    <!-- top book highlighted through the lens -->
+    <rect x="132" y="266" width="450" height="86" rx="14" fill="none" stroke="url(#lens)" stroke-width="7"/>
+    <!-- lens circle -->
+    <circle cx="360" cy="300" r="230" fill="none" stroke="url(#lens)" stroke-width="10"/>
+    <line x1="522" y1="462" x2="640" y2="580" stroke="url(#lens)" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>
