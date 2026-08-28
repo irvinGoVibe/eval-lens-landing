@@ -29,10 +29,6 @@ The short version of the CV, because it's a good one:
 
 He's on [LinkedIn](https://www.linkedin.com/in/akim-golubev/), where all three of his current jobs involve teaching someone something. We intend to be the fourth.
 
-:::gallery
-![Dr. Akim Golubev](/assets/blog/akim-joins/akim-golubev.png)
-:::
-
 ## Why an evaluation company hires a literature professor
 
 One of the four principles on our [About page](/company/about) reads: **methodology matters more than the model.** We mean it literally. A scoring system is a theory of judgment with a UI. Rubrics, criteria, structured disagreement, the difference between an opinion and an evidence-backed reading — none of that was invented by AI labs. The humanities have been arguing about how to evaluate work fairly, and what an evaluator owes the work in front of them, for a few centuries longer than machine learning has existed.
