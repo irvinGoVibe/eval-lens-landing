@@ -6,9 +6,9 @@ title: Dr. Kim Golubev joins EvalLens
 excerpt: We build software that helps humans judge startups. Our newest co-founder has spent a decade studying how judgment works — and what responsibility means when humans and machines share it.
 date: 2026-08-28
 readMinutes: 5
-cover: /assets/blog/akim-joins/cover-v3.png
+cover: /assets/blog/akim-joins/cover-v4.png
 author: Anonymous Unicorn
-status: draft
+status: published
 ---
 
 On weekday mornings, Dr. Kim Golubev teaches English at a school in Silicon Valley. Evenings and remote hours belong to the University of Nevada, Las Vegas, where he earned his Ph.D. and picked up an Outstanding Teaching Award on the way out. As of this week, the hours in between belong to us.
