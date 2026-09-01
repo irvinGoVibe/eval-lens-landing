@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import {
   StatBand,
+  Bento,
   Numbered,
   Faq,
   CtaBand,
@@ -181,22 +182,35 @@ const KIT_ROWS = [
   },
 ];
 
-/* §7 — data & team IP (page-local) */
+/* §7 — data & team IP (DS Bento) */
 const DATA_IP = [
   {
-    icon: "🚫",
+    tag: "Data use",
     title: "Never trained on",
     body: "Team submissions are processed only for your event's evaluation and never used to train models. Contractual.",
+    feature: true,
   },
   {
-    icon: "🏫",
+    tag: "Ownership",
     title: "The event owns the record",
     body: "Reports, scores and the decision log belong to your program. Retention and deletion follow your policy, and a DPA is available. Student data handling is structured to support your institution's obligations.",
   },
   {
-    icon: "🧾",
+    tag: "Procurement",
     title: "Procurement-ready",
     body: "PO and invoice accepted, vendor registration forms and security questionnaires supported, public sub-processor list at /subprocessors, education discount for university programs.",
+  },
+  {
+    tag: "Retro-test",
+    title: "Try it on last year’s field first",
+    body: (
+      <>
+        Send us a batch you already judged and compare the AI read against the
+        placements you know. The first retro-test run is free through August 31,
+        for batches up to 10 decks. <a href="/company/contact#batch">Send us your batch</a>{" "}
+        or <a href="/pricing">see pricing</a>.
+      </>
+    ),
   },
 ];
 
@@ -246,8 +260,6 @@ const HK_STYLES = `
 .hk-kit .rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:24px}
 .hk-kit .row b{display:block;font-size:15px;margin-bottom:6px}
 .hk-kit .row span{font-size:14px;line-height:1.55;color:var(--muted,#5b5670)}
-.hk-note{margin-top:clamp(24px,3vw,34px);font-size:15px;color:var(--muted,#5b5670);text-wrap:balance}
-.hk-note strong{color:var(--fg,#14102d);font-weight:640}
 `;
 
 export default function HackathonsPage() {
@@ -385,34 +397,18 @@ export default function HackathonsPage() {
           </div>
         </section>
 
-        {/* §7 Data & team IP — page-local */}
-        <section className="band soft" aria-labelledby="hk-data-h2">
-          <div className="wrap hk-narrow" data-reveal="up">
-            <Eyebrow>Data &amp; team IP</Eyebrow>
-            <h2 id="hk-data-h2">
-              The block your legal team reads{" "}
-              <span className="grad-word">first.</span>
-            </h2>
-          </div>
-          <div className="wrap">
-            <div className="hk-cards">
-              {DATA_IP.map((c) => (
-                <div key={c.title} className="hk-card" data-reveal="up">
-                  <div className="ic" aria-hidden="true">{c.icon}</div>
-                  <h3>{c.title}</h3>
-                  <p>{c.body}</p>
-                </div>
-              ))}
-            </div>
-            <p className="hk-note" data-reveal="up">
-              <strong>Try it on last year&rsquo;s field first.</strong> Send us a batch you
-              already judged and compare the AI read against the placements you know. The
-              first retro-test run is free through August 31, for batches up to 10 decks.{" "}
-              <a href="/company/contact#batch">Send us your batch</a> or{" "}
-              <a href="/pricing">see pricing</a>.
-            </p>
-          </div>
-        </section>
+        {/* §7 Data & team IP — shared DS Bento, no emoji icon layer. */}
+        <Bento
+          id="data-team-ip"
+          surface="light"
+          version={1}
+          ariaLabel="Data and team intellectual property"
+          eyebrow="Data & team IP"
+          title="The block your legal team reads first."
+          titleAccent="first."
+          sub=""
+          items={DATA_IP}
+        />
 
         {/* Cinema starts the single dark act; FAQ and conversion stay dark. */}
         <Cinema

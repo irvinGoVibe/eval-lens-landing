@@ -250,7 +250,7 @@ const TRUST_CARDS = [
 function BuiltForControlledReview() {
   return (
     <section
-      className="band light uc2-trust"
+      className="band soft uc2-trust"
       aria-labelledby="uc2-trust-h2"
     >
       <div className="wrap">
@@ -524,13 +524,6 @@ export default function UseCasesPage() {
 
         {/* §4 Built for Controlled Review */}
         <BuiltForControlledReview />
-
-        <div
-          className="tr-gradient-bridge"
-          data-from="light"
-          data-to="soft"
-          aria-hidden="true"
-        />
 
         {/* §5 Choose Your Workflow */}
         <ChooseYourWorkflow />
