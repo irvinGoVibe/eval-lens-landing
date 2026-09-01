@@ -1,17 +1,17 @@
 # EvalLens Podcast · Episode 1 — "The Price of Responsibility"
 ## План повествования v2 (после реверс-инжиниринга на панели из 9 слушателей)
 
-Хосты: Yaroslav + Dr. Akim Golubev · Студия · Язык: EN · Хронометраж: **30–35 мин**
+Хосты: Yaroslav + Dr. Kim Golubev · Студия · Язык: EN · Хронометраж: **30–35 мин**
 Публичная рамка: всё видение подаём как **EvalLens** («Lineage» не произносим; стадии, R-уровни,
 RaaS-термин, цифры stake/pool не раскрываем). Guardrails: EvalLens без «e», no «AI jury»,
 финальное решение всегда за человеком, произношение «EvalLens» (не «evil»).
 
 Правила v2: **одно число на блок** (остальные в шоуноты) · в каждом блоке либо история, либо
 сцена · прямые адресации трём аудиториям (организаторы заявок · агентства, продающие работу
-агентов · enterprise-инновации) · регалии Акима раздаём по ходу, не списком.
+агентов · enterprise-инновации) · регалии Кима раздаём по ходу, не списком.
 
 Арка: сцена с деньгами → кто подписывается → рынок уже прайсит ответственность (но страхует не
-то) → кто судит → человек в петле (глубина Акима) → куда идёт EvalLens.
+то) → кто судит → человек в петле (глубина Кима) → куда идёт EvalLens.
 
 ---
 
@@ -30,7 +30,7 @@ RaaS-термин, цифры stake/pool не раскрываем). Guardrails:
 ## 1 · WELCOME ABOARD (0:45–5:00)
 
 > "Welcome to the first EvalLens podcast. I'm Yaroslav, co-founder of EvalLens — and I'm
-> genuinely happy to welcome aboard a new member of the founding team: Dr. Akim Golubev."
+> genuinely happy to welcome aboard a new member of the founding team: Dr. Kim Golubev."
 
 Коротко где он: «joins us from the middle of Silicon Valley». Остальные регалии НЕ здесь —
 раздаём по эпизоду (Macmillan/PhD → блок про суждение; «first
@@ -58,7 +58,7 @@ Crimean Tatar Ph.D. in the US» → финал, личная нота).
 - Живой пример-мост (1 мин, для университетов/грантов): ERC запретила AI в оценке заявок —
   «judgment cannot be delegated». Регулятор уже провёл нашу границу: администрирование — можно,
   суждение — человек. (кросс-промо статьи в Newsroom)
-- Акиму: **"Philosophy has argued about moral agency for centuries. Is 'the human signs, the
+- Киму: **"Philosophy has argued about moral agency for centuries. Is 'the human signs, the
   machine acts' a real answer or a legal fiction?"**
 - Спор: «ответственность нельзя делегировать» vs «она уже де-факто делегирована — просто никто
   не оформил бумаги».
@@ -81,7 +81,7 @@ Crimean Tatar Ph.D. in the US» → финал, личная нота).
 - Мини-вставка про identity (2 мин, бывший блок 4): у агентов появляются паспорта — реестры,
   agent cards, репутация. **"Passports are here. But who grades the driving test?"** (identity ≠
   качество работы; реестры пусты, потому что некому верифицировать)
-- Акиму: **"When responsibility gets a price tag, does it become more real — or less human?"**
+- Киму: **"When responsibility gets a price tag, does it become more real — or less human?"**
 
 ## 4 · WHO JUDGES THE JUDGES? (19:00–26:00) — суждение, LLM-as-judge и мост к сегодняшнему EvalLens
 
@@ -94,7 +94,7 @@ Crimean Tatar Ph.D. in the US» → финал, личная нота).
   applications, one rubric, three tired reviewers. Same judgment problem, human scale. That's
   the EvalLens you can use this Monday." (одна фраза «batch of applications → evidence-backed
   reports → human final call»)
-- История Акима (попросить заранее): случай из преподавания/грейдинга, где два честных
+- История Кима (попросить заранее): случай из преподавания/грейдинга, где два честных
   оценщика разошлись — и что это говорит о суждении. (здесь естественно всплывает: его PhD,
   грядущая книга в **Palgrave Macmillan** — «человек, который написал книгу о суждении»)
 - **"Humanities have graded ambiguous work for centuries. What does a literature department
@@ -102,7 +102,7 @@ Crimean Tatar Ph.D. in the US» → финал, личная нота).
 - Спор: «судейство автоматизируется как всё остальное» vs «суждение — последняя человеческая
   монополия».
 
-## 5 · THE HUMAN IN THE LOOP (26:00–31:00) — линза Акима: distributed agency
+## 5 · THE HUMAN IN THE LOOP (26:00–31:00) — линза Кима: distributed agency
 
 Без чисел. Глубина. (Бизнес-слушатель уже прогрет, культурный слушатель — на пике.)
 
@@ -121,7 +121,7 @@ Crimean Tatar Ph.D. in the US» → финал, личная нота).
   decks in, ranked evidence out, your decision. The next chapter is bigger: execution is
   becoming abundant, responsibility is becoming the scarce asset. Full vision — in our
   Newsroom, next week."**
-- Личная нота (регалия к месту): «Akim is the first Crimean Tatar to earn a Ph.D. in the United
+- Личная нота (регалия к месту): «Kim is the first Crimean Tatar to earn a Ph.D. in the United
   States. A man who carries a first for an entire people doesn't take signing his name lightly.»
 - Финальный вопрос: **"One promise to our listeners — what will you personally deliver here?"**
   (ожидаемый калбэк: "I don't want to promise what I won't deliver…")
@@ -133,12 +133,12 @@ Crimean Tatar Ph.D. in the US» → финал, личная нота).
 
 - **Клипы (7 кандидатов):** cold open ($2,000 сцена) · «who signs — what is that signature
   worth» · «they insure the driver, nobody guarantees the ride» · «who grades the driving
-  test» · адресация агентствам («this question is your payroll») · ответ Акима про
+  test» · адресация агентствам («this question is your payroll») · ответ Кима про
   posthumanism · promise-калбэк финала.
 - **Роли:** Ярослав — сцены, числа (по одному на блок, всегда с источником: «Gartner says…»,
-  «a RAND study found…»), адресации сегментам. Аким — глубина, истории, вторая сторона споров.
+  «a RAND study found…»), адресации сегментам. Ким — глубина, истории, вторая сторона споров.
   В спорах меняемся ролями скептик/теоретик от блока к блоку.
-- **До записи:** попросить у Акима 2 истории (класс/грейдинг) · прогон терминов (EvalLens,
+- **До записи:** попросить у Кима 2 истории (класс/грейдинг) · прогон терминов (EvalLens,
   no «AI jury», no «Lineage», без внутренних цифр) · тайм-чек на 35 мин жёсткий.
 - **Ретеншн-дизайн:** лучший материал теперь в первых 60 секундах; каждые ~6 минут — смена
   регистра (сцена → спор → история → адресация); три прямые адресации сегментам (агентства

@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="1580" viewBox="0 0 3000 1580">
+  <defs>
+    <linearGradient id="lens" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6C4CF1"/>
+      <stop offset="38%" stop-color="#A99BFF"/>
+      <stop offset="72%" stop-color="#2EC5E8"/>
+      <stop offset="100%" stop-color="#36E0C2"/>
+    </linearGradient>
+    <linearGradient id="card-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#081527"/>
+      <stop offset="48%" stop-color="#0A1024"/>
+      <stop offset="100%" stop-color="#171038"/>
+    </linearGradient>
+    <linearGradient id="card-frame" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2EC5E8" stop-opacity="0.9"/>
+      <stop offset="52%" stop-color="#A99BFF" stop-opacity="0.72"/>
+      <stop offset="100%" stop-color="#6C4CF1" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="portrait-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07182A"/>
+      <stop offset="48%" stop-color="#080D20"/>
+      <stop offset="100%" stop-color="#1A0D3B"/>
+    </linearGradient>
+    <radialGradient id="cyan-glow"><stop offset="0%" stop-color="#2EC5E8" stop-opacity="0.46"/><stop offset="100%" stop-color="#2EC5E8" stop-opacity="0"/></radialGradient>
+    <radialGradient id="violet-glow"><stop offset="0%" stop-color="#6C4CF1" stop-opacity="0.52"/><stop offset="100%" stop-color="#6C4CF1" stop-opacity="0"/></radialGradient>
+    <clipPath id="portrait-clip">
+      <rect x="1880" y="140" width="960" height="960" rx="44"/>
+    </clipPath>
+    <filter id="card-shadow" x="-35%" y="-30%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+    <filter id="pill-glow" x="-50%" y="-100%" width="200%" height="300%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="portrait-mono" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.08" intercept="-0.035"/>
+        <feFuncG type="linear" slope="1.08" intercept="-0.035"/>
+        <feFuncB type="linear" slope="1.08" intercept="-0.035"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="cyan-rim" x="-20%" y="-15%" width="140%" height="130%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="3" result="expanded"/>
+      <feGaussianBlur in="expanded" stdDeviation="4" result="soft"/>
+      <feFlood flood-color="#2EC5E8" flood-opacity="0.82" result="color"/>
+      <feComposite in="color" in2="soft" operator="in" result="glow"/>
+      <feOffset in="glow" dx="-5" dy="0"/>
+    </filter>
+    <filter id="violet-rim" x="-20%" y="-15%" width="140%" height="130%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="3" result="expanded"/>
+      <feGaussianBlur in="expanded" stdDeviation="4" result="soft"/>
+      <feFlood flood-color="#8B5CF6" flood-opacity="0.82" result="color"/>
+      <feComposite in="color" in2="soft" operator="in" result="glow"/>
+      <feOffset in="glow" dx="5" dy="0"/>
+    </filter>
+  </defs>
+
+  <rect width="3000" height="1580" fill="#FFFFFF"/>
+
+  <text x="185" y="530" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="10" fill="#3F4551">EVALLENS&#160;&#160;·&#160;&#160;PRESS RELEASE</text>
+  <text x="180" y="680" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="800" fill="#15181E">A new co-founder:</text>
+  <text x="180" y="820" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="800" fill="url(#lens)">Dr. Kim Golubev</text>
+  <text x="183" y="935" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">Ten years studying how judgment works.</text>
+  <text x="183" y="1000" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="49" fill="#6B7280">Now building the lens with us.</text>
+
+  <g>
+    <rect x="1804" y="84" width="1112" height="1412" rx="78" fill="#6C4CF1" opacity="0.12" filter="url(#card-shadow)"/>
+    <rect x="1818" y="70" width="1084" height="1426" rx="76" fill="url(#card-bg)" stroke="url(#card-frame)" stroke-width="6"/>
+    <rect x="1850" y="108" width="1020" height="1024" rx="54" fill="#050A16" stroke="#A99BFF" stroke-opacity="0.25" stroke-width="4"/>
+
+    <!-- Original-photo pixels on a separate EvalLens background layer. -->
+    <g clip-path="url(#portrait-clip)">
+      <rect x="1880" y="140" width="960" height="960" fill="url(#portrait-bg)"/>
+      <circle cx="1970" cy="500" r="470" fill="url(#cyan-glow)"/>
+      <circle cx="2810" cy="430" r="500" fill="url(#violet-glow)"/>
+      <rect x="1940" y="205" width="420" height="780" rx="54" fill="#2EC5E8" fill-opacity="0.035" stroke="#2EC5E8" stroke-opacity="0.12" stroke-width="3"/>
+      <rect x="2310" y="240" width="470" height="800" rx="58" fill="#6C4CF1" fill-opacity="0.035" stroke="#A99BFF" stroke-opacity="0.12" stroke-width="3"/>
+      <image href="akim-cutout.png" x="2060" y="140" width="960" height="960" preserveAspectRatio="xMidYMid slice" filter="url(#cyan-rim)"/>
+      <image href="akim-cutout.png" x="2060" y="140" width="960" height="960" preserveAspectRatio="xMidYMid slice" filter="url(#violet-rim)"/>
+      <image href="akim-cutout.png" x="2060" y="140" width="960" height="960" preserveAspectRatio="xMidYMid slice" filter="url(#portrait-mono)"/>
+    </g>
+
+    <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+      <rect x="1910" y="176" width="184" height="58" rx="29" fill="#080D1C" fill-opacity="0.88" stroke="#A99BFF" stroke-opacity="0.62" stroke-width="3"/>
+      <text x="2002" y="214" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="6" fill="#FFFFFF">FOUNDER</text>
+
+      <g font-size="22" font-weight="500" fill="#66DBF3" text-anchor="middle" filter="url(#pill-glow)">
+        <rect x="1910" y="302" width="272" height="58" rx="29" fill="#071027" fill-opacity="0.94" stroke="#6C4CF1" stroke-width="3"/>
+        <text x="2046" y="339">Methodology</text>
+        <rect x="1910" y="380" width="320" height="58" rx="29" fill="#071027" fill-opacity="0.94" stroke="#2EC5E8" stroke-width="3"/>
+        <text x="2070" y="417">Human-AI Ethics</text>
+        <rect x="1910" y="458" width="352" height="58" rx="29" fill="#071027" fill-opacity="0.94" stroke="#36E0C2" stroke-width="3"/>
+        <text x="2086" y="495">Academic Research</text>
+      </g>
+
+      <rect x="1910" y="972" width="440" height="82" rx="41" fill="#061024" fill-opacity="0.94" stroke="#2EC5E8" stroke-opacity="0.86" stroke-width="3"/>
+      <text x="2130" y="1026" text-anchor="middle" font-family="Bradley Hand, Comic Sans MS, cursive" font-size="34" font-style="italic" fill="#5BE5F7">Keeps judgment human</text>
+    </g>
+
+    <line x1="1880" y1="1164" x2="2840" y2="1164" stroke="#A99BFF" stroke-opacity="0.24" stroke-width="3"/>
+    <text x="2360" y="1250" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="34" font-weight="500" font-style="italic" fill="#F2F0FF">
+      <tspan x="2360" dy="0">“I don't want to promise what I won't deliver.</tspan>
+      <tspan x="2360" dy="56">But I'm ready to deliver everything I can.”</tspan>
+    </text>
+    <rect x="2220" y="1370" width="280" height="5" rx="3" fill="url(#lens)" opacity="0.88"/>
+    <text x="2360" y="1432" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="5" fill="#36E0C2">DR. KIM GOLUBEV</text>
+  </g>
+</svg>
