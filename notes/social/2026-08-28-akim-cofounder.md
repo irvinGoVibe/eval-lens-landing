@@ -11,7 +11,7 @@ media/photos/akim-joins/akim-golubev.webp).
 
 ## LinkedIn (Yaroslav, текст + кард; ссылки в ПЕРВЫЙ коммент)
 
-On weekday mornings, our newest co-founder teaches literature to teenagers whose parents build AI for a living.
+On weekday mornings, our newest co-founder teaches English at a school in Silicon Valley.
 
 In the evenings he teaches at the university where he earned his doctorate. As of this week, the hours in between belong to EvalLens.
 
@@ -26,8 +26,8 @@ The credentials carry their own weight:
 • Ph.D. in English Literature, UNLV, 2025
 • The first Crimean Tatar to earn a Ph.D. in the United States
 • UNLV Outstanding Teaching Award, 2025
-• "Posthuman Vital Materialism" forthcoming from Macmillan
-• Teaches at The Harker School, in the middle of Silicon Valley
+• "Posthuman Vital Materialism" forthcoming from Palgrave Macmillan
+• Teaches English at a school in the middle of Silicon Valley
 
 And the timing is not an accident. Next week we unveil the next chapter of EvalLens. Akim joined because of what comes next, not only because of what exists today.
 
@@ -48,7 +48,7 @@ His LinkedIn: https://www.linkedin.com/in/akim-golubev/
 
 ## X (Yaroslav, тред из 8 твитов; кард — в твит 2)
 
-1/ On weekday mornings, our new co-founder teaches literature to teenagers whose parents build AI for a living.
+1/ On weekday mornings, our new co-founder teaches English at a school in Silicon Valley.
 
 He has never shipped production code. That's exactly why we brought him on.
 
@@ -57,7 +57,7 @@ He has never shipped production code. That's exactly why we brought him on.
 Ph.D. in English Literature, UNLV, 2025.
 First Crimean Tatar to earn a Ph.D. in the United States.
 UNLV Outstanding Teaching Award.
-"Posthuman Vital Materialism" forthcoming from Macmillan.
+"Posthuman Vital Materialism" forthcoming from Palgrave Macmillan.
 Teaches in Silicon Valley.
 
 3/ EvalLens evaluates pitch decks: AI prepares the evidence, a human makes the final call.
@@ -98,7 +98,7 @@ Say hi. He answers arguments about posthumanism faster than emails.
 
 Our new co-founder doesn't write code.
 
-On weekday mornings, Dr. Akim Golubev teaches literature to teenagers whose parents build AI for a living. In the evenings he teaches at UNLV, where he earned his Ph.D. and an Outstanding Teaching Award. The first Crimean Tatar to earn a Ph.D. in the United States. A book forthcoming from Macmillan.
+On weekday mornings, Dr. Akim Golubev teaches English at a school in Silicon Valley. In the evenings he teaches at UNLV, where he earned his Ph.D. and an Outstanding Teaching Award. The first Crimean Tatar to earn a Ph.D. in the United States. A book forthcoming from Palgrave Macmillan.
 
 Why does an evaluation company need a scholar of judgment?
 

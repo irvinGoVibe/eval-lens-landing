@@ -1,0 +1,29 @@
+LINKEDIN POST
+
+Every research newsletter ran the same headline this spring: "ERC bans reviewers from using AI."
+
+Almost nobody answered the question that lands on an organizer's desk the next morning: what is still allowed?
+
+We read the rules instead of the headlines. Two things stand out.
+
+1. The "AI ban" is two different fences.
+The ERC rule is about judgment: assessing merit is the one task a funder cannot delegate to a machine, even one running on the agency's own servers. The NIH rule (NOT-OD-23-149) is about custody: confidential content may not leave controlled infrastructure, even for a task with zero judgment in it. An operation can clear one fence and still hit the other.
+
+2. The workable line under both rules: administration vs evaluation.
+Completeness checks, eligibility against objective criteria, routing, decision logs: workable. Summarizing a proposal for a reviewer, drafting assessments, scoring merit: off limits. And when an "eligibility" criterion requires judgment to apply, treat it as judgment.
+
+Meanwhile, across 12 research funders, applications grew 57% between 2022 and 2025. Marie Curie fellowships alone: +142%. The share of easy rejections dropped from 20% to 5%. Same reviewer hours. (Times Higher Education)
+
+A documented protocol resolves that math where a ban cannot: your team automated this class of operations, named humans decided that class, and the record shows which was which.
+
+That is the design principle behind EvalLens: the platform prepares the analysis, a human makes the call. Across 1,000+ evaluation runs, the final ranking has always come from a score a person set.
+
+The full breakdown, operation by operation, is in the article. Link in the first comment.
+
+If you run a selection program: which side worries you more right now, the reading load or the audit trail?
+
+
+FIRST COMMENT
+
+Full article, with the operation-by-operation table and sources:
+https://www.evallens.io/blog/what-the-erc-ban-actually-allows

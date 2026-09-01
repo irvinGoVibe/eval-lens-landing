@@ -1,0 +1,78 @@
+ERC BAN ARTICLE — SOCIAL PACK (FINAL, after stop-slop)
+Article: https://www.evallens.io/blog/what-the-erc-ban-actually-allows
+Voice: official EvalLens accounts
+
+============================================================
+LINKEDIN (official page; post WITH image; link in FIRST comment)
+============================================================
+
+Every research newsletter ran the same headline this spring: "ERC bans reviewers from using AI."
+
+Almost nobody answered the question that lands on an organizer's desk the next morning: what is still allowed?
+
+We read the rules instead of the headlines. Two things stand out.
+
+1. The "AI ban" is two different fences.
+The ERC rule is about judgment: assessing merit is the one task a funder cannot delegate to a machine, even one running on the agency's own servers. The NIH rule (NOT-OD-23-149) is about custody: confidential content may not leave controlled infrastructure, even for a task with zero judgment in it. An operation can clear one fence and still hit the other.
+
+2. The workable line under both rules: administration vs evaluation.
+Completeness checks, eligibility against objective criteria, routing, decision logs: workable. Summarizing a proposal for a reviewer, drafting assessments, scoring merit: off limits. And when an "eligibility" criterion requires judgment to apply, treat it as judgment.
+
+Meanwhile, across 12 research funders, applications grew 57% between 2022 and 2025. Marie Curie fellowships alone: +142%. The share of easy rejections dropped from 20% to 5%. Same reviewer hours. (Times Higher Education)
+
+A documented protocol resolves that math where a ban cannot: your team automated this class of operations, named humans decided that class, and the record shows which was which.
+
+That is the design principle behind EvalLens: the platform prepares the analysis, a human makes the call. Across 1,000+ evaluation runs, the final ranking has always come from a score a person set.
+
+The full breakdown, operation by operation, is in the article. Link in the first comment.
+
+If you run a selection program: which side worries you more right now, the reading load or the audit trail?
+
+--- FIRST COMMENT (from the page) ---
+
+Full article, with the operation-by-operation table and sources:
+https://www.evallens.io/blog/what-the-erc-ban-actually-allows
+
+--- SEED COMMENT (from Yaroslav, within the first hour) ---
+
+The question I keep hearing from organizers is not "Can reviewers use AI?" It is "Which parts of our workflow can we still automate without crossing the line?" The administration-versus-evaluation distinction has been the most useful answer.
+
+============================================================
+TELEGRAM (@evallens channel, broadcast)
+============================================================
+
+"Reviewers banned from using AI." You saw the headline in March. Your intake automation didn't stop being useful because of it.
+
+We read the actual rules (ERC + NIH) and mapped what's still allowed, operation by operation. Short version: there are two different fences. ERC protects judgment: no AI summaries, no AI scoring, no draft assessments. NIH protects custody: proposal content doesn't leave controlled infrastructure, period. Everything administrative between those fences (completeness checks, eligibility against objective criteria, routing, decision logs) is workable, and increasingly expected.
+
+The split that survives both rules: administration establishes facts about a submission; a named human judges its merit. The first you can automate. The second you have to own.
+
+Full table + sources (Nature, THE, Candid, EU AI Act Art. 86):
+https://www.evallens.io/blog/what-the-erc-ban-actually-allows
+
+============================================================
+X (@evallens, single tweet — variant A, recommended)
+============================================================
+
+"Reviewers banned from using AI" ran in every research newsletter this spring. Nobody answered the organizer's next question: what's still allowed?
+
+We mapped the ERC and NIH rules operation by operation. The working line is administration vs evaluation.
+
+https://www.evallens.io/blog/what-the-erc-ban-actually-allows
+
+============================================================
+X (variant B, backup)
+============================================================
+
+The ERC ban got the headlines. The useful part is the boundary it drew.
+
+What the rules still allow, operation by operation: you can automate completeness checks and eligibility, you cannot delegate summarizing or scoring. A human owns every judgment.
+
+https://www.evallens.io/blog/what-the-erc-ban-actually-allows
+
+============================================================
+MEDIA
+============================================================
+LinkedIn: assets/2026-08-24-erc-ban-allows/linkedin-two-fences-horizontal-minimal-3200x1800.png
+Telegram: article cover (cover.png)
+X: two-fences image or allowed-table.png (single tweet with image beats bare text)

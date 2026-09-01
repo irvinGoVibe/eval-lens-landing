@@ -11,20 +11,20 @@ author: Anonymous Unicorn
 status: draft
 ---
 
-On weekday mornings in San Jose, Dr. Akim Golubev teaches literature at a school where a good share of the parents build AI systems for a living. Evenings and remote hours belong to the University of Nevada, Las Vegas, where he earned his Ph.D. and picked up an Outstanding Teaching Award on the way out. As of this week, the hours in between belong to us.
+On weekday mornings, Dr. Akim Golubev teaches English at a school in Silicon Valley. Evenings and remote hours belong to the University of Nevada, Las Vegas, where he earned his Ph.D. and picked up an Outstanding Teaching Award on the way out. As of this week, the hours in between belong to us.
 
 Akim is joining EvalLens as a co-founder.
 
 ## Who is Dr. Akim Golubev?
 
-Dr. Akim Golubev is a professor at the University of Nevada, Las Vegas and a teacher at The Harker School in San Jose, working where literary theory, posthuman studies, and AI meet. He defended his Ph.D. dissertation, [*Posthuman Vital Materialism*](https://oasis.library.unlv.edu/thesesdissertations/5275/), at UNLV in 2025 — an inquiry into what happens to agency, identity, and responsibility when humans stop being the only actors in the room. At EvalLens he'll lead research and academic partnerships.
+Dr. Akim Golubev is a professor at the University of Nevada, Las Vegas who also teaches English at a Silicon Valley school, working where literary theory, posthuman studies, and AI meet. He defended his Ph.D. dissertation, [*Posthuman Vital Materialism*](https://oasis.library.unlv.edu/thesesdissertations/5275/), at UNLV in 2025 — an inquiry into what happens to agency, identity, and responsibility when humans stop being the only actors in the room. At EvalLens he'll lead research and academic partnerships.
 
 The short version of the CV, because it's a good one:
 
 - **Ph.D. in English Literature, UNLV, 2025.** The dissertation builds a theory of distributed agency and decentralized ethics — how meaning and responsibility work in systems where humans and non-humans act together. In his own words: *"The vital posthuman theory does not challenge the freedom, but the notion that there was an a priori self-will distinct from other-will."*
 - **[The first Crimean Tatar to earn a Ph.D. in the United States.](https://akim-golubev.com/)** Not a line on a CV — a first that belongs to an entire people, and he's the one who carried it across.
 - **UNLV Outstanding Teaching Award, 2025.** He teaches mythology, British and world literature, and composition.
-- **A book on the way.** *Posthuman Vital Materialism* is forthcoming from [Macmillan](https://us.macmillan.com/), one of the world's major publishing houses — worldwide distribution, translation rights included. (The contract terms are the one thing he's not allowed to talk about.)
+- **A book on the way.** *Posthuman Vital Materialism* is forthcoming from [Palgrave Macmillan](https://www.palgrave.com/), a major international academic publisher — worldwide distribution, translation rights included. (The contract terms are the one thing he's not allowed to talk about.)
 - **A working podcast habit.** He hosts the [Post-Podcast](https://akim-golubev.com/interviews) on the UNLV English channel — long-form conversations with scholars about war, media, poetry, and apocalypse. Light listening.
 
 He's on [LinkedIn](https://www.linkedin.com/in/akim-golubev/), where all three of his current jobs involve teaching someone something. We intend to be the fourth.
@@ -58,7 +58,7 @@ Four things, in rough order of appearance:
 - **Being where the arguments happen.** He lives and teaches in the middle of Silicon Valley — demo days, AI meetups, hallway debates included. Somebody from EvalLens should be in those rooms; now somebody is.
 ## Common questions
 
-**Who is Dr. Akim Golubev?** Dr. Akim Golubev is a co-founder of EvalLens, a professor at the University of Nevada, Las Vegas, and a teacher at The Harker School in San Jose. He holds a Ph.D. in English Literature from UNLV (2025), is the first Crimean Tatar to earn a Ph.D. in the United States, received UNLV's Outstanding Teaching Award, and his book *Posthuman Vital Materialism* is forthcoming from Macmillan.
+**Who is Dr. Akim Golubev?** Dr. Akim Golubev is a co-founder of EvalLens and a professor at the University of Nevada, Las Vegas, who also teaches English at a Silicon Valley school. He holds a Ph.D. in English Literature from UNLV (2025), is the first Crimean Tatar to earn a Ph.D. in the United States, received UNLV's Outstanding Teaching Award, and his book *Posthuman Vital Materialism* is forthcoming from Palgrave Macmillan.
 
 **Why did EvalLens add an academic co-founder?** Because evaluation products win on methodology, and a methodology is a theory of judgment. Akim's research on distributed agency covers the exact question EvalLens is built around: when AI prepares the analysis and a person makes the final call, who owns the decision? At EvalLens he leads research and academic partnerships.
 

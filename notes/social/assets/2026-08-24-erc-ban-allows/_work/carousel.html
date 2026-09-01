@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EvalLens · ERC AI ban carousel</title>
+  <style>
+    @font-face { font-family: "Inter"; src: url("file:///Users/yaroslavvolovoj/Library/Fonts/InterVariable.ttf") format("truetype"); font-weight: 100 900; }
+    @font-face { font-family: "SF Mono"; src: url("file:///System/Library/Fonts/SFNSMono.ttf") format("truetype"); font-weight: 400 700; }
+    :root {
+      --black:#000; --white:#fff; --ink:#1D1D1F; --muted:#6E6E73;
+      --paper:#F5F5F7; --dark-muted:#A1A1A6; --violet:#6C4CF1; --lavender:#A99BFF;
+      --lens:linear-gradient(118deg,#6C4CF1 0%,#A99BFF 32%,#2EC5E8 68%,#36E0C2 100%);
+    }
+    * { box-sizing:border-box; }
+    html, body { margin:0; padding:0; background:#d8d8dc; font-family:Inter,"SF Pro Display",system-ui,sans-serif; }
+    body { width:1080px; }
+    .slide { width:1080px; height:1350px; position:relative; overflow:hidden; page-break-after:always; padding:92px 82px 72px; }
+    .slide:last-child { page-break-after:auto; }
+    .dark { color:var(--paper); background:var(--black); }
+    .light { color:var(--ink); background:var(--white); }
+    .eyebrow { position:relative; z-index:3; font-family:"SF Mono",ui-monospace,monospace; font-size:18px; line-height:1.4; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+    .dark .eyebrow { color:var(--lavender); }
+    .light .eyebrow { color:var(--violet); }
+    h1,h2,h3,p { margin:0; }
+    h1,h2 { letter-spacing:-.04em; font-weight:760; }
+    h1 { font-size:92px; line-height:.96; }
+    h2 { font-size:72px; line-height:1.02; }
+    .gradient-text { background:var(--lens); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .footer { position:absolute; z-index:8; left:82px; right:82px; bottom:46px; display:flex; align-items:center; justify-content:space-between; font-size:18px; line-height:1; letter-spacing:.01em; }
+    .dark .footer { color:var(--dark-muted); }
+    .light .footer { color:var(--muted); }
+    .brand { display:flex; align-items:center; gap:8px; }
+    .brand img { width:22px; height:22px; }
+    .page { font-family:"SF Mono",ui-monospace,monospace; font-size:16px; letter-spacing:.09em; }
+    .hairline { height:2px; width:100%; background:var(--lens); border-radius:999px; }
+
+    /* Slide 1 */
+    .s1 { isolation:isolate; }
+    .s1::after { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(0,0,0,.06) 0%,rgba(0,0,0,.28) 56%,#000 100%); }
+    .s1 .hero-art { position:absolute; z-index:-2; width:1260px; height:709px; object-fit:cover; object-position:64% 50%; left:-16px; bottom:30px; opacity:.78; filter:saturate(1.05) contrast(1.07); }
+    .s1 .eyebrow { margin-top:4px; }
+    .s1 h1 { max-width:875px; margin-top:36px; }
+    .s1 .sub { margin-top:34px; color:var(--dark-muted); font-size:30px; line-height:1.28; letter-spacing:-.015em; }
+    .s1 .swipe { position:absolute; right:82px; bottom:95px; z-index:4; color:#D5D5DB; font-family:"SF Mono",monospace; font-size:16px; letter-spacing:.11em; text-transform:uppercase; display:flex; align-items:center; gap:12px; }
+    .s1 .swipe i { display:block; width:52px; height:2px; background:var(--lens); position:relative; }
+    .s1 .swipe i::after { content:""; position:absolute; right:0; top:-4px; width:8px; height:8px; border-top:2px solid #36E0C2; border-right:2px solid #36E0C2; transform:rotate(45deg); }
+
+    /* Shared light slide title */
+    .slide-title { margin-top:22px; max-width:900px; }
+    .section-rule { margin:32px 0 34px; width:118px; }
+    .bottom-note { position:absolute; left:82px; right:82px; bottom:112px; font-size:25px; line-height:1.36; letter-spacing:-.02em; }
+
+    /* Slide 2 */
+    .s2 .cards { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:10px; }
+    .fence-card { position:relative; min-height:630px; padding:34px 34px 32px; border-radius:24px; background:linear-gradient(#fff,#fff) padding-box,var(--lens) border-box; border:2px solid transparent; overflow:hidden; }
+    .fence-card::after { content:""; position:absolute; width:310px; height:310px; right:-155px; bottom:-165px; border:44px solid rgba(108,76,241,.05); border-radius:50%; }
+    .fence-card.custody::after { border-color:rgba(46,197,232,.06); }
+    .icon { width:64px; height:64px; display:grid; place-items:center; border-radius:18px; background:#F5F3FF; font-size:34px; }
+    .custody .icon { background:#ECFAFD; }
+    .fence-card h3 { margin-top:72px; font-size:42px; line-height:1.08; letter-spacing:-.035em; }
+    .fence-card h3 span { display:block; margin-top:8px; color:var(--violet); }
+    .custody h3 span { color:#168DA6; }
+    .fence-card p { margin-top:26px; color:var(--muted); font-size:25px; line-height:1.47; letter-spacing:-.015em; }
+    .fence-card .ref { position:absolute; left:34px; bottom:30px; font-family:"SF Mono",monospace; color:#8A8A90; font-size:14px; letter-spacing:.08em; text-transform:uppercase; }
+    .s2 .bottom-note strong { color:var(--violet); font-weight:700; }
+
+    /* Slide 3 */
+    .s3 .line-table { display:grid; grid-template-columns:1fr 1fr; border:1px solid rgba(20,16,45,.12); border-radius:24px; overflow:hidden; min-height:680px; }
+    .line-col { padding:34px 32px 30px; }
+    .line-col + .line-col { border-left:1px solid rgba(20,16,45,.12); }
+    .line-head { display:flex; gap:15px; align-items:center; padding-bottom:28px; border-bottom:1px solid rgba(20,16,45,.12); }
+    .line-head .badge { width:48px; height:48px; border-radius:14px; display:grid; place-items:center; font-size:26px; background:#EDFBF5; }
+    .off .line-head .badge { background:#FFF1F3; }
+    .line-head h3 { font-size:34px; line-height:1.05; letter-spacing:-.03em; }
+    .line-head small { display:block; margin-top:5px; color:var(--muted); font-family:"SF Mono",monospace; font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
+    .op-list { list-style:none; margin:18px 0 0; padding:0; }
+    .op-list li { padding:20px 0 20px 30px; position:relative; font-size:25px; line-height:1.28; letter-spacing:-.02em; border-bottom:1px solid rgba(20,16,45,.09); }
+    .op-list li:last-child { border-bottom:0; }
+    .op-list li::before { content:""; position:absolute; left:2px; top:31px; width:8px; height:8px; border-radius:50%; background:#36C995; }
+    .off .op-list li::before { background:#F06173; }
+    .s3 .bottom-note { color:var(--violet); font-weight:650; }
+
+    /* Slide 4 */
+    .s4 .stat-list { display:grid; gap:20px; }
+    .stat { display:grid; grid-template-columns:250px 1fr; align-items:center; min-height:205px; border:1px solid rgba(20,16,45,.12); border-radius:22px; padding:26px 30px; }
+    .stat .value { font-size:70px; line-height:.9; font-weight:790; letter-spacing:-.055em; }
+    .stat p { font-size:25px; line-height:1.32; color:var(--muted); letter-spacing:-.02em; }
+    .stat p strong { color:var(--ink); font-weight:680; }
+    .s4 .bottom-note { font-size:27px; color:var(--ink); font-weight:620; }
+
+    /* Slide 5 */
+    .s5 { isolation:isolate; }
+    .s5::before { content:""; position:absolute; z-index:-1; width:720px; height:720px; right:-310px; bottom:-260px; border-radius:50%; border:88px solid transparent; background:linear-gradient(#000,#000) padding-box,var(--lens) border-box; opacity:.42; }
+    .s5::after { content:""; position:absolute; z-index:-1; width:360px; height:360px; left:-210px; top:310px; border-radius:50%; border:52px solid rgba(169,155,255,.12); }
+    .s5 h1 { margin-top:48px; max-width:880px; }
+    .s5 .sub { max-width:820px; margin-top:44px; color:var(--dark-muted); font-size:29px; line-height:1.42; letter-spacing:-.018em; }
+    .cta-card { margin-top:82px; min-height:300px; border-radius:24px; padding:34px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); display:flex; align-items:flex-end; justify-content:space-between; }
+    .url { font-size:34px; font-weight:680; letter-spacing:-.025em; }
+    .url small { display:block; margin-bottom:12px; color:var(--lavender); font-family:"SF Mono",monospace; font-size:15px; letter-spacing:.12em; text-transform:uppercase; }
+    .big-mark { width:140px; height:140px; display:grid; place-items:center; border-radius:32px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); }
+    .big-mark img { width:106px; height:106px; }
+    @media print { html,body { background:#fff; } }
+    @page { size:1080px 1350px; margin:0; }
+  </style>
+</head>
+<body>
+  <section class="slide dark s1" data-slide="1">
+    <img class="hero-art" src="../../eval-lens-landing/notes/social/assets/2026-08-24-erc-ban-allows/linkedin-two-fences-horizontal-clean-3200x1800.png" alt="Two optical lenses processing proposal content" />
+    <div class="eyebrow">ERC · NIH · WHAT THE RULES SAY</div>
+    <h1>What the ERC<br>“AI ban” actually<br><span class="gradient-text">allows</span></h1>
+    <p class="sub">Operation by operation. Sources inside.</p>
+    <div class="swipe"><span>Swipe</span><i></i></div>
+    <div class="footer"><span class="brand">@evallens <span>🦄</span></span><span class="page">1/5</span></div>
+  </section>
+
+  <section class="slide light s2" data-slide="2">
+    <div class="eyebrow">TWO RULES, TWO FENCES</div>
+    <h2 class="slide-title">Different rules protect<br>different things.</h2>
+    <div class="hairline section-rule"></div>
+    <div class="cards">
+      <article class="fence-card judgment">
+        <div class="icon">🧠</div>
+        <h3>ERC protects<span>judgment</span></h3>
+        <p>Merit stays with humans. No AI summaries, no AI scoring, no draft assessments.</p>
+        <div class="ref">Merit fence</div>
+      </article>
+      <article class="fence-card custody">
+        <div class="icon">🔒</div>
+        <h3>NIH protects<span>custody</span></h3>
+        <p>Proposal content never leaves controlled infrastructure.</p>
+        <div class="ref">NOT-OD-23-149</div>
+      </article>
+    </div>
+    <p class="bottom-note">An operation can clear <strong>one fence</strong> and still hit the other.</p>
+    <div class="footer"><span class="brand">@evallens <span>🦄</span></span><span class="page">2/5</span></div>
+  </section>
+
+  <section class="slide light s3" data-slide="3">
+    <div class="eyebrow">THE WORKABLE LINE</div>
+    <h2 class="slide-title">Administration<br>versus evaluation.</h2>
+    <div class="hairline section-rule"></div>
+    <div class="line-table">
+      <div class="line-col workable">
+        <div class="line-head"><div class="badge">✓</div><div><h3>Administration</h3><small>Workable</small></div></div>
+        <ul class="op-list">
+          <li>Completeness checks</li>
+          <li>Eligibility vs objective criteria</li>
+          <li>Routing</li>
+          <li>Decision logs</li>
+        </ul>
+      </div>
+      <div class="line-col off">
+        <div class="line-head"><div class="badge">×</div><div><h3>Evaluation</h3><small>Off limits</small></div></div>
+        <ul class="op-list">
+          <li>Summarizing for reviewers</li>
+          <li>Drafting assessments</li>
+          <li>Scoring merit</li>
+        </ul>
+      </div>
+    </div>
+    <p class="bottom-note">When an “eligibility” criterion requires judgment to apply, treat it as judgment.</p>
+    <div class="footer"><span class="brand">@evallens <span>🦄</span></span><span class="page">3/5</span></div>
+  </section>
+
+  <section class="slide light s4" data-slide="4">
+    <div class="eyebrow">WHY THE LINE BEATS THE BAN</div>
+    <h2 class="slide-title">The workload moved.<br>The hours did not.</h2>
+    <div class="hairline section-rule"></div>
+    <div class="stat-list">
+      <div class="stat"><div class="value gradient-text">+57%</div><p><strong>Applications</strong> across 12 funders, 2022–2025</p></div>
+      <div class="stat"><div class="value gradient-text">+142%</div><p><strong>Marie Curie</strong> fellowships</p></div>
+      <div class="stat"><div class="value gradient-text">20%→5%</div><p><strong>Easy rejections.</strong><br>Same reviewer hours.</p></div>
+    </div>
+    <p class="bottom-note">A documented protocol answers what a ban cannot: who owned each decision.</p>
+    <div class="footer"><span class="brand">@evallens <span>🦄</span></span><span class="page">4/5</span></div>
+  </section>
+
+  <section class="slide dark s5" data-slide="5">
+    <div class="eyebrow">AI PREPARES THE ANALYSIS · PEOPLE DECIDE</div>
+    <h1>Save this.<br>Read the<br><span class="gradient-text">full map.</span></h1>
+    <p class="sub">Operation-by-operation table + sources (Nature, THE, Candid, EU AI Act Art. 86) on the blog.</p>
+    <div class="cta-card">
+      <div class="url"><small>Open the source map</small>evallens.io/blog</div>
+      <div class="big-mark"><img src="../../eval-lens-landing/web/public/assets/brand/evallens-mark.svg" alt="EvalLens unicorn mark" /></div>
+    </div>
+    <div class="footer"><span class="brand">@evallens <span>🦄</span></span><span class="page">5/5</span></div>
+  </section>
+</body>
+</html>
