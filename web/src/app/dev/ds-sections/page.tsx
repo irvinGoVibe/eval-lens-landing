@@ -162,7 +162,6 @@ export default function DsSectionsPage() {
 
       <Faq
         id="faq"
-        surface="light"
         marker="16 · FAQ"
         ariaLabel="Frequently asked questions"
         eyebrow="FAQ"
@@ -173,7 +172,6 @@ export default function DsSectionsPage() {
 
       <FullStatement
         marker="02 · Full-bleed statement"
-        surface="ink"
         version={1}
         ariaLabel="Full-bleed statement"
         eyebrow="The thesis"
