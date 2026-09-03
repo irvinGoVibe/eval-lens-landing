@@ -126,6 +126,10 @@ const FAQ = [
     a: "Keep them — different job. Signal engines discover companies via external data; a pre-seed founder who just applied often has no signal footprint at all. Nothing in that stack reads submitted decks against your criteria. Complementary, not competitive.",
   },
   {
+    q: "Our inbound isn't tidy decks. It's Notion pages, Looms and data-room links.",
+    a: "Submitted decks and written answers get the full read today, in the language the founder wrote them — one rubric across the batch, so a deck in German and a deck in Portuguese land on the same scale. Looms and external links aren't read cold: they're scoped into your program during setup, and the per-company coverage log shows your team exactly what was read. No company loses points for format without a human seeing the flag.",
+  },
+  {
     q: "What happens when the AI misquotes a deck?",
     a: "Quotes are verified against the source document before any finding stands — no quote, no finding. Where evidence is thin, scores move down, never up, and the gap is flagged to your team rather than papered over. And nothing founder-facing leaves without your sign-off.",
   },

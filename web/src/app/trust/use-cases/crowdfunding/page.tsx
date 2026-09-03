@@ -152,6 +152,10 @@ const FAQ = [
     a: "Batch-based to start — export from your current intake, files and evaluations back — with API integration scoped on the Platform tier. No project-owner-facing change is required on day one.",
   },
   {
+    q: "Project files are a KIIS, a business plan and a financial model — rarely in one language.",
+    a: "Documents are read in full, each in the language the project owner filed it — the KIIS checked section by section against Annex I, the rest of the file read against your screening criteria. One rubric across the inbound keeps results comparable across languages and formats. Financial models and other structured files are configured during setup to match how your analysts use them, and the per-project coverage log records what was read.",
+  },
+  {
     q: "Who else runs this?",
     a: "We're onboarding a founding cohort of platforms, which is why the entry point is a measured parallel pilot on your own inbound — with metrics your Compliance Officer signs off before anything starts.",
   },

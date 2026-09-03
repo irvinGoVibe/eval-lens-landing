@@ -146,6 +146,10 @@ const FAQ = [
     a: "Price and other formula-based criteria stay mechanical — your existing calculation. EvalLens works the part that consumes committee time and generates challenges: the qualitative criteria — technical approach, methodology, team, delivery plan — where scoring consistency and evidence trails matter most.",
   },
   {
+    q: "Bids arrive as three volumes, standard forms and annexes. What exactly gets read?",
+    a: "The qualitative volumes — technical approach, methodology, team, delivery plan — are read in full with page references, in the language of submission, against your published criteria only. Price and formula criteria stay in your existing mechanical calculation. Forms and annexes are mapped to your tender structure during setup, and the coverage log shows the committee what was read, volume by volume. A bid is never marked down for format without an evaluator seeing the flag.",
+  },
+  {
     q: "What happens when the AI misreads a bid?",
     a: "Quotes are verified against the source document before a finding stands — no quote, no finding. Thin evidence moves scores down, never up, and every material gap routes to the evaluator's clarification list rather than into a silent score.",
   },
