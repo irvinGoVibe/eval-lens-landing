@@ -46,8 +46,10 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Install Playwright chromium
-        run: pnpm exec playwright install chromium --with-deps
+      - name: Install Playwright browsers
+        # The test matrix runs chromium, firefox and webkit projects —
+        # installing chromium alone left firefox/webkit failing to launch.
+        run: pnpm exec playwright install --with-deps
 
       - name: Smoke e2e
         run: pnpm test:e2e

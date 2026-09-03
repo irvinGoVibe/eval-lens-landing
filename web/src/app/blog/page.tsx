@@ -37,14 +37,18 @@ export default async function BlogHubPage() {
             </h1>
           </header>
 
-          <div className="blog-hero-grid">
-            <ArticleCard post={featured} variant="feature" priority />
-            <div className="blog-rail">
-              {rail.map((post) => (
-                <ArticleCard key={post.slug} post={post} variant="list" />
-              ))}
+          {/* Empty post source (BLOG_SOURCE=static in CI): no featured article
+              to render — skip the hero grid, keep the masthead and the rest. */}
+          {featured && (
+            <div className="blog-hero-grid">
+              <ArticleCard post={featured} variant="feature" priority />
+              <div className="blog-rail">
+                {rail.map((post) => (
+                  <ArticleCard key={post.slug} post={post} variant="list" />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="blog-seeall-row">
             <Link href="/blog/all" className="blog-seeall">

@@ -39,6 +39,11 @@ function extractFaq(markdown: string): { q: string; a: string }[] {
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
+  // Empty post source (BLOG_SOURCE=static in CI, where `blog-static`'s POSTS
+  // is intentionally empty): emit one sentinel path — `cacheComponents`
+  // rejects an empty result, and the sentinel slug just 404s via `notFound()`
+  // at request time. With a live source this branch never runs.
+  if (posts.length === 0) return [{ slug: "post-not-found" }];
   return posts.map((post) => ({ slug: post.slug }));
 }
 
