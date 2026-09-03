@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { ScrollFX } from "@/components/ScrollFX";
 import {
   StatBand,
+  Bento,
   Numbered,
   Faq,
   CtaBand,
@@ -132,11 +133,29 @@ const RECORD_ROWS = [
   },
 ];
 
-/* §5 — judge math cards (page-local) */
+/* §5 — judge math (DS Bento) */
 const JUDGE_MATH = [
-  { icon: "🤝", title: "Keep every judge", body: "Judge count is a program KPI and a sponsor perk. Nothing here reduces it — it upgrades what the ask is." },
-  { icon: "📊", title: "One standard, whole pool", body: "The written round stops being a lottery of which tired judge drew your entry on which night." },
-  { icon: "🎓", title: "Feedback as pedagogy", body: "Every student team gets rubric-based feedback — the outcome deans and sponsors actually brag about." },
+  {
+    tag: "The calculation",
+    title: "400 entries × 3 reads × 1.5 hours",
+    body: "The written round consumes 1,800 judge-hours before semis, finals and mentoring even begin.",
+    feature: true,
+  },
+  {
+    tag: "Judge pool",
+    title: "Keep every judge",
+    body: "Judge count is a program KPI and a sponsor perk. Nothing here reduces it — it upgrades what the ask is.",
+  },
+  {
+    tag: "Consistency",
+    title: "One standard, whole pool",
+    body: "The written round stops being a lottery of which tired judge drew your entry on which night.",
+  },
+  {
+    tag: "Outcome",
+    title: "Feedback as pedagogy",
+    body: "Every student team gets rubric-based feedback — the outcome deans and sponsors actually brag about.",
+  },
 ];
 
 /* §6 — the disclosure kit rows (page-local) */
@@ -198,11 +217,8 @@ const PC_STYLES = `
 .pc-record-rule__mark{font-family:var(--font-mono);font-size:22px;line-height:1;color:var(--violet)}
 .pc-record-rule strong{font-size:clamp(18px,1.7vw,23px);line-height:1.25;letter-spacing:-.02em}
 .pc-record-rule p{max-width:62ch;margin:0;font-size:15px;line-height:1.6;color:var(--muted)}
-.pc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:clamp(24px,3vw,36px)}
-.pc-card{border:1px solid var(--border,rgba(20,16,45,.12));border-radius:18px;padding:22px;background:var(--surface,#fff)}
-.pc-card .ic{font-size:22px;line-height:1}
-.pc-card h3{font-size:17px;margin:12px 0 8px;font-weight:650}
-.pc-card p{font-size:14.5px;line-height:1.55;color:var(--muted,#5b5670)}
+.pc-kit-head{max-width:1120px}
+.pc-kit-title{max-width:20ch;margin:0;font-size:clamp(48px,5.2vw,72px);font-weight:600;line-height:1.02;letter-spacing:-.045em;text-wrap:balance}
 .pc-kit{border-radius:24px;border:2px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--lens,linear-gradient(118deg,#6c4cf1,#a99bff,#2ec5e8,#36e0c2)) border-box;box-shadow:var(--shadow-soft,0 24px 60px -34px rgba(40,30,90,.5));padding:clamp(26px,4vw,44px);margin-top:clamp(28px,4vw,44px)}
 .pc-kit h3{font-size:clamp(20px,2.6vw,26px);font-weight:680}
 .pc-kit .lead{color:var(--muted,#5b5670);margin-top:12px;font-size:15.5px;max-width:68ch}
@@ -254,7 +270,8 @@ export default function PitchCompetitionsPage() {
           primary={{ label: "Run a shadow pilot", href: "/#demo", partnerAccess: true }}
           secondary={{ label: "See a sample report", href: "/trust/use-cases#sample-output" }}
           mediaAlt="A stack of evidence-linked entry review reports prepared for a pitch competition jury"
-          blendMediaCanvas
+          mediaSrc="/assets/use-cases/pitch-competitions/evidence-report-stack-cutout.png"
+          mediaCutout
         />
 
         {/* §2 The written round, honestly (StatBand bakes a soft surface) */}
@@ -323,38 +340,24 @@ export default function PitchCompetitionsPage() {
           items={STEPS}
         />
 
-        {/* §5 Judge math — page-local */}
-        <section className="band soft" aria-labelledby="pc-math-h2">
-          <div className="wrap pc-narrow" data-reveal="up">
-            <Eyebrow>Judge math</Eyebrow>
-            <h2 id="pc-math-h2">
-              1,800 hours, returned to the parts judges{" "}
-              <span className="grad-word">love.</span>
-            </h2>
-            <p className="sub">
-              400 entries × 3 reads × 1.5 hours = 1,800 judge-hours your current written
-              round consumes. The AI panel returns those hours to semis, finals and
-              mentoring — and every entry still gets every page read.
-            </p>
-          </div>
-          <div className="wrap">
-            <div className="pc-cards">
-              {JUDGE_MATH.map((c) => (
-                <div key={c.title} className="pc-card" data-reveal="up">
-                  <div className="ic" aria-hidden="true">{c.icon}</div>
-                  <h3>{c.title}</h3>
-                  <p>{c.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* §5 Judge math — DS Bento, light. */}
+        <Bento
+          id="judge-math"
+          surface="light"
+          version={1}
+          ariaLabel="How EvalLens returns judge time to the competition"
+          eyebrow="Judge math"
+          title="1,800 hours, returned to the parts judges love."
+          titleAccent="love."
+          sub="The AI panel returns those hours to semis, finals and mentoring — and every entry still gets every page read."
+          items={JUDGE_MATH}
+        />
 
         {/* §6 Disclosure kit — page-local */}
         <section className="band light" aria-labelledby="pc-kit-h2">
-          <div className="wrap pc-narrow" data-reveal="up">
+          <div className="wrap pc-kit-head" data-reveal="up">
             <Eyebrow>When the student paper calls</Eyebrow>
-            <h2 id="pc-kit-h2">
+            <h2 id="pc-kit-h2" className="pc-kit-title">
               You get the script, not just the{" "}
               <span className="grad-word">software.</span>
             </h2>
