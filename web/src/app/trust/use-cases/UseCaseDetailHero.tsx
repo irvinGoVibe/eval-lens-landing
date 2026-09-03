@@ -18,7 +18,8 @@ export function UseCaseDetailHero({
   primary,
   secondary,
   mediaAlt,
-  blendMediaCanvas = false,
+  mediaSrc = "/assets/use-cases/shared/evidence-report-stack.webp",
+  mediaCutout = false,
 }: {
   id: string;
   eyebrow: string;
@@ -27,14 +28,11 @@ export function UseCaseDetailHero({
   primary: HeroCta;
   secondary: HeroCta;
   mediaAlt: string;
-  blendMediaCanvas?: boolean;
+  mediaSrc?: string;
+  mediaCutout?: boolean;
 }) {
   return (
-    <section
-      id={id}
-      className={`${styles.hero} ${blendMediaCanvas ? styles.heroMediaBlend : ""} light`}
-      aria-labelledby={`${id}-title`}
-    >
+    <section id={id} className={`${styles.hero} light`} aria-labelledby={`${id}-title`}>
       <div className={styles.stage}>
         <div className={styles.copy}>
           <Eyebrow>{eyebrow}</Eyebrow>
@@ -60,8 +58,8 @@ export function UseCaseDetailHero({
           </div>
         </div>
         <Image
-          className={`${styles.media} ${blendMediaCanvas ? styles.mediaCanvasBlend : ""}`}
-          src="/assets/use-cases/shared/evidence-report-stack.webp"
+          className={`${styles.media} ${mediaCutout ? styles.mediaCutout : ""}`}
+          src={mediaSrc}
           alt={mediaAlt}
           width={1536}
           height={1024}
