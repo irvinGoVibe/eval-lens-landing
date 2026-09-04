@@ -1,5 +1,5 @@
+import Image from "next/image";
 import Link from "@/components/LanSafeLink";
-import { BrandLogo } from "@/components/BrandLogo";
 import { Button } from "@/components/ui/Button";
 
 type FooterProps = {
@@ -38,9 +38,20 @@ export function Footer({ variant = "light" }: FooterProps) {
               className="brand"
               href="/#top"
               aria-label="EvalLens home"
-              style={{ marginBottom: 14 }}
+              style={{ marginBottom: 12 }}
             >
-              <BrandLogo tone={isDark ? "light" : "dark"} />
+              <Image
+                className="foot-brand-logo"
+                src={
+                  isDark
+                    ? "/assets/brand/evallens-logo-light-crop.svg"
+                    : "/assets/brand/evallens-logo-dark-crop.svg"
+                }
+                alt=""
+                width={539}
+                height={140}
+                priority={false}
+              />
             </Link>
             <p>
               Batch-review pitch decks.<br />
