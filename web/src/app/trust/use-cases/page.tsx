@@ -515,13 +515,6 @@ export default function UseCasesPage() {
         {/* §3 Where Review Breaks */}
         <WhereReviewBreaks />
 
-        <div
-          className="tr-gradient-bridge"
-          data-from="ink"
-          data-to="light"
-          aria-hidden="true"
-        />
-
         {/* §4 Built for Controlled Review */}
         <BuiltForControlledReview />
 
@@ -557,20 +550,13 @@ export default function UseCasesPage() {
           }}
         />
 
-        <div
-          className="tr-gradient-bridge"
-          data-from="ink"
-          data-to="light"
-          aria-hidden="true"
-        />
-
         {/* §7 Honest Scope */}
         <HonestScope />
 
         {/* §7b Trust pack — added 2026-08-15 (panel-review fix: the public
             trust-pack the segment pages promise lives one click away). */}
         <section
-          className="band light"
+          className="band light uc2-trustpack"
           aria-labelledby="uc2-trustpack-h2"
         >
           <div className="wrap">
@@ -625,7 +611,7 @@ export default function UseCasesPage() {
           auroraVariant="ocean"
         />
       </main>
-      <Footer />
+      <Footer variant="dark" />
       <ScrollFX />
     </>
   );

@@ -40,7 +40,10 @@ export function Footer({ variant = "light" }: FooterProps) {
               aria-label="EvalLens home"
               style={{ marginBottom: 14 }}
             >
-              <BrandLogo tone={isDark ? "light" : "dark"} />
+              <BrandLogo
+                tone={isDark ? "light" : "dark"}
+                className={isDark ? "foot-brand-logo--dark" : "foot-brand-logo--on-light"}
+              />
             </Link>
             <p>
               Batch-review pitch decks.<br />

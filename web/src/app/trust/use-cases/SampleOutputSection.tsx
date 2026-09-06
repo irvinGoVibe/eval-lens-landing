@@ -1,6 +1,6 @@
 "use client";
 
-import { PitchReportMock } from "./PitchReportMock";
+import { MobilePitchReportMock, PitchReportMock } from "./PitchReportMock";
 
 export function SampleOutputSection() {
   return (
@@ -33,7 +33,12 @@ export function SampleOutputSection() {
 
           {/* 4. Internal report tabs + 5. default Project Summary view */}
           <div className="uc2-panel-body">
-            <PitchReportMock />
+            <div className="uc2-report-desktop">
+              <PitchReportMock />
+            </div>
+            <div className="uc2-report-mobile">
+              <MobilePitchReportMock />
+            </div>
           </div>
         </div>
 

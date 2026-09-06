@@ -295,3 +295,65 @@ export function PitchReportMock() {
     </div>
   );
 }
+
+const MOBILE_DIMS = DIMS.filter(({ code }) => ["P3", "P4", "P5"].includes(code));
+
+export function MobilePitchReportMock() {
+  return (
+    <article className="rpt-mobile" aria-label="Condensed sample pitch report for EduPath SEA">
+      <header className="rpt-mobile__header">
+        <div>
+          <p className="rpt-mobile__kicker">Pitch report · AI jury</p>
+          <h3 className="rpt-mobile__project"><span className="grad-word">EduPath</span> SEA</h3>
+          <div className="rpt-mobile__meta">
+            <span className="rpt-mobile__status">AI report ready</span>
+            <span className="rpt-mobile__status rpt-mobile__status--neutral">6 slides submitted</span>
+          </div>
+        </div>
+        <div className="rpt-mobile__score" aria-label={`${TOTAL.toFixed(2)} out of 10`}>
+          <strong>{TOTAL.toFixed(2)}</strong>
+          <span>Score / 10</span>
+        </div>
+      </header>
+
+      <section className="rpt-mobile__section" aria-labelledby="rpt-mobile-summary">
+        <p className="rpt-mobile__label" id="rpt-mobile-summary">Executive summary</p>
+        <p className="rpt-mobile__summary">
+          Strong regional market and team signals. The deck still needs a clear business model, customer profile and first-market plan.
+        </p>
+      </section>
+
+      <section className="rpt-mobile__section" aria-labelledby="rpt-mobile-signals">
+        <p className="rpt-mobile__label" id="rpt-mobile-signals">Key score signals</p>
+        <div className="rpt-mobile__scores">
+          {MOBILE_DIMS.map((dimension) => (
+            <div className="rpt-mobile__score-row" key={dimension.code}>
+              <span className="rpt-mobile__code">{dimension.code}</span>
+              <span className="rpt-mobile__name">{dimension.name}</span>
+              <span className="rpt-mobile__bar" aria-hidden="true">
+                <span style={{ width: `${dimension.score * 10}%`, background: barColor(dimension.score) }} />
+              </span>
+              <strong>{dimension.score.toFixed(1)}</strong>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="rpt-mobile__decisions">
+        <div className="rpt-mobile__decision rpt-mobile__decision--up">
+          <span>Why it may pass</span>
+          <p>Experienced team and an attractive SEA market.</p>
+        </div>
+        <div className="rpt-mobile__decision rpt-mobile__decision--risk">
+          <span>Key risk</span>
+          <p>No pricing, revenue model or first-customer path.</p>
+        </div>
+      </div>
+
+      <section className="rpt-mobile__question" aria-labelledby="rpt-mobile-question">
+        <p className="rpt-mobile__label" id="rpt-mobile-question">Confirm live</p>
+        <p>Who is the first paying customer, and how does the product make money?</p>
+      </section>
+    </article>
+  );
+}
