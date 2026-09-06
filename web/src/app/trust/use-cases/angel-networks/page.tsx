@@ -235,6 +235,7 @@ const SEG_STYLES = `
 .seg-hero-exact__title .grad-word{background:var(--lens);-webkit-background-clip:text;background-clip:text;color:transparent}
 .seg-hero-exact__sub{width:66%;margin:clamp(26px,2vw,38px) 0 0;font-size:clamp(15px,1.1vw,21px);line-height:1.55;color:var(--muted)}
 .seg-hero-exact__actions{display:flex;align-items:center;gap:18px;margin-top:clamp(28px,2.8vw,42px)}
+.seg-hero-exact__actions .btn{min-height:56px;padding:17px 34px;justify-content:center;text-align:center;font-size:17px;line-height:1.1;font-weight:500;letter-spacing:-.02em}
 .seg-hero-exact__media{position:absolute;z-index:1;top:27%;right:min(-5vw,calc((1920px - 100vw)/2 - 5vw));width:clamp(1050px,72vw,2300px);height:auto;max-width:none}
 
 .seg .ds-statband__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
@@ -244,8 +245,9 @@ const SEG_STYLES = `
 .seg .ds-statband__grid .ds-statband__src{font-family:var(--font-mono);font-size:10px;line-height:1.35;letter-spacing:.06em;text-transform:uppercase;margin-top:auto;padding-top:8px}
 
 .seg #spiral .lab-pv__grid{grid-template-columns:minmax(0,.98fr) minmax(520px,1.02fr)}
-.seg #spiral.lab-process{min-height:0;padding-top:clamp(72px,8vw,112px);padding-bottom:clamp(76px,8vw,118px)}
+.seg #spiral.lab-process{min-height:0;padding-top:clamp(72px,8vw,112px);padding-bottom:clamp(38px,4vw,59px)}
 .seg #spiral .lab-process__stage{position:relative;top:auto;min-height:0;overflow:visible}
+.seg #spiral .lab-pv{min-height:50svh;padding-bottom:clamp(20px,3vh,40px)}
 .seg #spiral .lab-process__copy{text-align:left}
 .seg #spiral .lab-process__title{font-size:clamp(44px,4.8vw,68px);line-height:1.02}
 .seg #spiral .lab-process__title .lab-process__line > span{transform:none}
@@ -256,6 +258,7 @@ const SEG_STYLES = `
 .seg #spiral .lab-window__row{grid-template-columns:54px minmax(0,1fr);min-height:64px;padding-inline:16px}
 .seg #spiral .lab-window__status{display:none}
 .seg #spiral .lab-window__rlabel{text-transform:none;letter-spacing:0;font-family:var(--font-ui);font-size:clamp(14px,1.3vw,17px);line-height:1.35}
+.seg #how-it-works{padding-top:clamp(42px,5.5vw,75px)}
 .seg #how-it-works .ds-numbered__head .title{max-width:24ch;white-space:pre-line}
 
 .seg-brief-head{max-width:1120px}
@@ -301,11 +304,14 @@ const SEG_STYLES = `
 .seg-related__card:hover .seg-related__arrow{transform:translateX(4px);color:var(--fg-on-dark)}
 
 @media (max-width:900px){
+  .seg #volunteer-hours{padding-bottom:clamp(36px,4.5vw,60px)}
+  .seg #spiral.lab-process{padding-top:clamp(36px,4vw,56px)}
+  .seg #spiral .lab-pv{padding-top:clamp(20px,3vh,40px)}
   .seg-hero-exact{height:auto;padding:clamp(92px,14vw,126px) 0 24px}
   .seg-hero-exact__stage{width:min(calc(100% - 40px),760px)}
   .seg-hero-exact__copy{position:relative;top:auto;left:auto;width:100%}
   .seg-hero-exact__copy .eyebrow{margin-bottom:24px}
-  .seg-hero-exact__title{max-width:13ch;font-size:clamp(46px,8.5vw,68px);white-space:normal;text-wrap:balance}
+  .seg-hero-exact__title{max-width:13ch;font-size:clamp(42px,7.25vw,58px);white-space:normal;text-wrap:balance}
   .seg-hero-exact__sub{width:min(100%,48ch);font-size:16px}
   .seg-hero-exact__media{position:relative;top:auto;right:auto;width:138%;margin:-2% -19% -8%}
   .seg #spiral .lab-pv__grid{grid-template-columns:1fr}
@@ -314,6 +320,9 @@ const SEG_STYLES = `
   .seg-brief-row p{grid-column:3}
   .seg-brief-rule{grid-template-columns:48px minmax(110px,.38fr) minmax(0,1fr)}
   .seg-related__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:880px){
+  .seg #questions-cinema .ds-cinema__copy{top:66%}
 }
 @media (max-width:720px){
   .seg #how-it-works .ds-numbered__head .title{white-space:normal}
@@ -330,10 +339,10 @@ const SEG_STYLES = `
 @media (max-width:620px){
   .seg-hero-exact{padding-top:86px}
   .seg-hero-exact__stage{width:min(calc(100% - 32px),560px)}
-  .seg-hero-exact__title{max-width:11ch;font-size:clamp(42px,13vw,58px);line-height:1.02}
+  .seg-hero-exact__title{max-width:11ch;font-size:clamp(36px,11.2vw,50px);line-height:1.02}
   .seg-hero-exact__sub{margin-top:22px;font-size:15px}
   .seg-hero-exact__actions{width:100%;flex-direction:column;align-items:stretch;gap:10px}
-  .seg-hero-exact__actions .btn{width:100%;min-height:44px;flex:none}
+  .seg-hero-exact__actions .btn{width:100%;min-height:48px;padding:13px 20px;flex:none;font-size:15px;line-height:1;font-weight:400;letter-spacing:0}
   .seg-hero-exact__media{width:126%;margin:8px -13% -3%}
   .seg .ds-statband__grid{grid-template-columns:1fr}
   .seg-related__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}

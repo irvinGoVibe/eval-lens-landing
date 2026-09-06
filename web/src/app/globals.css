@@ -594,7 +594,6 @@ section.band{padding:clamp(84px,11vw,150px) var(--gutter);position:relative;}
   font-size:17px;line-height:1.1;font-weight:500;letter-spacing:-.02em;
   padding:17px 34px;min-height:56px;
 }
-
 /* ---- aurora background ---- */
 .cta-band__aurora{
   /* palette + pulse speeds — overridden per variation (.cta-band__aurora--<id>);
@@ -3401,12 +3400,7 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
 .foot .inner{max-width:var(--maxw);margin:0 auto;position:relative;z-index:1;}
 .foot .wrap{display:grid;grid-template-columns:minmax(280px,1fr) auto;align-items:start;gap:88px;}
 .foot .nav-cluster{display:grid;grid-template-columns:repeat(3,max-content);gap:76px;}
-/* Cropped official wordmark for light footer surfaces. */
-.foot .foot-brand-logo--on-light{
-  width:124.34px;
-  height:32px;
-  background-image:url(/assets/brand/evallens-logo-dark-crop.svg);
-}
+.foot .foot-brand-logo{display:block;width:auto;height:32px;}
 .foot .col--brand p{max-width:300px;line-height:1.55;margin:0 0 18px;}
 .foot .ctas{display:flex;gap:10px;flex-wrap:wrap;}
 .foot h5,.foot .col-h{font-family:var(--foot-head-font);font-size:12px;text-transform:uppercase;letter-spacing:var(--foot-head-tracking);color:var(--fg);font-weight:500;margin:0 0 16px;}
@@ -3495,11 +3489,6 @@ a.mini-tag:hover{text-decoration-color:var(--violet);}
   .foot.is-dark::before{animation:none;transform:translateX(-50%);}
 }
 .foot.is-dark .brand{color:var(--fg-on-dark);}
-.foot.is-dark .foot-brand-logo--dark{
-  width:124.34px;
-  height:32px;
-  background-image:url(/assets/brand/evallens-logo-light-crop.svg);
-}
 .foot.is-dark h5,.foot.is-dark .col-h{color:var(--fg-on-dark);}
 .foot.is-dark .col nav a,
 .foot.is-dark .foot-legal__meta a{color:var(--muted-on-dark);}
@@ -9416,4 +9405,14 @@ section.band.ink .mini-tag{color:var(--lavender);}
   }
   .foot .foot-social a{width:44px;height:44px;}
   .partner-modal__close{width:44px;height:44px;}
+}
+
+/* Mobile CTA bands: every page uses the same full-width action stack and the
+   compact button type tier. Kept late so it wins over liquid-glass sizing. */
+@media (max-width:720px){
+  .cta-band__actions{width:100%;flex-direction:column;align-items:stretch;gap:10px;}
+  .cta-band .cta-band__actions .btn{
+    width:100%;min-height:48px;padding:13px 20px;justify-content:center;
+    font-size:15px;line-height:1;
+  }
 }
